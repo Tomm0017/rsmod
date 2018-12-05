@@ -1,0 +1,11 @@
+ext {
+    junitVersion = '4.12'
+    kotlinVersion = '1.3.10'
+    nettyVersion = '4.0.34.Final'
+    guavaVersion = '19.0'
+    yamlVersion = '2.5.0'
+    reflectionsVersion = '0.9.11'
+    runeliteVersion = 'runelite-parent-1.5.2.1'
+    commonsIoVersion = '2.4'
+    scryptVersion = '1.4.0'
+}

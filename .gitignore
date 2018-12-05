@@ -1,0 +1,14 @@
+/.idea/
+/out/
+
+gradlew
+gradlew.bat
+
+/data/xteas/
+/data/saves/
+
+plugins/src/main/kotlin/
+
+game.yml
+packets.yml
+error.log

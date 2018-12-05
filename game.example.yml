@@ -1,0 +1,45 @@
+# Game values
+# You want to edit these to fit your game.
+name: "RS Mod Server"
+game-port: 43594
+revision: 172
+rsa-encryption: false
+home-x: 3200
+home-z: 3200
+dev-mode: true
+
+# Privileges
+# Any privilege you want to be represented in-game you define here.
+privileges:
+    - id: 0
+      power: 0
+      icon: -1
+      name: "player"
+    - id: 1
+      power: 1
+      icon: 0
+      name: "moderator"
+    - id: 2
+      power: 2
+      icon: 1
+      name: "administrator"
+
+# Game context values
+# You usually do not want to modify these values or the game may not function properly.
+max-players: 2000
+cycle-time: 600
+
+# Game services
+# You can pick and choose which services you want to run.
+services:
+  - class: gg.rsmod.game.service.GameService
+    messages-per-cycle: 30
+
+  - class: gg.rsmod.game.service.serializer.json.JsonPlayerSerializer
+    path: "./data/saves/"
+
+  - class: gg.rsmod.game.service.login.LoginService
+    thread-count: 3
+
+  - class: gg.rsmod.game.service.xtea.XteaKeyService
+    path: "./data/xteas/"

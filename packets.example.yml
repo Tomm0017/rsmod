@@ -1,0 +1,163 @@
+packets:
+  # Out
+  - message: gg.rsmod.game.message.impl.LoginRegionMessage
+    type: VARIABLE_SHORT
+    opcode: 15
+    structure:
+      - name: gpi
+        type: BYTES
+      - name: z
+        trans: ADD
+        type: SHORT
+      - name: x
+        type: SHORT
+      - name: regions
+        type: SHORT
+      - name: xteas
+        type: BYTES
+
+  - message: gg.rsmod.game.message.impl.SmallVarpMessage
+    type: FIXED
+    opcode: 12
+    structure:
+      - name: value
+        type: BYTE
+      - name: id
+        type: SHORT
+
+  - message: gg.rsmod.game.message.impl.OpenInterfaceMessage
+    type: FIXED
+    opcode: 23
+    structure:
+      - name: interfaceId
+        trans: ADD
+        type: SHORT
+      - name: overlay
+        order: MIDDLE
+        type: INT
+      - name: type
+        trans: SUBTRACT
+        type: BYTE
+
+  - message: gg.rsmod.game.message.impl.SetDisplayInterfaceMessage
+    type: FIXED
+    opcode: 13
+    structure:
+      - name: interfaceId
+        type: SHORT
+
+  - message: gg.rsmod.game.message.impl.InvokeScriptMessage
+    type: VARIABLE_SHORT
+    opcode: 80
+    structure:
+      - name: types
+        type: BYTES
+      - name: args
+        type: BYTES
+      - name: id
+        type: INT
+
+  - message: gg.rsmod.game.message.impl.ChangeStaticRegionMessage
+    type: VARIABLE_SHORT
+    opcode: 15
+    structure:
+      - name: z
+        trans: ADD
+        type: SHORT
+      - name: x
+        type: SHORT
+      - name: regions
+        type: SHORT
+      - name: xteas
+        type: BYTES
+
+  - message: gg.rsmod.game.message.impl.SendChatboxTextMessage
+    type: VARIABLE_BYTE
+    opcode: 38
+    structure:
+      - name: type
+        type: BYTE
+      - name: check_ignore
+        type: BYTE
+      - name: username
+        type: BYTES
+      - name: message
+        type: BYTES
+
+  # In
+  - message: gg.rsmod.game.message.impl.CommandMessage
+    type: VARIABLE_BYTE
+    opcode: 94
+    structure:
+      - name: command
+        type: STRING
+
+  - message: gg.rsmod.game.message.impl.ChangeDisplayModeMessage
+    type: FIXED
+    opcode: 33
+    length: 5
+    structure:
+      - name: mode
+        type: BYTE
+      - name: width
+        sign: UNSIGNED
+        type: SHORT
+      - name: height
+        sign: UNSIGNED
+        type: SHORT
+
+  - message: gg.rsmod.game.message.impl.ClickMapMovementMessage
+    type: VARIABLE_BYTE
+    opcode: 63
+    structure:
+      - name: x
+        trans: ADD
+        order: LITTLE
+        type: SHORT
+        sign: UNSIGNED
+      - name: z
+        trans: ADD
+        sign: UNSIGNED
+        type: SHORT
+      - name: movement_type
+        type: BYTE
+
+  - message: gg.rsmod.game.message.impl.ObjectActionOneMessage
+    type: FIXED
+    opcode: 67
+    structure:
+      - name: z
+        trans: ADD
+        type: SHORT
+        SIGN: unsigned
+      - name: x
+        trans: ADD
+        type: SHORT
+        sign: UNSIGNED
+      - name: movement_type
+        trans: SUBTRACT
+        type: BYTE
+      - name: id
+        trans: ADD
+        type: SHORT
+        sign: UNSIGNED
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Keep alive message
+    opcode: 15
+    length: 0
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Request new region
+    opcode: 83
+    length: 0
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Reconnection
+    opcode: 10
+    length: -1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Window focus state change
+    opcode: 19
+    length: 1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Key press message
+    opcode: 50
+    length: -2

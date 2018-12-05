@@ -26,7 +26,7 @@ and it'll automatically load on the next server startup!
     -
     A command is an input through normal chat messages when the message is 
     prefixed with `::`, such as `::food`.
-    ````
+    ```
     @JvmStatic   // 1
     @ScanPlugins // 2
     fun register(r: PluginRepository) { // 3
@@ -34,7 +34,7 @@ and it'll automatically load on the next server startup!
             it.player().getInventory().add(392, 100) // 5                    
         }    
     }
-    ````
+    ```
     This is a pretty simple script. Let's go over the lines of code that are 
     labelled:
     1) `@JvmStatic` this annotation tells the compiler that the function needs
@@ -59,7 +59,7 @@ and it'll automatically load on the next server startup!
     A scheduled task is logic that can take more than a single tick to complete.
     Some examples are skills that are continuous, dialogues that wait for input,
     or cutscenes.
-    ````
+    ```
     @JvmStatic
     @ScanPlugins
     fun register(r: PluginRepository) {
@@ -71,7 +71,7 @@ and it'll automatically load on the next server startup!
             }
         }
     }
-    ````
+    ```
     This script can seem a bit more complex, but it just needs to follow a simple
     structure and the rest of the code is code you would normally use.
     1) TODO

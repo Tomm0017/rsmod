@@ -37,7 +37,7 @@ and it'll automatically load on the next server startup!
         }
     
     This is a pretty simple script. Let's go over the lines of code that are 
-    labelled:
+    labelled 
     1. `@JvmStatic` this annotation tells the compiler that the function needs
     an additional static method, which can then be read by our reflection logic.
     2. `@ScanPlugins`: this annotation allows our reflection logic to find any 
@@ -74,7 +74,8 @@ and it'll automatically load on the next server startup!
         }
     
     This script can seem a bit more complex, but it just needs to follow a simple
-    structure and the rest of the code is code you would normally use.
+    structure and the rest of the code is code you would normally use. 
+    
     1. TODO
     2. TODO
     3. TODO

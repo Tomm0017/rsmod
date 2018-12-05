@@ -38,6 +38,7 @@ and it'll automatically load on the next server startup!
     
     This is a pretty simple script. Let's go over the lines of code that are 
     labelled 
+    
     1. `@JvmStatic` this annotation tells the compiler that the function needs
     an additional static method, which can then be read by our reflection logic.
     2. `@ScanPlugins`: this annotation allows our reflection logic to find any 

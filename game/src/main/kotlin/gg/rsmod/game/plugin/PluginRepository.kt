@@ -22,12 +22,6 @@ class PluginRepository {
     }
 
     /**
-     * The [PluginExecutor] is responsible for executing plugins as requested by
-     * the game.
-     */
-    private val executor = PluginExecutor()
-
-    /**
      * The total amount of plugins.
      */
     private var count = 0
@@ -67,7 +61,7 @@ class PluginRepository {
      */
     fun init(gameService: GameService, packagePath: String) {
         scanForPlugins(packagePath)
-        executor.init(gameService)
+        gameService.world.pluginExecutor.init(gameService)
     }
 
     /**
@@ -108,7 +102,7 @@ class PluginRepository {
     }
 
     fun executeLogin(p: Player) {
-        loginPlugins.forEach { logic -> executor.execute(p, logic) }
+        loginPlugins.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
     }
 
     @Throws(IllegalStateException::class)
@@ -131,7 +125,7 @@ class PluginRepository {
             } else {
                 p.attr.remove(COMMAND_ARGS_ATTR)
             }
-            executor.execute(p, plugin)
+            p.world.pluginExecutor.execute(p, plugin)
             return true
         }
         return false
@@ -148,7 +142,7 @@ class PluginRepository {
     }
 
     fun executeRegionEnter(p: Player, regionId: Int) {
-        enterRegionPlugins[regionId]?.forEach { logic -> executor.execute(p, logic) }
+        enterRegionPlugins[regionId]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
     }
 
     fun bindRegionExit(regionId: Int, plugin: Function1<Plugin, Unit>) {
@@ -162,7 +156,7 @@ class PluginRepository {
     }
 
     fun executeRegionExit(p: Player, regionId: Int) {
-        exitRegionPlugins[regionId]?.forEach { logic -> executor.execute(p, logic) }
+        exitRegionPlugins[regionId]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
     }
 
     @Throws(IllegalStateException::class)
@@ -180,7 +174,7 @@ class PluginRepository {
     fun executeObject(p: Player, id: Int, opt: Int): Boolean {
         val optMap = objectPlugins[id] ?: return false
         val logic = optMap[opt] ?: return false
-        executor.execute(p, logic)
+        p.world.pluginExecutor.execute(p, logic)
         return true
     }
 }

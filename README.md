@@ -43,7 +43,7 @@ and it'll automatically load on the next server startup!
     an additional static method, which can then be read by our reflection logic.
     2. `@ScanPlugins`: this annotation allows our reflection logic to find any 
     functions that should register plugins upon server launch.
-    3. `fun register`: `fun` is a Kotlin keyword to begin a function. 
+    3. `fun register`: `fun` is a Kotlin keyword to define a function. 
     The use of `register` as the method name where plugins are registered
     is highly recommended and the convention should be followed for consistency.
     4. `r.bindCommand`: `r` is specified as a parameter on the method as a 
@@ -52,7 +52,7 @@ and it'll automatically load on the next server startup!
     plugins; all these registration methods begin with the prefix `bind`.
     `bindCommand` is one of the many registration methods, which tells the repository
     to store the command `food` and execute the logic we give it once a player
-    uses a command.
+    uses the command.
     5. This is pretty straightforward. We get the inventory for the player and
     then add item with id 392 with an amount of 100. So now you have 100 Manta ray!
     

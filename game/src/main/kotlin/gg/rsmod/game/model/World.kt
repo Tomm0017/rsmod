@@ -5,6 +5,7 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.map.Map
 import gg.rsmod.game.model.entity.PawnList
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.plugin.PluginExecutor
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 
@@ -19,6 +20,12 @@ class World(val server: Server, val gameContext: GameContext) {
     val players = PawnList<Player>(gameContext.playerLimit)
 
     val maps = Map()
+
+    /**
+     * The [PluginExecutor] is responsible for executing plugins as requested by
+     * the game.
+     */
+    val pluginExecutor = PluginExecutor()
 
     /**
      * A [Random] implementation used for pseudo-random purposes through-out

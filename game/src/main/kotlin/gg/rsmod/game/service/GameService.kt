@@ -92,6 +92,7 @@ class GameService : Service() {
              * Pre-synchronization tasks.
              */
             MessageHandlerTask(),
+            PluginHandlerTask(),
             PlayerCycleTask(),
             MapHandlerTask(),
 

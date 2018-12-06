@@ -7,7 +7,7 @@ gradlew.bat
 /data/xteas/
 /data/saves/
 
-plugins/src/main/kotlin/
+/plugins/
 
 game.yml
 packets.yml

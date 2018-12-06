@@ -77,6 +77,13 @@ class Interfaces(val player: Player, private val actionListener: InterfaceAction
     }
 
     /**
+     * Close the [child] interface on its [parent] interface.
+     */
+    fun close(parent: Int, child: Int) {
+        close((parent shl 16) or child)
+    }
+
+    /**
      * Closes any interface that is currently being drawn on the [hash].
      *
      * @param hash

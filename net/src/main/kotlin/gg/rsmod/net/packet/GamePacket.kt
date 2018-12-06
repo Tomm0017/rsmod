@@ -1,5 +1,6 @@
 package gg.rsmod.net.packet
 
+import com.google.common.base.MoreObjects
 import io.netty.buffer.ByteBuf
 
 /**
@@ -54,4 +55,5 @@ class GamePacket
      */
     val length: Int = payload.readableBytes()
 
+    override fun toString(): String = MoreObjects.toStringHelper(this).add("opcode", opcode).add("type", type).add("length", length).toString()
 }

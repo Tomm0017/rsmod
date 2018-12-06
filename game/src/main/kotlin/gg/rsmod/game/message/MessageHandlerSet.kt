@@ -20,7 +20,7 @@ class MessageHandlerSet {
     /**
      * The [MessageHandler]s stored in respect to their opcode.
      */
-    private val handlers = arrayOfNulls<MessageHandler<out Message>>(255)
+    private val handlers = arrayOfNulls<MessageHandler<out Message>>(256)
 
     /**
      * Links [Message]s to their respective [MessageHandler]s.

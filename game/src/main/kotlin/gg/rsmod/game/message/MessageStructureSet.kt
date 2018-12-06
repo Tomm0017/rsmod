@@ -23,7 +23,7 @@ class MessageStructureSet {
     /**
      * The [MessageStructure]s stored respectively to their opcode.
      */
-    private val structureOpcodes = arrayOfNulls<MessageStructure>(255)
+    private val structureOpcodes = arrayOfNulls<MessageStructure>(256)
 
     fun get(type: Class<*>): MessageStructure? = structureClasses[type]
 

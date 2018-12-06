@@ -21,7 +21,7 @@ class MessageDecoderSet {
     /**
      * The [MessageDecoder]s stored in respect to their opcode.
      */
-    private val decoders = arrayOfNulls<MessageDecoder<*>>(255)
+    private val decoders = arrayOfNulls<MessageDecoder<*>>(256)
 
     /**
      * Links [Message]s to their respective [MessageDecoder]s.

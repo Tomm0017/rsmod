@@ -1,6 +1,7 @@
 package gg.rsmod.game.model.entity
 
 import gg.rsmod.game.model.*
+import gg.rsmod.game.plugin.Plugin
 
 /**
  * A controllable character in the world that is used by something, or someone,
@@ -46,4 +47,18 @@ abstract class Pawn(open val world: World) : Entity() {
      * Handles logic before any synchronization tasks are executed.
      */
     abstract fun cycle()
+
+    /**
+     * Executes a plugin with this [Pawn] as its context.
+     */
+    fun executePlugin(plugin: Function1<Plugin, Unit>) {
+        world.pluginExecutor.execute(this, plugin)
+    }
+
+    /**
+     * Terminates any on-going plugins that are being executed by this [Pawn].
+     */
+    fun interruptPlugins() {
+        world.pluginExecutor.interruptPluginsWithContext(this)
+    }
 }

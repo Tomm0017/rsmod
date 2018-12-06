@@ -13,6 +13,7 @@ class ClickMapHandler : MessageHandler<ClickMapMovementMessage> {
     override fun handle(client: Client, message: ClickMapMovementMessage) {
         client.tile = Tile(message.x, message.z)
         client.teleport = true
+        client.interruptPlugins()
 
         log(client, "Click Map: x={}, z={}, type={}", message.x, message.z, message.movementType)
     }

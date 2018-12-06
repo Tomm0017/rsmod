@@ -16,20 +16,62 @@ class PluginExecutor {
     }
 
     /**
-     * The [CoroutineDispatcher] used to schedule suspendable
+     * The [CoroutineDispatcher] used to schedule suspendable plugins.
      */
     private lateinit var dispatcher: CoroutineDispatcher
 
+    /**
+     * A collection of all 'active' plugins that are being executed.
+     */
     private val active = hashSetOf<Plugin>()
 
     fun init(gameService: GameService) {
         dispatcher = gameService.dispatcher
     }
 
+    /**
+     * Get the amount of active plugins in the executor.
+     */
+    fun getActiveCount(): Int = active.size
+
     fun execute(ctx: Any, logic: Function1<Plugin, Unit>) {
         val plugin = Plugin(ctx, dispatcher)
-        active.add(plugin)
         logic.invoke(plugin)
+        active.add(plugin)
+    }
+
+    /**
+     * In-game events sometimes must return a value to a plugin. An example are
+     * dialogs which must return values such as input, button click, etc.
+     *
+     * @param ctx
+     * The context that submitted the initial plugin.
+     *
+     * @param value
+     * The return value that the plugin has asked for.
+     */
+    fun submitReturnType(ctx: Any, value: Any) {
+        val iterator = active.iterator()
+        while (iterator.hasNext()) {
+            val plugin = iterator.next()
+            if (plugin.ctx == ctx) {
+                plugin.requestReturnValue = value
+            }
+        }
+    }
+
+    /**
+     * Terminates any plugins that have [ctx] as their context.
+     */
+    fun interruptPluginsWithContext(ctx: Any) {
+        val iterator = active.iterator()
+        while (iterator.hasNext()) {
+            val plugin = iterator.next()
+            if (plugin.ctx == ctx) {
+                plugin.terminate()
+                iterator.remove()
+            }
+        }
     }
 
     fun pulse() {

@@ -23,7 +23,7 @@ and it'll automatically load on the next server startup!
 - Creating your first script is super simple! Here are the instructions for how 
     you would create a few different scripts. Scripts are written in **Kotlin**.
     
-    I want to create a ``Command``
+    I want to create a `Command`
     -
     A command is an input through normal chat messages when the message is 
     prefixed with `::`, such as `::food`.
@@ -56,7 +56,7 @@ and it'll automatically load on the next server startup!
     5. This is pretty straightforward. We get the inventory for the player and
     then add item with id 392 with an amount of 100. So now you have 100 Manta ray!
     
-    I want to create a ``Scheduled Task``
+    I want to create a `Scheduled Task`
     -
     A scheduled task is logic that can take more than a single tick to complete.
     Some examples are skills that are continuous, dialogues that wait for input,
@@ -66,22 +66,56 @@ and it'll automatically load on the next server startup!
         @ScanPlugins
         fun register(r: PluginRepository) {
             r.bindObject(id = 0, opt = 1) { // 1
-                GlobalScope.launch(it.dispatcher) { // 2
+                it.suspendable { // 2
                     it.player().message("Start scheduled logic.") // 3
-                    it.wait(1) // 4
+                    it.wait(2) // 4
                     it.player.message("Finished scheduled logic.") // 5
                 }
             }
         }
     
-    This script can seem a bit more complex, but it just needs to follow a simple
-    structure and the rest of the code is code you would normally use. 
+    This script is pretty similar to the last, except we have a new piece of 
+    important code. When you want to create a piece of code that will be 
+    scheduled at a certain point, you want to surround the code with Plugin.suspendable
+    (in this case, it.suspendable { ... }). 
     
-    1. TODO
-    2. TODO
-    3. TODO
-    4. TODO
-    5. TODO
+    1. `bindObj` this is the bind method for attaching a plugin to an object action.
+    You can see, in `Kotlin`, we are able to 'label' the parameters. In this case, 
+    we set the `object id` to `0` and `opt` to `1` 
+    2. `it.suspendable` exposes the code that follows as being `suspendable`, 
+    which means it can be paused at any point. `it` is the auto-assigned name
+    that `Kotlin` assigns unnamed variables in logic such as lambdas. `it`, in this case, 
+    is a `Plugin`, which holds the `suspendable` method.
+    3. We send a message to the player's chatbox immediately.
+    4. We tell the `Plugin` to wait, or suspend, for `2` game cycles. One game cycle is 
+    usually represented by 600 milliseconds. 
+    5. After `2` game cycles have gone by, the player will receive the last message.
+    
+    And that's it! You're on your way to creating all sorts of crazy scripts now.
+    
+    I want to create a `Dialogue`
+    -
+    Creating a dialogue script is similar to that of the `scheduled task` script. 
+    We will use the `suspendable` in this example, which is targeted for the 
+    `OSRS` version of `RS Mod`.
+    
+        @JvmStatic
+        @ScanPlugins
+        fun register(r: PluginRepository) {
+            r.bindObject(id = 0, opt = 1) {
+                it.suspendable {
+                    it.npcDialog(message = "This is a test dialogue!", npc = 3078, animation = 588, title = "Man") // 1
+                    it.npcDialog(message = "This is the second test dialogue!", npc = 3078, animation = 588, title = "Man") // 2
+                }
+            }
+        }
+        
+    1. `npcDialog` is defined in the `PluginHelper` file in the core `plugins`
+     package. It can change depending on what version of `RS Mod` you are using,
+     but the format and conventions should be similar. This method is `suspendable`
+     and will pause any further code until the dialogue is continued by the player.
+     
+     Short and sweet! That's all you need for  a basic dialogue script. 
 
 ## FAQ
 #### I would like a feature added to the core game module

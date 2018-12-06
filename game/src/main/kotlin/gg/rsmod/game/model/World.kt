@@ -33,6 +33,8 @@ class World(val server: Server, val gameContext: GameContext) {
      */
     private val random: Random = ThreadLocalRandom.current()
 
+    var currentCycle = 0
+
     fun register(p: Player): Boolean {
         return players.add(p)
     }

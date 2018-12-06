@@ -8,4 +8,4 @@ import gg.rsmod.game.model.Tile
  * @author Tom <rspsmods@gmail.com>
  */
 data class PlayerSaveData(val passwordHash: String, val username: String, val displayName: String,
-                          val tile: Tile, val privilege: Int)
+                          val tile: Tile, val privilege: Int, val attributes: HashMap<String, Any>)

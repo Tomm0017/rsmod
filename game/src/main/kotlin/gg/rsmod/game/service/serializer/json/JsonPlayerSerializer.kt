@@ -67,16 +67,25 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.passwordHash = data.passwordHash
             client.tile = data.tile
             client.privilege = client.world.gameContext.privileges.get(data.privilege) ?: Privilege.DEFAULT
+            data.attributes.forEach { key, value ->
+                if (value is Number) {
+                    client.attr.putPersistent(key, value.toInt())
+                } else {
+                    client.attr.putPersistent(key, value)
+                }
+            }
 
             return PlayerLoadResult.LOAD_ACCOUNT
         } catch (e: Exception) {
+            logger.error(e)
             return PlayerLoadResult.MALFORMED
         }
     }
 
     override fun saveClientData(client: Client): Boolean {
         val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername,
-                displayName = client.username, tile = client.tile, privilege = client.privilege.id)
+                displayName = client.username, tile = client.tile, privilege = client.privilege.id,
+                attributes = client.attr.__getPersistentMap())
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))
         val json = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
         json.toJson(data, writer)

@@ -1,9 +1,10 @@
 package gg.rsmod.game.model.entity
 
+import gg.rsmod.game.message.Message
 import gg.rsmod.game.model.World
+import gg.rsmod.game.service.serializer.PlayerSerializerService
 import gg.rsmod.game.system.GameSystem
 import gg.rsmod.net.codec.login.LoginRequest
-import gg.rsmod.game.message.Message
 import io.netty.channel.Channel
 
 /**
@@ -54,6 +55,11 @@ class Client(val channel: Channel, override val world: World) : Player(world) {
     lateinit var uuid: String
 
     override fun getType(): EntityType = EntityType.CLIENT
+
+    override fun handleLogout() {
+        world.server.getService(PlayerSerializerService::class.java, true).ifPresent { it.saveClientData(this) }
+        super.handleLogout()
+    }
 
     override fun handleMessages() {
         gameSystem.handleMessages()

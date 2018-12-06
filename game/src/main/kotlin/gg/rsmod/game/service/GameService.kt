@@ -173,6 +173,14 @@ class GameService : Service() {
         }
 
         /**
+         * Increment the world cycle count.
+         */
+        if (world.currentCycle++ >= Int.MAX_VALUE - 1000) {
+            world.currentCycle = 0
+            logger.info("World cycle has been reset.")
+        }
+
+        /**
          * Calculate the time, in milliseconds, it took for this cycle to complete
          * and add it to [cycleTime].
          */

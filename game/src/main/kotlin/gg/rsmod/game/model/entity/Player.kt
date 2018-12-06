@@ -3,13 +3,13 @@ package gg.rsmod.game.model.entity
 import com.google.common.base.MoreObjects
 import gg.rsmod.game.map.Chunk
 import gg.rsmod.game.map.Region
+import gg.rsmod.game.message.Message
 import gg.rsmod.game.model.PlayerGpi
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.interf.Interfaces
 import gg.rsmod.game.model.interf.action.OSRSInterfaceListener
-import gg.rsmod.game.message.Message
 
 /**
  * A [Pawn] that represents a player on the players' clients.
@@ -68,10 +68,22 @@ open class Player(override val world: World) : Pawn(world) {
         if (pendingLogout) {
             if (lock.canLogout()) {
                 // TODO: check if can log out (not in combat)
-                world.unregister(this)
+                handleLogout()
             }
             pendingLogout = false
         }
+    }
+
+    /**
+     * Handles the logic that must be executed once a player has successfully
+     * logged out. This means all the prerequisites have been met for the player
+     * to log out of the [world].
+     *
+     * The [Client] implementation overrides this method and will handle saving
+     * data for the player and call this super method at the end.
+     */
+    protected open fun handleLogout() {
+        world.unregister(this)
     }
 
     /**

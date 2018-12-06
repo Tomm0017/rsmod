@@ -1,8 +1,11 @@
 package gg.rsmod.game.plugin
 
 import gg.rsmod.game.model.entity.Player
-import kotlinx.coroutines.*
-import kotlin.coroutines.Continuation
+import gg.rsmod.game.plugin.coroutine.SuspendableStep
+import gg.rsmod.game.plugin.coroutine.WaitCondition
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlin.coroutines.*
 
 /**
  * Represents a plugin that can be executed at any time by a context.
@@ -11,19 +14,9 @@ import kotlin.coroutines.Continuation
  *
  * @author Tom <rspsmods@gmail.com>
  */
-data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) {
+data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continuation<Unit> {
 
-    var currentJob: Job? = null
-
-    var continuation: Continuation<Unit>? = null
-
-    var waitCycles = 0
-
-    /**
-     * The current state of the plugin that allows us to keep track of suspended
-     * or interrupted plugins.
-     */
-    var state = PluginState.NORMAL
+    var started = false
 
     /**
      * Can represent an action that should be executed if, and only if, this plugin
@@ -32,20 +25,35 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) {
      */
     var interruptAction: Function0<Unit>? = null
 
-    fun suspendable(block: suspend CoroutineScope.() -> Unit) {
-        currentJob = CoroutineScope(dispatcher).launch { block.invoke(this) }
+    private var nextStep: SuspendableStep? = null
+
+    override val context: CoroutineContext = EmptyCoroutineContext
+
+    override fun resumeWith(result: Result<Unit>) {
+        nextStep = null
     }
+
+    fun suspendable(block: suspend CoroutineScope.() -> Unit) {
+        val coroutine = block.createCoroutine(receiver = CoroutineScope(dispatcher), completion = this)
+        coroutine.resume(Unit)
+    }
+
+    fun pulse() {
+        val next = nextStep ?: return
+
+        if (next.condition.resume()) {
+            next.continuation.resume(Unit)
+        }
+    }
+
+    fun canKill(): Boolean = nextStep == null
 
     /**
      * Wait for the specified amount of game cycles [cycles] before
      * continuing the logic associated with this plugin.
      */
-    suspend fun wait(cycles: Int) {
-        state = PluginState.TIME_WAIT
-        waitCycles = cycles
-        while (state == PluginState.TIME_WAIT) {
-            delay(100)
-        }
+    suspend fun wait(cycles: Int): Unit = suspendCoroutine {
+        nextStep = SuspendableStep(WaitCondition(cycles), it)
     }
 
     /**

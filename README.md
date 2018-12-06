@@ -17,16 +17,17 @@ and it'll automatically load on the next server startup!
         
     Luckily, both of these files have a ```.example.yml``` file in the root 
     directory, which you can simply copy and remove the ```.example``` extension.
-    The ```packets.example.yml``` file contains the structure of packets for `OSRS` ```#172```
+    The ```packets.example.yml``` file contains the structure of packets for 
+    `OSRS` ```#172```
 
 #### Creating Your First Script 
-- Creating your first script is super simple! Here are the instructions for how 
-    you would create a few different scripts. Scripts are written in **Kotlin**.
+- Creating your first script is super simple! Scripts are written in **Kotlin**. 
+Here are the instructions for how you would create a few different scripts. .
     
     I want to create a `Command`
     -
-    A command is an input through normal chat messages when the message is 
-    prefixed with `::`, such as `::food`.
+    A command is an input received when a player types something in their chatbox, 
+    prefixed with `::`. For example `::food`.
 
         @JvmStatic   // 1
         @ScanPlugins // 2
@@ -76,24 +77,24 @@ and it'll automatically load on the next server startup!
     
     This script is pretty similar to the last, except we have a new piece of 
     important code. When you want to create a piece of code that will be 
-    scheduled at a certain point, you want to surround the code with Plugin.suspendable
-    (in this case, it.suspendable { ... }). 
+    scheduled at a certain point, you want to surround the code with `Plugin.suspendable`
+    (in this case, `it.suspendable { ... }`). 
     
     1. `bindObj` this is the bind method for attaching a plugin to an object action.
     You can see, in `Kotlin`, we are able to 'label' the parameters. In this case, 
     we set the `object id` to `0` and `opt` to `1` 
     2. `it.suspendable` exposes the code that follows as being `suspendable`, 
     which means it can be paused at any point. `it` is the auto-assigned name
-    that `Kotlin` assigns unnamed variables in logic such as lambdas. `it`, in this case, 
+    that `Kotlin` gives unnamed variables in logic such as lambdas. `it`, in this case, 
     is a `Plugin`, which holds the `suspendable` method.
     3. We send a message to the player's chatbox immediately.
-    4. We tell the `Plugin` to wait, or suspend, for `2` game cycles. One game cycle is 
+    4. We tell the `Plugin` to `wait`, or suspend, for `2` game cycles. One game cycle is 
     usually represented by 600 milliseconds. 
     5. After `2` game cycles have gone by, the player will receive the last message.
     
     And that's it! You're on your way to creating all sorts of crazy scripts now.
     
-    I want to create a `Dialogue`
+    I want to create a `Dialog`
     -
     Creating a dialogue script is similar to that of the `scheduled task` script. 
     We will use the `suspendable` in this example, which is targeted for the 

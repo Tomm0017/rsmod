@@ -12,5 +12,6 @@ class PlayerPostSynchronizationTask(val player: Player, override val phaser: Pha
     override fun execute() {
         player.teleport = false
         player.lastTile = Tile(player.tile)
+        player.blockBuffer.clean()
     }
 }

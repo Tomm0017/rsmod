@@ -22,7 +22,7 @@ class MessageEncoderSet {
      */
     fun init(structures: MessageStructureSet) {
         encoders[LoginRegionMessage::class.java] = LoginRegionEncoder(structures.get(LoginRegionMessage::class.java)!!)
-        encoders[SmallVarpMessage::class.java] = SmallVarpEncoder(structures.get(LoginRegionMessage::class.java)!!)
+        encoders[SmallVarpMessage::class.java] = SmallVarpEncoder(structures.get(SmallVarpMessage::class.java)!!)
         encoders[OpenInterfaceMessage::class.java] = OpenInterfaceEncoder(structures.get(OpenInterfaceMessage::class.java)!!)
         encoders[SetDisplayInterfaceMessage::class.java] = DisplayInterfaceEncoder(structures.get(SetDisplayInterfaceMessage::class.java)!!)
         encoders[InvokeScriptMessage::class.java] = InvokeScriptEncoder(structures.get(InvokeScriptMessage::class.java)!!)

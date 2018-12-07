@@ -46,7 +46,7 @@ class Tile(val x: Int, val z: Int, val height: Int = 0) {
     /**
      * The tile presented as a 32-bit integer.
      */
-    fun toInteger(): Int = (z and 0x3FFF or (x and 0x3FFF shl 14) or (height and 0x3 shl 28))
+    fun toInteger(): Int = (z and 0x3FFF) or (x and 0x3FFF shl 14) or (height and 0x3 shl 28)
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("x", x).add("z", z).add("height", height).toString()
 }

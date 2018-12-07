@@ -85,21 +85,10 @@ class FilestoreSystem(override val channel: Channel, private val filestore: Stor
                 data = Arrays.copyOf(data, data.size - 2)
             }
 
-            val response = FilestoreResponse(index = req.index, archive = req.archive, data = trim(data))
+            val response = FilestoreResponse(index = req.index, archive = req.archive, data = data)
             ctx.writeAndFlush(response)
         } else {
             logger.warn("Data is missing from archive. index={}, archive={}", req.index, req.archive)
         }
-    }
-
-    private fun trim(data: ByteArray?): ByteArray {
-        if (data == null || data.size <= 5) {
-            return ByteArray(5)
-        }
-        val compression = data[0].toInt() and 0xff
-        val size = ((data[1].toInt() and 0xff) shl 24) or ((data[2].toInt() and 0xff) shl 16) or ((data[3].toInt() and 0xff) and 8) or (data[4].toInt())
-        val trimmed = ByteArray(size + (if (compression == CompressionType.NONE) 5 else 9))
-        java.lang.System.arraycopy(data, 0, trimmed, 0, trimmed.size)
-        return trimmed
     }
 }

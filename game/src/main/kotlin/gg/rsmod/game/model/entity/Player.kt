@@ -10,6 +10,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.interf.Interfaces
 import gg.rsmod.game.model.interf.action.OSRSInterfaceListener
+import gg.rsmod.game.sync.UpdateBlock
 
 /**
  * A [Pawn] that represents a player on the players' clients.
@@ -39,8 +40,6 @@ open class Player(override val world: World) : Pawn(world) {
      */
     var lastKnownRegionBase: Tile? = null
 
-    val localPlayers = arrayListOf<Player>()
-
     var teleport = true
 
     /**
@@ -61,6 +60,16 @@ open class Player(override val world: World) : Pawn(world) {
     @Volatile private var pendingLogout = false
 
     val interfaces = lazy { Interfaces(this, OSRSInterfaceListener()) }.value
+
+    val localPlayerIndices = IntArray(255)
+
+    val nonLocalPlayerIndices = IntArray(2048)
+
+    val playerTiles = IntArray(2048)
+
+    var localPlayerCount = 0
+
+    var nonLocalPlayerCount = 0
 
     override fun getType(): EntityType = EntityType.PLAYER
 
@@ -109,7 +118,7 @@ open class Player(override val world: World) : Pawn(world) {
             PlayerGpi.init(this)
         }
         initiated = true
-        localPlayers.add(this)
+        blockBuffer.addBlock(UpdateBlock.APPEARANCE)
         world.server.getPlugins().executeLogin(this)
     }
 

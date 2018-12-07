@@ -22,7 +22,7 @@ and it'll automatically load on the next server startup!
 
 #### Creating Your First Script 
 - Creating your first script is super simple! Scripts are written in **Kotlin**. 
-Here are the instructions for how you would create a few different scripts. .
+Here are the instructions for how you would create a few different scripts.
     
     I want to create a `Command`
     -
@@ -45,7 +45,7 @@ Here are the instructions for how you would create a few different scripts. .
     2. `@ScanPlugins`: this annotation allows our reflection logic to find any 
     functions that should register plugins upon server launch.
     3. `fun register`: `fun` is a Kotlin keyword to define a function. 
-    The use of `register` as the method name where plugins are registered
+    The use of `register` as the method name where plugins are registered,
     is highly recommended and the convention should be followed for consistency.
     4. `r.bindCommand`: `r` is specified as a parameter on the method as a 
     `PluginRepository`, which is where all plugins are registered to.
@@ -105,8 +105,8 @@ Here are the instructions for how you would create a few different scripts. .
         fun register(r: PluginRepository) {
             r.bindObject(id = 0, opt = 1) {
                 it.suspendable {
-                    it.npcDialog(message = "This is a test dialogue!", npc = 3078, animation = 588, title = "Man") // 1
-                    it.npcDialog(message = "This is the second test dialogue!", npc = 3078, animation = 588, title = "Man") // 2
+                    it.npcDialog(message = "This is a test dialog!", npc = 3078, animation = 588, title = "Man") // 1
+                    it.npcDialog(message = "This is the second test dialog!", npc = 3078, animation = 588, title = "Man") // 2
                 }
             }
         }
@@ -114,9 +114,9 @@ Here are the instructions for how you would create a few different scripts. .
     1. `npcDialog` is defined in the `PluginHelper` file in the core `plugins`
      package. It can change depending on what version of `RS Mod` you are using,
      but the format and conventions should be similar. This method is `suspendable`
-     and will pause any further code until the dialogue is continued by the player.
+     and will pause any further code until the dialog is continued by the player.
      
-     Short and sweet! That's all you need for  a basic dialogue script. 
+     Short and sweet! That's all you need for a basic dialog script. 
 
 ## FAQ
 #### I would like a feature added to the core game module

@@ -6,7 +6,6 @@ import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import org.apache.logging.log4j.LogManager
-import java.math.BigInteger
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -84,53 +83,50 @@ class LoginDecoder(private val serverRevision: Int) : StatefulFrameDecoder<Login
             val clientWidth = buf.readUnsignedShort()
             val clientHeight = buf.readUnsignedShort()
 
-            buf.skipBytes(24) // random.dat data
-            BufferUtils.readString(buf)
-            buf.skipBytes(4)
+            buf.skipBytes(Byte.SIZE_BYTES * 24) // random.dat data
+            BufferUtils.readString(buf) // Session token
+            buf.skipBytes(Int.SIZE_BYTES) // N/A
 
-            /**
-             * Custom code start.
-             */
-            val uuid = ByteArray(16)
-            buf.readBytes(uuid)
-            /**
-             * Custom code ends.
-             */
+            buf.skipBytes(Byte.SIZE_BYTES) // 7
+            buf.skipBytes(Byte.SIZE_BYTES) // Operating System
+            buf.skipBytes(Byte.SIZE_BYTES) // 64-bit
+            buf.skipBytes(Byte.SIZE_BYTES) // Operating System Version
+            buf.skipBytes(Byte.SIZE_BYTES) // Java vendor
+            buf.skipBytes(Byte.SIZE_BYTES) // Java major version
+            buf.skipBytes(Byte.SIZE_BYTES) // Java minor version
+            buf.skipBytes(Byte.SIZE_BYTES) // Java patch
+            buf.skipBytes(Byte.SIZE_BYTES) // N/A
+            buf.skipBytes(Short.SIZE_BYTES) // Max memory (MB)
+            buf.skipBytes(Byte.SIZE_BYTES) // N/A
+            buf.skipBytes(3) // N/A
+            buf.skipBytes(Short.SIZE_BYTES) // N/A
+            BufferUtils.readJagexString(buf) // N/A
+            BufferUtils.readJagexString(buf) // N/A
+            BufferUtils.readJagexString(buf) // N/A
+            BufferUtils.readJagexString(buf) // N/A
+            buf.skipBytes(Byte.SIZE_BYTES) // N/A
+            buf.skipBytes(Short.SIZE_BYTES) // N/A
+            BufferUtils.readJagexString(buf) // N/A
+            BufferUtils.readJagexString(buf) // N/A
+            buf.skipBytes(Byte.SIZE_BYTES) // N/A
+            buf.skipBytes(Byte.SIZE_BYTES) // N/A
+            buf.skipBytes(Int.SIZE_BYTES * 3) // N/A
+            buf.skipBytes(Int.SIZE_BYTES) // N/A
+            BufferUtils.readJagexString(buf) // N/A
 
-            buf.skipBytes(17)
-            BufferUtils.readJagexString(buf)
-            BufferUtils.readJagexString(buf)
-            BufferUtils.readJagexString(buf)
-            BufferUtils.readJagexString(buf)
-            buf.skipBytes(3)
-            BufferUtils.readJagexString(buf)
-            BufferUtils.readJagexString(buf)
-            buf.skipBytes(2)
-            buf.skipBytes(4 * 3)
-            buf.skipBytes(4)
-            buf.skipBytes(1)
+            buf.skipBytes(Int.SIZE_BYTES) // Always 0
 
-            val crcs = IntArray(17)
+            val crcs = IntArray(18)
             for (i in 0 until crcs.size) {
                 crcs[i] = buf.readInt()
             }
 
-            /**
-             * Custom code start.
-             */
-            val hwid = ByteArray(20)
-            buf.readBytes(hwid)
-            /**
-             * Custom code ends.
-             */
-
             logger.info("User '{}' login request from {}.", username, ctx.channel())
-
 
             val request = LoginRequest(channel = ctx.channel(), username = username,
                     password = password, revision = serverRevision, isaacSeed = isaacSeed,
                     crcs = crcs, resizableClient = clientResizable, auth = authCode,
-                    uuid = BigInteger(uuid).toString(16).toUpperCase())
+                    uuid = "100000".toUpperCase())
             out.add(request)
         }
     }

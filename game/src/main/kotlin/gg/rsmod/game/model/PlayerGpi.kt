@@ -1,8 +1,8 @@
 package gg.rsmod.game.model
 
+import gg.rsmod.game.message.impl.LoginRegionMessage
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.xtea.XteaKeyService
-import gg.rsmod.game.message.impl.LoginRegionMessage
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
 
@@ -27,10 +27,13 @@ object PlayerGpi {
         /**
          * Encode the GPI.
          */
+        client.localPlayerIndices[client.localPlayerCount++] = client.index
+
         gpiBuf.switchToBitAccess()
         gpiBuf.putBits(30, client.tile.toInteger())
         for (i in 1 until 2048) {
             if (i != client.index) {
+                client.nonLocalPlayerIndices[client.nonLocalPlayerCount++] = i
                 gpiBuf.putBits(18, 0)
             }
         }

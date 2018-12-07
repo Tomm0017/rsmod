@@ -2,6 +2,7 @@ package gg.rsmod.game.model.entity
 
 import gg.rsmod.game.model.*
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.game.sync.UpdateBlockBuffer
 
 /**
  * A controllable character in the world that is used by something, or someone,
@@ -15,6 +16,8 @@ abstract class Pawn(open val world: World) : Entity() {
      * The index assigned when this [Pawn] is successfully added to a [PawnList].
      */
     var index = -1
+
+    var blockBuffer = UpdateBlockBuffer()
 
     /**
      * The current 3D [Tile] that this [Pawn] is standing on in the [World].

@@ -37,6 +37,12 @@ class PluginRepository {
     private val commandPlugins = hashMapOf<String, Function1<Plugin, Unit>>()
 
     /**
+     * A map of button click plugins. The key is a shifted value of the parent
+     * and child id.
+     */
+    private val buttonPlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
+
+    /**
      * A map that contains any plugin that will be executed upon entering a new
      * region. The key is the region id and the value is a list of plugins
      * that will execute upon entering the region.
@@ -75,6 +81,7 @@ class PluginRepository {
     fun scanForPlugins(packagePath: String) {
         loginPlugins.clear()
         commandPlugins.clear()
+        buttonPlugins.clear()
         enterRegionPlugins.clear()
         exitRegionPlugins.clear()
         objectPlugins.clear()
@@ -125,6 +132,27 @@ class PluginRepository {
             } else {
                 p.attr.remove(COMMAND_ARGS_ATTR)
             }
+            p.world.pluginExecutor.execute(p, plugin)
+            return true
+        }
+        return false
+    }
+
+    @Throws(IllegalStateException::class)
+    fun bindButton(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) {
+        val hash = (parent shl 16) or child
+        if (buttonPlugins.containsKey(hash)) {
+            logger.error("Button widget already bound to a plugin: [parent=$parent, child=$child]")
+            throw IllegalStateException()
+        }
+        buttonPlugins[hash] = plugin
+        count++
+    }
+
+    fun executeButton(p: Player, parent: Int, child: Int): Boolean {
+        val hash = (parent shl 16) or child
+        val plugin = buttonPlugins[hash]
+        if (plugin != null) {
             p.world.pluginExecutor.execute(p, plugin)
             return true
         }

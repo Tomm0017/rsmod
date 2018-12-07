@@ -27,6 +27,7 @@ object PlayerGpi {
         /**
          * Encode the GPI.
          */
+        client.localPlayers[client.index] = client
         client.localPlayerIndices[client.localPlayerCount++] = client.index
 
         gpiBuf.switchToBitAccess()

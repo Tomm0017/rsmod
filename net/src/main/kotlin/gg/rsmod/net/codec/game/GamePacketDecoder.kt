@@ -27,16 +27,24 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
 
     override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>, state: GameDecoderState) {
         when (state) {
-            GameDecoderState.OPCODE -> decodeOpcode(buf)
+            GameDecoderState.OPCODE -> decodeOpcode(ctx, buf)
             GameDecoderState.LENGTH -> decodeLength(buf)
             GameDecoderState.PAYLOAD -> decodePayload(buf, out)
         }
     }
 
-    private fun decodeOpcode(buf: ByteBuf) {
+    private fun decodeOpcode(ctx: ChannelHandlerContext, buf: ByteBuf) {
         if (buf.isReadable) {
             opcode = (buf.readUnsignedByte().toInt() - (if (rsaEncryption) (random.nextInt() and 0xFF) else 0))
-            type = packetMetadata.getType(opcode)
+            val metadata = packetMetadata.getType(opcode)
+            if (metadata == null) {
+                if (ctx.channel().isOpen) {
+                    ctx.channel().disconnect()
+                    logger.fatal("Had to kick channel {} due to non-configured packet metadata. Packet {}.", ctx.channel(), opcode)
+                }
+                return
+            }
+            type = metadata
 
             when (type) {
                 PacketType.IGNORE -> {

@@ -14,7 +14,7 @@ import java.util.concurrent.Phaser
 class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser) : PhasedSynchronizationTask(phaser) {
 
     companion object {
-        private const val MAX_LOCAL_PLAYERS = 255
+        private const val MAX_LOCAL_PLAYERS = 250
         private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 25
         private const val VIEWING_DISTANCE = 14
     }
@@ -57,8 +57,8 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
         player.localPlayerCount = 0
         player.nonLocalPlayerCount = 0
         for (i in 1 until 2048) {
-            val other = if (i < player.world.players.capacity) player.world.players.get(i) else null
-            if (other != null) {
+            val other = player.localPlayers[i]
+            if (other != null && player.localPlayerCount < MAX_LOCAL_PLAYERS) {
                 player.localPlayerIndices[player.localPlayerCount++] = i
             } else {
                 player.nonLocalPlayerIndices[player.nonLocalPlayerCount++] = i
@@ -76,14 +76,14 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 continue
             }
             val index = player.localPlayerIndices[i]
-            val local = player.world.players.get(index)
+            val local = player.localPlayers[index]
             if (local == null || local != player && shouldRemove(local)) {
                 buf.putBits(1, 1) // Do not skip this player
                 buf.putBits(1, 0) // Does not require block update
                 buf.putBits(2, 0) // Player needs to be removed
                 buf.putBits(1, 0) // Don't put the player in non-local list
                 player.playerTiles[index] = 0 // Reset the local player's tile
-                player.localPlayerIndices[i] = 0
+                player.localPlayers[index] = null
                 continue
             }
             val dirtyBlocks = local.blockBuffer.isDirty()
@@ -126,13 +126,16 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 buf.putBits(2, 0) // Does not require movement update
             } else {
                 buf.putBits(1, 0) // Skip this player
-                for (j in i + 1 until player.localPlayerCount) {
-                    val next = player.world.players.get(player.localPlayerIndices[j])
-                    if (next == null || next.blockBuffer.isDirty() || next.teleport || next.step != null || shouldRemove(next)) {
-                        break
+                /*for (j in i + 1 until player.localPlayerCount) {
+                    val nextIndex = player.localPlayerIndices[j]
+                    if (nextIndex < player.localPlayers.size) {
+                        val next = player.localPlayers[nextIndex]
+                        if (next == null || next.blockBuffer.isDirty() || next.teleport || next.step != null || shouldRemove(next)) {
+                            break
+                        }
                     }
                     skip++
-                }
+                }*/
                 writeSkip(buf, skip)
             }
         }
@@ -153,7 +156,8 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
             }
             val index = player.nonLocalPlayerIndices[i]
             val nonLocal = if (index < player.world.players.capacity) player.world.players.get(index) else null
-            if (nonLocal != null && shouldAdd(nonLocal) && added++ < MAX_PLAYER_ADDITIONS_PER_CYCLE && player.localPlayerCount < MAX_LOCAL_PLAYERS) {
+            if (nonLocal != null && shouldAdd(nonLocal) && added++ < MAX_PLAYER_ADDITIONS_PER_CYCLE
+                    && player.localPlayerCount < MAX_LOCAL_PLAYERS) {
                 val tileHash = nonLocal.tile.toInteger()
                 buf.putBits(1, 1) // Do not skip this player
                 buf.putBits(2, 0) // Require addition to local players
@@ -166,18 +170,19 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 buf.putBits(13, nonLocal.tile.z and 0x1FFF)
                 buf.putBits(1, 1) // Requires block update
                 encodeBlocks(nonLocal, maskBuf, true)
-                player.localPlayerIndices[player.localPlayerCount++] = nonLocal.index
+                player.localPlayers[index] = nonLocal
             } else {
                 buf.putBits(1, 0) // Skip this player
-                for (j in i + 1 until player.nonLocalPlayerCount) {
-                    if (player.nonLocalPlayerIndices[j] < player.world.players.capacity) {
-                        val next = player.world.players.get(player.nonLocalPlayerIndices[j])
+                /*for (j in i + 1 until player.nonLocalPlayerCount) {
+                    val nextIndex = player.nonLocalPlayerIndices[j]
+                    if (nextIndex < player.world.players.capacity) {
+                        val next = player.world.players.get(nextIndex)
                         if (next != null && shouldAdd(next)) {
                             break
                         }
                     }
                     skip++
-                }
+                }*/
                 writeSkip(buf, skip)
             }
         }
@@ -236,12 +241,11 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
             appBuf.put(DataType.BYTE, 0) // String terminator
 
             maskBuf.put(DataType.BYTE, DataTransformation.NEGATE, appBuf.getBuffer().readableBytes())
-            println("sending app with size: ${appBuf.getBuffer().readableBytes()}")
             maskBuf.putBytes(appBuf.getBuffer())
         }
     }
 
-    private fun shouldAdd(other: Player): Boolean = player.tile.isWithinRadius(other.tile, VIEWING_DISTANCE)
+    private fun shouldAdd(other: Player): Boolean = player.tile.isWithinRadius(other.tile, VIEWING_DISTANCE) && nearbyPlayers.contains(other)
 
     private fun shouldRemove(other: Player): Boolean = !player.isOnline() || !player.tile.isWithinRadius(other.tile, VIEWING_DISTANCE) || !nearbyPlayers.contains(other)
 

@@ -17,12 +17,8 @@ class PacketMetadataHelper(private val structures: MessageStructureSet) : IPacke
         private val logger = LogManager.getLogger(PacketMetadataHelper::class.java)
     }
 
-    override fun getType(opcode: Int): PacketType {
-        val structure = structures.get(opcode)
-        if (structure == null) {
-            logger.warn("No message structure found for message with opcode {}.", opcode)
-            return PacketType.IGNORE
-        }
+    override fun getType(opcode: Int): PacketType? {
+        val structure = structures.get(opcode) ?: return null
         return structure.type
     }
 

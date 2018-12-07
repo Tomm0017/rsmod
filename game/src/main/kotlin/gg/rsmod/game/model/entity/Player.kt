@@ -61,7 +61,9 @@ open class Player(override val world: World) : Pawn(world) {
 
     val interfaces = lazy { Interfaces(this, OSRSInterfaceListener()) }.value
 
-    val localPlayerIndices = IntArray(255)
+    val localPlayers = arrayOfNulls<Player>(2048)
+
+    val localPlayerIndices = IntArray(256)
 
     val nonLocalPlayerIndices = IntArray(2048)
 

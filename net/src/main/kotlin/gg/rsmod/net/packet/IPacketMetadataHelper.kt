@@ -5,7 +5,7 @@ package gg.rsmod.net.packet
  */
 interface IPacketMetadataHelper {
 
-    fun getType(opcode: Int): PacketType
+    fun getType(opcode: Int): PacketType?
 
     fun getLength(opcode: Int): Int
 }

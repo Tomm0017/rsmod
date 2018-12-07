@@ -18,4 +18,6 @@ class UpdateBlockBuffer {
     }
 
     fun hasBlock(block: UpdateBlock): Boolean = (mask and block.value) != 0
+
+    fun blockValue(): Int = mask
 }

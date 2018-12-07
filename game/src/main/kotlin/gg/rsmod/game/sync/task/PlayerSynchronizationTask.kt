@@ -1,6 +1,7 @@
 package gg.rsmod.game.sync.task
 
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.sync.UpdateBlock
 import gg.rsmod.net.packet.DataTransformation
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
@@ -81,6 +82,8 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 buf.putBits(1, 0) // Does not require block update
                 buf.putBits(2, 0) // Player needs to be removed
                 buf.putBits(1, 0) // Don't put the player in non-local list
+                player.playerTiles[index] = 0 // Reset the local player's tile
+                player.localPlayerIndices[i] = 0
                 continue
             }
             val dirtyBlocks = local.blockBuffer.isDirty()
@@ -96,10 +99,13 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 val lastZ = player.playerTiles[index] and 0x3FFF
                 val lastH = player.playerTiles[index] shr 28 and 0x3
 
-                var dx = local.tile.x - lastX
-                var dz = local.tile.z - lastZ
-                val dh = local.tile.height - lastH
+                var dx = local.tile.x// - lastX
+                var dz = local.tile.z// - lastZ
+                var dh = local.tile.height// - lastH
                 if (Math.abs(dx) <= 14 && Math.abs(dz) <= 14) {
+                    dx -= local.lastTile?.x ?: 0
+                    dz -= local.lastTile?.z ?: 0
+                    dh -= local.lastTile?.height ?: 0
                     if (dx < 0) {
                         dx += 32
                     }
@@ -180,10 +186,10 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
     }
 
     private fun encodeBlocks(other: Player, maskBuf: GamePacketBuilder, newPlayer: Boolean) {
-        var mask = if (newPlayer) 0x1 else 0
+        var mask = if (newPlayer) UpdateBlock.APPEARANCE.value else other.blockBuffer.blockValue()
 
         if (mask >= 0x100) {
-            mask = mask or 0x8
+            mask = mask or 0x20
             maskBuf.put(DataType.BYTE, mask and 0xFF)
             maskBuf.put(DataType.BYTE, mask shr 8)
         } else {
@@ -224,7 +230,13 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
             appBuf.put(DataType.SHORT, 0)
             appBuf.put(DataType.BYTE, 0)
 
-            maskBuf.put(DataType.BYTE, DataTransformation.SUBTRACT, appBuf.getBuffer().readableBytes())
+            appBuf.put(DataType.BYTE, other.privilege.icon)
+            appBuf.put(DataType.BYTE, 0)
+            appBuf.putBytes("".toByteArray())
+            appBuf.put(DataType.BYTE, 0) // String terminator
+
+            maskBuf.put(DataType.BYTE, DataTransformation.NEGATE, appBuf.getBuffer().readableBytes())
+            println("sending app with size: ${appBuf.getBuffer().readableBytes()}")
             maskBuf.putBytes(appBuf.getBuffer())
         }
     }

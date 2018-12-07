@@ -125,6 +125,7 @@ packets:
   - message: gg.rsmod.game.message.impl.ObjectActionOneMessage
     type: FIXED
     opcode: 67
+    length: 7
     structure:
       - name: z
         trans: ADD

@@ -21,7 +21,7 @@ class PacketMetadataHelper(private val structures: MessageStructureSet) : IPacke
         val structure = structures.get(opcode)
         if (structure == null) {
             logger.warn("No message structure found for message with opcode {}.", opcode)
-            return PacketType.FIXED
+            return PacketType.IGNORE
         }
         return structure.type
     }

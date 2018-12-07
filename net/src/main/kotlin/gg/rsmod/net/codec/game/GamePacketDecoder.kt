@@ -40,7 +40,7 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
             if (metadata == null) {
                 if (ctx.channel().isOpen) {
                     ctx.channel().disconnect()
-                    logger.fatal("Had to kick channel {} due to non-configured packet metadata. Packet {}.", ctx.channel(), opcode)
+                    logger.fatal("Had to kick channel {} due to non-configured packet {} metadata.", ctx.channel(), opcode)
                 }
                 return
             }

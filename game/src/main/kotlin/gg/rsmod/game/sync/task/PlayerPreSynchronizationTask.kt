@@ -1,9 +1,9 @@
 package gg.rsmod.game.sync.task
 
+import gg.rsmod.game.message.impl.ChangeStaticRegionMessage
 import gg.rsmod.game.model.PlayerGpi
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.message.impl.ChangeStaticRegionMessage
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
 import java.util.concurrent.Phaser
@@ -26,7 +26,7 @@ class PlayerPreSynchronizationTask(val player: Player, override val phaser: Phas
             val dz = current.z - last.z
             val changedHeight = current.height != last.height
 
-            if (dx <= 15 || dz <= 15 || dx >= 88 || dz >= 88) {
+            if (player.getType().isHumanControlled() && (dx <= 15 || dz <= 15 || dx >= 88 || dz >= 88)) {
                 val regionX = ((current.x shr 3) - 6) * 8
                 val regionZ = ((current.z shr 3) - 6) * 8
                 player.lastKnownRegionBase = Tile(regionX, regionZ, current.height)

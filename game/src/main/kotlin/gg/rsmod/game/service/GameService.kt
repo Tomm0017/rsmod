@@ -99,7 +99,7 @@ class GameService : Service() {
             /**
              * Synchronization tasks.
              */
-            SynchronizationTask(Runtime.getRuntime().availableProcessors()),
+            SynchronizationTask(Runtime.getRuntime().availableProcessors() / 2),
 
             /**
              * Post-synchronization tasks.
@@ -198,18 +198,8 @@ class GameService : Service() {
             cycleTime = 0
         }
 
-        /**
-         * If the cycle took less than [GameContext.cycleTime]ms, we put the
-         * thread to sleep until it meets said time.
-         */
         val freeTime = world.gameContext.cycleTime - (System.currentTimeMillis() - start)
-        if (freeTime >= 0) {
-            try {
-                Thread.sleep(freeTime)
-            } catch (e: InterruptedException) {
-                logger.fatal("", e)
-            }
-        } else {
+        if (freeTime < 0) {
             /**
              * If the cycle took more than [GameContext.cycleTime]ms, we log the
              * occurrence as well as the time each [GameTask] took to complete,
@@ -217,8 +207,8 @@ class GameService : Service() {
              * to process this cycle.
              */
             logger.fatal("Cycle took longer than expected: ${(-freeTime) + world.gameContext.cycleTime}ms / ${world.gameContext.cycleTime}ms!")
-            logger.fatal(taskTimes)
-            logger.fatal(playerTimes)
+            logger.fatal(taskTimes.toList().sortedByDescending { (_, value) -> value }.toMap())
+            logger.fatal(playerTimes.toList().sortedByDescending { (_, value) -> value }.toMap())
         }
     }
 }

@@ -1,11 +1,13 @@
 package gg.rsmod.game.sync.task
 
+import gg.rsmod.game.model.INDEX_ATTR
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.sync.UpdateBlock
 import gg.rsmod.net.packet.DataTransformation
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
 import gg.rsmod.net.packet.PacketType
+import org.apache.logging.log4j.LogManager
 import java.util.concurrent.Phaser
 
 /**
@@ -14,90 +16,70 @@ import java.util.concurrent.Phaser
 class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser) : PhasedSynchronizationTask(phaser) {
 
     companion object {
-        private const val MAX_LOCAL_PLAYERS = 250
-        private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 25
+        private val logger = LogManager.getLogger(PlayerSynchronizationTask::class.java)
+        private const val MAX_LOCAL_PLAYERS = 255
+        private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 15
         private const val VIEWING_DISTANCE = 14
     }
 
-    private val nearbyPlayers = arrayListOf<Player>()
-
-    private fun calculateNearbyPlayers() {
-        val chunkRadius = when (player.localPlayerCount) {
-            in 0..10000 -> 2
-            in 0..99 -> 2
-            in 100..149 -> 1
-            in 150..199 -> 0
-            else -> 0
-        }
-        val surroundingChunks = player.world.maps.getSurroundingChunks(center = player.tile,
-                chunkRadius = chunkRadius, activeOnly = true, centerFirst = true, prioritized = true)
-        surroundingChunks.forEach { chunk ->
-            val localPlayers = player.world.maps.getPlayersInChunk(chunk)
-            if (localPlayers != null) {
-                nearbyPlayers.addAll(localPlayers.sortedBy { it.index })
-            }
-        }
-        nearbyPlayers.remove(player)
-    }
+    private val nonLocalIndices = arrayListOf<Int>().apply { addAll(1..2047) }
 
     override fun execute() {
-        val packetBuf = GamePacketBuilder(79, PacketType.VARIABLE_SHORT)
+        val buf = GamePacketBuilder(79, PacketType.VARIABLE_SHORT)
         val maskBuf = GamePacketBuilder()
 
-        calculateNearbyPlayers()
+        encodeLocal(buf, maskBuf)
+        encodeNonLocal(buf, maskBuf)
 
-        encodeLocal(packetBuf, maskBuf, false)
-        //encodeLocal(packetBuf, maskBuf, true)
-        encodeGlobal(packetBuf, maskBuf, true)
-        //encodeGlobal(packetBuf, maskBuf, false)
-
-        packetBuf.putBytes(maskBuf.getBuffer())
-        player.write(packetBuf.toGamePacket())
-
-        player.localPlayerCount = 0
-        player.nonLocalPlayerCount = 0
-        for (i in 1 until 2048) {
-            val other = player.localPlayers[i]
-            if (other != null && player.localPlayerCount < MAX_LOCAL_PLAYERS) {
-                player.localPlayerIndices[player.localPlayerCount++] = i
-            } else {
-                player.nonLocalPlayerIndices[player.nonLocalPlayerCount++] = i
-            }
-        }
+        buf.putBytes(maskBuf.getBuffer())
+        player.write(buf.toGamePacket())
     }
 
-    private fun encodeLocal(buf: GamePacketBuilder, maskBuf: GamePacketBuilder, skippedOnly: Boolean) {
-        buf.switchToBitAccess()
-
+    private fun encodeLocal(buf: GamePacketBuilder, maskBuf: GamePacketBuilder) {
         var skip = 0
-        for (i in 0 until player.localPlayerCount) {
+        var iteratorIndex = 0
+        val iterator = player.localPlayers.iterator()
+
+        buf.switchToBitAccess()
+        while (iterator.hasNext()) {
+            iteratorIndex++
+            val local = iterator.next()
+            val index = local.attr.get(INDEX_ATTR)
+            nonLocalIndices.remove(index)
+
             if (skip > 0) {
-                --skip
+                skip--
                 continue
             }
-            val index = player.localPlayerIndices[i]
-            val local = player.localPlayers[index]
-            if (local == null || local != player && shouldRemove(local)) {
-                buf.putBits(1, 1) // Do not skip this player
-                buf.putBits(1, 0) // Does not require block update
-                buf.putBits(2, 0) // Player needs to be removed
-                buf.putBits(1, 0) // Don't put the player in non-local list
-                player.playerTiles[index] = 0 // Reset the local player's tile
-                player.localPlayers[index] = null
+            /**
+             * Remove player
+             */
+            if (local != player && shouldRemove(local)) {
+                player.otherPlayerTiles[index] = 0
+                iterator.remove()
+
+                buf.putBits(1, 1)
+                buf.putBits(1, 0)
+                buf.putBits(2, 0)
+                buf.putBits(1, 0)
                 continue
             }
-            val dirtyBlocks = local.blockBuffer.isDirty()
-            if (dirtyBlocks) {
-                encodeBlocks(local, maskBuf, false)
+
+            /**
+             * Update player.
+             */
+            val requiresBlockUpdate = local.blockBuffer.isDirty()
+            if (requiresBlockUpdate) {
+                encodeBlocks(other = local, maskBuf = maskBuf, newPlayer = false)
             }
             if (local.teleport) {
                 buf.putBits(1, 1) // Do not skip this player
-                buf.putBit(dirtyBlocks) // Does the local player require block update?
+                buf.putBit(requiresBlockUpdate) // Does the local player require block update?
                 buf.putBits(2, 3) // Teleport movement type
 
-                val lastX = player.playerTiles[index] shr 14 and 0x3FFF
-                val lastZ = player.playerTiles[index] and 0x3FFF
-                val lastH = player.playerTiles[index] shr 28 and 0x3
+                val lastX = player.otherPlayerTiles[index] shr 14 and 0x3FFF
+                val lastZ = player.otherPlayerTiles[index] and 0x3FFF
+                val lastH = player.otherPlayerTiles[index] shr 28 and 0x3
 
                 var dx = local.tile.x// - lastX
                 var dz = local.tile.z// - lastZ
@@ -119,74 +101,74 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                     buf.putBits(30, (dz and 0x3fff) or ((dx and 0x3fff) shl 14) or ((dh and 0x3) shl 28))
                 }
             } else if (local.step != null) {
-                buf.putBits(1, 1) // Do not skip this player
-            } else if (dirtyBlocks) {
-                buf.putBits(1, 1) // Do not skip this player
-                buf.putBits(1, 1) // Requires block update
-                buf.putBits(2, 0) // Does not require movement update
+
+            } else if (requiresBlockUpdate) {
+                buf.putBits(1, 1)
+                buf.putBits(1, 1)
+                buf.putBits(2, 0)
             } else {
-                buf.putBits(1, 0) // Skip this player
-                /*for (j in i + 1 until player.localPlayerCount) {
-                    val nextIndex = player.localPlayerIndices[j]
-                    if (nextIndex < player.localPlayers.size) {
-                        val next = player.localPlayers[nextIndex]
-                        if (next == null || next.blockBuffer.isDirty() || next.teleport || next.step != null || shouldRemove(next)) {
-                            break
-                        }
+                buf.putBits(1, 0)
+                for (i in iteratorIndex until player.localPlayers.size) {
+                    val next = player.localPlayers[i]
+                    if (next.blockBuffer.isDirty() || next.teleport || next.step != null || next != player && shouldRemove(next)) {
+                        break
                     }
                     skip++
-                }*/
+                }
                 writeSkip(buf, skip)
             }
         }
-
         buf.switchToByteAccess()
     }
 
-    private fun encodeGlobal(buf: GamePacketBuilder, maskBuf: GamePacketBuilder, skippedOnly: Boolean) {
-        buf.switchToBitAccess()
-
-        var added = 0
+    private fun encodeNonLocal(buf: GamePacketBuilder, maskBuf: GamePacketBuilder) {
         var skip = 0
+        var added = 0
 
-        for (i in 0 until player.nonLocalPlayerCount) {
+        buf.switchToBitAccess()
+        for (i in 0 until nonLocalIndices.size) {
             if (skip > 0) {
-                --skip
+                skip--
                 continue
             }
-            val index = player.nonLocalPlayerIndices[i]
+            val index = nonLocalIndices[i]
             val nonLocal = if (index < player.world.players.capacity) player.world.players.get(index) else null
-            if (nonLocal != null && shouldAdd(nonLocal) && added++ < MAX_PLAYER_ADDITIONS_PER_CYCLE
-                    && player.localPlayerCount < MAX_LOCAL_PLAYERS) {
+
+            /**
+             * Add non local player as local.
+             */
+            if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE
+                    && player.localPlayers.size < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
+                player.localPlayers.add(nonLocal)
+                player.localPlayers.sortBy { it.index }
+                added++
+
                 val tileHash = nonLocal.tile.toInteger()
                 buf.putBits(1, 1) // Do not skip this player
                 buf.putBits(2, 0) // Require addition to local players
 
                 buf.putBits(1, 1) // Require location hash change
-                updateLocation(buf, player.playerTiles[index], tileHash)
-                player.playerTiles[index] = tileHash
+                updateLocation(buf, player.otherPlayerTiles[index], tileHash)
+                player.otherPlayerTiles[index] = tileHash
 
                 buf.putBits(13, nonLocal.tile.x and 0x1FFF)
                 buf.putBits(13, nonLocal.tile.z and 0x1FFF)
                 buf.putBits(1, 1) // Requires block update
-                encodeBlocks(nonLocal, maskBuf, true)
-                player.localPlayers[index] = nonLocal
-            } else {
-                buf.putBits(1, 0) // Skip this player
-                /*for (j in i + 1 until player.nonLocalPlayerCount) {
-                    val nextIndex = player.nonLocalPlayerIndices[j]
-                    if (nextIndex < player.world.players.capacity) {
-                        val next = player.world.players.get(nextIndex)
-                        if (next != null && shouldAdd(next)) {
-                            break
-                        }
-                    }
-                    skip++
-                }*/
-                writeSkip(buf, skip)
+                encodeBlocks(other = nonLocal, maskBuf = maskBuf, newPlayer = true)
+                continue
             }
-        }
 
+            buf.putBits(1, 0)
+            for (j in i + 1 until nonLocalIndices.size) {
+                val nextIndex = nonLocalIndices[j]
+                val next = if (nextIndex < player.world.players.capacity) player.world.players.get(nextIndex) else null
+                if (next != null && shouldAdd(next)) {
+                    break
+                }
+                skip++
+            }
+            writeSkip(buf, skip)
+        }
         buf.switchToByteAccess()
     }
 
@@ -245,9 +227,9 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
         }
     }
 
-    private fun shouldAdd(other: Player): Boolean = player.tile.isWithinRadius(other.tile, VIEWING_DISTANCE) && nearbyPlayers.contains(other)
+    private fun shouldAdd(other: Player): Boolean = other.tile.isWithinRadius(player.tile, VIEWING_DISTANCE)// && nearbyPlayers.contains(other)
 
-    private fun shouldRemove(other: Player): Boolean = !player.isOnline() || !player.tile.isWithinRadius(other.tile, VIEWING_DISTANCE) || !nearbyPlayers.contains(other)
+    private fun shouldRemove(other: Player): Boolean = !other.isOnline() || !other.tile.isWithinRadius(player.tile, VIEWING_DISTANCE)// || !nearbyPlayers.contains(other)
 
     private fun writeSkip(buf: GamePacketBuilder, count: Int) {
         when {

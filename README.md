@@ -13,9 +13,9 @@ and it'll automatically load on the next server startup!
 - Before you can launch the server, you will need to create a few files:
 
         game.yml: holds information on general game information
-        packets.yml: holds information on the packets you want to support
+        data/packets.yml: holds information on the packets you want to support
         
-    Luckily, both of these files have a ```.example.yml``` file in the root 
+    Luckily, both of these files have a ```.example.yml``` file in their corresponding 
     directory, which you can simply copy and remove the ```.example``` extension.
     The ```packets.example.yml``` file contains the structure of packets for 
     `OSRS` ```#172```

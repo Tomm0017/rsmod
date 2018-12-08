@@ -27,14 +27,12 @@ object PlayerGpi {
         /**
          * Encode the GPI.
          */
-        client.localPlayers[client.index] = client
-        client.localPlayerIndices[client.localPlayerCount++] = client.index
+        client.localPlayers.add(client)
 
         gpiBuf.switchToBitAccess()
         gpiBuf.putBits(30, client.tile.toInteger())
         for (i in 1 until 2048) {
             if (i != client.index) {
-                client.nonLocalPlayerIndices[client.nonLocalPlayerCount++] = i
                 gpiBuf.putBits(18, 0)
             }
         }

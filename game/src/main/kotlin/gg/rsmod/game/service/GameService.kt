@@ -191,7 +191,7 @@ class GameService : Service() {
             val totalMemory = Runtime.getRuntime().totalMemory()
             val maxMemory = Runtime.getRuntime().maxMemory()
 
-            logger.info("[Cycle time avg: {}ms] [Entities: {}p / {}n] [Live Plugins: {}] [Mem usage: U={}MB / R={}MB / M={}MB].",
+            logger.info("[Cycle time avg: {}ms] [Entities: {}p / {}n] [Live plugins: {}] [Mem usage: U={}MB / R={}MB / M={}MB].",
                     cycleTime / TICKS_PER_DEBUG_LOG, world.players.count(), world.getNpcCount(), world.pluginExecutor.getActiveCount(),
                     (totalMemory - freeMemory) / (1024 * 1024), totalMemory / (1024 * 1024), maxMemory / (1024 * 1024))
             debugTick = 0

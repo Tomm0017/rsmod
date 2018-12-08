@@ -10,6 +10,13 @@ package gg.rsmod.game.model
  */
 
 /**
+ * The index that was assigned to a [Player] when they were first registered to the
+ * [World]. This is needed to remove local players from the synchronization task
+ * as once that logic is reached, the local player would have an index of [-1].
+ */
+val INDEX_ATTR = AttributeKey<Int>()
+
+/**
  * The command that the player has submitted to the server using the '::' prefix.
  */
 val COMMAND_ATTR = AttributeKey<String>()

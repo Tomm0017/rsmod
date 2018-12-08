@@ -30,8 +30,14 @@ open class Player(override val world: World) : Pawn(world) {
 
     var privilege = Privilege.DEFAULT
 
+    /**
+     * The current [Chunk] our player is registered to.
+     */
     var mapChunk: Chunk? = null
 
+    /**
+     * The current [Region] our player is registered to.
+     */
     var mapRegion: Region? = null
 
     /**
@@ -61,17 +67,14 @@ open class Player(override val world: World) : Pawn(world) {
 
     val interfaces = lazy { Interfaces(this, OSRSInterfaceListener()) }.value
 
-    val localPlayers = arrayOfNulls<Player>(2048)
+    val localPlayers = arrayListOf<Player>()
 
-    val localPlayerIndices = IntArray(256)
-
-    val nonLocalPlayerIndices = IntArray(2048)
-
-    val playerTiles = IntArray(2048)
-
-    var localPlayerCount = 0
-
-    var nonLocalPlayerCount = 0
+    /**
+     * An array that holds the last-known [Tile.toInteger] for every player
+     * according to this [Player]. This can vary from player to player, since
+     * on log-in, this array will be filled with [0]s for this [Player].
+     */
+    val otherPlayerTiles = IntArray(2048)
 
     override fun getType(): EntityType = EntityType.PLAYER
 

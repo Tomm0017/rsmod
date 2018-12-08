@@ -33,10 +33,20 @@ class World(val server: Server, val gameContext: GameContext) {
      */
     private val random: Random = ThreadLocalRandom.current()
 
+    /**
+     * The amount of game cycles that have gone by since the world was first
+     * initialized. This can reset back to [0], if it's signalled to overflow
+     * any time soon.
+     */
     var currentCycle = 0
 
     fun register(p: Player): Boolean {
-        return players.add(p)
+        val registered = players.add(p)
+        if (registered) {
+            p.attr.put(INDEX_ATTR, p.index)
+            return true
+        }
+        return false
     }
 
     fun unregister(p: Player) {
@@ -46,8 +56,8 @@ class World(val server: Server, val gameContext: GameContext) {
 
     fun getPlayerForName(username: String): Optional<Player> {
         for (i in 0 until players.capacity) {
-            val player = players.get(i)
-            if (player?.username == username) {
+            val player = players.get(i) ?: continue
+            if (player.username == username) {
                 return Optional.of(player)
             }
         }

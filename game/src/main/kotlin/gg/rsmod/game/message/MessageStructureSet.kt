@@ -41,9 +41,16 @@ class MessageStructureSet {
             val values = packet as LinkedHashMap<*, *>
             val className = values["message"] as String
             val packetType = if (values.containsKey("type")) PacketType.valueOf((values["type"] as String).toUpperCase()) else PacketType.IGNORE
-            val packetOpcode = values["opcode"] as Int
             val clazz = Class.forName(className)
             val packetLength = if (values.containsKey("length")) values["length"] as Int else 0
+
+            val packetOpcodes = arrayListOf<Int>()
+            if (values.containsKey("opcodes")) {
+                val split = (values["opcodes"] as String).trim().split(",")
+                split.forEach { v -> packetOpcodes.add(v.toInt()) }
+            } else if (values.containsKey("opcode")) {
+                packetOpcodes.add(values["opcode"] as Int)
+            }
 
             if (clazz::class.java != IgnoreMessage::class.java) {
                 val packetStructure = if (values.containsKey("structure")) values["structure"] as ArrayList<*> else null
@@ -54,19 +61,19 @@ class MessageStructureSet {
                     val order = if (structValues.containsKey("order")) DataOrder.valueOf(structValues["order"] as String) else DataOrder.BIG
                     val transform = if (structValues.containsKey("trans")) DataTransformation.valueOf(structValues["trans"] as String) else DataTransformation.NONE
                     val type = DataType.valueOf(structValues["type"] as String)
-                    val signature = if (structValues.containsKey("sign")) DataSignature.valueOf(structValues["sign"] as String) else DataSignature.SIGNED
+                    val signature = if (structValues.containsKey("sign")) DataSignature.valueOf((structValues["sign"] as String).toUpperCase()) else DataSignature.SIGNED
                     packetValues[name] = MessageValue(id = name, order = order, transformation = transform, type = type,
                             signature = signature)
                 }
-                val messageStructure = MessageStructure(type = packetType, opcode = packetOpcode, length = packetLength,
+                val messageStructure = MessageStructure(type = packetType, opcodes = packetOpcodes.toIntArray(), length = packetLength,
                         values = packetValues)
                 structureClasses[clazz] = messageStructure
-                structureOpcodes[packetOpcode] = messageStructure
+                packetOpcodes.forEach { opcode -> structureOpcodes[opcode] = messageStructure }
             } else {
-                val messageStructure = MessageStructure(type = packetType, opcode = packetOpcode,
+                val messageStructure = MessageStructure(type = packetType, opcodes = packetOpcodes.toIntArray(),
                         length = packetLength, values = LinkedHashMap())
                 structureClasses[clazz] = messageStructure
-                structureOpcodes[packetOpcode] = messageStructure
+                packetOpcodes.forEach { opcode -> structureOpcodes[opcode] = messageStructure }
             }
         }
         return this

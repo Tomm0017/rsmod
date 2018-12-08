@@ -26,7 +26,7 @@ abstract class MessageEncoder<T: Message>(open val structure: MessageStructure) 
      * Encode the [message] into a [GamePacket] based on the [structure].
      */
     fun encode(message: T): GamePacket {
-        val builder = GamePacketBuilder(structure.opcode, structure.type)
+        val builder = GamePacketBuilder(structure.opcodes.first(), structure.type)
         structure.values.values.forEach { value ->
             if (value.type != DataType.BYTES) {
                 builder.put(value.type, value.order, value.transformation, extract(message, value.id))

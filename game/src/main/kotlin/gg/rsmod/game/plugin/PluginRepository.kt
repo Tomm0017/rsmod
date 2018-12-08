@@ -142,7 +142,7 @@ class PluginRepository {
     fun bindButton(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) {
         val hash = (parent shl 16) or child
         if (buttonPlugins.containsKey(hash)) {
-            logger.error("Button widget already bound to a plugin: [parent=$parent, child=$child]")
+            logger.error("Button hash already bound to a plugin: [parent=$parent, child=$child]")
             throw IllegalStateException()
         }
         buttonPlugins[hash] = plugin

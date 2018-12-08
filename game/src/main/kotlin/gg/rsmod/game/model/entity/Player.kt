@@ -167,6 +167,14 @@ open class Player(override val world: World) : Pawn(world) {
 
     }
 
+    /**
+     * Default method to close the attached channel. Won't be handled unless
+     * the [Player] is controlled by a [Client] user.
+     */
+    open fun channelClose() {
+
+    }
+
     override fun toString(): String = MoreObjects.toStringHelper(this)
             .add("name", username)
             .add("pid", index)

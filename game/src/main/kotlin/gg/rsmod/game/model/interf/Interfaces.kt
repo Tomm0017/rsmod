@@ -23,17 +23,9 @@ class Interfaces(val player: Player, private val actionListener: InterfaceAction
     private val visible = hashMapOf<Int, Int>()
 
     /**
-     * The current [DisplayMode] being used.
+     * The current [DisplayMode] being used by the client.
      */
     private var displayMode = DisplayMode.FIXED
-
-    fun getDisplayMode(): DisplayMode = displayMode
-
-    fun setDisplayMode(newMode: DisplayMode) {
-        if (displayMode != newMode) {
-            actionListener.onDisplayChange(player, newMode)
-        }
-    }
 
     /**
      * Registers the [interfaceId] as being opened on the pane correspondent to
@@ -104,4 +96,11 @@ class Interfaces(val player: Player, private val actionListener: InterfaceAction
      */
     fun isVisible(interfaceId: Int): Boolean = visible.values.contains(interfaceId)
 
+    fun getDisplayMode(): DisplayMode = displayMode
+
+    fun setDisplayMode(newMode: DisplayMode) {
+        if (displayMode != newMode) {
+            actionListener.onDisplayChange(player, newMode)
+        }
+    }
 }

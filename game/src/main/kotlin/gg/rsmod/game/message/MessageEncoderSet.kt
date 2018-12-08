@@ -28,6 +28,7 @@ class MessageEncoderSet {
         encoders[InvokeScriptMessage::class.java] = InvokeScriptEncoder(structures.get(InvokeScriptMessage::class.java)!!)
         encoders[ChangeStaticRegionMessage::class.java] = ChangeStaticRegionEncoder(structures.get(ChangeStaticRegionMessage::class.java)!!)
         encoders[SendChatboxTextMessage::class.java] = SendChatboxTextEncoder(structures.get(SendChatboxTextMessage::class.java)!!)
+        encoders[SendLogoutMessage::class.java] = SendLogoutEncoder(structures.get(SendLogoutMessage::class.java)!!)
     }
 
     @Suppress("UNCHECKED_CAST")

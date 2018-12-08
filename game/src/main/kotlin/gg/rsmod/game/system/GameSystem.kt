@@ -65,5 +65,9 @@ class GameSystem(override val channel: Channel, val client: Client,
         channel.flush()
     }
 
+    fun close() {
+        channel.disconnect()
+    }
+
     private data class MessageHandle(val message: Message, val handler: MessageHandler<Message>, val opcode: Int, val length: Int)
 }

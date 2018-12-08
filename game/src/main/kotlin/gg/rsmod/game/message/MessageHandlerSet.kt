@@ -1,13 +1,7 @@
 package gg.rsmod.game.message
 
-import gg.rsmod.game.message.handler.ClickMapHandler
-import gg.rsmod.game.message.handler.CommandHandler
-import gg.rsmod.game.message.handler.DisplayModeHandler
-import gg.rsmod.game.message.handler.ObjectActionOneHandler
-import gg.rsmod.game.message.impl.ChangeDisplayModeMessage
-import gg.rsmod.game.message.impl.ClickMapMovementMessage
-import gg.rsmod.game.message.impl.CommandMessage
-import gg.rsmod.game.message.impl.ObjectActionOneMessage
+import gg.rsmod.game.message.handler.*
+import gg.rsmod.game.message.impl.*
 
 /**
  * Stores all the [MessageHandler]s that are used on the
@@ -30,11 +24,14 @@ class MessageHandlerSet {
         put(ChangeDisplayModeMessage::class.java, DisplayModeHandler(), structures)
         put(ClickMapMovementMessage::class.java, ClickMapHandler(), structures)
         put(ObjectActionOneMessage::class.java, ObjectActionOneHandler(), structures)
+        put(ClickButtonMessage::class.java, ClickButtonHandler(), structures)
     }
 
     private fun put(messageType: Class<out Message>, handlerType: MessageHandler<out Message>, structures: MessageStructureSet) {
         val structure = structures.get(messageType)!!
-        this.handlers[structure.opcode] = handlerType
+        structure.opcodes.forEach { opcode ->
+            this.handlers[opcode] = handlerType
+        }
     }
 
     @Suppress("UNCHECKED_CAST")

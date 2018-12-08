@@ -76,4 +76,8 @@ class Client(val channel: Channel, override val world: World) : Player(world) {
     override fun channelFlush() {
         gameSystem.flush()
     }
+
+    override fun channelClose() {
+        gameSystem.close()
+    }
 }

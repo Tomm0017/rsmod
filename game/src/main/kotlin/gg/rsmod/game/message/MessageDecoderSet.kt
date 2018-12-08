@@ -1,14 +1,8 @@
 package gg.rsmod.game.message
 
 import gg.rsmod.game.message.codec.MessageDecoder
-import gg.rsmod.game.message.codec.decoder.ClickMapDecoder
-import gg.rsmod.game.message.codec.decoder.CommandDecoder
-import gg.rsmod.game.message.codec.decoder.DisplayModeDecoder
-import gg.rsmod.game.message.codec.decoder.ObjectActionOneDecoder
-import gg.rsmod.game.message.impl.ChangeDisplayModeMessage
-import gg.rsmod.game.message.impl.ClickMapMovementMessage
-import gg.rsmod.game.message.impl.CommandMessage
-import gg.rsmod.game.message.impl.ObjectActionOneMessage
+import gg.rsmod.game.message.codec.decoder.*
+import gg.rsmod.game.message.impl.*
 
 /**
  * Stores all the [MessageDecoder]s that are used on the
@@ -31,11 +25,14 @@ class MessageDecoderSet {
         put(ChangeDisplayModeMessage::class.java, DisplayModeDecoder(), structures)
         put(ClickMapMovementMessage::class.java, ClickMapDecoder(), structures)
         put(ObjectActionOneMessage::class.java, ObjectActionOneDecoder(), structures)
+        put(ClickButtonMessage::class.java, ClickButtonDecoder(), structures)
     }
 
     private fun put(messageType: Class<out Message>, decoderType: MessageDecoder<out Message>, structures: MessageStructureSet) {
         val structure = structures.get(messageType)!!
-        decoders[structure.opcode] = decoderType
+        structure.opcodes.forEach { opcode ->
+            decoders[opcode] = decoderType
+        }
     }
 
     @Suppress("UNCHECKED_CAST")

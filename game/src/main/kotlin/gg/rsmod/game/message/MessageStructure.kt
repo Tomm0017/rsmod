@@ -17,4 +17,27 @@ import gg.rsmod.net.packet.PacketType
  *
  * @author Tom <rspsmods@gmail.com>
  */
-data class MessageStructure(val type: PacketType, val opcode: Int, val length: Int, val values: LinkedHashMap<String, MessageValue>)
+data class MessageStructure(val type: PacketType, val opcodes: IntArray, val length: Int, val values: LinkedHashMap<String, MessageValue>) {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as MessageStructure
+
+        if (type != other.type) return false
+        if (!opcodes.contentEquals(other.opcodes)) return false
+        if (length != other.length) return false
+        if (values != other.values) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = type.hashCode()
+        result = 31 * result + opcodes.contentHashCode()
+        result = 31 * result + length
+        result = 31 * result + values.hashCode()
+        return result
+    }
+}

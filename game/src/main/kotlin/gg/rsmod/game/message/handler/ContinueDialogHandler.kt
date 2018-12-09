@@ -12,6 +12,6 @@ class ContinueDialogHandler : MessageHandler<ContinueDialogMessage> {
     override fun handle(client: Client, message: ContinueDialogMessage) {
         log(client, "Continue Dialog: parent={}, child={}, slot={}", message.parent, message.child, message.slot)
 
-        client.world.pluginExecutor.submitReturnType(client, -1)
+        client.world.pluginExecutor.submitReturnType(client, message.slot)
     }
 }

@@ -4,8 +4,10 @@ import gg.rsmod.game.fs.def.VarpDefinition
 import net.runelite.cache.ConfigType
 import net.runelite.cache.IndexType
 import net.runelite.cache.definitions.EnumDefinition
+import net.runelite.cache.definitions.NpcDefinition
 import net.runelite.cache.definitions.VarbitDefinition
 import net.runelite.cache.definitions.loaders.EnumLoader
+import net.runelite.cache.definitions.loaders.NpcLoader
 import net.runelite.cache.definitions.loaders.VarbitLoader
 import net.runelite.cache.fs.Store
 import org.apache.logging.log4j.LogManager
@@ -29,6 +31,18 @@ class DefinitionSet {
         val configs = store.getIndex(IndexType.CONFIGS)!!
 
         /**
+         * Load [Varp]s.
+         */
+        val varpArchive = configs.getArchive(ConfigType.VARPLAYER.id)!!
+        val varpFiles = varpArchive.getFiles(store.storage.loadArchive(varpArchive)!!).files
+        val varps = arrayListOf<VarpDefinition>().apply {
+            varpFiles.forEach { add(VarpDefinition()) }
+        }
+        defs[VarpDefinition::class.java] = varps.toTypedArray()
+
+        logger.info("Loaded ${varps.size} varp definitions.")
+
+        /**
          * Load [VarbitDef]s.
          */
         val varbitArchive = configs.getArchive(ConfigType.VARBIT.id)!!
@@ -44,18 +58,6 @@ class DefinitionSet {
         logger.info("Loaded ${varbits.size} varbit definitions.")
 
         /**
-         * Load [Varp]s.
-         */
-        val varpArchive = configs.getArchive(ConfigType.VARPLAYER.id)!!
-        val varpFiles = varpArchive.getFiles(store.storage.loadArchive(varpArchive)!!).files
-        val varps = arrayListOf<VarpDefinition>().apply {
-            varpFiles.forEach { add(VarpDefinition()) }
-        }
-        defs[VarpDefinition::class.java] = varps.toTypedArray()
-
-        logger.info("Loaded ${varps.size} varp definitions.")
-
-        /**
          * Load [EnumDefinition]s.
          */
         val enumArchive = configs.getArchive(ConfigType.ENUM.id)!!
@@ -69,6 +71,21 @@ class DefinitionSet {
         defs[EnumDefinition::class.java] = enums.toTypedArray()
 
         logger.info("Loaded ${enums.size} enum definitions.")
+
+        /**
+         * Load [NpcDefinition]s.
+         */
+        val npcArchive = configs.getArchive(ConfigType.NPC.id)!!
+        val npcFiles = npcArchive.getFiles(store.storage.loadArchive(npcArchive)!!).files
+        val npcs = arrayListOf<NpcDefinition>()
+        for (file in npcFiles) {
+            val loader = NpcLoader()
+            val def = loader.load(file.fileId, file.contents)
+            npcs.add(def)
+        }
+        defs[NpcDefinition::class.java] = npcs.toTypedArray()
+
+        logger.info("Loaded ${npcs.size} npc definitions.")
     }
 
     @Suppress("UNCHECKED_CAST")

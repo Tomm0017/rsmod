@@ -35,16 +35,9 @@ class Server {
      */
     private val apiProperties = ServerProperties()
 
-    /**
-     * The properties specific to the game being launched by the customer/user.
-     */
-    private val gameProperties = ServerProperties()
-
     private val acceptGroup = NioEventLoopGroup(2)
 
     private val ioGroup = NioEventLoopGroup(1)
-
-    private val serverBootstrap = ServerBootstrap()
 
     /**
      * Prepares and handles any API related logic that must be handled
@@ -79,9 +72,11 @@ class Server {
         val stopwatch = Stopwatch.createStarted()
         val individualStopwatch = Stopwatch.createUnstarted()
 
+
         /**
          * Load the game property file.
          */
+        val gameProperties = ServerProperties()
         gameProperties.loadYaml(gameProps.toFile())
         logger.info("Loaded properties for ${gameProperties.get<String>("name")!!}.")
 
@@ -102,7 +97,7 @@ class Server {
         /**
          * Load the services required to run the server.
          */
-        loadServices(world)
+        loadServices(world, gameProperties)
 
         /**
          * Fetch the [GameService].
@@ -150,14 +145,16 @@ class Server {
         /**
          * Binding the network to allow incoming and outgoing connections.
          */
+        val serverBootstrap = ServerBootstrap()
         val clientChannelInitializer = ClientChannelInitializer(revision = gameContext.revision, filestore = world.filestore, world = world)
+        val port = gameProperties.get<Int>("game-port")!!
+
         serverBootstrap.group(acceptGroup, ioGroup)
         serverBootstrap.channel(NioServerSocketChannel::class.java)
         serverBootstrap.childHandler(clientChannelInitializer)
-        serverBootstrap.option(ChannelOption.TCP_NODELAY, true)
-                .option(ChannelOption.SO_KEEPALIVE, true)
-        serverBootstrap.bind(InetSocketAddress(gameProperties.get<Int>("game-port")!!)).sync().awaitUninterruptibly()
-        logger.info("Now listening for incoming connections...")
+        serverBootstrap.option(ChannelOption.TCP_NODELAY, true).option(ChannelOption.SO_KEEPALIVE, true)
+        serverBootstrap.bind(InetSocketAddress(port)).sync().awaitUninterruptibly()
+        logger.info("Now listening for incoming connections on port $port...")
 
         System.gc()
     }
@@ -165,7 +162,7 @@ class Server {
     /**
      * Loads all the services listed on our game properties file.
      */
-    private fun loadServices(world: World) {
+    private fun loadServices(world: World, gameProperties: ServerProperties) {
         val stopwatch = Stopwatch.createUnstarted()
         val foundServices = gameProperties.get<ArrayList<Any>>("services")!!
         foundServices.forEach { it ->

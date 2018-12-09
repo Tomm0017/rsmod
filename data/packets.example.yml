@@ -138,6 +138,47 @@ packets:
       - name: hash
         type: INT
 
+  - message: gg.rsmod.game.message.impl.SetInterfaceSettingMessage
+    type: FIXED
+    opcode: 25
+    structure:
+      - name: from
+        type: SHORT
+        order: LITTLE
+      - name: setting
+        type: INT
+        order: LITTLE
+      - name: hash
+        type: INT
+        order: LITTLE
+      - name: to
+        type: SHORT
+
+  - message: gg.rsmod.game.message.impl.SetInterfaceHiddenMessage
+    type: FIXED
+    opcode: 64
+    structure:
+      - name: hash
+        type: INT
+        order: INVERSED_MIDDLE
+      - name: hidden
+        type: BYTE
+        trans: ADD
+
+  - message: gg.rsmod.game.message.impl.SetInterfaceItemMessage
+    type: FIXED
+    opcode: 57
+    structure:
+      - name: item
+        type: SHORT
+      - name: amount
+        type: INT
+        order: LITTLE
+      - name: hash
+        type: INT
+        order: MIDDLE
+
+
   # In
   - message: gg.rsmod.game.message.impl.CommandMessage
     type: VARIABLE_BYTE

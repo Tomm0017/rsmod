@@ -29,6 +29,7 @@ class MessageEncoderSet {
         encoders[SetInterfaceTextMessage::class.java] = InterfaceTextEncoder(structures.get(SetInterfaceTextMessage::class.java)!!)
         encoders[SetInterfaceSettingMessage::class.java] = InterfaceSettingEncoder(structures.get(SetInterfaceSettingMessage::class.java)!!)
         encoders[SetInterfaceHiddenMessage::class.java] = InterfaceHiddenEncoder(structures.get(SetInterfaceHiddenMessage::class.java)!!)
+        encoders[SetInterfaceItemMessage::class.java] = InterfaceItemEncoder(structures.get(SetInterfaceItemMessage::class.java)!!)
         encoders[SetDisplayInterfaceMessage::class.java] = DisplayInterfaceEncoder(structures.get(SetDisplayInterfaceMessage::class.java)!!)
         encoders[InvokeScriptMessage::class.java] = InvokeScriptEncoder(structures.get(InvokeScriptMessage::class.java)!!)
         encoders[ChangeStaticRegionMessage::class.java] = ChangeStaticRegionEncoder(structures.get(ChangeStaticRegionMessage::class.java)!!)

@@ -2,7 +2,6 @@ package gg.rsmod.game
 
 import com.google.common.base.Stopwatch
 import gg.rsmod.game.model.Tile
-import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.protocol.ClientChannelInitializer
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.Service
@@ -15,7 +14,6 @@ import net.runelite.cache.fs.Store
 import org.apache.logging.log4j.LogManager
 import java.net.InetSocketAddress
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.text.DecimalFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -47,16 +45,6 @@ class Server {
      */
     private val services = arrayListOf<Service>()
 
-    /**
-     * The plugin repository that's responsible for storing all the plugins found.
-     */
-    private val plugins = PluginRepository()
-
-    /**
-     * The [Store] is responsible for handling the data in our cache.
-     */
-    private lateinit var filestore: Store
-
     private val acceptGroup = NioEventLoopGroup(2)
 
     private val ioGroup = NioEventLoopGroup(1)
@@ -71,21 +59,12 @@ class Server {
     fun startServer(apiProps: Path) {
         Thread.setDefaultUncaughtExceptionHandler { t, e -> logger.error("Uncaught server exception in thread $t!", e) }
         val overallStopwatch = Stopwatch.createStarted()
-        val specificStopwatch = Stopwatch.createUnstarted()
 
         /**
          * Load the API property file.
          */
         apiProperties.loadYaml(apiProps.toFile())
         logger.info("Preparing ${getApiName()}...")
-
-        /**
-         * Load the file store.
-         */
-        specificStopwatch.reset().start()
-        filestore = Store(Paths.get("./data", "cache").toFile())
-        filestore.load()
-        logger.info("Loaded filestore in {}ms.", specificStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**
          * Inform the time it took to load the API related logic.
@@ -101,7 +80,7 @@ class Server {
      * can start multiple servers with different game property files.
      */
     @Throws(Exception::class)
-    fun startGame(gameProps: Path, packets: Path) {
+    fun startGame(filestorePath: Path, gameProps: Path, packets: Path) {
         val stopwatch = Stopwatch.createStarted()
         val individualStopwatch = Stopwatch.createUnstarted()
 
@@ -132,6 +111,16 @@ class Server {
          * Fetch the [GameService].
          */
         val gameService = getService(type = GameService::class.java, searchSubclasses = false).get()
+        val world = gameService.world
+
+        /**
+         * Load the file store.
+         */
+        individualStopwatch.reset().start()
+        world.filestore = Store(filestorePath.toFile())
+        world.filestore.load()
+        world.definitions.init(world.filestore)
+        logger.info("Loaded filestore from path {} in {}ms.", filestorePath, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**
          * Load the packets for the game.
@@ -154,8 +143,8 @@ class Server {
          * Load the plugins for game content.
          */
         individualStopwatch.reset().start()
-        plugins.init(gameService = gameService, packagePath = gameProperties.get<String>("plugin-path")!!)
-        logger.info("Loaded {} plugins from path {} in {}ms.", DecimalFormat().format(plugins.getCount()), gameProperties.get<String>("plugin-path")!!, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
+        world.plugins.init(gameService = gameService, packagePath = gameProperties.get<String>("plugin-path")!!)
+        logger.info("Loaded {} plugins from path {} in {}ms.", DecimalFormat().format(world.plugins.getCount()), gameProperties.get<String>("plugin-path")!!, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**
          * Inform the time it took to load up all non-network logic.
@@ -165,7 +154,7 @@ class Server {
         /**
          * Binding the network to allow incoming and outgoing connections.
          */
-        val clientChannelInitializer = ClientChannelInitializer(revision = gameContext.revision, filestore = getFilestore(), world = gameService.world)
+        val clientChannelInitializer = ClientChannelInitializer(revision = gameContext.revision, filestore = world.filestore, world = world)
         serverBootstrap.group(acceptGroup, ioGroup)
         serverBootstrap.channel(NioServerSocketChannel::class.java)
         serverBootstrap.childHandler(clientChannelInitializer)
@@ -203,10 +192,6 @@ class Server {
         }
         logger.info("Loaded {} game services.", services.size)
     }
-
-    fun getPlugins(): PluginRepository = plugins
-
-    fun getFilestore(): Store = filestore
 
     /**
      * Gets the first service that can be found which meets the criteria of:

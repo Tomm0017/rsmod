@@ -1,6 +1,7 @@
 package gg.rsmod.net.packet
 
 import com.google.common.base.Preconditions
+import gg.rsmod.util.DataConstants
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 
@@ -213,35 +214,35 @@ class GamePacketBuilder {
      */
     @Throws(IllegalArgumentException::class)
     fun putBits(numBits: Int, value: Int) {
-        var numBits = numBits
-        Preconditions.checkArgument(numBits in 1..32, "Number of bits must be between 1 and 32 inclusive.")
+        var numberOfBits = numBits
+        Preconditions.checkArgument(numberOfBits in 1..32, "Number of bits must be between 1 and 32 inclusive.")
 
         checkBitAccess()
 
         var bytePos = bitIndex shr 3
         var bitOffset = 8 - (bitIndex and 7)
-        bitIndex += numBits
+        bitIndex += numberOfBits
 
         var requiredSpace = bytePos - buffer.writerIndex() + 1
-        requiredSpace += (numBits + 7) / 8
+        requiredSpace += (numberOfBits + 7) / 8
         buffer.ensureWritable(requiredSpace)
 
-        while (numBits > bitOffset) {
+        while (numberOfBits > bitOffset) {
             var tmp = buffer.getByte(bytePos).toInt()
             tmp = tmp and DataConstants.BIT_MASK[bitOffset].inv()
-            tmp = tmp or (value shr numBits - bitOffset and DataConstants.BIT_MASK[bitOffset])
+            tmp = tmp or (value shr numberOfBits - bitOffset and DataConstants.BIT_MASK[bitOffset])
             buffer.setByte(bytePos++, tmp)
-            numBits -= bitOffset
+            numberOfBits -= bitOffset
             bitOffset = 8
         }
         var tmp = buffer.getByte(bytePos).toInt()
-        if (numBits == bitOffset) {
+        if (numberOfBits == bitOffset) {
             tmp = tmp and DataConstants.BIT_MASK[bitOffset].inv()
             tmp = tmp or (value and DataConstants.BIT_MASK[bitOffset])
             buffer.setByte(bytePos, tmp)
         } else {
-            tmp = tmp and (DataConstants.BIT_MASK[numBits] shl bitOffset - numBits).inv()
-            tmp = tmp or (value and DataConstants.BIT_MASK[numBits] shl bitOffset - numBits)
+            tmp = tmp and (DataConstants.BIT_MASK[numberOfBits] shl bitOffset - numberOfBits).inv()
+            tmp = tmp or (value and DataConstants.BIT_MASK[numberOfBits] shl bitOffset - numberOfBits)
             buffer.setByte(bytePos, tmp)
         }
     }

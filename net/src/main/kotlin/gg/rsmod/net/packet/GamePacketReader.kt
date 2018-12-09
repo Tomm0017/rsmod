@@ -2,6 +2,7 @@ package gg.rsmod.net.packet
 
 import com.google.common.base.Preconditions
 import gg.rsmod.util.BufferUtils
+import gg.rsmod.util.DataConstants
 import io.netty.buffer.ByteBuf
 
 /**
@@ -191,24 +192,24 @@ class GamePacketReader(packet: GamePacket) {
      * @throws IllegalArgumentException If the number of bits is not between 1 and 31 inclusive.
      */
     fun getBits(amount: Int): Int {
-        var amount = amount
-        Preconditions.checkArgument(amount >= 0 && amount <= 32, "Number of bits must be between 1 and 32 inclusive.")
+        var amountOfBits = amount
+        Preconditions.checkArgument(amountOfBits >= 0 && amountOfBits <= 32, "Number of bits must be between 1 and 32 inclusive.")
         checkBitAccess()
 
         var bytePos = bitIndex shr 3
         var bitOffset = 8 - (bitIndex and 7)
         var value = 0
-        bitIndex += amount
+        bitIndex += amountOfBits
 
-        while (amount > bitOffset) {
-            value += buffer.getByte(bytePos++).toInt() and DataConstants.BIT_MASK[bitOffset] shl amount - bitOffset
-            amount -= bitOffset
+        while (amountOfBits > bitOffset) {
+            value += buffer.getByte(bytePos++).toInt() and DataConstants.BIT_MASK[bitOffset] shl amountOfBits - bitOffset
+            amountOfBits -= bitOffset
             bitOffset = 8
         }
-        if (amount == bitOffset) {
+        if (amountOfBits == bitOffset) {
             value += buffer.getByte(bytePos).toInt() and DataConstants.BIT_MASK[bitOffset]
         } else {
-            value += buffer.getByte(bytePos).toInt() shr bitOffset - amount and DataConstants.BIT_MASK[amount]
+            value += buffer.getByte(bytePos).toInt() shr bitOffset - amountOfBits and DataConstants.BIT_MASK[amountOfBits]
         }
         return value
     }

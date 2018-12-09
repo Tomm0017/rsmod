@@ -25,7 +25,7 @@ class ClickButtonHandler : MessageHandler<ClickButtonMessage> {
             return
         }
 
-        if (client.world.server.getPlugins().executeButton(client, parent, child)) {
+        if (client.world.plugins.executeButton(client, parent, child)) {
             return
         }
 

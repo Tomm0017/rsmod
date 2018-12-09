@@ -339,12 +339,12 @@ class Map {
 
     private fun addPlayerToRegion(p: Player, region: Region): Boolean {
         logger.debug("Registered player {} to region {}.", p.username, region.toTile())
-        p.world.server.getPlugins().executeRegionEnter(p, p.tile.toRegionId())
+        p.world.plugins.executeRegionEnter(p, p.tile.toRegionId())
         return true
     }
 
     private fun removePlayerFromRegion(p: Player, region: Region) {
         logger.debug("Removed player {} from region {}.", p.username, region.toTile())
-        p.world.server.getPlugins().executeRegionExit(p, p.tile.toRegionId())
+        p.world.plugins.executeRegionExit(p, p.tile.toRegionId())
     }
 }

@@ -10,4 +10,5 @@ dependencies {
 
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8'
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-scripting-common'
+    implementation group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
 }

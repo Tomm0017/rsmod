@@ -1,10 +1,13 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
+import gg.rsmod.game.fs.def.VarpDefinition
 import gg.rsmod.game.map.Chunk
 import gg.rsmod.game.map.Region
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.SendSkillMessage
+import gg.rsmod.game.message.impl.SetBigVarpMessage
+import gg.rsmod.game.message.impl.SetSmallVarpMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.interf.Interfaces
 import gg.rsmod.game.model.interf.action.OSRSInterfaceListener
@@ -63,9 +66,11 @@ open class Player(override val world: World) : Pawn(world) {
      */
     @Volatile private var pendingLogout = false
 
-    val interfaces: Interfaces by lazy { Interfaces(this, OSRSInterfaceListener()) }
+    val interfaces: Interfaces by lazy { Interfaces(this, actionListener = OSRSInterfaceListener()) }
 
-    val skills: SkillSet by lazy { SkillSet(world.gameContext.skillCount) }
+    val skills: SkillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
+
+    val varps: VarpSet by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDefinition::class.java)) }
 
     val localPlayers = arrayListOf<Player>()
 
@@ -76,11 +81,7 @@ open class Player(override val world: World) : Pawn(world) {
      */
     val otherPlayerTiles = IntArray(2048)
 
-    var running = true
-
     var runEnergy = 100.0
-
-    var specialAttackEnergy = 100.0
 
     override fun getType(): EntityType = EntityType.PLAYER
 
@@ -95,13 +96,23 @@ open class Player(override val world: World) : Pawn(world) {
         }
 
         for (i in 0 until skills.maxSkills) {
-            val id = skills[i].id
-            if (skills.isDirty(id)) {
-                write(SendSkillMessage(id, skills.getCurrentLevel(id), skills.getCurrentXp(id).toInt()))
+            if (skills.isDirty(i)) {
+                write(SendSkillMessage(i, skills.getCurrentLevel(i), skills.getCurrentXp(i).toInt()))
+            }
+        }
+        for (i in 0 until varps.maxVarps) {
+            if (varps.isDirty(i)) {
+                val varp = varps[i]
+                val message = when {
+                    varp.state <= Byte.MAX_VALUE -> SetSmallVarpMessage(varp.id, varp.state)
+                    else -> SetBigVarpMessage(varp.id, varp.state)
+                }
+                write(message)
             }
         }
 
         skills.clean()
+        varps.clean()
     }
 
     /**
@@ -140,7 +151,7 @@ open class Player(override val world: World) : Pawn(world) {
         }
         initiated = true
         blockBuffer.addBlock(UpdateBlock.APPEARANCE)
-        world.server.getPlugins().executeLogin(this)
+        world.plugins.executeLogin(this)
     }
 
     /**

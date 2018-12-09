@@ -1,9 +1,10 @@
-package gg.rsmod.net.packet
+package gg.rsmod.util
 
 /**
  * A class holding data-related constants.
  *
  * @author Graham
+ * @author Tom <rspsmods@gmail.com>
  */
 object DataConstants {
 
@@ -13,6 +14,14 @@ object DataConstants {
     val BIT_MASK = IntArray(32).apply {
         for (i in 0 until size) {
             set(i, (1 shl i) - 1)
+        }
+    }
+
+    val BIT_SIZES = IntArray(32).apply {
+        var size = 2
+        for (i in 0 until 32) {
+            set(i, size - 1)
+            size += size
         }
     }
 }

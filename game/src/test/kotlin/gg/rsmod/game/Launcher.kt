@@ -4,8 +4,10 @@ import java.nio.file.Paths
 
 fun main(args: Array<String>) {
     val server = Server()
+
     server.startServer(apiProps = Paths.get("./data/api.yml"))
-    server.startGame(gameProps = Paths.get("./game.yml"), packets = Paths.get("./data/packets.yml"))
+    server.startGame(filestorePath = Paths.get("./data", "cache"), gameProps = Paths.get("./game.yml"),
+            packets = Paths.get("./data/packets.yml"))
 
     /*val gameService = server.getService(GameService::class.java, false).get()
     val world = gameService.world

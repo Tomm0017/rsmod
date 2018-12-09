@@ -13,7 +13,7 @@ class CommandHandler : MessageHandler<CommandMessage> {
         val values = message.command.split(" ")
         val command = values[0].toLowerCase()
         val args = if (values.size > 1) values.slice(1 until values.size).toTypedArray() else null
-        client.world.server.getPlugins().executeCommand(client, command, args)
+        client.world.plugins.executeCommand(client, command, args)
         if (args != null) {
             log(client, "Command: cmd={}, args={}", command, args)
         } else {

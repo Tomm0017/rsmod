@@ -2,10 +2,13 @@ package gg.rsmod.game.model
 
 import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
+import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.map.Map
 import gg.rsmod.game.model.entity.PawnList
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.PluginExecutor
+import gg.rsmod.game.plugin.PluginRepository
+import net.runelite.cache.fs.Store
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 
@@ -26,6 +29,21 @@ class World(val server: Server, val gameContext: GameContext) {
      * the game.
      */
     val pluginExecutor = PluginExecutor()
+
+    /**
+     * The [Store] is responsible for handling the data in our cache.
+     */
+    lateinit var filestore: Store
+
+    /**
+     * The [DefinitionSet] that holds general filestore data.
+     */
+    val definitions = DefinitionSet()
+
+    /**
+     * The plugin repository that's responsible for storing all the plugins found.
+     */
+    val plugins = PluginRepository()
 
     /**
      * A [Random] implementation used for pseudo-random purposes through-out

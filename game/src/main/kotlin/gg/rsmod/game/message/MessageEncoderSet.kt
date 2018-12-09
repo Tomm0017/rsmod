@@ -22,7 +22,8 @@ class MessageEncoderSet {
      */
     fun init(structures: MessageStructureSet) {
         encoders[LoginRegionMessage::class.java] = LoginRegionEncoder(structures.get(LoginRegionMessage::class.java)!!)
-        encoders[SmallVarpMessage::class.java] = SmallVarpEncoder(structures.get(SmallVarpMessage::class.java)!!)
+        encoders[SetSmallVarpMessage::class.java] = SmallVarpEncoder(structures.get(SetSmallVarpMessage::class.java)!!)
+        encoders[SetBigVarpMessage::class.java] = BigVarpEncoder(structures.get(SetBigVarpMessage::class.java)!!)
         encoders[OpenInterfaceMessage::class.java] = OpenInterfaceEncoder(structures.get(OpenInterfaceMessage::class.java)!!)
         encoders[SetDisplayInterfaceMessage::class.java] = DisplayInterfaceEncoder(structures.get(SetDisplayInterfaceMessage::class.java)!!)
         encoders[InvokeScriptMessage::class.java] = InvokeScriptEncoder(structures.get(InvokeScriptMessage::class.java)!!)
@@ -31,6 +32,7 @@ class MessageEncoderSet {
         encoders[SendLogoutMessage::class.java] = LogoutEncoder(structures.get(SendLogoutMessage::class.java)!!)
         encoders[SendSkillMessage::class.java] = SendSkillEncoder(structures.get(SendSkillMessage::class.java)!!)
         encoders[SetInterfaceTextMessage::class.java] = InterfaceTextEncoder(structures.get(SetInterfaceTextMessage::class.java)!!)
+        encoders[SetRunEnergyMessage::class.java] = RunEnergyEncoder(structures.get(SetRunEnergyMessage::class.java)!!)
     }
 
     @Suppress("UNCHECKED_CAST")

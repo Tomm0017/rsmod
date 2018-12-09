@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class SmallVarpMessage(val id: Int, val value: Int) : Message
+data class SetSmallVarpMessage(val id: Int, val value: Int) : Message

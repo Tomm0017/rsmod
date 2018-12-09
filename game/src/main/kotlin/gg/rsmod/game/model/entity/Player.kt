@@ -63,9 +63,9 @@ open class Player(override val world: World) : Pawn(world) {
      */
     @Volatile private var pendingLogout = false
 
-    val interfaces = lazy { Interfaces(this, OSRSInterfaceListener()) }.value
+    val interfaces: Interfaces by lazy { Interfaces(this, OSRSInterfaceListener()) }
 
-    val skills = SkillSet(23)
+    val skills: SkillSet by lazy { SkillSet(world.gameContext.skillCount) }
 
     val localPlayers = arrayListOf<Player>()
 
@@ -75,6 +75,12 @@ open class Player(override val world: World) : Pawn(world) {
      * on log-in, this array will be filled with [0]s for this [Player].
      */
     val otherPlayerTiles = IntArray(2048)
+
+    var running = true
+
+    var runEnergy = 100.0
+
+    var specialAttackEnergy = 100.0
 
     override fun getType(): EntityType = EntityType.PLAYER
 

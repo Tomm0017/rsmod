@@ -46,8 +46,14 @@ class SkillSet(val maxSkills: Int) {
 
     operator fun get(skill: Int): Skill = skills[skill]
 
+    /**
+     * If the [skill] data needs to be sent to the client.
+     */
     fun isDirty(skill: Int): Boolean = dirty[skill]
 
+    /**
+     * Reset the [dirty] flag on all skills.
+     */
     fun clean() {
         for (i in 0 until dirty.size) {
             dirty[i] = false
@@ -72,10 +78,16 @@ class SkillSet(val maxSkills: Int) {
         dirty[skill] = true
     }
 
+    /**
+     * Sets the base, or real, level of the skill.
+     */
     fun setBaseLevel(skill: Int, level: Int) {
         setBaseXp(skill, Companion.getXpForLevel(level))
     }
 
+    /**
+     * Sets the base xp of the skill.
+     */
     fun setBaseXp(skill: Int, xp: Double) {
         setXp(skill, xp)
         setCurrentLevel(skill, getLevelForXp(xp))

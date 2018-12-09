@@ -27,4 +27,9 @@ enum class LockState {
         NONE, FULL_WITH_LOGOUT -> true
         else -> false
     }
+
+    fun canMove(): Boolean = when (this) {
+        NONE -> true
+        else -> false
+    }
 }

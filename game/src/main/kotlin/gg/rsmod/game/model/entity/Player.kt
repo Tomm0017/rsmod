@@ -1,7 +1,7 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
-import gg.rsmod.game.fs.def.VarpDefinition
+import gg.rsmod.game.fs.VarpDefinition
 import gg.rsmod.game.map.Chunk
 import gg.rsmod.game.map.Region
 import gg.rsmod.game.message.Message
@@ -72,7 +72,7 @@ open class Player(override val world: World) : Pawn(world) {
     val localPlayers = arrayListOf<Player>()
 
     /**
-     * An array that holds the last-known [Tile.toInteger] for every player
+     * An array that holds the last-known [Tile.to30BitInteger] for every player
      * according to this [Player]. This can vary from player to player, since
      * on log-in, this array will be filled with [0]s for this [Player].
      */

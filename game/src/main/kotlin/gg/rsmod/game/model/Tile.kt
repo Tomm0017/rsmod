@@ -7,7 +7,27 @@ import com.google.common.base.MoreObjects
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class Tile(val x: Int, val z: Int, val height: Int = 0) {
+class Tile {
+
+    /**
+     * A bit-packed integer that holds and represents the [x], [z] and [height] of the tile.
+     */
+    private val coordinate: Int
+
+    val x: Int
+        get() = coordinate and 0x7FFF
+
+    val z: Int
+        get() = (coordinate shr 15) and 0x7FFF
+
+    val height: Int
+        get() = coordinate ushr 30
+
+    private constructor(coordinate: Int) {
+        this.coordinate = coordinate
+    }
+
+    constructor(x: Int, z: Int, height: Int = 0) : this((x and 0x7FFF) or ((z and 0x7FFF) shl 15) or (height shl 30))
 
     constructor(other: Tile) : this(other.x, other.z, other.height)
 
@@ -44,9 +64,9 @@ class Tile(val x: Int, val z: Int, val height: Int = 0) {
     fun toRegionId(): Int = ((x shr 6) shl 8) or (z shr 6)
 
     /**
-     * The tile presented as a 32-bit integer.
+     * The tile packed as a 30-bit integer.
      */
-    fun toInteger(): Int = (z and 0x3FFF) or (x and 0x3FFF shl 14) or (height and 0x3 shl 28)
+    fun to30BitInteger(): Int = (z and 0x3FFF) or (x and 0x3FFF shl 14) or (height and 0x3 shl 28)
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("x", x).add("z", z).add("height", height).toString()
 }

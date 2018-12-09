@@ -1,14 +1,22 @@
 package gg.rsmod.game.model
 
 /**
+ * Holds all [Skill] data for a player.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class SkillSet(val maxSkills: Int) {
 
     companion object {
 
+        /**
+         * The maximum amount of xp that can be set on a skill.
+         */
         const val MAX_XP = 200_000_000
 
+        /**
+         * Gets the level correspondent to the [xp] given.
+         */
         fun getLevelForXp(xp: Double): Int {
             for (guess in 1 until XP_TABLE.size) {
                 if (xp < XP_TABLE[guess]) {
@@ -18,8 +26,15 @@ class SkillSet(val maxSkills: Int) {
             return 99
         }
 
+        /**
+         * Gets the xp you need to achieve to first reach [level].
+         */
         fun getXpForLevel(level: Int): Double = XP_TABLE[level - 1].toDouble()
 
+        /**
+         * A table of the amount of xp needed to achieve 126 levels in a skill.
+         * If RS ever adds over 126 for any revision, we can increase this.
+         */
         private val XP_TABLE = IntArray(126).apply {
             var points = 0
             for (level in 1 until size) {
@@ -47,6 +62,9 @@ class SkillSet(val maxSkills: Int) {
      */
     var dirty = BooleanArray(maxSkills) { true }
 
+    /**
+     * Get the [Skill] in [skills] with [skill] as its index
+     */
     operator fun get(skill: Int): Skill = skills[skill]
 
     /**
@@ -67,15 +85,19 @@ class SkillSet(val maxSkills: Int) {
 
     fun getCurrentLevel(skill: Int): Int = skills[skill].currentLevel
 
+    /**
+     * Gets the level based on the xp that [skills].get([skill]) has.
+     */
     fun getLevelForXp(skill: Int): Int = getLevelForXp(skills[skill].xp)
-
-    fun getXpForLevel(skill: Int): Double = Companion.getXpForLevel(getLevelForXp(skills[skill].xp))
 
     fun setXp(skill: Int, xp: Double) {
         get(skill).xp = xp
         dirty[skill] = true
     }
 
+    /**
+     * Sets the 'current'/temporary level of the [skill].
+     */
     fun setCurrentLevel(skill: Int, level: Int) {
         get(skill).currentLevel = level
         dirty[skill] = true
@@ -85,7 +107,7 @@ class SkillSet(val maxSkills: Int) {
      * Sets the base, or real, level of the skill.
      */
     fun setBaseLevel(skill: Int, level: Int) {
-        setBaseXp(skill, Companion.getXpForLevel(level))
+        setBaseXp(skill, getXpForLevel(level))
     }
 
     /**

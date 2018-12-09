@@ -1,8 +1,8 @@
 package gg.rsmod.game.service.xtea
 
 import com.google.gson.Gson
-import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
+import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
 import org.apache.commons.io.FilenameUtils
@@ -25,7 +25,7 @@ class XteaKeyService : Service() {
     private val keys = hashMapOf<Int, IntArray>()
 
     @Throws(Exception::class)
-    override fun init(server: Server, gameContext: GameContext, serviceProperties: ServerProperties) {
+    override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         val path = Paths.get(serviceProperties.get<String>("path")!!)
         if (!Files.exists(path)) {
             throw FileNotFoundException("Path does not exist. $path")
@@ -53,7 +53,7 @@ class XteaKeyService : Service() {
         logger.info("Loaded {} XTEA keys.", keys.size)
     }
 
-    override fun terminate(server: Server, gameContext: GameContext) {
+    override fun terminate(server: Server, world: World) {
     }
 
     fun get(region: Int): IntArray {

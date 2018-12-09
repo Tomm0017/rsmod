@@ -143,7 +143,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 player.localPlayers.sortBy { it.index }
                 added++
 
-                val tileHash = nonLocal.tile.toInteger()
+                val tileHash = nonLocal.tile.to30BitInteger()
                 buf.putBits(1, 1) // Do not skip this player
                 buf.putBits(2, 0) // Require addition to local players
 

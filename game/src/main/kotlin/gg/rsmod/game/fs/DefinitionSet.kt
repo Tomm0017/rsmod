@@ -1,6 +1,5 @@
 package gg.rsmod.game.fs
 
-import gg.rsmod.game.fs.def.VarpDefinition
 import net.runelite.cache.ConfigType
 import net.runelite.cache.IndexType
 import net.runelite.cache.definitions.EnumDefinition
@@ -13,6 +12,8 @@ import net.runelite.cache.fs.Store
 import org.apache.logging.log4j.LogManager
 
 /**
+ * Holds all definitions that we need from our [Store].
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class DefinitionSet {
@@ -21,6 +22,9 @@ class DefinitionSet {
         private val logger = LogManager.getLogger(DefinitionSet::class.java)
     }
 
+    /**
+     * A [HashMap] holding all definitions with their [Class] as key.
+     */
     private val defs = hashMapOf<Class<*>, Array<*>>()
 
     @Throws(RuntimeException::class)

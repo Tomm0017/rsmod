@@ -1,7 +1,7 @@
 package gg.rsmod.game.service
 
-import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
+import gg.rsmod.game.model.World
 import gg.rsmod.util.ServerProperties
 
 /**
@@ -15,10 +15,10 @@ abstract class Service {
      * Called when the server is starting up.
      */
     @Throws(Exception::class)
-    abstract fun init(server: Server, gameContext: GameContext, serviceProperties: ServerProperties)
+    abstract fun init(server: Server, world: World, serviceProperties: ServerProperties)
 
     /**
      * Called when the server is shutting off.
      */
-    abstract fun terminate(server: Server, gameContext: GameContext)
+    abstract fun terminate(server: Server, world: World)
 }

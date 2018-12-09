@@ -3,6 +3,8 @@ package gg.rsmod.game.model
 import gg.rsmod.util.DataConstants
 
 /**
+ * Holds all [Varp]s for a player.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class VarpSet(val maxVarps: Int) {

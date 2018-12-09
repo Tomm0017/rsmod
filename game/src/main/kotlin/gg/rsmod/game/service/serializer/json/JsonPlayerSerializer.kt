@@ -6,6 +6,8 @@ import com.lambdaworks.crypto.SCryptUtil
 import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.Privilege
+import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.serializer.PlayerLoadResult
 import gg.rsmod.game.service.serializer.PlayerSaveData
@@ -33,7 +35,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     private lateinit var path: Path
 
     @Throws(Exception::class)
-    override fun initSerializer(server: Server, gameContext: GameContext, serviceProperties: ServerProperties) {
+    override fun initSerializer(server: Server, world: World, serviceProperties: ServerProperties) {
         path = Paths.get(serviceProperties.get<String>("path")!!)
         if (!Files.exists(path)) {
             throw FileNotFoundException("Path does not exist: $path")
@@ -60,7 +62,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.loginUsername = data.username
             client.username = data.displayName
             client.passwordHash = data.passwordHash
-            client.tile = data.tile
+            client.tile = Tile(data.x, data.z, data.height)
             client.privilege = client.world.gameContext.privileges.get(data.privilege) ?: Privilege.DEFAULT
             data.attributes.forEach { key, value ->
                 if (value is Number) {
@@ -82,8 +84,9 @@ class JsonPlayerSerializer : PlayerSerializerService() {
 
     override fun saveClientData(client: Client): Boolean {
         val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername,
-                displayName = client.username, tile = client.tile, privilege = client.privilege.id,
-                attributes = client.attr.__getPersistentMap(), varps = client.varps.getAll().filter { it.state != 0 })
+                displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
+                privilege = client.privilege.id, attributes = client.attr.__getPersistentMap(),
+                varps = client.varps.getAll().filter { it.state != 0 })
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))
         val json = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
         json.toJson(data, writer)

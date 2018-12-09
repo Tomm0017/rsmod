@@ -2,6 +2,7 @@ package gg.rsmod.game
 
 import com.google.common.base.Stopwatch
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.World
 import gg.rsmod.game.protocol.ClientChannelInitializer
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.Service
@@ -38,12 +39,6 @@ class Server {
      * The properties specific to the game being launched by the customer/user.
      */
     private val gameProperties = ServerProperties()
-
-    /**
-     * A collection of our [Service]s specified in our game [ServerProperties]
-     * files.
-     */
-    private val services = arrayListOf<Service>()
 
     private val acceptGroup = NioEventLoopGroup(2)
 
@@ -101,17 +96,18 @@ class Server {
                 rsaEncryption = gameProperties.get<Boolean>("rsa-encryption")!!,
                 devMode = gameProperties.getOrDefault("dev-mode", false),
                 skillCount = gameProperties.get<Int>("skill-count")!!)
-        
+
+        val world = World(this, gameContext)
+
         /**
          * Load the services required to run the server.
          */
-        loadServices(gameContext)
+        loadServices(world)
 
         /**
          * Fetch the [GameService].
          */
-        val gameService = getService(type = GameService::class.java, searchSubclasses = false).get()
-        val world = gameService.world
+        val gameService = world.getService(type = GameService::class.java, searchSubclasses = false).get()
 
         /**
          * Load the file store.
@@ -169,7 +165,7 @@ class Server {
     /**
      * Loads all the services listed on our game properties file.
      */
-    private fun loadServices(gameContext: GameContext) {
+    private fun loadServices(world: World) {
         val stopwatch = Stopwatch.createUnstarted()
         val foundServices = gameProperties.get<ArrayList<Any>>("services")!!
         foundServices.forEach { it ->
@@ -184,29 +180,13 @@ class Server {
             }
 
             stopwatch.reset().start()
-            service.init(this, gameContext, ServerProperties().loadMap(properties))
+            service.init(this, world, ServerProperties().loadMap(properties))
             stopwatch.stop()
 
-            services.add(service)
+            world.services.add(service)
             logger.info("Initiated service '{}' in {}ms.", service.javaClass.simpleName, stopwatch.elapsed(TimeUnit.MILLISECONDS))
         }
-        logger.info("Loaded {} game services.", services.size)
-    }
-
-    /**
-     * Gets the first service that can be found which meets the criteria of:
-     *
-     * When [searchSubclasses] is true: the service class must be assignable to the [type].
-     * When [searchSubclasses] is false: the service class must be equal to the [type].
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun <T: Service> getService(type: Class<out T>, searchSubclasses: Boolean): Optional<T> {
-        if (searchSubclasses) {
-            val service = services.firstOrNull { type.isAssignableFrom(it::class.java) }
-            return if (service != null) Optional.of(service) as Optional<T> else Optional.empty()
-        }
-        val service = services.firstOrNull { it::class.java == type }
-        return if (service != null) Optional.of(service) as Optional<T> else Optional.empty()
+        logger.info("Loaded {} game services.", world.services.size)
     }
 
     /**

@@ -20,7 +20,7 @@ object PlayerGpi {
 
     fun init(client: Client) {
         if (xteaKeys == null) {
-            xteaKeys = client.world.server.getService(XteaKeyService::class.java, false).get()
+            xteaKeys = client.world.getService(XteaKeyService::class.java, false).get()
         }
         val gpiBuf = GamePacketBuilder()
 
@@ -30,7 +30,7 @@ object PlayerGpi {
         client.localPlayers.add(client)
 
         gpiBuf.switchToBitAccess()
-        gpiBuf.putBits(30, client.tile.toInteger())
+        gpiBuf.putBits(30, client.tile.to30BitInteger())
         for (i in 1 until 2048) {
             if (i != client.index) {
                 gpiBuf.putBits(18, 0)

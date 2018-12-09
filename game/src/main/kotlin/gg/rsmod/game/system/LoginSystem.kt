@@ -24,7 +24,7 @@ class LoginSystem(override val channel: Channel, private val world: World)
     override fun receiveMessage(ctx: ChannelHandlerContext, msg: Any) {
         if (msg is LoginRequest) {
             if (loginService == null) {
-                loginService = world.server.getService(LoginService::class.java, false).get()
+                loginService = world.getService(LoginService::class.java, false).get()
             }
             loginService!!.addLoginRequest(world, msg)
         }

@@ -1,6 +1,5 @@
 package gg.rsmod.game.service.login
 
-import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
@@ -44,8 +43,8 @@ class LoginService : Service() {
     val requests = LinkedBlockingQueue<LoginServiceRequest>()
 
     @Throws(Exception::class)
-    override fun init(server: Server, gameContext: GameContext, serviceProperties: ServerProperties) {
-        serializer = server.getService(PlayerSerializerService::class.java, true).get()
+    override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
+        serializer = world.getService(PlayerSerializerService::class.java, true).get()
 
         val threadCount = serviceProperties.get<Int>("thread-count")!!
         val executorService = Executors.newFixedThreadPool(threadCount, NamedThreadFactory().setName("login-worker").build())
@@ -54,7 +53,7 @@ class LoginService : Service() {
         }
     }
 
-    override fun terminate(server: Server, gameContext: GameContext) {
+    override fun terminate(server: Server, world: World) {
     }
 
     fun addLoginRequest(world: World, request: LoginRequest) {
@@ -64,7 +63,7 @@ class LoginService : Service() {
 
     fun successfulLogin(client: Client, encodeRandom: IsaacRandom, decodeRandom: IsaacRandom) {
         val gameSystem = GameSystem(channel = client.channel, client = client,
-                service = client.world.server.getService(GameService::class.java, false).get())
+                service = client.world.getService(GameService::class.java, false).get())
 
         client.gameSystem = gameSystem
         client.channel.attr(GameHandler.SYSTEM_KEY).set(gameSystem)

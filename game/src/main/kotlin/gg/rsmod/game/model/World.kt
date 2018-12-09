@@ -8,6 +8,8 @@ import gg.rsmod.game.model.entity.PawnList
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.plugin.PluginRepository
+import gg.rsmod.game.service.Service
+import gg.rsmod.util.ServerProperties
 import net.runelite.cache.fs.Store
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
@@ -23,6 +25,12 @@ class World(val server: Server, val gameContext: GameContext) {
     val players = PawnList<Player>(gameContext.playerLimit)
 
     val maps = Map()
+
+    /**
+     * A collection of our [Service]s specified in our game [ServerProperties]
+     * files.
+     */
+    val services = arrayListOf<Service>()
 
     /**
      * The [PluginExecutor] is responsible for executing plugins as requested by
@@ -85,4 +93,20 @@ class World(val server: Server, val gameContext: GameContext) {
     fun getNpcCount(): Int = 0
 
     fun random(range: IntRange): Int = random.nextInt(range.endInclusive - range.start + 1) + range.start
+
+    /**
+     * Gets the first service that can be found which meets the criteria of:
+     *
+     * When [searchSubclasses] is true: the service class must be assignable to the [type].
+     * When [searchSubclasses] is false: the service class must be equal to the [type].
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun <T: Service> getService(type: Class<out T>, searchSubclasses: Boolean): Optional<T> {
+        if (searchSubclasses) {
+            val service = services.firstOrNull { type.isAssignableFrom(it::class.java) }
+            return if (service != null) Optional.of(service) as Optional<T> else Optional.empty()
+        }
+        val service = services.firstOrNull { it::class.java == type }
+        return if (service != null) Optional.of(service) as Optional<T> else Optional.empty()
+    }
 }

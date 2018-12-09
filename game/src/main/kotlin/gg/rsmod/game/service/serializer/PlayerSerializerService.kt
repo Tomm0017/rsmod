@@ -1,10 +1,10 @@
 package gg.rsmod.game.service.serializer
 
 import com.lambdaworks.crypto.SCryptUtil
-import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.NEW_ACCOUNT_ATTR
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.Service
 import gg.rsmod.net.codec.login.LoginRequest
@@ -20,12 +20,12 @@ abstract class PlayerSerializerService : Service() {
     private lateinit var startTile: Tile
 
     @Throws(Exception::class)
-    final override fun init(server: Server, gameContext: GameContext, serviceProperties: ServerProperties) {
-        startTile = Tile(gameContext.home)
-        initSerializer(server, gameContext, serviceProperties)
+    final override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
+        startTile = Tile(world.gameContext.home)
+        initSerializer(server, world, serviceProperties)
     }
 
-    override fun terminate(server: Server, gameContext: GameContext) {
+    override fun terminate(server: Server, world: World) {
     }
 
     fun configureNewPlayer(client: Client, request: LoginRequest) {
@@ -36,7 +36,7 @@ abstract class PlayerSerializerService : Service() {
     }
 
     @Throws(Exception::class)
-    abstract fun initSerializer(server: Server, gameContext: GameContext, serviceProperties: ServerProperties)
+    abstract fun initSerializer(server: Server, world: World, serviceProperties: ServerProperties)
 
     abstract fun loadClientData(client: Client, request: LoginRequest): PlayerLoadResult
 

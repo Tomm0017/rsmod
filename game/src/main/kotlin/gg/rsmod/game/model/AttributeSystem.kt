@@ -26,7 +26,7 @@ class AttributeSystem {
     private val persistent: HashMap<String, Any> = hashMapOf()
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> get(key: AttributeKey<T>): T = (attributes[key] as? T)!!
+    operator fun <T> get(key: AttributeKey<T>): T = (attributes[key] as? T)!!
 
     @Suppress("UNCHECKED_CAST")
     fun <T> getNullable(key: AttributeKey<T>): T? = (attributes[key] as? T)

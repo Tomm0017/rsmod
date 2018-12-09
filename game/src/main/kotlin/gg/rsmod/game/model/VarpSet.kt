@@ -44,8 +44,8 @@ class VarpSet(val maxVarps: Int) {
      * The end of the bits to get the value from.
      */
     fun getBit(id: Int, startBit: Int, endBit: Int): Int {
-        val position = DataConstants.BIT_SIZES[endBit - startBit] shl startBit
-        return (getState(id) and position.inv())
+        val position = DataConstants.BIT_SIZES[endBit - startBit]
+        return ((getState(id) shr startBit) and position)
     }
 
     /**

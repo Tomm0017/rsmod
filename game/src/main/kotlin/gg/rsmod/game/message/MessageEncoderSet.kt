@@ -25,6 +25,7 @@ class MessageEncoderSet {
         encoders[SetSmallVarpMessage::class.java] = SmallVarpEncoder(structures.get(SetSmallVarpMessage::class.java)!!)
         encoders[SetBigVarpMessage::class.java] = BigVarpEncoder(structures.get(SetBigVarpMessage::class.java)!!)
         encoders[OpenInterfaceMessage::class.java] = OpenInterfaceEncoder(structures.get(OpenInterfaceMessage::class.java)!!)
+        encoders[CloseInterfaceMessage::class.java] = CloseInterfaceEncoder(structures.get(CloseInterfaceMessage::class.java)!!)
         encoders[SetDisplayInterfaceMessage::class.java] = DisplayInterfaceEncoder(structures.get(SetDisplayInterfaceMessage::class.java)!!)
         encoders[InvokeScriptMessage::class.java] = InvokeScriptEncoder(structures.get(InvokeScriptMessage::class.java)!!)
         encoders[ChangeStaticRegionMessage::class.java] = ChangeStaticRegionEncoder(structures.get(ChangeStaticRegionMessage::class.java)!!)

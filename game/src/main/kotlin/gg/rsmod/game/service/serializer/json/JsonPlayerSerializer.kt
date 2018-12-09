@@ -43,7 +43,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     override fun loadClientData(client: Client, request: LoginRequest): PlayerLoadResult {
         val save = path.resolve(client.loginUsername)
         if (!Files.exists(save)) {
-            onNewPlayer(client, request)
+            configureNewPlayer(client, request)
             saveClientData(client)
             return PlayerLoadResult.NEW_ACCOUNT
         }

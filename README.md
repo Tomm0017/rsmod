@@ -60,7 +60,7 @@ Here are the instructions for how you would create a few different scripts.
     I want to create a `Scheduled Task`
     -
     A scheduled task is logic that can take more than a single tick to complete.
-    Some examples are skills that are continuous, dialogues that wait for input,
+    Some examples are skills that are continuous, dialogs that wait for input,
     or cutscenes.
     
         @JvmStatic
@@ -96,7 +96,7 @@ Here are the instructions for how you would create a few different scripts.
     
     I want to create a `Dialog`
     -
-    Creating a dialogue script is similar to that of the `scheduled task` script. 
+    Creating a dialog script is similar to that of the `scheduled task` script. 
     We will use the `suspendable` in this example, which is targeted for the 
     `OSRS` version of `RS Mod`.
     

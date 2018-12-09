@@ -130,7 +130,7 @@ class PluginRepository {
             if (args != null){
                 p.attr.put(COMMAND_ARGS_ATTR, args)
             } else {
-                p.attr.remove(COMMAND_ARGS_ATTR)
+                p.attr.put(COMMAND_ARGS_ATTR, emptyArray())
             }
             p.world.pluginExecutor.execute(p, plugin)
             return true

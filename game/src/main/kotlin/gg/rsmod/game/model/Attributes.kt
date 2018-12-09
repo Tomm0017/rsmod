@@ -10,6 +10,12 @@ package gg.rsmod.game.model
  */
 
 /**
+ * A flag which indicates if the player's account was just created/logged in for
+ * the first time.
+ */
+val NEW_ACCOUNT_ATTR = AttributeKey<Boolean>()
+
+/**
  * The index that was assigned to a [Player] when they were first registered to the
  * [World]. This is needed to remove local players from the synchronization task
  * as once that logic is reached, the local player would have an index of [-1].

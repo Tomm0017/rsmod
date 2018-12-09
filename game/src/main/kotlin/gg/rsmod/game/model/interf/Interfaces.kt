@@ -62,7 +62,7 @@ class Interfaces(val player: Player, private val actionListener: InterfaceAction
         val found = visible.filterValues { it == interfaceId }.keys.firstOrNull()
         if (found != null) {
             visible.remove(found)
-            actionListener.onClose(player, interfaceId)
+            actionListener.onClose(player, found)
         } else {
             logger.warn("Interface {} is not visible and cannot be closed.", interfaceId)
         }
@@ -72,7 +72,7 @@ class Interfaces(val player: Player, private val actionListener: InterfaceAction
      * Close the [child] interface on its [parent] interface.
      */
     fun close(parent: Int, child: Int) {
-        close((parent shl 16) or child)
+        closeByHash((parent shl 16) or child)
     }
 
     /**
@@ -85,7 +85,7 @@ class Interfaces(val player: Player, private val actionListener: InterfaceAction
     fun closeByHash(hash: Int) {
         val found = visible.remove(hash)
         if (found != null) {
-            actionListener.onClose(player, hash shr 16)
+            actionListener.onClose(player, hash)
         } else {
             logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
         }

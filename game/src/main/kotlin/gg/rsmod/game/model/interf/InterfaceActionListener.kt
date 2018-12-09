@@ -12,7 +12,7 @@ interface InterfaceActionListener {
 
     fun onOpen(p: Player, parent: Int, child: Int, interfaceId: Int, type: Int)
 
-    fun onClose(p: Player, interfaceId: Int)
+    fun onClose(p: Player, interfaceHash: Int)
 
     fun onDisplayChange(p: Player, newMode: DisplayMode)
 }

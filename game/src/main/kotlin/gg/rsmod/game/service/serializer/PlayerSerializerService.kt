@@ -3,6 +3,7 @@ package gg.rsmod.game.service.serializer
 import com.lambdaworks.crypto.SCryptUtil
 import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
+import gg.rsmod.game.model.NEW_ACCOUNT_ATTR
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.Service
@@ -27,7 +28,9 @@ abstract class PlayerSerializerService : Service() {
     override fun terminate(server: Server, gameContext: GameContext) {
     }
 
-    fun onNewPlayer(client: Client, request: LoginRequest) {
+    fun configureNewPlayer(client: Client, request: LoginRequest) {
+        client.attr.put(NEW_ACCOUNT_ATTR, true)
+
         client.passwordHash = SCryptUtil.scrypt(request.password, 16384, 8, 1)
         client.tile = startTile
     }

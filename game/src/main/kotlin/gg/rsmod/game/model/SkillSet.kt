@@ -6,6 +6,9 @@ package gg.rsmod.game.model
 class SkillSet(val maxSkills: Int) {
 
     companion object {
+
+        const val MAX_XP = 200_000_000
+
         fun getLevelForXp(xp: Double): Int {
             for (guess in 1 until XP_TABLE.size) {
                 if (xp < XP_TABLE[guess]) {

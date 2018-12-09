@@ -25,6 +25,7 @@ class MessageHandlerSet {
         put(ClickMapMovementMessage::class.java, ClickMapHandler(), structures)
         put(ObjectActionOneMessage::class.java, ObjectActionOneHandler(), structures)
         put(ClickButtonMessage::class.java, ClickButtonHandler(), structures)
+        put(ContinueDialogMessage::class.java, ContinueDialogHandler(), structures)
     }
 
     private fun put(messageType: Class<out Message>, handlerType: MessageHandler<out Message>, structures: MessageStructureSet) {

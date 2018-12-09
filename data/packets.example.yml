@@ -16,7 +16,7 @@ packets:
       - name: xteas
         type: BYTES
 
-  - message: gg.rsmod.game.message.impl.SmallVarpMessage
+  - message: gg.rsmod.game.message.impl.SetSmallVarpMessage
     type: FIXED
     opcode: 12
     structure:
@@ -24,6 +24,18 @@ packets:
         type: BYTE
       - name: id
         type: SHORT
+
+  - message: gg.rsmod.game.message.impl.SetBigVarpMessage
+    type: FIXED
+    opcode: 62
+    structure:
+      - name: value
+        type: INT
+        order: LITTLE
+      - name: id
+        type: SHORT
+        order: LITTLE
+        trans: ADD
 
   - message: gg.rsmod.game.message.impl.OpenInterfaceMessage
     type: FIXED
@@ -112,6 +124,20 @@ packets:
       - name: text
         type: BYTES
 
+  - message: gg.rsmod.game.message.impl.SetRunEnergyMessage
+    type: FIXED
+    opcode: 75
+    structure:
+      - name: energy
+        type: BYTE
+
+  - message: gg.rsmod.game.message.impl.CloseInterfaceMessage
+    type: FIXED
+    opcode: 35
+    structure:
+      - name: hash
+        type: INT
+
   # In
   - message: gg.rsmod.game.message.impl.CommandMessage
     type: VARIABLE_BYTE
@@ -184,6 +210,25 @@ packets:
       - name: item
         type: SHORT
         sign: UNSIGNED
+
+  - message: gg.rsmod.game.message.impl.ContinueDialogMessage
+    type: FIXED
+    opcode: 93
+    length: 6
+    structure:
+      - name: hash
+        type: INT
+      - name: slot
+        type: SHORT
+        sign: UNSIGNED
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 72
+    length: 4
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 14
+    length: 0
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Keep alive message
     opcode: 15

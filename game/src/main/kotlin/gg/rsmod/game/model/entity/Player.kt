@@ -47,8 +47,6 @@ open class Player(override val world: World) : Pawn(world) {
      */
     var lastKnownRegionBase: Tile? = null
 
-    var teleport = true
-
     /**
      * A flag that indicates whether or not the [login] method has been executed.
      * This is currently used so that we don't send player updates when the player

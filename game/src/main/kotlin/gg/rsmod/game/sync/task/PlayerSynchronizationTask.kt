@@ -44,7 +44,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
         while (iterator.hasNext()) {
             iteratorIndex++
             val local = iterator.next()
-            val index = local.attr.get(INDEX_ATTR)
+            val index = local.attr[INDEX_ATTR]
             nonLocalIndices.remove(index)
 
             if (skip > 0) {

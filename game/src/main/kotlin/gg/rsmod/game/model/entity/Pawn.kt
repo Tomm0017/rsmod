@@ -30,6 +30,11 @@ abstract class Pawn(open val world: World) : Entity() {
     var lastTile: Tile? = null
 
     /**
+     * Whether or not this pawn can teleported this game cycle.
+     */
+    var teleport = false
+
+    /**
      * The current directions that this [Pawn] is moving.
      */
     var step: Step? = null
@@ -50,6 +55,15 @@ abstract class Pawn(open val world: World) : Entity() {
      * Handles logic before any synchronization tasks are executed.
      */
     abstract fun cycle()
+
+    fun teleport(x: Int, z: Int, height: Int = 0) {
+        teleport = true
+        tile = Tile(x, z, height)
+    }
+
+    fun teleport(tile: Tile) {
+        teleport(tile.x, tile.z, tile.height)
+    }
 
     /**
      * Executes a plugin with this [Pawn] as its context.

@@ -178,6 +178,26 @@ packets:
         type: INT
         order: MIDDLE
 
+  - message: gg.rsmod.game.message.impl.SetInterfaceNpcMessage
+    type: FIXED
+    opcode: 10
+    structure:
+      - name: hash
+        type: INT
+        order: LITTLE
+      - name: npc
+        type: SHORT
+        order: LITTLE
+
+  - message: gg.rsmod.game.message.impl.SetInterfaceAnimationMessage
+    type: FIXED
+    opcode: 76
+    structure:
+      - name: hash
+        type: INT
+      - name: anim
+        type: SHORT
+        order: LITTLE
 
   # In
   - message: gg.rsmod.game.message.impl.CommandMessage

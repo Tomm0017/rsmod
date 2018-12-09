@@ -84,6 +84,34 @@ packets:
       - name: message
         type: BYTES
 
+  - message: gg.rsmod.game.message.impl.SendLogoutMessage
+    type: FIXED
+    opcode: 3
+
+  - message: gg.rsmod.game.message.impl.SendSkillMessage
+    type: FIXED
+    opcode: 37
+    structure:
+      - name: level
+        type: BYTE
+        trans: NEGATE
+      - name: xp
+        type: INT
+        order: LITTLE
+      - name: skill
+        type: BYTE
+        trans: SUBTRACT
+
+  - message: gg.rsmod.game.message.impl.SetInterfaceTextMessage
+    type: VARIABLE_SHORT
+    opcode: 61
+    structure:
+      - name: hash
+        type: INT
+        order: INVERSED_MIDDLE
+      - name: text
+        type: BYTES
+
   # In
   - message: gg.rsmod.game.message.impl.CommandMessage
     type: VARIABLE_BYTE
@@ -130,7 +158,7 @@ packets:
       - name: z
         trans: ADD
         type: SHORT
-        SIGN: unsigned
+        sign: unsigned
       - name: x
         trans: ADD
         type: SHORT
@@ -140,6 +168,20 @@ packets:
         type: BYTE
       - name: id
         trans: ADD
+        type: SHORT
+        sign: UNSIGNED
+
+  - message: gg.rsmod.game.message.impl.ClickButtonMessage
+    type: FIXED
+    opcodes: 38,0,1,44,25,24,79,61,59,39
+    length: 8
+    structure:
+      - name: hash
+        type: INT
+      - name: slot
+        type: SHORT
+        sign: UNSIGNED
+      - name: item
         type: SHORT
         sign: UNSIGNED
 

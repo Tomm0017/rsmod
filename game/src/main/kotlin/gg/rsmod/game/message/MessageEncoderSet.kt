@@ -27,8 +27,10 @@ class MessageEncoderSet {
         encoders[SetDisplayInterfaceMessage::class.java] = DisplayInterfaceEncoder(structures.get(SetDisplayInterfaceMessage::class.java)!!)
         encoders[InvokeScriptMessage::class.java] = InvokeScriptEncoder(structures.get(InvokeScriptMessage::class.java)!!)
         encoders[ChangeStaticRegionMessage::class.java] = ChangeStaticRegionEncoder(structures.get(ChangeStaticRegionMessage::class.java)!!)
-        encoders[SendChatboxTextMessage::class.java] = SendChatboxTextEncoder(structures.get(SendChatboxTextMessage::class.java)!!)
-        encoders[SendLogoutMessage::class.java] = SendLogoutEncoder(structures.get(SendLogoutMessage::class.java)!!)
+        encoders[SendChatboxTextMessage::class.java] = ChatboxTextEncoder(structures.get(SendChatboxTextMessage::class.java)!!)
+        encoders[SendLogoutMessage::class.java] = LogoutEncoder(structures.get(SendLogoutMessage::class.java)!!)
+        encoders[SendSkillMessage::class.java] = SendSkillEncoder(structures.get(SendSkillMessage::class.java)!!)
+        encoders[SetInterfaceTextMessage::class.java] = InterfaceTextEncoder(structures.get(SetInterfaceTextMessage::class.java)!!)
     }
 
     @Suppress("UNCHECKED_CAST")

@@ -4,10 +4,8 @@ import com.google.common.base.MoreObjects
 import gg.rsmod.game.map.Chunk
 import gg.rsmod.game.map.Region
 import gg.rsmod.game.message.Message
-import gg.rsmod.game.model.PlayerGpi
-import gg.rsmod.game.model.Privilege
-import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.World
+import gg.rsmod.game.message.impl.SendSkillMessage
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.interf.Interfaces
 import gg.rsmod.game.model.interf.action.OSRSInterfaceListener
 import gg.rsmod.game.sync.UpdateBlock
@@ -67,6 +65,8 @@ open class Player(override val world: World) : Pawn(world) {
 
     val interfaces = lazy { Interfaces(this, OSRSInterfaceListener()) }.value
 
+    val skills = SkillSet(23)
+
     val localPlayers = arrayListOf<Player>()
 
     /**
@@ -83,9 +83,19 @@ open class Player(override val world: World) : Pawn(world) {
             if (lock.canLogout()) {
                 // TODO: check if can log out (not in combat)
                 handleLogout()
+                return
             }
             pendingLogout = false
         }
+
+        for (i in 0 until skills.maxSkills) {
+            val id = skills[i].id
+            if (skills.isDirty(id)) {
+                write(SendSkillMessage(id, skills.getCurrentLevel(id), skills.getCurrentXp(id).toInt()))
+            }
+        }
+
+        skills.clean()
     }
 
     /**

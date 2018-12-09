@@ -120,7 +120,8 @@ class Server {
                 playerLimit = gameProperties.get<Int>("max-players")!!,
                 home = Tile(gameProperties.get<Int>("home-x")!!, gameProperties.get<Int>("home-z")!!, gameProperties.getOrDefault("home-height", 0)),
                 rsaEncryption = gameProperties.get<Boolean>("rsa-encryption")!!,
-                devMode = gameProperties.getOrDefault("dev-mode", false))
+                devMode = gameProperties.getOrDefault("dev-mode", false),
+                skillCount = gameProperties.get<Int>("skill-count")!!)
         
         /**
          * Load the services required to run the server.

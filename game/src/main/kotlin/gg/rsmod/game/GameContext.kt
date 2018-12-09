@@ -30,10 +30,14 @@ import gg.rsmod.game.model.Tile
  * This flag enables certain developer-only features, such as in-game debug
  * messages.
  *
+ * @param skillCount
+ * The max amount of skills in our game.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
-data class GameContext(val name: String, val revision: Int, val cycleTime: Int, val playerLimit: Int,
-                       val home: Tile, val rsaEncryption: Boolean, var devMode: Boolean) {
+data class GameContext(val name: String, val revision: Int, val cycleTime: Int,
+                       val playerLimit: Int, val home: Tile, val rsaEncryption: Boolean,
+                       var devMode: Boolean, val skillCount: Int) {
 
     /**
      * The [PrivilegeSet] that is attached to our game.

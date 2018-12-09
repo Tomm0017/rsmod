@@ -10,7 +10,6 @@ import gg.rsmod.game.message.impl.SetBigVarpMessage
 import gg.rsmod.game.message.impl.SetSmallVarpMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.interf.Interfaces
-import gg.rsmod.game.model.interf.action.OSRSInterfaceListener
 import gg.rsmod.game.sync.UpdateBlock
 
 /**
@@ -64,7 +63,7 @@ open class Player(override val world: World) : Pawn(world) {
      */
     @Volatile private var pendingLogout = false
 
-    val interfaces: Interfaces by lazy { Interfaces(this, actionListener = OSRSInterfaceListener()) }
+    val interfaces: Interfaces by lazy { Interfaces(this) }
 
     val skills: SkillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
 

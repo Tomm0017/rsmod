@@ -26,13 +26,15 @@ class MessageEncoderSet {
         encoders[SetBigVarpMessage::class.java] = BigVarpEncoder(structures.get(SetBigVarpMessage::class.java)!!)
         encoders[OpenInterfaceMessage::class.java] = OpenInterfaceEncoder(structures.get(OpenInterfaceMessage::class.java)!!)
         encoders[CloseInterfaceMessage::class.java] = CloseInterfaceEncoder(structures.get(CloseInterfaceMessage::class.java)!!)
+        encoders[SetInterfaceTextMessage::class.java] = InterfaceTextEncoder(structures.get(SetInterfaceTextMessage::class.java)!!)
+        encoders[SetInterfaceSettingMessage::class.java] = InterfaceSettingEncoder(structures.get(SetInterfaceSettingMessage::class.java)!!)
+        encoders[SetInterfaceHiddenMessage::class.java] = InterfaceHiddenEncoder(structures.get(SetInterfaceHiddenMessage::class.java)!!)
         encoders[SetDisplayInterfaceMessage::class.java] = DisplayInterfaceEncoder(structures.get(SetDisplayInterfaceMessage::class.java)!!)
         encoders[InvokeScriptMessage::class.java] = InvokeScriptEncoder(structures.get(InvokeScriptMessage::class.java)!!)
         encoders[ChangeStaticRegionMessage::class.java] = ChangeStaticRegionEncoder(structures.get(ChangeStaticRegionMessage::class.java)!!)
         encoders[SendChatboxTextMessage::class.java] = ChatboxTextEncoder(structures.get(SendChatboxTextMessage::class.java)!!)
         encoders[SendLogoutMessage::class.java] = LogoutEncoder(structures.get(SendLogoutMessage::class.java)!!)
         encoders[SendSkillMessage::class.java] = SendSkillEncoder(structures.get(SendSkillMessage::class.java)!!)
-        encoders[SetInterfaceTextMessage::class.java] = InterfaceTextEncoder(structures.get(SetInterfaceTextMessage::class.java)!!)
         encoders[SetRunEnergyMessage::class.java] = RunEnergyEncoder(structures.get(SetRunEnergyMessage::class.java)!!)
     }
 

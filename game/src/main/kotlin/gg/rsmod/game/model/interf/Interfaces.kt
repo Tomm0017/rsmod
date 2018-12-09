@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class Interfaces(val player: Player, private val actionListener: InterfaceActionListener) {
+class Interfaces(val player: Player) {
 
     companion object {
         private val logger = LogManager.getLogger(Interfaces::class.java)
@@ -25,7 +25,7 @@ class Interfaces(val player: Player, private val actionListener: InterfaceAction
     /**
      * The current [DisplayMode] being used by the client.
      */
-    private var displayMode = DisplayMode.FIXED
+    var displayMode = DisplayMode.FIXED
 
     /**
      * Registers the [interfaceId] as being opened on the pane correspondent to
@@ -40,11 +40,13 @@ class Interfaces(val player: Player, private val actionListener: InterfaceAction
      * @param interfaceId
      * The interface that will be drawn on the [child] interface inside the [parent] interface.
      *
-     * @param type
-     * Optional value. Can be used for different purposes, such as the flag for
-     * OSRS interfaces.
+     * @note
+     * This method by itself will not visually 'open' an interface for the client,
+     * you will have to define a specific method or function that will call this
+     * method and also send a [gg.rsmod.game.message.Message] to signal the client
+     * to draw the interface.
      */
-    fun open(parent: Int, child: Int, interfaceId: Int, type: Int = 0) {
+    fun open(parent: Int, child: Int, interfaceId: Int) {
         val paneHash = (parent shl 16) or child
 
         val replace = visible.remove(paneHash)
@@ -52,24 +54,37 @@ class Interfaces(val player: Player, private val actionListener: InterfaceAction
             closeByHash(paneHash)
         }
         visible[paneHash] = interfaceId
-        actionListener.onOpen(player, parent, child, interfaceId, type)
     }
 
     /**
      * Closes the [interfaceId] if, and only if, it's currently visible.
+     *
+     * @return The hash key of the visible interface, [-1] if not found.
+     *
+     * @note
+     * This method by itself will not visually 'close' an interface for the client,
+     * you will have to define a specific method or function that will call this
+     * method and also send a [gg.rsmod.game.message.Message] to signal the client
+     * to close the interface.
      */
-    fun close(interfaceId: Int) {
+    fun close(interfaceId: Int): Int {
         val found = visible.filterValues { it == interfaceId }.keys.firstOrNull()
         if (found != null) {
             visible.remove(found)
-            actionListener.onClose(player, found)
-        } else {
-            logger.warn("Interface {} is not visible and cannot be closed.", interfaceId)
+            return found
         }
+        logger.warn("Interface {} is not visible and cannot be closed.", interfaceId)
+        return -1
     }
 
     /**
      * Close the [child] interface on its [parent] interface.
+     *
+     * @note
+     * This method by itself will not visually 'close' an interface for the client,
+     * you will have to define a specific method or function that will call this
+     * method and also send a [gg.rsmod.game.message.Message] to signal the client
+     * to close the interface.
      */
     fun close(parent: Int, child: Int) {
         closeByHash((parent shl 16) or child)
@@ -81,12 +96,16 @@ class Interfaces(val player: Player, private val actionListener: InterfaceAction
      * @param hash
      * The bit-shifted value of the parent and child interface ids where an
      * interface may be drawn.
+     *
+     * @note
+     * This method by itself will not visually 'close' an interface for the client,
+     * you will have to define a specific method or function that will call this
+     * method and also send a [gg.rsmod.game.message.Message] to signal the client
+     * to close the interface.
      */
-    fun closeByHash(hash: Int) {
+    private fun closeByHash(hash: Int) {
         val found = visible.remove(hash)
-        if (found != null) {
-            actionListener.onClose(player, hash)
-        } else {
+        if (found == null) {
             logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
         }
     }
@@ -105,14 +124,6 @@ class Interfaces(val player: Player, private val actionListener: InterfaceAction
             visible[interfaceId shl 16] = interfaceId
         } else {
             visible.remove(interfaceId shl 16)
-        }
-    }
-
-    fun getDisplayMode(): DisplayMode = displayMode
-
-    fun setDisplayMode(newMode: DisplayMode) {
-        if (displayMode != newMode) {
-            actionListener.onDisplayChange(player, newMode)
         }
     }
 }

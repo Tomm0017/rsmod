@@ -3,7 +3,9 @@ package gg.rsmod.game.fs
 import gg.rsmod.game.fs.def.VarpDefinition
 import net.runelite.cache.ConfigType
 import net.runelite.cache.IndexType
+import net.runelite.cache.definitions.EnumDefinition
 import net.runelite.cache.definitions.VarbitDefinition
+import net.runelite.cache.definitions.loaders.EnumLoader
 import net.runelite.cache.definitions.loaders.VarbitLoader
 import net.runelite.cache.fs.Store
 import org.apache.logging.log4j.LogManager
@@ -52,6 +54,21 @@ class DefinitionSet {
         defs[VarpDefinition::class.java] = varps.toTypedArray()
 
         logger.info("Loaded ${varps.size} varp definitions.")
+
+        /**
+         * Load [EnumDefinition]s.
+         */
+        val enumArchive = configs.getArchive(ConfigType.ENUM.id)!!
+        val enumFiles = enumArchive.getFiles(store.storage.loadArchive(enumArchive)!!).files
+        val enums = arrayListOf<EnumDefinition>()
+        for (file in enumFiles) {
+            val loader = EnumLoader()
+            val def = loader.load(file.fileId, file.contents)
+            enums.add(def)
+        }
+        defs[EnumDefinition::class.java] = enums.toTypedArray()
+
+        logger.info("Loaded ${enums.size} enum definitions.")
     }
 
     @Suppress("UNCHECKED_CAST")

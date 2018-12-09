@@ -100,8 +100,12 @@ class Interfaces(val player: Player, private val actionListener: InterfaceAction
      * Set an interface as being visible. This should be reserved for settings
      * interfaces such as display mode as visible.
      */
-    fun setVisible(interfaceId: Int) {
-        visible[interfaceId shl 16] = interfaceId
+    fun setVisible(interfaceId: Int, isVisible: Boolean) {
+        if (isVisible) {
+            visible[interfaceId shl 16] = interfaceId
+        } else {
+            visible.remove(interfaceId shl 16)
+        }
     }
 
     fun getDisplayMode(): DisplayMode = displayMode

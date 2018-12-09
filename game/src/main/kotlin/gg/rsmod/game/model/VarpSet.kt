@@ -81,4 +81,6 @@ class VarpSet(val maxVarps: Int) {
     fun clean() {
         dirty.clear()
     }
+
+    fun getAll(): List<Varp> = varps
 }

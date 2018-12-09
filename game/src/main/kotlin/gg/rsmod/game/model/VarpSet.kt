@@ -26,6 +26,7 @@ class VarpSet(val maxVarps: Int) {
 
     fun setState(id: Int, state: Int): VarpSet {
         varps[id].state = state
+        dirty.add(id)
         return this
     }
 
@@ -68,10 +69,6 @@ class VarpSet(val maxVarps: Int) {
     fun setBit(id: Int, startBit: Int, endBit: Int, value: Int): VarpSet {
         val position = DataConstants.BIT_SIZES[endBit - startBit] shl startBit
         return setState(id, (getState(id) and position.inv()) or (position and (value shl startBit)))
-    }
-
-    fun makeDirty(id: Int) {
-        dirty.add(id)
     }
 
     fun isDirty(id: Int): Boolean {

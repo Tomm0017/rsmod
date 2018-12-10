@@ -27,6 +27,7 @@ class MessageDecoderSet {
         put(ObjectActionOneMessage::class.java, ObjectActionOneDecoder(), structures)
         put(ClickButtonMessage::class.java, ClickButtonDecoder(), structures)
         put(ContinueDialogMessage::class.java, ContinueDialogDecoder(), structures)
+        put(ExamineObjectMessage::class.java, ExamineObjectDecoder(), structures)
     }
 
     private fun put(messageType: Class<out Message>, decoderType: MessageDecoder<out Message>, structures: MessageStructureSet) {

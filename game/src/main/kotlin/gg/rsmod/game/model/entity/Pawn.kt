@@ -1,6 +1,7 @@
 package gg.rsmod.game.model.entity
 
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.UpdateBlockBuffer
 
@@ -20,14 +21,11 @@ abstract class Pawn(open val world: World) : Entity() {
     var blockBuffer = UpdateBlockBuffer()
 
     /**
-     * The current 3D [Tile] that this [Pawn] is standing on in the [World].
-     */
-    var tile = Tile(0, 0)
-
-    /**
      * The 3D [Tile] that this [Pawn] was standing on, in the last game cycle.
      */
     var lastTile: Tile? = null
+
+    var chunk: Chunk? = null
 
     /**
      * Whether or not this pawn can teleported this game cycle.

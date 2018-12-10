@@ -2,8 +2,6 @@ package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
 import gg.rsmod.game.fs.VarpDefinition
-import gg.rsmod.game.map.Chunk
-import gg.rsmod.game.map.Region
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.SendSkillMessage
 import gg.rsmod.game.message.impl.SetBigVarpMessage
@@ -29,16 +27,6 @@ open class Player(override val world: World) : Pawn(world) {
     var username = ""
 
     var privilege = Privilege.DEFAULT
-
-    /**
-     * The current [Chunk] our player is registered to.
-     */
-    var mapChunk: Chunk? = null
-
-    /**
-     * The current [Region] our player is registered to.
-     */
-    var mapRegion: Region? = null
 
     /**
      * The base region [Tile] is the most bottom-left (south-west) tile where
@@ -92,11 +80,22 @@ open class Player(override val world: World) : Pawn(world) {
             pendingLogout = false
         }
 
+        val newChunk = world.collision.regions.getChunkForTile(world, tile)
+        if (chunk == null || chunk != newChunk) {
+            val oldRegion = lastTile?.toRegionId() ?: -1
+            if (oldRegion != tile.toRegionId()) {
+                world.plugins.executeRegionExit(this, oldRegion)
+                world.plugins.executeRegionEnter(this, tile.toRegionId())
+            }
+            chunk = newChunk
+        }
+
         for (i in 0 until skills.maxSkills) {
             if (skills.isDirty(i)) {
                 write(SendSkillMessage(i, skills.getCurrentLevel(i), skills.getCurrentXp(i).toInt()))
             }
         }
+
         for (i in 0 until varps.maxVarps) {
             if (varps.isDirty(i)) {
                 val varp = varps[i]

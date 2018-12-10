@@ -1,6 +1,7 @@
 package gg.rsmod.game.model
 
 import com.google.common.base.MoreObjects
+import gg.rsmod.game.model.region.RegionCoordinates
 
 /**
  * A 3D point in the world.
@@ -35,6 +36,8 @@ class Tile {
 
     fun transform(x: Int, z: Int): Tile = Tile(this.x + x, this.z + z, this.height)
 
+    fun step(num: Int, direction: Direction): Tile = Tile(this.x + (num * direction.getDeltaX()), this.z + (num * direction.getDeltaZ()), this.height)
+
     /**
      * Checks if the [other] tile is within the [radius]x[radius] distance of
      * this [Tile].
@@ -53,10 +56,16 @@ class Tile {
 
     fun calculateDistance(other: Tile): Int = Math.sqrt((other.x - x * other.x - x + other.z - z * other.z - z).toDouble()).toInt()
 
+    fun calculateTopLeftRegionX() = (x shr 3) - 6
+
+    fun calculateTopLeftRegionZ() = (z shr 3) - 6
+
     /**
      * Checks if the [other] tile has the same coordinates as this tile.
      */
     fun sameCoordinates(other: Tile): Boolean = other.x == x && other.z == z && other.height == height
+
+    fun toRegionCoordinates(): RegionCoordinates = RegionCoordinates.fromTile(this)
 
     /**
      * Get the region id based on these coordinates.
@@ -69,4 +78,13 @@ class Tile {
     fun to30BitInteger(): Int = (z and 0x3FFF) or (x and 0x3FFF shl 14) or (height and 0x3 shl 28)
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("x", x).add("z", z).add("height", height).toString()
+
+    override fun hashCode(): Int = coordinate
+
+    override fun equals(other: Any?): Boolean {
+        if (other is Tile) {
+            return other.coordinate == coordinate
+        }
+        return false
+    }
 }

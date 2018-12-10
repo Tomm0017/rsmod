@@ -64,6 +64,8 @@ class XteaKeyService : Service() {
         return keys[region]!!
     }
 
+    fun getOrNull(region: Int): IntArray? = keys[region]
+
     private data class XteaFile(val region: Int, val keys: IntArray) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true

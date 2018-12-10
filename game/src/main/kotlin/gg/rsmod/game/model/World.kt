@@ -3,7 +3,8 @@ package gg.rsmod.game.model
 import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.DefinitionSet
-import gg.rsmod.game.map.Map
+import gg.rsmod.game.model.collision.CollisionManager
+import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.PawnList
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.PluginExecutor
@@ -24,7 +25,9 @@ class World(val server: Server, val gameContext: GameContext) {
 
     val players = PawnList<Player>(gameContext.playerLimit)
 
-    val maps = Map()
+    val npcs = PawnList<Npc>(Short.MAX_VALUE.toInt())
+
+    val collision = CollisionManager()
 
     /**
      * A collection of our [Service]s specified in our game [ServerProperties]
@@ -76,7 +79,6 @@ class World(val server: Server, val gameContext: GameContext) {
     }
 
     fun unregister(p: Player) {
-        maps.removePlayer(p)
         players.remove(p)
     }
 

@@ -12,6 +12,6 @@ import gg.rsmod.game.service.GameService
 class MapHandlerTask : GameTask {
 
     override fun execute(world: World, service: GameService) {
-        world.maps.pulse(world)
+        //world.maps.pulse(world)
     }
 }

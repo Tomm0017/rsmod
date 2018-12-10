@@ -180,6 +180,7 @@ class DefinitionSet {
                     val obj = StaticObject(loc.id, loc.type, loc.orientation, tile)
                     world.collision.regions.getChunkForTile(world, tile).addEntity(world, obj)
                 }
+                world.collision.build(world, false)
                 return true
             } catch (e: IOException) {
                 logger.error("Could not decrypt map region {}.", id)

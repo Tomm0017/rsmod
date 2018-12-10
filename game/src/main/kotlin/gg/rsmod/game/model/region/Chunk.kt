@@ -28,6 +28,8 @@ class Chunk(val coordinates: RegionCoordinates, val heights: Int) {
 
     fun getMatrix(height: Int): CollisionMatrix = matrices[height]
 
+    fun getMatrices(): Array<CollisionMatrix> = matrices
+
     fun canTraverse(tile: Tile, direction: Direction, projectile: Boolean): Boolean {
         val matrix = matrices[tile.height]
         return !matrix.isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)

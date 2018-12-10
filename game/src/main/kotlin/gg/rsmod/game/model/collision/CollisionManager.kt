@@ -69,6 +69,46 @@ class CollisionManager {
         return true
     }
 
+    fun build(world: World, rebuilding: Boolean) {
+        if (rebuilding) {
+            for (region in regions.getChunks()) {
+                for (matrix in region.getMatrices()) {
+                    matrix.reset()
+                }
+            }
+        }
+
+        regions.getChunks().forEach { chunk ->
+            val builder = CollisionUpdate.Builder()
+            builder.setType(CollisionUpdate.Type.ADDING)
+
+            blocked.get(chunk.coordinates).forEach { tile ->
+                val x = tile.x
+                val z = tile.z
+                var height = tile.height
+
+                if (bridges.contains(Tile(x, z, 1))) {
+                    height--
+                }
+
+                if (height >= 0) {
+                    builder.putTile(Tile(x, z, height), false, *Direction.NESW)
+                }
+            }
+
+            apply(world, builder.build())
+
+            val objects = CollisionUpdate.Builder()
+            objects.setType(CollisionUpdate.Type.ADDING)
+
+            chunk.getEntities<GameObject>(EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT)
+                    .forEach { entity -> objects.putObject(world.definitions, entity) }
+
+            apply(world, objects.build())
+            return@forEach
+        }
+    }
+
     private fun flag(type: CollisionUpdate.Type, matrix: CollisionMatrix, localX: Int, localY: Int, flag: CollisionFlag) {
         if (type === CollisionUpdate.Type.ADDING) {
             matrix.addFlag(localX, localY, flag)

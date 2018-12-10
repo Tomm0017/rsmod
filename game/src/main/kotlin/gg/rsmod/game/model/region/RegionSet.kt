@@ -1,5 +1,6 @@
 package gg.rsmod.game.model.region
 
+import com.google.common.collect.ImmutableList
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 
@@ -15,6 +16,8 @@ class RegionSet {
     private val chunks = hashMapOf<RegionCoordinates, Chunk>()
 
     private val decodedRegions = hashSetOf<Int>()
+
+    fun getChunks(): ImmutableList<Chunk> = ImmutableList.copyOf(chunks.values)
 
     fun getChunkForTile(world: World, tile: Tile): Chunk = getChunk(world, RegionCoordinates.fromTile(tile))
 

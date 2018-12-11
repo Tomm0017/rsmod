@@ -34,4 +34,6 @@ class RegionSet {
         }
         return newChunk
     }
+
+    fun getChunkOrNull(coordinates: RegionCoordinates): Chunk? = chunks[coordinates]
 }

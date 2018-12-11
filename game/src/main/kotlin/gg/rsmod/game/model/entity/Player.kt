@@ -1,7 +1,7 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
-import gg.rsmod.game.fs.VarpDefinition
+import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.SendSkillMessage
 import gg.rsmod.game.message.impl.SetBigVarpMessage
@@ -55,7 +55,7 @@ open class Player(override val world: World) : Pawn(world) {
 
     val skills: SkillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
 
-    val varps: VarpSet by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDefinition::class.java)) }
+    val varps: VarpSet by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
 
     val localPlayers = arrayListOf<Player>()
 

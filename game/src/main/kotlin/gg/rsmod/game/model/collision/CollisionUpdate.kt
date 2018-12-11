@@ -4,10 +4,10 @@ import com.google.common.collect.Multimap
 import com.google.common.collect.MultimapBuilder
 import com.google.common.collect.Multimaps
 import gg.rsmod.game.fs.DefinitionSet
+import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.GameObject
-import net.runelite.cache.definitions.ObjectDefinition
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -55,7 +55,7 @@ class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Ti
         }
 
         fun putObject(definitions: DefinitionSet, obj: GameObject) {
-            val def = definitions.get(ObjectDefinition::class.java, obj.id)
+            val def = definitions.get(ObjectDef::class.java, obj.id)
             val type = obj.type
             val tile = obj.tile
 
@@ -63,27 +63,25 @@ class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Ti
                 return
             }
 
-            val x = obj.tile.x
-            val z = obj.tile.z
-            val height = obj.tile.height
+            val x = tile.x
+            val z = tile.z
+            val height = tile.height
             var width = def.sizeX
-            var length = def.sizeY
-            val impenetrable = def.isBlocksProjectile
+            var length = def.sizeZ
+            val impenetrable = def.projectileClipped
             val orientation = obj.rot
 
             if (orientation == 1 || orientation == 3) {
-                width = def.sizeY
+                width = def.sizeZ
                 length = def.sizeX
             }
 
             if (type == ObjectType.FLOOR_DECORATION.value) {
-                if (def.isInteractive() && def.isSolidObj()) {
-                    putTile(Tile(x, z, height), impenetrable, *Direction.NESW)
-                }
+                putTile(Tile(x, z, height), impenetrable, *Direction.NESW)
             } else if (type >= ObjectType.DIAGONAL_WALL.value && type < ObjectType.FLOOR_DECORATION.value) {
                 for (dx in 0 until width) {
-                    for (dy in 0 until length) {
-                        putTile(Tile(x + dx, z + dy, height), impenetrable, *Direction.NESW)
+                    for (dz in 0 until length) {
+                        putTile(Tile(x + dx, z + dz, height), impenetrable, *Direction.NESW)
                     }
                 }
             } else if (type == ObjectType.LENGTHWISE_WALL.value) {
@@ -95,20 +93,16 @@ class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Ti
             }
         }
 
-        private fun unwalkable(definition: ObjectDefinition, type: Int): Boolean {
-            val isSolidFloorDecoration = type == ObjectType.FLOOR_DECORATION.value && definition.interactType == 1
+        private fun unwalkable(def: ObjectDef, type: Int): Boolean {
+            val isSolidFloorDecoration = type == ObjectType.FLOOR_DECORATION.value && def.interactionType == 1
             val isRoof = type > ObjectType.DIAGONAL_INTERACTABLE.value && type < ObjectType.FLOOR_DECORATION.value
 
             val isWall = type >= ObjectType.LENGTHWISE_WALL.value && type <= ObjectType.RECTANGULAR_CORNER.value || type == ObjectType.DIAGONAL_WALL.value
 
-            val isSolidInteractable = (type == ObjectType.DIAGONAL_INTERACTABLE.value || type == ObjectType.INTERACTABLE.value) && definition.interactType != 0
+            val isSolidInteractable = (type == ObjectType.DIAGONAL_INTERACTABLE.value || type == ObjectType.INTERACTABLE.value) && def.interactionType != 0
 
             return isWall || isRoof || isSolidInteractable || isSolidFloorDecoration
         }
-
-        private fun ObjectDefinition.isInteractive(): Boolean = ((interactType and 0xFF) == 1)
-
-        private fun ObjectDefinition.isSolidObj(): Boolean = isSolid
     }
 
 }

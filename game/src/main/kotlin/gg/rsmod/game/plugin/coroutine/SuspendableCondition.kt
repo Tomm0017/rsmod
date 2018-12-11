@@ -47,7 +47,7 @@ class WaitCondition(cycles: Int) : SuspendableCondition() {
  */
 class TileCondition(private val src: Tile, private val dst: Tile) : SuspendableCondition() {
 
-    override fun resume(): Boolean = src.sameCoordinates(dst)
+    override fun resume(): Boolean = src.sameAs(dst)
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("src", src).add("dst", dst).toString()
 }

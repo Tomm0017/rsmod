@@ -1,6 +1,6 @@
 package gg.rsmod.game.model.collision
 
-enum class CollisionFlag(val bit: Int) {
+enum class CollisionFlag(private val bit: Int) {
 
     PAWN_NORTH_WEST(1),
 
@@ -35,8 +35,6 @@ enum class CollisionFlag(val bit: Int) {
     PROJECTILE_WEST(16);
 
     fun getBitAsShort(): Short = (1 shl bit).toShort()
-
-    fun getBitValue(): Int = bit
 
     companion object {
 

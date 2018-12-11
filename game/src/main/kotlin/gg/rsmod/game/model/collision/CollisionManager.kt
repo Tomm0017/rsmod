@@ -118,7 +118,7 @@ class CollisionManager {
     }
 
     private fun apply(world: World, update: CollisionUpdate) {
-        var prev: Chunk? = null
+        var chunk: Chunk? = null
 
         val type = update.type
         val map = update.flags.asMap()
@@ -133,16 +133,20 @@ class CollisionManager {
                 }
             }
 
-            if (prev == null || !prev.contains(tile)) {
-                prev = regions.getChunkForTile(world, tile)
+            if (chunk == null || !chunk.contains(tile)) {
+                chunk = regions.getChunkForTile(world, tile)
             }
 
             val localX = tile.x % Chunk.CHUNK_SIZE
-            val localY = tile.z % Chunk.CHUNK_SIZE
+            val localZ = tile.z % Chunk.CHUNK_SIZE
 
-            val matrix = prev.getMatrix(height)
+            val matrix = chunk.getMatrix(height)
             val pawns = CollisionFlag.pawnFlags()
             val projectiles = CollisionFlag.projectileFlags()
+
+            if (tile.sameAs(3226, 3256)) {
+                println("adding obj to furnace tile: $tile, ${entry.value}")
+            }
 
             for (flag in entry.value) {
                 val direction = flag.direction
@@ -152,10 +156,10 @@ class CollisionManager {
 
                 val orientation = direction.value
                 if (flag.impenetrable) {
-                    flag(type, matrix, localX, localY, projectiles[orientation])
+                    flag(type, matrix, localX, localZ, projectiles[orientation])
                 }
 
-                flag(type, matrix, localX, localY, pawns[orientation])
+                flag(type, matrix, localX, localZ, pawns[orientation])
             }
         }
     }

@@ -18,9 +18,12 @@ class ClickMapHandler : MessageHandler<ClickMapMovementMessage> {
         client.interruptPlugins()
 
         val directions = Direction.values().filter { it != Direction.NONE }
-        println("Can traverse:")
+        val matrix = client.world.collision.regions.getChunkForTile(client.world, client.tile).getMatrix(client.tile.height)
+        val localX = client.tile.x % 8
+        val localZ = client.tile.z % 8
+        println("Flags: ${matrix.get(localX, localZ)}. Blocked:")
         directions.forEach { dir ->
-            println("\t$dir: ${client.world.collision.canTraverse(client.world, client.tile, client.getType(), dir)}")
+            println("\t$dir: ${matrix.isBlocked(localX, localZ, dir, false)}")
         }
     }
 }

@@ -63,7 +63,9 @@ class Tile {
     /**
      * Checks if the [other] tile has the same coordinates as this tile.
      */
-    fun sameCoordinates(other: Tile): Boolean = other.x == x && other.z == z && other.height == height
+    fun sameAs(other: Tile): Boolean = other.x == x && other.z == z && other.height == height
+
+    fun sameAs(x: Int, z: Int): Boolean = x == this.x && z == this.z
 
     fun toRegionCoordinates(): RegionCoordinates = RegionCoordinates.fromTile(this)
 

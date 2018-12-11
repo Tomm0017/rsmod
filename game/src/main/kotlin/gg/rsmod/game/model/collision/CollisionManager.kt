@@ -45,7 +45,7 @@ class CollisionManager {
 
     fun canTraverse(world: World, tile: Tile, type: EntityType, direction: Direction): Boolean {
         val next = tile.step(1, direction)
-        var region = regions.getChunkForTile(world, tile)
+        var region = regions.getChunkForTile(world, next)
         val projectile = type == EntityType.PROJECTILE
 
         if (!region.canTraverse(next, direction, projectile)) {
@@ -143,10 +143,6 @@ class CollisionManager {
             val matrix = chunk.getMatrix(height)
             val pawns = CollisionFlag.pawnFlags()
             val projectiles = CollisionFlag.projectileFlags()
-
-            if (tile.sameAs(3226, 3256)) {
-                println("adding obj to furnace tile: $tile, ${entry.value}")
-            }
 
             for (flag in entry.value) {
                 val direction = flag.direction

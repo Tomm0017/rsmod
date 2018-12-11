@@ -10,11 +10,11 @@ import io.netty.buffer.ByteBuf
 class ObjectDef(override val id: Int) : Definition(id) {
 
     var name = ""
-    var sizeX = 1
-    var sizeZ = 1
-    var clipType = 2
-    var projectileClipped = false
-    var interactionType = -1
+    var width = 1
+    var length = 1
+    var solid = true
+    var impenetrable = true
+    var interactive = false
     var clipFlag = 0
     var varbit = -1
     var varp = -1
@@ -37,21 +37,18 @@ class ObjectDef(override val id: Int) : Definition(id) {
                     buf.readUnsignedShort() // Model
                 }
             }
-            14 -> sizeX = buf.readUnsignedByte().toInt()
-            15 -> sizeZ = buf.readUnsignedByte().toInt()
-            17 -> {
-                clipType = 0
-                projectileClipped = false
-            }
-            18 -> projectileClipped = false
-            19 -> interactionType = buf.readUnsignedByte().toInt()
+            14 -> width = buf.readUnsignedByte().toInt()
+            15 -> length = buf.readUnsignedByte().toInt()
+            17 -> solid = false
+            18 -> impenetrable = false
+            19 -> interactive = buf.readUnsignedByte().toInt() == 1
             24 -> {
                 animation = buf.readUnsignedShort()
                 if (animation == 65535) {
                     animation = -1
                 }
             }
-            27 -> clipType = 1
+            27 -> {}
             28 -> buf.readUnsignedByte()
             29 -> buf.readByte()
             in 30 until 35 -> {

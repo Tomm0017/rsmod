@@ -66,18 +66,20 @@ class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Ti
             val x = tile.x
             val z = tile.z
             val height = tile.height
-            var width = def.sizeX
-            var length = def.sizeZ
-            val impenetrable = def.projectileClipped
+            var width = def.width
+            var length = def.length
+            val impenetrable = def.impenetrable
             val orientation = obj.rot
 
             if (orientation == 1 || orientation == 3) {
-                width = def.sizeZ
-                length = def.sizeX
+                width = def.length
+                length = def.width
             }
 
             if (type == ObjectType.FLOOR_DECORATION.value) {
-                putTile(Tile(x, z, height), impenetrable, *Direction.NESW)
+                if (def.interactive && def.solid) {
+                    putTile(Tile(x, z, height), impenetrable, *Direction.NESW)
+                }
             } else if (type >= ObjectType.DIAGONAL_WALL.value && type < ObjectType.FLOOR_DECORATION.value) {
                 for (dx in 0 until width) {
                     for (dz in 0 until length) {
@@ -94,12 +96,10 @@ class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Ti
         }
 
         private fun unwalkable(def: ObjectDef, type: Int): Boolean {
-            val isSolidFloorDecoration = type == ObjectType.FLOOR_DECORATION.value && def.interactionType == 1
+            val isSolidFloorDecoration = type == ObjectType.FLOOR_DECORATION.value && def.interactive
             val isRoof = type > ObjectType.DIAGONAL_INTERACTABLE.value && type < ObjectType.FLOOR_DECORATION.value
-
             val isWall = type >= ObjectType.LENGTHWISE_WALL.value && type <= ObjectType.RECTANGULAR_CORNER.value || type == ObjectType.DIAGONAL_WALL.value
-
-            val isSolidInteractable = (type == ObjectType.DIAGONAL_INTERACTABLE.value || type == ObjectType.INTERACTABLE.value) && def.interactionType != 0
+            val isSolidInteractable = (type == ObjectType.DIAGONAL_INTERACTABLE.value || type == ObjectType.INTERACTABLE.value) && def.solid
 
             return isWall || isRoof || isSolidInteractable || isSolidFloorDecoration
         }

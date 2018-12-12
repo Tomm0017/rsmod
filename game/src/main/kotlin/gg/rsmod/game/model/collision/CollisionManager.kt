@@ -45,10 +45,10 @@ class CollisionManager {
 
     fun canTraverse(world: World, tile: Tile, type: EntityType, direction: Direction): Boolean {
         val next = tile.step(1, direction)
-        var region = regions.getChunkForTile(world, next)
+        var chunk = regions.getChunkForTile(world, next)
         val projectile = type == EntityType.PROJECTILE
 
-        if (!region.canTraverse(next, direction, projectile)) {
+        if (!chunk.canTraverse(next, direction, projectile)) {
             return false
         }
 
@@ -56,11 +56,11 @@ class CollisionManager {
             direction.getDiagonalComponents().forEach { other ->
                 val otherNext = tile.step(1, other)
 
-                if (!region.contains(otherNext)) {
-                    region = regions.getChunkForTile(world, otherNext)
+                if (!chunk.contains(otherNext)) {
+                    chunk = regions.getChunkForTile(world, otherNext)
                 }
 
-                if (!region.canTraverse(otherNext, direction, projectile)) {
+                if (!chunk.canTraverse(otherNext, other, projectile)) {
                     return false
                 }
             }

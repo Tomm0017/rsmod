@@ -20,6 +20,11 @@ class ClickMapHandler : MessageHandler<ClickMapMovementMessage> {
         val directions = Direction.values().filter { it != Direction.NONE }
         println("Can traverse:")
         directions.forEach { dir ->
+            val dirTile = client.tile.step(1, dir)
+            val chunk = client.world.collision.regions.getChunkForTile(client.world, dirTile)
+            val matrix = chunk.getMatrix(client.tile.height)
+            val localX = dirTile.x % 8
+            val localZ = dirTile.z % 8
             println("\t$dir: ${client.world.collision.canTraverse(client.world, client.tile, client.getType(), dir)}")
         }
     }

@@ -9,9 +9,6 @@ import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.GameObject
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
 class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Tile, DirectionFlag>) {
 
     enum class Type {

@@ -68,7 +68,7 @@ class Server {
      * can start multiple servers with different game property files.
      */
     @Throws(Exception::class)
-    fun startGame(filestorePath: Path, gameProps: Path, packets: Path) {
+    fun startGame(filestorePath: Path, gameProps: Path, packets: Path): World {
         val stopwatch = Stopwatch.createStarted()
         val individualStopwatch = Stopwatch.createUnstarted()
 
@@ -90,7 +90,8 @@ class Server {
                 home = Tile(gameProperties.get<Int>("home-x")!!, gameProperties.get<Int>("home-z")!!, gameProperties.getOrDefault("home-height", 0)),
                 rsaEncryption = gameProperties.get<Boolean>("rsa-encryption")!!,
                 devMode = gameProperties.getOrDefault("dev-mode", false),
-                skillCount = gameProperties.get<Int>("skill-count")!!)
+                skillCount = gameProperties.get<Int>("skill-count")!!,
+                runEnergy = gameProperties.get<Boolean>("run-energy")!!)
 
         val world = World(this, gameContext)
 
@@ -157,6 +158,7 @@ class Server {
         logger.info("Now listening for incoming connections on port $port...")
 
         System.gc()
+        return world
     }
 
     /**

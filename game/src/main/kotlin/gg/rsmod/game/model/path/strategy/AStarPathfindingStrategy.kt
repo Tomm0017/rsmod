@@ -26,7 +26,7 @@ class AStarPathfindingStrategy(override val collision: CollisionManager)
         open.add(start)
         sorted.add(start)
 
-        var max = 4096
+        var max = 1024
         do {
             val active = getCheapest(sorted)
             val position = active.tile

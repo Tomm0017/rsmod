@@ -195,7 +195,11 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
     }
 
     private fun encodeBlocks(other: Player, maskBuf: GamePacketBuilder, newPlayer: Boolean) {
-        var mask = if (newPlayer) UpdateBlock.APPEARANCE.value else other.blockBuffer.blockValue()
+        var mask = other.blockBuffer.blockValue()
+
+        if (newPlayer) {
+            mask = mask or UpdateBlock.APPEARANCE.value
+        }
 
         if (mask >= 0x100) {
             mask = mask or 0x20

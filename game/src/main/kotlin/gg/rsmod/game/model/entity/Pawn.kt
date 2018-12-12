@@ -1,5 +1,6 @@
 package gg.rsmod.game.model.entity
 
+import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.path.strategy.AStarPathfindingStrategy
 import gg.rsmod.game.model.region.Chunk
@@ -72,9 +73,13 @@ abstract class Pawn(open val world: World) : Entity() {
         val pathfinding = AStarPathfindingStrategy(world.collision)
         val path = pathfinding.getPath(tile, Tile(x, z, tile.height), getType())
 
-        movementQueue.clear()
-        path.forEach { tile ->
-            movementQueue.addStep(tile, type)
+        if (path.isNotEmpty()) {
+            movementQueue.clear()
+            path.forEach { tile ->
+                movementQueue.addStep(tile, type)
+            }
+        } else if (this is Player) {
+            write(SetMinimapMarkerMessage(255, 255))
         }
     }
 

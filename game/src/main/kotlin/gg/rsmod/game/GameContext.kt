@@ -37,7 +37,7 @@ import gg.rsmod.game.model.Tile
  */
 data class GameContext(val name: String, val revision: Int, val cycleTime: Int,
                        val playerLimit: Int, val home: Tile, val rsaEncryption: Boolean,
-                       var devMode: Boolean, val skillCount: Int) {
+                       var devMode: Boolean, val skillCount: Int, val runEnergy: Boolean) {
 
     /**
      * The [PrivilegeSet] that is attached to our game.

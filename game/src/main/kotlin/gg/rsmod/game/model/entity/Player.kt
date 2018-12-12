@@ -3,6 +3,7 @@ package gg.rsmod.game.model.entity
 import com.google.common.base.MoreObjects
 import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
+import gg.rsmod.game.message.impl.SendChatboxTextMessage
 import gg.rsmod.game.message.impl.SendSkillMessage
 import gg.rsmod.game.message.impl.SetBigVarpMessage
 import gg.rsmod.game.message.impl.SetSmallVarpMessage
@@ -206,6 +207,10 @@ open class Player(override val world: World) : Pawn(world) {
      */
     open fun channelClose() {
 
+    }
+
+    fun message(message: String) {
+        write(SendChatboxTextMessage(type = 0, message = message, username = null))
     }
 
     override fun toString(): String = MoreObjects.toStringHelper(this)

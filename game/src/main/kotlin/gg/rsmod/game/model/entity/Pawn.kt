@@ -1,6 +1,7 @@
 package gg.rsmod.game.model.entity
 
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.path.strategy.AStarPathfindingStrategy
 import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.UpdateBlockBuffer
@@ -68,34 +69,19 @@ abstract class Pawn(open val world: World) : Entity() {
     fun canMove(): Boolean = !isDead() && lock.canMove()
 
     fun walkTo(x: Int, z: Int, type: MovementQueue.StepType) {
-        val dx = Math.abs(x - tile.x)
-        val dz = Math.abs(z - tile.z)
-        var currTile = Tile(tile)
+        val pathfinding = AStarPathfindingStrategy(world.collision)
+        val path = pathfinding.getPath(tile, Tile(x, z, tile.height), getType())
 
-        var firstStep = true
-        if (Math.abs(dx) < 64 && Math.abs(dz) < 64) {
-            while (!currTile.sameAs(x, z)) {
-                if (currTile.x != x) {
-                    currTile = currTile.transform(if (x > tile.x) 1 else -1, 0)
-                } else if (currTile.z != z) {
-                    currTile = currTile.transform(0, if (z > tile.z) 1 else -1)
-                } else {
-                    break
-                }
-
-                if (firstStep) {
-                    movementQueue.setFirstStep(currTile, type)
-                    firstStep = false
-                } else {
-                    movementQueue.addStep(currTile, type)
-                }
-            }
+        movementQueue.clear()
+        path.forEach { tile ->
+            movementQueue.addStep(tile, type)
         }
     }
 
     fun teleport(x: Int, z: Int, height: Int = 0) {
         teleport = true
         tile = Tile(x, z, height)
+        movementQueue.clear()
     }
 
     fun teleport(tile: Tile) {

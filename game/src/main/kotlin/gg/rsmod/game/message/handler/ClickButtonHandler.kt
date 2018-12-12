@@ -2,7 +2,6 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.ClickButtonMessage
-import gg.rsmod.game.message.impl.SendChatboxTextMessage
 import gg.rsmod.game.model.entity.Client
 import org.apache.logging.log4j.LogManager
 
@@ -30,8 +29,7 @@ class ClickButtonHandler : MessageHandler<ClickButtonMessage> {
         }
 
         if (client.world.gameContext.devMode) {
-            val debug = "Unhandled button action: [parent=$parent, child=$child, slot=${message.slot}, item=${message.item}]"
-            client.write(SendChatboxTextMessage(type = 0, message = debug, username = null))
+            client.message("Unhandled button action: [parent=$parent, child=$child, slot=${message.slot}, item=${message.item}]")
         }
     }
 }

@@ -11,7 +11,7 @@ import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.model.region.RegionCoordinates
 
-class CollisionManager(world: World) {
+class CollisionManager(val world: World) {
 
     companion object {
         const val BLOCKED_TILE = 0x1
@@ -31,16 +31,16 @@ class CollisionManager(world: World) {
         bridges.add(tile)
     }
 
-    fun submitUpdate(world: World, entity: Entity, updateType: CollisionUpdate.Type) {
+    fun submitUpdate(entity: Entity, updateType: CollisionUpdate.Type) {
         if (entity is GameObject) {
             val builder = CollisionUpdate.Builder()
             builder.setType(updateType)
             builder.putObject(world.definitions, entity)
-            apply(world, builder.build())
+            apply(builder.build())
         }
     }
 
-    fun canTraverse(world: World, tile: Tile, type: EntityType, direction: Direction): Boolean {
+    fun canTraverse(tile: Tile, type: EntityType, direction: Direction): Boolean {
         val next = tile.step(1, direction)
         var chunk = world.regions.getChunkForTile(next)
         val projectile = type == EntityType.PROJECTILE
@@ -66,7 +66,7 @@ class CollisionManager(world: World) {
         return true
     }
 
-    fun build(world: World, rebuilding: Boolean) {
+    fun build(rebuilding: Boolean) {
         if (rebuilding) {
             for (region in world.regions.getChunks()) {
                 for (matrix in region.getMatrices()) {
@@ -93,7 +93,7 @@ class CollisionManager(world: World) {
                 }
             }
 
-            apply(world, builder.build())
+            apply(builder.build())
 
             val objects = CollisionUpdate.Builder()
             objects.setType(CollisionUpdate.Type.ADDING)
@@ -101,7 +101,7 @@ class CollisionManager(world: World) {
             chunk.getEntities<GameObject>(EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT)
                     .forEach { entity -> objects.putObject(world.definitions, entity) }
 
-            apply(world, objects.build())
+            apply(objects.build())
             return@forEach
         }
     }
@@ -114,7 +114,7 @@ class CollisionManager(world: World) {
         }
     }
 
-    private fun apply(world: World, update: CollisionUpdate) {
+    private fun apply(update: CollisionUpdate) {
         var chunk: Chunk? = null
 
         val type = update.type

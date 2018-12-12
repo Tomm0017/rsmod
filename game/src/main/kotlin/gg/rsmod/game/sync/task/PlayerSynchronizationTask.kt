@@ -117,7 +117,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                     movement = Misc.getPlayerWalkingDirection(dx, dz)
                 }
                 buf.putBits(1, 1) // Requires client decoding
-                buf.putBits(1, if (running) 1 else 0) // Whether client should decode update masks
+                buf.putBits(1, if (requiresBlockUpdate) 1 else 0) // Whether client should decode update masks
                 buf.putBits(2, if (running) 2 else 1) // Whether client should decode a walk or a run movement
                 buf.putBits(if (running) 4 else 3, movement)
 
@@ -196,9 +196,6 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
 
     private fun encodeBlocks(other: Player, maskBuf: GamePacketBuilder, newPlayer: Boolean) {
         var mask = if (newPlayer) UpdateBlock.APPEARANCE.value else other.blockBuffer.blockValue()
-        if (other.steps?.runDirection != null) {
-            mask = mask or 0x1000
-        }
 
         if (mask >= 0x100) {
             mask = mask or 0x20
@@ -208,7 +205,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
             maskBuf.put(DataType.BYTE, mask and 0xFF)
         }
 
-        if (other.steps?.runDirection != null) {
+        if ((mask and 0x1000) != 0) {
             maskBuf.put(DataType.BYTE, DataTransformation.NEGATE, 2)
         }
 

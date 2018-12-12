@@ -1,6 +1,8 @@
 package gg.rsmod.game.model
 
 import gg.rsmod.game.model.entity.Pawn
+import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.sync.UpdateBlock
 import java.util.*
 
 /**
@@ -52,7 +54,7 @@ class MovementQueue(val pawn: Pawn) {
 
             walkDirection = Direction.between(tile, next.tile)
 
-            if (collision.canTraverse(pawn.world, tile, pawn.getType(), walkDirection)) {
+            if (collision.canTraverse(tile, pawn.getType(), walkDirection)) {
                 lastSteps.add(next)
                 tile = Tile(next.tile)
                 pawn.lastFacingDirection = walkDirection
@@ -67,7 +69,7 @@ class MovementQueue(val pawn: Pawn) {
                     if (next != null) {
                         runDirection = Direction.between(tile, next.tile)
 
-                        if (collision.canTraverse(pawn.world, tile, pawn.getType(), runDirection)) {
+                        if (collision.canTraverse(tile, pawn.getType(), runDirection)) {
                             lastSteps.add(next)
                             tile = Tile(next.tile)
                             pawn.lastFacingDirection = runDirection
@@ -85,6 +87,9 @@ class MovementQueue(val pawn: Pawn) {
             if (walkDirection != null) {
                 pawn.steps = StepDirection(walkDirection, runDirection)
                 pawn.tile = Tile(tile)
+                if (runDirection != null && pawn is Player) {
+                    pawn.blockBuffer.addBlock(UpdateBlock.MOVEMENT)
+                }
             }
         }
     }

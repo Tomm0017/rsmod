@@ -56,7 +56,17 @@ class Tile {
         return dx <= radius && dz <= radius
     }
 
-    fun calculateDistance(other: Tile): Int = Math.sqrt((other.x - x * other.x - x + other.z - z * other.z - z).toDouble()).toInt()
+    fun calculateDistance(other: Tile): Int {
+        val dx = x - other.x
+        val dz = z - other.z
+        return Math.ceil(Math.sqrt((dx * dx + dz * dz).toDouble())).toInt()
+    }
+
+    fun calculateDelta(other: Tile): Int {
+        val dx = x - other.x
+        val dz = z - other.z
+        return (Math.sqrt((dx * dx + dz * dz).toDouble())).toInt()
+    }
 
     fun calculateTopLeftRegionX() = (x shr 3) - 6
 

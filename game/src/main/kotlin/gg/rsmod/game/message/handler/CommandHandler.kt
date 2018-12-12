@@ -2,7 +2,6 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.CommandMessage
-import gg.rsmod.game.message.impl.SendChatboxTextMessage
 import gg.rsmod.game.model.entity.Client
 
 /**
@@ -17,7 +16,7 @@ class CommandHandler : MessageHandler<CommandMessage> {
         log(client, "Command: cmd={}, args={}", command, args ?: emptyArray<String>())
 
         if (!client.world.plugins.executeCommand(client, command, args)) {
-            client.write(SendChatboxTextMessage(type = 0, message = "No valid command found: $command", username = null))
+            client.message("No valid command found: $command")
         }
     }
 }

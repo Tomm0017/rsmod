@@ -17,7 +17,7 @@ enum class UpdateBlock(val value: Int) {
 
     FACE_PAWN(0x0),
 
-    MOVEMENT(0x0),
+    MOVEMENT(0x1000),
 
     CONTEXT_MENU(0x0),
 

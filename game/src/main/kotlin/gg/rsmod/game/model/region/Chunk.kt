@@ -37,7 +37,7 @@ class Chunk(val coordinates: RegionCoordinates, heights: Int) {
 
     fun addEntity(world: World, entity: Entity) {
         entities.put(entity.tile, entity)
-        world.collision.submitUpdate(world, entity, CollisionUpdate.Type.ADDING)
+        world.collision.submitUpdate(entity, CollisionUpdate.Type.ADDING)
     }
 
     fun contains(tile: Tile): Boolean {

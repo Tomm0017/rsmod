@@ -185,7 +185,7 @@ class DefinitionSet {
             cacheRegion.locations.forEach { loc ->
                 val tile = Tile(loc.position.x, loc.position.y, loc.position.z)
                 val obj = StaticObject(loc.id, loc.type, loc.orientation, tile)
-                world.collision.regions.getChunkForTile(world, tile).addEntity(world, obj)
+                world.regions.getChunkForTile(tile).addEntity(world, obj)
             }
             return true
         } catch (e: IOException) {

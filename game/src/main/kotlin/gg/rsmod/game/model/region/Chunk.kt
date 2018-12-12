@@ -13,7 +13,7 @@ import gg.rsmod.game.model.entity.EntityType
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class Chunk(val coordinates: RegionCoordinates, val heights: Int) {
+class Chunk(val coordinates: RegionCoordinates, heights: Int) {
 
     companion object {
         /**
@@ -47,5 +47,10 @@ class Chunk(val coordinates: RegionCoordinates, val heights: Int) {
     @Suppress("UNCHECKED_CAST")
     fun <T> getEntities(vararg types: EntityType): List<T> {
         return entities.values().filter { it.getType() in types } as List<T>
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T> getEntities(tile: Tile, vararg types: EntityType): List<T> {
+        return entities.get(tile).filter { it.getType() in types } as List<T>
     }
 }

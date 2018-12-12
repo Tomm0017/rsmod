@@ -7,6 +7,7 @@ import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.PawnList
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.region.RegionSet
 import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.service.Service
@@ -27,7 +28,9 @@ class World(val server: Server, val gameContext: GameContext) {
 
     val npcs = PawnList<Npc>(Short.MAX_VALUE.toInt())
 
-    val collision = CollisionManager()
+    val collision = CollisionManager(this)
+
+    val regions = RegionSet(this)
 
     /**
      * A collection of our [Service]s specified in our game [ServerProperties]

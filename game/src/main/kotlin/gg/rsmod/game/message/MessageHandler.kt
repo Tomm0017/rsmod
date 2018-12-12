@@ -29,4 +29,10 @@ interface MessageHandler<T: Message> {
             //logger.info(format, *args)
         }
     }
+
+    fun logAntiCheat(client: Client, format: String, vararg args: Any) {
+        if (client.world.gameContext.devMode) {
+            //logger.info(format, *args)
+        }
+    }
 }

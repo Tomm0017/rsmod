@@ -80,7 +80,7 @@ open class Player(override val world: World) : Pawn(world) {
             pendingLogout = false
         }
 
-        val newChunk = world.collision.regions.getChunkForTile(world, tile)
+        val newChunk = world.regions.getChunkForTile(tile)
         if (chunk == null || chunk != newChunk) {
             val oldRegion = lastTile?.toRegionId() ?: -1
             if (oldRegion != tile.toRegionId()) {

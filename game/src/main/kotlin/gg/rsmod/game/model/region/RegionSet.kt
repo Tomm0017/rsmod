@@ -7,7 +7,7 @@ import gg.rsmod.game.model.World
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class RegionSet {
+class RegionSet(val world: World) {
 
     companion object {
         const val DEFAULT_TOTAL_HEIGHTS = 4
@@ -19,9 +19,9 @@ class RegionSet {
 
     fun getChunks(): ImmutableList<Chunk> = ImmutableList.copyOf(chunks.values)
 
-    fun getChunkForTile(world: World, tile: Tile): Chunk = getChunk(world, RegionCoordinates.fromTile(tile))
+    fun getChunkForTile(tile: Tile): Chunk = getChunk(RegionCoordinates.fromTile(tile))
 
-    fun getChunk(world: World, coordinates: RegionCoordinates): Chunk {
+    fun getChunk(coordinates: RegionCoordinates): Chunk {
         val chunk = chunks[coordinates]
         if (chunk != null) {
             return chunk

@@ -36,6 +36,8 @@ class Tile {
 
     fun transform(x: Int, z: Int): Tile = Tile(this.x + x, this.z + z, this.height)
 
+    fun viewableFrom(other: Tile): Boolean = calculateDistance(other) <= 15
+
     fun step(num: Int, direction: Direction): Tile = Tile(this.x + (num * direction.getDeltaX()), this.z + (num * direction.getDeltaZ()), this.height)
 
     /**

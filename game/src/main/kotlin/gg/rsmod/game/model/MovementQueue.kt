@@ -94,8 +94,8 @@ class MovementQueue(val pawn: Pawn) {
         var dz = next.z - current.z
         val delta = Math.max(Math.abs(dx), Math.abs(dz))
 
-        val regions = pawn.world.collision.regions
-        var region = regions.getChunkForTile(pawn.world, current)
+        val regions = pawn.world.regions
+        var region = regions.getChunkForTile(current)
 
         for (i in 0 until delta) {
             if (dx < 0) {
@@ -112,7 +112,7 @@ class MovementQueue(val pawn: Pawn) {
 
             val step = next.transform(-dx, -dz)
             if (!region.contains(step)) {
-                region = regions.getChunkForTile(pawn.world, step)
+                region = regions.getChunkForTile(step)
             }
 
             steps.add(Step(step, type))

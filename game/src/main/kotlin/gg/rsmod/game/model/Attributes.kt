@@ -1,5 +1,7 @@
 package gg.rsmod.game.model
 
+import gg.rsmod.game.model.entity.GameObject
+
 /**
  * A decoupled file that holds [AttributeKey]s that require read-access from our
  * game module. Any attributes that can be stored on the plugin classes themselves,
@@ -33,3 +35,6 @@ val COMMAND_ATTR = AttributeKey<String>()
  * [COMMAND_ATTR] attribute.
  */
 val COMMAND_ARGS_ATTR = AttributeKey<Array<String>>()
+
+val INTERACTING_OPT_ATTR = AttributeKey<Int>()
+val INTERACTING_OBJ_ATTR = AttributeKey<GameObject>()

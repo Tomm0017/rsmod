@@ -10,9 +10,8 @@ import gg.rsmod.game.model.entity.EntityType
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.model.region.RegionCoordinates
-import gg.rsmod.game.model.region.RegionSet
 
-class CollisionManager {
+class CollisionManager(world: World) {
 
     companion object {
         const val BLOCKED_TILE = 0x1
@@ -23,8 +22,6 @@ class CollisionManager {
     private val blocked: Multimap<RegionCoordinates, Tile> = HashMultimap.create()
 
     private val bridges = hashSetOf<Tile>()
-
-    val regions = RegionSet()
 
     fun block(tile: Tile) {
         blocked.put(tile.toRegionCoordinates(), tile)
@@ -45,7 +42,7 @@ class CollisionManager {
 
     fun canTraverse(world: World, tile: Tile, type: EntityType, direction: Direction): Boolean {
         val next = tile.step(1, direction)
-        var chunk = regions.getChunkForTile(world, next)
+        var chunk = world.regions.getChunkForTile(next)
         val projectile = type == EntityType.PROJECTILE
 
         if (!chunk.canTraverse(next, direction, projectile)) {
@@ -57,7 +54,7 @@ class CollisionManager {
                 val otherNext = tile.step(1, other)
 
                 if (!chunk.contains(otherNext)) {
-                    chunk = regions.getChunkForTile(world, otherNext)
+                    chunk = world.regions.getChunkForTile(otherNext)
                 }
 
                 if (!chunk.canTraverse(otherNext, other, projectile)) {
@@ -71,14 +68,14 @@ class CollisionManager {
 
     fun build(world: World, rebuilding: Boolean) {
         if (rebuilding) {
-            for (region in regions.getChunks()) {
+            for (region in world.regions.getChunks()) {
                 for (matrix in region.getMatrices()) {
                     matrix.reset()
                 }
             }
         }
 
-        regions.getChunks().forEach { chunk ->
+        world.regions.getChunks().forEach { chunk ->
             val builder = CollisionUpdate.Builder()
             builder.setType(CollisionUpdate.Type.ADDING)
 
@@ -134,7 +131,7 @@ class CollisionManager {
             }
 
             if (chunk == null || !chunk.contains(tile)) {
-                chunk = regions.getChunkForTile(world, tile)
+                chunk = world.regions.getChunkForTile(tile)
             }
 
             val localX = tile.x % Chunk.CHUNK_SIZE

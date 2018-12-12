@@ -39,6 +39,7 @@ class MessageEncoderSet {
         encoders[SendLogoutMessage::class.java] = LogoutEncoder(structures.get(SendLogoutMessage::class.java)!!)
         encoders[SendSkillMessage::class.java] = SendSkillEncoder(structures.get(SendSkillMessage::class.java)!!)
         encoders[SetRunEnergyMessage::class.java] = RunEnergyEncoder(structures.get(SetRunEnergyMessage::class.java)!!)
+        encoders[SetMinimapMarkerMessage::class.java] = MinimapMarkerEncoder(structures.get(SetMinimapMarkerMessage::class.java)!!)
     }
 
     @Suppress("UNCHECKED_CAST")

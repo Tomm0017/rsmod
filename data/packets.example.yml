@@ -199,6 +199,15 @@ packets:
         type: SHORT
         order: LITTLE
 
+  - message: gg.rsmod.game.message.impl.SetMinimapMarkerMessage
+    type: FIXED
+    opcode: 45
+    structure:
+      - name: x
+        type: BYTE
+      - name: z
+        type: BYTE
+
   # In
   - message: gg.rsmod.game.message.impl.CommandMessage
     type: VARIABLE_BYTE
@@ -280,6 +289,15 @@ packets:
       - name: hash
         type: INT
       - name: slot
+        type: SHORT
+        sign: UNSIGNED
+
+  - message: gg.rsmod.game.message.impl.ExamineObjectMessage
+    type: FIXED
+    opcode: 34
+    length: 2
+    structure:
+      - name: id
         type: SHORT
         sign: UNSIGNED
 

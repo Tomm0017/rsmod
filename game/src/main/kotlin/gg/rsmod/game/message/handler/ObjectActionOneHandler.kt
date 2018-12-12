@@ -13,6 +13,7 @@ class ObjectActionOneHandler : MessageHandler<ObjectActionOneMessage> {
     override fun handle(client: Client, message: ObjectActionOneMessage) {
         log(client, "Object Action 1: id={}, x={}, z={}, movement={}", message.id, message.x, message.z, message.movementType)
 
+        client.interruptPlugins()
         if (client.world.plugins.executeObject(client, message.id, 1)) {
             return
         }

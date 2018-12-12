@@ -25,6 +25,18 @@ enum class Direction(val value: Int) {
 
     SOUTH_EAST(7);
 
+    fun getPlayerWalkIndex(): Int = when (this) {
+        SOUTH_WEST -> 0
+        SOUTH -> 1
+        SOUTH_EAST -> 2
+        WEST -> 3
+        EAST -> 4
+        NORTH_WEST -> 5
+        NORTH -> 6
+        NORTH_EAST -> 7
+        NONE -> throw IllegalArgumentException("Invalid walk index for this direction.")
+    }
+
     fun isDiagonal(): Boolean = this == SOUTH_EAST || this == SOUTH_WEST || this == NORTH_EAST || this == NORTH_WEST
 
     fun getDeltaX(): Int = when (this) {
@@ -67,5 +79,35 @@ enum class Direction(val value: Int) {
         val WNES = arrayOf(WEST, NORTH, EAST, SOUTH)
 
         val WNES_DIAGONAL = arrayOf(NORTH_WEST, NORTH_EAST, SOUTH_EAST, SOUTH_WEST)
+
+        fun between(current: Tile, next: Tile): Direction {
+            val deltaX = next.x - current.x
+            val deltaZ = next.z - current.z
+
+            return fromDeltas(deltaX, deltaZ)
+        }
+
+        fun fromDeltas(deltaX: Int, deltaY: Int): Direction {
+            if (deltaY == 1) {
+                when (deltaX) {
+                    1 -> return NORTH_EAST
+                    0 -> return NORTH
+                    -1 -> return NORTH_WEST
+                }
+            } else if (deltaY == -1) {
+                when (deltaX) {
+                    1 -> return SOUTH_EAST
+                    0 -> return SOUTH
+                    -1 -> return SOUTH_WEST
+                }
+            } else if (deltaY == 0) {
+                when (deltaX) {
+                    1 -> return EAST
+                    0 -> return NONE
+                    -1 -> return WEST
+                }
+            }
+            throw IllegalArgumentException("Unhandled delta difference.")
+        }
     }
 }

@@ -7,6 +7,7 @@ import gg.rsmod.net.packet.DataTransformation
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
 import gg.rsmod.net.packet.PacketType
+import gg.rsmod.util.Misc
 import org.apache.logging.log4j.LogManager
 import java.util.concurrent.Phaser
 
@@ -100,8 +101,29 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                     buf.putBits(1, 1) // Tiles aren't within viewing distance
                     buf.putBits(30, (dz and 0x3fff) or ((dx and 0x3fff) shl 14) or ((dh and 0x3) shl 28))
                 }
-            } else if (local.step != null) {
+            } else if (local.steps != null) {
+                var dx = Misc.DIRECTION_DELTA_X[local.steps!!.walkDirection!!.getPlayerWalkIndex()]
+                var dz = Misc.DIRECTION_DELTA_Z[local.steps!!.walkDirection!!.getPlayerWalkIndex()]
+                var running = local.steps!!.runDirection != null
 
+                var movement = 0
+                if (running) {
+                    dx += Misc.DIRECTION_DELTA_X[local.steps!!.runDirection!!.getPlayerWalkIndex()]
+                    dz += Misc.DIRECTION_DELTA_Z[local.steps!!.runDirection!!.getPlayerWalkIndex()]
+                    movement = Misc.getPlayerRunningDirection(dx, dz)
+                    running = movement != -1
+                }
+                if (!running) {
+                    movement = Misc.getPlayerWalkingDirection(dx, dz)
+                }
+                buf.putBits(1, 1) // Requires client decoding
+                buf.putBits(1, if (running) 1 else 0) // Whether client should decode update masks
+                buf.putBits(2, if (running) 2 else 1) // Whether client should decode a walk or a run movement
+                buf.putBits(if (running) 4 else 3, movement)
+
+                if (!requiresBlockUpdate && running) {
+                    encodeBlocks(local, maskBuf, false)
+                }
             } else if (requiresBlockUpdate) {
                 buf.putBits(1, 1)
                 buf.putBits(1, 1)
@@ -110,7 +132,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 buf.putBits(1, 0)
                 for (i in iteratorIndex until player.localPlayers.size) {
                     val next = player.localPlayers[i]
-                    if (next.blockBuffer.isDirty() || next.teleport || next.step != null || next != player && shouldRemove(next)) {
+                    if (next.blockBuffer.isDirty() || next.teleport || next.steps != null || next != player && shouldRemove(next)) {
                         break
                     }
                     skip++
@@ -174,6 +196,9 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
 
     private fun encodeBlocks(other: Player, maskBuf: GamePacketBuilder, newPlayer: Boolean) {
         var mask = if (newPlayer) UpdateBlock.APPEARANCE.value else other.blockBuffer.blockValue()
+        if (other.steps?.runDirection != null) {
+            mask = mask or 0x1000
+        }
 
         if (mask >= 0x100) {
             mask = mask or 0x20
@@ -181,6 +206,10 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
             maskBuf.put(DataType.BYTE, mask shr 8)
         } else {
             maskBuf.put(DataType.BYTE, mask and 0xFF)
+        }
+
+        if (other.steps?.runDirection != null) {
+            maskBuf.put(DataType.BYTE, DataTransformation.NEGATE, 2)
         }
 
         if ((mask and 0x1) != 0) {

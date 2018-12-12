@@ -35,14 +35,7 @@ class DefinitionSet {
      */
     private val defs = hashMapOf<Class<out Definition>, Array<*>>()
 
-    private inline fun <reified T: Definition> loadDefinitions(type: Class<T>, files: MutableList<FSFile>) {
-        val definitions = Array<T?>(files.size + 1) { null }
-        for (i in 0 until files.size) {
-            val def = createDefinition(type, files[i].fileId, files[i].contents)
-            definitions[files[i].fileId] = def
-        }
-        defs[type] = definitions
-    }
+    private var xteaService: XteaKeyService? = null
 
     @Suppress("UNCHECKED_CAST")
     @Throws(RuntimeException::class)
@@ -93,6 +86,15 @@ class DefinitionSet {
         logger.info("Loaded ${objFiles.size} object definitions.")
     }
 
+    private inline fun <reified T: Definition> loadDefinitions(type: Class<T>, files: MutableList<FSFile>) {
+        val definitions = Array<T?>(files.size + 1) { null }
+        for (i in 0 until files.size) {
+            val def = createDefinition(type, files[i].fileId, files[i].contents)
+            definitions[files[i].fileId] = def
+        }
+        defs[type] = definitions
+    }
+
     fun getCount(type: Class<*>) = defs[type]!!.size
 
     @Suppress("UNCHECKED_CAST")
@@ -128,7 +130,9 @@ class DefinitionSet {
     }
 
     fun createRegion(world: World, id: Int): Boolean {
-        val xteaService = world.getService(XteaKeyService::class.java, true).orElse(null)
+        if (xteaService == null) {
+            xteaService = world.getService(XteaKeyService::class.java, true).orElse(null)
+        }
         val regionIndex = world.filestore.getIndex(IndexType.MAPS)
 
         val x = id shr 8
@@ -160,25 +164,33 @@ class DefinitionSet {
             }
         }
 
-        if (xteaService != null) {
-            val keys = xteaService.getOrNull(id) ?: return false
-            try {
-                val landData = landArchive.decompress(world.filestore.storage.loadArchive(landArchive), keys)
-                val locDef = LocationsLoader().load(x, z, landData)
-                cacheRegion.loadLocations(locDef)
-
-                cacheRegion.locations.forEach { loc ->
-                    val tile = Tile(loc.position.x, loc.position.y, loc.position.z)
-                    val obj = StaticObject(loc.id, loc.type, loc.orientation, tile)
-                    world.collision.regions.getChunkForTile(world, tile).addEntity(world, obj)
-                }
-                return true
-            } catch (e: IOException) {
-                logger.error("Could not decrypt map region {}.", id)
-                return false
-            }
+        if (xteaService == null) {
+            /**
+             * If we don't have an [XteaKeyService], then we assume we don't
+             * need to decrypt the files through xteas. This means the objects
+             * from each region has to be decrypted a different way.
+             *
+             * If this is the case, you need to use [gg.rsmod.game.model.region.Chunk.addEntity]
+             * to add the object to the world for collision detection.
+             */
+            return true
         }
 
-        return true
+        val keys = xteaService?.getOrNull(id) ?: return false
+        try {
+            val landData = landArchive.decompress(world.filestore.storage.loadArchive(landArchive), keys)
+            val locDef = LocationsLoader().load(x, z, landData)
+            cacheRegion.loadLocations(locDef)
+
+            cacheRegion.locations.forEach { loc ->
+                val tile = Tile(loc.position.x, loc.position.y, loc.position.z)
+                val obj = StaticObject(loc.id, loc.type, loc.orientation, tile)
+                world.collision.regions.getChunkForTile(world, tile).addEntity(world, obj)
+            }
+            return true
+        } catch (e: IOException) {
+            logger.error("Could not decrypt map region {}.", id)
+            return false
+        }
     }
 }

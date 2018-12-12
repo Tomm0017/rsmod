@@ -14,6 +14,8 @@ import java.util.concurrent.Phaser
 class PlayerPreSynchronizationTask(val player: Player, override val phaser: Phaser) : PhasedSynchronizationTask(phaser) {
 
     override fun execute() {
+        player.movementQueue.pulse()
+
         if (player.lastKnownRegionBase == null) {
             val regionX = ((player.tile.x shr 3) - 6) * 8
             val regionZ = ((player.tile.z shr 3) - 6) * 8

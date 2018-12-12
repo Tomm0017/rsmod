@@ -7,6 +7,10 @@ import gg.rsmod.game.model.World
  */
 class Npc(override val world: World) : Pawn(world) {
 
+    override fun isDead(): Boolean = false
+
+    override fun isRunning(): Boolean = false
+
     override fun cycle() {
 
     }

@@ -112,6 +112,18 @@ open class Player(override val world: World) : Pawn(world) {
     }
 
     /**
+     * Default method to check if a player is dead. We assume that the [Skill]
+     * with id of [3] is Hitpoints.
+     */
+    override fun isDead(): Boolean = skills.getCurrentLevel(3) == 0
+
+    /**
+     * Checks if the player is running. We assume that the [Varp] with id of
+     * [173] is the running state varp.
+     */
+    override fun isRunning(): Boolean = varps[173].state != 0
+
+    /**
      * Handles the logic that must be executed once a player has successfully
      * logged out. This means all the prerequisites have been met for the player
      * to log out of the [world].
@@ -158,9 +170,7 @@ open class Player(override val world: World) : Pawn(world) {
      *
      * @return [true] if the player is registered to a [PawnList].
      */
-    fun isOnline(): Boolean {
-        return index > 0
-    }
+    fun isOnline(): Boolean = index > 0
 
     /**
      * Default method to handle any incoming [Message]s that won't be

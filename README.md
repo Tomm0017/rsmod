@@ -132,3 +132,5 @@ through e-mail: **rspsmods@gmail.com**
 * ##### Graham Edgecombe
     - Using project structure based on Apollo
     - Using StatefulFrameDecoder, AccessMode, DataConstants, DataOrder, DataTransformation, DataType, GamePacket & GamePacketBuilder from Apollo
+* ##### Major
+    - Using Collision Detection from Apollo 

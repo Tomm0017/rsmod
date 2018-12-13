@@ -25,7 +25,7 @@ class BFSPathfindingStrategy(override val collision: CollisionManager) : Pathfin
         }
 
         val nodes = ArrayDeque<Node>()
-        val closed = hashSetOf<Tile>()
+        val closed = hashSetOf<Node>()
 
         nodes.add(Node(tile = origin, parent = null))
 
@@ -42,12 +42,16 @@ class BFSPathfindingStrategy(override val collision: CollisionManager) : Pathfin
 
             Direction.NWSE_NWNESWSE.forEach { direction ->
                 val tile = head.tile.step(1, direction)
-                if (!closed.contains(tile) && head.tile.isWithinRadius(tile, MAX_DISTANCE) && collision.canTraverse(head.tile, direction, type)) {
-                    val node = Node(tile = tile, parent = head)
+                val node = Node(tile = tile, parent = head)
+                if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE) && collision.canTraverse(head.tile, direction, type)) {
                     nodes.add(node)
-                    closed.add(tile)
+                    closed.add(node)
                 }
             }
+        }
+
+        if (tail == null) {
+            tail = closed.minBy { it.tile.calculateDistance(target) }
         }
 
         val path = ArrayDeque<Tile>()

@@ -15,6 +15,10 @@ class MovementQueue(val pawn: Pawn) {
 
     private val lastSteps: Deque<Step> = ArrayDeque()
 
+    fun hasDestination(): Boolean = steps.isNotEmpty()
+
+    fun peekLast(): Tile? = if (steps.isNotEmpty()) steps.peekLast().tile else null
+
     fun clear() {
         steps.clear()
         lastSteps.clear()

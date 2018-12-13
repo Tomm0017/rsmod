@@ -2,11 +2,11 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.ObjectActionOneMessage
+import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Client
-import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.path.plugins.ObjectPathing
 
@@ -27,7 +27,7 @@ class ObjectActionOneHandler : MessageHandler<ObjectActionOneMessage> {
          * If tile is too far away, don't process it.
          */
         val tile = Tile(message.x, message.z, client.tile.height)
-        if (!tile.viewableFrom(client.tile)) {
+        if (!tile.viewableFrom(client.tile, 24)) {
             return
         }
 

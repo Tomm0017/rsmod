@@ -9,6 +9,10 @@ import gg.rsmod.game.model.World
  */
 abstract class Entity {
 
+    companion object {
+        const val NOTHING_INTERESTING_HAPPENS = "Nothing interesting happens."
+    }
+
     /**
      * The current 3D [Tile] that this [Pawn] is standing on in the [World].
      */

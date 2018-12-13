@@ -14,7 +14,7 @@ abstract class PathfindingStrategy(open val collision: CollisionManager) {
         /**
          * The maximum distance between the origin and target tiles.
          */
-        const val MAX_DISTANCE = 16
+        const val MAX_DISTANCE = 24
     }
 
     fun getPath(origin: Tile, target: Tile, type: EntityType): PathRequest {

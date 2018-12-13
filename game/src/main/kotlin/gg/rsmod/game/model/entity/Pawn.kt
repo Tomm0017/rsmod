@@ -1,5 +1,6 @@
 package gg.rsmod.game.model.entity
 
+import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
@@ -72,18 +73,17 @@ abstract class Pawn(open val world: World) : Entity() {
     fun canMove(): Boolean = !isDead() && lock.canMove()
 
     fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType) {
-        /*if (currentPath != null) {
-            currentPath!!.discard = true
-        }*/
-        val pathfinding = BFSPathfindingStrategy(world.collision)
-        val currentPath = pathfinding.getPath(tile, Tile(x, z, tile.height), getType())
-
         movementQueue.clear()
-        //movementQueue.setFirstStep(currentPath.path.poll(), stepType)
-        var next = currentPath.path.poll()
+
+        val path = BFSPathfindingStrategy(world.collision).getPath(tile, Tile(x, z, tile.height), getType())
+        if (path.path.isEmpty() && this is Player) {
+            write(SetMinimapMarkerMessage(255, 255))
+            return
+        }
+        var next = path.path.poll()
         while (next != null) {
             movementQueue.addStep(next, stepType)
-            next = currentPath.path.poll()
+            next = path.path.poll()
         }
     }
 

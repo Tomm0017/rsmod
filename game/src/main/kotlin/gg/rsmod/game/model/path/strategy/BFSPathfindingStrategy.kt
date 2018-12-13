@@ -6,6 +6,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.PathfindingStrategy
+import org.apache.logging.log4j.LogManager
 import java.util.*
 
 /**
@@ -13,7 +14,16 @@ import java.util.*
  */
 class BFSPathfindingStrategy(override val collision: CollisionManager) : PathfindingStrategy(collision) {
 
+    companion object {
+        private val logger = LogManager.getLogger(BFSPathfindingStrategy::class.java)
+    }
+
     override fun calculatePath(origin: Tile, target: Tile, type: EntityType, request: PathRequest): Queue<Tile> {
+        if (!target.isWithinRadius(origin, MAX_DISTANCE)) {
+            logger.error("Target tile is not within view distance of origin. [origin=$origin, target=$target, distance=${origin.calculateDistance(target)}]")
+            return ArrayDeque()
+        }
+
         val nodes = ArrayDeque<Node>()
         val closed = hashSetOf<Tile>()
 
@@ -21,7 +31,8 @@ class BFSPathfindingStrategy(override val collision: CollisionManager) : Pathfin
 
         var tail: Node? = null
 
-        while (nodes.isNotEmpty() && !request.discard) {
+        var maxSearch = 2048
+        while (nodes.isNotEmpty() && !request.discard && maxSearch-- > 0) {
             val head = nodes.poll()
 
             if (head.tile.sameAs(target)) {

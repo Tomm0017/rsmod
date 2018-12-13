@@ -2,6 +2,7 @@ package gg.rsmod.game.message
 
 import gg.rsmod.game.message.codec.MessageDecoder
 import gg.rsmod.game.message.codec.decoder.*
+import gg.rsmod.game.message.handler.*
 import gg.rsmod.game.message.impl.*
 
 /**
@@ -18,27 +19,39 @@ class MessageDecoderSet {
     private val decoders = arrayOfNulls<MessageDecoder<*>>(256)
 
     /**
-     * Links [Message]s to their respective [MessageDecoder]s.
+     * The [MessageHandler]s stored in respect to their opcode.
+     */
+    private val handlers = arrayOfNulls<MessageHandler<out Message>>(256)
+
+    /**
+     * Links [Message]s to their respective [MessageDecoder]s and [MessageHandler].
      */
     fun init(structures: MessageStructureSet) {
-        put(CommandMessage::class.java, CommandDecoder(), structures)
-        put(ChangeDisplayModeMessage::class.java, DisplayModeDecoder(), structures)
-        put(ClickMapMovementMessage::class.java, ClickMapDecoder(), structures)
-        put(ObjectActionOneMessage::class.java, ObjectActionOneDecoder(), structures)
-        put(ClickButtonMessage::class.java, ClickButtonDecoder(), structures)
-        put(ContinueDialogMessage::class.java, ContinueDialogDecoder(), structures)
-        put(ExamineObjectMessage::class.java, ExamineObjectDecoder(), structures)
+        put(CommandMessage::class.java, CommandDecoder(), CommandHandler(), structures)
+        put(ChangeDisplayModeMessage::class.java, DisplayModeDecoder(), DisplayModeHandler(), structures)
+        put(ClickMapMessage::class.java, ClickMapDecoder(), ClickMapHandler(), structures)
+        put(ClickMinimapMessage::class.java, ClickMinimapDecoder(), ClickMinimapHandler(), structures)
+        put(ObjectActionOneMessage::class.java, ObjectActionOneDecoder(), ObjectActionOneHandler(), structures)
+        put(ClickButtonMessage::class.java, ClickButtonDecoder(), ClickButtonHandler(), structures)
+        put(ContinueDialogMessage::class.java, ContinueDialogDecoder(), ContinueDialogHandler(), structures)
+        put(ExamineObjectMessage::class.java, ExamineObjectDecoder(), ExamineObjectHandler(), structures)
     }
 
-    private fun put(messageType: Class<out Message>, decoderType: MessageDecoder<out Message>, structures: MessageStructureSet) {
+    private fun <T: Message> put(messageType: Class<T>, decoderType: MessageDecoder<T>, handlerType: MessageHandler<T>, structures: MessageStructureSet) {
         val structure = structures.get(messageType)!!
         structure.opcodes.forEach { opcode ->
             decoders[opcode] = decoderType
+            handlers[opcode] = handlerType
         }
     }
 
     @Suppress("UNCHECKED_CAST")
     fun get(opcode: Int): MessageDecoder<*>? {
         return decoders[opcode]
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun getHandler(opcode: Int): MessageHandler<Message>? {
+        return handlers[opcode] as MessageHandler<Message>?
     }
 }

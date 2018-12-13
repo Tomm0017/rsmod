@@ -230,9 +230,25 @@ packets:
         sign: UNSIGNED
         type: SHORT
 
-  - message: gg.rsmod.game.message.impl.ClickMapMovementMessage
+  - message: gg.rsmod.game.message.impl.ClickMapMessage
     type: VARIABLE_BYTE
     opcode: 63
+    structure:
+      - name: x
+        trans: ADD
+        order: LITTLE
+        type: SHORT
+        sign: UNSIGNED
+      - name: z
+        trans: ADD
+        sign: UNSIGNED
+        type: SHORT
+      - name: movement_type
+        type: BYTE
+
+  - message: gg.rsmod.game.message.impl.ClickMinimapMessage
+    type: VARIABLE_BYTE
+    opcode: 64
     structure:
       - name: x
         trans: ADD

@@ -1,4 +1,4 @@
-package gg.rsmod.game.model.path.plugins
+package gg.rsmod.game.model.path.actions
 
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ObjectDef
@@ -16,7 +16,7 @@ import gg.rsmod.util.DataConstants
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-object ObjectPathing {
+object ObjectPathfinder {
 
     /**
      * TODO: varrock museum, basement staircase shouldn't be valid where the rope is

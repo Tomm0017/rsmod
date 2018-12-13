@@ -121,7 +121,6 @@ class Server {
         gameService.messageStructures.load(packets.toFile())
         gameService.messageEncoders.init(gameService.messageStructures)
         gameService.messageDecoders.init(gameService.messageStructures)
-        gameService.messageHandlers.init(gameService.messageStructures)
         logger.info("Loaded message codec and handlers in {}ms.", individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**

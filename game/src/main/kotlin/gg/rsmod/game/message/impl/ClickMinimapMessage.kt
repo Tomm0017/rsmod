@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class ClickMapMovementMessage(val x: Int, val z: Int, val movementType: Int) : Message
+data class ClickMinimapMessage(val x: Int, val z: Int, val movementType: Int) : Message

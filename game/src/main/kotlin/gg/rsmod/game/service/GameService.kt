@@ -4,7 +4,6 @@ import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.message.MessageDecoderSet
 import gg.rsmod.game.message.MessageEncoderSet
-import gg.rsmod.game.message.MessageHandlerSet
 import gg.rsmod.game.message.MessageStructureSet
 import gg.rsmod.game.model.World
 import gg.rsmod.game.task.*
@@ -112,8 +111,6 @@ class GameService : Service() {
     val messageEncoders = MessageEncoderSet()
 
     val messageDecoders = MessageDecoderSet()
-
-    val messageHandlers = MessageHandlerSet()
 
     @Throws(Exception::class)
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {

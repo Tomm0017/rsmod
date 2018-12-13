@@ -6,7 +6,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.path.PathfindingStrategy
-import gg.rsmod.game.model.path.plugins.ObjectPathing
+import gg.rsmod.game.model.path.actions.ObjectPathfinder
 import org.apache.logging.log4j.LogManager
 import java.util.*
 
@@ -85,7 +85,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
             return ArrayDeque()
         }
 
-        val validTiles = ObjectPathing.getValidTiles(world.definitions, obj)
+        val validTiles = ObjectPathfinder.getValidTiles(world.definitions, obj)
 
         val nodes = ArrayDeque<Node>()
         val closed = hashSetOf<Node>()

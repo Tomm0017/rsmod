@@ -29,10 +29,6 @@ object ObjectPathing {
         val opt = p.attr[INTERACTING_OPT_ATTR]
 
         val validTiles = getValidTiles(p.world.definitions, obj)
-        println("Valid tiles:")
-        validTiles.forEach { tile ->
-            println("\t$tile")
-        }
         if (p.tile !in validTiles) {
             p.walkTo(obj, MovementQueue.StepType.NORMAL)
             it.suspendable {
@@ -46,118 +42,15 @@ object ObjectPathing {
         }
     }
 
-    fun getValidTiles(definitions: DefinitionSet, obj: GameObject): Array<Tile> {
-        val directions = hashSetOf<Tile>()
+    private fun handleAction(it: Plugin, obj: GameObject, opt: Int) {
+        val p = it.player()
 
-        val def = definitions.get(ObjectDef::class.java, obj.id)
-        val rot = obj.rot
-        val type = obj.type
-        var width = def.width
-        var length = def.length
-
-        if (rot == 1 || rot == 3) {
-            width = def.length
-            length = def.width
-        }
-
-        val blockBits = 4
-        val clipMask = def.clipFlag
-        val clipFlag = (DataConstants.BIT_MASK[blockBits] and (clipMask shl rot)) or (clipMask shr (blockBits - rot))
-
-        println("mask=$clipMask, flag=$clipFlag, type=${obj.type}, rot=${obj.rot}, width=$width, length=$length, tile=${obj.tile}")
-
-        //blocked=7,flag=11 : stairs from west to east
-        //blocked=7,flag=14 : stairs up from west to east
-        //blocked=11,flag=11 : staircase up from south to north
-        //blocked=11,flag=13 : poll booth from south to north
-        //blocked=13,flag=14 : stairs up from east to west
-        //blocked=14,flag=14 : ladders from north to south (maybe south to north as well)
-        //blocked=14,flag=11 : bank deposit from north to south
-
-        when (clipFlag) {
-            7 -> { // West to east
-                for (z in 0 until length) {
-                    directions.add(obj.tile.transform(-1, z))
-                }
-                return directions.toTypedArray()
-            }
-            11 -> { // South to north.
-                for (x in 0 until width) {
-                    directions.add(obj.tile.transform(x, -1))
-                }
-                return directions.toTypedArray()
-            }
-            13 -> { // East to west
-                for (z in 0 until length) {
-                    directions.add(obj.tile.transform(width, z))
-                }
-                return directions.toTypedArray()
-            }
-            14 -> { // North to south
-                for (x in 0 until width) {
-                    directions.add(obj.tile.transform(x, length))
-                }
-                return directions.toTypedArray()
+        if (!p.world.plugins.executeObject(p, obj.id, opt)) {
+            p.message(Entity.NOTHING_INTERESTING_HAPPENS)
+            if (p.world.gameContext.devMode) {
+                p.message("Unhandled object action: [opt=$opt, id=${obj.id}, type=${obj.type}, rot=${obj.rot}, x=${obj.tile.x}, z=${obj.tile.z}]")
             }
         }
-
-        if (type >= ObjectType.INTERACTABLE.value && type <= ObjectType.FLOOR_DECORATION.value) {
-            /**
-             * A 1x1 object can be interacted with from any side, except
-             * diagonal tiles.
-             */
-            if (width == 1 && length == 1) {
-                for (x in -1 .. width) {
-                    for (z in -1 .. length) {
-
-                        if (x == -1 && z == -1 || x == width && z == -1
-                                || x == -1 && z == length || x == width && z == length) {
-                            continue
-                        }
-
-                        directions.add(obj.tile.transform(x, z))
-                    }
-                }
-                return directions.toTypedArray()
-            }
-
-            /**
-             * Rotation one can only be accessed from the south & north side.
-             * Rotation three can only be accessed from the north side.
-             */
-            if (rot == 1 || rot == 3) {
-                for (x in 0 until width) {
-                    directions.add(obj.tile.transform(x, if (rot == 1) -1 else length))
-                    if (rot == 1) {
-                        directions.add(obj.tile.transform(x, length))
-                    }
-                }
-                return directions.toTypedArray()
-            }
-
-            /**
-             * Rotation zero can only be accessed from the south side.
-             * Rotation three can only be accessed from the north side.
-             */
-            if (rot == 0 || rot == 2) {
-                for (x in 0 until width) {
-                    directions.add(obj.tile.transform(x, if (rot == 0) -1 else length))
-                }
-                return directions.toTypedArray()
-            }
-        } else if (type == ObjectType.LENGTHWISE_WALL.value) {
-            /**
-             * Doors, mainly.
-             */
-            return when (rot) {
-                1 -> arrayOf(obj.tile.transform(-1, 0), obj.tile.transform(0, 0), obj.tile.transform(0, 1), obj.tile.transform(0, -1))
-                2 -> arrayOf(obj.tile.transform(0, 0), obj.tile.transform(1, 0))
-                3 -> arrayOf(obj.tile.transform(0, -1), obj.tile.transform(0, 0))
-                else -> arrayOf(obj.tile.transform(0, 0), obj.tile.transform(-1, 0))
-            }
-        }
-
-        return directions.toTypedArray()
     }
 
     private suspend fun awaitArrival(it: Plugin, obj: GameObject, opt: Int) {
@@ -218,14 +111,115 @@ object ObjectPathing {
         }
     }
 
-    private fun handleAction(it: Plugin, obj: GameObject, opt: Int) {
-        val p = it.player()
+    fun getValidTiles(definitions: DefinitionSet, obj: GameObject): Array<Tile> {
+        val directions = hashSetOf<Tile>()
 
-        if (!p.world.plugins.executeObject(p, obj.id, opt)) {
-            p.message(Entity.NOTHING_INTERESTING_HAPPENS)
-            if (p.world.gameContext.devMode) {
-                p.message("Unhandled object action: [opt=$opt, id=${obj.id}, type=${obj.type}, rot=${obj.rot}, x=${obj.tile.x}, z=${obj.tile.z}]")
+        val def = definitions.get(ObjectDef::class.java, obj.id)
+        val rot = obj.rot
+        val type = obj.type
+        var width = def.width
+        var length = def.length
+
+        if (rot == 1 || rot == 3) {
+            width = def.length
+            length = def.width
+        }
+
+        val blockBits = 4
+        val clipMask = def.clipFlag
+        val clipFlag = (DataConstants.BIT_MASK[blockBits] and (clipMask shl rot)) or (clipMask shr (blockBits - rot))
+
+        when (clipFlag) {
+            7 -> { // West to east
+                for (z in 0 until length) {
+                    directions.add(obj.tile.transform(-1, z))
+                }
+                return directions.toTypedArray()
+            }
+            11 -> { // South to north.
+                for (x in 0 until width) {
+                    directions.add(obj.tile.transform(x, -1))
+                }
+                return directions.toTypedArray()
+            }
+            13 -> { // East to west
+                for (z in 0 until length) {
+                    directions.add(obj.tile.transform(width, z))
+                }
+                return directions.toTypedArray()
+            }
+            14 -> { // North to south
+                for (x in 0 until width) {
+                    directions.add(obj.tile.transform(x, length))
+                }
+                return directions.toTypedArray()
             }
         }
+
+        if (type >= ObjectType.INTERACTABLE.value && type <= ObjectType.FLOOR_DECORATION.value) {
+            /**
+             * 1x1 and 2x2 objects can be interacted from any side, except
+             * diagonal tiles.
+             */
+            if (width <= 2 && length <= 2) {
+                for (x in -1 .. width) {
+                    for (z in -1 .. length) {
+
+                        if (x == -1 && z == -1 || x == width && z == -1
+                                || x == -1 && z == length || x == width && z == length) {
+                            continue
+                        }
+
+                        directions.add(obj.tile.transform(x, z))
+                    }
+                }
+                return directions.toTypedArray()
+            }
+
+            /**
+             * Rotation one can only be accessed from the south & north side.
+             * Rotation three can only be accessed from the north side.
+             */
+            if (rot == 1 || rot == 3) {
+                for (x in 0 until width) {
+                    directions.add(obj.tile.transform(x, if (rot == 1) -1 else length))
+                    if (rot == 1) {
+                        directions.add(obj.tile.transform(x, length))
+                    }
+                }
+                return directions.toTypedArray()
+            }
+
+            /**
+             * Rotation zero can only be accessed from the south side.
+             * Rotation three can only be accessed from the north side.
+             */
+            if (rot == 0 || rot == 2) {
+                for (x in 0 until width) {
+                    directions.add(obj.tile.transform(x, if (rot == 0) -1 else length))
+                }
+                return directions.toTypedArray()
+            }
+        } else if (type == ObjectType.LENGTHWISE_WALL.value) {
+            /**
+             * Doors, mainly.
+             */
+            return when (rot) {
+                1 -> arrayOf(obj.tile.transform(-1, 0), obj.tile.transform(0, 0), obj.tile.transform(0, 1), obj.tile.transform(0, -1))
+                2 -> arrayOf(obj.tile.transform(0, 0), obj.tile.transform(1, 0))
+                3 -> arrayOf(obj.tile.transform(0, -1), obj.tile.transform(0, 0))
+                else -> arrayOf(obj.tile.transform(0, 0), obj.tile.transform(-1, 0))
+            }
+        } else if (type == 5) {
+            /**
+             * Varrock agility course start is type 5. Look more into this type
+             * to insert it into [ObjectType] properly.
+             */
+            return when (rot) {
+                else -> arrayOf(obj.tile.transform(0, 0))
+            }
+        }
+
+        return directions.toTypedArray()
     }
 }

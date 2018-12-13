@@ -1,5 +1,6 @@
 package gg.rsmod.game.model.path.plugins
 
+import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.INTERACTING_OPT_ATTR
@@ -17,12 +18,23 @@ import gg.rsmod.util.DataConstants
  */
 object ObjectPathing {
 
+    /**
+     * TODO: varrock museum, basement staircase shouldn't be valid where the rope is
+     * TODO: varrock anvil on east side, the entrances r being clipped for some reason
+     */
+
     val walkPlugin: (Plugin) -> Unit = {
         val p = it.player()
         val obj = p.attr[INTERACTING_OBJ_ATTR]
         val opt = p.attr[INTERACTING_OPT_ATTR]
-        if (!isTouching(p, obj)) {
-            walkTo(p, obj)
+
+        val validTiles = getValidTiles(p.world.definitions, obj)
+        println("Valid tiles:")
+        validTiles.forEach { tile ->
+            println("\t$tile")
+        }
+        if (p.tile !in validTiles) {
+            p.walkTo(obj, MovementQueue.StepType.NORMAL)
             it.suspendable {
                 awaitArrival(it, obj, opt)
             }
@@ -34,56 +46,118 @@ object ObjectPathing {
         }
     }
 
-    private fun walkTo(p: Player, obj: GameObject) {
-        val def = p.world.definitions[ObjectDef::class.java][obj.id]
+    fun getValidTiles(definitions: DefinitionSet, obj: GameObject): Array<Tile> {
+        val directions = hashSetOf<Tile>()
+
+        val def = definitions.get(ObjectDef::class.java, obj.id)
         val rot = obj.rot
-        val flag = def.clipFlag
+        val type = obj.type
         var width = def.width
         var length = def.length
-        var x = obj.tile.x
-        var z = obj.tile.z
 
-        val blockBits = 4
-        val blockedDirections = (DataConstants.BIT_MASK[blockBits] and (flag shl rot)) + (flag shr (blockBits - rot))
-
-        /**
-         * The dimensions are swapped when the object has any of these rotations.
-         */
         if (rot == 1 || rot == 3) {
             width = def.length
             length = def.width
         }
 
-        /**
-         * Can only interact from West side.
-         */
-        if ((blockedDirections and 0x7) == 0x7) {
-            x -= 1
-        }
+        val blockBits = 4
+        val clipMask = def.clipFlag
+        val clipFlag = (DataConstants.BIT_MASK[blockBits] and (clipMask shl rot)) or (clipMask shr (blockBits - rot))
 
-        /**
-         * Can only interact from North side.
-         */
-        if ((blockedDirections and 0xe) == 0xe) {
-            z += 1
-            if (p.tile.x - obj.tile.x in 1..width) {
-                x = obj.tile.x + (width - 1)
+        println("mask=$clipMask, flag=$clipFlag, type=${obj.type}, rot=${obj.rot}, width=$width, length=$length, tile=${obj.tile}")
+
+        //blocked=7,flag=11 : stairs from west to east
+        //blocked=7,flag=14 : stairs up from west to east
+        //blocked=11,flag=11 : staircase up from south to north
+        //blocked=11,flag=13 : poll booth from south to north
+        //blocked=13,flag=14 : stairs up from east to west
+        //blocked=14,flag=14 : ladders from north to south (maybe south to north as well)
+        //blocked=14,flag=11 : bank deposit from north to south
+
+        when (clipFlag) {
+            7 -> { // West to east
+                for (z in 0 until length) {
+                    directions.add(obj.tile.transform(-1, z))
+                }
+                return directions.toTypedArray()
+            }
+            11 -> { // South to north.
+                for (x in 0 until width) {
+                    directions.add(obj.tile.transform(x, -1))
+                }
+                return directions.toTypedArray()
+            }
+            13 -> { // East to west
+                for (z in 0 until length) {
+                    directions.add(obj.tile.transform(width, z))
+                }
+                return directions.toTypedArray()
+            }
+            14 -> { // North to south
+                for (x in 0 until width) {
+                    directions.add(obj.tile.transform(x, length))
+                }
+                return directions.toTypedArray()
             }
         }
 
-        /**
-         * Can only interact from South side.
-         */
-        if ((blockedDirections and 0xb) == 0xb || rot == 1 && width > 1) {
-            z -= 1
-            if (p.tile.x - obj.tile.x in 1..width) {
-                x = obj.tile.x + (width - 1)
+        if (type >= ObjectType.INTERACTABLE.value && type <= ObjectType.FLOOR_DECORATION.value) {
+            /**
+             * A 1x1 object can be interacted with from any side, except
+             * diagonal tiles.
+             */
+            if (width == 1 && length == 1) {
+                for (x in -1 .. width) {
+                    for (z in -1 .. length) {
+
+                        if (x == -1 && z == -1 || x == width && z == -1
+                                || x == -1 && z == length || x == width && z == length) {
+                            continue
+                        }
+
+                        directions.add(obj.tile.transform(x, z))
+                    }
+                }
+                return directions.toTypedArray()
+            }
+
+            /**
+             * Rotation one can only be accessed from the south & north side.
+             * Rotation three can only be accessed from the north side.
+             */
+            if (rot == 1 || rot == 3) {
+                for (x in 0 until width) {
+                    directions.add(obj.tile.transform(x, if (rot == 1) -1 else length))
+                    if (rot == 1) {
+                        directions.add(obj.tile.transform(x, length))
+                    }
+                }
+                return directions.toTypedArray()
+            }
+
+            /**
+             * Rotation zero can only be accessed from the south side.
+             * Rotation three can only be accessed from the north side.
+             */
+            if (rot == 0 || rot == 2) {
+                for (x in 0 until width) {
+                    directions.add(obj.tile.transform(x, if (rot == 0) -1 else length))
+                }
+                return directions.toTypedArray()
+            }
+        } else if (type == ObjectType.LENGTHWISE_WALL.value) {
+            /**
+             * Doors, mainly.
+             */
+            return when (rot) {
+                1 -> arrayOf(obj.tile.transform(-1, 0), obj.tile.transform(0, 0), obj.tile.transform(0, 1), obj.tile.transform(0, -1))
+                2 -> arrayOf(obj.tile.transform(0, 0), obj.tile.transform(1, 0))
+                3 -> arrayOf(obj.tile.transform(0, -1), obj.tile.transform(0, 0))
+                else -> arrayOf(obj.tile.transform(0, 0), obj.tile.transform(-1, 0))
             }
         }
 
-        println("walk to: $x, $z")
-
-        p.walkTo(x, z, MovementQueue.StepType.NORMAL, width, length)
+        return directions.toTypedArray()
     }
 
     private suspend fun awaitArrival(it: Plugin, obj: GameObject, opt: Int) {
@@ -100,7 +174,7 @@ object ObjectPathing {
             }
             faceObj(p, obj)
             it.wait(1)
-            if (isTouching(p, obj)) {
+            if (p.tile in getValidTiles(p.world.definitions, obj)) {
                 handleAction(it, obj, opt)
             } else {
                 p.message(Entity.YOU_CANT_REACH_THAT)
@@ -153,124 +227,5 @@ object ObjectPathing {
                 p.message("Unhandled object action: [opt=$opt, id=${obj.id}, type=${obj.type}, rot=${obj.rot}, x=${obj.tile.x}, z=${obj.tile.z}]")
             }
         }
-    }
-
-    private fun isTouching(p: Player, obj: GameObject): Boolean {
-        val world = p.world
-        val def = world.definitions.get(ObjectDef::class.java, obj.id)
-        val type = obj.type
-        val rot = obj.rot
-        var width = def.width
-        var length = def.length
-        val flag = def.clipFlag
-        val blockBits = 4
-
-        if (type == 10 || type == 11 || type == 22) {
-            val blockedDirections = (DataConstants.BIT_MASK[blockBits] and (flag shl rot)) + (flag shr (blockBits - rot))
-
-            if (rot == 1 || rot == 3) {
-                width = def.length
-                length = def.width
-            }
-
-            println("blocked=$blockedDirections, flag=$flag, rot=$rot, type=$type width=$width, length=$length, tile=${obj.tile}, player=${p.tile}")
-
-            if (blockedDirections == 0) {
-                if (width == 1 && length == 1) {
-                    for (x in -1..1) {
-                        for (z in -1..1) {
-                            if (x == -1 && z == -1 || x == 1 && z == 1 || x == 1 && z == -1 || x == -1 && z == 1) {
-                                continue
-                            }
-                            val tile = obj.tile.transform(x, z)
-                            if (p.tile.sameAs(tile)) {
-                                return true
-                            }
-                        }
-                    }
-                } else {
-                    when (rot) {
-                        1 -> {
-                            for (x in 0 until width) {
-                                for (z in -1 until length) {
-                                    val tile = obj.tile.transform(x, z)
-                                    if (p.tile.sameAs(tile)) {
-                                        return true
-                                    }
-                                }
-                            }
-                        }
-                        3 -> {
-                            for (x in 0 until width) {
-                                for (z in 0..length) {
-                                    val tile = obj.tile.transform(x, z)
-                                    if (p.tile.sameAs(tile)) {
-                                        return true
-                                    }
-                                }
-                            }
-                        }
-                        else -> {
-                            for (x in 0..width) {
-                                for (z in 0..length) {
-                                    val tile = obj.tile.transform(x, z)
-                                    if (p.tile.sameAs(tile)) {
-                                        return true
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                //TODO: find flag for east only
-
-                /**
-                 * Can only interact from West side.
-                 */
-                if ((blockedDirections and 0x7) == 0x7) {
-                    for (z in 0 until length) {
-                        val tile = obj.tile.transform(-width, z)
-                        if (p.tile.sameAs(tile)) {
-                            return true
-                        }
-                    }
-                }
-
-                /**
-                 * Can only interact from North side.
-                 */
-                if ((blockedDirections and 0xe) == 0xe) {
-                    // can interact from north
-                    for (x in 0 until width) {
-                        val tile = obj.tile.transform(x, length)
-                        if (p.tile.sameAs(tile)) {
-                            return true
-                        }
-                    }
-                }
-
-                /**
-                 * Can only interact from South side.
-                 */
-                if ((blockedDirections and 0xb) == 0xb) {
-                    for (x in 0 until width) {
-                        val tile = obj.tile.transform(x, -length)
-                        if (p.tile.sameAs(tile)) {
-                            return true
-                        }
-                    }
-                }
-            }
-        } else {
-            if (width == 1 && length == 1) {
-                return when (rot) {
-                    0, 2 -> arrayOf(obj.tile.transform(-1, 0), obj.tile.transform(0, 0)).any { p.tile.sameAs(it) }
-                    1, 3 -> arrayOf(obj.tile.transform(0, 1), obj.tile.transform(0, 0)).any { p.tile.sameAs(it) }
-                    else -> false
-                }
-            }
-        }
-        return false
     }
 }

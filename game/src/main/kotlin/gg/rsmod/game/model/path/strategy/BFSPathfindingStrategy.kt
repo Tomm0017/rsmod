@@ -3,23 +3,22 @@ package gg.rsmod.game.model.path.strategy
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.collision.CollisionManager
-import gg.rsmod.game.model.path.PathRequest
+import gg.rsmod.game.model.World
+import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.path.PathfindingStrategy
+import gg.rsmod.game.model.path.plugins.ObjectPathing
 import org.apache.logging.log4j.LogManager
 import java.util.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class BFSPathfindingStrategy(override val collision: CollisionManager) : PathfindingStrategy(collision) {
-
+class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(world) {
     companion object {
+
         private val logger = LogManager.getLogger(BFSPathfindingStrategy::class.java)
     }
-
-    override fun calculatePath(origin: Tile, target: Tile, type: EntityType, request: PathRequest,
-                               targetWidth: Int, targetLength: Int): Queue<Tile> {
+    override fun calculatePath(origin: Tile, target: Tile, type: EntityType): Queue<Tile> {
         if (!target.isWithinRadius(origin, MAX_DISTANCE)) {
             logger.error("Target tile is not within view distance of origin. [origin=$origin, target=$target, distance=${origin.calculateDistance(target)}]")
             return ArrayDeque()
@@ -33,7 +32,7 @@ class BFSPathfindingStrategy(override val collision: CollisionManager) : Pathfin
         var tail: Node? = null
 
         var maxSearch = 2048
-        while (nodes.isNotEmpty() && !request.discard && maxSearch-- > 0) {
+        while (nodes.isNotEmpty() && maxSearch-- > 0) {
             val head = nodes.poll()
 
             if (head.tile.sameAs(target)) {
@@ -41,10 +40,10 @@ class BFSPathfindingStrategy(override val collision: CollisionManager) : Pathfin
                 break
             }
 
-            Direction.NWSE_NWNESWSE.forEach { direction ->
+            Direction.RS_ORDER.forEach { direction ->
                 val tile = head.tile.step(1, direction)
                 val node = Node(tile = tile, parent = head)
-                if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE) && collision.canTraverse(head.tile, direction, type)) {
+                if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE) && world.collision.canTraverse(head.tile, direction, type)) {
                     nodes.add(node)
                     closed.add(node)
                 }
@@ -52,51 +51,84 @@ class BFSPathfindingStrategy(override val collision: CollisionManager) : Pathfin
         }
 
         if (tail == null) {
-            if (targetLength <= 1 && targetWidth <= 1) {
-                /**
-                 * We get the closest node to the [target], but keep in mind that
-                 * multiple nodes may have the same distance (i.e the first layer
-                 * of border outside of the [target]).
-                 */
-                val min = closed.minBy { it.tile.calculateDistance(target) }!!
+            /**
+             * We get the closest node to the [target], but keep in mind that
+             * multiple nodes may have the same distance (i.e the first layer
+             * of border outside of the [target]).
+             */
+            val min = closed.minBy { it.tile.calculateDistance(target) }!!
 
-                /**
-                 * The destination will be the closest tile to the player, out of
-                 * the nodes that have the minimum distance from the [target].
-                 * This is so that the destination will be the closest to the
-                 * [origin].
-                 */
-                tail = closed.filter { !it.tile.sameAs(origin) && it.tile.calculateDistance(target) <= min.tile.calculateDistance(target) }
-                        .minBy { it.tile.calculateDelta(origin) }
-            } else {
-                /**
-                 * TODO: this is different per object rot and shit. We need a separate
-                 * method for pathing on objects so we can just pass the game obj
-                 * as a parameter. all this complicated shit should be there instead of here.
-                 * this one should be the default getPath for walking/simple tasks
-                 */
-                val neighbors = arrayListOf<Tile>()
-                for (x in 0 until targetWidth) {
-                    for (z in 0..targetLength) {
-                        val tile = target.transform(x, z)
-                        neighbors.add(tile)
-                    }
-                }
+            /**
+             * The destination will be the closest tile to the player, out of
+             * the nodes that have the minimum distance from the [target].
+             * This is so that the destination will be the closest to the
+             * [origin].
+             */
+            tail = closed.filter { !it.tile.sameAs(origin) && it.tile.calculateDistance(target) <= min.tile.calculateDistance(target) }
+                    .minBy { it.tile.calculateDelta(origin) }
+        }
 
-                var bestCost = Int.MAX_VALUE
-                val valid = closed.filter { !it.tile.sameAs(origin) && neighbors.contains(it.tile) }
-                for (node in valid) {
-                    val cost = (node.tile.calculateDistance(origin) * 2) + node.tile.calculateDelta(target)
-                    if (cost < bestCost) {
-                        tail = node
-                        bestCost = cost
+        val path = ArrayDeque<Tile>()
+        while (tail?.parent != null) {
+            path.addFirst(tail.tile)
+            tail = tail.parent
+        }
+
+        return path
+    }
+
+    override fun calculatePath(origin: Tile, obj: GameObject, type: EntityType): Queue<Tile> {
+        val target = obj.tile
+
+        if (!target.isWithinRadius(origin, MAX_DISTANCE)) {
+            logger.error("Target tile is not within view distance of origin. [origin=$origin, target=$target, distance=${origin.calculateDistance(target)}]")
+            return ArrayDeque()
+        }
+
+        val validTiles = ObjectPathing.getValidTiles(world.definitions, obj)
+
+        val nodes = ArrayDeque<Node>()
+        val closed = hashSetOf<Node>()
+        val validNodes = arrayListOf<Node>()
+
+        nodes.add(Node(tile = origin, parent = null))
+
+        var tail: Node? = null
+
+        var maxSearch = 2048
+        while (nodes.isNotEmpty() && maxSearch-- > 0) {
+            val head = nodes.poll()
+
+            if (head.tile.sameAs(target)) {
+                tail = head
+                break
+            }
+
+            Direction.RS_ORDER.forEach { direction ->
+                val tile = head.tile.step(1, direction)
+                val node = Node(tile = tile, parent = head)
+                if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE) && world.collision.canTraverse(head.tile, direction, type)) {
+                    nodes.add(node)
+                    closed.add(node)
+                    if (node.tile in validTiles) {
+                        validNodes.add(node)
                     }
                 }
             }
         }
 
+        if (tail == null && validNodes.isNotEmpty()) {
+            tail = validNodes.first()
+        }
+
+        if (tail == null) {
+            val min = closed.minBy { it.tile.calculateDistance(target) }!!
+            tail = closed.filter { !it.tile.sameAs(origin) && it.tile.calculateDistance(target) <= min.tile.calculateDistance(target) }
+                    .minBy { it.tile.calculateDelta(origin) }
+        }
+
         val path = ArrayDeque<Tile>()
-        while (tail?.parent != null && !request.discard) {
+        while (tail?.parent != null) {
             path.addFirst(tail.tile)
             tail = tail.parent
         }

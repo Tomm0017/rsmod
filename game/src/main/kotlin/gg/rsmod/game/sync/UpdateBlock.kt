@@ -13,7 +13,7 @@ enum class UpdateBlock(val value: Int) {
 
     CHAT(0x0),
 
-    FACE_TILE(0x0),
+    FACE_TILE(0x2),
 
     FACE_PAWN(0x0),
 

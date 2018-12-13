@@ -17,11 +17,12 @@ abstract class PathfindingStrategy(open val collision: CollisionManager) {
         const val MAX_DISTANCE = 24
     }
 
-    fun getPath(origin: Tile, target: Tile, type: EntityType): PathRequest {
+    fun getPath(origin: Tile, target: Tile, type: EntityType, targetWidth: Int, targetLength: Int): PathRequest {
         val result = PathRequest()
-        result.path = calculatePath(origin, target, type, result)
+        result.path = calculatePath(origin, target, type, result, targetWidth, targetLength)
         return result
     }
 
-    protected abstract fun calculatePath(origin: Tile, target: Tile, type: EntityType, request: PathRequest): Queue<Tile>
+    protected abstract fun calculatePath(origin: Tile, target: Tile, type: EntityType, request: PathRequest,
+                                         targetWidth: Int, targetLength: Int): Queue<Tile>
 }

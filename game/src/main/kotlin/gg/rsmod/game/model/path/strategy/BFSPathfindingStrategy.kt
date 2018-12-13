@@ -18,7 +18,8 @@ class BFSPathfindingStrategy(override val collision: CollisionManager) : Pathfin
         private val logger = LogManager.getLogger(BFSPathfindingStrategy::class.java)
     }
 
-    override fun calculatePath(origin: Tile, target: Tile, type: EntityType, request: PathRequest): Queue<Tile> {
+    override fun calculatePath(origin: Tile, target: Tile, type: EntityType, request: PathRequest,
+                               targetWidth: Int, targetLength: Int): Queue<Tile> {
         if (!target.isWithinRadius(origin, MAX_DISTANCE)) {
             logger.error("Target tile is not within view distance of origin. [origin=$origin, target=$target, distance=${origin.calculateDistance(target)}]")
             return ArrayDeque()
@@ -51,7 +52,47 @@ class BFSPathfindingStrategy(override val collision: CollisionManager) : Pathfin
         }
 
         if (tail == null) {
-            tail = closed.minBy { it.tile.calculateDistance(target) }
+            if (targetLength <= 1 && targetWidth <= 1) {
+                /**
+                 * We get the closest node to the [target], but keep in mind that
+                 * multiple nodes may have the same distance (i.e the first layer
+                 * of border outside of the [target]).
+                 */
+                val min = closed.minBy { it.tile.calculateDistance(target) }!!
+
+                /**
+                 * The destination will be the closest tile to the player, out of
+                 * the nodes that have the minimum distance from the [target].
+                 * This is so that the destination will be the closest to the
+                 * [origin].
+                 */
+                tail = closed.filter { !it.tile.sameAs(origin) && it.tile.calculateDistance(target) <= min.tile.calculateDistance(target) }
+                        .minBy { it.tile.calculateDelta(origin) }
+            } else {
+                /**
+                 * TODO: this is different per object rot and shit. We need a separate
+                 * method for pathing on objects so we can just pass the game obj
+                 * as a parameter. all this complicated shit should be there instead of here.
+                 * this one should be the default getPath for walking/simple tasks
+                 */
+                val neighbors = arrayListOf<Tile>()
+                for (x in 0 until targetWidth) {
+                    for (z in 0..targetLength) {
+                        val tile = target.transform(x, z)
+                        neighbors.add(tile)
+                    }
+                }
+
+                var bestCost = Int.MAX_VALUE
+                val valid = closed.filter { !it.tile.sameAs(origin) && neighbors.contains(it.tile) }
+                for (node in valid) {
+                    val cost = (node.tile.calculateDistance(origin) * 2) + node.tile.calculateDelta(target)
+                    if (cost < bestCost) {
+                        tail = node
+                        bestCost = cost
+                    }
+                }
+            }
         }
 
         val path = ArrayDeque<Tile>()

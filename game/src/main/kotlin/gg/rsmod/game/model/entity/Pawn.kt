@@ -6,6 +6,7 @@ import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
 import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.game.sync.UpdateBlock
 import gg.rsmod.game.sync.UpdateBlockBuffer
 
 /**
@@ -72,8 +73,8 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun canMove(): Boolean = !isDead() && lock.canMove()
 
-    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType) {
-        val path = BFSPathfindingStrategy(world.collision).getPath(tile, Tile(x, z, tile.height), getType())
+    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, targetWidth: Int = 0, targetLength: Int = 0) {
+        val path = BFSPathfindingStrategy(world.collision).getPath(tile, Tile(x, z, tile.height), getType(), targetWidth, targetLength)
         if (path.path.isEmpty() && this is Player) {
             write(SetMinimapMarkerMessage(255, 255))
             return
@@ -105,6 +106,20 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun teleport(tile: Tile) {
         teleport(tile.x, tile.z, tile.height)
+    }
+
+    fun forceChat(message: String) {
+        if (this is Player) {
+            blockBuffer.forceChat = message
+            blockBuffer.addBlock(UpdateBlock.FORCE_CHAT)
+        }
+    }
+
+    fun faceTile(t: Tile) {
+        if (this is Player) {
+            blockBuffer.faceTile = t
+            blockBuffer.addBlock(UpdateBlock.FACE_TILE)
+        }
     }
 
     /**

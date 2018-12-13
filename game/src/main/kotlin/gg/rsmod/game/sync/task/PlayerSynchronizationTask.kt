@@ -71,7 +71,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
              */
             val requiresBlockUpdate = local.blockBuffer.isDirty()
             if (requiresBlockUpdate) {
-                encodeBlocks(other = local, maskBuf = maskBuf, newPlayer = false)
+                encodeBlocks(other = local, buf = maskBuf, newPlayer = false)
             }
             if (local.teleport) {
                 buf.putBits(1, 1) // Do not skip this player
@@ -176,7 +176,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 buf.putBits(13, nonLocal.tile.x and 0x1FFF)
                 buf.putBits(13, nonLocal.tile.z and 0x1FFF)
                 buf.putBits(1, 1) // Requires block update
-                encodeBlocks(other = nonLocal, maskBuf = maskBuf, newPlayer = true)
+                encodeBlocks(other = nonLocal, buf = maskBuf, newPlayer = true)
                 continue
             }
 
@@ -194,7 +194,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
         buf.switchToByteAccess()
     }
 
-    private fun encodeBlocks(other: Player, maskBuf: GamePacketBuilder, newPlayer: Boolean) {
+    private fun encodeBlocks(other: Player, buf: GamePacketBuilder, newPlayer: Boolean) {
         var mask = other.blockBuffer.blockValue()
 
         if (newPlayer) {
@@ -203,18 +203,29 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
 
         if (mask >= 0x100) {
             mask = mask or 0x20
-            maskBuf.put(DataType.BYTE, mask and 0xFF)
-            maskBuf.put(DataType.BYTE, mask shr 8)
+            buf.put(DataType.BYTE, mask and 0xFF)
+            buf.put(DataType.BYTE, mask shr 8)
         } else {
-            maskBuf.put(DataType.BYTE, mask and 0xFF)
+            buf.put(DataType.BYTE, mask and 0xFF)
         }
 
         if (other.blockBuffer.hasBlock(UpdateBlock.FORCE_CHAT)) {
-            maskBuf.putString(other.blockBuffer.getForceChat())
+            buf.putString(other.blockBuffer.forceChat)
         }
 
         if (other.blockBuffer.hasBlock(UpdateBlock.MOVEMENT)) {
-            maskBuf.put(DataType.BYTE, DataTransformation.NEGATE, if (other.teleport) 127 else if (other.steps?.runDirection != null) 2 else 1)
+            buf.put(DataType.BYTE, DataTransformation.NEGATE, if (other.teleport) 127 else if (other.steps?.runDirection != null) 2 else 1)
+        }
+
+        if (other.blockBuffer.hasBlock(UpdateBlock.FACE_TILE)) {
+            val srcX = other.tile.x * 64
+            val srcZ = other.tile.z * 64
+            val dstX = other.blockBuffer.faceTile!!.x * 64
+            val dstZ = other.blockBuffer.faceTile!!.z * 64
+            val dx = srcX - dstX
+            val dz = srcZ - dstZ
+            buf.put(DataType.SHORT, DataTransformation.ADD,
+                    (Math.atan2(dx.toDouble(), dz.toDouble()) * 325.949).toInt() and 0x7ff)
         }
 
         if (other.blockBuffer.hasBlock(UpdateBlock.APPEARANCE) || newPlayer) {
@@ -256,8 +267,8 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
             appBuf.putBytes("".toByteArray())
             appBuf.put(DataType.BYTE, 0) // String terminator
 
-            maskBuf.put(DataType.BYTE, DataTransformation.NEGATE, appBuf.getBuffer().readableBytes())
-            maskBuf.putBytes(appBuf.getBuffer())
+            buf.put(DataType.BYTE, DataTransformation.NEGATE, appBuf.getBuffer().readableBytes())
+            buf.putBytes(appBuf.getBuffer())
         }
     }
 

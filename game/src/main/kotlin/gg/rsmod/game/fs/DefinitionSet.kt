@@ -108,11 +108,6 @@ class DefinitionSet {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T: Definition> getOrNull(type: Class<out T>, id: Int): T? {
-        return (defs[type]!!)[id] as T?
-    }
-
-    @Suppress("UNCHECKED_CAST")
     fun <T: Definition> createDefinition(type: Class<out T>, id: Int, data: ByteArray): T {
         val def: Definition = when (type) {
             VarpDef::class.java -> VarpDef(id)
@@ -133,6 +128,7 @@ class DefinitionSet {
         if (xteaService == null) {
             xteaService = world.getService(XteaKeyService::class.java, true).orElse(null)
         }
+
         val regionIndex = world.filestore.getIndex(IndexType.MAPS)
 
         val x = id shr 8

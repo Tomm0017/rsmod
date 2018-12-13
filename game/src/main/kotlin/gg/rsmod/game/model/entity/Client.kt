@@ -1,6 +1,7 @@
 package gg.rsmod.game.model.entity
 
 import gg.rsmod.game.message.Message
+import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.serializer.PlayerSerializerService
 import gg.rsmod.game.system.GameSystem

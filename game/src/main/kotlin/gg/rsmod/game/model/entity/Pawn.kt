@@ -1,8 +1,8 @@
 package gg.rsmod.game.model.entity
 
-import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
-import gg.rsmod.game.model.path.strategy.AStarPathfindingStrategy
+import gg.rsmod.game.model.path.PathRequest
+import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
 import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.UpdateBlockBuffer
@@ -58,6 +58,8 @@ abstract class Pawn(open val world: World) : Entity() {
      */
     val attr = AttributeSystem()
 
+    var currentPath: PathRequest? = null
+
     /**
      * Handles logic before any synchronization tasks are executed.
      */
@@ -69,17 +71,19 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun canMove(): Boolean = !isDead() && lock.canMove()
 
-    fun walkTo(x: Int, z: Int, type: MovementQueue.StepType) {
-        val pathfinding = AStarPathfindingStrategy(world.collision)
-        val path = pathfinding.getPath(tile, Tile(x, z, tile.height), getType())
+    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType) {
+        /*if (currentPath != null) {
+            currentPath!!.discard = true
+        }*/
+        val pathfinding = BFSPathfindingStrategy(world.collision)
+        val currentPath = pathfinding.getPath(tile, Tile(x, z, tile.height), getType())
 
-        if (path.isNotEmpty()) {
-            movementQueue.clear()
-            path.forEach { tile ->
-                movementQueue.addStep(tile, type)
-            }
-        } else if (this is Player) {
-            write(SetMinimapMarkerMessage(255, 255))
+        movementQueue.clear()
+        //movementQueue.setFirstStep(currentPath.path.poll(), stepType)
+        var next = currentPath.path.poll()
+        while (next != null) {
+            movementQueue.addStep(next, stepType)
+            next = currentPath.path.poll()
         }
     }
 

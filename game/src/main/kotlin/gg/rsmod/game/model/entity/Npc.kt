@@ -1,5 +1,6 @@
 package gg.rsmod.game.model.entity
 
+import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.World
 
 /**

@@ -62,11 +62,7 @@ class Tile {
         return Math.ceil(Math.sqrt((dx * dx + dz * dz).toDouble())).toInt()
     }
 
-    fun calculateDelta(other: Tile): Int {
-        val dx = x - other.x
-        val dz = z - other.z
-        return (Math.sqrt((dx * dx + dz * dz).toDouble())).toInt()
-    }
+    fun calculateDelta(other: Tile): Int = Math.abs(x - other.x) + Math.abs(z - other.z)
 
     fun calculateTopLeftRegionX() = (x shr 3) - 6
 

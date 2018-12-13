@@ -5,7 +5,6 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.model.entity.PawnList
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.region.RegionSet
 import gg.rsmod.game.plugin.PluginExecutor

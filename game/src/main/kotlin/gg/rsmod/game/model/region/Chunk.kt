@@ -8,7 +8,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.collision.CollisionMatrix
 import gg.rsmod.game.model.collision.CollisionUpdate
 import gg.rsmod.game.model.entity.Entity
-import gg.rsmod.game.model.entity.EntityType
+import gg.rsmod.game.model.EntityType
 
 /**
  * @author Tom <rspsmods@gmail.com>

@@ -3,10 +3,10 @@ package gg.rsmod.game.model.collision
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import gg.rsmod.game.model.Direction
+import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Entity
-import gg.rsmod.game.model.entity.EntityType
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.model.region.RegionCoordinates
@@ -40,7 +40,7 @@ class CollisionManager(val world: World) {
         }
     }
 
-    fun canTraverse(tile: Tile, type: EntityType, direction: Direction): Boolean {
+    fun canTraverse(tile: Tile, direction: Direction, type: EntityType): Boolean {
         val next = tile.step(1, direction)
         var chunk = world.regions.getChunkForTile(next)
         val projectile = type == EntityType.PROJECTILE

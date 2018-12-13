@@ -96,6 +96,15 @@ class Server {
         val world = World(this, gameContext)
 
         /**
+         * Load the file store.
+         */
+        individualStopwatch.reset().start()
+        world.filestore = Store(filestorePath.toFile())
+        world.filestore.load()
+        world.definitions.init(world.filestore)
+        logger.info("Loaded filestore from path {} in {}ms.", filestorePath, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
+
+        /**
          * Load the services required to run the server.
          */
         loadServices(world, gameProperties)
@@ -104,15 +113,6 @@ class Server {
          * Fetch the [GameService].
          */
         val gameService = world.getService(type = GameService::class.java, searchSubclasses = false).get()
-
-        /**
-         * Load the file store.
-         */
-        individualStopwatch.reset().start()
-        world.filestore = Store(filestorePath.toFile())
-        world.filestore.load()
-        world.definitions.init(world.filestore)
-        logger.info("Loaded filestore from path {} in {}ms.", filestorePath, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**
          * Load the packets for the game.
@@ -158,6 +158,7 @@ class Server {
         logger.info("Now listening for incoming connections on port $port...")
 
         System.gc()
+
         return world
     }
 

@@ -72,13 +72,14 @@ enum class Direction(val value: Int) {
     }
 
     companion object {
-        val EMPTY_DIRECTION_ARRAY = arrayOfNulls<Direction>(0)
 
         val NESW = arrayOf(NORTH, EAST, SOUTH, WEST)
 
         val WNES = arrayOf(WEST, NORTH, EAST, SOUTH)
 
         val WNES_DIAGONAL = arrayOf(NORTH_WEST, NORTH_EAST, SOUTH_EAST, SOUTH_WEST)
+
+        val NWSE_NWNESWSE = arrayOf(NORTH, EAST, SOUTH, WEST, NORTH_WEST, NORTH_EAST, SOUTH_WEST, SOUTH_EAST)
 
         fun between(current: Tile, next: Tile): Direction {
             val deltaX = next.x - current.x

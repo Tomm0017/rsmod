@@ -209,11 +209,15 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
             maskBuf.put(DataType.BYTE, mask and 0xFF)
         }
 
-        if ((mask and 0x1000) != 0) {
-            maskBuf.put(DataType.BYTE, DataTransformation.NEGATE, 2)
+        if (other.blockBuffer.hasBlock(UpdateBlock.FORCE_CHAT)) {
+            maskBuf.putString(other.blockBuffer.getForceChat())
         }
 
-        if ((mask and 0x1) != 0) {
+        if (other.blockBuffer.hasBlock(UpdateBlock.MOVEMENT)) {
+            maskBuf.put(DataType.BYTE, DataTransformation.NEGATE, if (other.teleport) 127 else if (other.steps?.runDirection != null) 2 else 1)
+        }
+
+        if (other.blockBuffer.hasBlock(UpdateBlock.APPEARANCE) || newPlayer) {
             val appBuf = GamePacketBuilder()
             appBuf.put(DataType.BYTE, 0)
             appBuf.put(DataType.BYTE, -1)

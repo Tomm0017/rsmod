@@ -25,5 +25,5 @@ enum class UpdateBlock(val value: Int) {
 
     HITMARK(0x0),
 
-    FORCE_CHAT(0x0);
+    FORCE_CHAT(0x4);
 }

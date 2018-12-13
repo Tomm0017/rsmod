@@ -1,4 +1,6 @@
-package gg.rsmod.game.model.entity
+package gg.rsmod.game.model
+
+import gg.rsmod.game.model.entity.Pawn
 
 /**
  * A custom list of [Pawn]s backed by an [Array].

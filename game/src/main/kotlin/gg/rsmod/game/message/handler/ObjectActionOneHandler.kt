@@ -6,7 +6,7 @@ import gg.rsmod.game.model.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Client
-import gg.rsmod.game.model.entity.EntityType
+import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.path.plugins.ObjectPathing
 

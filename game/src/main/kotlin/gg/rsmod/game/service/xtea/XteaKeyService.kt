@@ -5,6 +5,7 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
+import net.runelite.cache.IndexType
 import org.apache.commons.io.FilenameUtils
 import org.apache.logging.log4j.LogManager
 import java.io.FileNotFoundException
@@ -50,7 +51,43 @@ class XteaKeyService : Service() {
                 this.keys[region] = keys
             }
         }
-        logger.info("Loaded {} XTEA keys.", keys.size)
+
+        /**
+         * Get the total amount of valid regions and which keys we are missing.
+         */
+        val maxRegions = Short.MAX_VALUE
+        var totalRegions = 0
+        val missingKeys = arrayListOf<Int>()
+
+        val regionIndex = world.filestore.getIndex(IndexType.MAPS)
+        for (regionId in 0 until maxRegions) {
+            val x = regionId shr 8
+            val z = regionId and 0xFF
+
+            /**
+             * Check if the region corresponding to the [x] and [z] can be
+             * found in our cache.
+             */
+            regionIndex.findArchiveByName("m${x}_$z") ?: continue
+            regionIndex.findArchiveByName("l${x}_$z") ?: continue
+
+            /**
+             * The region was found in the [regionIndex].
+             */
+            totalRegions++
+
+            /**
+             * If the XTEA is not found in our [xteaService], we know the keys
+             * are missing.
+             */
+            if (getOrNull(regionId) == null) {
+                missingKeys.add(regionId)
+            }
+        }
+
+        val validKeys = totalRegions - missingKeys.size
+        logger.info("Loaded {} / {} ({}%) XTEA keys.", validKeys, totalRegions,
+                String.format("%.2f", (validKeys.toDouble() * 100.0) / totalRegions.toDouble()))
     }
 
     override fun terminate(server: Server, world: World) {

@@ -22,6 +22,8 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, val stack
 
     fun getBackingArray(): Array<Item?> = items
 
+    fun hasItem(itemId: Int): Boolean = items.any { it?.id == itemId }
+
     fun getNextFreeSlot(): Int = items.indexOfFirst { it == null }
 
     fun getFreeSlotCount(): Int = items.count { it == null }
@@ -123,7 +125,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, val stack
      * suggestion as any pre-existing stack's index of the item will be used as
      * the slot for this transaction.
      */
-    fun add(id: Int, amount: Int, assureFullInsertion: Boolean = true, forceNoStack: Boolean = false, beginSlot: Int = -1): ItemTransaction {
+    fun add(id: Int, amount: Int = 1, assureFullInsertion: Boolean = true, forceNoStack: Boolean = false, beginSlot: Int = -1): ItemTransaction {
         val def = definitions.get(ItemDef::class.java, id)
         val stack = !forceNoStack && (def.isStackable() || stackType == ContainerStackType.STACK)
 

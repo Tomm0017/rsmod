@@ -100,6 +100,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         return Optional.empty()
     }
 
+    fun random(boundsInclusive: Int) = random.nextInt(boundsInclusive + 1)
+
     fun random(range: IntRange): Int = random.nextInt(range.endInclusive - range.start + 1) + range.start
 
     /**

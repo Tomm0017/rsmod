@@ -1,6 +1,10 @@
 package gg.rsmod.game.model.item
 
 /**
+ * An [ItemAttribute] is a broad-used attribute key which can be used for different
+ * effects on different items. [Item]s that have attributes will stop being tradeable
+ * and can no longer stack with other items of the same id.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 enum class ItemAttribute {

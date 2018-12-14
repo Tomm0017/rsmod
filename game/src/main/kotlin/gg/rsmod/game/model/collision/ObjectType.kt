@@ -1,8 +1,7 @@
 package gg.rsmod.game.model.collision
 
 /**
- * The type of an object, which affects specified behaviour (such as whether it displaces existing objects). TODO
- * complete this...
+ * The type of an object, which affects specified behaviour (such as whether it displaces existing objects).
  *
  * @author Major
  * @author Scu11

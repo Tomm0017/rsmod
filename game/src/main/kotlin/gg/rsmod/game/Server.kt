@@ -16,6 +16,7 @@ import org.apache.logging.log4j.LogManager
 import java.net.InetSocketAddress
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.text.DecimalFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -77,6 +78,7 @@ class Server {
         /**
          * Load the game property file.
          */
+        val initialLaunch = Files.deleteIfExists(Paths.get("./first-launch"))
         val gameProperties = ServerProperties()
         val devProperties = ServerProperties()
         gameProperties.loadYaml(gameProps.toFile())
@@ -88,7 +90,9 @@ class Server {
         /**
          * Create a game context for our configurations and services to run.
          */
-        val gameContext = GameContext(name = gameProperties.get<String>("name")!!,
+        println("initial launch: $initialLaunch")
+        val gameContext = GameContext(initialLaunch = initialLaunch,
+                name = gameProperties.get<String>("name")!!,
                 revision = gameProperties.get<Int>("revision")!!,
                 cycleTime = gameProperties.get<Int>("cycle-time")!!,
                 playerLimit = gameProperties.get<Int>("max-players")!!,

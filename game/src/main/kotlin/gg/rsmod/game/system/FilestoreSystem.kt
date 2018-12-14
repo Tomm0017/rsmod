@@ -21,7 +21,7 @@ import java.util.*
 class FilestoreSystem(override val channel: Channel, private val filestore: Store) : ServerSystem(channel) {
 
     /**
-     * TODO(Tom): the logic for encoding the data should be handled
+     * TODO: the logic for encoding the data should be handled
      * by a pipeline defined in the [net] module instead. This [ServerSystem]
      * should only be responsible for informing the pipeline that a request
      * was sent by the client.

@@ -15,7 +15,6 @@ import gg.rsmod.util.DataConstants
 object ObjectPathfinder {
 
     /**
-     * TODO: varrock museum, basement staircase shouldn't be valid where the rope is
      * TODO: varrock anvil on east side, the entrances r being clipped for some reason
      * TODO: [getValidTiles] for other object types. i.e object type 5 needs other rotations support
      */

@@ -5,6 +5,10 @@ import gg.rsmod.game.model.Tile
 /**
  * Holds vital information that the game needs in order to run (properly).
  *
+ * @param initialLaunch
+ * A flag which indicates whether this game launch is the first ever launch.
+ * See [first-launch] file in root directory for more information.
+ *
  * @param name
  * The game name.
  *
@@ -30,6 +34,7 @@ import gg.rsmod.game.model.Tile
  *
  * @author Tom <rspsmods@gmail.com>
  */
-data class GameContext(val name: String, val revision: Int, val cycleTime: Int,
-                       val playerLimit: Int, val home: Tile, val rsaEncryption: Boolean,
-                       val skillCount: Int, val runEnergy: Boolean)
+data class GameContext(var initialLaunch: Boolean, val name: String, val revision: Int,
+                       val cycleTime: Int, val playerLimit: Int, val home: Tile,
+                       val rsaEncryption: Boolean, val skillCount: Int,
+                       val runEnergy: Boolean)

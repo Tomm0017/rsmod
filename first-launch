@@ -1,0 +1,5 @@
+# This file is used to identify the initial launch of RS Mod to allow for a
+# proper introduction when the user logs into the server for the first time.
+# This should not be used / should be deleted in production environments.
+
+# This file will be auto-deleted on the first launch of the server.

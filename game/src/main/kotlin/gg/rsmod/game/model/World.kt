@@ -100,8 +100,6 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         return Optional.empty()
     }
 
-    fun getNpcCount(): Int = 0
-
     fun random(range: IntRange): Int = random.nextInt(range.endInclusive - range.start + 1) + range.start
 
     /**

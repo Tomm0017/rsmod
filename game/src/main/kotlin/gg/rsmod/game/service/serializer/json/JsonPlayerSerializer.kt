@@ -3,7 +3,6 @@ package gg.rsmod.game.service.serializer.json
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.lambdaworks.crypto.SCryptUtil
-import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.model.Tile
@@ -63,7 +62,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.username = data.displayName
             client.passwordHash = data.passwordHash
             client.tile = Tile(data.x, data.z, data.height)
-            client.privilege = client.world.gameContext.privileges.get(data.privilege) ?: Privilege.DEFAULT
+            client.privilege = client.world.privileges.get(data.privilege) ?: Privilege.DEFAULT
             data.attributes.forEach { key, value ->
                 if (value is Number) {
                     client.attr.putPersistent(key, value.toInt())

@@ -1,5 +1,6 @@
 package gg.rsmod.game.model
 
+import gg.rsmod.game.DevContext
 import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.DefinitionSet
@@ -21,7 +22,7 @@ import java.util.concurrent.ThreadLocalRandom
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class World(val server: Server, val gameContext: GameContext) {
+class World(val server: Server, val gameContext: GameContext, val devContext: DevContext) {
 
     val players = PawnList<Player>(gameContext.playerLimit)
 
@@ -57,6 +58,11 @@ class World(val server: Server, val gameContext: GameContext) {
      * The plugin repository that's responsible for storing all the plugins found.
      */
     val plugins = PluginRepository()
+
+    /**
+     * The [PrivilegeSet] that is attached to our game.
+     */
+    val privileges = PrivilegeSet()
 
     /**
      * A [Random] implementation used for pseudo-random purposes through-out

@@ -73,7 +73,20 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun canMove(): Boolean = !isDead() && lock.canMove()
 
+    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, validSurroundingTiles: Array<Tile>?) {
+        walkTo(tile.x, tile.z, stepType, validSurroundingTiles)
+    }
+
     fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, validSurroundingTiles: Array<Tile>? = null) {
+        if (validSurroundingTiles != null && tile in validSurroundingTiles) {
+            /**
+             * This will cause desync since the player is already on the tile,
+             * they should not be able to add a step in a tile they are already
+             * standing on.
+             */
+            return
+        }
+
         val path = BFSPathfindingStrategy(world).getPath(tile, Tile(x, z, tile.height), getType(), validSurroundingTiles)
         if (path.isEmpty() && this is Player) {
             write(SetMinimapMarkerMessage(255, 255))

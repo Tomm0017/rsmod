@@ -28,7 +28,7 @@ class ClickButtonHandler : MessageHandler<ClickButtonMessage> {
             return
         }
 
-        if (client.world.gameContext.devMode) {
+        if (client.world.devContext.debugButtons) {
             client.message("Unhandled button action: [parent=$parent, child=$child, slot=${message.slot}, item=${message.item}]")
         }
     }

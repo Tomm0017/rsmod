@@ -44,7 +44,7 @@ object ObjectPathfinder {
 
         if (!p.world.plugins.executeObject(p, obj.id, opt)) {
             p.message(Entity.NOTHING_INTERESTING_HAPPENS)
-            if (p.world.gameContext.devMode) {
+            if (p.world.devContext.debugObjects) {
                 p.message("Unhandled object action: [opt=$opt, id=${obj.id}, type=${obj.type}, rot=${obj.rot}, x=${obj.tile.x}, z=${obj.tile.z}]")
             }
         }
@@ -123,8 +123,6 @@ object ObjectPathfinder {
         val blockBits = 4
         val clipMask = def.clipFlag
         val clipFlag = (DataConstants.BIT_MASK[blockBits] and (clipMask shl rot)) or (clipMask shr (blockBits - rot))
-
-        println("mask=$clipMask, flag=$clipFlag, type=${obj.type}, rot=${obj.rot}, flipped=${def.rotated}, width=$width, length=$length, tile=${obj.tile}")
 
         when (clipFlag) {
             7 -> { // West to east
@@ -224,6 +222,8 @@ object ObjectPathfinder {
             /**
              * Varrock agility course start is type 5. Look more into this type
              * to insert it into [ObjectType] properly.
+             *
+             * Edit: Seems to be wall object "decorations" that you can interact with
              */
             return when (rot) {
                 else -> arrayOf(obj.tile.transform(0, 0))

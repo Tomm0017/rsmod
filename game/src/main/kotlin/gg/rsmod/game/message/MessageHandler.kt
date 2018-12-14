@@ -25,14 +25,11 @@ interface MessageHandler<T: Message> {
      * A default method to log the handlers.
      */
     fun log(client: Client, format: String, vararg args: Any) {
-        if (client.world.gameContext.devMode) {
-            //logger.info(format, *args)
-        }
+        // TODO: log normal packets if applicable (maybe have a toggle for certain
+        // flagged/suspicious players to be logged)
     }
 
     fun logAntiCheat(client: Client, format: String, vararg args: Any) {
-        if (client.world.gameContext.devMode) {
-            //logger.info(format, *args)
-        }
+        // TODO: log that someone is trying to cheat, though not succeeding.
     }
 }

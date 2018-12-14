@@ -1,6 +1,5 @@
 package gg.rsmod.game
 
-import gg.rsmod.game.model.PrivilegeSet
 import gg.rsmod.game.model.Tile
 
 /**
@@ -26,10 +25,6 @@ import gg.rsmod.game.model.Tile
  * If RSA encryption should be used for encrypting/decrypting
  * [gg.rsmod.net.message.Message]s.
  *
- * @param devMode
- * This flag enables certain developer-only features, such as in-game debug
- * messages.
- *
  * @param skillCount
  * The max amount of skills in our game.
  *
@@ -37,10 +32,4 @@ import gg.rsmod.game.model.Tile
  */
 data class GameContext(val name: String, val revision: Int, val cycleTime: Int,
                        val playerLimit: Int, val home: Tile, val rsaEncryption: Boolean,
-                       var devMode: Boolean, val skillCount: Int, val runEnergy: Boolean) {
-
-    /**
-     * The [PrivilegeSet] that is attached to our game.
-     */
-    val privileges = PrivilegeSet()
-}
+                       val skillCount: Int, val runEnergy: Boolean)

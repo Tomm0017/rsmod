@@ -25,10 +25,15 @@ class PrivilegeSet : Iterable<Privilege> {
         privilegeDefinitions.forEach { struct ->
             val values = struct as LinkedHashMap<*, *>
             val id = values["id"] as Int
-            val power = values["power"] as Int
             val icon = if (values.containsKey("icon")) values["icon"] as Int else 0
             val name = values["name"] as String
-            definitions.add(Privilege(id = id, power = power, icon = icon, name = name.toLowerCase()))
+            val powerValues = values["powers"] as List<*>
+            val powers = hashSetOf<String>()
+            powerValues.forEach { power ->
+                val value = power as String
+                powers.add(value.toLowerCase())
+            }
+            definitions.add(Privilege(id = id, icon = icon, name = name.toLowerCase(), powers = powers))
         }
         values = arrayListOf()
         values.addAll(definitions)
@@ -39,4 +44,6 @@ class PrivilegeSet : Iterable<Privilege> {
     fun get(id: Int): Privilege? = values.firstOrNull { it.id == id }
 
     fun get(name: String): Privilege? = values.firstOrNull { it.name == name.toLowerCase() }
+
+    fun isEligible(from: Privilege, to: String): Boolean = from.powers.contains(to.toLowerCase())
 }

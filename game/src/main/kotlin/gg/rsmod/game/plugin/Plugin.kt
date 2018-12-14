@@ -97,6 +97,7 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
      * continuing the logic associated with this plugin.
      */
     suspend fun wait(cycles: Int): Unit = suspendCoroutine {
+        check(cycles > 0) { "Wait cycles must be greater than 0." }
         nextStep = SuspendableStep(WaitCondition(cycles), it)
     }
 

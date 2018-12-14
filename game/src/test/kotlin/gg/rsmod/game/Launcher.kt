@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
 
     server.startServer(apiProps = Paths.get("./data/api.yml"))
     val world = server.startGame(filestorePath = Paths.get("./data", "cache"), gameProps = Paths.get("./game.yml"),
-                packets = Paths.get("./data/packets.yml"))
+                packets = Paths.get("./data/packets.yml"), devProps = Paths.get("./dev-settings.yml"))
 
     /*val gameService = world.getService(GameService::class.java, false).get()
     for (i in 0 until 1997) {

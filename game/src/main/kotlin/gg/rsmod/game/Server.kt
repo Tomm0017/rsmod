@@ -14,6 +14,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel
 import net.runelite.cache.fs.Store
 import org.apache.logging.log4j.LogManager
 import java.net.InetSocketAddress
+import java.nio.file.Files
 import java.nio.file.Path
 import java.text.DecimalFormat
 import java.util.*
@@ -68,7 +69,7 @@ class Server {
      * can start multiple servers with different game property files.
      */
     @Throws(Exception::class)
-    fun startGame(filestorePath: Path, gameProps: Path, packets: Path): World {
+    fun startGame(filestorePath: Path, gameProps: Path, packets: Path, devProps: Path?): World {
         val stopwatch = Stopwatch.createStarted()
         val individualStopwatch = Stopwatch.createUnstarted()
 
@@ -77,7 +78,11 @@ class Server {
          * Load the game property file.
          */
         val gameProperties = ServerProperties()
+        val devProperties = ServerProperties()
         gameProperties.loadYaml(gameProps.toFile())
+        if (devProps != null && Files.exists(devProps)) {
+            devProperties.loadYaml(devProps.toFile())
+        }
         logger.info("Loaded properties for ${gameProperties.get<String>("name")!!}.")
 
         /**
@@ -89,11 +94,13 @@ class Server {
                 playerLimit = gameProperties.get<Int>("max-players")!!,
                 home = Tile(gameProperties.get<Int>("home-x")!!, gameProperties.get<Int>("home-z")!!, gameProperties.getOrDefault("home-height", 0)),
                 rsaEncryption = gameProperties.get<Boolean>("rsa-encryption")!!,
-                devMode = gameProperties.getOrDefault("dev-mode", false),
                 skillCount = gameProperties.get<Int>("skill-count")!!,
                 runEnergy = gameProperties.get<Boolean>("run-energy")!!)
 
-        val world = World(this, gameContext)
+        val devContext = DevContext(debugObjects = devProperties.getOrDefault("debug-objects", false),
+                debugButtons = devProperties.getOrDefault("debug-buttons", false))
+
+        val world = World(this, gameContext, devContext)
 
         /**
          * Load the file store.
@@ -127,8 +134,8 @@ class Server {
          * Load the privileges for the game.
          */
         individualStopwatch.reset().start()
-        gameContext.privileges.load(gameProperties)
-        logger.info("Loaded {} privilege levels in {}ms.", gameContext.privileges.size(), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
+        world.privileges.load(gameProperties)
+        logger.info("Loaded {} privilege levels in {}ms.", world.privileges.size(), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**
          * Load the plugins for game content.

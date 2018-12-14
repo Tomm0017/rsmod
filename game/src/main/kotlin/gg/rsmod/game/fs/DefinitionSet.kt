@@ -159,22 +159,23 @@ class DefinitionSet {
 
                     if ((tileSetting.toInt() and CollisionManager.BRIDGE_TILE) == CollisionManager.BRIDGE_TILE) {
                         bridges.add(tile)
+                        /**
+                         * We don't want the bottom of the bridge to be blocked,
+                         * so remove the blocked tile if applicable.
+                         */
+                        blocked.remove(tile.transform(-1))
                     }
                 }
             }
         }
 
+        /**
+         * Apply the blocked tiles to the collision detection.
+         */
         val blockedTileBuilder = CollisionUpdate.Builder()
         blockedTileBuilder.setType(CollisionUpdate.Type.ADDING)
         blocked.forEach { tile ->
-            var block = tile
-            if (bridges.contains(tile)) {
-                block = block.transform(-1)
-            }
-
-            if (block.height >= 0) {
-                blockedTileBuilder.putTile(block, false, *Direction.NESW)
-            }
+            blockedTileBuilder.putTile(tile, false, *Direction.NESW)
         }
         world.collision.apply(blockedTileBuilder.build())
 
@@ -198,13 +199,9 @@ class DefinitionSet {
 
             cacheRegion.locations.forEach { loc ->
                 val tile = Tile(loc.position.x, loc.position.y, loc.position.z)
-                /**
-                 * Bridges should be added on a level below where they are. This
-                 * is due to the fact the client can't render objects above other
-                 * objects unless the client decodes its in a height level above.
-                 * However, the server knows this and we make sure to clip the correct
-                 * tile, not the 'correct' one.
-                 */
+                if (bridges.contains(tile.transform(1))) {
+                    return@forEach
+                }
                 val obj = StaticObject(loc.id, loc.type, loc.orientation,
                         if (bridges.contains(tile)) tile.transform(-1) else tile)
                 world.regions.getChunkForTile(tile).addEntity(world, obj)

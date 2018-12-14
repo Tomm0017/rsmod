@@ -12,7 +12,6 @@ class CollisionManager(val world: World) {
 
     companion object {
         const val BLOCKED_TILE = 0x1
-
         const val BRIDGE_TILE = 0x2
     }
 

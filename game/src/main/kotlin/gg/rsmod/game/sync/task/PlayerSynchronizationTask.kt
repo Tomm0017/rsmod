@@ -218,14 +218,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
         }
 
         if (other.blockBuffer.hasBlock(UpdateBlock.FACE_TILE)) {
-            val srcX = other.tile.x * 64
-            val srcZ = other.tile.z * 64
-            val dstX = other.blockBuffer.faceTile!!.x * 64
-            val dstZ = other.blockBuffer.faceTile!!.z * 64
-            val dx = srcX - dstX
-            val dz = srcZ - dstZ
-            buf.put(DataType.SHORT, DataTransformation.ADD,
-                    (Math.atan2(dx.toDouble(), dz.toDouble()) * 325.949).toInt() and 0x7ff)
+            buf.put(DataType.SHORT, DataTransformation.ADD, other.blockBuffer.faceDegrees)
         }
 
         if (other.blockBuffer.hasBlock(UpdateBlock.APPEARANCE) || newPlayer) {

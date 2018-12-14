@@ -140,9 +140,20 @@ abstract class Pawn(open val world: World) : Entity() {
         }
     }
 
-    fun faceTile(t: Tile) {
+    fun faceTile(face: Tile, width: Int = 1, length: Int = 1) {
         if (this is Player) {
-            blockBuffer.faceTile = t
+            val srcX = tile.x * 64
+            val srcZ = tile.z * 64
+            val dstX = face.x * 64
+            val dstZ = face.z * 64
+
+            var degreesX = (srcX - dstX).toDouble()
+            var degreesZ = (srcZ - dstZ).toDouble()
+
+            degreesX += (Math.floor(width / 2.0)) * 32
+            degreesZ += (Math.floor(length / 2.0)) * 32
+
+            blockBuffer.faceDegrees = (Math.atan2(degreesX, degreesZ) * 325.949).toInt() and 0x7ff
             blockBuffer.addBlock(UpdateBlock.FACE_TILE)
         }
     }

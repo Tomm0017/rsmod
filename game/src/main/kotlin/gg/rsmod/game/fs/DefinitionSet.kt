@@ -1,9 +1,11 @@
 package gg.rsmod.game.fs
 
 import gg.rsmod.game.fs.def.*
+import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.collision.CollisionManager
+import gg.rsmod.game.model.collision.CollisionUpdate
 import gg.rsmod.game.model.entity.StaticObject
 import gg.rsmod.game.service.xtea.XteaKeyService
 import io.netty.buffer.Unpooled
@@ -143,6 +145,8 @@ class DefinitionSet {
         val cacheRegion = net.runelite.cache.region.Region(id)
         cacheRegion.loadTerrain(mapDefinition)
 
+        val blocked = hashSetOf<Tile>()
+        val bridges = hashSetOf<Tile>()
         for (height in 0 until 4) {
             for (lx in 0 until 64) {
                 for (lz in 0 until 64) {
@@ -150,15 +154,29 @@ class DefinitionSet {
                     val tile = Tile(cacheRegion.baseX + lx, cacheRegion.baseY + lz, height)
 
                     if ((tileSetting.toInt() and CollisionManager.BLOCKED_TILE) == CollisionManager.BLOCKED_TILE) {
-                        world.collision.block(tile)
+                        blocked.add(tile)
                     }
 
                     if ((tileSetting.toInt() and CollisionManager.BRIDGE_TILE) == CollisionManager.BRIDGE_TILE) {
-                        world.collision.markBridged(tile)
+                        bridges.add(tile)
                     }
                 }
             }
         }
+
+        val blockedTileBuilder = CollisionUpdate.Builder()
+        blockedTileBuilder.setType(CollisionUpdate.Type.ADDING)
+        blocked.forEach { tile ->
+            var block = tile
+            if (bridges.contains(tile)) {
+                block = block.transform(-1)
+            }
+
+            if (block.height >= 0) {
+                blockedTileBuilder.putTile(block, false, *Direction.NESW)
+            }
+        }
+        world.collision.apply(blockedTileBuilder.build())
 
         if (xteaService == null) {
             /**
@@ -180,10 +198,17 @@ class DefinitionSet {
 
             cacheRegion.locations.forEach { loc ->
                 val tile = Tile(loc.position.x, loc.position.y, loc.position.z)
-                val obj = StaticObject(loc.id, loc.type, loc.orientation, tile)
+                /**
+                 * Bridges should be added on a level below where they are. This
+                 * is due to the fact the client can't render objects above other
+                 * objects unless the client decodes its in a height level above.
+                 * However, the server knows this and we make sure to clip the correct
+                 * tile, not the 'correct' one.
+                 */
+                val obj = StaticObject(loc.id, loc.type, loc.orientation,
+                        if (bridges.contains(tile)) tile.transform(-1) else tile)
                 world.regions.getChunkForTile(tile).addEntity(world, obj)
             }
-            world.collision.build(false)
             return true
         } catch (e: IOException) {
             logger.error("Could not decrypt map region {}.", id)

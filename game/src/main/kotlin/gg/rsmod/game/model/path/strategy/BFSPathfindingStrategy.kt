@@ -31,7 +31,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
 
         var tail: Node? = null
 
-        var maxSearch = 2048
+        var maxSearch = (256 * 5)
         while (nodes.isNotEmpty() && maxSearch-- > 0) {
             val head = nodes.poll()
 
@@ -44,28 +44,23 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
                 val tile = head.tile.step(1, direction)
                 val node = Node(tile = tile, parent = head)
                 if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE) && world.collision.canTraverse(head.tile, direction, type)) {
+                    node.cost = head.cost + 1
                     nodes.add(node)
                     closed.add(node)
                 }
             }
         }
 
-        if (tail == null) {
-            /**
-             * We get the closest node to the [target], but keep in mind that
-             * multiple nodes may have the same distance (i.e the first layer
-             * of border outside of the [target]).
-             */
-            val min = closed.minBy { it.tile.calculateDistance(target) }!!
+        if (maxSearch == 0) {
+            logger.warn("Had to exit path early as max search samples ran out. [origin=$origin, target=$target, distance=${origin.calculateDistance(target)}]")
+        }
 
-            /**
-             * The destination will be the closest tile to the player, out of
-             * the nodes that have the minimum distance from the [target].
-             * This is so that the destination will be the closest to the
-             * [origin].
-             */
-            tail = closed.filter { !it.tile.sameAs(origin) && it.tile.calculateDistance(target) <= min.tile.calculateDistance(target) }
-                    .minBy { it.tile.calculateDelta(origin) }
+        if (tail == null && closed.isNotEmpty()) {
+            val min = closed.minBy { it.tile.calculateDistance(target) }!!
+            val valid = closed.filter { !it.tile.sameAs(origin) && it.tile.calculateDistance(target) <= min.tile.calculateDistance(target) }
+            if (valid.isNotEmpty()) {
+                tail = valid.minBy { it.tile.calculateDelta(origin) }
+            }
         }
 
         val path = ArrayDeque<Tile>()
@@ -85,7 +80,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
             return ArrayDeque()
         }
 
-        val validTiles = ObjectPathfinder.getValidTiles(world.definitions, obj)
+        val validTiles = ObjectPathfinder.getValidTiles(world, obj)
 
         val nodes = ArrayDeque<Node>()
         val closed = hashSetOf<Node>()
@@ -95,7 +90,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
 
         var tail: Node? = null
 
-        var maxSearch = 2048
+        var maxSearch = (256 * 8)
         while (nodes.isNotEmpty() && maxSearch-- > 0) {
             val head = nodes.poll()
 
@@ -108,6 +103,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
                 val tile = head.tile.step(1, direction)
                 val node = Node(tile = tile, parent = head)
                 if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE) && world.collision.canTraverse(head.tile, direction, type)) {
+                    node.cost = head.cost + 1
                     nodes.add(node)
                     closed.add(node)
                     if (node.tile in validTiles) {
@@ -117,14 +113,20 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
             }
         }
 
+        if (maxSearch == 0) {
+            logger.warn("Had to exit path early as max search samples ran out. [origin=$origin, target=$target, distance=${origin.calculateDistance(target)}]")
+        }
+
         if (tail == null && validNodes.isNotEmpty()) {
-            tail = validNodes.minBy { it.tile.calculateDelta(target) }
+            tail = validNodes.minBy { it.cost }
         }
 
         if (tail == null && closed.isNotEmpty()) {
             val min = closed.minBy { it.tile.calculateDistance(target) }!!
-            tail = closed.filter { !it.tile.sameAs(origin) && it.tile.calculateDistance(target) <= min.tile.calculateDistance(target) }
-                    .minBy { it.tile.calculateDelta(origin) }
+            val valid = closed.filter { !it.tile.sameAs(origin) && it.tile.calculateDistance(target) <= min.tile.calculateDistance(target) }
+            if (valid.isNotEmpty()) {
+                tail = valid.minBy { it.tile.calculateDelta(origin) }
+            }
         }
 
         val path = ArrayDeque<Tile>()
@@ -137,6 +139,8 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
     }
 
     private data class Node(val tile: Tile, var parent: Node?) {
+
+        var cost: Int = 0
 
         override fun equals(other: Any?): Boolean = (other as? Node)?.tile?.sameAs(tile) ?: false
 

@@ -1,11 +1,7 @@
 package gg.rsmod.game.model.path.actions
 
-import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ObjectDef
-import gg.rsmod.game.model.INTERACTING_OBJ_ATTR
-import gg.rsmod.game.model.INTERACTING_OPT_ATTR
-import gg.rsmod.game.model.MovementQueue
-import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.collision.ObjectType
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GameObject
@@ -21,6 +17,7 @@ object ObjectPathfinder {
     /**
      * TODO: varrock museum, basement staircase shouldn't be valid where the rope is
      * TODO: varrock anvil on east side, the entrances r being clipped for some reason
+     * TODO: [getValidTiles] for other object types. i.e object type 5 needs other rotations support
      */
 
     val walkPlugin: (Plugin) -> Unit = {
@@ -28,7 +25,7 @@ object ObjectPathfinder {
         val obj = p.attr[INTERACTING_OBJ_ATTR]
         val opt = p.attr[INTERACTING_OPT_ATTR]
 
-        val validTiles = getValidTiles(p.world.definitions, obj)
+        val validTiles = getValidTiles(p.world, obj)
         if (p.tile !in validTiles) {
             p.walkTo(obj, MovementQueue.StepType.NORMAL)
             it.suspendable {
@@ -67,7 +64,7 @@ object ObjectPathfinder {
             }
             faceObj(p, obj)
             it.wait(1)
-            if (p.tile in getValidTiles(p.world.definitions, obj)) {
+            if (p.tile in getValidTiles(p.world, obj)) {
                 handleAction(it, obj, opt)
             } else {
                 p.message(Entity.YOU_CANT_REACH_THAT)
@@ -78,14 +75,24 @@ object ObjectPathfinder {
 
     private fun faceObj(p: Player, obj: GameObject) {
         val def = p.world.definitions.get(ObjectDef::class.java, obj.id)
+        val rot = obj.rot
+        val type = obj.type
 
-        when (obj.type) {
+        var width = def.width
+        var length = def.length
+
+        if (rot == 1 || rot == 3) {
+            width = def.length
+            length = def.width
+        }
+
+        when (type) {
             ObjectType.LENGTHWISE_WALL.value -> {
                 /**
                  * Doors and walls, otherwise you end up facing the same direction
                  * the object is facing.
                  */
-                val dir = when (obj.rot) {
+                val dir = when (rot) {
                     0 -> obj.tile.transform(if (p.tile.x == obj.tile.x) -1 else 0, 0)
                     1 -> obj.tile.transform(0, 1)
                     2 -> obj.tile.transform(1, 0)
@@ -94,27 +101,15 @@ object ObjectPathfinder {
                 p.faceTile(dir)
             }
             else -> {
-                val face = when {
-                    /**
-                     * For anything that's does not have a width/length of 2, we
-                     * will try to face it's center.
-                     */
-                    def.width != 2 && def.length != 2 -> obj.tile.transform(def.width shr 1, def.length shr 1)
-                    /**
-                     * If the object has a dimension of two units, we will try to
-                     * face the dimension closest to us.
-                     */
-                    else -> if (p.tile.x != obj.tile.x) Tile(p.tile.x, obj.tile.z) else obj.tile
-                }
-                p.faceTile(face)
+                p.faceTile(obj.tile.transform(width shr 1, length shr 1), width, length)
             }
         }
     }
 
-    fun getValidTiles(definitions: DefinitionSet, obj: GameObject): Array<Tile> {
+    fun getValidTiles(world: World, obj: GameObject): Array<Tile> {
         val directions = hashSetOf<Tile>()
 
-        val def = definitions.get(ObjectDef::class.java, obj.id)
+        val def = world.definitions.get(ObjectDef::class.java, obj.id)
         val rot = obj.rot
         val type = obj.type
         var width = def.width
@@ -128,6 +123,8 @@ object ObjectPathfinder {
         val blockBits = 4
         val clipMask = def.clipFlag
         val clipFlag = (DataConstants.BIT_MASK[blockBits] and (clipMask shl rot)) or (clipMask shr (blockBits - rot))
+
+        //println("mask=$clipMask, flag=$clipFlag, type=${obj.type}, rot=${obj.rot}, width=$width, length=$length, tile=${obj.tile}")
 
         when (clipFlag) {
             7 -> { // West to east
@@ -158,10 +155,9 @@ object ObjectPathfinder {
 
         if (type >= ObjectType.INTERACTABLE.value && type <= ObjectType.FLOOR_DECORATION.value) {
             /**
-             * 1x1 and 2x2 objects can be interacted from any side, except
-             * diagonal tiles.
+             * Same dimension objects can be interacted from any side.
              */
-            if (width <= 2 && length <= 2) {
+            if (width == length) {
                 for (x in -1 .. width) {
                     for (z in -1 .. length) {
 
@@ -170,7 +166,21 @@ object ObjectPathfinder {
                             continue
                         }
 
-                        directions.add(obj.tile.transform(x, z))
+                        val tile = obj.tile.transform(x, z)
+
+                        /**
+                         * We make sure the object can be reached from this [tile].
+                         */
+                        val objFace: Direction = when {
+                            (x in 0 .. width) && z == -1 -> Direction.NORTH
+                            (x in 0 .. width) && z == length -> Direction.SOUTH
+                            (z in 0 .. length) && x == -1 -> Direction.EAST
+                            (z in 0 .. length) && x == width -> Direction.WEST
+                            else -> Direction.NONE // Inside object - can always interact
+                        }
+                        if (objFace == Direction.NONE || world.collision.canTraverse(tile.step(1, objFace), Direction.between(tile.step(1, objFace), tile), EntityType.PLAYER)) {
+                            directions.add(tile)
+                        }
                     }
                 }
                 return directions.toTypedArray()
@@ -192,7 +202,7 @@ object ObjectPathfinder {
 
             /**
              * Rotation zero can only be accessed from the south side.
-             * Rotation three can only be accessed from the north side.
+             * Rotation two can only be accessed from the north side.
              */
             if (rot == 0 || rot == 2) {
                 for (x in 0 until width) {

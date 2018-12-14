@@ -1,7 +1,5 @@
 package gg.rsmod.game.sync
 
-import gg.rsmod.game.model.Tile
-
 /**
  * @author Tom <rspsmods@gmail.com>
  */
@@ -11,7 +9,7 @@ class UpdateBlockBuffer {
 
     var forceChat = ""
 
-    var faceTile: Tile? = null
+    var faceDegrees = 0
 
     fun isDirty(): Boolean = mask != 0
 

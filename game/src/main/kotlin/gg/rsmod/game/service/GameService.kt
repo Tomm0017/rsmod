@@ -30,7 +30,7 @@ class GameService : Service() {
         /**
          * The amount of ticks that must go by for debug info to be logged.
          */
-        private const val TICKS_PER_DEBUG_LOG = 50
+        private const val TICKS_PER_DEBUG_LOG = 10
     }
 
     /**

@@ -15,10 +15,12 @@ class ObjectDef(override val id: Int) : Definition(id) {
     var solid = true
     var impenetrable = true
     var interactive = false
+    var obstructive = false
     var clipFlag = 0
     var varbit = -1
     var varp = -1
     var animation = -1
+    var rotated = false
     val options: Array<String?> = Array(5) { "" }
 
     override fun decode(buf: ByteBuf, opcode: Int) {
@@ -73,6 +75,7 @@ class ObjectDef(override val id: Int) : Definition(id) {
                 }
             }
             60 -> buf.readUnsignedShort()
+            62 -> rotated = true
             65 -> buf.readUnsignedShort()
             66 -> buf.readUnsignedShort()
             67 -> buf.readUnsignedShort()
@@ -81,6 +84,7 @@ class ObjectDef(override val id: Int) : Definition(id) {
             70 -> buf.readShort()
             71 -> buf.readShort()
             72 -> buf.readShort()
+            73 -> obstructive = true
             75 -> buf.readUnsignedByte()
             77, 92 -> {
                 varbit = buf.readUnsignedShort()

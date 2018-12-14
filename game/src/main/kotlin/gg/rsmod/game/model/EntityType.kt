@@ -34,4 +34,6 @@ enum class EntityType {
     PROJECTILE;
 
     fun isHumanControlled(): Boolean = this == CLIENT
+
+    fun isPlayer(): Boolean = this == CLIENT || this == PLAYER
 }

@@ -3,10 +3,7 @@ package gg.rsmod.game.sync.task
 import gg.rsmod.game.model.INDEX_ATTR
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.sync.UpdateBlock
-import gg.rsmod.net.packet.DataTransformation
-import gg.rsmod.net.packet.DataType
-import gg.rsmod.net.packet.GamePacketBuilder
-import gg.rsmod.net.packet.PacketType
+import gg.rsmod.net.packet.*
 import gg.rsmod.util.Misc
 import org.apache.logging.log4j.LogManager
 import java.util.concurrent.Phaser
@@ -198,7 +195,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
         var mask = other.blockBuffer.blockValue()
 
         if (newPlayer) {
-            mask = mask or UpdateBlock.APPEARANCE.value
+            mask = mask or UpdateBlock.APPEARANCE.playerBit
         }
 
         if (mask >= 0x100) {
@@ -209,19 +206,19 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
             buf.put(DataType.BYTE, mask and 0xFF)
         }
 
-        if (other.blockBuffer.hasBlock(UpdateBlock.FORCE_CHAT)) {
+        if (other.blockBuffer.hasBlock(UpdateBlock.FORCE_CHAT, other.getType())) {
             buf.putString(other.blockBuffer.forceChat)
         }
 
-        if (other.blockBuffer.hasBlock(UpdateBlock.MOVEMENT)) {
+        if (other.blockBuffer.hasBlock(UpdateBlock.MOVEMENT, other.getType())) {
             buf.put(DataType.BYTE, DataTransformation.NEGATE, if (other.teleport) 127 else if (other.steps?.runDirection != null) 2 else 1)
         }
 
-        if (other.blockBuffer.hasBlock(UpdateBlock.FACE_TILE)) {
+        if (other.blockBuffer.hasBlock(UpdateBlock.FACE_TILE, other.getType())) {
             buf.put(DataType.SHORT, DataTransformation.ADD, other.blockBuffer.faceDegrees)
         }
 
-        if (other.blockBuffer.hasBlock(UpdateBlock.APPEARANCE) || newPlayer) {
+        if (other.blockBuffer.hasBlock(UpdateBlock.APPEARANCE, other.getType()) || newPlayer) {
             val appBuf = GamePacketBuilder()
             appBuf.put(DataType.BYTE, 0)
             appBuf.put(DataType.BYTE, -1)
@@ -262,6 +259,16 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
 
             buf.put(DataType.BYTE, DataTransformation.NEGATE, appBuf.getBuffer().readableBytes())
             buf.putBytes(appBuf.getBuffer())
+        }
+
+        if (other.blockBuffer.hasBlock(UpdateBlock.ANIMATION, other.getType())) {
+            buf.put(DataType.SHORT, DataOrder.LITTLE, other.blockBuffer.animation)
+            buf.put(DataType.BYTE, DataTransformation.SUBTRACT, other.blockBuffer.animationDelay)
+        }
+
+        if (other.blockBuffer.hasBlock(UpdateBlock.GFX, other.getType())) {
+            buf.put(DataType.SHORT, other.blockBuffer.graphicId)
+            buf.put(DataType.INT, DataOrder.INVERSED_MIDDLE, (other.blockBuffer.graphicHeight shl 16) or other.blockBuffer.graphicDelay)
         }
     }
 

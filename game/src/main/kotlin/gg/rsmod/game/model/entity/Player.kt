@@ -159,7 +159,7 @@ open class Player(override val world: World) : Pawn(world) {
             PlayerGpi.init(this)
         }
         initiated = true
-        blockBuffer.addBlock(UpdateBlock.APPEARANCE)
+        blockBuffer.addBlock(UpdateBlock.APPEARANCE, getType())
         world.plugins.executeLogin(this)
     }
 

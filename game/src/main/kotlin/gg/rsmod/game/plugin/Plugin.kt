@@ -34,7 +34,7 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
      * was interrupted by another action such as walking or a new script being
      * executed by the same [ctx].
      */
-    var interruptAction: Function0<Unit>? = null
+    var interruptAction: Function1<Plugin, Unit>? = null
 
     /**
      * The next [SuspendableStep], if any, that must be handled once a [SuspendableCondition]
@@ -83,7 +83,7 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
     fun terminate() {
         nextStep = null
         requestReturnValue = null
-        interruptAction?.invoke()
+        interruptAction?.invoke(this)
     }
 
     /**

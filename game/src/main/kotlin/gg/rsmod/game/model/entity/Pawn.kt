@@ -115,21 +115,32 @@ abstract class Pawn(open val world: World) : Entity() {
         teleport = true
         tile = Tile(x, z, height)
         movementQueue.clear()
+        blockBuffer.addBlock(UpdateBlock.MOVEMENT, getType())
     }
 
     fun teleport(tile: Tile) {
         teleport(tile.x, tile.z, tile.height)
     }
 
+    fun animate(id: Int) {
+        blockBuffer.animation = id
+        blockBuffer.addBlock(UpdateBlock.ANIMATION, getType())
+    }
+
+    fun graphic(id: Int, height: Int = 0, delay: Int = 0) {
+        blockBuffer.graphicId = id
+        blockBuffer.graphicHeight = height
+        blockBuffer.graphicDelay = delay
+        blockBuffer.addBlock(UpdateBlock.GFX, getType())
+    }
+
     fun forceChat(message: String) {
-        if (this is Player) {
-            blockBuffer.forceChat = message
-            blockBuffer.addBlock(UpdateBlock.FORCE_CHAT)
-        }
+        blockBuffer.forceChat = message
+        blockBuffer.addBlock(UpdateBlock.FORCE_CHAT, getType())
     }
 
     fun faceTile(face: Tile, width: Int = 1, length: Int = 1) {
-        if (this is Player) {
+        if (getType().isPlayer()) {
             val srcX = tile.x * 64
             val srcZ = tile.z * 64
             val dstX = face.x * 64
@@ -142,8 +153,8 @@ abstract class Pawn(open val world: World) : Entity() {
             degreesZ += (Math.floor(length / 2.0)) * 32
 
             blockBuffer.faceDegrees = (Math.atan2(degreesX, degreesZ) * 325.949).toInt() and 0x7ff
-            blockBuffer.addBlock(UpdateBlock.FACE_TILE)
         }
+        blockBuffer.addBlock(UpdateBlock.FACE_TILE, getType())
     }
 
     /**

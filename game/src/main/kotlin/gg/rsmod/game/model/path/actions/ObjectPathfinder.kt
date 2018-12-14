@@ -27,7 +27,7 @@ object ObjectPathfinder {
 
         val validTiles = getValidTiles(p.world, obj)
         if (p.tile !in validTiles) {
-            p.walkTo(obj, MovementQueue.StepType.NORMAL)
+            p.walkTo(obj.tile.x, obj.tile.z, MovementQueue.StepType.NORMAL, validTiles)
             it.suspendable {
                 awaitArrival(it, obj, opt)
             }
@@ -106,7 +106,7 @@ object ObjectPathfinder {
         }
     }
 
-    fun getValidTiles(world: World, obj: GameObject): Array<Tile> {
+    private fun getValidTiles(world: World, obj: GameObject): Array<Tile> {
         val directions = hashSetOf<Tile>()
 
         val def = world.definitions.get(ObjectDef::class.java, obj.id)
@@ -123,6 +123,8 @@ object ObjectPathfinder {
         val blockBits = 4
         val clipMask = def.clipFlag
         val clipFlag = (DataConstants.BIT_MASK[blockBits] and (clipMask shl rot)) or (clipMask shr (blockBits - rot))
+
+        println("mask=$clipMask, flag=$clipFlag, type=${obj.type}, rot=${obj.rot}, flipped=${def.rotated}, width=$width, length=$length, tile=${obj.tile}")
 
         when (clipFlag) {
             7 -> { // West to east
@@ -218,7 +220,7 @@ object ObjectPathfinder {
                 3 -> arrayOf(obj.tile.transform(0, -1), obj.tile.transform(0, 0))
                 else -> arrayOf(obj.tile.transform(0, 0), obj.tile.transform(-1, 0))
             }
-        } else if (type == 5) {
+        } else if (type == 4 || type == 5) {
             /**
              * Varrock agility course start is type 5. Look more into this type
              * to insert it into [ObjectType] properly.

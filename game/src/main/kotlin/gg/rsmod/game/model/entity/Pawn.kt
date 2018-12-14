@@ -73,33 +73,8 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun canMove(): Boolean = !isDead() && lock.canMove()
 
-    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType) {
-        val path = BFSPathfindingStrategy(world).getPath(tile, Tile(x, z, tile.height), getType())
-        if (path.isEmpty() && this is Player) {
-            write(SetMinimapMarkerMessage(255, 255))
-            return
-        }
-
-        var tail: Tile? = null
-
-        movementQueue.clear()
-        var next = path.poll()
-        while (next != null) {
-            movementQueue.addStep(next, stepType)
-            val poll = path.poll()
-            if (poll == null) {
-                tail = next
-            }
-            next = poll
-        }
-
-        if (tail != null && this is Player) {
-            write(SetMinimapMarkerMessage(tail.x - lastKnownRegionBase!!.x, tail.z - lastKnownRegionBase!!.z))
-        }
-    }
-
-    fun walkTo(obj: GameObject, stepType: MovementQueue.StepType) {
-        val path = BFSPathfindingStrategy(world).getPath(tile, obj, getType())
+    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, validSurroundingTiles: Array<Tile>? = null) {
+        val path = BFSPathfindingStrategy(world).getPath(tile, Tile(x, z, tile.height), getType(), validSurroundingTiles)
         if (path.isEmpty() && this is Player) {
             write(SetMinimapMarkerMessage(255, 255))
             return

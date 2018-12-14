@@ -40,6 +40,7 @@ class MessageEncoderSet {
         encoders[SendSkillMessage::class.java] = SendSkillEncoder(structures.get(SendSkillMessage::class.java)!!)
         encoders[SetRunEnergyMessage::class.java] = RunEnergyEncoder(structures.get(SetRunEnergyMessage::class.java)!!)
         encoders[SetMinimapMarkerMessage::class.java] = MinimapMarkerEncoder(structures.get(SetMinimapMarkerMessage::class.java)!!)
+        encoders[SetItemContainerMessage::class.java] = ItemContainerEncoder(structures.get(SetItemContainerMessage::class.java)!!)
     }
 
     @Suppress("UNCHECKED_CAST")

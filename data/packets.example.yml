@@ -208,6 +208,19 @@ packets:
       - name: z
         type: BYTE
 
+  - message: gg.rsmod.game.message.impl.SetItemContainerMessage
+    type: VARIABLE_SHORT
+    opcode: 67
+    structure:
+      - name: interfaceHash
+        type: INT
+      - name: containerKey
+        type: SHORT
+      - name: itemCount
+        type: SHORT
+      - name: items
+        type: BYTES
+
   # In
   - message: gg.rsmod.game.message.impl.CommandMessage
     type: VARIABLE_BYTE

@@ -3,13 +3,13 @@ package gg.rsmod.game.model.entity
 import com.google.common.base.MoreObjects
 import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
-import gg.rsmod.game.message.impl.SendChatboxTextMessage
-import gg.rsmod.game.message.impl.SendSkillMessage
-import gg.rsmod.game.message.impl.SetBigVarpMessage
-import gg.rsmod.game.message.impl.SetSmallVarpMessage
+import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.container.ContainerStackType
+import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.interf.Interfaces
 import gg.rsmod.game.sync.UpdateBlock
+import java.util.*
 
 /**
  * A [Pawn] that represents a player on the players' clients.
@@ -52,6 +52,8 @@ open class Player(override val world: World) : Pawn(world) {
      */
     @Volatile private var pendingLogout = false
 
+    val inventory: ItemContainer by lazy { ItemContainer(world.definitions, 28, ContainerStackType.NORMAL) }
+
     val interfaces: Interfaces by lazy { Interfaces(this) }
 
     val skills: SkillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
@@ -66,6 +68,17 @@ open class Player(override val world: World) : Pawn(world) {
      * on log-in, this array will be filled with [0]s for this [Player].
      */
     val otherPlayerTiles = IntArray(2048)
+
+    /**
+     * Persistent attributes which must be saved from our system and loaded
+     * when needed. This map does not support storing [Double]s as we convert
+     * every double into an [Int] when loading. This is done because some
+     * parsers can interpret [Number]s differently, so we want to force every
+     * [Number] to an [Int], explicitly. If you wish to store a [Double], you
+     * can multiply your value by [100] and then divide it on login as a work-
+     * around.
+     */
+    private val persistent: HashMap<String, Any> = hashMapOf()
 
     var runEnergy = 100.0
 
@@ -89,6 +102,11 @@ open class Player(override val world: World) : Pawn(world) {
                 world.plugins.executeRegionEnter(this, tile.toRegionId())
             }
             chunk = newChunk
+        }
+
+        if (inventory.dirty) {
+            write(SetItemContainerMessage(parent = 149, child = 0, containerKey = 93, items = Arrays.copyOf(inventory.getBackingArray(), inventory.capacity)))
+            inventory.dirty = false
         }
 
         for (i in 0 until skills.maxSkills) {
@@ -212,6 +230,29 @@ open class Player(override val world: World) : Pawn(world) {
     fun message(message: String) {
         write(SendChatboxTextMessage(type = 0, message = message, username = null))
     }
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T> getPersistent(key: String): T = (persistent[key] as? T)!!
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T> getPersistentNullable(key: String): T? = (persistent[key] as? T)
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T> getPersistentOrDefault(key: String, default: T): T = (persistent[key] as? T) ?: default
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T> putPersistent(key: String, value: T) {
+        persistent[key] = value as Any
+    }
+
+    fun removePersistent(key: String) {
+        persistent.remove(key)
+    }
+
+    /**
+     * Should only be used when saving [persistent] attributes.
+     */
+    fun __getPersistentMap(): HashMap<String, Any> = persistent
 
     override fun toString(): String = MoreObjects.toStringHelper(this)
             .add("name", username)

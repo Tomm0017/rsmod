@@ -1,6 +1,7 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
+import gg.rsmod.game.model.AttributeSystem
 import gg.rsmod.game.model.Tile
 
 /**
@@ -19,6 +20,11 @@ abstract class GameObject : Entity {
      * A bit-packed byte that holds the object "type" and "rotation".
      */
     private val settings: Byte
+
+    /**
+     * @see [AttributeSystem]
+     */
+    val attr = AttributeSystem()
 
     val type: Int
         get() = settings.toInt() shr 2

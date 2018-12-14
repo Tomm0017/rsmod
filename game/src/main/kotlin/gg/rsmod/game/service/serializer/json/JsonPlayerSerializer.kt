@@ -63,11 +63,12 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.passwordHash = data.passwordHash
             client.tile = Tile(data.x, data.z, data.height)
             client.privilege = client.world.privileges.get(data.privilege) ?: Privilege.DEFAULT
+            client.inventory.setItems(data.inventory)
             data.attributes.forEach { key, value ->
                 if (value is Number) {
-                    client.attr.putPersistent(key, value.toInt())
+                    client.putPersistent(key, value.toInt())
                 } else {
-                    client.attr.putPersistent(key, value)
+                    client.putPersistent(key, value)
                 }
             }
             data.varps.forEach { varp ->
@@ -84,8 +85,8 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     override fun saveClientData(client: Client): Boolean {
         val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername,
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
-                privilege = client.privilege.id, attributes = client.attr.__getPersistentMap(),
-                varps = client.varps.getAll().filter { it.state != 0 })
+                privilege = client.privilege.id, inventory = client.inventory.toMap(),
+                attributes = client.__getPersistentMap(), varps = client.varps.getAll().filter { it.state != 0 })
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))
         val json = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
         json.toJson(data, writer)

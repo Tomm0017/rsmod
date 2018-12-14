@@ -46,7 +46,7 @@ class LoginService : Service() {
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         serializer = world.getService(PlayerSerializerService::class.java, true).get()
 
-        val threadCount = serviceProperties.get<Int>("thread-count")!!
+        val threadCount = serviceProperties.getOrDefault("thread-count", 3)
         val executorService = Executors.newFixedThreadPool(threadCount, NamedThreadFactory().setName("login-worker").build())
         for (i in 0 until threadCount) {
             executorService.execute(LoginWorker(this))

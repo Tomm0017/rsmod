@@ -88,7 +88,7 @@ class SkillSet(val maxSkills: Int) {
     /**
      * Gets the level based on the xp that [skills].get([skill]) has.
      */
-    fun getLevelForXp(skill: Int): Int = getLevelForXp(skills[skill].xp)
+    fun getMaxLevel(skill: Int): Int = getLevelForXp(skills[skill].xp)
 
     fun setXp(skill: Int, xp: Double) {
         get(skill).xp = xp
@@ -118,7 +118,7 @@ class SkillSet(val maxSkills: Int) {
         setCurrentLevel(skill, getLevelForXp(xp))
     }
 
-    fun calculateTotalLevel(): Int = skills.sumBy { skill -> getLevelForXp(skill.id) }
+    fun calculateTotalLevel(): Int = skills.sumBy { skill -> getMaxLevel(skill.id) }
 
     fun calculateTotalXp(): Double = skills.sumByDouble { skill -> getCurrentXp(skill.id) }
 }

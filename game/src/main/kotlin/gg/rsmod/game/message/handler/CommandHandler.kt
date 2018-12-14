@@ -12,7 +12,7 @@ class CommandHandler : MessageHandler<CommandMessage> {
     override fun handle(client: Client, message: CommandMessage) {
         val values = message.command.split(" ")
         val command = values[0].toLowerCase()
-        val args = if (values.size > 1) values.slice(1 until values.size).toTypedArray() else null
+        val args = if (values.size > 1) values.slice(1 until values.size).filter { it.isNotEmpty() }.toTypedArray() else null
         log(client, "Command: cmd={}, args={}", command, args ?: emptyArray<String>())
 
         if (!client.world.plugins.executeCommand(client, command, args)) {

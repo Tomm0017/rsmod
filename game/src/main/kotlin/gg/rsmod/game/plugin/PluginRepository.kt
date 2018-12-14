@@ -133,7 +133,7 @@ class PluginRepository {
         val plugin = commandPlugins[command]
         if (plugin != null) {
             p.attr.put(COMMAND_ATTR, command)
-            if (args != null){
+            if (args != null) {
                 p.attr.put(COMMAND_ARGS_ATTR, args)
             } else {
                 p.attr.put(COMMAND_ARGS_ATTR, emptyArray())

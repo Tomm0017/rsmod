@@ -115,7 +115,7 @@ class GameService : Service() {
     @Throws(Exception::class)
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         this.world = world
-        maxMessagesPerCycle = serviceProperties.get<Int>("messages-per-cycle")!!
+        maxMessagesPerCycle = serviceProperties.getOrDefault("messages-per-cycle", 30)
         executor.scheduleAtFixedRate(this::cycle, 0, world.gameContext.cycleTime.toLong(), TimeUnit.MILLISECONDS)
     }
 

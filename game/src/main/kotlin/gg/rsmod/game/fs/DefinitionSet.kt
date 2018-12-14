@@ -11,9 +11,6 @@ import gg.rsmod.game.service.xtea.XteaKeyService
 import io.netty.buffer.Unpooled
 import net.runelite.cache.ConfigType
 import net.runelite.cache.IndexType
-import net.runelite.cache.definitions.EnumDefinition
-import net.runelite.cache.definitions.NpcDefinition
-import net.runelite.cache.definitions.ObjectDefinition
 import net.runelite.cache.definitions.loaders.LocationsLoader
 import net.runelite.cache.definitions.loaders.MapLoader
 import net.runelite.cache.fs.FSFile
@@ -48,7 +45,7 @@ class DefinitionSet {
         val configs = store.getIndex(IndexType.CONFIGS)!!
 
         /**
-         * Load [Varp]s.
+         * Load [VarpDef]s.
          */
         val varpArchive = configs.getArchive(ConfigType.VARPLAYER.id)!!
         val varpFiles = varpArchive.getFiles(store.storage.loadArchive(varpArchive)!!).files
@@ -64,7 +61,7 @@ class DefinitionSet {
         logger.info("Loaded ${varbitFiles.size} varbit definitions.")
 
         /**
-         * Load [EnumDefinition]s.
+         * Load [EnumDef]s.
          */
         val enumArchive = configs.getArchive(ConfigType.ENUM.id)!!
         val enumFiles = enumArchive.getFiles(store.storage.loadArchive(enumArchive)!!).files
@@ -72,7 +69,7 @@ class DefinitionSet {
         logger.info("Loaded ${enumFiles.size} enum definitions.")
 
         /**
-         * Load [NpcDefinition]s.
+         * Load [NpcDef]s.
          */
         val npcArchive = configs.getArchive(ConfigType.NPC.id)!!
         val npcFiles = npcArchive.getFiles(store.storage.loadArchive(npcArchive)!!).files
@@ -80,7 +77,15 @@ class DefinitionSet {
         logger.info("Loaded ${npcFiles.size} npc definitions.")
 
         /**
-         * Load [ObjectDefinition]s.
+         * Load [ItemDef]s.
+         */
+        val itemArchive = configs.getArchive(ConfigType.ITEM.id)!!
+        val itemFiles = itemArchive.getFiles(store.storage.loadArchive(itemArchive)!!).files
+        loadDefinitions(ItemDef::class.java, itemFiles)
+        logger.info("Loaded ${itemFiles.size} item definitions.")
+
+        /**
+         * Load [ObjectDef]s.
          */
         val objArchive = configs.getArchive(ConfigType.OBJECT.id)!!
         val objFiles = objArchive.getFiles(store.storage.loadArchive(objArchive)!!).files
@@ -117,6 +122,7 @@ class DefinitionSet {
             EnumDef::class.java -> EnumDef(id)
             NpcDef::class.java -> NpcDef(id)
             ObjectDef::class.java -> ObjectDef(id)
+            ItemDef::class.java -> ItemDef(id)
             else -> throw IllegalArgumentException("Unhandled definition class type ${type::class.java}.")
         }
 

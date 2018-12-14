@@ -80,10 +80,10 @@ Here are the instructions for how you would create a few different scripts.
     scheduled at a certain point, you want to surround the code with `Plugin.suspendable`
     (in this case, `it.suspendable { ... }`). 
     
-    1. `bindObj` this is the bind method for attaching a plugin to an object action.
+    1. `bindObj`: this is the bind method for attaching a plugin to an object action.
     You can see, in `Kotlin`, we are able to 'label' the parameters. In this case, 
     we set the `object id` to `0` and `opt` to `1` 
-    2. `it.suspendable` exposes the code that follows as being `suspendable`, 
+    2. `it.suspendable`: exposes the code that follows as being `suspendable`, 
     which means it can be paused at any point. `it` is the auto-assigned name
     that `Kotlin` gives unnamed variables in logic such as lambdas. `it`, in this case, 
     is a `Plugin`, which holds the `suspendable` method.
@@ -97,8 +97,8 @@ Here are the instructions for how you would create a few different scripts.
     I want to create a `Dialog`
     -
     Creating a dialog script is similar to that of the `scheduled task` script. 
-    We will use the `suspendable` in this example, which is targeted for the 
-    `OSRS` version of `RS Mod`.
+    We will use the `npcDialog` functionality in this example, which is targeted 
+    for the `OSRS` version of `RS Mod`.
     
         @JvmStatic
         @ScanPlugins

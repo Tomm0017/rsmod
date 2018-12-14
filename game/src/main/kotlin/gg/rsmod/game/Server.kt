@@ -90,7 +90,6 @@ class Server {
         /**
          * Create a game context for our configurations and services to run.
          */
-        println("initial launch: $initialLaunch")
         val gameContext = GameContext(initialLaunch = initialLaunch,
                 name = gameProperties.get<String>("name")!!,
                 revision = gameProperties.get<Int>("revision")!!,

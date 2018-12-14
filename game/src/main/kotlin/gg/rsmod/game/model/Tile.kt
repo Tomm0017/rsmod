@@ -40,7 +40,7 @@ class Tile {
 
     fun viewableFrom(other: Tile, viewDistance: Int = 15): Boolean = calculateDistance(other) <= viewDistance
 
-    fun step(num: Int, direction: Direction): Tile = Tile(this.x + (num * direction.getDeltaX()), this.z + (num * direction.getDeltaZ()), this.height)
+    fun step(direction: Direction, num: Int = 1): Tile = Tile(this.x + (num * direction.getDeltaX()), this.z + (num * direction.getDeltaZ()), this.height)
 
     /**
      * Checks if the [other] tile is within the [radius]x[radius] distance of

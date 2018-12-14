@@ -4,8 +4,8 @@ name: "RS Mod Server"
 game-port: 43594
 revision: 172
 rsa-encryption: false
-home-x: 3200
-home-z: 3200
+home-x: 3087
+home-z: 3497
 skill-count: 23
 run-energy: true # If the player will use run energy when running
 
@@ -24,6 +24,10 @@ privileges:
     icon: 1
     name: "administrator"
     powers: ["mod", "admin"]
+  - id: 3
+    icon: 1
+    name: "owner"
+    powers: ["mod", "dev", "admin", "owner"]
 
 # Game context values
 # You usually do not want to modify these values or the game may not function properly.
@@ -40,8 +44,8 @@ services:
   - class: gg.rsmod.game.service.serializer.json.JsonPlayerSerializer
     path: "./data/saves/"
 
-  - class: gg.rsmod.game.service.login.LoginService
-    thread-count: 3
-
   - class: gg.rsmod.game.service.xtea.XteaKeyService
     path: "./data/xteas/"
+
+  - class: gg.rsmod.game.service.login.LoginService
+    thread-count: 3

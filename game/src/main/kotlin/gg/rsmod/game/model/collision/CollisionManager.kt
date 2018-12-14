@@ -25,13 +25,13 @@ class CollisionManager(val world: World) {
     }
 
     fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean {
-        val next = tile.step(1, direction)
+        val next = tile.step(direction)
         val chunk = world.regions.getChunkForTile(next)
         return chunk.isBlocked(tile, direction, projectile)
     }
 
     fun canTraverse(tile: Tile, direction: Direction, type: EntityType): Boolean {
-        val next = tile.step(1, direction)
+        val next = tile.step(direction)
         var chunk = world.regions.getChunkForTile(next)
         val projectile = type == EntityType.PROJECTILE
 
@@ -41,7 +41,7 @@ class CollisionManager(val world: World) {
 
         if (direction.isDiagonal()) {
             direction.getDiagonalComponents().forEach { other ->
-                val otherNext = tile.step(1, other)
+                val otherNext = tile.step(other)
 
                 if (!chunk.contains(otherNext)) {
                     chunk = world.regions.getChunkForTile(otherNext)

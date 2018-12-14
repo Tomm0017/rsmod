@@ -39,7 +39,7 @@ class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Ti
 
         fun putWall(tile: Tile, impenetrable: Boolean, orientation: Direction) {
             putTile(tile, impenetrable, orientation)
-            putTile(tile.step(1, orientation), impenetrable, orientation.getOpposite())
+            putTile(tile.step(orientation), impenetrable, orientation.getOpposite())
         }
 
         fun putLargeCornerWall(tile: Tile, impenetrable: Boolean, orientation: Direction) {
@@ -47,7 +47,7 @@ class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Ti
             putTile(tile, impenetrable, *directions)
 
             directions.forEach { dir ->
-                putTile(tile.step(1, dir), impenetrable, dir.getOpposite())
+                putTile(tile.step(dir), impenetrable, dir.getOpposite())
             }
         }
 

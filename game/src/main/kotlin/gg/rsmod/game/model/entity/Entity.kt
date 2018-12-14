@@ -11,7 +11,7 @@ abstract class Entity {
 
     companion object {
         const val NOTHING_INTERESTING_HAPPENS = "Nothing interesting happens."
-        const val YOU_CANT_REACH_THAT = "You can't reach that."
+        const val YOU_CANT_REACH_THAT = "I can't reach that!"
     }
 
     /**

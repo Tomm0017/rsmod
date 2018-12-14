@@ -41,7 +41,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
             }
 
             Direction.RS_ORDER.forEach { direction ->
-                val tile = head.tile.step(1, direction)
+                val tile = head.tile.step(direction)
                 val node = Node(tile = tile, parent = head)
                 if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE) && world.collision.canTraverse(head.tile, direction, type)) {
                     node.cost = head.cost + 1
@@ -69,6 +69,10 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
                 tail = valid.minBy { it.tile.calculateDelta(origin) }
             }
         }
+
+        /*if (tail != null && tail.tile.calculateDistance(target) > origin.calculateDistance(target)) {
+            tail = null
+        }*/
 
         val path = ArrayDeque<Tile>()
         while (tail?.parent != null) {

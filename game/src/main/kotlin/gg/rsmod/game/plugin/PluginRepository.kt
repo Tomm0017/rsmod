@@ -63,6 +63,12 @@ class PluginRepository {
     private val objectPlugins = hashMapOf<Int, HashMap<Int, Function1<Plugin, Unit>>>()
 
     /**
+     * A map of objects that have custom path finding. This means that the plugin
+     * is responsible for walking to the object if necessary.
+     */
+    private val customPathingObjects = hashMapOf<Int, Function1<Plugin, Unit>>()
+
+    /**
      * Initiates and populates all our plugins.
      */
     fun init(gameService: GameService, packagePath: String) {
@@ -202,6 +208,22 @@ class PluginRepository {
     fun executeObject(p: Player, id: Int, opt: Int): Boolean {
         val optMap = objectPlugins[id] ?: return false
         val logic = optMap[opt] ?: return false
+        p.world.pluginExecutor.execute(p, logic)
+        return true
+    }
+
+    @Throws(IllegalStateException::class)
+    fun bindCustomPathingObject(id: Int, plugin: Function1<Plugin, Unit>) {
+        if (customPathingObjects.containsKey(id)) {
+            logger.error("Object is already bound to a custom path-finder plugin: $id")
+            throw IllegalStateException()
+        }
+        customPathingObjects[id] = plugin
+        count++
+    }
+
+    fun executeCustomPathingObject(p: Player, id: Int): Boolean {
+        val logic = customPathingObjects[id] ?: return false
         p.world.pluginExecutor.execute(p, logic)
         return true
     }

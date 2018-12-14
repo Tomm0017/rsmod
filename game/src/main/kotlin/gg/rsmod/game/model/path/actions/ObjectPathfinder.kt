@@ -124,8 +124,6 @@ object ObjectPathfinder {
         val clipMask = def.clipFlag
         val clipFlag = (DataConstants.BIT_MASK[blockBits] and (clipMask shl rot)) or (clipMask shr (blockBits - rot))
 
-        //println("mask=$clipMask, flag=$clipFlag, type=${obj.type}, rot=${obj.rot}, width=$width, length=$length, tile=${obj.tile}")
-
         when (clipFlag) {
             7 -> { // West to east
                 for (z in 0 until length) {
@@ -172,10 +170,10 @@ object ObjectPathfinder {
                          * We make sure the object can be reached from this [tile].
                          */
                         val objFace: Direction = when {
-                            (x in 0 .. width) && z == -1 -> Direction.NORTH
-                            (x in 0 .. width) && z == length -> Direction.SOUTH
-                            (z in 0 .. length) && x == -1 -> Direction.EAST
-                            (z in 0 .. length) && x == width -> Direction.WEST
+                            (x in 0 .. width) && z == -1 -> Direction.SOUTH
+                            (x in 0 .. width) && z == length -> Direction.NORTH
+                            (z in 0 .. length) && x == -1 -> Direction.WEST
+                            (z in 0 .. length) && x == width -> Direction.EAST
                             else -> Direction.NONE // Inside object - can always interact
                         }
                         if (objFace == Direction.NONE || world.collision.canTraverse(tile.step(1, objFace), Direction.between(tile.step(1, objFace), tile), EntityType.PLAYER)) {

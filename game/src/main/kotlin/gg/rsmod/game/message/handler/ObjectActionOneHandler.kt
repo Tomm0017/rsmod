@@ -50,6 +50,8 @@ class ObjectActionOneHandler : MessageHandler<ObjectActionOneMessage> {
         client.interruptPlugins()
         client.attr.put(INTERACTING_OPT_ATTR, 1)
         client.attr.put(INTERACTING_OBJ_ATTR, obj)
-        client.world.pluginExecutor.execute(client, ObjectPathfinder.walkPlugin)
+        if (!client.world.plugins.executeCustomPathingObject(client, obj.id)) {
+            client.world.pluginExecutor.execute(client, ObjectPathfinder.walkPlugin)
+        }
     }
 }

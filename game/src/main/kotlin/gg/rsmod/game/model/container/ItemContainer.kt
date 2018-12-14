@@ -214,6 +214,113 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, val stack
         return ItemTransaction(amount, completed)
     }
 
+    /**
+     * Adds an [Item] to our container. We also use the item to see if the
+     * transaction should use the "no-stack" flag, which means that even if
+     * the container has a type of [ContainerStackType.STACK] or if the item
+     * metadata specifies it's stackable, it will will not stack with any other
+     * item with the same id on the container.
+     *
+     * Any [Item] that has any [gg.rsmod.game.model.item.ItemAttribute] will not
+     * stack with other items of the same id.
+     */
+    fun add(item: Item, assureFullInsertion: Boolean = true, beginSlot: Int = -1): ItemTransaction {
+        return add(id = item.id, amount = item.amount, assureFullInsertion = assureFullInsertion,
+                forceNoStack = item.hasAnyAttr(), beginSlot = beginSlot)
+    }
+
+    /**
+     * Remove [amount] of [id] in the the container.
+     *
+     * @param id
+     * The item id.
+     *
+     * @param amount
+     * The amount of [id]s to try and remove. There is no guarantee that this
+     * method will be able to remove all the [amount] of items. This is true
+     * when the container doesn't have as many [id]s as [amount].
+     *
+     * To get the amount of items that were removed, see [ItemTransaction.completed].
+     * To get the amount of items that couldn't be removed, see [ItemTransaction.getLeftOver].
+     *
+     * @param assureFullRemoval
+     * If [true], we make sure the container has [amount] or more [id]s before
+     * attempting to remove any.
+     * If [false], it will remove any [id] it can find until [amount] has been
+     * removed.
+     *
+     * @param fromIndex
+     * The search for [id] in the [items] array will begin from this index and
+     * will sequentially increment until either 1) [amount] of [id]s has been
+     * removed or 2) the index has reached [capacity].
+     */
+    fun remove(id: Int, amount: Int = 1, assureFullRemoval: Boolean = true, fromIndex: Int = -1): ItemTransaction {
+        val hasAmount = getItemCount(id)
+
+        if (assureFullRemoval && hasAmount < amount) {
+            return ItemTransaction(amount, 0)
+        } else if (!assureFullRemoval && hasAmount < 1) {
+            return ItemTransaction(amount, 0)
+        }
+
+        var removed = 0
+
+        val skippedIndices = if (fromIndex != -1) 0 until fromIndex else null
+
+        val index = if (fromIndex != -1) fromIndex else 0
+        for (i in index until capacity) {
+            val item = items[i] ?: continue
+            if (item.id == id) {
+                val removeCount = Math.min(item.amount, amount - removed)
+                removed += removeCount
+
+                item.amount -= removeCount
+                if (item.amount == 0) {
+                    items[i] = null
+                }
+
+                if (removed == amount) {
+                    break
+                }
+            }
+        }
+
+        /**
+         * If we specified a [fromIndex] to begin the search, but we were not able
+         * to remove [amount] of [id] items, then we go over the skipped indices.
+         * This is done to ensure that [assureFullRemoval] will always provide
+         * accurate results.
+         *
+         * Example: 1 abyssal whip in slot 0 and 1 in slot 10, we call [remove]
+         * with [fromIndex] of [5] and [assureFullRemoval] as [true]. Our initial
+         * check to make sure the container has enough of the item will succeed,
+         * however the loop would only iterate through items in index 5-[capacity].
+         */
+        if (skippedIndices != null && removed < amount) {
+            for (i in skippedIndices) {
+                val item = items[i] ?: continue
+                if (item.id == id) {
+                    val removeCount = Math.min(item.amount, amount - removed)
+                    removed += removeCount
+
+                    item.amount -= removeCount
+                    if (item.amount == 0) {
+                        items[i] = null
+                    }
+
+                    if (removed == amount) {
+                        break
+                    }
+                }
+            }
+        }
+
+        if (removed > 0) {
+            dirty = true
+        }
+        return ItemTransaction(amount, removed)
+    }
+
     operator fun get(index: Int): Item? = items[index]
 
     private fun set(index: Int, item: Item?) {

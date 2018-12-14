@@ -60,6 +60,7 @@ class Server {
          * Inform the time it took to load the API related logic.
          */
         logger.info("${getApiName()} loaded up in ${overallStopwatch.elapsed(TimeUnit.MILLISECONDS)}ms.")
+        logger.info("Visit our site ${getApiSite()} to purchase & sell plugins.")
     }
 
     /**
@@ -201,5 +202,7 @@ class Server {
     /**
      * Gets the API-specific org name.
      */
-    private fun getApiName(): String = apiProperties.get("org")!!
+    fun getApiName(): String = apiProperties.getOrDefault("org", "RS Mod")
+
+    fun getApiSite(): String = apiProperties.getOrDefault("org-site", "rsmods.gg")
 }

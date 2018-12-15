@@ -11,9 +11,11 @@ import gg.rsmod.game.model.collision.CollisionUpdate
 import gg.rsmod.game.model.entity.Entity
 
 /**
+ * Represents an 8x8 tile in the game map.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
-class Chunk(val coordinates: RegionCoordinates, heights: Int) {
+class Chunk(private val coordinates: RegionCoordinates, private val heights: Int) {
 
     companion object {
         /**
@@ -22,8 +24,16 @@ class Chunk(val coordinates: RegionCoordinates, heights: Int) {
         const val CHUNK_SIZE = 8
     }
 
+    /**
+     * The collision matrices of 8x8 tiles in [heights] different height levels.
+     */
     private val matrices = CollisionMatrix.createMatrices(heights, CHUNK_SIZE, CHUNK_SIZE)
 
+    /**
+     * The [Entity]s that are currently registered to the [Tile] key. This is
+     * not used for [gg.rsmod.game.model.entity.Pawn], but rather [Entity]s
+     * that do not regularly change [Tile]s.
+     */
     private val entities: Multimap<Tile, Entity> = HashMultimap.create()
 
     fun getMatrix(height: Int): CollisionMatrix = matrices[height]
@@ -43,6 +53,11 @@ class Chunk(val coordinates: RegionCoordinates, heights: Int) {
     fun addEntity(world: World, entity: Entity) {
         entities.put(entity.tile, entity)
         world.collision.submitUpdate(entity, CollisionUpdate.Type.ADDING)
+    }
+
+    fun removeEntity(world: World, entity: Entity) {
+        entities.remove(entity.tile, entity)
+        world.collision.submitUpdate(entity, CollisionUpdate.Type.REMOVING)
     }
 
     fun contains(tile: Tile): Boolean {

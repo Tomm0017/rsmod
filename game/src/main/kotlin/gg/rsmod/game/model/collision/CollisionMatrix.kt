@@ -3,7 +3,6 @@ package gg.rsmod.game.model.collision
 import com.google.common.base.MoreObjects
 import gg.rsmod.game.model.Direction
 import java.util.*
-import kotlin.experimental.and
 import kotlin.experimental.inv
 import kotlin.experimental.or
 
@@ -49,7 +48,7 @@ class CollisionMatrix private constructor(val length: Int, val width: Int, val m
     fun hasFlag(x: Int, y: Int, flag: CollisionFlag): Boolean = (get(x, y) and flag.getBitAsShort().toInt()) != 0
 
     fun removeFlag(x: Int, y: Int, flag: CollisionFlag) {
-        set(x, y, (matrix[indexOf(x, y)] and flag.getBitAsShort().inv()))
+        set(x, y, (matrix[indexOf(x, y)].toInt() and flag.getBitAsShort().inv().toInt()).toShort())
     }
 
     fun reset() {

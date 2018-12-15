@@ -35,5 +35,5 @@ class RegionSet(val world: World) {
         return newChunk
     }
 
-    fun getChunkOrNull(coordinates: RegionCoordinates): Chunk? = chunks[coordinates]
+    fun getChunkNullable(coordinates: RegionCoordinates): Chunk? = chunks[coordinates]
 }

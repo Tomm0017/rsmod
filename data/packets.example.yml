@@ -221,6 +221,40 @@ packets:
       - name: items
         type: BYTES
 
+  - message: gg.rsmod.game.message.impl.SetMapChunkMessage
+    type: FIXED
+    opcode: 17
+    structure:
+      - name: x
+        type: BYTE
+      - name: z
+        type: BYTE
+
+  - message: gg.rsmod.game.message.impl.SpawnObjectMessage
+    type: FIXED
+    opcode: 9
+    structure:
+      - name: tile
+        type: BYTE
+        trans: NEGATE
+      - name: settings
+        type: BYTE
+      - name: id
+        type: SHORT
+        order: LITTLE
+        trans: ADD
+
+  - message: gg.rsmod.game.message.impl.RemoveObjectMessage
+    type: FIXED
+    opcode: 48
+    structure:
+      - name: tile
+        type: BYTE
+        tran: ADD
+      - name: settings
+        type: BYTE
+        trans: NEGATE
+
   # In
   - message: gg.rsmod.game.message.impl.CommandMessage
     type: VARIABLE_BYTE

@@ -3,6 +3,8 @@ package gg.rsmod.game.model
 import gg.rsmod.game.model.entity.Pawn
 
 /**
+ * Represents a quad area in the world.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 data class Area(val bottomLeftX: Int, val bottomLeftZ: Int, val topRightX: Int, val topRightZ: Int) {

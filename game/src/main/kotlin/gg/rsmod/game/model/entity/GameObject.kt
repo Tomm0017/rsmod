@@ -19,7 +19,7 @@ abstract class GameObject : Entity {
     /**
      * A bit-packed byte that holds the object "type" and "rotation".
      */
-    private val settings: Byte
+    val settings: Byte
 
     /**
      * @see [AttributeSystem]

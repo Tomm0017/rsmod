@@ -2,7 +2,6 @@ package gg.rsmod.game.model.entity
 
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
-import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
 import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.plugin.Plugin
@@ -22,13 +21,19 @@ abstract class Pawn(open val world: World) : Entity() {
      */
     var index = -1
 
+    /**
+     * @see UpdateBlockBuffer
+     */
     var blockBuffer = UpdateBlockBuffer()
 
     /**
-     * The 3D [Tile] that this [Pawn] was standing on, in the last game cycle.
+     * The 3D [Tile] that this pawn was standing on, in the last game cycle.
      */
     var lastTile: Tile? = null
 
+    /**
+     * The last [Chunk] this pawn was registered to.
+     */
     var chunk: Chunk? = null
 
     /**
@@ -36,10 +41,13 @@ abstract class Pawn(open val world: World) : Entity() {
      */
     var teleport = false
 
+    /**
+     * @see [MovementQueue]
+     */
     val movementQueue by lazy { MovementQueue(this) }
 
     /**
-     * The current directions that this [Pawn] is moving.
+     * The current directions that this pawn is moving.
      */
     var steps: MovementQueue.StepDirection? = null
 
@@ -60,8 +68,6 @@ abstract class Pawn(open val world: World) : Entity() {
      */
     val attr = AttributeSystem()
 
-    var currentPath: PathRequest? = null
-
     /**
      * Handles logic before any synchronization tasks are executed.
      */
@@ -73,17 +79,27 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun canMove(): Boolean = !isDead() && lock.canMove()
 
-    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, validSurroundingTiles: Array<Tile>?) {
-        walkTo(tile.x, tile.z, stepType, validSurroundingTiles)
-    }
-
+    /**
+     * Handles the walking to the specified [x] and [z] coordinates. The height
+     * level used is the one this pawn is currently on.
+     *
+     * @param stepType
+     * The [MovementQueue.StepType] that the movement to the coordinates will
+     * use.
+     *
+     * @param validSurroundingTiles
+     * If we have a list of predetermined [Tile]s, we set this value to that list.
+     * This is useful for pathfinding on things like objects, where the object
+     * has metadata which defines the surrounding tiles that it can be interacted
+     * from.
+     */
     fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, validSurroundingTiles: Array<Tile>? = null) {
+        /**
+         * This will cause desync since the player is already on the tile,
+         * they should not be able to add a step in a tile they are already
+         * standing on.
+         */
         if (validSurroundingTiles != null && tile in validSurroundingTiles) {
-            /**
-             * This will cause desync since the player is already on the tile,
-             * they should not be able to add a step in a tile they are already
-             * standing on.
-             */
             return
         }
 
@@ -109,6 +125,10 @@ abstract class Pawn(open val world: World) : Entity() {
         if (tail != null && this is Player) {
             write(SetMinimapMarkerMessage(tail.x - lastKnownRegionBase!!.x, tail.z - lastKnownRegionBase!!.z))
         }
+    }
+
+    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, validSurroundingTiles: Array<Tile>?) {
+        walkTo(tile.x, tile.z, stepType, validSurroundingTiles)
     }
 
     fun teleport(x: Int, z: Int, height: Int = 0) {

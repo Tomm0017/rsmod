@@ -93,12 +93,11 @@ class GameService : Service() {
             MessageHandlerTask(),
             PluginHandlerTask(),
             PlayerCycleTask(),
-            MapHandlerTask(),
 
             /**
              * Synchronization tasks.
              */
-            SynchronizationTask(Runtime.getRuntime().availableProcessors() / 2),
+            SynchronizationTask(Runtime.getRuntime().availableProcessors()),
 
             /**
              * Post-synchronization tasks.

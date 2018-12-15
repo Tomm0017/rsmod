@@ -48,7 +48,7 @@ open class Player(override val world: World) : Pawn(world) {
      * certain circumstances where the player should not be unregistered from
      * the world.
      *
-     * For example: when they player is in combat.
+     * For example: when the player is in combat.
      */
     @Volatile private var pendingLogout = false
 
@@ -78,7 +78,7 @@ open class Player(override val world: World) : Pawn(world) {
      * can multiply your value by [100] and then divide it on login as a work-
      * around.
      */
-    private val persistent: HashMap<String, Any> = hashMapOf()
+    private val persistent: MutableMap<String, Any> = hashMapOf()
 
     var runEnergy = 100.0
 
@@ -252,7 +252,7 @@ open class Player(override val world: World) : Pawn(world) {
     /**
      * Should only be used when saving [persistent] attributes.
      */
-    fun __getPersistentMap(): HashMap<String, Any> = persistent
+    fun __getPersistentMap(): Map<String, Any> = persistent
 
     override fun toString(): String = MoreObjects.toStringHelper(this)
             .add("name", username)

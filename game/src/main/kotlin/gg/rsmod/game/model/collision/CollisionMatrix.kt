@@ -46,7 +46,7 @@ class CollisionMatrix private constructor(val length: Int, val width: Int, val m
         matrix[index] = matrix[index] or flag.getBitAsShort()
     }
 
-    fun hasFlag(x: Int, y: Int, flag: CollisionFlag): Boolean = (get(x, y).toInt() and flag.getBitAsShort().toInt()) != 0
+    fun hasFlag(x: Int, y: Int, flag: CollisionFlag): Boolean = (get(x, y) and flag.getBitAsShort().toInt()) != 0
 
     fun removeFlag(x: Int, y: Int, flag: CollisionFlag) {
         set(x, y, (matrix[indexOf(x, y)] and flag.getBitAsShort().inv()))

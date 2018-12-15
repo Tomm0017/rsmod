@@ -10,13 +10,17 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
+ * A [PathfindingStrategy] which uses breadth-first search algorithm to calculate
+ * a valid path the the target location.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(world) {
-    companion object {
 
+    companion object {
         private val logger = LogManager.getLogger(BFSPathfindingStrategy::class.java)
     }
+
     override fun calculatePath(origin: Tile, target: Tile, type: EntityType, validSurroundingTiles: Array<Tile>?): Queue<Tile> {
         if (!target.isWithinRadius(origin, MAX_DISTANCE)) {
             logger.error("Target tile is not within view distance of origin. [origin=$origin, target=$target, distance=${origin.calculateDistance(target)}]")
@@ -70,10 +74,6 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
             }
         }
 
-        /*if (tail != null && tail.tile.calculateDistance(target) > origin.calculateDistance(target)) {
-            tail = null
-        }*/
-
         val path = ArrayDeque<Tile>()
         while (tail?.parent != null) {
             path.addFirst(tail.tile)
@@ -83,8 +83,16 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
         return path
     }
 
+    /**
+     * A [Node] represents an single tile in a path, which can have the previous
+     * tile in the path attached to it as a parent node.
+     */
     private data class Node(val tile: Tile, var parent: Node?) {
 
+        /**
+         * The amount of interconnected nodes from this node to its parents,
+         * and their parents, and their parents ...
+         */
         var cost: Int = 0
 
         override fun equals(other: Any?): Boolean = (other as? Node)?.tile?.sameAs(tile) ?: false

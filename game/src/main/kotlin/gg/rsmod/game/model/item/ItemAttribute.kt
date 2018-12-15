@@ -1,7 +1,7 @@
 package gg.rsmod.game.model.item
 
 /**
- * An [ItemAttribute] is a broad-used attribute key which can be used for different
+ * An [ItemAttribute] is a broad-use attribute key which can be used for different
  * effects on different items. [Item]s that have attributes will stop being tradeable
  * and can no longer stack with other items of the same id.
  *
@@ -23,7 +23,7 @@ enum class ItemAttribute {
     DEGRADE,
 
     /**
-     * Some items should have another item 'attached' to them in some form or
+     * Some items can have another item 'attached' to them in some form or
      * another.
      *
      * Example: Toxic blowpipe can have darts attached to it.

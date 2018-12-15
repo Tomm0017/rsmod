@@ -10,6 +10,9 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.DataConstants
 
 /**
+ * Responsible for calculating distances and valid interaction tiles for
+ * [GameObject] pathing.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 object ObjectPathfinder {

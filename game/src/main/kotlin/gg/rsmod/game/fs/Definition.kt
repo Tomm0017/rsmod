@@ -4,6 +4,9 @@ import gg.rsmod.util.BufferUtils
 import io.netty.buffer.ByteBuf
 
 /**
+ * A [Definition] is used to represent metadata that can be decoded from the
+ * game resources.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 abstract class Definition(open val id: Int) {

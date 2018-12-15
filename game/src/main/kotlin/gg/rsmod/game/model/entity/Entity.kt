@@ -5,6 +5,8 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 
 /**
+ * An [Entity] can be anything in the world that that maintains a [Tile].
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 abstract class Entity {

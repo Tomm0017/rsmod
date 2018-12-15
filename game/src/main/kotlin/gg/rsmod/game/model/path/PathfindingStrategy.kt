@@ -6,6 +6,8 @@ import gg.rsmod.game.model.World
 import java.util.*
 
 /**
+ * Represents an strategy that can be used to find a valid path to a target.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 abstract class PathfindingStrategy(open val world: World) {

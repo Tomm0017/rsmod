@@ -9,7 +9,7 @@ enum class ContainerStackType {
 
     /**
      * Represents an [ItemContainer] which only stacks items that are defined to
-     * be stackable in their metadata.
+     * be stackable by their metadata.
      */
     NORMAL,
 

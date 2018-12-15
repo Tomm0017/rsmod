@@ -19,7 +19,8 @@ import org.apache.logging.log4j.LogManager
 import java.io.IOException
 
 /**
- * Holds all definitions that we need from our [Store].
+ * A [DefinitionSet] is responsible for loading any relevant metadata found in
+ * the game resources.
  *
  * @author Tom <rspsmods@gmail.com>
  */
@@ -30,7 +31,7 @@ class DefinitionSet {
     }
 
     /**
-     * A [HashMap] holding all definitions with their [Class] as key.
+     * A [Map] holding all definitions with their [Class] as key.
      */
     private val defs = hashMapOf<Class<out Definition>, Array<*>>()
 

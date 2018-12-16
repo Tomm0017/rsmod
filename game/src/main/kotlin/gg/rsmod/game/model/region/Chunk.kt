@@ -2,15 +2,14 @@ package gg.rsmod.game.model.region
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
-import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.collision.CollisionMatrix
 import gg.rsmod.game.model.collision.CollisionUpdate
-import gg.rsmod.game.model.entity.*
-import gg.rsmod.game.service.GameService
+import gg.rsmod.game.model.entity.Entity
+import gg.rsmod.game.model.entity.GameObject
 
 /**
  * Represents an 8x8 tile in the game map.
@@ -42,18 +41,6 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
          */
         private const val MULTI_SPAWN_OBJ_INDEX = 8
         private const val MULTI_REMOVE_OBJ_INDEX = 9
-
-        /**
-         * Handles spawning (and removing) all entities in the [surrounding]
-         * chunks for [p].
-         */
-        fun spawnAll(p: Player, surrounding: Set<ChunkCoords>) {
-            val gameService = p.world.getService(GameService::class.java, false).orElse(null)!!
-            surrounding.forEach { coords ->
-                val chunk = p.world.chunks.get(coords) ?: return@forEach
-                chunk.spawnAll(p, gameService)
-            }
-        }
     }
 
     /**
@@ -89,7 +76,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
         world.collision.submit(entity, CollisionUpdate.Type.REMOVE)
     }
 
-    fun spawnAll(p: Player, gameService: GameService) {
+    /*fun spawnAll(p: Player, gameService: GameService) {
         val groupMessages = arrayListOf<EntityGroupMessage>()
 
         getEntities<DynamicObject>(EntityType.DYNAMIC_OBJECT).forEach { obj ->
@@ -106,7 +93,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
             val local = p.lastKnownRegionBase!!.toLocal(coords.toTile())
             p.write(SpawnEntityGroupsMessage(local.x, local.z, gameService.messageEncoders, gameService.messageStructures, *groupMessages.toTypedArray()))
         }
-    }
+    }*/
 
     fun getSurroundingCoords(chunkRadius: Int = CHUNK_VIEW_RADIUS): MutableSet<ChunkCoords> {
         val surrounding = hashSetOf<ChunkCoords>()
@@ -132,7 +119,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
             ChunkUpdateType.ADD -> {
                 entities.put(tile, entity)
 
-                if (entity.getType() == EntityType.DYNAMIC_OBJECT) {
+                /*if (entity.getType() == EntityType.DYNAMIC_OBJECT) {
                     forSurrounding(world) { chunk ->
                         chunk.getEntities<Client>(EntityType.CLIENT).forEach { player ->
                             val local = player.lastKnownRegionBase!!.toLocal(entity.tile)
@@ -141,12 +128,12 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
                             player.write(SpawnObjectMessage(obj.id, obj.settings.toInt(), ((obj.tile.x and 0x7) shl 4) or (obj.tile.z and 0x7)))
                         }
                     }
-                }
+                }*/
             }
             ChunkUpdateType.REMOVE -> {
                 entities.remove(tile, entity)
 
-                if (entity.getType().isObject()) {
+                /*if (entity.getType().isObject()) {
                     val obj = entity as GameObject
                     if (entity.getType() == EntityType.STATIC_OBJECT) {
                         removedObjects.add(obj)
@@ -158,7 +145,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
                             player.write(RemoveObjectMessage(obj.settings.toInt(), ((obj.tile.x and 0x7) shl 4) or (obj.tile.z and 0x7)))
                         }
                     }
-                }
+                }*/
             }
         }
     }

@@ -2,8 +2,10 @@ package gg.rsmod.game
 
 import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathfindingStrategy
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.game.service.GameService
 import java.nio.file.Paths
 
 fun main(args: Array<String>) {
@@ -13,8 +15,8 @@ fun main(args: Array<String>) {
     val world = server.startGame(filestorePath = Paths.get("./data", "cache"), gameProps = Paths.get("./game.yml"),
                 packets = Paths.get("./data/packets.yml"), devProps = Paths.get("./dev-settings.yml"))
 
-    /*val gameService = world.getService(GameService::class.java, false).get()
-    for (i in 0 until 1997) {
+    val gameService = world.getService(GameService::class.java, false).get()
+    for (i in 0 until 150) {
         val player = Player(world)
         player.username = "Test $i"
         player.tile = Tile(gameService.world.gameContext.home)
@@ -25,7 +27,7 @@ fun main(args: Array<String>) {
                 walkPlugin(it)
             }
         }
-    }*/
+    }
 }
 
 suspend fun walkPlugin(it: Plugin) {

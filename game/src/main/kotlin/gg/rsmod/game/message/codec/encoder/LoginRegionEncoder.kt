@@ -13,8 +13,8 @@ import gg.rsmod.net.packet.GamePacketBuilder
 class LoginRegionEncoder : MessageEncoder<LoginRegionMessage>() {
 
     override fun extract(message: LoginRegionMessage, key: String): Number = when (key) {
-        "x" -> message.chunkX
-        "z" -> message.chunkZ
+        "x" -> message.tile.x shr 3
+        "z" -> message.tile.z shr 3
         else -> throw Exception("Unhandled value key.")
     }
 
@@ -39,7 +39,7 @@ class LoginRegionEncoder : MessageEncoder<LoginRegionMessage>() {
         /**
          * Since the xtea payload is exactly the same as the [ChangeStaticRegionMessage], let's reuse it.
          */
-        "xteas" -> ChangeStaticRegionEncoder().extractBytes(ChangeStaticRegionMessage(message.chunkX, message.chunkZ, message.tile), key)
+        "xteas" -> ChangeStaticRegionEncoder().extractBytes(ChangeStaticRegionMessage(message.tile.x, message.tile.z, message.xteaKeyService), key)
         else -> throw Exception("Unhandled value key.")
     }
 }

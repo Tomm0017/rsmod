@@ -85,9 +85,15 @@ class XteaKeyService : Service() {
             }
         }
 
+        /**
+         * Set the XTEA service for the [World].
+         */
+        world.xteaKeyService = this
+
         val validKeys = totalRegions - missingKeys.size
         logger.info("Loaded {} / {} ({}%) XTEA keys.", validKeys, totalRegions,
                 String.format("%.2f", (validKeys.toDouble() * 100.0) / totalRegions.toDouble()))
+
     }
 
     override fun terminate(server: Server, world: World) {

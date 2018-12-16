@@ -181,7 +181,8 @@ open class Player(override val world: World) : Pawn(world) {
      */
     fun login() {
         if (this is Client) {
-            PlayerGpi.init(this)
+            localPlayers.add(this)
+            write(LoginRegionMessage(index, tile, world.xteaKeyService))
         }
         initiated = true
         blockBuffer.addBlock(UpdateBlock.APPEARANCE, getType())

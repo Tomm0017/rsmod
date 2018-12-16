@@ -15,8 +15,10 @@ import gg.rsmod.game.model.region.ChunkSet
 import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.service.Service
+import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.util.ServerProperties
 import net.runelite.cache.fs.Store
+import org.apache.logging.log4j.LogManager
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 
@@ -27,6 +29,10 @@ import java.util.concurrent.ThreadLocalRandom
  * @author Tom <rspsmods@gmail.com>
  */
 class World(val server: Server, val gameContext: GameContext, val devContext: DevContext) {
+
+    companion object {
+        private val logger = LogManager.getLogger(World::class.java)
+    }
 
     val players = PawnList<Player>(gameContext.playerLimit)
 
@@ -67,6 +73,13 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * The [PrivilegeSet] that is attached to our game.
      */
     val privileges = PrivilegeSet()
+
+    /**
+     * A cached value for [gg.rsmod.game.service.xtea.XteaKeyService] since it
+     * is used frequently and in performance critical code. This value is set
+     * when [XteaKeyService.init] is called.
+     */
+    var xteaKeyService: XteaKeyService? = null
 
     /**
      * A [Random] implementation used for pseudo-random purposes through-out
@@ -117,8 +130,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
         players.forEach { player ->
             if (player.tile.isWithinRadius(obj.tile, 15)) {
-                val cx = ((tile.x - 6) - player.lastKnownRegionBase!!.x)
-                val cz = ((tile.z - 6) - player.lastKnownRegionBase!!.z)
+                val cx = tile.x - player.lastKnownRegionBase!!.x
+                val cz = tile.z - player.lastKnownRegionBase!!.z
                 player.write(SetChunkToRegionOffset(cx, cz))
                 player.write(SpawnObjectMessage(obj.id, obj.settings.toInt(), ((tile.x and 0x7) shl 4) or (tile.z and 0x7)))
             }
@@ -134,8 +147,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
         players.forEach { player ->
             if (player.tile.isWithinRadius(tile, 15)) {
-                val x = ((tile.x - player.lastKnownRegionBase!!.x)) shr 3
-                val z = ((tile.z - player.lastKnownRegionBase!!.z)) shr 3
+                val x = ((tile.x - player.lastKnownRegionBase!!.x) / 8) * 8
+                val z = ((tile.z - player.lastKnownRegionBase!!.z) / 8) * 8
                 player.write(SetChunkToRegionOffset(x, z))
                 player.write(RemoveObjectMessage(obj.settings.toInt(), ((tile.x and 0x7) shl 4) or (tile.z and 0x7)))
             }

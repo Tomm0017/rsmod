@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.OpenInterfaceMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class OpenInterfaceEncoder(override val structure: MessageStructure) : MessageEncoder<OpenInterfaceMessage>(structure) {
+class OpenInterfaceEncoder : MessageEncoder<OpenInterfaceMessage>() {
 
     override fun extract(message: OpenInterfaceMessage, key: String): Number = when (key) {
         "interfaceId" -> message.interfaceId

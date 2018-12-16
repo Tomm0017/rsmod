@@ -1,7 +1,9 @@
 package gg.rsmod.game.protocol
 
-import gg.rsmod.game.message.MessageEncoderSet
 import gg.rsmod.game.message.Message
+import gg.rsmod.game.message.MessageEncoderSet
+import gg.rsmod.game.message.MessageStructureSet
+import gg.rsmod.net.packet.GamePacketBuilder
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToMessageEncoder
 import org.apache.logging.log4j.LogManager
@@ -17,7 +19,7 @@ import org.apache.logging.log4j.LogManager
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class GameMessageEncoder(private val encoders: MessageEncoderSet) : MessageToMessageEncoder<Message>() {
+class GameMessageEncoder(private val encoders: MessageEncoderSet, private val structures: MessageStructureSet) : MessageToMessageEncoder<Message>() {
 
     companion object {
         private val logger = LogManager.getLogger(GameMessageEncoder::class.java)
@@ -25,7 +27,10 @@ class GameMessageEncoder(private val encoders: MessageEncoderSet) : MessageToMes
 
     override fun encode(ctx: ChannelHandlerContext, msg: Message, out: MutableList<Any>) {
         val encoder = encoders.get(msg.javaClass)!!
-        val packet = encoder.encode(msg)
-        out.add(packet)
+        val structure = structures.get(msg.javaClass)!!
+
+        val builder = GamePacketBuilder(structure.opcodes.first(), structure.type)
+        encoder.encode(msg, builder, structure)
+        out.add(builder.toGamePacket())
     }
 }

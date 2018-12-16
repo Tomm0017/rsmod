@@ -11,8 +11,6 @@ packets:
         type: SHORT
       - name: x
         type: SHORT
-      - name: regions
-        type: SHORT
       - name: xteas
         type: BYTES
 
@@ -77,8 +75,6 @@ packets:
         trans: ADD
         type: SHORT
       - name: x
-        type: SHORT
-      - name: regions
         type: SHORT
       - name: xteas
         type: BYTES
@@ -221,7 +217,7 @@ packets:
       - name: items
         type: BYTES
 
-  - message: gg.rsmod.game.message.impl.SetMapChunkMessage
+  - message: gg.rsmod.game.message.impl.SetChunkToRegionOffset
     type: FIXED
     opcode: 17
     structure:

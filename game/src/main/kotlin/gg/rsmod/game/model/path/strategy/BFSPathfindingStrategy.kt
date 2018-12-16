@@ -23,7 +23,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
 
     override fun calculatePath(origin: Tile, target: Tile, type: EntityType, validSurroundingTiles: Array<Tile>?): Queue<Tile> {
         if (!target.isWithinRadius(origin, MAX_DISTANCE)) {
-            logger.error("Target tile is not within view distance of origin. [origin=$origin, target=$target, distance=${origin.calculateDistance(target)}]")
+            logger.error("Target tile is not within view distance of origin. [origin=$origin, target=$target, distance=${origin.getDistance(target)}]")
             return ArrayDeque()
         }
 
@@ -59,7 +59,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
         }
 
         if (maxSearch == 0) {
-            logger.warn("Had to exit path early as max search samples ran out. [origin=$origin, target=$target, distance=${origin.calculateDistance(target)}]")
+            logger.warn("Had to exit path early as max search samples ran out. [origin=$origin, target=$target, distance=${origin.getDistance(target)}]")
         }
 
         if (tail == null && surroundingNodes.isNotEmpty()) {
@@ -67,10 +67,10 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
         }
 
         if (tail == null && closed.isNotEmpty()) {
-            val min = closed.minBy { it.tile.calculateDistance(target) }!!
-            val valid = closed.filter { !it.tile.sameAs(origin) && it.tile.calculateDistance(target) <= min.tile.calculateDistance(target) }
+            val min = closed.minBy { it.tile.getDistance(target) }!!
+            val valid = closed.filter { !it.tile.sameAs(origin) && it.tile.getDistance(target) <= min.tile.getDistance(target) }
             if (valid.isNotEmpty()) {
-                tail = valid.minBy { it.tile.calculateDelta(origin) }
+                tail = valid.minBy { it.tile.getDelta(origin) }
             }
         }
 

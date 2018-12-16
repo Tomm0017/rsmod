@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.CloseInterfaceMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class CloseInterfaceEncoder(override val structure: MessageStructure) : MessageEncoder<CloseInterfaceMessage>(structure) {
+class CloseInterfaceEncoder : MessageEncoder<CloseInterfaceMessage>() {
 
     override fun extract(message: CloseInterfaceMessage, key: String): Number = when (key) {
         "hash" -> message.hash

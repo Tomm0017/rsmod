@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.SetRunEnergyMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class RunEnergyEncoder(override val structure: MessageStructure) : MessageEncoder<SetRunEnergyMessage>(structure) {
+class RunEnergyEncoder : MessageEncoder<SetRunEnergyMessage>() {
 
     override fun extract(message: SetRunEnergyMessage, key: String): Number = when (key) {
         "energy" -> message.energy

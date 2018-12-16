@@ -5,15 +5,13 @@ import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.message.impl.RemoveObjectMessage
-import gg.rsmod.game.message.impl.SetMapChunkMessage
+import gg.rsmod.game.message.impl.SetChunkToRegionOffset
 import gg.rsmod.game.message.impl.SpawnObjectMessage
 import gg.rsmod.game.model.collision.CollisionManager
-import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.region.Chunk
-import gg.rsmod.game.model.region.RegionSet
+import gg.rsmod.game.model.region.ChunkSet
 import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.service.Service
@@ -36,7 +34,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     val collision = CollisionManager(this)
 
-    val regions = RegionSet(this)
+    val regionChunks = ChunkSet(this)
 
     /**
      * A collection of our [Service]s specified in our game [ServerProperties]
@@ -107,7 +105,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     fun spawn(obj: GameObject) {
         val tile = obj.tile
 
-        val chunk = regions.getChunkForTile(tile)
+        val chunk = regionChunks.getChunkForTile(tile)
 
         val oldObj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT)
                 .firstOrNull { it.type == obj.type }
@@ -119,9 +117,9 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
         players.forEach { player ->
             if (player.tile.isWithinRadius(obj.tile, 15)) {
-                val cx = ((tile.x - player.lastKnownRegionBase!!.x) / 8) * 8
-                val cz = ((tile.z - player.lastKnownRegionBase!!.z) / 8) * 8
-                player.write(SetMapChunkMessage(cx, cz))
+                val cx = ((tile.x - 6) - player.lastKnownRegionBase!!.x)
+                val cz = ((tile.z - 6) - player.lastKnownRegionBase!!.z)
+                player.write(SetChunkToRegionOffset(cx, cz))
                 player.write(SpawnObjectMessage(obj.id, obj.settings.toInt(), ((tile.x and 0x7) shl 4) or (tile.z and 0x7)))
             }
         }
@@ -130,33 +128,16 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     fun remove(obj: GameObject) {
         val tile = obj.tile
 
-        val chunk = regions.getChunkForTile(tile)
+        val chunk = regionChunks.getChunkForTile(tile)
 
         chunk.removeEntity(this, obj)
 
         players.forEach { player ->
-            if (player.tile.isWithinRadius(obj.tile, 15)) {
-                val x = ((tile.x - player.lastKnownRegionBase!!.x) / 8) * 8
-                val z = ((tile.z - player.lastKnownRegionBase!!.z) / 8) * 8
-                player.write(SetMapChunkMessage(x, z))
+            if (player.tile.isWithinRadius(tile, 15)) {
+                val x = ((tile.x - player.lastKnownRegionBase!!.x)) shr 3
+                val z = ((tile.z - player.lastKnownRegionBase!!.z)) shr 3
+                player.write(SetChunkToRegionOffset(x, z))
                 player.write(RemoveObjectMessage(obj.settings.toInt(), ((tile.x and 0x7) shl 4) or (tile.z and 0x7)))
-            }
-        }
-    }
-
-    fun showSpawns(p: Player) {
-        val tile = p.tile
-        for (x in -3..3) {
-            for (z in -3..3) {
-                val chunkTile = tile.transform(x * Chunk.CHUNK_SIZE, z * Chunk.CHUNK_SIZE)
-                val chunk = regions.getChunkNullable(chunkTile.toRegionCoordinates()) ?: continue
-
-                chunk.getEntities<DynamicObject>(EntityType.DYNAMIC_OBJECT).forEach { obj ->
-                    val cx = ((tile.x - p.lastKnownRegionBase!!.x) / 8) * 8
-                    val cz = ((tile.z - p.lastKnownRegionBase!!.z) / 8) * 8
-                    p.write(SetMapChunkMessage(cx, cz))
-                    p.write(SpawnObjectMessage(obj.id, obj.settings.toInt(), ((tile.x and 0x7) shl 4) or (tile.z and 0x7)))
-                }
             }
         }
     }

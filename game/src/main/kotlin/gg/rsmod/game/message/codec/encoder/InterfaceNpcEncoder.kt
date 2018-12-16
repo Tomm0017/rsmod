@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.SetInterfaceNpcMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class InterfaceNpcEncoder(override val structure: MessageStructure) : MessageEncoder<SetInterfaceNpcMessage>(structure) {
+class InterfaceNpcEncoder : MessageEncoder<SetInterfaceNpcMessage>() {
 
     override fun extract(message: SetInterfaceNpcMessage, key: String): Number = when (key) {
         "hash" -> message.hash

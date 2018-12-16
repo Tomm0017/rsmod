@@ -15,13 +15,19 @@ import gg.rsmod.game.model.entity.Entity
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class Chunk(private val coordinates: RegionCoordinates, private val heights: Int) {
+class Chunk(private val coordinates: ChunkCoords, private val heights: Int) {
 
     companion object {
         /**
          * The size of a chunk, in tiles.
          */
         const val CHUNK_SIZE = 8
+
+        /**
+         * The size of the viewport a [gg.rsmod.game.model.entity.Player] can
+         * 'see' at a time, in tiles.
+         */
+        const val MAX_VIEWPORT = CHUNK_SIZE * 13
     }
 
     /**
@@ -38,16 +44,9 @@ class Chunk(private val coordinates: RegionCoordinates, private val heights: Int
 
     fun getMatrix(height: Int): CollisionMatrix = matrices[height]
 
-    fun getMatrices(): Array<CollisionMatrix> = matrices
-
     fun canTraverse(tile: Tile, direction: Direction, projectile: Boolean): Boolean {
         val matrix = matrices[tile.height]
         return !matrix.isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
-    }
-
-    fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean {
-        val matrix = matrices[tile.height]
-        return matrix.isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
     }
 
     fun addEntity(world: World, entity: Entity) {
@@ -60,17 +59,11 @@ class Chunk(private val coordinates: RegionCoordinates, private val heights: Int
         world.collision.submitUpdate(entity, CollisionUpdate.Type.REMOVING)
     }
 
-    fun contains(tile: Tile): Boolean {
-        return coordinates == tile.toRegionCoordinates()
-    }
+    fun contains(tile: Tile): Boolean =coordinates == tile.toChunkCoords()
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getEntities(vararg types: EntityType): List<T> {
-        return entities.values().filter { it.getType() in types } as List<T>
-    }
+    fun <T> getEntities(vararg types: EntityType): List<T> = entities.values().filter { it.getType() in types } as List<T>
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getEntities(tile: Tile, vararg types: EntityType): List<T> {
-        return entities.get(tile).filter { it.getType() in types } as List<T>
-    }
+    fun <T> getEntities(tile: Tile, vararg types: EntityType): List<T> = entities.get(tile).filter { it.getType() in types } as List<T>
 }

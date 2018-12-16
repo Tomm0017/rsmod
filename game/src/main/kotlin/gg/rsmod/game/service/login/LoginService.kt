@@ -69,7 +69,7 @@ class LoginService : Service() {
         client.channel.attr(GameHandler.SYSTEM_KEY).set(gameSystem)
 
         /**
-         * NOTE(Tom): we should be able to use an async task to handle
+         * NOTE(Tom): we should be able to use an parallel task to handle
          * the pipeline work and then schedule for the [client] to log in on the
          * next game cycle after completion. Should benchmark first.
          */
@@ -80,7 +80,7 @@ class LoginService : Service() {
         pipeline.remove("login_encoder")
 
         pipeline.addFirst("packet_encoder", GamePacketEncoder(encodeRandom, client.world.gameContext.rsaEncryption))
-        pipeline.addAfter("packet_encoder", "message_encoder", GameMessageEncoder(gameSystem.service.messageEncoders))
+        pipeline.addAfter("packet_encoder", "message_encoder", GameMessageEncoder(gameSystem.service.messageEncoders, gameSystem.service.messageStructures))
 
         pipeline.addBefore("handler", "packet_decoder", GamePacketDecoder(decodeRandom, client.world.gameContext.rsaEncryption,
                 PacketMetadataHelper(gameSystem.service.messageStructures)))

@@ -11,7 +11,7 @@ import gg.rsmod.net.packet.GamePacketBuilder
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ItemContainerEncoder(override val structure: MessageStructure) : MessageEncoder<SetItemContainerMessage>(structure) {
+class ItemContainerEncoder : MessageEncoder<SetItemContainerMessage>() {
 
     override fun extract(message: SetItemContainerMessage, key: String): Number = when (key) {
         "interfaceHash" -> message.interfaceHash

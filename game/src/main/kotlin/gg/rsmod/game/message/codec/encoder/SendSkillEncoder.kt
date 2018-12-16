@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.SendSkillMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class SendSkillEncoder(override val structure: MessageStructure) : MessageEncoder<SendSkillMessage>(structure) {
+class SendSkillEncoder : MessageEncoder<SendSkillMessage>() {
 
     override fun extract(message: SendSkillMessage, key: String): Number = when (key) {
         "level" -> message.level

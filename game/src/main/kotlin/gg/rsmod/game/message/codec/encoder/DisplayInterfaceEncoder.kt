@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.SetDisplayInterfaceMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class DisplayInterfaceEncoder(override val structure: MessageStructure) : MessageEncoder<SetDisplayInterfaceMessage>(structure) {
+class DisplayInterfaceEncoder : MessageEncoder<SetDisplayInterfaceMessage>() {
 
     override fun extract(message: SetDisplayInterfaceMessage, key: String): Number = when (key) {
         "interfaceId" -> message.interfaceId

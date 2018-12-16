@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class InvokeScriptEncoder(override val structure: MessageStructure) : MessageEncoder<InvokeScriptMessage>(structure) {
+class InvokeScriptEncoder : MessageEncoder<InvokeScriptMessage>() {
 
     companion object {
         private val logger = LogManager.getLogger(InvokeScriptEncoder::class.java)

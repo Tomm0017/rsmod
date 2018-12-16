@@ -16,7 +16,7 @@ import org.apache.logging.log4j.LogManager
  *
  * @author Tom <rspsmods@gmail.com>
  */
-abstract class MessageEncoder<T: Message>(open val structure: MessageStructure) {
+abstract class MessageEncoder<T: Message> {
 
     companion object {
         private val logger = LogManager.getLogger(MessageEncoder::class.java)
@@ -25,8 +25,7 @@ abstract class MessageEncoder<T: Message>(open val structure: MessageStructure) 
     /**
      * Encode the [message] into a [GamePacket] based on the [structure].
      */
-    fun encode(message: T): GamePacket {
-        val builder = GamePacketBuilder(structure.opcodes.first(), structure.type)
+    fun encode(message: T, builder: GamePacketBuilder, structure: MessageStructure) {
         structure.values.values.forEach { value ->
             if (value.type != DataType.BYTES) {
                 builder.put(value.type, value.order, value.transformation, extract(message, value.id))
@@ -34,7 +33,6 @@ abstract class MessageEncoder<T: Message>(open val structure: MessageStructure) 
                 builder.putBytes(extractBytes(message, value.id))
             }
         }
-        return builder.toGamePacket()
     }
 
     /**

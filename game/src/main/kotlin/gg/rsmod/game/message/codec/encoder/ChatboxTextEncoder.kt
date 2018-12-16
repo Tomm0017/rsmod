@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.SendChatboxTextMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ChatboxTextEncoder(override val structure: MessageStructure) : MessageEncoder<SendChatboxTextMessage>(structure) {
+class ChatboxTextEncoder : MessageEncoder<SendChatboxTextMessage>() {
 
     override fun extract(message: SendChatboxTextMessage, key: String): Number = when (key) {
         "type" -> message.type

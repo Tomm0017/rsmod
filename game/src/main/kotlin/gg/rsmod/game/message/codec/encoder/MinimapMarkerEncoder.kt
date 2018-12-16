@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class MinimapMarkerEncoder(override val structure: MessageStructure) : MessageEncoder<SetMinimapMarkerMessage>(structure) {
+class MinimapMarkerEncoder : MessageEncoder<SetMinimapMarkerMessage>() {
 
     override fun extract(message: SetMinimapMarkerMessage, key: String): Number = when (key) {
         "x" -> message.x

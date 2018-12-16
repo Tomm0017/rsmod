@@ -1,7 +1,7 @@
 package gg.rsmod.game.model
 
 import com.google.common.base.MoreObjects
-import gg.rsmod.game.model.region.RegionCoordinates
+import gg.rsmod.game.model.region.ChunkCoords
 
 /**
  * A 3D point in the world.
@@ -38,7 +38,7 @@ class Tile {
 
     fun transform(height: Int): Tile = Tile(this.x, this.z, this.height + height)
 
-    fun viewableFrom(other: Tile, viewDistance: Int = 15): Boolean = calculateDistance(other) <= viewDistance
+    fun viewableFrom(other: Tile, viewDistance: Int = 15): Boolean = getDistance(other) <= viewDistance
 
     fun step(direction: Direction, num: Int = 1): Tile = Tile(this.x + (num * direction.getDeltaX()), this.z + (num * direction.getDeltaZ()), this.height)
 
@@ -58,17 +58,17 @@ class Tile {
         return dx <= radius && dz <= radius
     }
 
-    fun calculateDistance(other: Tile): Int {
+    fun getDistance(other: Tile): Int {
         val dx = x - other.x
         val dz = z - other.z
         return Math.ceil(Math.sqrt((dx * dx + dz * dz).toDouble())).toInt()
     }
 
-    fun calculateDelta(other: Tile): Int = Math.abs(x - other.x) + Math.abs(z - other.z)
+    fun getDelta(other: Tile): Int = Math.abs(x - other.x) + Math.abs(z - other.z)
 
-    fun calculateTopLeftRegionX() = (x shr 3) - 6
+    fun getTopLeftRegionX() = (x shr 3) - 6
 
-    fun calculateTopLeftRegionZ() = (z shr 3) - 6
+    fun getTopLeftRegionZ() = (z shr 3) - 6
 
     /**
      * Checks if the [other] tile has the same coordinates as this tile.
@@ -77,7 +77,7 @@ class Tile {
 
     fun sameAs(x: Int, z: Int): Boolean = x == this.x && z == this.z
 
-    fun toRegionCoordinates(): RegionCoordinates = RegionCoordinates.fromTile(this)
+    fun toChunkCoords(): ChunkCoords = ChunkCoords.fromTile(this)
 
     /**
      * Get the region id based on these coordinates.

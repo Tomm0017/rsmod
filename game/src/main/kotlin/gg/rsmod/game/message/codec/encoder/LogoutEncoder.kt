@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.SendLogoutMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class LogoutEncoder(override val structure: MessageStructure) : MessageEncoder<SendLogoutMessage>(structure) {
+class LogoutEncoder : MessageEncoder<SendLogoutMessage>() {
 
     override fun extract(message: SendLogoutMessage, key: String): Number = throw Exception("Unhandled value key.")
 

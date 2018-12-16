@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.SetInterfaceHiddenMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class InterfaceHiddenEncoder(override val structure: MessageStructure) : MessageEncoder<SetInterfaceHiddenMessage>(structure) {
+class InterfaceHiddenEncoder : MessageEncoder<SetInterfaceHiddenMessage>() {
 
     override fun extract(message: SetInterfaceHiddenMessage, key: String): Number = when (key) {
         "hash" -> message.hash

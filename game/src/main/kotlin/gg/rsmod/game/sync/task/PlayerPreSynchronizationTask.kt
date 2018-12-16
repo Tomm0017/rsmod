@@ -1,11 +1,9 @@
 package gg.rsmod.game.sync.task
 
 import gg.rsmod.game.message.impl.ChangeStaticRegionMessage
-import gg.rsmod.game.model.PlayerGpi
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.net.packet.DataType
-import gg.rsmod.net.packet.GamePacketBuilder
+import gg.rsmod.game.model.region.Chunk
 import java.util.concurrent.Phaser
 
 /**
@@ -16,9 +14,14 @@ class PlayerPreSynchronizationTask(val player: Player, override val phaser: Phas
     override fun execute() {
         player.movementQueue.pulse()
 
+        var changeRegion = false
+
         if (player.lastKnownRegionBase == null) {
-            val regionX = ((player.tile.x shr 3) - 6) * 8
-            val regionZ = ((player.tile.z shr 3) - 6) * 8
+            val chunkX = player.tile.x shr 3
+            val chunkZ = player.tile.z shr 3
+            val regionX = (chunkX - (Chunk.MAX_VIEWPORT shr 4)) shl 3
+            val regionZ = (chunkZ - (Chunk.MAX_VIEWPORT shr 4)) shl 3
+
             player.lastKnownRegionBase = Tile(regionX, regionZ, player.tile.height)
         } else {
             val last = player.lastKnownRegionBase!!
@@ -28,45 +31,16 @@ class PlayerPreSynchronizationTask(val player: Player, override val phaser: Phas
             val dz = current.z - last.z
             val changedHeight = current.height != last.height
 
-            if (player.getType().isHumanControlled() && (dx <= 15 || dz <= 15 || dx >= 88 || dz >= 88)) {
-                val regionX = ((current.x shr 3) - 6) * 8
-                val regionZ = ((current.z shr 3) - 6) * 8
+            if (dx <= Player.VIEW_DISTANCE || dz <= Player.VIEW_DISTANCE || dx >= Chunk.MAX_VIEWPORT - Player.VIEW_DISTANCE - 1
+                    || dz >= Chunk.MAX_VIEWPORT - Player.VIEW_DISTANCE - 1) {
+
+                val chunkX = current.x shr 3
+                val chunkZ = current.z shr 3
+                val regionX = ((chunkX - (Chunk.MAX_VIEWPORT shr 4)) shl 3)
+                val regionZ = ((chunkZ - (Chunk.MAX_VIEWPORT shr 4)) shl 3)
+
                 player.lastKnownRegionBase = Tile(regionX, regionZ, current.height)
-
-                val xteaBuf = GamePacketBuilder()
-                val chunkX = current.x / 8
-                val chunkZ = current.z / 8
-
-                var forceSend = false
-                if ((chunkX / 8 == 48 || chunkX / 8 == 49) && chunkZ / 8 == 48) {
-                    forceSend = true
-                }
-                if (chunkX / 8 == 48 && chunkZ / 8 == 148) {
-                    forceSend = true
-                }
-
-                val lx = (chunkX - (PlayerGpi.MAP_SIZE shr 4)) / 8
-                val rx = (chunkX + (PlayerGpi.MAP_SIZE shr 4)) / 8
-                val lz = (chunkZ - (PlayerGpi.MAP_SIZE shr 4)) / 8
-                val rz = (chunkZ + (PlayerGpi.MAP_SIZE shr 4)) / 8
-
-                var count = 0
-                for (x in lx..rx) {
-                    for (z in lz..rz) {
-                        if (!forceSend || z != 49 && z != 149 && z != 147 && x != 50 && (x != 49 || x != 47)) {
-                            val region = z + (x shl 8)
-                            val keys = PlayerGpi.xteaKeys!!.get(region)
-                            for (key in keys) {
-                                xteaBuf.put(DataType.INT, key)
-                            }
-                        }
-                        count++
-                    }
-                }
-
-                val xteas = ByteArray(xteaBuf.getBuffer().readableBytes())
-                xteaBuf.getBuffer().readBytes(xteas)
-                player.write(ChangeStaticRegionMessage(chunkX, chunkZ, count, xteas))
+                player.write(ChangeStaticRegionMessage(chunkX, chunkZ, current))
             }
         }
     }

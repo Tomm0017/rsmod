@@ -114,7 +114,7 @@ class MovementQueue(val pawn: Pawn) {
         var dz = next.z - current.z
         val delta = Math.max(Math.abs(dx), Math.abs(dz))
 
-        val regions = pawn.world.regions
+        val regions = pawn.world.regionChunks
         var region = regions.getChunkForTile(current)
 
         for (i in 0 until delta) {

@@ -18,6 +18,13 @@ import java.util.*
  */
 open class Player(override val world: World) : Pawn(world) {
 
+    companion object {
+        /**
+         * How many tiles a player can see at a time.
+         */
+        const val VIEW_DISTANCE = 15
+    }
+
     /**
      * A persistent and unique id. This is <strong>not</strong> the index
      * of our [Player] when registered to the [World], it is a value determined
@@ -31,7 +38,7 @@ open class Player(override val world: World) : Pawn(world) {
 
     /**
      * The base region [Tile] is the most bottom-left (south-west) tile where
-     * the region begins.
+     * the last known region for this player begins.
      */
     var lastKnownRegionBase: Tile? = null
 
@@ -94,7 +101,7 @@ open class Player(override val world: World) : Pawn(world) {
             pendingLogout = false
         }
 
-        val newChunk = world.regions.getChunkForTile(tile)
+        val newChunk = world.regionChunks.getChunkForTile(tile)
         if (chunk == null || chunk != newChunk) {
             val oldRegion = lastTile?.toRegionId() ?: -1
             if (oldRegion != tile.toRegionId()) {

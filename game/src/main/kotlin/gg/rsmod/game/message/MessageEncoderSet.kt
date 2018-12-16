@@ -18,35 +18,35 @@ class MessageEncoderSet {
     private val encoders = hashMapOf<Class<out Message>, MessageEncoder<out Message>>()
 
     /**
-     * Links [Message] classes to their respective [MessageEncoder].
+     * Links [MessageEncoder] to their respective [Message] class.
      */
-    fun init(structures: MessageStructureSet) {
-        put(LoginRegionMessage::class.java, LoginRegionEncoder(structures.get(LoginRegionMessage::class.java)!!))
-        put(SetSmallVarpMessage::class.java, SmallVarpEncoder(structures.get(SetSmallVarpMessage::class.java)!!))
-        put(SetBigVarpMessage::class.java, BigVarpEncoder(structures.get(SetBigVarpMessage::class.java)!!))
-        put(OpenInterfaceMessage::class.java, OpenInterfaceEncoder(structures.get(OpenInterfaceMessage::class.java)!!))
-        put(CloseInterfaceMessage::class.java, CloseInterfaceEncoder(structures.get(CloseInterfaceMessage::class.java)!!))
-        put(SetInterfaceTextMessage::class.java, InterfaceTextEncoder(structures.get(SetInterfaceTextMessage::class.java)!!))
-        put(SetInterfaceSettingMessage::class.java, InterfaceSettingEncoder(structures.get(SetInterfaceSettingMessage::class.java)!!))
-        put(SetInterfaceHiddenMessage::class.java, InterfaceHiddenEncoder(structures.get(SetInterfaceHiddenMessage::class.java)!!))
-        put(SetInterfaceAnimationMessage::class.java, InterfaceAnimationEncoder(structures.get(SetInterfaceAnimationMessage::class.java)!!))
-        put(SetInterfaceItemMessage::class.java, InterfaceItemEncoder(structures.get(SetInterfaceItemMessage::class.java)!!))
-        put(SetInterfaceNpcMessage::class.java, InterfaceNpcEncoder(structures.get(SetInterfaceNpcMessage::class.java)!!))
-        put(SetDisplayInterfaceMessage::class.java, DisplayInterfaceEncoder(structures.get(SetDisplayInterfaceMessage::class.java)!!))
-        put(InvokeScriptMessage::class.java, InvokeScriptEncoder(structures.get(InvokeScriptMessage::class.java)!!))
-        put(ChangeStaticRegionMessage::class.java, ChangeStaticRegionEncoder(structures.get(ChangeStaticRegionMessage::class.java)!!))
-        put(SendChatboxTextMessage::class.java, ChatboxTextEncoder(structures.get(SendChatboxTextMessage::class.java)!!))
-        put(SendLogoutMessage::class.java, LogoutEncoder(structures.get(SendLogoutMessage::class.java)!!))
-        put(SendSkillMessage::class.java, SendSkillEncoder(structures.get(SendSkillMessage::class.java)!!))
-        put(SetRunEnergyMessage::class.java, RunEnergyEncoder(structures.get(SetRunEnergyMessage::class.java)!!))
-        put(SetMinimapMarkerMessage::class.java, MinimapMarkerEncoder(structures.get(SetMinimapMarkerMessage::class.java)!!))
-        put(SetItemContainerMessage::class.java, ItemContainerEncoder(structures.get(SetItemContainerMessage::class.java)!!))
-        put(SetMapChunkMessage::class.java, MapChunkEncoder(structures.get(SetMapChunkMessage::class.java)!!))
-        put(SpawnObjectMessage::class.java, SpawnObjectEncoder(structures.get(SpawnObjectMessage::class.java)!!))
-        put(RemoveObjectMessage::class.java, RemoveObjectEncoder(structures.get(RemoveObjectMessage::class.java)!!))
+    fun init() {
+        put(LoginRegionEncoder(), LoginRegionMessage::class.java)
+        put(SmallVarpEncoder(), SetSmallVarpMessage::class.java)
+        put(BigVarpEncoder(), SetBigVarpMessage::class.java)
+        put(OpenInterfaceEncoder(), OpenInterfaceMessage::class.java)
+        put(CloseInterfaceEncoder(), CloseInterfaceMessage::class.java)
+        put(InterfaceTextEncoder(), SetInterfaceTextMessage::class.java)
+        put(InterfaceSettingEncoder(), SetInterfaceSettingMessage::class.java)
+        put(InterfaceHiddenEncoder(), SetInterfaceHiddenMessage::class.java)
+        put(InterfaceAnimationEncoder(), SetInterfaceAnimationMessage::class.java)
+        put(InterfaceItemEncoder(), SetInterfaceItemMessage::class.java)
+        put(InterfaceNpcEncoder(), SetInterfaceNpcMessage::class.java)
+        put(DisplayInterfaceEncoder(), SetDisplayInterfaceMessage::class.java)
+        put(InvokeScriptEncoder(), InvokeScriptMessage::class.java)
+        put(ChangeStaticRegionEncoder(), ChangeStaticRegionMessage::class.java)
+        put(ChatboxTextEncoder(), SendChatboxTextMessage::class.java)
+        put(LogoutEncoder(), SendLogoutMessage::class.java)
+        put(SendSkillEncoder(), SendSkillMessage::class.java)
+        put(RunEnergyEncoder(), SetRunEnergyMessage::class.java)
+        put(MinimapMarkerEncoder(), SetMinimapMarkerMessage::class.java)
+        put(ItemContainerEncoder(), SetItemContainerMessage::class.java)
+        put(MapChunkEncoder(), SetChunkToRegionOffset::class.java)
+        put(SpawnObjectEncoder(), SpawnObjectMessage::class.java)
+        put(RemoveObjectEncoder(), RemoveObjectMessage::class.java)
     }
 
-    private fun <T: Message> put(message: Class<out T>, encoder: MessageEncoder<T>) {
+    private fun <T: Message> put(encoder: MessageEncoder<T>, message: Class<out T>) {
         encoders[message] = encoder
     }
 

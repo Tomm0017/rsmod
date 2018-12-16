@@ -211,7 +211,7 @@ class DefinitionSet {
                 }
                 val obj = StaticObject(loc.id, loc.type, loc.orientation,
                         if (bridges.contains(tile)) tile.transform(-1) else tile)
-                world.regions.getChunkForTile(tile).addEntity(world, obj)
+                world.regionChunks.getChunkForTile(tile).addEntity(world, obj)
             }
             return true
         } catch (e: IOException) {

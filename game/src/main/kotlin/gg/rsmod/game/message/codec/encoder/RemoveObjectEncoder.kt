@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.RemoveObjectMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class RemoveObjectEncoder(override val structure: MessageStructure) : MessageEncoder<RemoveObjectMessage>(structure) {
+class RemoveObjectEncoder : MessageEncoder<RemoveObjectMessage>() {
 
     override fun extract(message: RemoveObjectMessage, key: String): Number = when (key) {
         "tile" -> message.tile

@@ -10,7 +10,7 @@ import gg.rsmod.game.message.impl.SetSmallVarpMessage
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class BigVarpEncoder(override val structure: MessageStructure) : MessageEncoder<SetBigVarpMessage>(structure) {
+class BigVarpEncoder : MessageEncoder<SetBigVarpMessage>() {
 
     override fun extract(message: SetBigVarpMessage, key: String): Number = when (key) {
         "id" -> message.id

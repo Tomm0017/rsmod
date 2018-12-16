@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.SetInterfaceAnimationMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class InterfaceAnimationEncoder(override val structure: MessageStructure) : MessageEncoder<SetInterfaceAnimationMessage>(structure) {
+class InterfaceAnimationEncoder : MessageEncoder<SetInterfaceAnimationMessage>() {
 
     override fun extract(message: SetInterfaceAnimationMessage, key: String): Number = when (key) {
         "hash" -> message.hash

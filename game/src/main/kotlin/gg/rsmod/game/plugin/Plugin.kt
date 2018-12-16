@@ -24,8 +24,8 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
 
     /**
      * This flag indicates whether or not [PluginExecutor.pulse] has iterated
-     * through this plugin as the [pulse] must be handled one tick after the
-     * plugin logic has executed.
+     * through this plugin at least once, as the [pulse] must be handled one
+     * tick after the plugin logic has executed.
      */
     var started = false
 
@@ -43,21 +43,20 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
     private var nextStep: SuspendableStep? = null
 
     /**
-     * The [CoroutineContext] implementation for our [Plugin] as an implementation
-     * of [Continuation].
+     * The [CoroutineContext] implementation for our [Plugin].
      */
     override val context: CoroutineContext = EmptyCoroutineContext
 
     /**
-     * When the [nextStep] [SuspendableCondition.resume] returns true, this method
-     * is called.
+     * When the [nextStep] [SuspendableCondition.resume] returns true, this
+     * method is called.
      */
     override fun resumeWith(result: Result<Unit>) {
         nextStep = null
     }
 
     /**
-     * How we signal that the plugin will use suspend-only methods and functions.
+     * Boilerplate to signal the use of suspendable logic.
      */
     fun suspendable(block: suspend CoroutineScope.() -> Unit) {
         val coroutine = block.createCoroutine(receiver = CoroutineScope(dispatcher), completion = this)
@@ -65,7 +64,7 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
     }
 
     /**
-     * The logic in each [SuspendableStep] must be game-thread-safe, so we use this
+     * The logic in each [SuspendableStep] must be game-thread-safe, so we use pulse
      * method to keep them in-sync.
      */
     fun pulse() {

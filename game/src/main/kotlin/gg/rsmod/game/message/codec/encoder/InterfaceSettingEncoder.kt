@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.SetInterfaceSettingMessage
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class InterfaceSettingEncoder(override val structure: MessageStructure) : MessageEncoder<SetInterfaceSettingMessage>(structure) {
+class InterfaceSettingEncoder : MessageEncoder<SetInterfaceSettingMessage>() {
 
     override fun extract(message: SetInterfaceSettingMessage, key: String): Number = when (key) {
         "hash" -> message.hash

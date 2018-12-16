@@ -111,7 +111,7 @@ Here are the instructions for how you would create a few different scripts.
             }
         }
         
-    1. `npcDialog` is defined in the `PluginHelper` file in the core `plugins`
+    1. `npcDialog` is defined in the `plugin.kt` file in the core `plugins`
      package. It can change depending on what version of `RS Mod` you are using,
      but the format and conventions should be similar. This method is `suspendable`
      and will pause any further code until the dialog is continued by the player.

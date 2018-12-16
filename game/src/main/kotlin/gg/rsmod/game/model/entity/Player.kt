@@ -101,14 +101,12 @@ open class Player(override val world: World) : Pawn(world) {
             pendingLogout = false
         }
 
-        val newChunk = world.regionChunks.getChunkForTile(tile)
-        if (chunk == null || chunk != newChunk) {
-            val oldRegion = lastTile?.toRegionId() ?: -1
-            if (oldRegion != tile.toRegionId()) {
+        val oldRegion = lastTile?.toRegionId() ?: -1
+        if (oldRegion != getTile().toRegionId()) {
+            if (oldRegion != -1) {
                 world.plugins.executeRegionExit(this, oldRegion)
-                world.plugins.executeRegionEnter(this, tile.toRegionId())
             }
-            chunk = newChunk
+            world.plugins.executeRegionEnter(this, getTile().toRegionId())
         }
 
         if (inventory.dirty) {
@@ -121,6 +119,7 @@ open class Player(override val world: World) : Pawn(world) {
                 write(SendSkillMessage(i, skills.getCurrentLevel(i), skills.getCurrentXp(i).toInt()))
             }
         }
+        skills.clean()
 
         for (i in 0 until varps.maxVarps) {
             if (varps.isDirty(i)) {
@@ -132,8 +131,6 @@ open class Player(override val world: World) : Pawn(world) {
                 write(message)
             }
         }
-
-        skills.clean()
         varps.clean()
     }
 
@@ -180,10 +177,11 @@ open class Player(override val world: World) : Pawn(world) {
      * Handles any logic that should be executed upon log in.
      */
     fun login() {
-        if (this is Client) {
+        if (getType().isHumanControlled()) {
             localPlayers.add(this)
-            write(LoginRegionMessage(index, tile, world.xteaKeyService))
+            write(LoginRegionMessage(index, getTile(), world.xteaKeyService))
         }
+
         initiated = true
         blockBuffer.addBlock(UpdateBlock.APPEARANCE, getType())
         world.plugins.executeLogin(this)

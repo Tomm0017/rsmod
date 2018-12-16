@@ -1,6 +1,7 @@
 package gg.rsmod.game.sync.task
 
 import gg.rsmod.game.model.INDEX_ATTR
+import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.sync.UpdateBlock
 import gg.rsmod.net.packet.*
@@ -15,9 +16,9 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
 
     companion object {
         private val logger = LogManager.getLogger(PlayerSynchronizationTask::class.java)
+
         private const val MAX_LOCAL_PLAYERS = 255
         private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 15
-        private const val VIEWING_DISTANCE = 14
     }
 
     private val nonLocalIndices = arrayListOf<Int>().apply { addAll(1..2047) }
@@ -79,9 +80,9 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 val lastZ = player.otherPlayerTiles[index] and 0x3FFF
                 val lastH = player.otherPlayerTiles[index] shr 28 and 0x3
 
-                var dx = local.tile.x// - lastX
-                var dz = local.tile.z// - lastZ
-                var dh = local.tile.height// - lastH
+                var dx = local.getTile().x// - lastX
+                var dz = local.getTile().z// - lastZ
+                var dh = local.getTile().height// - lastH
                 if (Math.abs(dx) <= 14 && Math.abs(dz) <= 14) {
                     dx -= local.lastTile?.x ?: 0
                     dz -= local.lastTile?.z ?: 0
@@ -162,7 +163,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 player.localPlayers.sortBy { it.index }
                 added++
 
-                val tileHash = nonLocal.tile.to30BitInteger()
+                val tileHash = nonLocal.getTile().to30BitInteger()
                 buf.putBits(1, 1) // Do not skip this player
                 buf.putBits(2, 0) // Require addition to local players
 
@@ -170,8 +171,8 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 updateLocation(buf, player.otherPlayerTiles[index], tileHash)
                 player.otherPlayerTiles[index] = tileHash
 
-                buf.putBits(13, nonLocal.tile.x and 0x1FFF)
-                buf.putBits(13, nonLocal.tile.z and 0x1FFF)
+                buf.putBits(13, nonLocal.getTile().x and 0x1FFF)
+                buf.putBits(13, nonLocal.getTile().z and 0x1FFF)
                 buf.putBits(1, 1) // Requires block update
                 encodeBlocks(other = nonLocal, buf = maskBuf, newPlayer = true)
                 continue
@@ -194,8 +195,18 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
     private fun encodeBlocks(other: Player, buf: GamePacketBuilder, newPlayer: Boolean) {
         var mask = other.blockBuffer.blockValue()
 
+        var forceFace: Tile? = null
         if (newPlayer) {
             mask = mask or UpdateBlock.APPEARANCE.playerBit
+
+            if (other.blockBuffer.faceDegrees != 0) {
+                mask = mask or UpdateBlock.FACE_TILE.playerBit
+            } else if (other.blockBuffer.facePawnIndex != -1) {
+                mask = mask or UpdateBlock.FACE_PAWN.playerBit
+            } else {
+                mask = mask or UpdateBlock.FACE_TILE.playerBit
+                forceFace = other.getTile().step(other.lastFacingDirection)
+            }
         }
 
         if (mask >= 0x100) {
@@ -206,19 +217,29 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
             buf.put(DataType.BYTE, mask and 0xFF)
         }
 
-        if (other.blockBuffer.hasBlock(UpdateBlock.FORCE_CHAT, other.getType())) {
+        if ((mask and UpdateBlock.FORCE_CHAT.playerBit) != 0) {
             buf.putString(other.blockBuffer.forceChat)
         }
 
-        if (other.blockBuffer.hasBlock(UpdateBlock.MOVEMENT, other.getType())) {
+        if ((mask and UpdateBlock.MOVEMENT.playerBit) != 0) {
             buf.put(DataType.BYTE, DataTransformation.NEGATE, if (other.teleport) 127 else if (other.steps?.runDirection != null) 2 else 1)
         }
 
-        if (other.blockBuffer.hasBlock(UpdateBlock.FACE_TILE, other.getType())) {
-            buf.put(DataType.SHORT, DataTransformation.ADD, other.blockBuffer.faceDegrees)
+        if ((mask and UpdateBlock.FACE_TILE.playerBit) != 0) {
+            if (forceFace != null) {
+                val srcX = other.getTile().x * 64
+                val srcZ = other.getTile().z * 64
+                val dstX = forceFace.x * 64
+                val dstZ = forceFace.z * 64
+                val degreesX = (srcX - dstX).toDouble()
+                val degreesZ = (srcZ - dstZ).toDouble()
+                buf.put(DataType.SHORT, DataTransformation.ADD, (Math.atan2(degreesX, degreesZ) * 325.949).toInt() and 0x7ff)
+            } else {
+                buf.put(DataType.SHORT, DataTransformation.ADD, other.blockBuffer.faceDegrees)
+            }
         }
 
-        if (other.blockBuffer.hasBlock(UpdateBlock.APPEARANCE, other.getType()) || newPlayer) {
+        if ((mask and UpdateBlock.APPEARANCE.playerBit) != 0) {
             val appBuf = GamePacketBuilder()
             appBuf.put(DataType.BYTE, 0)
             appBuf.put(DataType.BYTE, -1)
@@ -261,20 +282,24 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
             buf.putBytes(appBuf.getBuffer())
         }
 
-        if (other.blockBuffer.hasBlock(UpdateBlock.ANIMATION, other.getType())) {
+        if ((mask and UpdateBlock.FACE_PAWN.playerBit) != 0) {
+            buf.put(DataType.SHORT, DataOrder.LITTLE, other.blockBuffer.facePawnIndex)
+        }
+
+        if ((mask and UpdateBlock.ANIMATION.playerBit) != 0) {
             buf.put(DataType.SHORT, DataOrder.LITTLE, other.blockBuffer.animation)
             buf.put(DataType.BYTE, DataTransformation.SUBTRACT, other.blockBuffer.animationDelay)
         }
 
-        if (other.blockBuffer.hasBlock(UpdateBlock.GFX, other.getType())) {
+        if ((mask and UpdateBlock.GFX.playerBit) != 0) {
             buf.put(DataType.SHORT, other.blockBuffer.graphicId)
             buf.put(DataType.INT, DataOrder.INVERSED_MIDDLE, (other.blockBuffer.graphicHeight shl 16) or other.blockBuffer.graphicDelay)
         }
     }
 
-    private fun shouldAdd(other: Player): Boolean = other.tile.isWithinRadius(player.tile, VIEWING_DISTANCE)// && nearbyPlayers.contains(other)
+    private fun shouldAdd(other: Player): Boolean = other.getTile().isWithinRadius(player.getTile(), Player.VIEW_DISTANCE)
 
-    private fun shouldRemove(other: Player): Boolean = !other.isOnline() || !other.tile.isWithinRadius(player.tile, VIEWING_DISTANCE)// || !nearbyPlayers.contains(other)
+    private fun shouldRemove(other: Player): Boolean = !other.isOnline() || !other.getTile().isWithinRadius(player.getTile(), Player.VIEW_DISTANCE)
 
     private fun writeSkip(buf: GamePacketBuilder, count: Int) {
         when {

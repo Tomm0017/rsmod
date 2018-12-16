@@ -10,8 +10,11 @@ class UpdateBlockBuffer {
     private var mask = 0
     var forceChat = ""
     var faceDegrees = 0
+    var facePawnIndex = -1
+
     var animation = 0
     var animationDelay = 0
+
     var graphicId = 0
     var graphicHeight = 0
     var graphicDelay = 0

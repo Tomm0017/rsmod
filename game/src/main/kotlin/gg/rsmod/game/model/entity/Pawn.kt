@@ -3,7 +3,6 @@ package gg.rsmod.game.model.entity
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
-import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.UpdateBlock
 import gg.rsmod.game.sync.UpdateBlockBuffer
@@ -30,11 +29,6 @@ abstract class Pawn(open val world: World) : Entity() {
      * The 3D [Tile] that this pawn was standing on, in the last game cycle.
      */
     var lastTile: Tile? = null
-
-    /**
-     * The last [Chunk] this pawn was registered to.
-     */
-    var chunk: Chunk? = null
 
     /**
      * Whether or not this pawn can teleported this game cycle.
@@ -77,6 +71,20 @@ abstract class Pawn(open val world: World) : Entity() {
 
     abstract fun isRunning(): Boolean
 
+    override fun setTile(t: Tile) {
+        if (!getTile().sameAs(0, 0)) {
+            val oldChunk = world.regionChunks.getChunkForTile(getTile())
+            oldChunk.removeEntity(world, this)
+        }
+
+        super.setTile(t)
+
+        if (!getTile().sameAs(0, 0)) {
+            val newChunk = world.regionChunks.getChunkForTile(getTile())
+            newChunk.addEntity(world, this)
+        }
+    }
+
     fun canMove(): Boolean = !isDead() && lock.canMove()
 
     /**
@@ -99,11 +107,11 @@ abstract class Pawn(open val world: World) : Entity() {
          * they should not be able to add a step in a tile they are already
          * standing on.
          */
-        if (validSurroundingTiles != null && tile in validSurroundingTiles) {
+        if (validSurroundingTiles != null && getTile() in validSurroundingTiles) {
             return
         }
 
-        val path = BFSPathfindingStrategy(world).getPath(tile, Tile(x, z, tile.height), getType(), validSurroundingTiles)
+        val path = BFSPathfindingStrategy(world).getPath(getTile(), Tile(x, z, getTile().height), getType(), validSurroundingTiles)
         if (path.isEmpty() && this is Player) {
             write(SetMinimapMarkerMessage(255, 255))
             return
@@ -133,7 +141,7 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun teleport(x: Int, z: Int, height: Int = 0) {
         teleport = true
-        tile = Tile(x, z, height)
+        setTile(Tile(x, z, height))
         movementQueue.clear()
         blockBuffer.addBlock(UpdateBlock.MOVEMENT, getType())
     }
@@ -161,8 +169,8 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun faceTile(face: Tile, width: Int = 1, length: Int = 1) {
         if (getType().isPlayer()) {
-            val srcX = tile.x * 64
-            val srcZ = tile.z * 64
+            val srcX = getTile().x * 64
+            val srcZ = getTile().z * 64
             val dstX = face.x * 64
             val dstZ = face.z * 64
 
@@ -174,7 +182,16 @@ abstract class Pawn(open val world: World) : Entity() {
 
             blockBuffer.faceDegrees = (Math.atan2(degreesX, degreesZ) * 325.949).toInt() and 0x7ff
         }
+
+        blockBuffer.facePawnIndex = -1
         blockBuffer.addBlock(UpdateBlock.FACE_TILE, getType())
+    }
+
+    fun facePawn(pawn: Pawn?) {
+        blockBuffer.facePawnIndex = if (pawn == null) -1 else if (pawn.getType().isPlayer()) pawn.index + 32768 else pawn.index
+
+        blockBuffer.faceDegrees = 0
+        blockBuffer.addBlock(UpdateBlock.FACE_PAWN, getType())
     }
 
     /**

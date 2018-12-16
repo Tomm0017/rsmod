@@ -187,8 +187,36 @@ class GameService : Service() {
             val totalMemory = Runtime.getRuntime().totalMemory()
             val maxMemory = Runtime.getRuntime().maxMemory()
 
-            logger.info("[Cycle time avg: {}ms] [Entities: {}p / {}n] [Live plugins: {}] [Mem usage: U={}MB / R={}MB / M={}MB].",
-                    cycleTime / TICKS_PER_DEBUG_LOG, world.players.count(), world.npcs.count(), world.pluginExecutor.getActiveCount(),
+            /**
+             * Description:
+             *
+             * [Cycle time]
+             * the average time it took for a game cycle to
+             * complete the last [TICKS_PER_DEBUG_LOG] game cycles.
+             *
+             * [Entities]
+             * The amount of entities in the world.
+             * p: players
+             * n: npcs
+             *
+             * [Map]
+             * The amount of map entities that are currently active.
+             * c: chunks [gg.rsmod.game.model.region.Chunk]
+             * r: regions
+             *
+             * [Live Plugins]
+             * The amount of plugins that are being executed on this exact
+             * game cycle.
+             *
+             * [Mem Usage]
+             * Memory usage statistics.
+             * U: used memory, in megabytes
+             * R: reserved memory, in megabytes
+             * M: max memory available, in megabytes
+             */
+            logger.info("[Cycle time: {}ms] [Entities: {}p / {}n] [Map: {}c / {}r] [Live plugins: {}] [Mem usage: U={}MB / R={}MB / M={}MB].",
+                    cycleTime / TICKS_PER_DEBUG_LOG, world.players.count(), world.npcs.count(),
+                    world.chunks.getActiveChunks(), world.chunks.getActiveRegions(), world.pluginExecutor.getActiveCount(),
                     (totalMemory - freeMemory) / (1024 * 1024), totalMemory / (1024 * 1024), maxMemory / (1024 * 1024))
             debugTick = 0
             cycleTime = 0

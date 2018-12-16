@@ -24,10 +24,10 @@ class PlayerPreSynchronizationTask(val player: Player, override val phaser: Phas
         val current = player.tile
 
         if (shouldUpdateRegion(last, current)) {
-            val regionX = ((player.tile.x shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
-            val regionZ = ((player.tile.z shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
+            val regionX = ((current.x shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
+            val regionZ = ((current.z shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
 
-            player.lastKnownRegionBase = Tile(regionX, regionZ, player.tile.height)
+            player.lastKnownRegionBase = Tile(regionX, regionZ, current.height)
             player.write(ChangeStaticRegionMessage(current.x, current.z, player.world.xteaKeyService))
         }
     }

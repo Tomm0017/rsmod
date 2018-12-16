@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
                 packets = Paths.get("./data/packets.yml"), devProps = Paths.get("./dev-settings.yml"))
 
     val gameService = world.getService(GameService::class.java, false).get()
-    for (i in 0 until 150) {
+    for (i in 0 until 1998) {
         val player = Player(world)
         player.username = "Test $i"
         player.tile = Tile(gameService.world.gameContext.home)

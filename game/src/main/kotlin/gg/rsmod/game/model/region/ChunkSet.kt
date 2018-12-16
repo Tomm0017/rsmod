@@ -16,9 +16,13 @@ class ChunkSet(val world: World) {
 
     private val activeRegions = hashSetOf<Int>()
 
-    fun getForTile(tile: Tile): Chunk = get(ChunkCoords.fromTile(tile), create = true)!!
+    fun getActiveChunks(): Int = chunks.size
 
-    fun get(coords: ChunkCoords, create: Boolean = false): Chunk? {
+    fun getActiveRegions(): Int = activeRegions.size
+
+    fun getForTile(tile: Tile): Chunk = getOrCreate(ChunkCoords.fromTile(tile), true)!!
+
+    fun getOrCreate(coords: ChunkCoords, create: Boolean = false): Chunk? {
         val chunk = chunks[coords]
         if (chunk != null) {
             return chunk

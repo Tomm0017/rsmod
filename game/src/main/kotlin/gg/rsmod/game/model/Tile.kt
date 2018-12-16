@@ -1,6 +1,7 @@
 package gg.rsmod.game.model
 
 import com.google.common.base.MoreObjects
+import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.model.region.ChunkCoords
 
 /**
@@ -69,6 +70,18 @@ class Tile {
     fun getTopLeftRegionX() = (x shr 3) - 6
 
     fun getTopLeftRegionZ() = (z shr 3) - 6
+
+    /**
+     * Returns the local tile of our region relative to the current [x] and [z].
+     *
+     * The [other] tile will always have coords equal to or greater than our own.
+     */
+    fun toLocal(other: Tile): Tile = Tile(((other.x shr 3) - (x shr 3)) shl 3, ((other.z shr 3) - (z shr 3)) shl 3, height)
+
+    /**
+     * Returns the base tile of our region relative to the current [x], [z] and [Chunk.MAX_VIEWPORT].
+     */
+    fun toRegionBase(): Tile = Tile(((x shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3, ((z shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3, height)
 
     /**
      * Checks if the [other] tile has the same coordinates as this tile.

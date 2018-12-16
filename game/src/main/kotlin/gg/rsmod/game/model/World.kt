@@ -37,7 +37,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     val collision = CollisionManager(this)
 
-    val regionChunks = ChunkSet(this)
+    val chunks = ChunkSet(this)
 
     /**
      * A collection of our [Service]s specified in our game [ServerProperties]
@@ -115,23 +115,22 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     fun spawn(obj: GameObject) {
         val tile = obj.tile
 
-        val chunk = regionChunks.getChunkForTile(tile)
+        val chunk = chunks.getForTile(tile)
 
-        val oldObj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT)
-                .firstOrNull { it.type == obj.type }
+        val oldObj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.type == obj.type }
         if (oldObj != null) {
-            chunk.removeEntity(this, oldObj)
+            chunk.removeEntity(this, oldObj, tile)
         }
 
-        chunk.addEntity(this, obj)
+        chunk.addEntity(this, obj, tile)
     }
 
     fun remove(obj: GameObject) {
         val tile = obj.tile
 
-        val chunk = regionChunks.getChunkForTile(tile)
+        val chunk = chunks.getForTile(tile)
 
-        chunk.removeEntity(this, obj)
+        chunk.removeEntity(this, obj, tile)
     }
 
     fun getPlayerForName(username: String): Optional<Player> {

@@ -16,18 +16,18 @@ class CollisionManager(val world: World) {
     }
 
     fun submit(entity: Entity, updateType: CollisionUpdate.Type) {
-        if (entity is GameObject) {
+        if (entity.getType().isObject()) {
             val builder = CollisionUpdate.Builder()
             builder.setType(updateType)
-            builder.putObject(world.definitions, entity)
+            builder.putObject(world.definitions, entity as GameObject)
             apply(builder.build())
         }
     }
 
     fun canTraverse(tile: Tile, direction: Direction, type: EntityType): Boolean {
         val next = tile.step(direction)
-        var chunk = world.regionChunks.getChunkForTile(next)
-        val projectile = type == EntityType.PROJECTILE
+        var chunk = world.chunks.getForTile(next)
+        val projectile = type.isProjectile()
 
         if (!chunk.canTraverse(next, direction, projectile)) {
             return false
@@ -38,7 +38,7 @@ class CollisionManager(val world: World) {
                 val otherNext = tile.step(other)
 
                 if (!chunk.contains(otherNext)) {
-                    chunk = world.regionChunks.getChunkForTile(otherNext)
+                    chunk = world.chunks.getForTile(otherNext)
                 }
 
                 if (!chunk.canTraverse(otherNext, other, projectile)) {
@@ -68,7 +68,7 @@ class CollisionManager(val world: World) {
             val tile = entry.key
 
             if (chunk == null || !chunk.contains(tile)) {
-                chunk = world.regionChunks.getChunkForTile(tile)
+                chunk = world.chunks.getForTile(tile)
             }
 
             val localX = tile.x % Chunk.CHUNK_SIZE

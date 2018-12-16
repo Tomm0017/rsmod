@@ -18,6 +18,7 @@ class PlayerPreSynchronizationTask(val player: Player, override val phaser: Phas
             val regionX = ((player.tile.x shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
             val regionZ = ((player.tile.z shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
             player.lastKnownRegionBase = Tile(regionX, regionZ, player.tile.height)
+            Chunk.spawnAll(player)
         }
 
         val last = player.lastKnownRegionBase!!

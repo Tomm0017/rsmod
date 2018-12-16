@@ -34,7 +34,7 @@ class ObjectActionOneHandler : MessageHandler<ObjectActionOneMessage> {
         /**
          * Get the region chunk that the object would belong to.
          */
-        val chunk = client.world.regionChunks.getChunkForTile(tile)
+        val chunk = client.world.chunks.getForTile(tile)
         val obj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.id == message.id }
 
         /**

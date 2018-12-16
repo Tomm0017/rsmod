@@ -134,3 +134,4 @@ through e-mail: **rspsmods@gmail.com**
     - Using StatefulFrameDecoder, AccessMode, DataConstants, DataOrder, DataTransformation, DataType, GamePacket & GamePacketBuilder from Apollo
 * ##### Major
     - Using Collision Detection from Apollo 
+    - Basic idea behind the Region system (known as Chunk on RS Mod)

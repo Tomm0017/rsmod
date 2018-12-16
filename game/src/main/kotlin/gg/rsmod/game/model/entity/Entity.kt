@@ -19,7 +19,7 @@ abstract class Entity {
     /**
      * The current 3D [Tile] that this [Pawn] is standing on in the [World].
      */
-    var tile = Tile(0, 0)
+    lateinit var tile: Tile
 
     abstract fun getType(): EntityType
 }

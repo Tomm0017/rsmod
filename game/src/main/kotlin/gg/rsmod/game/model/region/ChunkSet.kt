@@ -14,11 +14,11 @@ class ChunkSet(val world: World) {
 
     private val chunks = hashMapOf<ChunkCoords, Chunk>()
 
-    private val decodedRegions = hashSetOf<Int>()
+    private val activeRegions = hashSetOf<Int>()
 
-    fun getChunkForTile(tile: Tile): Chunk = getChunk(ChunkCoords.fromTile(tile), create = true)!!
+    fun getForTile(tile: Tile): Chunk = get(ChunkCoords.fromTile(tile), create = true)!!
 
-    fun getChunk(coords: ChunkCoords, create: Boolean = false): Chunk? {
+    fun get(coords: ChunkCoords, create: Boolean = false): Chunk? {
         val chunk = chunks[coords]
         if (chunk != null) {
             return chunk
@@ -28,7 +28,7 @@ class ChunkSet(val world: World) {
         val newChunk = Chunk(coords, DEFAULT_TOTAL_HEIGHTS)
         val regionId = coords.toTile().toRegionId()
         chunks[coords] = newChunk
-        if (decodedRegions.add(regionId)) {
+        if (activeRegions.add(regionId)) {
             world.definitions.createRegion(world, regionId)
         }
         return newChunk

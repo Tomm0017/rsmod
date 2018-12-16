@@ -19,11 +19,11 @@ class SpawnEntityGroupsEncoder : MessageEncoder<SpawnEntityGroupsMessage>() {
     override fun extractBytes(message: SpawnEntityGroupsMessage, key: String): ByteArray = when (key) {
         "payload" -> {
             val builder = GamePacketBuilder()
-            message.messages.forEach { m ->
-                val encoder = message.encoders.get(m::class.java)!!
-                val structure = message.structures.get(m::class.java)!!
-                builder.put(DataType.BYTE, m.id) // Client always read as unsigned byte
-                encoder.encode(m, builder, structure)
+            message.messages.forEach { groupMessage ->
+                val encoder = message.encoders.get(groupMessage.message::class.java)!!
+                val structure = message.structures.get(groupMessage.message::class.java)!!
+                builder.put(DataType.BYTE, groupMessage.id) // Client always read as unsigned byte
+                encoder.encode(groupMessage.message, builder, structure)
             }
             val payload = ByteArray(builder.getBuffer().readableBytes())
             builder.getBuffer().readBytes(payload)

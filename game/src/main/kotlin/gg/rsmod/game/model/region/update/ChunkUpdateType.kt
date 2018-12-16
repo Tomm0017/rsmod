@@ -5,5 +5,5 @@ package gg.rsmod.game.model.region.update
  */
 enum class ChunkUpdateType {
     ADD,
-    REMOVE
+    REMOVE,
 }

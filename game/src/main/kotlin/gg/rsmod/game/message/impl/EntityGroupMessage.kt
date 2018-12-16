@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class EntityGroupMessage(val id: Int) : Message
+class EntityGroupMessage(val id: Int, val message: Message)

@@ -1,4 +1,4 @@
-package gg.rsmod.game.model.region.update
+package gg.rsmod.game.model.region
 
 /**
  * @author Tom <rspsmods@gmail.com>

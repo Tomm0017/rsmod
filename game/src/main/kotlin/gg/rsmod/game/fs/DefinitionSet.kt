@@ -180,7 +180,7 @@ class DefinitionSet {
          * Apply the blocked tiles to the collision detection.
          */
         val blockedTileBuilder = CollisionUpdate.Builder()
-        blockedTileBuilder.setType(CollisionUpdate.Type.ADDING)
+        blockedTileBuilder.setType(CollisionUpdate.Type.ADD)
         blocked.forEach { tile ->
             blockedTileBuilder.putTile(tile, false, *Direction.NESW)
         }

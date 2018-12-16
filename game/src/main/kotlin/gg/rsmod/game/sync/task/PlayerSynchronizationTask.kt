@@ -80,9 +80,9 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 val lastZ = player.otherPlayerTiles[index] and 0x3FFF
                 val lastH = player.otherPlayerTiles[index] shr 28 and 0x3
 
-                var dx = local.getTile().x// - lastX
-                var dz = local.getTile().z// - lastZ
-                var dh = local.getTile().height// - lastH
+                var dx = local.tile.x// - lastX
+                var dz = local.tile.z// - lastZ
+                var dh = local.tile.height// - lastH
                 if (Math.abs(dx) <= 14 && Math.abs(dz) <= 14) {
                     dx -= local.lastTile?.x ?: 0
                     dz -= local.lastTile?.z ?: 0
@@ -163,7 +163,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 player.localPlayers.sortBy { it.index }
                 added++
 
-                val tileHash = nonLocal.getTile().to30BitInteger()
+                val tileHash = nonLocal.tile.to30BitInteger()
                 buf.putBits(1, 1) // Do not skip this player
                 buf.putBits(2, 0) // Require addition to local players
 
@@ -171,8 +171,8 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 updateLocation(buf, player.otherPlayerTiles[index], tileHash)
                 player.otherPlayerTiles[index] = tileHash
 
-                buf.putBits(13, nonLocal.getTile().x and 0x1FFF)
-                buf.putBits(13, nonLocal.getTile().z and 0x1FFF)
+                buf.putBits(13, nonLocal.tile.x and 0x1FFF)
+                buf.putBits(13, nonLocal.tile.z and 0x1FFF)
                 buf.putBits(1, 1) // Requires block update
                 encodeBlocks(other = nonLocal, buf = maskBuf, newPlayer = true)
                 continue
@@ -205,7 +205,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
                 mask = mask or UpdateBlock.FACE_PAWN.playerBit
             } else {
                 mask = mask or UpdateBlock.FACE_TILE.playerBit
-                forceFace = other.getTile().step(other.lastFacingDirection)
+                forceFace = other.tile.step(other.lastFacingDirection)
             }
         }
 
@@ -227,8 +227,8 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
 
         if ((mask and UpdateBlock.FACE_TILE.playerBit) != 0) {
             if (forceFace != null) {
-                val srcX = other.getTile().x * 64
-                val srcZ = other.getTile().z * 64
+                val srcX = other.tile.x * 64
+                val srcZ = other.tile.z * 64
                 val dstX = forceFace.x * 64
                 val dstZ = forceFace.z * 64
                 val degreesX = (srcX - dstX).toDouble()
@@ -297,9 +297,9 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
         }
     }
 
-    private fun shouldAdd(other: Player): Boolean = other.getTile().isWithinRadius(player.getTile(), Player.VIEW_DISTANCE)
+    private fun shouldAdd(other: Player): Boolean = other.tile.isWithinRadius(player.tile, Player.VIEW_DISTANCE)
 
-    private fun shouldRemove(other: Player): Boolean = !other.isOnline() || !other.getTile().isWithinRadius(player.getTile(), Player.VIEW_DISTANCE)
+    private fun shouldRemove(other: Player): Boolean = !other.isOnline() || !other.tile.isWithinRadius(player.tile, Player.VIEW_DISTANCE)
 
     private fun writeSkip(buf: GamePacketBuilder, count: Int) {
         when {

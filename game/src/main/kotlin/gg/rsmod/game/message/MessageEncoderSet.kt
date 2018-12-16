@@ -44,6 +44,7 @@ class MessageEncoderSet {
         put(MapChunkEncoder(), SetChunkToRegionOffset::class.java)
         put(SpawnObjectEncoder(), SpawnObjectMessage::class.java)
         put(RemoveObjectEncoder(), RemoveObjectMessage::class.java)
+        put(SpawnEntityGroupsEncoder(), SpawnEntityGroupsMessage::class.java)
     }
 
     private fun <T: Message> put(encoder: MessageEncoder<T>, message: Class<out T>) {

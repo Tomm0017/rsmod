@@ -4,9 +4,6 @@ import gg.rsmod.game.DevContext
 import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.DefinitionSet
-import gg.rsmod.game.message.impl.RemoveObjectMessage
-import gg.rsmod.game.message.impl.SetChunkToRegionOffset
-import gg.rsmod.game.message.impl.SpawnObjectMessage
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Npc
@@ -127,15 +124,6 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         }
 
         chunk.addEntity(this, obj)
-
-        players.forEach { player ->
-            if (player.tile.isWithinRadius(obj.tile, 15)) {
-                val cx = tile.x - player.lastKnownRegionBase!!.x
-                val cz = tile.z - player.lastKnownRegionBase!!.z
-                player.write(SetChunkToRegionOffset(cx, cz))
-                player.write(SpawnObjectMessage(obj.id, obj.settings.toInt(), ((tile.x and 0x7) shl 4) or (tile.z and 0x7)))
-            }
-        }
     }
 
     fun remove(obj: GameObject) {
@@ -144,15 +132,6 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         val chunk = regionChunks.getChunkForTile(tile)
 
         chunk.removeEntity(this, obj)
-
-        players.forEach { player ->
-            if (player.tile.isWithinRadius(tile, 15)) {
-                val x = ((tile.x - player.lastKnownRegionBase!!.x) / 8) * 8
-                val z = ((tile.z - player.lastKnownRegionBase!!.z) / 8) * 8
-                player.write(SetChunkToRegionOffset(x, z))
-                player.write(RemoveObjectMessage(obj.settings.toInt(), ((tile.x and 0x7) shl 4) or (tile.z and 0x7)))
-            }
-        }
     }
 
     fun getPlayerForName(username: String): Optional<Player> {

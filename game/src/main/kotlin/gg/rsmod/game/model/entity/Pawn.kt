@@ -71,20 +71,6 @@ abstract class Pawn(open val world: World) : Entity() {
 
     abstract fun isRunning(): Boolean
 
-    override fun setTile(t: Tile) {
-        if (!getTile().sameAs(0, 0)) {
-            val oldChunk = world.regionChunks.getChunkForTile(getTile())
-            oldChunk.removeEntity(world, this)
-        }
-
-        super.setTile(t)
-
-        if (!getTile().sameAs(0, 0)) {
-            val newChunk = world.regionChunks.getChunkForTile(getTile())
-            newChunk.addEntity(world, this)
-        }
-    }
-
     fun canMove(): Boolean = !isDead() && lock.canMove()
 
     /**
@@ -107,11 +93,11 @@ abstract class Pawn(open val world: World) : Entity() {
          * they should not be able to add a step in a tile they are already
          * standing on.
          */
-        if (validSurroundingTiles != null && getTile() in validSurroundingTiles) {
+        if (validSurroundingTiles != null && tile in validSurroundingTiles) {
             return
         }
 
-        val path = BFSPathfindingStrategy(world).getPath(getTile(), Tile(x, z, getTile().height), getType(), validSurroundingTiles)
+        val path = BFSPathfindingStrategy(world).getPath(tile, Tile(x, z, tile.height), getType(), validSurroundingTiles)
         if (path.isEmpty() && this is Player) {
             write(SetMinimapMarkerMessage(255, 255))
             return
@@ -141,7 +127,7 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun teleport(x: Int, z: Int, height: Int = 0) {
         teleport = true
-        setTile(Tile(x, z, height))
+        tile = Tile(x, z, height)
         movementQueue.clear()
         blockBuffer.addBlock(UpdateBlock.MOVEMENT, getType())
     }
@@ -169,8 +155,8 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun faceTile(face: Tile, width: Int = 1, length: Int = 1) {
         if (getType().isPlayer()) {
-            val srcX = getTile().x * 64
-            val srcZ = getTile().z * 64
+            val srcX = tile.x * 64
+            val srcZ = tile.z * 64
             val dstX = face.x * 64
             val dstZ = face.z * 64
 

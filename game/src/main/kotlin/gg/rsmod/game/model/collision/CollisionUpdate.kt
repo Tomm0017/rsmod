@@ -12,8 +12,8 @@ import gg.rsmod.game.model.entity.GameObject
 class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Tile, DirectionFlag>) {
 
     enum class Type {
-        ADDING,
-        REMOVING
+        ADD,
+        REMOVE
     }
 
     class Builder {

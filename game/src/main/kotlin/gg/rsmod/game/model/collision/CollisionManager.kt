@@ -15,7 +15,7 @@ class CollisionManager(val world: World) {
         const val BRIDGE_TILE = 0x2
     }
 
-    fun submitUpdate(entity: Entity, updateType: CollisionUpdate.Type) {
+    fun submit(entity: Entity, updateType: CollisionUpdate.Type) {
         if (entity is GameObject) {
             val builder = CollisionUpdate.Builder()
             builder.setType(updateType)
@@ -51,7 +51,7 @@ class CollisionManager(val world: World) {
     }
 
     private fun flag(type: CollisionUpdate.Type, matrix: CollisionMatrix, localX: Int, localY: Int, flag: CollisionFlag) {
-        if (type === CollisionUpdate.Type.ADDING) {
+        if (type === CollisionUpdate.Type.ADD) {
             matrix.addFlag(localX, localY, flag)
         } else {
             matrix.removeFlag(localX, localY, flag)

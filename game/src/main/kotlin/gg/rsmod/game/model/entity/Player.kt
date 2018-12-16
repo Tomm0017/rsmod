@@ -102,11 +102,11 @@ open class Player(override val world: World) : Pawn(world) {
         }
 
         val oldRegion = lastTile?.toRegionId() ?: -1
-        if (oldRegion != getTile().toRegionId()) {
+        if (oldRegion != tile.toRegionId()) {
             if (oldRegion != -1) {
                 world.plugins.executeRegionExit(this, oldRegion)
             }
-            world.plugins.executeRegionEnter(this, getTile().toRegionId())
+            world.plugins.executeRegionEnter(this, tile.toRegionId())
         }
 
         if (inventory.dirty) {
@@ -179,7 +179,7 @@ open class Player(override val world: World) : Pawn(world) {
     fun login() {
         if (getType().isHumanControlled()) {
             localPlayers.add(this)
-            write(LoginRegionMessage(index, getTile(), world.xteaKeyService))
+            write(LoginRegionMessage(index, tile, world.xteaKeyService))
         }
 
         initiated = true

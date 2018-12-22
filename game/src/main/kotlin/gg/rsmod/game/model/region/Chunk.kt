@@ -59,6 +59,8 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
      */
     private val entities: Multimap<Tile, Entity> = HashMultimap.create()
 
+    private val objects: Multimap<Tile, GameObject> = HashMultimap.create()
+
     private val removedObjects = hashSetOf<StaticObject>()
 
     fun getMatrix(height: Int): CollisionMatrix = matrices[height]
@@ -97,7 +99,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
     fun spawnAll(p: Player, gameService: GameService) {
         val messages = arrayListOf<EntityGroupMessage>()
 
-        val objSpawn = getEntities<DynamicObject>(EntityType.DYNAMIC_OBJECT)
+        val objSpawn = objects.values()//getEntities<DynamicObject>(EntityType.DYNAMIC_OBJECT)
         val objRemove = removedObjects
 
         objSpawn.forEach { obj ->
@@ -116,7 +118,6 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
 
         if (messages.isNotEmpty()) {
             val local = p.lastKnownRegionBase!!.toLocal(coords.toTile())
-            println("sending ${messages.size} group messages")
             p.write(SpawnEntityGroupsMessage(local.x, local.z, gameService.messageEncoders, gameService.messageStructures, *messages.toTypedArray()))
         }
     }
@@ -138,6 +139,10 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
                         }
                     }
                 }
+
+                if (entity.getType() == EntityType.DYNAMIC_OBJECT) {
+                    objects.put(tile, entity as GameObject)
+                }
             }
             ChunkUpdateType.REMOVE -> {
                 entities.remove(tile, entity)
@@ -156,6 +161,10 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
                             client.write(message)
                         }
                     }
+                }
+
+                if (entity.getType() == EntityType.DYNAMIC_OBJECT) {
+                    objects.remove(tile, entity as GameObject)
                 }
             }
         }

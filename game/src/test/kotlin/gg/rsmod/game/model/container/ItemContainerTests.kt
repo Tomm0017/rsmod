@@ -95,7 +95,7 @@ class ItemContainerTests {
     }
 
     @Test
-    fun addOneToManyStrict() {
+    fun addOneTooManyStrict() {
         val container = ItemContainer(definitions, CAPACITY, ContainerStackType.NORMAL)
         val result = container.add(id = 4151, amount = CAPACITY + 1, forceNoStack = false, assureFullInsertion = true, beginSlot = 0)
         assertFalse(result.hasSucceeded())
@@ -103,7 +103,7 @@ class ItemContainerTests {
     }
 
     @Test
-    fun addOneToManyLoose() {
+    fun addOneTooManyLoose() {
         val container = ItemContainer(definitions, CAPACITY, ContainerStackType.NORMAL)
         val loose = container.add(id = 4151, amount = CAPACITY + 1, forceNoStack = false, assureFullInsertion = false, beginSlot = 0)
         assertFalse(loose.hasSucceeded())

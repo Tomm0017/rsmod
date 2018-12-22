@@ -47,7 +47,7 @@ class GameSystem(override val channel: Channel, val client: Client,
 
     override fun terminate() {
         client.requestLogout()
-        logger.info("User '{}' disconnected from channel {}.", client.username, channel)
+        logger.info("User '{}' requested disconnection from channel {}.", client.username, channel)
     }
 
     fun handleMessages() {

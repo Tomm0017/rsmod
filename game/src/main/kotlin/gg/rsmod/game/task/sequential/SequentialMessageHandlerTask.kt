@@ -6,7 +6,7 @@ import gg.rsmod.game.task.GameTask
 
 /**
  * A [GameTask] responsible for handling all incoming
- * [gg.rsmod.net.message.Message]s, sequentially.
+ * [gg.rsmod.game.message.Message]s, sequentially.
  *
  * @author Tom <rspsmods@gmail.com>
  */

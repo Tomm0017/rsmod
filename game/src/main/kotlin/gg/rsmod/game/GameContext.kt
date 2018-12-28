@@ -27,7 +27,7 @@ import gg.rsmod.game.model.Tile
  *
  * @param rsaEncryption
  * If RSA encryption should be used for encrypting/decrypting
- * [gg.rsmod.net.message.Message]s.
+ * [gg.rsmod.game.message.Message]s.
  *
  * @param skillCount
  * The max amount of skills in our game.

@@ -31,6 +31,9 @@ enum class EntityType {
      */
     DYNAMIC_OBJECT,
 
+    /**
+     * A projectile.
+     */
     PROJECTILE;
 
     fun isHumanControlled(): Boolean = this == CLIENT
@@ -40,4 +43,10 @@ enum class EntityType {
     fun isObject(): Boolean = this == STATIC_OBJECT || this == DYNAMIC_OBJECT
 
     fun isProjectile(): Boolean = this == PROJECTILE
+
+    /**
+     * Checks if the entity type should not be added to a region as an entity
+     * that should be spawned in for players who just enter its region.
+     */
+    fun isTransient(): Boolean = this == PROJECTILE
 }

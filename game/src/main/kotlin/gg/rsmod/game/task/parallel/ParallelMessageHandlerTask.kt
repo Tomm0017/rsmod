@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Phaser
 
 /**
- * A [GameTask] responsible for handling all incoming [gg.rsmod.net.message.Message]s,
+ * A [GameTask] responsible for handling all incoming [gg.rsmod.game.message.Message]s,
  * in parallel.
  *
  * @author Tom <rspsmods@gmail.com>

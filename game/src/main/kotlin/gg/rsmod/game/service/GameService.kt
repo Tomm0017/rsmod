@@ -43,7 +43,7 @@ class GameService : Service() {
     lateinit var world: World
 
     /**
-     * The max amount of incoming [gg.rsmod.net.message.Messages]s that can be
+     * The max amount of incoming [gg.rsmod.game.message.Messages]s that can be
      * handled per cycle.
      */
     var maxMessagesPerCycle = 0

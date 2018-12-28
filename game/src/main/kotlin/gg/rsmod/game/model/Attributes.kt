@@ -3,9 +3,9 @@ package gg.rsmod.game.model
 import gg.rsmod.game.model.entity.GameObject
 
 /**
- * A decoupled file that holds [AttributeKey]s that require read-access from our
+ * A decoupled file that holds AttributeKeys that require read-access from our
  * game module. Any attributes that can be stored on the plugin classes themselves,
- * should do so. When storing them in a class, remember the [AttributeKey] must be
+ * should do so. When storing them in a class, remember the AttributeKey must be
  * a singleton, meaning it should only have a single state.
  *
  * @author Tom <rspsmods@gmail.com>

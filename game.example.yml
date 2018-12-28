@@ -32,8 +32,6 @@ privileges:
 # Game context values
 # You usually do not want to modify these values or the game may not function properly.
 plugin-path: "gg.rsmod.plugins"
-max-players: 2000
-cycle-time: 600
 
 # Game services
 # You can pick and choose which services you want to run.

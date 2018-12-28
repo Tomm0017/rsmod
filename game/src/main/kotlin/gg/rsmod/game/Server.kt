@@ -94,12 +94,12 @@ class Server {
         val gameContext = GameContext(initialLaunch = initialLaunch,
                 name = gameProperties.get<String>("name")!!,
                 revision = gameProperties.get<Int>("revision")!!,
-                cycleTime = gameProperties.get<Int>("cycle-time")!!,
-                playerLimit = gameProperties.get<Int>("max-players")!!,
+                cycleTime = gameProperties.getOrDefault("cycle-time", 600),
+                playerLimit = gameProperties.getOrDefault("max-players", 2000),
                 home = Tile(gameProperties.get<Int>("home-x")!!, gameProperties.get<Int>("home-z")!!, gameProperties.getOrDefault("home-height", 0)),
-                rsaEncryption = gameProperties.get<Boolean>("rsa-encryption")!!,
+                rsaEncryption = gameProperties.getOrDefault("rsa-encryption", false),
                 skillCount = gameProperties.get<Int>("skill-count")!!,
-                runEnergy = gameProperties.get<Boolean>("run-energy")!!)
+                runEnergy = gameProperties.getOrDefault("run-energy", true))
 
         val devContext = DevContext(debugObjects = devProperties.getOrDefault("debug-objects", false),
                 debugButtons = devProperties.getOrDefault("debug-buttons", false))

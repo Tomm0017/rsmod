@@ -88,10 +88,8 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
         if (update != null) {
             if (entity.getType() == EntityType.STATIC_OBJECT) {
                 updates.add(update)
-                println("as static obj, we add it as an update, total updates: ${updates.size}")
             } else {
-                val removed = updates.removeIf { it.entity == entity }
-                println("removing entity [$entity] with status $removed")
+                updates.removeIf { it.entity == entity }
             }
             sendUpdate(world, update)
         }

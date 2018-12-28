@@ -4,14 +4,13 @@ import gg.rsmod.game.message.impl.ChangeStaticRegionMessage
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.region.Chunk
-import java.util.concurrent.Phaser
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class PlayerPreSynchronizationTask(val player: Player, override val phaser: Phaser) : PhasedSynchronizationTask(phaser) {
+class PlayerPreSynchronizationTask(val player: Player) : SynchronizationTask {
 
-    override fun execute() {
+    override fun run() {
         player.movementQueue.pulse()
 
         if (player.lastKnownRegionBase == null) {

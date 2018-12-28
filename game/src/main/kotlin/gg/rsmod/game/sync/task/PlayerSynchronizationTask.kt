@@ -2,17 +2,17 @@ package gg.rsmod.game.sync.task
 
 import gg.rsmod.game.model.INDEX_ATTR
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.sync.UpdateBlock
 import gg.rsmod.net.packet.*
 import gg.rsmod.util.Misc
 import org.apache.logging.log4j.LogManager
-import java.util.concurrent.Phaser
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser) : PhasedSynchronizationTask(phaser) {
+class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
     companion object {
         private val logger = LogManager.getLogger(PlayerSynchronizationTask::class.java)
@@ -23,7 +23,7 @@ class PlayerSynchronizationTask(val player: Player, override val phaser: Phaser)
 
     private val nonLocalIndices = arrayListOf<Int>().apply { addAll(1..2047) }
 
-    override fun execute() {
+    override fun run() {
         val buf = GamePacketBuilder(79, PacketType.VARIABLE_SHORT)
         val maskBuf = GamePacketBuilder()
 

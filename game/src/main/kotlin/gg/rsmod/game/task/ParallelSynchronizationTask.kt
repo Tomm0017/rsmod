@@ -2,6 +2,7 @@ package gg.rsmod.game.task
 
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.GameService
+import gg.rsmod.game.sync.task.PhasedSynchronizationTask
 import gg.rsmod.game.sync.task.PlayerPostSynchronizationTask
 import gg.rsmod.game.sync.task.PlayerPreSynchronizationTask
 import gg.rsmod.game.sync.task.PlayerSynchronizationTask
@@ -15,7 +16,7 @@ import java.util.concurrent.Phaser
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class SynchronizationTask(processors: Int) : GameTask {
+class ParallelSynchronizationTask(processors: Int) : GameTask {
 
     /**
      * The [java.util.concurrent.ExecutorService] responsible for the parallel
@@ -35,7 +36,7 @@ class SynchronizationTask(processors: Int) : GameTask {
 
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
-            executor.submit(PlayerPreSynchronizationTask(p, phaser))
+            executor.submit(PhasedSynchronizationTask(phaser, PlayerPreSynchronizationTask(p)))
         }
         phaser.arriveAndAwaitAdvance()
 
@@ -47,7 +48,7 @@ class SynchronizationTask(processors: Int) : GameTask {
              * not have one.
              */
             if (p.getType().isHumanControlled() && p.initiated) {
-                executor.submit(PlayerSynchronizationTask(p, phaser))
+                executor.submit(PhasedSynchronizationTask(phaser, PlayerSynchronizationTask(p)))
             } else {
                 phaser.arriveAndDeregister()
             }
@@ -56,7 +57,7 @@ class SynchronizationTask(processors: Int) : GameTask {
 
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
-            executor.submit(PlayerPostSynchronizationTask(p, phaser))
+            executor.submit(PhasedSynchronizationTask(phaser, PlayerPostSynchronizationTask(p)))
         }
         phaser.arriveAndAwaitAdvance()
     }

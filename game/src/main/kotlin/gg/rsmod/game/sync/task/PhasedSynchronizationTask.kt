@@ -6,17 +6,15 @@ import java.util.concurrent.Phaser
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-abstract class PhasedSynchronizationTask(open val phaser: Phaser) : Runnable {
+class PhasedSynchronizationTask(private val phaser: Phaser, val task: SynchronizationTask) : SynchronizationTask {
 
     companion object {
         private val logger = LogManager.getLogger(PhasedSynchronizationTask::class.java)
     }
 
-    abstract fun execute()
-
-    final override fun run() {
+    override fun run() {
         try {
-            execute()
+            task.run()
         } catch (e: Exception) {
             logger.error("Error with task ${this::class.java.simpleName}.", e)
         } finally {

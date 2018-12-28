@@ -20,13 +20,13 @@ fun main(args: Array<String>) {
         val player = Player(world)
         player.username = "Test $i"
         player.tile = Tile(gameService.world.gameContext.home)
-        player.register()
+        /*player.register()
 
         player.world.pluginExecutor.execute(player) {
             it.suspendable {
                 walkPlugin(it)
             }
-        }
+        }*/
     }
 }
 

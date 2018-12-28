@@ -22,6 +22,10 @@ class ChunkSet(val world: World) {
 
     fun getForTile(tile: Tile): Chunk = getOrCreate(ChunkCoords.fromTile(tile), true)!!
 
+    fun createIfNeeded(tile: Tile) {
+        getOrCreate(tile.toChunkCoords(), create = true)
+    }
+
     fun getOrCreate(coords: ChunkCoords, create: Boolean = false): Chunk? {
         val chunk = chunks[coords]
         if (chunk != null) {

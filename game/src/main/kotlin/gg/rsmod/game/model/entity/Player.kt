@@ -101,6 +101,8 @@ open class Player(override val world: World) : Pawn(world) {
             pendingLogout = false
         }
 
+        world.chunks.createIfNeeded(tile)
+
         val oldRegion = lastTile?.toRegionId() ?: -1
         if (oldRegion != tile.toRegionId()) {
             if (oldRegion != -1) {

@@ -1,5 +1,7 @@
 package gg.rsmod.game.model
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 /**
  * @author Tom <rspsmods@gmail.com>
  */
@@ -28,6 +30,8 @@ class TimerSystem {
         return this
     }
 
+    fun has(key: TimerKey): Boolean = timers?.containsKey(key) ?: false
+
     fun remove(key: TimerKey) {
         constructIfNeeded()
         timers!!.remove(key)
@@ -39,5 +43,10 @@ class TimerSystem {
         }
     }
 
-    fun getPersistentTimers(): Map<TimerKey, Int> = timers?.filter { it.key.identifier != null } ?: emptyMap()
+    fun toPersistentTimers(): List<PersistentTimer> = timers?.filter { it.key.identifier != null }?.map { PersistentTimer(it.key.identifier, it.key.tickOffline, it.value, System.currentTimeMillis()) } ?: emptyList()
+
+    data class PersistentTimer(@JsonProperty("identifier") val identifier: String? = null,
+                               @JsonProperty("tickOffline") val tickOffline: Boolean = true,
+                               @JsonProperty("timeLeft") val timeLeft: Int,
+                               @JsonProperty("currentMs") val currentMs: Long)
 }

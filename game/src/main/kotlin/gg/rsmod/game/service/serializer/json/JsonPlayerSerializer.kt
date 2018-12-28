@@ -6,6 +6,7 @@ import com.lambdaworks.crypto.SCryptUtil
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.serializer.PlayerLoadResult
@@ -71,12 +72,15 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                     client.putPersistentAttr(key, value)
                 }
             }
-            data.timers.forEach { key, value ->
-                var time = value
-                if (key.tickOffline) {
-                    // TODO: decrement [time]
+            data.timers.forEach { timer ->
+                var time = timer.timeLeft
+                if (timer.tickOffline) {
+                    val elapsed = System.currentTimeMillis() - timer.currentMs
+                    val ticks = (elapsed / client.world.gameContext.cycleTime).toInt()
+                    time -= ticks
                 }
-                client.timers[key] = time
+                val key = TimerKey(timer.identifier, timer.tickOffline)
+                client.timers[key] = Math.max(0, time)
             }
             data.varps.forEach { varp ->
                 client.varps.setState(varp.id, varp.state)
@@ -93,7 +97,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
         val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername,
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
                 privilege = client.privilege.id, inventory = client.inventory.toMap(),
-                attributes = client.__getPersistentAttrMap(), timers = client.timers.getPersistentTimers(),
+                attributes = client.__getPersistentAttrMap(), timers = client.timers.toPersistentTimers(),
                 varps = client.varps.getAll().filter { it.state != 0 })
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))
         val json = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()

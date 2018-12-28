@@ -187,10 +187,6 @@ open class Player(override val world: World) : Pawn(world) {
         initiated = true
         blockBuffer.addBlock(UpdateBlock.APPEARANCE, getType())
         world.plugins.executeLogin(this)
-
-        timers[TimerKey()] = 5
-        timers[TimerKey("testing_timer2")] = 2
-        timers[TimerKey("testing_timer3", true)] = 4
     }
 
     /**

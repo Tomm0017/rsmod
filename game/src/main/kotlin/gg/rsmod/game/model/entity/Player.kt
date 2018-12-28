@@ -59,13 +59,15 @@ open class Player(override val world: World) : Pawn(world) {
      */
     @Volatile private var pendingLogout = false
 
-    val inventory: ItemContainer by lazy { ItemContainer(world.definitions, 28, ContainerStackType.NORMAL) }
+    val inventory by lazy { ItemContainer(world.definitions, 28, ContainerStackType.NORMAL) }
 
-    val interfaces: Interfaces by lazy { Interfaces(this) }
+    val equipment by lazy { ItemContainer(world.definitions, 14, ContainerStackType.NORMAL) }
 
-    val skills: SkillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
+    val interfaces by lazy { Interfaces(this) }
 
-    val varps: VarpSet by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
+    val skills  by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
+
+    val varps  by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
 
     val localPlayers = arrayListOf<Player>()
 
@@ -87,6 +89,16 @@ open class Player(override val world: World) : Pawn(world) {
      */
     private val persistentAttr: MutableMap<String, Any> = hashMapOf()
 
+    val looks = intArrayOf(9, 14, 109, 26, 33, 36, 42)
+
+    val lookColors = intArrayOf(0, 3, 2, 0, 0)
+
+    var weight = 0.0
+
+    var gender = Gender.MALE
+
+    var skullIcon = SkullIcon.NONE
+
     var runEnergy = 100.0
 
     override fun getType(): EntityType = EntityType.PLAYER
@@ -97,6 +109,8 @@ open class Player(override val world: World) : Pawn(world) {
      * conditions if any logic may modify other [Pawn]s.
      */
     override fun cycle() {
+        var calculateWeight = false
+
         if (pendingLogout) {
             if (lock.canLogout()) {
                 // TODO: check if can log out (not in combat)
@@ -117,6 +131,17 @@ open class Player(override val world: World) : Pawn(world) {
         if (inventory.dirty) {
             write(SetItemContainerMessage(parent = 149, child = 0, containerKey = 93, items = Arrays.copyOf(inventory.getBackingArray(), inventory.capacity)))
             inventory.dirty = false
+            calculateWeight = true
+        }
+
+        if (equipment.dirty) {
+            write(SetItemContainerMessage(containerKey = 94, items = Arrays.copyOf(equipment.getBackingArray(), equipment.capacity)))
+            equipment.dirty = false
+            calculateWeight = true
+        }
+
+        if (calculateWeight) {
+            // TODO(Tom): set weight based on inventory + equipment items
         }
 
         for (i in 0 until skills.maxSkills) {

@@ -69,6 +69,10 @@ abstract class Pawn(open val world: World) : Entity() {
      */
     val timers = TimerSystem()
 
+    var prayerIcon = PrayerIcon.NONE
+
+    var transmogId = -1
+
     /**
      * Handles logic before any synchronization tasks are executed.
      */

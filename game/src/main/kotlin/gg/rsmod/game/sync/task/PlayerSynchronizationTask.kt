@@ -1,5 +1,6 @@
 package gg.rsmod.game.sync.task
 
+import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.INDEX_ATTR
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
@@ -245,35 +246,57 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
         if (other.hasBlock(UpdateBlock.APPEARANCE) || newPlayer) {
             val appBuf = GamePacketBuilder()
-            appBuf.put(DataType.BYTE, 0)
-            appBuf.put(DataType.BYTE, -1)
-            appBuf.put(DataType.BYTE, -1)
+            appBuf.put(DataType.BYTE, other.gender.id)
+            appBuf.put(DataType.BYTE, other.skullIcon.id)
+            appBuf.put(DataType.BYTE, other.prayerIcon.id)
 
-            val translation = intArrayOf(-1, -1, -1, -1, 2, -1, 3, 5, 0, 4, 6, 1)
-            val looks = intArrayOf(9, 14, 109, 26, 33, 36, 42)
-            for (i in 0 until 12) {
-                if (translation[i] == -1) {
-                    appBuf.put(DataType.BYTE, 0)
-                } else {
-                    appBuf.put(DataType.SHORT, 0x100 + looks[translation[i]])
+            val transmog = other.transmogId >= 0
+
+            if (!transmog) {
+                val translation = arrayOf(-1, -1, -1, -1, 2, -1, 3, 5, 0, 4, 6, 1)
+                for (i in 0 until 12) {
+                    val item = other.equipment[i]
+                    if (item != null) {
+                        appBuf.put(DataType.SHORT, 0x200 + item.id)
+                    } else {
+                        if (translation[i] == -1) {
+                            appBuf.put(DataType.BYTE, 0)
+                        } else {
+                            appBuf.put(DataType.SHORT, 0x100 + other.looks[translation[i]])
+                        }
+                    }
                 }
+            } else {
+                appBuf.put(DataType.SHORT, 0xFFFF)
+                appBuf.put(DataType.SHORT, other.transmogId)
             }
 
             for (i in 0 until 5) {
-                appBuf.put(DataType.BYTE, 0)
+                val color = Math.max(0, other.lookColors[i])
+                appBuf.put(DataType.BYTE, color)
             }
 
-            appBuf.put(DataType.SHORT, 809)
-            appBuf.put(DataType.SHORT, 823)
-            appBuf.put(DataType.SHORT, 819)
-            appBuf.put(DataType.SHORT, 820)
-            appBuf.put(DataType.SHORT, 821)
-            appBuf.put(DataType.SHORT, 822)
-            appBuf.put(DataType.SHORT, 824)
+            if (!transmog) {
+                appBuf.put(DataType.SHORT, 809)
+                appBuf.put(DataType.SHORT, 823)
+                appBuf.put(DataType.SHORT, 819)
+                appBuf.put(DataType.SHORT, 820)
+                appBuf.put(DataType.SHORT, 821)
+                appBuf.put(DataType.SHORT, 822)
+                appBuf.put(DataType.SHORT, 824)
+            } else {
+                val def = other.world.definitions.get(NpcDef::class.java, other.transmogId)
+                val animations = arrayOf(def.standAnim, def.walkAnim, def.walkAnim, def.render3,
+                        def.render4, def.render5, def.walkAnim)
+
+                animations.forEach { anim ->
+                    appBuf.put(DataType.SHORT, anim)
+                }
+            }
 
             appBuf.putBytes(other.username.toByteArray())
             appBuf.put(DataType.BYTE, 0) // String terminator
-            appBuf.put(DataType.BYTE, 126)
+            appBuf.put(DataType.BYTE, other.skills.combatLevel)
             appBuf.put(DataType.SHORT, 0)
             appBuf.put(DataType.BYTE, 0)
 

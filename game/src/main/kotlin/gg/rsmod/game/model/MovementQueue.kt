@@ -96,7 +96,7 @@ class MovementQueue(val pawn: Pawn) {
                     pawn.addBlock(UpdateBlock.MOVEMENT)
 
                     if (pawn.world.gameContext.runEnergy && pawn is Player) {
-                        val weight = 0 // TODO: weight for player
+                        val weight = pawn.weight
                         val decrement = Math.max(0.05, 0.67 + weight / 100.0)
                         pawn.runEnergy = Math.max(0.0, (pawn.runEnergy - decrement))
                         if (pawn.runEnergy <= 0) {

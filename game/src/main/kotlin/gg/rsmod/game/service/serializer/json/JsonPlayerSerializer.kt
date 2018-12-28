@@ -66,10 +66,17 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.inventory.setItems(data.inventory)
             data.attributes.forEach { key, value ->
                 if (value is Number) {
-                    client.putPersistent(key, value.toInt())
+                    client.putPersistentAttr(key, value.toInt())
                 } else {
-                    client.putPersistent(key, value)
+                    client.putPersistentAttr(key, value)
                 }
+            }
+            data.timers.forEach { key, value ->
+                var time = value
+                if (key.tickOffline) {
+                    // TODO: decrement [time]
+                }
+                client.timers[key] = time
             }
             data.varps.forEach { varp ->
                 client.varps.setState(varp.id, varp.state)
@@ -86,7 +93,8 @@ class JsonPlayerSerializer : PlayerSerializerService() {
         val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername,
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
                 privilege = client.privilege.id, inventory = client.inventory.toMap(),
-                attributes = client.__getPersistentMap(), varps = client.varps.getAll().filter { it.state != 0 })
+                attributes = client.__getPersistentAttrMap(), timers = client.timers.getPersistentTimers(),
+                varps = client.varps.getAll().filter { it.state != 0 })
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))
         val json = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
         json.toJson(data, writer)

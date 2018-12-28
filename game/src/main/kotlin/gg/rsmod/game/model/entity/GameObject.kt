@@ -3,6 +3,7 @@ package gg.rsmod.game.model.entity
 import com.google.common.base.MoreObjects
 import gg.rsmod.game.model.AttributeSystem
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.TimerSystem
 
 /**
  * A [GameObject] is any type of map object that can occupy a tile.
@@ -25,6 +26,11 @@ abstract class GameObject : Entity {
      * @see [AttributeSystem]
      */
     val attr = AttributeSystem()
+
+    /**
+     * @see [TimerSystem]
+     */
+    val timers = TimerSystem()
 
     val type: Int
         get() = settings.toInt() shr 2

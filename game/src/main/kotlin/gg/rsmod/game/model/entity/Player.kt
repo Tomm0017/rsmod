@@ -85,7 +85,7 @@ open class Player(override val world: World) : Pawn(world) {
      * can multiply your value by [100] and then divide it on login as a work-
      * around.
      */
-    private val persistent: MutableMap<String, Any> = hashMapOf()
+    private val persistentAttr: MutableMap<String, Any> = hashMapOf()
 
     var runEnergy = 100.0
 
@@ -187,6 +187,10 @@ open class Player(override val world: World) : Pawn(world) {
         initiated = true
         blockBuffer.addBlock(UpdateBlock.APPEARANCE, getType())
         world.plugins.executeLogin(this)
+
+        timers[TimerKey()] = 5
+        timers[TimerKey("testing_timer2")] = 2
+        timers[TimerKey("testing_timer3", true)] = 4
     }
 
     /**
@@ -240,27 +244,27 @@ open class Player(override val world: World) : Pawn(world) {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getPersistent(key: String): T = (persistent[key] as? T)!!
+    fun <T> getPersistentAttr(key: String): T = (persistentAttr[key] as? T)!!
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getPersistentNullable(key: String): T? = (persistent[key] as? T)
+    fun <T> getPersistentNullableAttr(key: String): T? = (persistentAttr[key] as? T)
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getPersistentOrDefault(key: String, default: T): T = (persistent[key] as? T) ?: default
+    fun <T> getPersistentOrDefaultAttr(key: String, default: T): T = (persistentAttr[key] as? T) ?: default
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> putPersistent(key: String, value: T) {
-        persistent[key] = value as Any
+    fun <T> putPersistentAttr(key: String, value: T) {
+        persistentAttr[key] = value as Any
     }
 
-    fun removePersistent(key: String) {
-        persistent.remove(key)
+    fun removePersistentAttr(key: String) {
+        persistentAttr.remove(key)
     }
 
     /**
-     * Should only be used when saving [persistent] attributes.
+     * Should only be used when saving [persistentAttr] attributes.
      */
-    fun __getPersistentMap(): Map<String, Any> = persistent
+    fun __getPersistentAttrMap(): Map<String, Any> = persistentAttr
 
     override fun toString(): String = MoreObjects.toStringHelper(this)
             .add("name", username)

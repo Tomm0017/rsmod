@@ -51,16 +51,23 @@ abstract class Pawn(open val world: World) : Entity() {
     var lastFacingDirection: Direction = Direction.NONE
 
     /**
-     * The current [LockState] which filters what actions this [Pawn] can perform.
+     * The current [LockState] which filters what actions this pawn can perform.
      */
     var lock = LockState.NONE
 
     /**
-     * The attributes attached to the [Pawn].
+     * The attributes attached to the pawn.
      *
      * @see AttributeSystem
      */
     val attr = AttributeSystem()
+
+    /**
+     * The timers attached to the pawn.
+     *
+     * @see TimerSystem
+     */
+    val timers = TimerSystem()
 
     /**
      * Handles logic before any synchronization tasks are executed.

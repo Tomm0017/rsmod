@@ -2,6 +2,8 @@ package gg.rsmod.game.plugin
 
 import gg.rsmod.game.model.COMMAND_ARGS_ATTR
 import gg.rsmod.game.model.COMMAND_ATTR
+import gg.rsmod.game.model.TimerKey
+import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.service.GameService
 import org.apache.logging.log4j.LogManager
@@ -35,6 +37,12 @@ class PluginRepository {
      * A map that contains command plugins.
      */
     private val commandPlugins = hashMapOf<String, Function1<Plugin, Unit>>()
+
+    /**
+     * A map that contains plugins that should be executed when the [TimerKey]
+     * hits a value of [0] time left.
+     */
+    private val timerPlugins = hashMapOf<TimerKey, Function1<Plugin, Unit>>()
 
     /**
      * A map of button click plugins. The key is a shifted value of the parent
@@ -87,6 +95,7 @@ class PluginRepository {
     fun scanForPlugins(packagePath: String) {
         loginPlugins.clear()
         commandPlugins.clear()
+        timerPlugins.clear()
         buttonPlugins.clear()
         enterRegionPlugins.clear()
         exitRegionPlugins.clear()
@@ -139,6 +148,25 @@ class PluginRepository {
                 p.attr.put(COMMAND_ARGS_ATTR, emptyArray())
             }
             p.world.pluginExecutor.execute(p, plugin)
+            return true
+        }
+        return false
+    }
+
+    @Throws(IllegalStateException::class)
+    fun bindTimer(key: TimerKey, plugin: Function1<Plugin, Unit>) {
+        if (timerPlugins.containsKey(key)) {
+            logger.error("Timer key is already bound to a plugin: $key")
+            throw IllegalStateException()
+        }
+        timerPlugins[key] = plugin
+        count++
+    }
+
+    fun executeTimer(pawn: Pawn, key: TimerKey): Boolean {
+        val plugin = timerPlugins[key]
+        if (plugin != null) {
+            pawn.world.pluginExecutor.execute(pawn, plugin)
             return true
         }
         return false

@@ -1,15 +1,16 @@
-package gg.rsmod.game.task
+package gg.rsmod.game.task.sequential
 
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.GameService
+import gg.rsmod.game.task.GameTask
 
 /**
  * A [GameTask] responsible for handling all incoming
- * [gg.rsmod.net.message.Message]s.
+ * [gg.rsmod.net.message.Message]s, sequentially.
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class MessageHandlerTask : GameTask {
+class SequentialMessageHandlerTask : GameTask {
 
     override fun execute(world: World, service: GameService) {
         world.players.forEach { p ->

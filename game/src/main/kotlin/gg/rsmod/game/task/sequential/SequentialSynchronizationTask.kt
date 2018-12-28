@@ -1,10 +1,11 @@
-package gg.rsmod.game.task
+package gg.rsmod.game.task.sequential
 
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.sync.task.PlayerPostSynchronizationTask
 import gg.rsmod.game.sync.task.PlayerPreSynchronizationTask
 import gg.rsmod.game.sync.task.PlayerSynchronizationTask
+import gg.rsmod.game.task.GameTask
 
 /**
  * A [GameTask] that is responsible for sending [gg.rsmod.game.model.entity.Pawn]

@@ -1,7 +1,7 @@
 package gg.rsmod.net.packet
 
 import com.google.common.base.Preconditions
-import gg.rsmod.util.BufferUtils
+import gg.rsmod.util.io.BufferUtils
 import gg.rsmod.util.DataConstants
 import io.netty.buffer.ByteBuf
 

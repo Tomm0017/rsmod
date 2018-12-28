@@ -91,6 +91,11 @@ open class Player(override val world: World) : Pawn(world) {
 
     override fun getType(): EntityType = EntityType.PLAYER
 
+    /**
+     * Logic that should be executed every game cycle, before a [gg.rsmod.game.sync.task.SynchronizationTask].
+     * Note that this method may be handled in parallel, so be careful with race
+     * conditions if any logic may modify other [Pawn]s.
+     */
     override fun cycle() {
         if (pendingLogout) {
             if (lock.canLogout()) {
@@ -100,8 +105,6 @@ open class Player(override val world: World) : Pawn(world) {
             }
             pendingLogout = false
         }
-
-        world.chunks.createIfNeeded(tile)
 
         val oldRegion = lastTile?.toRegionId() ?: -1
         if (oldRegion != tile.toRegionId()) {
@@ -118,7 +121,7 @@ open class Player(override val world: World) : Pawn(world) {
 
         for (i in 0 until skills.maxSkills) {
             if (skills.isDirty(i)) {
-                write(SendSkillMessage(i, skills.getCurrentLevel(i), skills.getCurrentXp(i).toInt()))
+                write(SendSkillMessage(skill = i, level = skills.getCurrentLevel(i), xp = skills.getCurrentXp(i).toInt()))
             }
         }
         skills.clean()
@@ -134,6 +137,24 @@ open class Player(override val world: World) : Pawn(world) {
             }
         }
         varps.clean()
+
+
+        timers.forEach {
+            val key = it.key
+            val timeLeft = it.value
+
+            if (timeLeft - 1 > 0) {
+                timers[key] = timeLeft - 1
+            } else {
+                // NOTE(Tom): if any timer may modify another [Pawn], we will
+                // need to iterate timers on a sequential task and execute
+                // any of them which have a value (time) of [0], instead of
+                // handling it here. This would only apply if we are using
+                // a parallel task to call [cycle].
+                timers.remove(key)
+                world.plugins.executeTimer(this, key)
+            }
+        }
     }
 
     /**

@@ -1,6 +1,6 @@
 package gg.rsmod.game.fs
 
-import gg.rsmod.util.BufferUtils
+import gg.rsmod.util.io.BufferUtils
 import io.netty.buffer.ByteBuf
 
 /**

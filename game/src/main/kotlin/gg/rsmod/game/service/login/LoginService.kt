@@ -13,8 +13,8 @@ import gg.rsmod.game.system.GameSystem
 import gg.rsmod.net.codec.game.GamePacketDecoder
 import gg.rsmod.net.codec.game.GamePacketEncoder
 import gg.rsmod.net.codec.login.LoginRequest
-import gg.rsmod.util.IsaacRandom
-import gg.rsmod.util.NamedThreadFactory
+import gg.rsmod.util.io.IsaacRandom
+import gg.rsmod.util.concurrency.NamedThreadFactory
 import gg.rsmod.util.ServerProperties
 import org.apache.logging.log4j.LogManager
 import java.util.concurrent.Executors

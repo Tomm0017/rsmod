@@ -4,7 +4,7 @@ import gg.rsmod.net.codec.StatefulFrameDecoder
 import gg.rsmod.net.packet.GamePacket
 import gg.rsmod.net.packet.IPacketMetadataHelper
 import gg.rsmod.net.packet.PacketType
-import gg.rsmod.util.IsaacRandom
+import gg.rsmod.util.io.IsaacRandom
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import org.apache.logging.log4j.LogManager

@@ -1,4 +1,4 @@
-package gg.rsmod.game.task
+package gg.rsmod.game.task.parallel
 
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.GameService
@@ -6,8 +6,8 @@ import gg.rsmod.game.sync.task.PhasedSynchronizationTask
 import gg.rsmod.game.sync.task.PlayerPostSynchronizationTask
 import gg.rsmod.game.sync.task.PlayerPreSynchronizationTask
 import gg.rsmod.game.sync.task.PlayerSynchronizationTask
-import gg.rsmod.util.NamedThreadFactory
-import java.util.concurrent.Executors
+import gg.rsmod.game.task.GameTask
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Phaser
 
 /**
@@ -16,13 +16,7 @@ import java.util.concurrent.Phaser
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class ParallelSynchronizationTask(processors: Int) : GameTask {
-
-    /**
-     * The [java.util.concurrent.ExecutorService] responsible for the parallel
-     * synchronization.
-     */
-    private val executor = Executors.newFixedThreadPool(processors, NamedThreadFactory().setName("player-sync-thread").build())
+class ParallelSynchronizationTask(private val executor: ExecutorService) : GameTask {
 
     /**
      * The [Phaser] responsible for waiting on every [gg.rsmod.game.model.entity.Player]

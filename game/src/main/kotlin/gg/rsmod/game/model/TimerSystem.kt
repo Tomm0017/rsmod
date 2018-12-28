@@ -1,11 +1,15 @@
 package gg.rsmod.game.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.sun.xml.internal.xsom.impl.scd.Iterators
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class TimerSystem {
+class TimerSystem : Iterable<MutableMap.MutableEntry<TimerKey, Int>> {
+
+    override fun iterator(): Iterator<MutableMap.MutableEntry<TimerKey, Int>>
+            = timers?.iterator() ?: Iterators.empty()
 
     /**
      * Temporary timers that can be attached to our system.

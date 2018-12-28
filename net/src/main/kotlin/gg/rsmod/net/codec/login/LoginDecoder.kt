@@ -1,7 +1,7 @@
 package gg.rsmod.net.codec.login
 
 import gg.rsmod.net.codec.StatefulFrameDecoder
-import gg.rsmod.util.BufferUtils
+import gg.rsmod.util.io.BufferUtils
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext

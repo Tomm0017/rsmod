@@ -5,7 +5,7 @@ import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.serializer.PlayerLoadResult
 import gg.rsmod.net.codec.login.LoginResponse
 import gg.rsmod.net.codec.login.LoginResultType
-import gg.rsmod.util.IsaacRandom
+import gg.rsmod.util.io.IsaacRandom
 import io.netty.channel.ChannelFutureListener
 import org.apache.logging.log4j.LogManager
 

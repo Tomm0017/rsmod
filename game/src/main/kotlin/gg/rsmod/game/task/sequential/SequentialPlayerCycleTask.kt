@@ -1,14 +1,16 @@
-package gg.rsmod.game.task
+package gg.rsmod.game.task.sequential
 
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.GameService
+import gg.rsmod.game.task.GameTask
 
 /**
- * A [GameTask] responsible for executing the player's cycle logic.
+ * A [GameTask] responsible for executing [gg.rsmod.game.model.entity.Player]
+ * cycle logic, sequentially.
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class PlayerCycleTask : GameTask {
+class SequentialPlayerCycleTask : GameTask {
 
     override fun execute(world: World, service: GameService) {
         world.players.forEach { p ->

@@ -1,4 +1,4 @@
-package gg.rsmod.util
+package gg.rsmod.util.concurrency
 
 import org.apache.logging.log4j.LogManager
 import java.util.concurrent.ThreadFactory

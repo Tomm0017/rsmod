@@ -6,9 +6,13 @@ import gg.rsmod.game.message.MessageDecoderSet
 import gg.rsmod.game.message.MessageEncoderSet
 import gg.rsmod.game.message.MessageStructureSet
 import gg.rsmod.game.model.World
-import gg.rsmod.game.task.*
-import gg.rsmod.util.NamedThreadFactory
+import gg.rsmod.game.task.ChunkCreationTask
+import gg.rsmod.game.task.GameTask
+import gg.rsmod.game.task.PluginHandlerTask
+import gg.rsmod.game.task.parallel.*
+import gg.rsmod.game.task.sequential.*
 import gg.rsmod.util.ServerProperties
+import gg.rsmod.util.concurrency.NamedThreadFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
 import org.apache.logging.log4j.LogManager
@@ -78,7 +82,7 @@ class GameService : Service() {
     private val taskTimes = hashMapOf<Class<GameTask>, Long>()
 
     /**
-     * The amount of time, in milliseconds, that [PlayerCycleTask] has taken
+     * The amount of time, in milliseconds, that [SequentialPlayerCycleTask] has taken
      * for each [gg.rsmod.game.model.entity.Player].
      */
     val playerTimes = hashMapOf<String, Long>()
@@ -114,15 +118,30 @@ class GameService : Service() {
          */
         val availableProcessors = Runtime.getRuntime().availableProcessors()
         val processors = Math.max(1, Math.min(availableProcessors, serviceProperties.getOrDefault("processors", availableProcessors)))
-        val useSequentialSynch = processors == 1 || serviceProperties.getOrDefault("sequential-sync", false)
-        val synchTask = if (useSequentialSynch) SequentialSynchronizationTask() else ParallelSynchronizationTask(processors)
-        this.tasks.addAll(arrayOf(
-                MessageHandlerTask(),
-                PluginHandlerTask(),
-                PlayerCycleTask(),
-                synchTask,
-                ChannelFlushTask()
-        ))
+        val sequentialTasks = processors == 1 || serviceProperties.getOrDefault("sequential-tasks", false)
+
+        if (sequentialTasks) {
+            tasks.addAll(arrayOf(
+                    ChunkCreationTask(),
+                    SequentialMessageHandlerTask(),
+                    PluginHandlerTask(),
+                    SequentialPlayerCycleTask(),
+                    SequentialNpcCycleTask(),
+                    SequentialSynchronizationTask(),
+                    SequentialChannelFlushTask()
+            ))
+        } else {
+            val executor = Executors.newFixedThreadPool(processors, NamedThreadFactory().setName("game-tasks-thread").build())
+            tasks.addAll(arrayOf(
+                    ChunkCreationTask(),
+                    ParallelMessageHandlerTask(executor),
+                    PluginHandlerTask(),
+                    ParallelPlayerCycleTask(executor),
+                    ParallelNpcCycleTask(executor),
+                    ParallelSynchronizationTask(executor),
+                    ParallelChannelFlushTask(executor)
+            ))
+        }
     }
 
     /**

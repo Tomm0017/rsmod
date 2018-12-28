@@ -2,7 +2,7 @@ package gg.rsmod.net.codec.game
 
 import gg.rsmod.net.packet.GamePacket
 import gg.rsmod.net.packet.PacketType
-import gg.rsmod.util.IsaacRandom
+import gg.rsmod.util.io.IsaacRandom
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToByteEncoder

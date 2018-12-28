@@ -9,11 +9,15 @@ import gg.rsmod.game.service.GameService
 import java.nio.file.Paths
 
 fun main(args: Array<String>) {
-    val server = Server()
 
+    val server = Server()
     server.startServer(apiProps = Paths.get("./data/api.yml"))
-    val world = server.startGame(filestorePath = Paths.get("./data", "cache"), gameProps = Paths.get("./game.yml"),
-                packets = Paths.get("./data/packets.yml"), devProps = Paths.get("./dev-settings.yml"))
+
+    val world = server.startGame(
+            filestore = Paths.get("./data", "cache"),
+            gameProps = Paths.get("./game.yml"),
+            packets = Paths.get("./data/packets.yml"),
+            devProps = Paths.get("./dev-settings.yml"))
 
     val gameService = world.getService(GameService::class.java, false).get()
     for (i in 0 until 1998) {

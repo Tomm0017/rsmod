@@ -71,7 +71,7 @@ class Server {
      * can start multiple servers with different game property files.
      */
     @Throws(Exception::class)
-    fun startGame(filestorePath: Path, gameProps: Path, packets: Path, devProps: Path?): World {
+    fun startGame(filestore: Path, gameProps: Path, packets: Path, devProps: Path?): World {
         val stopwatch = Stopwatch.createStarted()
         val individualStopwatch = Stopwatch.createUnstarted()
 
@@ -110,10 +110,10 @@ class Server {
          * Load the file store.
          */
         individualStopwatch.reset().start()
-        world.filestore = Store(filestorePath.toFile())
+        world.filestore = Store(filestore.toFile())
         world.filestore.load()
         world.definitions.init(world.filestore)
-        logger.info("Loaded filestore from path {} in {}ms.", filestorePath, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
+        logger.info("Loaded filestore from path {} in {}ms.", filestore, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**
          * Load the services required to run the server.

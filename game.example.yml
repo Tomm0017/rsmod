@@ -7,7 +7,12 @@ rsa-encryption: false
 home-x: 3087
 home-z: 3497
 skill-count: 23
-run-energy: true # If the player will use run energy when running
+# If the player will use run energy when running
+run-energy: true
+
+# The path to the plugins for the game being launched.
+# This value usually does not need to be changed.
+plugin-path: "gg.rsmod.plugins"
 
 # Privileges
 # Any privilege you want to be represented in-game you define here.
@@ -29,15 +34,10 @@ privileges:
     name: "owner"
     powers: ["mod", "dev", "admin", "owner"]
 
-# Game context values
-# You usually do not want to modify these values or the game may not function properly.
-plugin-path: "gg.rsmod.plugins"
-
 # Game services
 # You can pick and choose which services you want to run.
 services:
   - class: gg.rsmod.game.service.GameService
-    messages-per-cycle: 30
 
   - class: gg.rsmod.game.service.serializer.json.JsonPlayerSerializer
     path: "./data/saves/"
@@ -46,4 +46,3 @@ services:
     path: "./data/xteas/"
 
   - class: gg.rsmod.game.service.login.LoginService
-    thread-count: 3

@@ -130,6 +130,7 @@ class GameService : Service() {
                     SequentialSynchronizationTask(),
                     SequentialChannelFlushTask()
             ))
+            logger.info("Sequential tasks preference enabled. {} tasks will be handled per cycle.", tasks.size)
         } else {
             val executor = Executors.newFixedThreadPool(processors, NamedThreadFactory().setName("game-tasks-thread").build())
             tasks.addAll(arrayOf(
@@ -141,6 +142,7 @@ class GameService : Service() {
                     ParallelSynchronizationTask(executor),
                     ParallelChannelFlushTask(executor)
             ))
+            logger.info("Parallel tasks preference enabled. {} tasks will be handled per cycle.", tasks.size)
         }
     }
 

@@ -26,7 +26,7 @@ class PluginRepository {
     /**
      * The total amount of plugins.
      */
-    private var count = 0
+    private var pluginCount = 0
 
     /**
      * A list of plugins that will be executed upon login.
@@ -101,12 +101,14 @@ class PluginRepository {
         exitRegionPlugins.clear()
         objectPlugins.clear()
 
+        pluginCount = 0
+
         Reflections(packagePath, SubTypesScanner(false), MethodAnnotationsScanner()).getMethodsAnnotatedWith(ScanPlugins::class.java).forEach { method ->
             if (!method.declaringClass.name.contains("$") && !method.declaringClass.name.endsWith("Package")) {
                 try {
                     method.invoke(null, this)
                 } catch (e: Exception) {
-                    logger.error("Error loading plugin: ${method.declaringClass} [$method]", e)
+                    logger.error("Error loading plugin: ${method.declaringClass} [$method].", e)
                     throw e
                 }
             }
@@ -116,11 +118,11 @@ class PluginRepository {
     /**
      * Get the total amount of plugins loaded from the plugins path.
      */
-    fun getCount(): Int = count
+    fun getPluginCount(): Int = pluginCount
 
     fun bindLogin(plugin: Function1<Plugin, Unit>) {
         loginPlugins.add(plugin)
-        count++
+        pluginCount++
     }
 
     fun executeLogin(p: Player) {
@@ -135,7 +137,7 @@ class PluginRepository {
             throw IllegalStateException()
         }
         commandPlugins[cmd] = plugin
-        count++
+        pluginCount++
     }
 
     fun executeCommand(p: Player, command: String, args: Array<String>? = null): Boolean {
@@ -160,7 +162,7 @@ class PluginRepository {
             throw IllegalStateException()
         }
         timerPlugins[key] = plugin
-        count++
+        pluginCount++
     }
 
     fun executeTimer(pawn: Pawn, key: TimerKey): Boolean {
@@ -180,7 +182,7 @@ class PluginRepository {
             throw IllegalStateException()
         }
         buttonPlugins[hash] = plugin
-        count++
+        pluginCount++
     }
 
     fun executeButton(p: Player, parent: Int, child: Int): Boolean {
@@ -200,7 +202,7 @@ class PluginRepository {
         } else {
             enterRegionPlugins[regionId] = arrayListOf(plugin)
         }
-        count++
+        pluginCount++
     }
 
     fun executeRegionEnter(p: Player, regionId: Int) {
@@ -214,7 +216,7 @@ class PluginRepository {
         } else {
             exitRegionPlugins[regionId] = arrayListOf(plugin)
         }
-        count++
+        pluginCount++
     }
 
     fun executeRegionExit(p: Player, regionId: Int) {
@@ -230,7 +232,7 @@ class PluginRepository {
         }
         optMap[opt] = plugin
         objectPlugins[id] = optMap
-        count++
+        pluginCount++
     }
 
     fun executeObject(p: Player, id: Int, opt: Int): Boolean {
@@ -247,7 +249,7 @@ class PluginRepository {
             throw IllegalStateException()
         }
         customPathingObjects[id] = plugin
-        count++
+        pluginCount++
     }
 
     fun executeCustomPathingObject(p: Player, id: Int): Boolean {

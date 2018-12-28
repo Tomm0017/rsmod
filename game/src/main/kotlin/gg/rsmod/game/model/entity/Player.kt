@@ -12,7 +12,7 @@ import gg.rsmod.game.sync.UpdateBlock
 import java.util.*
 
 /**
- * A [Pawn] that represents a player on the players' clients.
+ * A [Pawn] that represents a player.
  *
  * @author Tom <rspsmods@gmail.com>
  */

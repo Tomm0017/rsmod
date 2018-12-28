@@ -146,7 +146,7 @@ class Server {
          */
         individualStopwatch.reset().start()
         world.plugins.init(gameService = gameService, packagePath = gameProperties.get<String>("plugin-path")!!)
-        logger.info("Loaded {} plugins from path {} in {}ms.", DecimalFormat().format(world.plugins.getCount()), gameProperties.get<String>("plugin-path")!!, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
+        logger.info("Loaded {} plugins from path {} in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), gameProperties.get<String>("plugin-path")!!, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**
          * Inform the time it took to load up all non-network logic.

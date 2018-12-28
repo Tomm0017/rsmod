@@ -2,7 +2,6 @@ package gg.rsmod.game.sync.task
 
 import gg.rsmod.game.model.INDEX_ATTR
 import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.sync.UpdateBlock
 import gg.rsmod.net.packet.*
@@ -195,16 +194,21 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
     private fun encodeBlocks(other: Player, buf: GamePacketBuilder, newPlayer: Boolean) {
         var mask = other.blockBuffer.blockValue()
 
+        var forceFacePawn = false
+        var forceFaceTile = false
+
         var forceFace: Tile? = null
         if (newPlayer) {
-            mask = mask or UpdateBlock.APPEARANCE.playerBit
+            mask = mask or other.world.updateBlocks[UpdateBlock.APPEARANCE]!!.playerBit
 
             if (other.blockBuffer.faceDegrees != 0) {
-                mask = mask or UpdateBlock.FACE_TILE.playerBit
+                mask = mask or other.world.updateBlocks[UpdateBlock.FACE_TILE]!!.playerBit
+                forceFaceTile = true
             } else if (other.blockBuffer.facePawnIndex != -1) {
-                mask = mask or UpdateBlock.FACE_PAWN.playerBit
+                mask = mask or other.world.updateBlocks[UpdateBlock.FACE_PAWN]!!.playerBit
+                forceFacePawn = true
             } else {
-                mask = mask or UpdateBlock.FACE_TILE.playerBit
+                mask = mask or other.world.updateBlocks[UpdateBlock.FACE_TILE]!!.playerBit
                 forceFace = other.tile.step(other.lastFacingDirection)
             }
         }
@@ -217,15 +221,15 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             buf.put(DataType.BYTE, mask and 0xFF)
         }
 
-        if ((mask and UpdateBlock.FORCE_CHAT.playerBit) != 0) {
+        if (other.hasBlock(UpdateBlock.FORCE_CHAT)) {
             buf.putString(other.blockBuffer.forceChat)
         }
 
-        if ((mask and UpdateBlock.MOVEMENT.playerBit) != 0) {
+        if (other.hasBlock(UpdateBlock.MOVEMENT)) {
             buf.put(DataType.BYTE, DataTransformation.NEGATE, if (other.teleport) 127 else if (other.steps?.runDirection != null) 2 else 1)
         }
 
-        if ((mask and UpdateBlock.FACE_TILE.playerBit) != 0) {
+        if (other.hasBlock(UpdateBlock.FACE_TILE) || forceFaceTile || forceFace != null) {
             if (forceFace != null) {
                 val srcX = other.tile.x * 64
                 val srcZ = other.tile.z * 64
@@ -239,7 +243,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             }
         }
 
-        if ((mask and UpdateBlock.APPEARANCE.playerBit) != 0) {
+        if (other.hasBlock(UpdateBlock.APPEARANCE) || newPlayer) {
             val appBuf = GamePacketBuilder()
             appBuf.put(DataType.BYTE, 0)
             appBuf.put(DataType.BYTE, -1)
@@ -282,16 +286,16 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             buf.putBytes(appBuf.getBuffer())
         }
 
-        if ((mask and UpdateBlock.FACE_PAWN.playerBit) != 0) {
+        if (other.hasBlock(UpdateBlock.FACE_PAWN) || forceFacePawn) {
             buf.put(DataType.SHORT, DataOrder.LITTLE, other.blockBuffer.facePawnIndex)
         }
 
-        if ((mask and UpdateBlock.ANIMATION.playerBit) != 0) {
+        if (other.hasBlock(UpdateBlock.ANIMATION)) {
             buf.put(DataType.SHORT, DataOrder.LITTLE, other.blockBuffer.animation)
             buf.put(DataType.BYTE, DataTransformation.SUBTRACT, other.blockBuffer.animationDelay)
         }
 
-        if ((mask and UpdateBlock.GFX.playerBit) != 0) {
+        if (other.hasBlock(UpdateBlock.GFX)) {
             buf.put(DataType.SHORT, other.blockBuffer.graphicId)
             buf.put(DataType.INT, DataOrder.INVERSED_MIDDLE, (other.blockBuffer.graphicHeight shl 16) or other.blockBuffer.graphicDelay)
         }

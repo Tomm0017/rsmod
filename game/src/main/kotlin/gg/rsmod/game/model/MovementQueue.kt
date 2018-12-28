@@ -93,7 +93,7 @@ class MovementQueue(val pawn: Pawn) {
                 pawn.steps = StepDirection(walkDirection, runDirection)
                 pawn.tile = Tile(tile)
                 if (runDirection != null) {
-                    pawn.blockBuffer.addBlock(UpdateBlock.MOVEMENT, pawn.getType())
+                    pawn.addBlock(UpdateBlock.MOVEMENT)
 
                     if (pawn.world.gameContext.runEnergy && pawn is Player) {
                         val weight = 0 // TODO: weight for player

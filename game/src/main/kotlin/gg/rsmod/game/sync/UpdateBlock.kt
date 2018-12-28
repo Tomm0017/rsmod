@@ -3,27 +3,27 @@ package gg.rsmod.game.sync
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-enum class UpdateBlock(val playerBit: Int, val npcBit: Int = 0) {
+enum class UpdateBlock {
 
-    APPEARANCE(0x1),
+    APPEARANCE,
 
-    ANIMATION(0x10),
+    ANIMATION,
 
-    GFX(0x400),
+    GFX,
 
-    CHAT(0x40),
+    PUBLIC_CHAT,
 
-    FACE_TILE(0x2),
+    FACE_TILE,
 
-    FACE_PAWN(0x8),
+    FACE_PAWN,
 
-    MOVEMENT(0x1000),
+    MOVEMENT,
 
-    CONTEXT_MENU(0x200),
+    CONTEXT_MENU,
 
-    FORCE_MOVEMENT(0x100),
+    FORCE_MOVEMENT,
 
-    HITMARK(0x80),
+    HITMARK,
 
-    FORCE_CHAT(0x4);
+    FORCE_CHAT;
 }

@@ -16,7 +16,8 @@ fun main(args: Array<String>) {
     val world = server.startGame(
             filestore = Paths.get("./data", "cache"),
             gameProps = Paths.get("./game.yml"),
-            packets = Paths.get("./data/packets.yml"),
+            packets = Paths.get("./data", "packets.yml"),
+            blocks = Paths.get("./data", "blocks.yml"),
             devProps = Paths.get("./dev-settings.yml"))
 
     val gameService = world.getService(GameService::class.java, false).get()

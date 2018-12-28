@@ -13,9 +13,12 @@ import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.service.Service
 import gg.rsmod.game.service.xtea.XteaKeyService
+import gg.rsmod.game.sync.UpdateBlock
+import gg.rsmod.game.sync.UpdateBlockBits
 import gg.rsmod.util.ServerProperties
 import net.runelite.cache.fs.Store
 import org.apache.logging.log4j.LogManager
+import java.io.File
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 
@@ -77,6 +80,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * when [XteaKeyService.init] is called.
      */
     var xteaKeyService: XteaKeyService? = null
+
+    val updateBlocks = EnumMap<UpdateBlock, UpdateBlockBits>(UpdateBlock::class.java)
 
     /**
      * A [Random] implementation used for pseudo-random purposes through-out
@@ -146,6 +151,22 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     fun random(boundInclusive: Int) = random.nextInt(boundInclusive + 1)
 
     fun random(range: IntRange): Int = random.nextInt(range.endInclusive - range.start + 1) + range.start
+
+    @Throws(Exception::class)
+    fun loadUpdateBlocks(updateBlocks: File) {
+        val properties = ServerProperties().loadYaml(updateBlocks)
+        val packets = properties.get<ArrayList<Any>>("blocks")!!
+        packets.forEach { packet ->
+            val values = packet as LinkedHashMap<*, *>
+            val blockType = (values["block"] as String).toUpperCase()
+            val playerBits = if (values.containsKey("pbit")) Integer.decode(values["pbit"] as String) else -1
+            val npcBits = if (values.containsKey("nbit")) Integer.decode(values["nbit"] as String) else -1
+
+            val block = UpdateBlock.valueOf(blockType)
+            val bits = UpdateBlockBits(playerBit = playerBits, npcBit = npcBits)
+            this.updateBlocks[block] = bits
+        }
+    }
 
     /**
      * Gets the first service that can be found which meets the criteria of:

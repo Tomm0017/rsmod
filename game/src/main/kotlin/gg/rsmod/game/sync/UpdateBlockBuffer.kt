@@ -1,7 +1,5 @@
 package gg.rsmod.game.sync
 
-import gg.rsmod.game.model.EntityType
-
 /**
  * @author Tom <rspsmods@gmail.com>
  */
@@ -25,11 +23,13 @@ class UpdateBlockBuffer {
         mask = 0
     }
 
-    fun addBlock(block: UpdateBlock, type: EntityType) {
-        mask = mask or (if (type.isPlayer()) block.playerBit else block.npcBit)
+    fun addBit(bit: Int) {
+        mask = mask or bit
     }
 
-    fun hasBlock(block: UpdateBlock, type: EntityType): Boolean = (mask and (if (type.isPlayer()) block.playerBit else block.npcBit)) != 0
+    fun hasBit(bit: Int): Boolean {
+        return (mask and bit) != 0
+    }
 
     fun blockValue(): Int = mask
 }

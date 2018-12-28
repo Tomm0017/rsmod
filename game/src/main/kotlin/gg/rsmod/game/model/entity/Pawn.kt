@@ -77,6 +77,10 @@ abstract class Pawn(open val world: World) : Entity() {
     abstract fun isDead(): Boolean
 
     abstract fun isRunning(): Boolean
+    
+    abstract fun addBlock(block: UpdateBlock)
+
+    abstract fun hasBlock(block: UpdateBlock): Boolean
 
     fun canMove(): Boolean = !isDead() && lock.canMove()
 
@@ -136,7 +140,7 @@ abstract class Pawn(open val world: World) : Entity() {
         teleport = true
         tile = Tile(x, z, height)
         movementQueue.clear()
-        blockBuffer.addBlock(UpdateBlock.MOVEMENT, getType())
+        addBlock(UpdateBlock.MOVEMENT)
     }
 
     fun teleport(tile: Tile) {
@@ -145,19 +149,19 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun animate(id: Int) {
         blockBuffer.animation = id
-        blockBuffer.addBlock(UpdateBlock.ANIMATION, getType())
+        addBlock(UpdateBlock.ANIMATION)
     }
 
     fun graphic(id: Int, height: Int = 0, delay: Int = 0) {
         blockBuffer.graphicId = id
         blockBuffer.graphicHeight = height
         blockBuffer.graphicDelay = delay
-        blockBuffer.addBlock(UpdateBlock.GFX, getType())
+        addBlock(UpdateBlock.GFX)
     }
 
     fun forceChat(message: String) {
         blockBuffer.forceChat = message
-        blockBuffer.addBlock(UpdateBlock.FORCE_CHAT, getType())
+        addBlock(UpdateBlock.FORCE_CHAT)
     }
 
     fun faceTile(face: Tile, width: Int = 1, length: Int = 1) {
@@ -177,14 +181,14 @@ abstract class Pawn(open val world: World) : Entity() {
         }
 
         blockBuffer.facePawnIndex = -1
-        blockBuffer.addBlock(UpdateBlock.FACE_TILE, getType())
+        addBlock(UpdateBlock.FACE_TILE)
     }
 
     fun facePawn(pawn: Pawn?) {
         blockBuffer.facePawnIndex = if (pawn == null) -1 else if (pawn.getType().isPlayer()) pawn.index + 32768 else pawn.index
 
         blockBuffer.faceDegrees = 0
-        blockBuffer.addBlock(UpdateBlock.FACE_PAWN, getType())
+        addBlock(UpdateBlock.FACE_PAWN)
     }
 
     /**

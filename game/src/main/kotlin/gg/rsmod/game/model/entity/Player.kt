@@ -169,6 +169,16 @@ open class Player(override val world: World) : Pawn(world) {
      */
     override fun isRunning(): Boolean = varps[173].state != 0
 
+    override fun addBlock(block: UpdateBlock) {
+        val bits = world.updateBlocks[block]!!
+        blockBuffer.addBit(bits.playerBit)
+    }
+
+    override fun hasBlock(block: UpdateBlock): Boolean {
+        val bits = world.updateBlocks[block]!!
+        return blockBuffer.hasBit(bits.playerBit)
+    }
+
     /**
      * Handles the logic that must be executed once a player has successfully
      * logged out. This means all the prerequisites have been met for the player
@@ -206,7 +216,7 @@ open class Player(override val world: World) : Pawn(world) {
         }
 
         initiated = true
-        blockBuffer.addBlock(UpdateBlock.APPEARANCE, getType())
+        addBlock(UpdateBlock.APPEARANCE)
         world.plugins.executeLogin(this)
     }
 

@@ -71,7 +71,7 @@ class Server {
      * can start multiple servers with different game property files.
      */
     @Throws(Exception::class)
-    fun startGame(filestore: Path, gameProps: Path, packets: Path, devProps: Path?): World {
+    fun startGame(filestore: Path, gameProps: Path, packets: Path, blocks: Path, devProps: Path?): World {
         val stopwatch = Stopwatch.createStarted()
         val individualStopwatch = Stopwatch.createUnstarted()
 
@@ -133,6 +133,13 @@ class Server {
         gameService.messageEncoders.init()
         gameService.messageDecoders.init(gameService.messageStructures)
         logger.info("Loaded message codec and handlers in {}ms.", individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
+
+        /**
+         * Load the update blocks for the game.
+         */
+        individualStopwatch.reset().start()
+        world.loadUpdateBlocks(blocks.toFile())
+        logger.info("Loaded update blocks in {}ms.", individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**
          * Load the privileges for the game.

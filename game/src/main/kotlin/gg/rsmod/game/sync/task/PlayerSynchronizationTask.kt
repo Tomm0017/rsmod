@@ -250,7 +250,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             appBuf.put(DataType.BYTE, other.skullIcon.id)
             appBuf.put(DataType.BYTE, other.prayerIcon.id)
 
-            val transmog = other.transmogId >= 0
+            val transmog = other.getTransmogId() >= 0
 
             if (!transmog) {
                 val translation = arrayOf(-1, -1, -1, -1, 2, -1, 3, 5, 0, 4, 6, 1)
@@ -268,7 +268,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 }
             } else {
                 appBuf.put(DataType.SHORT, 0xFFFF)
-                appBuf.put(DataType.SHORT, other.transmogId)
+                appBuf.put(DataType.SHORT, other.getTransmogId())
             }
 
             for (i in 0 until 5) {
@@ -285,7 +285,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 appBuf.put(DataType.SHORT, 822)
                 appBuf.put(DataType.SHORT, 824)
             } else {
-                val def = other.world.definitions.get(NpcDef::class.java, other.transmogId)
+                val def = other.world.definitions.get(NpcDef::class.java, other.getTransmogId())
                 val animations = arrayOf(def.standAnim, def.walkAnim, def.walkAnim, def.render3,
                         def.render4, def.render5, def.walkAnim)
 

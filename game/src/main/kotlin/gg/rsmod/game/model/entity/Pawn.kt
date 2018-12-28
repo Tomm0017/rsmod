@@ -69,9 +69,16 @@ abstract class Pawn(open val world: World) : Entity() {
      */
     val timers = TimerSystem()
 
+    /**
+     * The current [PrayerIcon] that the pawn has active.
+     */
     var prayerIcon = PrayerIcon.NONE
 
-    var transmogId = -1
+    /**
+     * Transmog is the action of turning into an npc. This value is equal to the
+     * npc id of the npc you want to turn into, visually.
+     */
+    private var transmogId = -1
 
     /**
      * Handles logic before any synchronization tasks are executed.
@@ -85,6 +92,13 @@ abstract class Pawn(open val world: World) : Entity() {
     abstract fun addBlock(block: UpdateBlock)
 
     abstract fun hasBlock(block: UpdateBlock): Boolean
+
+    fun getTransmogId(): Int = transmogId
+
+    fun setTransmogId(transmogId: Int) {
+        this.transmogId = transmogId
+        addBlock(UpdateBlock.APPEARANCE)
+    }
 
     fun canMove(): Boolean = !isDead() && lock.canMove()
 
@@ -131,7 +145,7 @@ abstract class Pawn(open val world: World) : Entity() {
             next = poll
         }
 
-        if (tail != null && this is Player) {
+        if (tail != null && this is Player && lastKnownRegionBase != null) {
             write(SetMinimapMarkerMessage(tail.x - lastKnownRegionBase!!.x, tail.z - lastKnownRegionBase!!.z))
         }
     }

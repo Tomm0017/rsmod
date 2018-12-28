@@ -70,7 +70,7 @@ Here are the instructions for how you would create a few different scripts.
                 it.suspendable { // 2
                     it.player().message("Start scheduled logic.") // 3
                     it.wait(2) // 4
-                    it.player.message("Finished scheduled logic.") // 5
+                    it.player().message("Finished scheduled logic.") // 5
                 }
             }
         }

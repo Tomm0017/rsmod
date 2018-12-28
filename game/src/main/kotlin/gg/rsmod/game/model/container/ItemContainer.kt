@@ -64,11 +64,11 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
         var amount: Long = 0
 
         /**
-         * We could stop the loop once the first one is found if the container
-         * has a [stackType] of [ContainerStackType.STACK], or if the item
-         * metadata describes it as a stackable item. However, we won't do this
-         * since there are items that aren't stackable even on [ContainerStackType.STACK],
-         * such as degradeable or chargeable items.
+         * We could stop the loop once the first matching item is found, if the
+         * container has a [stackType] of [ContainerStackType.STACK], or if the
+         * item's metadata describes it as a stackable item. However, we won't
+         * do this since there are items that aren't stackable even when the [stackType]
+         * equals [ContainerStackType.STACK], such as degradeable or chargeable items.
          *
          * The cost of iterating through tens or hundreds of items, when used
          * appropriately, shouldn't be expensive regardless.
@@ -84,6 +84,12 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
 
     /**
      * Get the index of [itemId] in relation to [items].
+     *
+     * @param skipAttrItems
+     * This flag indicates if [gg.rsmod.game.model.item.Item]s which have
+     * [gg.rsmod.game.model.item.ItemAttribute]s should not be taken into
+     * account (should be skipped) when iterating through the [items] to
+     * find one with the same [itemId] to return its index in the container.
      *
      * @return
      * [-1] if no item with [itemId] could be found.
@@ -145,7 +151,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
      * If [true], we make sure the container can hold [amount] of [id], taking
      * into account the item's metadata and the container's [ContainerStackType].
      * If [false], it will try to fill the container with as many [id]s as it
-     * can before the container is full.
+     * can fit before the container is full.
      *
      * @param forceNoStack
      * [true] if the item's metadata and container's [stackType] should be ignored,
@@ -302,15 +308,15 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
      * To get the amount of items that couldn't be removed, see [ItemTransaction.getLeftOver].
      *
      * @param assureFullRemoval
-     * If [true], we make sure the container has [amount] or more [id]s before
-     * attempting to remove any.
-     * If [false], it will remove any [id] it can find until [amount] has been
-     * removed.
+     * If [true], we make sure the container has [amount] or more items who's
+     * [Item.id] matches [id], before attempting to remove any.
+     * If [false], it will remove any item with [Item.id] of [id] which it can find
+     * until [amount] have been removed or until the container has no more.
      *
      * @param fromIndex
      * The search for [id] in the [items] array will begin from this index and
-     * will sequentially increment until either 1) [amount] of [id]s has been
-     * removed or 2) the index has reached [capacity].
+     * will sequentially increment until either 1) [amount] of [id]s have been
+     * removed or 2) we have iterated through every single [Item] in [items].
      *
      * @return
      * An [ItemTransaction] that contains relevant information on how successful
@@ -363,10 +369,12 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
          * This is done to ensure that [assureFullRemoval] will always provide
          * accurate results.
          *
-         * Example: 1 abyssal whip in slot 0 and 1 in slot 10, we call [remove]
+         * Example: One abyssal whip in slot 0 and another in slot 10, we call [remove]
          * with [fromIndex] of [5] and [assureFullRemoval] as [true]. Our initial
          * check to make sure the container has enough of the item will succeed,
          * however the loop would only iterate through items in index 5-[capacity].
+         * This would only remove one of the two items if we would not go over the
+         * skipped indices.
          */
         if (skippedIndices != null && totalRemoved < amount) {
             for (i in skippedIndices) {

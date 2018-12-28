@@ -10,7 +10,7 @@ package gg.rsmod.game.model.item
 enum class ItemAttribute {
 
     /**
-     * Can represent any type of charge.
+     * Can represent any type of charge on an item.
      */
     CHARGES,
 

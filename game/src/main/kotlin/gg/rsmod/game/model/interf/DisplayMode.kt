@@ -2,6 +2,8 @@ package gg.rsmod.game.model.interf
 
 /**
  * Represents a display-mode that the client can use.
+ *
+ * @author Tom <rspsmods@gmail.com>
  */
 enum class DisplayMode {
     /**

@@ -8,9 +8,6 @@ import gg.rsmod.game.model.*
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.interf.Interfaces
-import gg.rsmod.game.model.region.Chunk
-import gg.rsmod.game.model.region.ChunkCoords
-import gg.rsmod.game.service.GameService
 import gg.rsmod.game.sync.UpdateBlock
 import java.util.*
 
@@ -90,8 +87,6 @@ open class Player(override val world: World) : Pawn(world) {
      */
     private val persistent: MutableMap<String, Any> = hashMapOf()
 
-    private var lastChunk: Chunk? = null
-
     var runEnergy = 100.0
 
     override fun getType(): EntityType = EntityType.PLAYER
@@ -112,40 +107,6 @@ open class Player(override val world: World) : Pawn(world) {
                 world.plugins.executeRegionExit(this, oldRegion)
             }
             world.plugins.executeRegionEnter(this, tile.toRegionId())
-        }
-
-        if (lastChunk == null && lastKnownRegionBase != null) {
-            lastChunk = world.chunks.getForTile(tile)
-
-            world.getService(GameService::class.java, false).ifPresent { service ->
-                val newSurroundings = lastChunk!!.getSurroundingCoords()
-                newSurroundings.forEach { coords ->
-                    val neighbor = world.chunks.getOrCreate(coords, create = false) ?: return@forEach
-                    neighbor.spawnAll(this, service)
-                }
-            }
-        } else if (lastChunk != null) {
-            val chunk = world.chunks.getForTile(tile)
-            if (lastChunk != chunk) {
-                var oldSurroundings: Set<ChunkCoords>? = null
-                if (lastTile != null) {
-                    val oldChunk = world.chunks.getForTile(lastTile!!)
-                    oldChunk.removeEntity(world, this, lastTile!!)
-                    oldSurroundings = oldChunk.getSurroundingCoords()
-                }
-                chunk.addEntity(world, this, tile)
-
-                world.getService(GameService::class.java, false).ifPresent { service ->
-                    val newSurroundings = chunk.getSurroundingCoords()
-                    if (oldSurroundings != null) {
-                        newSurroundings.removeAll(oldSurroundings)
-                    }
-                    newSurroundings.forEach { coords ->
-                        val neighbor = world.chunks.getOrCreate(coords, create = false) ?: return@forEach
-                        neighbor.spawnAll(this, service)
-                    }
-                }
-            }
         }
 
         if (inventory.dirty) {

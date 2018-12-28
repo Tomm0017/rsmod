@@ -122,10 +122,10 @@ class GameService : Service() {
 
         if (sequentialTasks) {
             tasks.addAll(arrayOf(
-                    ChunkCreationTask(),
                     SequentialMessageHandlerTask(),
                     PluginHandlerTask(),
                     SequentialPlayerCycleTask(),
+                    ChunkCreationTask(),
                     SequentialNpcCycleTask(),
                     SequentialSynchronizationTask(),
                     SequentialChannelFlushTask()
@@ -134,10 +134,10 @@ class GameService : Service() {
         } else {
             val executor = Executors.newFixedThreadPool(processors, NamedThreadFactory().setName("game-tasks-thread").build())
             tasks.addAll(arrayOf(
-                    ChunkCreationTask(),
                     ParallelMessageHandlerTask(executor),
                     PluginHandlerTask(),
                     ParallelPlayerCycleTask(executor),
+                    ChunkCreationTask(),
                     ParallelNpcCycleTask(executor),
                     ParallelSynchronizationTask(executor),
                     ParallelChannelFlushTask(executor)

@@ -27,6 +27,7 @@ interface MessageHandler<T: Message> {
     fun log(client: Client, format: String, vararg args: Any) {
         // TODO: log normal packets if applicable (maybe have a toggle for certain
         // flagged/suspicious players to be logged)
+        //logger.info(format, *args)
     }
 
     fun logAntiCheat(client: Client, format: String, vararg args: Any) {

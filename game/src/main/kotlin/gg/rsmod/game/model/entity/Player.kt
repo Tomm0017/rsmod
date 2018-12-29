@@ -65,7 +65,7 @@ open class Player(override val world: World) : Pawn(world) {
 
     val interfaces by lazy { Interfaces(this) }
 
-    private val skills = lazy { SkillSet(maxSkills = world.gameContext.skillCount) }.value
+    private val skillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
 
     val varps  by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
 
@@ -209,7 +209,7 @@ open class Player(override val world: World) : Pawn(world) {
         return blockBuffer.hasBit(bits.playerBit)
     }
 
-    fun getSkills(): SkillSet = skills
+    fun getSkills(): SkillSet = skillSet
 
     /**
      * Handles the logic that must be executed once a player has successfully
@@ -220,7 +220,7 @@ open class Player(override val world: World) : Pawn(world) {
      * data for the player and call this super method at the end.
      */
     protected open fun handleLogout() {
-        world.pluginExecutor.interruptPluginsWithContext(this)
+        interruptPlugins()
         world.unregister(this)
     }
 

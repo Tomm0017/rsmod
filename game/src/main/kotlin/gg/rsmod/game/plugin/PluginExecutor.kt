@@ -37,7 +37,21 @@ class PluginExecutor {
     fun execute(ctx: Any, logic: Function1<Plugin, Unit>) {
         val plugin = Plugin(ctx, dispatcher)
         logic.invoke(plugin)
-        active.add(plugin)
+
+        /**
+         * We only categorize the plugin as 'active' if the plugin has been
+         * suspended. This is to avoid non-suspendable plugins from removing
+         * suspendable plugins.
+         *
+         * For example, if we didn't do this, a simple timer plugin, such as a
+         * prayer drain timer, which isn't suspendable but executed every cycle,
+         * would cancel suspendable plugins such as dialogs. (so you wouldn't be
+         * able to continue the dialog as it has been removed from 'active'
+         * plugins and would no longer pulse).
+         */
+        if (!plugin.canKill()) {
+            active.add(plugin)
+        }
     }
 
     /**

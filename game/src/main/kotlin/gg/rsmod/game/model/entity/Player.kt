@@ -165,25 +165,23 @@ open class Player(override val world: World) : Pawn(world) {
         }
         varps.clean()
 
+        val timerIterator = timers.getTimers().entries.iterator()
+        while (timerIterator.hasNext()) {
+            val timer = timerIterator.next()
 
-        val iterator = timers.iterator()
-        while (iterator.hasNext()) {
-            val next = iterator.next()
-
-            val key = next.key
-            val timeLeft = next.value
-
-            if (timeLeft - 1 > 0) {
-                timers[key] = timeLeft - 1
-            } else {
+            if (timer.value <= 0) {
                 // NOTE(Tom): if any timer may modify another [Pawn], we will
                 // need to iterate timers on a sequential task and execute
                 // any of them which have a value (time) of [0], instead of
                 // handling it here. This would only apply if we are using
                 // a parallel task to call [cycle].
-                iterator.remove()
-                world.plugins.executeTimer(this, key)
+                world.plugins.executeTimer(this, timer.key)
+                timerIterator.remove()
             }
+        }
+
+        timers.getTimers().entries.forEach { timer ->
+            timer.setValue(timer.value - 1)
         }
     }
 

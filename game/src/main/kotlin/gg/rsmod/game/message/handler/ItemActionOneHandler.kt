@@ -18,8 +18,6 @@ class ItemActionOneHandler : MessageHandler<ItemActionOneMessage> {
         @Suppress("unused")
         val interfaceChild = message.interfaceHash and 0xFFFF
 
-        println("parent=$interfaceParent, child=$interfaceChild, item=${message.item}, slot=${message.slot}")
-
         if (message.slot < 0 || message.slot >= client.inventory.capacity) {
             return
         }
@@ -30,12 +28,16 @@ class ItemActionOneHandler : MessageHandler<ItemActionOneMessage> {
 
         val item = client.inventory[message.slot]
 
-        if (item == null || item.id != message.item) {
-            logAntiCheat(client, "Item action 1: id=%d, slot=%d, interface=(%d, %d), inventory=(%d, %d)")
+        if (item == null) {
+            return
+        } else if (item.id != message.item) {
+            logAntiCheat(client, "Item action 1: id=%d, slot=%d, interface=(%d, %d), inventory=(%d, %d)",
+                    message.item, message.slot, interfaceParent, interfaceChild, item.id ?: -1, item.amount ?: 0)
             return
         }
 
-        log(client, "Item action 1: id=%d, slot=%d, interface=(%d, %d), inventory=(%d, %d)")
+        log(client, "Item action 1: id=%d, slot=%d, interface=(%d, %d), inventory=(%d, %d)",
+                message.item, message.slot, interfaceParent, interfaceChild, item.id, item.amount)
 
         client.attr[INTERACTING_ITEM_SLOT] = message.slot
         client.attr[INTERACTING_ITEM_ID] = item.id

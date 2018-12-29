@@ -1,15 +1,11 @@
 package gg.rsmod.game.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.sun.xml.internal.xsom.impl.scd.Iterators
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class TimerSystem : Iterable<MutableMap.MutableEntry<TimerKey, Int>> {
-
-    override fun iterator(): MutableIterator<MutableMap.MutableEntry<TimerKey, Int>>
-            = timers?.iterator() ?: Iterators.empty()
+class TimerSystem {
 
     /**
      * Temporary timers that can be attached to our system.
@@ -48,6 +44,8 @@ class TimerSystem : Iterable<MutableMap.MutableEntry<TimerKey, Int>> {
     }
 
     fun toPersistentTimers(): List<PersistentTimer> = timers?.filter { it.key.identifier != null }?.map { PersistentTimer(it.key.identifier, it.key.tickOffline, it.value, System.currentTimeMillis()) } ?: emptyList()
+
+    fun getTimers(): MutableMap<TimerKey, Int> = timers ?: HashMap(0)
 
     data class PersistentTimer(@JsonProperty("identifier") val identifier: String? = null,
                                @JsonProperty("tickOffline") val tickOffline: Boolean = true,

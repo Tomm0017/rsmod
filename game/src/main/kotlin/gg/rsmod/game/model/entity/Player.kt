@@ -209,6 +209,10 @@ open class Player(override val world: World) : Pawn(world) {
         return blockBuffer.hasBit(bits.playerBit)
     }
 
+    override fun heal(amount: Int, capValue: Int) {
+        getSkills().alterCurrentLevel(skill = 3, value = amount, capValue = capValue)
+    }
+
     fun getSkills(): SkillSet = skillSet
 
     /**

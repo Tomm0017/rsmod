@@ -38,6 +38,12 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
     fun hasItem(itemId: Int): Boolean = items.any { it?.id == itemId }
 
     /**
+     * Checks if the container has an [Item] which has the same [Item.id] as
+     * [itemId] in the specific [slot].
+     */
+    fun hasAt(slot: Int, itemId: Int): Boolean = items[slot]?.id == itemId
+
+    /**
      * Gets the most-left/first index(slot) that is not occupied by an [Item].
      */
     fun getNextFreeSlot(): Int = items.indexOfFirst { it == null }

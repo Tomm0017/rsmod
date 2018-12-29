@@ -120,6 +120,30 @@ class SkillSet(val maxSkills: Int) {
         setCurrentLevel(skill, getLevelForXp(xp))
     }
 
+    /**
+     * Alters the current level of the skill by adding [value] onto it.
+     *
+     * @param skill
+     * The skill level to alter.
+     *
+     * @param value
+     * The value which to add onto the current skill level. This value can be
+     * negative.
+     *
+     * @param capValue
+     * The amount of levels which can be surpass the max level in the skill.
+     * For example, if this value is set to [3] on a skill that has is [99],
+     * that means that the level can be altered from [99] to [102].
+     */
+    fun alterCurrentLevel(skill: Int, value: Int, capValue: Int = 0) {
+        val newLevel = Math.max(0, Math.min(getCurrentLevel(skill) + value, getMaxLevel(skill) + capValue))
+        val curLevel = getCurrentLevel(skill)
+
+        if (newLevel != curLevel) {
+            setCurrentLevel(skill = skill, level = newLevel)
+        }
+    }
+
     fun calculateTotalLevel(): Int = skills.sumBy { skill -> getMaxLevel(skill.id) }
 
     fun calculateTotalXp(): Double = skills.sumByDouble { skill -> getCurrentXp(skill.id) }

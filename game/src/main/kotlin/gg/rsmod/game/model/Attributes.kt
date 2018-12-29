@@ -25,11 +25,6 @@ val NEW_ACCOUNT_ATTR = AttributeKey<Boolean>()
 val INDEX_ATTR = AttributeKey<Int>()
 
 /**
- * Prayers cannot be activated.
- */
-val DISABLE_PRAYER_ATTR = AttributeKey<Boolean>()
-
-/**
  * The command that the player has submitted to the server using the '::' prefix.
  */
 val COMMAND_ATTR = AttributeKey<String>()

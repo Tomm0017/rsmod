@@ -93,6 +93,8 @@ abstract class Pawn(open val world: World) : Entity() {
 
     abstract fun hasBlock(block: UpdateBlock): Boolean
 
+    abstract fun heal(amount: Int, capValue: Int = 0)
+
     fun getTransmogId(): Int = transmogId
 
     fun setTransmogId(transmogId: Int) {

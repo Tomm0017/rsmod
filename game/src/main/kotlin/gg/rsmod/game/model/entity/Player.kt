@@ -65,7 +65,7 @@ open class Player(override val world: World) : Pawn(world) {
 
     val interfaces by lazy { Interfaces(this) }
 
-    private val skillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
+    private val normalSkills by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
 
     val varps  by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
 
@@ -211,7 +211,7 @@ open class Player(override val world: World) : Pawn(world) {
         getSkills().alterCurrentLevel(skill = 3, value = amount, capValue = capValue)
     }
 
-    fun getSkills(): SkillSet = skillSet
+    fun getSkills(): SkillSet = normalSkills
 
     /**
      * Handles the logic that must be executed once a player has successfully

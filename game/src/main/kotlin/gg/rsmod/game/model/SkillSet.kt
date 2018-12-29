@@ -113,7 +113,8 @@ class SkillSet(val maxSkills: Int) {
     }
 
     /**
-     * Sets the base xp of the skill.
+     * Sets the xp of the skill while also setting the current level
+     * to the level respective to [xp].
      */
     fun setBaseXp(skill: Int, xp: Double) {
         setXp(skill, xp)

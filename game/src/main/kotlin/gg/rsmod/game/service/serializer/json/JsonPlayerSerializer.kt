@@ -1,5 +1,6 @@
 package gg.rsmod.game.service.serializer.json
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.lambdaworks.crypto.SCryptUtil
@@ -15,7 +16,6 @@ import gg.rsmod.game.service.serializer.PlayerSerializerService
 import gg.rsmod.net.codec.login.LoginRequest
 import gg.rsmod.util.ServerProperties
 import org.apache.logging.log4j.LogManager
-import java.io.FileNotFoundException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -38,7 +38,8 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     override fun initSerializer(server: Server, world: World, serviceProperties: ServerProperties) {
         path = Paths.get(serviceProperties.get<String>("path")!!)
         if (!Files.exists(path)) {
-            throw FileNotFoundException("Path does not exist: $path")
+            Files.createDirectory(path)
+            logger.info("Path does not exist: $path, creating directory...")
         }
     }
 
@@ -64,6 +65,10 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.passwordHash = data.passwordHash
             client.tile = Tile(data.x, data.z, data.height)
             client.privilege = client.world.privileges.get(data.privilege) ?: Privilege.DEFAULT
+            data.skills.forEach { skill ->
+                client.getSkills().setXp(skill.skill, skill.xp)
+                client.getSkills().setCurrentLevel(skill.skill, skill.lvl)
+            }
             client.inventory.setItems(data.inventory)
             data.attributes.forEach { key, value ->
                 if (value is Number) {
@@ -96,9 +101,9 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     override fun saveClientData(client: Client): Boolean {
         val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername,
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
-                privilege = client.privilege.id, inventory = client.inventory.toMap(),
-                attributes = client.__getPersistentAttrMap(), timers = client.timers.toPersistentTimers(),
-                varps = client.varps.getAll().filter { it.state != 0 })
+                privilege = client.privilege.id, skills = getSkills(client),
+                inventory = client.inventory.toMap(), attributes = client.__getPersistentAttrMap(),
+                timers = client.timers.toPersistentTimers(), varps = client.varps.getAll().filter { it.state != 0 })
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))
         val json = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
         json.toJson(data, writer)
@@ -106,4 +111,20 @@ class JsonPlayerSerializer : PlayerSerializerService() {
         return true
     }
 
+    private fun getSkills(client: Client): List<PersistentSkill> {
+        val skills = arrayListOf<PersistentSkill>()
+
+        for (i in 0 until client.getSkills().maxSkills) {
+            val xp = client.getSkills().getCurrentXp(i)
+            val lvl = client.getSkills().getCurrentLevel(i)
+
+            skills.add(PersistentSkill(skill = i, xp = xp, lvl = lvl))
+        }
+
+        return skills
+    }
+
+    data class PersistentSkill(@JsonProperty("skill") val skill: Int,
+                               @JsonProperty("xp") val xp: Double,
+                               @JsonProperty("lvl") val lvl: Int)
 }

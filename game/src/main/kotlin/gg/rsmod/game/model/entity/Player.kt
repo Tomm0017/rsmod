@@ -65,7 +65,7 @@ open class Player(override val world: World) : Pawn(world) {
 
     val interfaces by lazy { Interfaces(this) }
 
-    val skills  by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
+    private val skills = lazy { SkillSet(maxSkills = world.gameContext.skillCount) }.value
 
     val varps  by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
 
@@ -97,7 +97,7 @@ open class Player(override val world: World) : Pawn(world) {
 
     var gender = Gender.MALE
 
-    var skullIcon = SkullIcon.NONE
+    var skullIcon = -1
 
     var runEnergy = 100.0
 
@@ -146,12 +146,12 @@ open class Player(override val world: World) : Pawn(world) {
             // TODO(Tom): set weight based on inventory + equipment items
         }
 
-        for (i in 0 until skills.maxSkills) {
-            if (skills.isDirty(i)) {
-                write(SendSkillMessage(skill = i, level = skills.getCurrentLevel(i), xp = skills.getCurrentXp(i).toInt()))
+        for (i in 0 until getSkills().maxSkills) {
+            if (getSkills().isDirty(i)) {
+                write(SendSkillMessage(skill = i, level = getSkills().getCurrentLevel(i), xp = getSkills().getCurrentXp(i).toInt()))
             }
         }
-        skills.clean()
+        getSkills().clean()
 
         for (i in 0 until varps.maxVarps) {
             if (varps.isDirty(i)) {
@@ -166,9 +166,12 @@ open class Player(override val world: World) : Pawn(world) {
         varps.clean()
 
 
-        timers.forEach {
-            val key = it.key
-            val timeLeft = it.value
+        val iterator = timers.iterator()
+        while (iterator.hasNext()) {
+            val next = iterator.next()
+
+            val key = next.key
+            val timeLeft = next.value
 
             if (timeLeft - 1 > 0) {
                 timers[key] = timeLeft - 1
@@ -178,7 +181,7 @@ open class Player(override val world: World) : Pawn(world) {
                 // any of them which have a value (time) of [0], instead of
                 // handling it here. This would only apply if we are using
                 // a parallel task to call [cycle].
-                timers.remove(key)
+                iterator.remove()
                 world.plugins.executeTimer(this, key)
             }
         }
@@ -188,7 +191,7 @@ open class Player(override val world: World) : Pawn(world) {
      * Default method to check if a player is dead. We assume that the [Skill]
      * with id of [3] is Hitpoints.
      */
-    override fun isDead(): Boolean = skills.getCurrentLevel(3) == 0
+    override fun isDead(): Boolean = getSkills().getCurrentLevel(3) == 0
 
     /**
      * Checks if the player is running. We assume that the [Varp] with id of
@@ -205,6 +208,8 @@ open class Player(override val world: World) : Pawn(world) {
         val bits = world.updateBlocks[block]!!
         return blockBuffer.hasBit(bits.playerBit)
     }
+
+    fun getSkills(): SkillSet = skills
 
     /**
      * Handles the logic that must be executed once a player has successfully

@@ -39,8 +39,8 @@ suspend fun walkPlugin(it: Plugin) {
     val start = Tile(it.player().tile)
     while (true) {
         it.wait(10 + it.player().world.random(0..25))
-        var randomX = it.player().tile.x + (-8 + it.player().world.random(0..16))
-        var randomZ = it.player().tile.z + (-8 + it.player().world.random(0..16))
+        var randomX = it.player().tile.x + (-6 + it.player().world.random(0..12))
+        var randomZ = it.player().tile.z + (-6 + it.player().world.random(0..12))
         if (!start.isWithinRadius(Tile(randomX, randomZ), PathfindingStrategy.MAX_DISTANCE - 1)) {
             randomX = start.x
             randomZ = start.z

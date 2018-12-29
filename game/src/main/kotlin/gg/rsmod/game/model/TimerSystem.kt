@@ -8,7 +8,7 @@ import com.sun.xml.internal.xsom.impl.scd.Iterators
  */
 class TimerSystem : Iterable<MutableMap.MutableEntry<TimerKey, Int>> {
 
-    override fun iterator(): Iterator<MutableMap.MutableEntry<TimerKey, Int>>
+    override fun iterator(): MutableIterator<MutableMap.MutableEntry<TimerKey, Int>>
             = timers?.iterator() ?: Iterators.empty()
 
     /**

@@ -70,9 +70,9 @@ abstract class Pawn(open val world: World) : Entity() {
     val timers = TimerSystem()
 
     /**
-     * The current [PrayerIcon] that the pawn has active.
+     * The current prayer icon that the pawn has active.
      */
-    var prayerIcon = PrayerIcon.NONE
+    var prayerIcon = -1
 
     /**
      * Transmog is the action of turning into an npc. This value is equal to the

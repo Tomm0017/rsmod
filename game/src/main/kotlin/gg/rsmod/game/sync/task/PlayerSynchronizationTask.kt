@@ -247,8 +247,8 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         if (other.hasBlock(UpdateBlock.APPEARANCE) || newPlayer) {
             val appBuf = GamePacketBuilder()
             appBuf.put(DataType.BYTE, other.gender.id)
-            appBuf.put(DataType.BYTE, other.skullIcon.id)
-            appBuf.put(DataType.BYTE, other.prayerIcon.id)
+            appBuf.put(DataType.BYTE, other.skullIcon)
+            appBuf.put(DataType.BYTE, other.prayerIcon)
 
             val transmog = other.getTransmogId() >= 0
 
@@ -296,7 +296,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
             appBuf.putBytes(other.username.toByteArray())
             appBuf.put(DataType.BYTE, 0) // String terminator
-            appBuf.put(DataType.BYTE, other.skills.combatLevel)
+            appBuf.put(DataType.BYTE, other.getSkills().combatLevel)
             appBuf.put(DataType.SHORT, 0)
             appBuf.put(DataType.BYTE, 0)
 

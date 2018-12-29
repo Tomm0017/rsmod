@@ -14,6 +14,11 @@ enum class LockState {
     NONE,
 
     /**
+     * Delays actions such as turning prayers on and being damaged.
+     */
+    DELAY_ACTIONS,
+
+    /**
      * Cannot log out or perform various actions such as handling incoming
      * [gg.rsmod.game.message.Message]s.
      */
@@ -31,6 +36,21 @@ enum class LockState {
 
     fun canMove(): Boolean = when (this) {
         NONE -> true
+        else -> false
+    }
+
+    fun canUsePrayer(): Boolean = when (this) {
+        NONE, DELAY_ACTIONS -> true
+        else -> false
+    }
+
+    fun delaysPrayer(): Boolean = when (this) {
+        DELAY_ACTIONS -> true
+        else -> false
+    }
+
+    fun delaysDamage(): Boolean = when (this) {
+        DELAY_ACTIONS -> true
         else -> false
     }
 }

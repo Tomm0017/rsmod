@@ -65,6 +65,12 @@ class PluginRepository {
     private val exitRegionPlugins = hashMapOf<Int, MutableList<Function1<Plugin, Unit>>>()
 
     /**
+     * A map that contains items and any associated menu-click and its respective
+     * plugin executor, if any (would not be in the map if it doesn't have a plugin).
+     */
+    private val itemPlugins = hashMapOf<Int, HashMap<Int, Function1<Plugin, Unit>>>()
+
+    /**
      * A map that contains objects and any associated menu-click and its respective
      * plugin executor, if any (would not be in the map if it doesn't have a plugin).
      */
@@ -99,6 +105,7 @@ class PluginRepository {
         buttonPlugins.clear()
         enterRegionPlugins.clear()
         exitRegionPlugins.clear()
+        itemPlugins.clear()
         objectPlugins.clear()
 
         pluginCount = 0
@@ -221,6 +228,25 @@ class PluginRepository {
 
     fun executeRegionExit(p: Player, regionId: Int) {
         exitRegionPlugins[regionId]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+    }
+
+    @Throws(IllegalStateException::class)
+    fun bindItem(id: Int, opt: Int, plugin: Function1<Plugin, Unit>) {
+        val optMap = itemPlugins[id] ?: HashMap()
+        if (optMap.containsKey(opt)) {
+            logger.error("Item is already bound to a plugin: $id [opt=$opt]")
+            throw IllegalStateException()
+        }
+        optMap[opt] = plugin
+        itemPlugins[id] = optMap
+        pluginCount++
+    }
+
+    fun executeItem(p: Player, id: Int, opt: Int): Boolean {
+        val optMap = itemPlugins[id] ?: return false
+        val logic = optMap[opt] ?: return false
+        p.world.pluginExecutor.execute(p, logic)
+        return true
     }
 
     @Throws(IllegalStateException::class)

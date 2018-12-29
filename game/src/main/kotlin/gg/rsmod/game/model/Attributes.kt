@@ -1,6 +1,7 @@
 package gg.rsmod.game.model
 
 import gg.rsmod.game.model.entity.GameObject
+import gg.rsmod.game.model.item.Item
 
 /**
  * A decoupled file that holds AttributeKeys that require read-access from our
@@ -46,3 +47,18 @@ val INTERACTING_OPT_ATTR = AttributeKey<Int>()
  * The [GameObject] that was last clicked on.
  */
 val INTERACTING_OBJ_ATTR = AttributeKey<GameObject>()
+
+/**
+ * The slot of the interacting item in its item container.
+ */
+val INTERACTING_ITEM_SLOT = AttributeKey<Int>()
+
+/**
+ * The id of the interacting item.
+ */
+val INTERACTING_ITEM_ID = AttributeKey<Int>()
+
+/**
+ * The item pointer of the interacting item.
+ */
+val INTERACTING_ITEM = AttributeKey<Item>()

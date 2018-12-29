@@ -12,7 +12,7 @@ import gg.rsmod.game.model.entity.Client
 class ClickMinimapHandler : MessageHandler<ClickMinimapMessage> {
 
     override fun handle(client: Client, message: ClickMinimapMessage) {
-        log(client, "Click Minimap: x={}, z={}, type={}", message.x, message.z, message.movementType)
+        log(client, "Click Minimap: x=%d, z=%d, type=%d", message.x, message.z, message.movementType)
         client.interruptPlugins()
 
         if (message.movementType == 2 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {

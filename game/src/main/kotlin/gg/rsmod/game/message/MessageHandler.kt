@@ -27,10 +27,11 @@ interface MessageHandler<T: Message> {
     fun log(client: Client, format: String, vararg args: Any) {
         // TODO: log normal packets if applicable (maybe have a toggle for certain
         // flagged/suspicious players to be logged)
-        //logger.info(format, *args)
+        //logger.info(String.format(format, *args))
     }
 
     fun logAntiCheat(client: Client, format: String, vararg args: Any) {
         // TODO: log that someone is trying to cheat, though not succeeding.
+        logger.warn(String.format(format, *args))
     }
 }

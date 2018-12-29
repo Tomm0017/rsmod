@@ -17,7 +17,7 @@ class ClickButtonHandler : MessageHandler<ClickButtonMessage> {
     override fun handle(client: Client, message: ClickButtonMessage) {
         val parent = message.hash shr 16
         val child = message.hash and 0xFFFF
-        log(client, "Click button: parent={}, child={}, slot={}, item={}", parent, child, message.slot, message.item)
+        log(client, "Click button: parent=%d, child=%d, slot=%d, item=%d", parent, child, message.slot, message.item)
 
         if (!client.interfaces.isVisible(parent)) {
             logger.warn("Player '{}' tried to click button {} on a non-visible interface {}.", client.username, child, parent)

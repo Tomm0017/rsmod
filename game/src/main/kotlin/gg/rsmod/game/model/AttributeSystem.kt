@@ -36,6 +36,10 @@ class AttributeSystem {
         return (attributes!![key] as? T) ?: default
     }
 
+    operator fun <T> set(key: AttributeKey<T>, value: T) {
+        put(key, value)
+    }
+
     @Suppress("UNCHECKED_CAST")
     fun <T> put(key: AttributeKey<T>, value: T): AttributeSystem {
         constructIfNeeded()

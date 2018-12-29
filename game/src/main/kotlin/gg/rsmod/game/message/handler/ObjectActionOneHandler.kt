@@ -41,11 +41,11 @@ class ObjectActionOneHandler : MessageHandler<ObjectActionOneMessage> {
          * [GameObject] doesn't exist in the region.
          */
         if (obj == null) {
-            logAntiCheat(client, "Object Action 1: id={}, x={}, z={}, movement={}", message.id, message.x, message.z, message.movementType)
+            logAntiCheat(client, "Object Action 1: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
             return
         }
 
-        log(client, "Object Action 1: id={}, x={}, z={}, movement={}", message.id, message.x, message.z, message.movementType)
+        log(client, "Object Action 1: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
 
         client.interruptPlugins()
         client.attr.put(INTERACTING_OPT_ATTR, 1)

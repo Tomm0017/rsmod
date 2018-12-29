@@ -360,6 +360,23 @@ packets:
         type: SHORT
         sign: UNSIGNED
 
+  - message: gg.rsmod.game.message.impl.ItemActionOneMessage
+    type: FIXED
+    opcode: 55
+    length: 8
+    structure:
+      - name: slot
+        type: SHORT
+        sign: UNSIGNED
+        trans: ADD
+      - name: item
+        type: SHORT
+        sign: UNSIGNED
+        trans: ADD
+      - name: interfaceHash
+        type: INT
+        order: LITTLE
+
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 72
     length: 4

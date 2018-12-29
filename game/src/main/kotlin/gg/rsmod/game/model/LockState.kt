@@ -39,6 +39,11 @@ enum class LockState {
         else -> false
     }
 
+    fun canEat(): Boolean = when (this) {
+        NONE -> true
+        else -> false
+    }
+
     fun canUsePrayer(): Boolean = when (this) {
         NONE, DELAY_ACTIONS -> true
         else -> false

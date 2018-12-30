@@ -19,7 +19,7 @@ object DataConstants {
 
     val BIT_SIZES = IntArray(32).apply {
         var size = 2
-        for (i in 0 until size) {
+        for (i in 0 until this.size) {
             set(i, size - 1)
             size += size
         }

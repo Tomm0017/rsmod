@@ -12,7 +12,6 @@ class VarbitDef(override val id: Int) : Definition(id) {
     var startBit = 0
     var endBit = 0
 
-
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {
             1 -> {

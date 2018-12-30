@@ -104,7 +104,6 @@ class Interfaces(val player: Player) {
      */
     private fun closeByHash(hash: Int) {
         val found = visible.remove(hash)
-        println("close by hash: ${hash shr 16}, ${hash and 0xFFFF}")
         if (found == null) {
             logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
         }

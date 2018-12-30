@@ -6,6 +6,7 @@ import gg.rsmod.net.packet.IPacketMetadataHelper
 import gg.rsmod.net.packet.PacketType
 import gg.rsmod.util.io.IsaacRandom
 import io.netty.buffer.ByteBuf
+import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelHandlerContext
 import org.apache.logging.log4j.LogManager
 
@@ -27,13 +28,13 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
 
     override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>, state: GameDecoderState) {
         when (state) {
-            GameDecoderState.OPCODE -> decodeOpcode(ctx, buf)
+            GameDecoderState.OPCODE -> decodeOpcode(ctx, buf, out)
             GameDecoderState.LENGTH -> decodeLength(buf)
             GameDecoderState.PAYLOAD -> decodePayload(buf, out)
         }
     }
 
-    private fun decodeOpcode(ctx: ChannelHandlerContext, buf: ByteBuf) {
+    private fun decodeOpcode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
         if (buf.isReadable) {
             opcode = (buf.readUnsignedByte().toInt() - (if (rsaEncryption) (random.nextInt() and 0xFF) else 0))
             val metadata = packetMetadata.getType(opcode)
@@ -60,6 +61,7 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
                 PacketType.FIXED -> {
                     length = packetMetadata.getLength(opcode)
                     if (length == 0) {
+                        out.add(GamePacket(opcode, type, Unpooled.EMPTY_BUFFER))
                         setState(GameDecoderState.OPCODE)
                     } else {
                         setState(GameDecoderState.PAYLOAD)

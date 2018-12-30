@@ -377,6 +377,10 @@ packets:
         type: INT
         order: LITTLE
 
+  - message: gg.rsmod.game.message.impl.CloseMainInterfaceMessage
+    opcode: 16
+    length: 0
+
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 72
     length: 4

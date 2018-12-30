@@ -36,6 +36,7 @@ class MessageDecoderSet {
         put(ContinueDialogMessage::class.java, ContinueDialogDecoder(), ContinueDialogHandler(), structures)
         put(ExamineObjectMessage::class.java, ExamineObjectDecoder(), ExamineObjectHandler(), structures)
         put(ItemActionOneMessage::class.java, ItemActionOneDecoder(), ItemActionOneHandler(), structures)
+        put(CloseMainInterfaceMessage::class.java, CloseMainInterfaceDecoder(), CloseMainInterfaceHandler(), structures)
     }
 
     private fun <T: Message> put(messageType: Class<T>, decoderType: MessageDecoder<T>, handlerType: MessageHandler<T>, structures: MessageStructureSet) {

@@ -29,6 +29,13 @@ class PluginRepository {
     private var pluginCount = 0
 
     /**
+     * A plugin that handles the closing of a 'main' interface. This is used
+     * when the [gg.rsmod.game.message.impl.CloseMainInterfaceMessage] is
+     * received.
+     */
+    private var closeMainInterfacePlugin: Function1<Plugin, Unit>? = null
+
+    /**
      * A list of plugins that will be executed upon login.
      */
     private val loginPlugins = arrayListOf<Function1<Plugin, Unit>>()
@@ -99,6 +106,7 @@ class PluginRepository {
      */
     @Throws(Exception::class)
     fun scanForPlugins(packagePath: String) {
+        closeMainInterfacePlugin = null
         loginPlugins.clear()
         commandPlugins.clear()
         timerPlugins.clear()
@@ -126,6 +134,17 @@ class PluginRepository {
      * Get the total amount of plugins loaded from the plugins path.
      */
     fun getPluginCount(): Int = pluginCount
+
+    fun bindCloseMainInterface(plugin: Function1<Plugin, Unit>) {
+        closeMainInterfacePlugin = plugin
+        pluginCount++
+    }
+
+    fun executeCloseMainInterface(p: Player) {
+        if (closeMainInterfacePlugin != null) {
+            p.world.pluginExecutor.execute(p, closeMainInterfacePlugin!!)
+        }
+    }
 
     fun bindLogin(plugin: Function1<Plugin, Unit>) {
         loginPlugins.add(plugin)

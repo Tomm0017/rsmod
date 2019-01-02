@@ -58,6 +58,10 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
      */
     private val entities: Multimap<Tile, Entity> = HashMultimap.create()
 
+    /**
+     * A list of [EntityUpdate]s that will be sent to players who have just entered
+     * a region that has this chunk as viewable.
+     */
     private val updates = arrayListOf<EntityUpdate<*>>()
 
     fun getMatrix(height: Int): CollisionMatrix = matrices[height]
@@ -99,13 +103,11 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
         val surrounding = hashSetOf<ChunkCoords>()
 
         val radius = chunkRadius - 1
-
         for (x in -radius .. radius) {
             for (z in -radius .. radius) {
                 surrounding.add(ChunkCoords(coords.x + x, coords.z + z))
             }
         }
-
         return surrounding
     }
 

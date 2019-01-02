@@ -9,8 +9,16 @@ gradlew.bat
 /data/packets.yml
 /data/blocks.yml
 
-/plugins/osrs/content/
-/plugins/osrs/model/
+/plugins/
+!/plugins/FirstLaunch.kt
+!/plugins/GeneralHelper.kt
+!/plugins/PlayerHelper.kt
+!/plugins/PluginHelper.kt
+!/plugins/osrs/OSRSGameframe.kt
+!/plugins/osrs/OSRSInterfaces.kt
+!/plugins/osrs/OSRSLogin.kt
+!/plugins/osrs/OSRSMessageType.kt
+!/plugins/osrs/Skills.kt
 
 game.yml
 error.log

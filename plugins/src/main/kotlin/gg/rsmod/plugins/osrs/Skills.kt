@@ -34,13 +34,35 @@ object Skills {
 
     fun getSkillName(world: World, skill: Int): String {
         val enum = world.definitions[EnumDef::class.java].getOrNull(680)!!
-        val index = enum.getInt(skill)
-        return enum.getString(index)
+        return enum.getString(skill)
     }
 
     fun isCombat(skill: Int): Boolean = when (skill) {
         ATTACK, DEFENCE, HITPOINTS, STRENGTH,
             RANGED, PRAYER, MAGIC -> true
         else -> false
+    }
+
+    fun getSkillForName(world: World, maxSkills: Int, skillName: String): Int {
+        var name = skillName.toLowerCase()
+        when (name) {
+            "con" -> name = "construction"
+            "hp" -> name = "hitpoints"
+            "craft" -> name = "crafting"
+            "hunt" -> name = "hunter"
+            "slay" -> name = "slayer"
+            "pray" -> name = "prayer"
+            "mage" -> name = "magic"
+            "fish" -> name = "fishing"
+            "herb" -> name = "herblore"
+            "rc" -> name = "runecrafting"
+            "fm" -> name = "firemaking"
+        }
+        for (i in 0 until maxSkills) {
+            if (getSkillName(world, i).toLowerCase() == name) {
+                return i
+            }
+        }
+        return -1
     }
 }

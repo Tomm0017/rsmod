@@ -36,15 +36,17 @@ fun main(args: Array<String>) {
 }
 
 suspend fun walkPlugin(it: Plugin) {
-    val start = Tile(it.player().tile)
+    val p = it.ctx as Player
+
+    val start = Tile(p.tile)
     while (true) {
-        it.wait(10 + it.player().world.random(0..25))
-        var randomX = it.player().tile.x + (-6 + it.player().world.random(0..12))
-        var randomZ = it.player().tile.z + (-6 + it.player().world.random(0..12))
+        it.wait(10 + p.world.random(0..25))
+        var randomX = p.tile.x + (-6 + p.world.random(0..12))
+        var randomZ = p.tile.z + (-6 + p.world.random(0..12))
         if (!start.isWithinRadius(Tile(randomX, randomZ), PathfindingStrategy.MAX_DISTANCE - 1)) {
             randomX = start.x
             randomZ = start.z
         }
-        it.player().walkTo(randomX, randomZ, MovementQueue.StepType.FORCED_RUN)
+        p.walkTo(randomX, randomZ, MovementQueue.StepType.FORCED_RUN)
     }
 }

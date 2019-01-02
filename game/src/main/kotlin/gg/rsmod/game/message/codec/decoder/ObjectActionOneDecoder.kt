@@ -8,7 +8,7 @@ import gg.rsmod.game.message.impl.ObjectActionOneMessage
  */
 class ObjectActionOneDecoder : MessageDecoder<ObjectActionOneMessage>() {
 
-    override fun decode(values: HashMap<String, Number>, stringValues: HashMap<String, String>): ObjectActionOneMessage {
+    override fun decode(opcode: Int, opcodeIndex: Int, values: HashMap<String, Number>, stringValues: HashMap<String, String>): ObjectActionOneMessage {
         val id = values["id"]!!.toInt()
         val x = values["x"]!!.toInt()
         val z = values["z"]!!.toInt()

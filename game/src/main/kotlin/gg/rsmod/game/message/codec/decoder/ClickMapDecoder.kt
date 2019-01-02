@@ -8,7 +8,7 @@ import gg.rsmod.game.message.impl.ClickMapMessage
  */
 class ClickMapDecoder : MessageDecoder<ClickMapMessage>() {
 
-    override fun decode(values: HashMap<String, Number>, stringValues: HashMap<String, String>): ClickMapMessage {
+    override fun decode(opcode: Int, opcodeIndex: Int, values: HashMap<String, Number>, stringValues: HashMap<String, String>): ClickMapMessage {
         val x = values["x"]!!.toInt()
         val z = values["z"]!!.toInt()
         val type = values["movement_type"]!!.toInt()

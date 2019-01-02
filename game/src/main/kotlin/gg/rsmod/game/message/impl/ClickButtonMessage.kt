@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ClickButtonMessage(val hash: Int, val slot: Int, val item: Int) : Message
+data class ClickButtonMessage(val hash: Int, val option: Int, val slot: Int, val item: Int) : Message

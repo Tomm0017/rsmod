@@ -2,6 +2,9 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.ClickButtonMessage
+import gg.rsmod.game.model.INTERACTING_ITEM_ID
+import gg.rsmod.game.model.INTERACTING_ITEM_SLOT
+import gg.rsmod.game.model.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Client
 import org.apache.logging.log4j.LogManager
 
@@ -17,13 +20,17 @@ class ClickButtonHandler : MessageHandler<ClickButtonMessage> {
     override fun handle(client: Client, message: ClickButtonMessage) {
         val parent = message.hash shr 16
         val child = message.hash and 0xFFFF
-        log(client, "Click button: parent=%d, child=%d, slot=%d, item=%d", parent, child, message.slot, message.item)
+
+        log(client, "Click button: parent=%d, child=%d, option=%d, slot=%d, item=%d", parent, child, message.option, message.slot, message.item)
 
         if (!client.interfaces.isVisible(parent)) {
             logger.warn("Player '{}' tried to click button {} on a non-visible interface {}.", client.username, child, parent)
             return
         }
 
+        client.attr[INTERACTING_OPT_ATTR] = message.option
+        client.attr[INTERACTING_ITEM_ID] = message.item
+        client.attr[INTERACTING_ITEM_SLOT] = message.slot
         if (client.world.plugins.executeButton(client, parent, child)) {
             return
         }

@@ -8,7 +8,7 @@ import gg.rsmod.game.message.impl.CommandMessage
  */
 class CommandDecoder : MessageDecoder<CommandMessage>() {
 
-    override fun decode(values: HashMap<String, Number>, stringValues: HashMap<String, String>): CommandMessage {
+    override fun decode(opcode: Int, opcodeIndex: Int, values: HashMap<String, Number>, stringValues: HashMap<String, String>): CommandMessage {
         return CommandMessage(stringValues["command"]!!)
     }
 }

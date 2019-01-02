@@ -30,7 +30,7 @@ object ObjectPathfinder {
      */
 
     val walkPlugin: (Plugin) -> Unit = {
-        val p = it.player()
+        val p = it.ctx as Player
         val obj = p.attr[INTERACTING_OBJ_ATTR]
         val opt = p.attr[INTERACTING_OPT_ATTR]
 
@@ -49,7 +49,7 @@ object ObjectPathfinder {
     }
 
     private fun handleAction(it: Plugin, obj: GameObject, opt: Int) {
-        val p = it.player()
+        val p = it.ctx as Player
 
         if (!p.world.plugins.executeObject(p, obj.id, opt)) {
             p.message(Entity.NOTHING_INTERESTING_HAPPENS)
@@ -60,7 +60,7 @@ object ObjectPathfinder {
     }
 
     private suspend fun awaitArrival(it: Plugin, obj: GameObject, opt: Int) {
-        val p = it.player()
+        val p = it.ctx as Player
         val destination = p.movementQueue.peekLast()
         if (destination == null) {
             p.message(Entity.YOU_CANT_REACH_THAT)

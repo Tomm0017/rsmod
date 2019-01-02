@@ -35,7 +35,7 @@ class GameSystem(override val channel: Channel, val client: Client,
                 return
             }
             val handler = service.messageDecoders.getHandler(msg.opcode)!!
-            val message = decoder.decode(service.messageStructures.get(msg.opcode)!!, GamePacketReader(msg))
+            val message = decoder.decode(msg.opcode, service.messageStructures.get(msg.opcode)!!, GamePacketReader(msg))
             messages.add(MessageHandle(message, handler, msg.opcode, msg.payload.readableBytes()))
 
             /**

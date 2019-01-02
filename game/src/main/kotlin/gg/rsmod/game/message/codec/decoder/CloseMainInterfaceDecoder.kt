@@ -8,7 +8,7 @@ import gg.rsmod.game.message.impl.CloseMainInterfaceMessage
  */
 class CloseMainInterfaceDecoder : MessageDecoder<CloseMainInterfaceMessage>() {
 
-    override fun decode(values: HashMap<String, Number>, stringValues: HashMap<String, String>): CloseMainInterfaceMessage {
+    override fun decode(opcode: Int, opcodeIndex: Int, values: HashMap<String, Number>, stringValues: HashMap<String, String>): CloseMainInterfaceMessage {
         return CloseMainInterfaceMessage()
     }
 }

@@ -2,7 +2,10 @@ package gg.rsmod.plugins
 
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.INTERACTING_OBJ_ATTR
+import gg.rsmod.game.model.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.GameObject
+import gg.rsmod.game.model.entity.Pawn
+import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.Skills
 
@@ -26,7 +29,19 @@ private val closeDialog = { it: Plugin ->
     it.player().closeInterface(parent = 162, child = CHATBOX_CHILD)
 }
 
-fun Plugin.getInteractingOption(): GameObject = pawn().attr[INTERACTING_OBJ_ATTR]
+/**
+ * Gets the [ctx] as a [Player]. If [ctx] is not a [Player], a cast exception
+ * will be thrown.
+ */
+fun Plugin.player(): Player = ctx as Player
+
+/**
+ * Gets the [ctx] as a [Pawn]. If [ctx] is not a [Pawn], a cast exception
+ * will be thrown.
+ */
+fun Plugin.pawn(): Pawn = ctx as Pawn
+
+fun Plugin.getInteractingOption(): Int = pawn().attr[INTERACTING_OPT_ATTR]
 
 fun Plugin.getInteractingGameObj(): GameObject = pawn().attr[INTERACTING_OBJ_ATTR]
 

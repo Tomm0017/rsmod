@@ -8,7 +8,7 @@ import gg.rsmod.game.message.impl.ChangeDisplayModeMessage
  */
 class DisplayModeDecoder : MessageDecoder<ChangeDisplayModeMessage>() {
 
-    override fun decode(values: HashMap<String, Number>, stringValues: HashMap<String, String>): ChangeDisplayModeMessage {
+    override fun decode(opcode: Int, opcodeIndex: Int, values: HashMap<String, Number>, stringValues: HashMap<String, String>): ChangeDisplayModeMessage {
         return ChangeDisplayModeMessage(values["mode"]!!.toInt(), values["width"]!!.toInt(), values["height"]!!.toInt())
     }
 

@@ -8,7 +8,7 @@ import gg.rsmod.game.message.impl.ExamineObjectMessage
  */
 class ExamineObjectDecoder : MessageDecoder<ExamineObjectMessage>() {
 
-    override fun decode(values: HashMap<String, Number>, stringValues: HashMap<String, String>): ExamineObjectMessage {
+    override fun decode(opcode: Int, opcodeIndex: Int, values: HashMap<String, Number>, stringValues: HashMap<String, String>): ExamineObjectMessage {
         val id = values["id"]!!.toInt()
         return ExamineObjectMessage(id)
     }

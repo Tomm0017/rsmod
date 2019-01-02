@@ -19,7 +19,7 @@ abstract class MessageDecoder<T: Message> {
      * an instance of [T].
      */
     @Throws(Exception::class)
-    fun decode(structure: MessageStructure, reader: GamePacketReader): T {
+    fun decode(opcode: Int, structure: MessageStructure, reader: GamePacketReader): T {
         val values = hashMapOf<String, Number>()
         val stringValues = hashMapOf<String, String>()
         structure.values.values.forEach { value ->
@@ -35,15 +35,17 @@ abstract class MessageDecoder<T: Message> {
                 }
             }
         }
-        return decode(values, stringValues)
+        return decode(opcode, structure.opcodes.indexOf(opcode), values, stringValues)
     }
 
     /**
      * Create a [T] instance with the decoded values for [MessageHandler]s to handle.
      *
-     * @param values A map of [Number] values.
+     * @param values
+     * A map of [Number] values.
      *
-     * @param stringValues A map of [String] values.
+     * @param stringValues
+     * A map of [String] values.
      */
-    abstract fun decode(values: HashMap<String, Number>, stringValues: HashMap<String, String>): T
+    abstract fun decode(opcode: Int, opcodeIndex: Int, values: HashMap<String, Number>, stringValues: HashMap<String, String>): T
 }

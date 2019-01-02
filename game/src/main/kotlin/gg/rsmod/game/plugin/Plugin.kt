@@ -38,7 +38,7 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
 
     /**
      * The next [SuspendableStep], if any, that must be handled once a [SuspendableCondition]
-     * returns [SuspendableCondition.resume] as [true].
+     * returns [SuspendableCondition.resume] as true.
      */
     private var nextStep: SuspendableStep? = null
 
@@ -106,7 +106,7 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
      * as well as the x and z coordinates.
      */
     suspend fun waitTile(tile: Tile): Unit = suspendCoroutine {
-        nextStep = SuspendableStep(TileCondition(pawn().tile, tile), it)
+        nextStep = SuspendableStep(TileCondition((ctx as Pawn).tile, tile), it)
     }
 
     /**
@@ -115,16 +115,4 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
     suspend fun waitReturnValue(): Unit = suspendCoroutine {
         nextStep = SuspendableStep(PredicateCondition { requestReturnValue != null }, it)
     }
-
-    /**
-     * Gets the [ctx] as a [Player]. If [ctx] is not a [Player], a cast exception
-     * will be thrown.
-     */
-    fun player(): Player = ctx as Player
-
-    /**
-     * Gets the [ctx] as a [Pawn]. If [ctx] is not a [Pawn], a cast exception
-     * will be thrown.
-     */
-    fun pawn(): Pawn = ctx as Pawn
 }

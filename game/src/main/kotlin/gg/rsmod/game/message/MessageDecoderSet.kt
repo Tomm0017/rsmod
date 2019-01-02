@@ -32,7 +32,7 @@ class MessageDecoderSet {
         put(ClickMapMessage::class.java, ClickMapDecoder(), ClickMapHandler(), structures)
         put(ClickMinimapMessage::class.java, ClickMinimapDecoder(), ClickMinimapHandler(), structures)
         put(ObjectActionOneMessage::class.java, ObjectActionOneDecoder(), ObjectActionOneHandler(), structures)
-        put(ClickButtonMessage::class.java, ClickButtonDecoder(), ClickButtonHandler(), structures)
+        put(ClickButtonMessage::class.java, ClickButtonOneDecoder(), ClickButtonHandler(), structures)
         put(ContinueDialogMessage::class.java, ContinueDialogDecoder(), ContinueDialogHandler(), structures)
         put(ExamineObjectMessage::class.java, ExamineObjectDecoder(), ExamineObjectHandler(), structures)
         put(ItemActionOneMessage::class.java, ItemActionOneDecoder(), ItemActionOneHandler(), structures)

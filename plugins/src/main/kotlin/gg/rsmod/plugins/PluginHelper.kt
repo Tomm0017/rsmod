@@ -3,6 +3,7 @@ package gg.rsmod.plugins
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.INTERACTING_OPT_ATTR
+import gg.rsmod.game.model.INTERACTING_SLOT_ATTR
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
@@ -40,6 +41,8 @@ fun Plugin.player(): Player = ctx as Player
  * will be thrown.
  */
 fun Plugin.pawn(): Pawn = ctx as Pawn
+
+fun Plugin.getInteractingSlot(): Int = pawn().attr[INTERACTING_SLOT_ATTR]
 
 fun Plugin.getInteractingOption(): Int = pawn().attr[INTERACTING_OPT_ATTR]
 

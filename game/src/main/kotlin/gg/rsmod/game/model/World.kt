@@ -139,6 +139,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         chunk.removeEntity(this, obj, tile)
     }
 
+    fun isSpawned(obj: GameObject): Boolean = chunks.getForTile(obj.tile).getEntities<GameObject>(obj.tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).contains(obj)
+
     fun getPlayerForName(username: String): Optional<Player> {
         for (i in 0 until players.capacity) {
             val player = players.get(i) ?: continue

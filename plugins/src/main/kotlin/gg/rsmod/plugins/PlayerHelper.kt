@@ -27,6 +27,14 @@ fun Player.invokeScript(id: Int, vararg args: Any) {
     write(InvokeScriptMessage(id, *args))
 }
 
+fun Player.openTab(tab: GameframeTab) {
+    invokeScript(915, tab.id)
+}
+
+fun Player.setMainInterfaceBackground(color: Int, transparency: Int) {
+    invokeScript(917, color, transparency)
+}
+
 fun Player.setInterfaceText(parent: Int, child: Int, text: String) {
     write(SetInterfaceTextMessage(parent, child, text))
 }
@@ -59,6 +67,12 @@ fun Player.openInterface(interfaceId: Int, pane: InterfacePane) {
     val child = getChildId(pane, interfaces.displayMode)
     val parent = getDisplayInterfaceId(interfaces.displayMode)
     openInterface(parent, child, interfaceId, if (pane.clickThrough) 1 else 0)
+}
+
+fun Player.openInterface(pane: InterfacePane) {
+    val child = getChildId(pane, interfaces.displayMode)
+    val parent = getDisplayInterfaceId(interfaces.displayMode)
+    openInterface(parent, child, pane.interfaceId, if (pane.clickThrough) 1 else 0)
 }
 
 fun Player.openInterface(parent: Int, child: Int, interfaceId: Int, type: Int = 0) {
@@ -123,6 +137,8 @@ fun Player.toggleVarbit(id: Int) {
     val def = world.definitions[VarbitDef::class.java][id]
     varps.setBit(def.varp, def.startBit, def.endBit, getVarbit(id) xor 1)
 }
+
+fun Player.hasEquipped(slot: Equipment, item: Int): Boolean = equipment.hasAt(slot.id, item)
 
 fun Player.addXp(skill: Int, xp: Double) {
     val currentXp = getSkills().getCurrentXp(skill)

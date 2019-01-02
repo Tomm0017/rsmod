@@ -3,8 +3,8 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.ClickButtonMessage
 import gg.rsmod.game.model.INTERACTING_ITEM_ID
-import gg.rsmod.game.model.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.INTERACTING_OPT_ATTR
+import gg.rsmod.game.model.INTERACTING_SLOT_ATTR
 import gg.rsmod.game.model.entity.Client
 import org.apache.logging.log4j.LogManager
 
@@ -30,13 +30,13 @@ class ClickButtonHandler : MessageHandler<ClickButtonMessage> {
 
         client.attr[INTERACTING_OPT_ATTR] = message.option
         client.attr[INTERACTING_ITEM_ID] = message.item
-        client.attr[INTERACTING_ITEM_SLOT] = message.slot
+        client.attr[INTERACTING_SLOT_ATTR] = message.slot
         if (client.world.plugins.executeButton(client, parent, child)) {
             return
         }
 
         if (client.world.devContext.debugButtons) {
-            client.message("Unhandled button action: [parent=$parent, child=$child, slot=${message.slot}, item=${message.item}]")
+            client.message("Unhandled button action: [parent=$parent, child=$child, option=${message.option}, slot=${message.slot}, item=${message.item}]")
         }
     }
 }

@@ -44,6 +44,11 @@ val COMMAND_ARGS_ATTR = AttributeKey<Array<String>>()
 val INTERACTING_OPT_ATTR = AttributeKey<Int>()
 
 /**
+ * The slot that was last selected on any entity message.
+ */
+val INTERACTING_SLOT_ATTR = AttributeKey<Int>()
+
+/**
  * The [GameObject] that was last clicked on.
  */
 val INTERACTING_OBJ_ATTR = AttributeKey<GameObject>()

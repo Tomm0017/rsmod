@@ -19,6 +19,7 @@ gradlew.bat
 !/plugins/osrs/OSRSLogin.kt
 !/plugins/osrs/OSRSMessageType.kt
 !/plugins/osrs/Skills.kt
+!/plugins/osrs/Equipment.kt
 
 game.yml
 error.log

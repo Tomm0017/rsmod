@@ -10,5 +10,9 @@ import gg.rsmod.game.model.Tile
  */
 class DynamicObject(id: Int, type: Int, rot: Int, tile: Tile) : GameObject(id, type, rot, tile) {
 
+    constructor(other: GameObject) : this(other.id, other.type, other.rot, Tile(other.tile))
+
+    constructor(id: Int, other: GameObject) : this(id, other.type, other.rot, Tile(other.tile))
+
     override fun getType(): EntityType = EntityType.DYNAMIC_OBJECT
 }

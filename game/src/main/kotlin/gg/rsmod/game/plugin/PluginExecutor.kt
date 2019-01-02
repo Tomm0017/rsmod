@@ -25,6 +25,12 @@ class PluginExecutor {
      */
     private val active = hashSetOf<Plugin>()
 
+    /**
+     * A collection of plugins that will be executed on the next possible
+     * cycle.
+     */
+    private val activeQueue = hashSetOf<Plugin>()
+
     fun init(gameService: GameService) {
         dispatcher = gameService.dispatcher
     }
@@ -50,7 +56,7 @@ class PluginExecutor {
          * plugins and would no longer pulse).
          */
         if (!plugin.canKill()) {
-            active.add(plugin)
+            activeQueue.add(plugin)
         }
     }
 
@@ -89,6 +95,9 @@ class PluginExecutor {
     }
 
     fun pulse() {
+        active.addAll(activeQueue)
+        activeQueue.clear()
+
         val iterator = active.iterator()
         while (iterator.hasNext()) {
             val plugin = iterator.next()

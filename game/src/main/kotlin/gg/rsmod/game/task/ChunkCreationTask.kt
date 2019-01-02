@@ -13,7 +13,11 @@ class ChunkCreationTask : GameTask {
 
     override fun execute(world: World, service: GameService) {
         world.players.forEach { p ->
-            world.chunks.createIfNeeded(p.tile)
+            val oldChunk = if (p.lastTile != null) world.chunks.getOrCreate(p.lastTile!!.toChunkCoords(), create = false) else null
+            val newChunk = world.chunks.getOrCreate(p.tile.toChunkCoords(), create = true)!!
+
+            oldChunk?.removeEntity(world, p, p.lastTile!!)
+            newChunk.addEntity(world, p, p.tile)
         }
     }
 }

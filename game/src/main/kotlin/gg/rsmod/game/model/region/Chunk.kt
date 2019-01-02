@@ -79,8 +79,10 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
 
         val update = createUpdateFor(entity, spawn = true)
         if (update != null) {
-            updates.add(update)
-            sendUpdate(world, update)
+            if (entity.getType() != EntityType.STATIC_OBJECT) {
+                updates.add(update)
+                sendUpdate(world, update)
+            }
         }
     }
 

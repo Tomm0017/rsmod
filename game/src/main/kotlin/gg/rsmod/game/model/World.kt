@@ -9,6 +9,7 @@ import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.region.ChunkSet
+import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.service.Service
@@ -151,6 +152,10 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     fun random(boundInclusive: Int) = random.nextInt(boundInclusive + 1)
 
     fun random(range: IntRange): Int = random.nextInt(range.endInclusive - range.start + 1) + range.start
+
+    fun executePlugin(plugin: Function1<Plugin, Unit>) {
+        pluginExecutor.execute(this, plugin)
+    }
 
     @Throws(Exception::class)
     fun loadUpdateBlocks(updateBlocks: File) {

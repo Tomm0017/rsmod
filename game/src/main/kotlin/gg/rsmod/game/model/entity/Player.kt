@@ -176,7 +176,9 @@ open class Player(override val world: World) : Pawn(world) {
                 // handling it here. This would only apply if we are using
                 // a parallel task to call [cycle].
                 world.plugins.executeTimer(this, timer.key)
-                timerIterator.remove()
+                if (!timers.has(timer.key)) {
+                    timerIterator.remove()
+                }
             }
         }
 

@@ -9,8 +9,8 @@ gradlew.bat
 /data/packets.yml
 /data/blocks.yml
 
-/plugins/osrs/content
-/plugins/osrs/model
+/plugins/osrs/content/
+/plugins/osrs/model/
 
 game.yml
 error.log

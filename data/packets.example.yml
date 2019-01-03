@@ -194,15 +194,15 @@ out-packets:
     type: FIXED
     opcode: 48
     structure:
-      - name: hash
+      - name: setting
         type: INT
         order: LITTLE
       - name: to
         type: SHORT
         trans: ADD
-      - name: setting
+      - name: hash
         type: INT
-        order: MIDDLE
+        order: INVERSED_MIDDLE
       - name: from
         type: SHORT
 
@@ -219,14 +219,13 @@ out-packets:
     type: FIXED
     opcode: 57
     structure:
+      - name: hash
+        type: INT
       - name: item
         type: SHORT
       - name: amount
         type: INT
-        order: LITTLE
-      - name: hash
-        type: INT
-        order: MIDDLE
+        order: INVERSED_MIDDLE
 
   - message: gg.rsmod.game.message.impl.SetInterfaceNpcMessage
     type: FIXED
@@ -238,7 +237,7 @@ out-packets:
         trans: ADD
       - name: hash
         type: INT
-        order: MIDDLE
+        order: INVERSED_MIDDLE
 
   - message: gg.rsmod.game.message.impl.SetInterfaceAnimationMessage
     type: FIXED
@@ -248,7 +247,7 @@ out-packets:
         type: SHORT
       - name: hash
         type: INT
-        order: MIDDLE
+        order: INVERSED_MIDDLE
 
   - message: gg.rsmod.game.message.impl.SetMinimapMarkerMessage
     type: FIXED

@@ -2,6 +2,7 @@ package gg.rsmod.game.message.codec.encoder
 
 import gg.rsmod.game.message.codec.MessageEncoder
 import gg.rsmod.game.message.impl.SetItemContainerMessage
+import gg.rsmod.net.packet.DataOrder
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
 
@@ -29,7 +30,7 @@ class ItemContainerEncoder : MessageEncoder<SetItemContainerMessage>() {
                     buf.put(DataType.SHORT, item.id + 1)
                     buf.put(DataType.BYTE, Math.min(255, item.amount))
                     if (item.amount >= 255) {
-                        buf.put(DataType.INT, item.amount)
+                        buf.put(DataType.INT, DataOrder.INVERSED_MIDDLE, item.amount)
                     }
                 } else {
                     buf.put(DataType.SHORT, 0)

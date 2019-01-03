@@ -6,7 +6,6 @@ import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import org.apache.logging.log4j.LogManager
-import java.math.BigInteger
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -46,9 +45,10 @@ class LoginDecoder(private val serverRevision: Int) : StatefulFrameDecoder<Login
             val size = buf.readUnsignedShort()
             if (buf.readableBytes() >= size) {
                 val revision = buf.readInt()
-                buf.readByte() // Dummy value.
+                buf.skipBytes(Int.SIZE_BYTES)
+                buf.skipBytes(Byte.SIZE_BYTES)
                 if (revision == serverRevision) {
-                    payloadLength = size - 5
+                    payloadLength = size - (Int.SIZE_BYTES + Int.SIZE_BYTES + Byte.SIZE_BYTES)
                     decodePayload(ctx, buf, out)
                 } else {
                     writeResponse(ctx, LoginResultType.REVISION_MISMATCH)
@@ -62,20 +62,22 @@ class LoginDecoder(private val serverRevision: Int) : StatefulFrameDecoder<Login
     private fun decodePayload(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
         if (buf.readableBytes() >= payloadLength) {
             val isaacSeed = IntArray(4)
+
+            buf.skipBytes(Byte.SIZE_BYTES)
             for (i in 0 until 4) {
                 isaacSeed[i] = buf.readInt()
             }
-            buf.readLong() // Dummy value.
+            buf.skipBytes(Long.SIZE_BYTES)
 
             val authRequest = buf.readByte().toInt()
-            var authCode = buf.readUnsignedMedium()
-            if (authRequest != 0 && authRequest != 2) {
-                authCode = -1
+            var authCode = -1
+            if (authRequest == 0 || authRequest == 3) {
+                authCode = buf.readUnsignedMedium()
+            } else {
+                buf.skipBytes(Int.SIZE_BYTES)
             }
 
-            buf.skipBytes(1) // Dummy value.
-            buf.readByte() // Dummy value.
-
+            buf.skipBytes(Byte.SIZE_BYTES)
             val password = BufferUtils.readString(buf)
             val username = BufferUtils.readString(buf)
 
@@ -87,15 +89,6 @@ class LoginDecoder(private val serverRevision: Int) : StatefulFrameDecoder<Login
             buf.skipBytes(24) // random.dat data
             BufferUtils.readString(buf)
             buf.skipBytes(4)
-
-            /**
-             * Custom code start.
-             */
-            val uuid = ByteArray(16)
-            buf.readBytes(uuid)
-            /**
-             * Custom code ends.
-             */
 
             buf.skipBytes(17)
             BufferUtils.readJagexString(buf)
@@ -109,28 +102,19 @@ class LoginDecoder(private val serverRevision: Int) : StatefulFrameDecoder<Login
             buf.skipBytes(4 * 3)
             buf.skipBytes(4)
             buf.skipBytes(1)
+            buf.skipBytes(Int.SIZE_BYTES)
 
-            val crcs = IntArray(17)
+            val crcs = IntArray(18)
             for (i in 0 until crcs.size) {
                 crcs[i] = buf.readInt()
             }
 
-            /**
-             * Custom code start.
-             */
-            val hwid = ByteArray(20)
-            buf.readBytes(hwid)
-            /**
-             * Custom code ends.
-             */
-
             logger.info("User '{}' login request from {}.", username, ctx.channel())
-
 
             val request = LoginRequest(channel = ctx.channel(), username = username,
                     password = password, revision = serverRevision, isaacSeed = isaacSeed,
                     crcs = crcs, resizableClient = clientResizable, auth = authCode,
-                    uuid = BigInteger(uuid).toString(16).toUpperCase())
+                    uuid = "".toUpperCase())
             out.add(request)
         }
     }

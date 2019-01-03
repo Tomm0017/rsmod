@@ -3,37 +3,37 @@ blocks:
     pbit: 0x1
 
   - block: ANIMATION
-    pbit: 0x10
-    nbit: 0x10
+    pbit: 0x80
+    nbit: 0x80
 
   - block: GFX
-    pbit: 0x400
-    nbit: 0x400
+    pbit: 0x200
+    nbit: 0x200
 
   - block: PUBLIC_CHAT
-    pbit: 0x40
+    pbit: 0x10
 
   - block: FACE_TILE
-    pbit: 0x2
-    nbit: 0x2
+    pbit: 0x4
+    nbit: 0x4
 
   - block: FACE_PAWN
-    pbit: 0x8
-    nbit: 0x8
+    pbit: 0x2
+    nbit: 0x2
 
   - block: MOVEMENT
     pbit: 0x1000
 
   - block: CONTEXT_MENU
-    pbit: 0x200
-
-  - block: FORCE_MOVEMENT
     pbit: 0x100
 
+  - block: FORCE_MOVEMENT
+    pbit: 0x400
+
   - block: HITMARK
-    pbit: 0x80
-    nbit: 0x80
+    pbit: 0x40
+    nbit: 0x40
 
   - block: FORCE_CHAT
-    pbit: 0x4
-    nbit: 0x4
+    pbit: 0x20
+    nbit: 0x20

@@ -1,4 +1,4 @@
-package gg.rsmod.game.sync.task
+package gg.rsmod.game.sync
 
 /**
  * A task in any pawn synchronization process.

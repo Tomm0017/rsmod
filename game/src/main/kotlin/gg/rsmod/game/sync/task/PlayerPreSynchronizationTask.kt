@@ -4,6 +4,7 @@ import gg.rsmod.game.message.impl.ChangeStaticRegionMessage
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.region.Chunk
+import gg.rsmod.game.sync.SynchronizationTask
 
 /**
  * @author Tom <rspsmods@gmail.com>

@@ -1,4 +1,4 @@
-package gg.rsmod.game.sync.task
+package gg.rsmod.game.sync
 
 import org.apache.logging.log4j.LogManager
 import java.util.concurrent.Phaser

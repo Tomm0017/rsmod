@@ -288,6 +288,17 @@ class GamePacketBuilder {
         }
     }
 
+    fun putBytes(transformation: DataTransformation, buffer: ByteBuf) {
+        val bytes = ByteArray(buffer.readableBytes())
+        buffer.markReaderIndex()
+        try {
+            buffer.readBytes(bytes)
+        } finally {
+            buffer.resetReaderIndex()
+        }
+        putBytes(transformation, bytes)
+    }
+
     /**
      * Puts the specified byte array into the buffer in reverse.
      *

@@ -2,7 +2,7 @@ package gg.rsmod.game.task.parallel
 
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.GameService
-import gg.rsmod.game.sync.task.PhasedSynchronizationTask
+import gg.rsmod.game.sync.PhasedSynchronizationTask
 import gg.rsmod.game.sync.task.PlayerPostSynchronizationTask
 import gg.rsmod.game.sync.task.PlayerPreSynchronizationTask
 import gg.rsmod.game.sync.task.PlayerSynchronizationTask

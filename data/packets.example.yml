@@ -2,21 +2,110 @@ packets:
   # Out
   - message: gg.rsmod.game.message.impl.LoginRegionMessage
     type: VARIABLE_SHORT
-    opcode: 15
+    opcode: 0
     structure:
       - name: gpi
         type: BYTES
       - name: z
-        trans: ADD
+        order: LITTLE
         type: SHORT
+        trans: ADD
       - name: x
         type: SHORT
+        trans: ADD
       - name: xteas
         type: BYTES
 
+  - message: gg.rsmod.game.message.impl.ChangeStaticRegionMessage
+    type: VARIABLE_SHORT
+    opcode: 0
+    structure:
+      - name: z
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: x
+        type: SHORT
+        trans: ADD
+      - name: xteas
+        type: BYTES
+
+  - message: gg.rsmod.game.message.impl.SetDisplayInterfaceMessage
+    type: FIXED
+    opcode: 84
+    structure:
+      - name: interfaceId
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+
+  - message: gg.rsmod.game.message.impl.OpenInterfaceMessage
+    type: FIXED
+    opcode: 77
+    structure:
+      - name: type
+        trans: ADD
+        type: BYTE
+      - name: overlay
+        order: MIDDLE
+        type: INT
+      - name: interfaceId
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+
+  - message: gg.rsmod.game.message.impl.SetChunkToRegionOffset
+    type: FIXED
+    opcode: 64
+    structure:
+      - name: x
+        type: BYTE
+        trans: NEGATE
+      - name: z
+        type: BYTE
+        trans: SUBTRACT
+
+  - message: gg.rsmod.game.message.impl.SpawnEntityGroupsMessage
+    type: VARIABLE_SHORT
+    opcode: 17
+    structure:
+      - name: x
+        type: BYTE
+        trans: SUBTRACT
+      - name: z
+        type: BYTE
+        trans: NEGATE
+      - name: payload
+        type: BYTES
+
+  - message: gg.rsmod.game.message.impl.SpawnObjectMessage
+    type: FIXED
+    opcode: 6
+    structure:
+      - name: tile
+        type: BYTE
+        trans: ADD
+      - name: settings
+        type: BYTE
+        trans: SUBTRACT
+      - name: id
+        type: SHORT
+        trans: ADD
+
+  - message: gg.rsmod.game.message.impl.RemoveObjectMessage
+    type: FIXED
+    opcode: 13
+    structure:
+      - name: tile
+        type: BYTE
+        tran: SUBTRACT
+      - name: settings
+        type: BYTE
+        trans: SUBTRACT
+
   - message: gg.rsmod.game.message.impl.SetSmallVarpMessage
     type: FIXED
-    opcode: 12
+    opcode: 63
     structure:
       - name: value
         type: BYTE
@@ -25,40 +114,16 @@ packets:
 
   - message: gg.rsmod.game.message.impl.SetBigVarpMessage
     type: FIXED
-    opcode: 62
+    opcode: 4
     structure:
-      - name: value
-        type: INT
-        order: LITTLE
       - name: id
         type: SHORT
-        order: LITTLE
-        trans: ADD
-
-  - message: gg.rsmod.game.message.impl.OpenInterfaceMessage
-    type: FIXED
-    opcode: 23
-    structure:
-      - name: interfaceId
-        trans: ADD
-        type: SHORT
-      - name: overlay
-        order: MIDDLE
+      - name: value
         type: INT
-      - name: type
-        trans: SUBTRACT
-        type: BYTE
-
-  - message: gg.rsmod.game.message.impl.SetDisplayInterfaceMessage
-    type: FIXED
-    opcode: 13
-    structure:
-      - name: interfaceId
-        type: SHORT
 
   - message: gg.rsmod.game.message.impl.InvokeScriptMessage
     type: VARIABLE_SHORT
-    opcode: 80
+    opcode: 62
     structure:
       - name: types
         type: BYTES
@@ -67,21 +132,9 @@ packets:
       - name: id
         type: INT
 
-  - message: gg.rsmod.game.message.impl.ChangeStaticRegionMessage
-    type: VARIABLE_SHORT
-    opcode: 15
-    structure:
-      - name: z
-        trans: ADD
-        type: SHORT
-      - name: x
-        type: SHORT
-      - name: xteas
-        type: BYTES
-
   - message: gg.rsmod.game.message.impl.SendChatboxTextMessage
     type: VARIABLE_BYTE
-    opcode: 38
+    opcode: 3
     structure:
       - name: type
         type: BYTE
@@ -94,72 +147,68 @@ packets:
 
   - message: gg.rsmod.game.message.impl.SendLogoutMessage
     type: FIXED
-    opcode: 3
+    opcode: 1
 
   - message: gg.rsmod.game.message.impl.SendSkillMessage
     type: FIXED
-    opcode: 37
+    opcode: 22
     structure:
-      - name: level
-        type: BYTE
-        trans: NEGATE
       - name: xp
-        type: INT
         order: LITTLE
+        type: INT
       - name: skill
         type: BYTE
-        trans: SUBTRACT
+        trans: NEGATE
+      - name: level
+        type: BYTE
 
   - message: gg.rsmod.game.message.impl.SetInterfaceTextMessage
     type: VARIABLE_SHORT
-    opcode: 61
+    opcode: 19
     structure:
       - name: hash
         type: INT
-        order: INVERSED_MIDDLE
       - name: text
         type: BYTES
 
   - message: gg.rsmod.game.message.impl.SetRunEnergyMessage
     type: FIXED
-    opcode: 75
+    opcode: 60
     structure:
       - name: energy
         type: BYTE
 
   - message: gg.rsmod.game.message.impl.CloseInterfaceMessage
     type: FIXED
-    opcode: 35
+    opcode: 9
     structure:
       - name: hash
         type: INT
 
   - message: gg.rsmod.game.message.impl.SetInterfaceSettingMessage
     type: FIXED
-    opcode: 25
+    opcode: 48
     structure:
-      - name: from
-        type: SHORT
-        order: LITTLE
-      - name: setting
-        type: INT
-        order: LITTLE
       - name: hash
         type: INT
         order: LITTLE
       - name: to
         type: SHORT
+        trans: ADD
+      - name: setting
+        type: INT
+        order: MIDDLE
+      - name: from
+        type: SHORT
 
   - message: gg.rsmod.game.message.impl.SetInterfaceHiddenMessage
     type: FIXED
-    opcode: 64
+    opcode: 21
     structure:
       - name: hash
         type: INT
-        order: INVERSED_MIDDLE
       - name: hidden
         type: BYTE
-        trans: ADD
 
   - message: gg.rsmod.game.message.impl.SetInterfaceItemMessage
     type: FIXED
@@ -176,28 +225,29 @@ packets:
 
   - message: gg.rsmod.game.message.impl.SetInterfaceNpcMessage
     type: FIXED
-    opcode: 10
+    opcode: 35
     structure:
+      - name: npc
+        order: LITTLE
+        type: SHORT
+        trans: ADD
       - name: hash
         type: INT
-        order: LITTLE
-      - name: npc
-        type: SHORT
-        order: LITTLE
+        order: MIDDLE
 
   - message: gg.rsmod.game.message.impl.SetInterfaceAnimationMessage
     type: FIXED
-    opcode: 76
+    opcode: 61
     structure:
-      - name: hash
-        type: INT
       - name: anim
         type: SHORT
-        order: LITTLE
+      - name: hash
+        type: INT
+        order: MIDDLE
 
   - message: gg.rsmod.game.message.impl.SetMinimapMarkerMessage
     type: FIXED
-    opcode: 45
+    opcode: 67
     structure:
       - name: x
         type: BYTE
@@ -206,7 +256,7 @@ packets:
 
   - message: gg.rsmod.game.message.impl.SetItemContainerMessage
     type: VARIABLE_SHORT
-    opcode: 67
+    opcode: 70
     structure:
       - name: interfaceHash
         type: INT
@@ -216,40 +266,6 @@ packets:
         type: SHORT
       - name: items
         type: BYTES
-
-  - message: gg.rsmod.game.message.impl.SetChunkToRegionOffset
-    type: FIXED
-    opcode: 17
-    structure:
-      - name: x
-        type: BYTE
-      - name: z
-        type: BYTE
-
-  - message: gg.rsmod.game.message.impl.SpawnObjectMessage
-    type: FIXED
-    opcode: 9
-    structure:
-      - name: tile
-        type: BYTE
-        trans: NEGATE
-      - name: settings
-        type: BYTE
-      - name: id
-        type: SHORT
-        order: LITTLE
-        trans: ADD
-
-  - message: gg.rsmod.game.message.impl.RemoveObjectMessage
-    type: FIXED
-    opcode: 48
-    structure:
-      - name: tile
-        type: BYTE
-        tran: ADD
-      - name: settings
-        type: BYTE
-        trans: NEGATE
 
   # In
   - message: gg.rsmod.game.message.impl.CommandMessage

@@ -71,6 +71,8 @@ open class Player(override val world: World) : Pawn(world) {
 
     val localPlayers = arrayListOf<Player>()
 
+    val otherPlayerSkipFlags = IntArray(2048)
+
     /**
      * An array that holds the last-known [Tile.to30BitInteger] for every player
      * according to this [Player]. This can vary from player to player, since

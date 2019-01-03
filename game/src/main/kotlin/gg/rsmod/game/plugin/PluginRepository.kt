@@ -65,6 +65,20 @@ class PluginRepository {
     private val exitRegionPlugins = hashMapOf<Int, MutableList<Function1<Plugin, Unit>>>()
 
     /**
+     * A map that contains any plugin that will be executed upon entering a new
+     * [gg.rsmod.game.model.region.Chunk]. The key is the chunk id which can be
+     * calculated via [gg.rsmod.game.model.region.ChunkCoords.hashCode].
+     */
+    private val enterChunkPlugins = hashMapOf<Int, MutableList<Function1<Plugin, Unit>>>()
+
+    /**
+     * A map that contains any plugin that will be executed when leaving a
+     * [gg.rsmod.game.model.region.Chunk]. The key is the chunk id which can be
+     * calculated via [gg.rsmod.game.model.region.ChunkCoords.hashCode].
+     */
+    private val exitChunkPlugins = hashMapOf<Int, MutableList<Function1<Plugin, Unit>>>()
+
+    /**
      * A map that contains items and any associated menu-click and its respective
      * plugin executor, if any (would not be in the map if it doesn't have a plugin).
      */
@@ -105,6 +119,8 @@ class PluginRepository {
         buttonPlugins.clear()
         enterRegionPlugins.clear()
         exitRegionPlugins.clear()
+        enterChunkPlugins.clear()
+        exitChunkPlugins.clear()
         itemPlugins.clear()
         objectPlugins.clear()
 
@@ -228,6 +244,34 @@ class PluginRepository {
 
     fun executeRegionExit(p: Player, regionId: Int) {
         exitRegionPlugins[regionId]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+    }
+
+    fun bindChunkEnter(chunkHash: Int, plugin: Function1<Plugin, Unit>) {
+        val plugins = enterChunkPlugins[chunkHash]
+        if (plugins != null) {
+            plugins.add(plugin)
+        } else {
+            enterChunkPlugins[chunkHash] = arrayListOf(plugin)
+        }
+        pluginCount++
+    }
+
+    fun executeChunkEnter(p: Player, chunkHash: Int) {
+        enterChunkPlugins[chunkHash]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+    }
+
+    fun bindChunkExit(chunkHash: Int, plugin: Function1<Plugin, Unit>) {
+        val plugins = exitChunkPlugins[chunkHash]
+        if (plugins != null) {
+            plugins.add(plugin)
+        } else {
+            exitChunkPlugins[chunkHash] = arrayListOf(plugin)
+        }
+        pluginCount++
+    }
+
+    fun executeChunkExit(p: Player, chunkHash: Int) {
+        exitChunkPlugins[chunkHash]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
     }
 
     @Throws(IllegalStateException::class)

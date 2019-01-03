@@ -31,6 +31,10 @@ class PlayerPostSynchronizationTask(val player: Player) : SynchronizationTask {
                     chunk.sendUpdates(player, service)
                 }
             }
+            if (oldChunk != null) {
+                player.world.plugins.executeChunkExit(player, oldChunk.hashCode())
+            }
+            player.world.plugins.executeChunkEnter(player, newChunk.hashCode())
         }
     }
 }

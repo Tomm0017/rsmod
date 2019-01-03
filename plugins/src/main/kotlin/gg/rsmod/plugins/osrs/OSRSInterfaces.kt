@@ -11,7 +11,7 @@ enum class InterfacePane(val interfaceId: Int, val fixedChildId: Int, val resize
 
     USERNAME(interfaceId = 163, fixedChildId = 19, resizeChildId = 9, resizeListChildId = 9),
 
-    UNSURE(interfaceId = 90, fixedChildId = 15, resizeChildId = 4, resizeListChildId = 4),
+    PVP_OVERLAY(interfaceId = -1, fixedChildId = 15, resizeChildId = 4, resizeListChildId = 4),
 
     MINI_MAP(interfaceId = 160, fixedChildId = 11, resizeChildId = 28, resizeListChildId = 28),
 
@@ -19,7 +19,7 @@ enum class InterfacePane(val interfaceId: Int, val fixedChildId: Int, val resize
 
     SKILLS(interfaceId = 320, fixedChildId = 67, resizeChildId = 69, resizeListChildId = 67),
 
-    QUEST(interfaceId = 120, fixedChildId = 68, resizeChildId = 70, resizeListChildId = 68),
+    QUEST(interfaceId = 399, fixedChildId = 68, resizeChildId = 70, resizeListChildId = 68),
 
     INVENTORY(interfaceId = 149, fixedChildId = 69, resizeChildId = 71, resizeListChildId = 69),
 
@@ -29,9 +29,9 @@ enum class InterfacePane(val interfaceId: Int, val fixedChildId: Int, val resize
 
     MAGIC(interfaceId = 218, fixedChildId = 72, resizeChildId = 74, resizeListChildId = 72),
 
-    FRIENDS(interfaceId = 429, fixedChildId = 74, resizeChildId = 76, resizeListChildId = 74),
+    ACCOUNT_MANAGEMENT(interfaceId = 109, fixedChildId = 74, resizeChildId = 76, resizeListChildId = 74),
 
-    IGNORES(interfaceId = 432, fixedChildId = 75, resizeChildId = 77, resizeListChildId = 75),
+    SOCIAL(interfaceId = 429, fixedChildId = 75, resizeChildId = 77, resizeListChildId = 75), // 432 = ignore
 
     LOG_OUT(interfaceId = 182, fixedChildId = 76, resizeChildId = 78, resizeListChildId = 76),
 

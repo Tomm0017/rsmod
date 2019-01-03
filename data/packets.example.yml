@@ -417,6 +417,14 @@ in-packets:
     length: -1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 5
+    length: 7
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 6
+    length: 7
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 41
     length: 6
 

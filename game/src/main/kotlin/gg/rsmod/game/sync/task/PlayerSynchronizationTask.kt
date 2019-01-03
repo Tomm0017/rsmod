@@ -43,11 +43,11 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             val local = locals[i]
             val index = local.attr[INDEX_ATTR]
 
+            nonLocalIndices.remove(index)
+
             if ((player.otherPlayerSkipFlags[index] and 0x1) != 0) {
                 continue
             }
-
-            nonLocalIndices.remove(index)
 
             if (skipCount > 0) {
                 skipCount--
@@ -120,8 +120,8 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 buf.putBits(2, 0)
             } else {
                 buf.putBits(1, 0)
-                for (j in i + 1 until player.localPlayers.size) {
-                    val next = player.localPlayers[j]
+                for (j in i + 1 until locals.size) {
+                    val next = locals[j]
                     val nextIndex = next.attr[INDEX_ATTR]
                     if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) != 0) {
                         continue
@@ -136,6 +136,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             }
         }
         buf.switchToByteAccess()
+        locals.removeAll(localsToRemove)
 
         if (skipCount > 0) {
             throw RuntimeException()
@@ -149,8 +150,6 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             if ((player.otherPlayerSkipFlags[index] and 0x1) == 0) {
                 continue
             }
-
-            nonLocalIndices.remove(index)
 
             if (skipCount > 0) {
                 skipCount--
@@ -228,8 +227,8 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 buf.putBits(2, 0)
             } else {
                 buf.putBits(1, 0)
-                for (j in i + 1 until player.localPlayers.size) {
-                    val next = player.localPlayers[j]
+                for (j in i + 1 until locals.size) {
+                    val next = locals[j]
                     val nextIndex = next.attr[INDEX_ATTR]
                     if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) == 0) {
                         continue
@@ -244,6 +243,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             }
         }
         buf.switchToByteAccess()
+        locals.removeAll(localsToRemove)
 
         if (skipCount > 0) {
             throw RuntimeException()
@@ -372,10 +372,12 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             throw RuntimeException()
         }
 
-        locals.removeAll(localsToRemove)
-
         buf.putBytes(maskBuf.getBuffer())
         player.write(buf.toGamePacket())
+
+        for (i in 1 until 2048) {
+            player.otherPlayerSkipFlags[i] = player.otherPlayerSkipFlags[i] shr 1
+        }
     }
 
     private fun encodeBlocks(other: Player, buf: GamePacketBuilder, newPlayer: Boolean) {

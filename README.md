@@ -18,7 +18,7 @@ and it'll automatically load on the next server startup!
     Luckily, both of these files have a ```.example.yml``` file in their corresponding 
     directory, which you can simply copy and remove the ```.example``` extension.
     The ```packets.example.yml``` file contains the structure of packets for 
-    `OSRS` ```#172```
+    `OSRS` ```#177```
 
 #### Creating Your First Script 
 - Creating your first script is super simple! Scripts are written in **Kotlin**. 

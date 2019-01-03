@@ -4,8 +4,10 @@ import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.INDEX_ATTR
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.SynchronizationTask
 import gg.rsmod.game.sync.UpdateBlock
+import gg.rsmod.game.sync.segment.*
 import gg.rsmod.net.packet.*
 import gg.rsmod.util.Misc
 import org.apache.logging.log4j.LogManager
@@ -22,15 +24,10 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 15
     }
 
-    /**
-     * TODO(Tom): break the logic into 'segments' which are then handled separately (too tired to go into detail)
-     */
-
     private val nonLocalIndices = arrayListOf<Int>().apply { addAll(1..2047) }
 
-    override fun run() {
-        val buf = GamePacketBuilder(79, PacketType.VARIABLE_SHORT)
-        val maskBuf = GamePacketBuilder()
+    private fun getSegments(): List<SynchronizationSegment> {
+        val segments = arrayListOf<SynchronizationSegment>()
 
         val localsToRemove = arrayListOf<Player>()
         val nonLocalsToRemove = arrayListOf<Int>()
@@ -38,7 +35,6 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         var skipCount = 0
         val locals = player.localPlayers
 
-        buf.switchToBitAccess()
         for (i in 0 until locals.size) {
             val local = locals[i]
             val index = local.attr[INDEX_ATTR]
@@ -58,68 +54,42 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             if (local != player && shouldRemove(local)) {
                 player.otherPlayerTiles[index] = 0
                 localsToRemove.add(local)
-
-                buf.putBits(1, 1)
-                buf.putBits(1, 0)
-                buf.putBits(2, 0)
-                buf.putBits(1, 0)
+                segments.add(RemoveLocalPlayerSegment())
                 continue
             }
 
             val requiresBlockUpdate = local.blockBuffer.isDirty()
             if (requiresBlockUpdate) {
-                encodeBlocks(other = local, buf = maskBuf, newPlayer = false)
+                segments.add(PlayerUpdateBlockSegment(other = local, newPlayer = false))
             }
             if (local.teleport) {
-                buf.putBits(1, 1) // Do not skip this player
-                buf.putBit(requiresBlockUpdate) // Does the local player require block update?
-                buf.putBits(2, 3) // Teleport movement type
-
-                var dx = local.tile.x - (local.lastTile?.x ?: 0)
-                var dz = local.tile.z - (local.lastTile?.z ?: 0)
-                val dh = local.tile.height - (local.lastTile?.height ?: 0)
-                if (Math.abs(dx) <= 14 && Math.abs(dz) <= 14) {
-                    if (dx < 0) {
-                        dx += 32
-                    }
-                    if (dz < 0) {
-                        dz += 32
-                    }
-                    buf.putBits(1, 0) // Tiles are within viewing distance
-                    buf.putBits(12, (dz and 0x1F) or ((dx and 0x1F) shl 5) or (dh and 0x3) shl 10)
-                } else {
-                    buf.putBits(1, 1) // Tiles aren't within viewing distance
-                    buf.putBits(30, (dz and 0x3FFF) or ((dx and 0x3FFF) shl 14) or (dh and 0x3) shl 28)
-                }
+                segments.add(PlayerTeleportSegment(player = player, other = local,
+                        index = index, encodeUpdateBlocks = requiresBlockUpdate))
             } else if (local.steps != null) {
                 var dx = Misc.DIRECTION_DELTA_X[local.steps!!.walkDirection!!.getPlayerWalkIndex()]
                 var dz = Misc.DIRECTION_DELTA_Z[local.steps!!.walkDirection!!.getPlayerWalkIndex()]
                 var running = local.steps!!.runDirection != null
 
-                var movement = 0
+                var direction = 0
                 if (running) {
                     dx += Misc.DIRECTION_DELTA_X[local.steps!!.runDirection!!.getPlayerWalkIndex()]
                     dz += Misc.DIRECTION_DELTA_Z[local.steps!!.runDirection!!.getPlayerWalkIndex()]
-                    movement = Misc.getPlayerRunningDirection(dx, dz)
-                    running = movement != -1
+                    direction = Misc.getPlayerRunningDirection(dx, dz)
+                    running = direction != -1
                 }
                 if (!running) {
-                    movement = Misc.getPlayerWalkingDirection(dx, dz)
+                    direction = Misc.getPlayerWalkingDirection(dx, dz)
                 }
-                buf.putBits(1, 1) // Requires client decoding
-                buf.putBits(1, if (requiresBlockUpdate) 1 else 0) // Whether client should decode update masks
-                buf.putBits(2, if (running) 2 else 1) // Whether client should decode a walk or a run movement
-                buf.putBits(if (running) 4 else 3, movement)
+
+                segments.add(PlayerWalkSegment(encodeUpdateBlocks = requiresBlockUpdate, running = running,
+                        direction = direction))
 
                 if (!requiresBlockUpdate && running) {
-                    encodeBlocks(local, maskBuf, false)
+                    segments.add(PlayerUpdateBlockSegment(other = local, newPlayer = false))
                 }
             } else if (requiresBlockUpdate) {
-                buf.putBits(1, 1)
-                buf.putBits(1, 1)
-                buf.putBits(2, 0)
+                segments.add(SignalPlayerUpdateBlockSegment())
             } else {
-                buf.putBits(1, 0)
                 for (j in i + 1 until locals.size) {
                     val next = locals[j]
                     val nextIndex = next.attr[INDEX_ATTR]
@@ -131,18 +101,16 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                     }
                     skipCount++
                 }
-                writeSkip(buf, skipCount)
+                segments.add(PlayerSkipCountSegment(skipCount))
                 player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
             }
         }
-        buf.switchToByteAccess()
         locals.removeAll(localsToRemove)
 
         if (skipCount > 0) {
             throw RuntimeException()
         }
 
-        buf.switchToBitAccess()
         for (i in 0 until locals.size) {
             val local = locals[i]
             val index = local.attr[INDEX_ATTR]
@@ -160,73 +128,42 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             if (local != player && shouldRemove(local)) {
                 player.otherPlayerTiles[index] = 0
                 localsToRemove.add(local)
-
-                buf.putBits(1, 1)
-                buf.putBits(1, 0)
-                buf.putBits(2, 0)
-                buf.putBits(1, 0)
+                segments.add(RemoveLocalPlayerSegment())
                 continue
             }
 
             val requiresBlockUpdate = local.blockBuffer.isDirty()
             if (requiresBlockUpdate) {
-                encodeBlocks(other = local, buf = maskBuf, newPlayer = false)
+                segments.add(PlayerUpdateBlockSegment(other = local, newPlayer = false))
             }
             if (local.teleport) {
-                buf.putBits(1, 1) // Do not skip this player
-                buf.putBit(requiresBlockUpdate) // Does the local player require block update?
-                buf.putBits(2, 3) // Teleport movement type
-
-                val lastX = (player.otherPlayerTiles[index] shr 14) and 0x3FFF
-                val lastZ = player.otherPlayerTiles[index] and 0x3FFF
-                val lastH = (player.otherPlayerTiles[index] shr 28) and 0x3
-
-                var dx = local.tile.x - lastX
-                var dz = local.tile.z - lastZ
-                val dh = local.tile.height - lastH
-
-                if (Math.abs(dx) <= 14 && Math.abs(dz) <= 14) {
-                    if (dx < 0) {
-                        dx += 32
-                    }
-                    if (dz < 0) {
-                        dz += 32
-                    }
-                    buf.putBits(1, 0) // Tiles are within viewing distance
-                    buf.putBits(12, (dz and 0x1F) or ((dx and 0x1F) shl 5) or (dh and 0x3) shl 10)
-                } else {
-                    buf.putBits(1, 1) // Tiles aren't within viewing distance
-                    buf.putBits(30, (dz and 0x3FFF) or ((dx and 0x3FFF) shl 14) or (dh and 0x3) shl 28)
-                }
+                segments.add(PlayerTeleportSegment(player = player, other = local,
+                        index = index, encodeUpdateBlocks = requiresBlockUpdate))
             } else if (local.steps != null) {
                 var dx = Misc.DIRECTION_DELTA_X[local.steps!!.walkDirection!!.getPlayerWalkIndex()]
                 var dz = Misc.DIRECTION_DELTA_Z[local.steps!!.walkDirection!!.getPlayerWalkIndex()]
                 var running = local.steps!!.runDirection != null
 
-                var movement = 0
+                var direction = 0
                 if (running) {
                     dx += Misc.DIRECTION_DELTA_X[local.steps!!.runDirection!!.getPlayerWalkIndex()]
                     dz += Misc.DIRECTION_DELTA_Z[local.steps!!.runDirection!!.getPlayerWalkIndex()]
-                    movement = Misc.getPlayerRunningDirection(dx, dz)
-                    running = movement != -1
+                    direction = Misc.getPlayerRunningDirection(dx, dz)
+                    running = direction != -1
                 }
                 if (!running) {
-                    movement = Misc.getPlayerWalkingDirection(dx, dz)
+                    direction = Misc.getPlayerWalkingDirection(dx, dz)
                 }
-                buf.putBits(1, 1) // Requires client decoding
-                buf.putBits(1, if (requiresBlockUpdate) 1 else 0) // Whether client should decode update masks
-                buf.putBits(2, if (running) 2 else 1) // Whether client should decode a walk or a run movement
-                buf.putBits(if (running) 4 else 3, movement)
+
+                segments.add(PlayerWalkSegment(encodeUpdateBlocks = requiresBlockUpdate, running = running,
+                        direction = direction))
 
                 if (!requiresBlockUpdate && running) {
-                    encodeBlocks(local, maskBuf, false)
+                    segments.add(PlayerUpdateBlockSegment(other = local, newPlayer = false))
                 }
             } else if (requiresBlockUpdate) {
-                buf.putBits(1, 1)
-                buf.putBits(1, 1)
-                buf.putBits(2, 0)
+                segments.add(SignalPlayerUpdateBlockSegment())
             } else {
-                buf.putBits(1, 0)
                 for (j in i + 1 until locals.size) {
                     val next = locals[j]
                     val nextIndex = next.attr[INDEX_ATTR]
@@ -238,18 +175,16 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                     }
                     skipCount++
                 }
-                writeSkip(buf, skipCount)
+                segments.add(PlayerSkipCountSegment(skipCount))
                 player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
             }
         }
-        buf.switchToByteAccess()
         locals.removeAll(localsToRemove)
 
         if (skipCount > 0) {
             throw RuntimeException()
         }
 
-        buf.switchToBitAccess()
         var added = 0
         for (i in 0 until nonLocalIndices.size) {
             val index = nonLocalIndices[i]
@@ -268,29 +203,19 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
             if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE
                     && player.localPlayers.size < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
+                val tileHash = nonLocal.tile.to30BitInteger()
+                segments.add(AddLocalPlayerSegment(player = player, other = nonLocal, index = index, tileHash = tileHash))
+                segments.add(PlayerUpdateBlockSegment(other = nonLocal, newPlayer = true))
+
                 player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
-                nonLocalsToRemove.add(index)
+                player.otherPlayerTiles[index] = tileHash
 
                 player.localPlayers.add(nonLocal)
                 player.localPlayers.sortBy { it.index }
                 added++
-
-                val tileHash = nonLocal.tile.to30BitInteger()
-                buf.putBits(1, 1) // Do not skip this player
-                buf.putBits(2, 0) // Require addition to local players
-
-                buf.putBits(1, 1) // Require location hash change
-                updateLocation(buf, player.otherPlayerTiles[index], tileHash)
-                player.otherPlayerTiles[index] = tileHash
-
-                buf.putBits(13, nonLocal.tile.x and 0x1FFF)
-                buf.putBits(13, nonLocal.tile.z and 0x1FFF)
-                buf.putBits(1, 1) // Requires block update
-                encodeBlocks(other = nonLocal, buf = maskBuf, newPlayer = true)
                 continue
             }
 
-            buf.putBits(1, 0)
             for (j in i + 1 until nonLocalIndices.size) {
                 val nextIndex = nonLocalIndices[j]
                 if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) == 0) {
@@ -302,16 +227,14 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 }
                 skipCount++
             }
-            writeSkip(buf, skipCount)
+            segments.add(PlayerSkipCountSegment(count = skipCount))
             player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
         }
-        buf.switchToByteAccess()
 
         if (skipCount > 0) {
             throw RuntimeException()
         }
 
-        buf.switchToBitAccess()
         nonLocalIndices.removeAll(nonLocalsToRemove)
         for (i in 0 until nonLocalIndices.size) {
             val index = nonLocalIndices[i]
@@ -330,28 +253,19 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
             if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE
                     && player.localPlayers.size < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
+                val tileHash = nonLocal.tile.to30BitInteger()
+                segments.add(AddLocalPlayerSegment(player = player, other = nonLocal, index = index, tileHash = tileHash))
+                segments.add(PlayerUpdateBlockSegment(other = nonLocal, newPlayer = true))
+
                 player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
+                player.otherPlayerTiles[index] = tileHash
 
                 player.localPlayers.add(nonLocal)
                 player.localPlayers.sortBy { it.index }
                 added++
-
-                val tileHash = nonLocal.tile.to30BitInteger()
-                buf.putBits(1, 1) // Do not skip this player
-                buf.putBits(2, 0) // Require addition to local players
-
-                buf.putBits(1, 1) // Require location hash change
-                updateLocation(buf, player.otherPlayerTiles[index], tileHash)
-                player.otherPlayerTiles[index] = tileHash
-
-                buf.putBits(13, nonLocal.tile.x and 0x1FFF)
-                buf.putBits(13, nonLocal.tile.z and 0x1FFF)
-                buf.putBits(1, 1) // Requires block update
-                encodeBlocks(other = nonLocal, buf = maskBuf, newPlayer = true)
                 continue
             }
 
-            buf.putBits(1, 0)
             for (j in i + 1 until nonLocalIndices.size) {
                 val nextIndex = nonLocalIndices[j]
                 if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) != 0) {
@@ -363,13 +277,26 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 }
                 skipCount++
             }
-            writeSkip(buf, skipCount)
+            segments.add(PlayerSkipCountSegment(count = skipCount))
             player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
         }
-        buf.switchToByteAccess()
 
         if (skipCount > 0) {
             throw RuntimeException()
+        }
+
+        return segments
+    }
+
+    override fun run() {
+        val buf = GamePacketBuilder(79, PacketType.VARIABLE_SHORT)
+        val maskBuf = GamePacketBuilder()
+
+        val segments = getSegments()
+        segments.forEach { segment ->
+            buf.switchToBitAccess()
+            segment.encode(if (segment is PlayerUpdateBlockSegment) maskBuf else buf)
+            buf.switchToByteAccess()
         }
 
         buf.putBytes(maskBuf.getBuffer())

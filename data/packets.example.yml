@@ -1,5 +1,8 @@
-packets:
-  # Out
+# Outgoing packets (sent from server to client) go in the out-packets section.
+# Incoming packets (sent from client to server) go in the in-packets section.
+
+out-packets:
+
   - message: gg.rsmod.game.message.impl.LoginRegionMessage
     type: VARIABLE_SHORT
     opcode: 0
@@ -267,17 +270,18 @@ packets:
       - name: items
         type: BYTES
 
-  # In
+in-packets:
+
   - message: gg.rsmod.game.message.impl.CommandMessage
     type: VARIABLE_BYTE
-    opcode: 94
+    opcode: 60
     structure:
       - name: command
         type: STRING
 
   - message: gg.rsmod.game.message.impl.ChangeDisplayModeMessage
     type: FIXED
-    opcode: 33
+    opcode: 35
     length: 5
     structure:
       - name: mode
@@ -291,136 +295,146 @@ packets:
 
   - message: gg.rsmod.game.message.impl.ClickMapMessage
     type: VARIABLE_BYTE
-    opcode: 63
+    opcode: 96
     structure:
-      - name: x
-        trans: ADD
-        order: LITTLE
-        type: SHORT
-        sign: UNSIGNED
       - name: z
-        trans: ADD
         sign: UNSIGNED
         type: SHORT
+        trans: ADD
+      - name: x
+        sign: UNSIGNED
+        type: SHORT
+        trans: ADD
       - name: movement_type
         type: BYTE
+        trans: ADD
 
   - message: gg.rsmod.game.message.impl.ClickMinimapMessage
     type: VARIABLE_BYTE
-    opcode: 64
+    opcode: 52
     structure:
-      - name: x
-        trans: ADD
-        order: LITTLE
-        type: SHORT
-        sign: UNSIGNED
       - name: z
-        trans: ADD
         sign: UNSIGNED
         type: SHORT
+        trans: ADD
+      - name: x
+        sign: UNSIGNED
+        type: SHORT
+        trans: ADD
       - name: movement_type
         type: BYTE
+        trans: ADD
 
   - message: gg.rsmod.game.message.impl.ObjectActionOneMessage
     type: FIXED
-    opcode: 67
+    opcode: 10
     length: 7
     structure:
       - name: z
-        trans: ADD
-        type: SHORT
-        sign: unsigned
-      - name: x
-        trans: ADD
         type: SHORT
         sign: UNSIGNED
       - name: movement_type
-        trans: SUBTRACT
         type: BYTE
+        trans: SUBTRACT
       - name: id
-        trans: ADD
-        type: SHORT
         sign: UNSIGNED
+        type: SHORT
+        trans: ADD
+      - name: x
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+        trans: ADD
 
   - message: gg.rsmod.game.message.impl.ClickButtonMessage
     type: FIXED
-    opcodes: 38,0,1,44,25,24,79,61,59,39
+    opcodes: 68,21,48,19,40,66,85,14,84,0
     length: 8
     structure:
       - name: hash
         type: INT
       - name: slot
-        type: SHORT
         sign: UNSIGNED
+        type: SHORT
       - name: item
-        type: SHORT
         sign: UNSIGNED
+        type: SHORT
 
   - message: gg.rsmod.game.message.impl.ContinueDialogMessage
     type: FIXED
-    opcode: 93
+    opcode: 70
     length: 6
     structure:
       - name: hash
         type: INT
+        order: INVERSED_MIDDLE
       - name: slot
-        type: SHORT
         sign: UNSIGNED
+        type: SHORT
+        trans: ADD
 
   - message: gg.rsmod.game.message.impl.ExamineObjectMessage
     type: FIXED
-    opcode: 34
+    opcode: 36
     length: 2
     structure:
       - name: id
-        type: SHORT
         sign: UNSIGNED
+        type: SHORT
+        trans: ADD
 
   - message: gg.rsmod.game.message.impl.ItemActionOneMessage
     type: FIXED
-    opcode: 55
+    opcode: 87
     length: 8
     structure:
+      - name: item
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+      - name: interfaceHash
+        type: INT
+        order: MIDDLE
       - name: slot
         type: SHORT
         sign: UNSIGNED
-        trans: ADD
-      - name: item
-        type: SHORT
-        sign: UNSIGNED
-        trans: ADD
-      - name: interfaceHash
-        type: INT
-        order: LITTLE
 
   - message: gg.rsmod.game.message.impl.CloseMainInterfaceMessage
-    opcode: 16
+    opcode: 20
     length: 0
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    opcode: 72
+    opcode: 39
     length: 4
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    opcode: 14
+    opcode: 49
     length: 0
 
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 34
+    length: -1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 41
+    length: 6
+
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Keep alive message
-    opcode: 15
+    opcode: 22
     length: 0
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Request new region
-    opcode: 83
+    opcode: 76
     length: 0
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Reconnection
-    opcode: 10
+    opcode: 4
     length: -1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Window focus state change
-    opcode: 19
+    opcode: 73
     length: 1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Key press message
-    opcode: 50
+    opcode: 67
     length: -2

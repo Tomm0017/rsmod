@@ -4,8 +4,9 @@ import gg.rsmod.game.message.impl.IgnoreMessage
 import gg.rsmod.net.packet.*
 import gg.rsmod.util.ServerProperties
 import java.io.File
-import java.util.*
+import java.util.ArrayList
 import kotlin.collections.LinkedHashMap
+import kotlin.collections.set
 
 /**
  * Stores all the [MessageStructure]s that are used on the
@@ -36,7 +37,13 @@ class MessageStructureSet {
     @Throws(Exception::class)
     fun load(packetStructures: File): MessageStructureSet {
         val properties = ServerProperties().loadYaml(packetStructures)
-        val packets = properties.get<ArrayList<Any>>("packets")!!
+        load(properties, false)
+        load(properties, true)
+        return this
+    }
+
+    private fun load(properties: ServerProperties, inPackets: Boolean) {
+        val packets = properties.get<ArrayList<Any>>(if (inPackets) "in-packets" else "out-packets")!!
         packets.forEach { packet ->
             val values = packet as LinkedHashMap<*, *>
             val className = values["message"] as String
@@ -68,14 +75,17 @@ class MessageStructureSet {
                 val messageStructure = MessageStructure(type = packetType, opcodes = packetOpcodes.toIntArray(), length = packetLength,
                         values = packetValues)
                 structureClasses[clazz] = messageStructure
-                packetOpcodes.forEach { opcode -> structureOpcodes[opcode] = messageStructure }
+                if (inPackets) {
+                    packetOpcodes.forEach { opcode -> structureOpcodes[opcode] = messageStructure }
+                }
             } else {
                 val messageStructure = MessageStructure(type = packetType, opcodes = packetOpcodes.toIntArray(),
                         length = packetLength, values = LinkedHashMap())
                 structureClasses[clazz] = messageStructure
-                packetOpcodes.forEach { opcode -> structureOpcodes[opcode] = messageStructure }
+                if (inPackets) {
+                    packetOpcodes.forEach { opcode -> structureOpcodes[opcode] = messageStructure }
+                }
             }
         }
-        return this
     }
 }

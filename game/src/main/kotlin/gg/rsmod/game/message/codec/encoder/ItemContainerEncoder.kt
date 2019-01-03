@@ -1,10 +1,7 @@
 package gg.rsmod.game.message.codec.encoder
 
-import gg.rsmod.game.message.MessageStructure
 import gg.rsmod.game.message.codec.MessageEncoder
 import gg.rsmod.game.message.impl.SetItemContainerMessage
-import gg.rsmod.net.packet.DataOrder
-import gg.rsmod.net.packet.DataTransformation
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
 
@@ -24,15 +21,19 @@ class ItemContainerEncoder : MessageEncoder<SetItemContainerMessage>() {
         "items" -> {
             val buf = GamePacketBuilder()
             message.items.forEach { item ->
+                /**
+                 * TODO(Tom): this can change per revision, so figure out a way
+                 * to externalize the structure.
+                 */
                 if (item != null) {
-                    buf.put(DataType.BYTE, DataTransformation.ADD, Math.min(255, item.amount))
+                    buf.put(DataType.SHORT, item.id + 1)
+                    buf.put(DataType.BYTE, Math.min(255, item.amount))
                     if (item.amount >= 255) {
                         buf.put(DataType.INT, item.amount)
                     }
-                    buf.put(DataType.SHORT, DataOrder.LITTLE, item.id + 1)
                 } else {
+                    buf.put(DataType.SHORT, 0)
                     buf.put(DataType.BYTE, 0)
-                    buf.put(DataType.SHORT, DataOrder.LITTLE, 0)
                 }
             }
             val data = ByteArray(buf.getBuffer().readableBytes())

@@ -22,6 +22,10 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 15
     }
 
+    /**
+     * TODO(Tom): break the logic into 'segments' which are then handled separately (too tired to go into detail)
+     */
+
     private val nonLocalIndices = arrayListOf<Int>().apply { addAll(1..2047) }
 
     override fun run() {

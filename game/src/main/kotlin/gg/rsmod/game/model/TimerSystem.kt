@@ -30,7 +30,7 @@ class TimerSystem {
         return this
     }
 
-    fun has(key: TimerKey): Boolean = timers?.containsKey(key) ?: false
+    fun has(key: TimerKey): Boolean = (timers?.getOrDefault(key, 0) ?: 0) > 0
 
     fun remove(key: TimerKey) {
         constructIfNeeded()

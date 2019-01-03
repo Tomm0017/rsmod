@@ -25,6 +25,12 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
     private val nonLocalIndices = arrayListOf<Int>().apply { addAll(1..2047) }
 
     override fun run() {
+        /**
+         * TODO(Tom): externalize this opcode. could rename blocks external file
+         * to sync.yml and have all sync related things in there, including this
+         * opcode.
+         */
+
         val buf = GamePacketBuilder(79, PacketType.VARIABLE_SHORT)
         val maskBuf = GamePacketBuilder()
 

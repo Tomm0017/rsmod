@@ -16,6 +16,15 @@ import gg.rsmod.net.packet.GamePacketBuilder
 class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean) : SynchronizationSegment {
 
     override fun encode(buf: GamePacketBuilder) {
+        /**
+         * TODO(Tom): externalize the structures in which the values are written
+         * to the [buf] as they are scrambled on every revision. Could use something
+         * like https://developers.google.com/protocol-buffers/ for structures like
+         * this. Using the same system as [gg.rsmod.game.message.MessageStructure]
+         * could work, but would have to benchmark the performance as [SynchronizationSegment]s
+         * are operations that must be handled within a game cycle and are
+         * performance-critical.
+         */
         var mask = other.blockBuffer.blockValue()
 
         var forceFacePawn = false

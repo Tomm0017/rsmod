@@ -112,8 +112,10 @@ out-packets:
     structure:
       - name: value
         type: BYTE
+        trans: ADD
       - name: id
         type: SHORT
+        trans: ADD
 
   - message: gg.rsmod.game.message.impl.SetBigVarpMessage
     type: FIXED

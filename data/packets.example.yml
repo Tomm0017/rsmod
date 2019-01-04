@@ -428,12 +428,20 @@ in-packets:
     length: -1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 1
+    length: 3
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 5
     length: 7
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 6
     length: 7
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 7
+    length: 8
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 9

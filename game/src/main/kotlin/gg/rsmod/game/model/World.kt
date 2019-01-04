@@ -88,11 +88,16 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     var xteaKeyService: XteaKeyService? = null
 
     /**
+     * The player updating packet opcode.
+     */
+    var playerUpdateOpcode = -1
+
+    /**
      * When [gg.rsmod.game.sync.UpdateBlockBuffer.blockValue] exceeds the value
      * 0xFF, we have to write it as a short. The client uses a certain bit to
      * identify when this is the case.
      */
-    var updateBlockExcessMask = 0
+    var updateBlockExcessMask = -1
 
     /**
      * The order in which [UpdateBlockType]s must be handled in the player
@@ -179,14 +184,17 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     @Throws(Exception::class)
     fun loadUpdateBlocks(updateBlocks: File) {
-        check(this.updateBlockExcessMask == 0)
+        check(this.playerUpdateOpcode == -1)
+        check(this.updateBlockExcessMask == -1)
         check(this.updateBlockOrder.isEmpty())
         check(this.updateBlocks.isEmpty())
 
         val properties = ServerProperties().loadYaml(updateBlocks)
 
+        val playerUpdateOpcode = properties.get<Int>("player-updating-opcode")!!
         val excessMask = Integer.decode(properties.get<String>("excess-mask"))
-        updateBlockExcessMask = excessMask
+        this.playerUpdateOpcode = playerUpdateOpcode
+        this.updateBlockExcessMask = excessMask
 
         val orders = properties.get<ArrayList<Any>>("order")!!
         orders.forEach { order ->

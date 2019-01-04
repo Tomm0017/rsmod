@@ -1,3 +1,4 @@
+player-updating-opcode: 79
 excess-mask: 0x8
 
 order:

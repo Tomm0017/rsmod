@@ -138,3 +138,5 @@ through e-mail: **rspsmods@gmail.com**
 * #### OS-Scape
     - The idea behind certain features such as TimerSystem, AttributeSystem and Services
     - The idea behind user-friendly plugin binding
+* #### Kris
+    - Some information on player GPI

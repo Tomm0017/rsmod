@@ -1,5 +1,5 @@
-# Outgoing packets (sent from server to client) go in the out-packets section.
-# Incoming packets (sent from client to server) go in the in-packets section.
+# out-packets: packets sent from server to client
+# in-packets:  packets sent from client to server
 
 out-packets:
 
@@ -271,6 +271,17 @@ out-packets:
       - name: items
         type: BYTES
 
+  - message: gg.rsmod.game.message.impl.PlaySoundMessage
+    type: FIXED
+    opcode: 65
+    structure:
+      - name: sound
+        type: SHORT
+      - name: volume
+        type: BYTE
+      - name: delay
+        type: SHORT
+
 in-packets:
 
   - message: gg.rsmod.game.message.impl.CommandMessage
@@ -425,8 +436,16 @@ in-packets:
     length: 7
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 9
+    length: 4
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 41
     length: 6
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 12
+    length: 13
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Keep alive message
     opcode: 22

@@ -15,7 +15,7 @@ class PlayerTeleportSegment(private val player: Player, private val other: Playe
          */
         buf.putBits(1, 1)
         /**
-         * Does [other] have pending [gg.rsmod.game.sync.UpdateBlock]s?
+         * Does [other] have pending [gg.rsmod.game.sync.UpdateBlockType]s?
          */
         buf.putBit(encodeUpdateBlocks)
         /**

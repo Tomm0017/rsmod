@@ -4,7 +4,7 @@ import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.game.sync.UpdateBlock
+import gg.rsmod.game.sync.UpdateBlockType
 import gg.rsmod.game.sync.UpdateBlockBuffer
 
 /**
@@ -89,9 +89,9 @@ abstract class Pawn(open val world: World) : Entity() {
 
     abstract fun isRunning(): Boolean
     
-    abstract fun addBlock(block: UpdateBlock)
+    abstract fun addBlock(block: UpdateBlockType)
 
-    abstract fun hasBlock(block: UpdateBlock): Boolean
+    abstract fun hasBlock(block: UpdateBlockType): Boolean
 
     abstract fun heal(amount: Int, capValue: Int = 0)
 
@@ -99,7 +99,7 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun setTransmogId(transmogId: Int) {
         this.transmogId = transmogId
-        addBlock(UpdateBlock.APPEARANCE)
+        addBlock(UpdateBlockType.APPEARANCE)
     }
 
     fun canMove(): Boolean = !isDead() && lock.canMove()
@@ -160,7 +160,7 @@ abstract class Pawn(open val world: World) : Entity() {
         teleport = true
         tile = Tile(x, z, height)
         movementQueue.clear()
-        addBlock(UpdateBlock.MOVEMENT)
+        addBlock(UpdateBlockType.MOVEMENT)
     }
 
     fun teleport(tile: Tile) {
@@ -169,19 +169,19 @@ abstract class Pawn(open val world: World) : Entity() {
 
     fun animate(id: Int) {
         blockBuffer.animation = id
-        addBlock(UpdateBlock.ANIMATION)
+        addBlock(UpdateBlockType.ANIMATION)
     }
 
     fun graphic(id: Int, height: Int = 0, delay: Int = 0) {
         blockBuffer.graphicId = id
         blockBuffer.graphicHeight = height
         blockBuffer.graphicDelay = delay
-        addBlock(UpdateBlock.GFX)
+        addBlock(UpdateBlockType.GFX)
     }
 
     fun forceChat(message: String) {
         blockBuffer.forceChat = message
-        addBlock(UpdateBlock.FORCE_CHAT)
+        addBlock(UpdateBlockType.FORCE_CHAT)
     }
 
     fun faceTile(face: Tile, width: Int = 1, length: Int = 1) {
@@ -201,14 +201,14 @@ abstract class Pawn(open val world: World) : Entity() {
         }
 
         blockBuffer.facePawnIndex = -1
-        addBlock(UpdateBlock.FACE_TILE)
+        addBlock(UpdateBlockType.FACE_TILE)
     }
 
     fun facePawn(pawn: Pawn?) {
         blockBuffer.facePawnIndex = if (pawn == null) -1 else if (pawn.getType().isPlayer()) pawn.index + 32768 else pawn.index
 
         blockBuffer.faceDegrees = 0
-        addBlock(UpdateBlock.FACE_PAWN)
+        addBlock(UpdateBlockType.FACE_PAWN)
     }
 
     /**

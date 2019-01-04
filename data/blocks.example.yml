@@ -1,28 +1,85 @@
+excess-mask: 0x8
+
+order:
+  - FORCE_CHAT
+  - MOVEMENT
+  - FACE_TILE
+  - APPEARANCE
+  - FACE_PAWN
+  - ANIMATION
+  - GFX
+
 blocks:
+
   - block: APPEARANCE
     pbit: 0x1
+    structure:
+      - name: length
+        type: BYTE
+        trans: SUBTRACT
+      - name: buffer
+        type: BYTES
+        trans: ADD
+
+  - block: MOVEMENT
+    pbit: 0x1000
+    structure:
+      - name: type
+        type: BYTE
+        trans: ADD
+
+  - block: FORCE_CHAT
+    pbit: 0x20
+    nbit: 0x20
 
   - block: ANIMATION
     pbit: 0x80
     nbit: 0x80
+    structure:
+      - name: animation
+        type: SHORT
+      - name: delay
+        type: BYTE
 
   - block: GFX
     pbit: 0x200
     nbit: 0x200
+    structure:
+      - name: gfx
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: settings
+        order: INVERSED_MIDDLE
+        type: INT
 
   - block: PUBLIC_CHAT
     pbit: 0x10
+    structure:
+      - name: effects
+        type: SHORT
+      - name: icon
+        type: BYTE
+      - name: auto
+        type: BYTE
+      - name: message
+        type: BYTES
 
   - block: FACE_TILE
     pbit: 0x4
     nbit: 0x4
+    structure:
+      - name: degrees
+        type: SHORT
+        order: LITTLE
 
   - block: FACE_PAWN
     pbit: 0x2
     nbit: 0x2
-
-  - block: MOVEMENT
-    pbit: 0x1000
+    structure:
+      - name: pawnIndex
+        type: SHORT
+        trans: ADD
 
   - block: CONTEXT_MENU
     pbit: 0x100
@@ -33,7 +90,3 @@ blocks:
   - block: HITMARK
     pbit: 0x40
     nbit: 0x40
-
-  - block: FORCE_CHAT
-    pbit: 0x20
-    nbit: 0x20

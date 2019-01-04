@@ -3,7 +3,7 @@ package gg.rsmod.game.model
 import gg.rsmod.game.message.impl.SetRunEnergyMessage
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.sync.UpdateBlock
+import gg.rsmod.game.sync.UpdateBlockType
 import java.util.*
 
 /**
@@ -93,7 +93,7 @@ class MovementQueue(val pawn: Pawn) {
                 pawn.steps = StepDirection(walkDirection, runDirection)
                 pawn.tile = Tile(tile)
                 if (runDirection != null) {
-                    pawn.addBlock(UpdateBlock.MOVEMENT)
+                    pawn.addBlock(UpdateBlockType.MOVEMENT)
 
                     if (pawn.world.gameContext.runEnergy && pawn is Player) {
                         val weight = pawn.weight

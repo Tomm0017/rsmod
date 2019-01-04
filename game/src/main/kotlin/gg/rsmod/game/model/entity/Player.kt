@@ -8,7 +8,7 @@ import gg.rsmod.game.model.*
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.interf.Interfaces
-import gg.rsmod.game.sync.UpdateBlock
+import gg.rsmod.game.sync.UpdateBlockType
 import java.util.*
 
 /**
@@ -201,12 +201,12 @@ open class Player(override val world: World) : Pawn(world) {
      */
     override fun isRunning(): Boolean = varps[173].state != 0
 
-    override fun addBlock(block: UpdateBlock) {
+    override fun addBlock(block: UpdateBlockType) {
         val bits = world.updateBlocks[block]!!
         blockBuffer.addBit(bits.playerBit)
     }
 
-    override fun hasBlock(block: UpdateBlock): Boolean {
+    override fun hasBlock(block: UpdateBlockType): Boolean {
         val bits = world.updateBlocks[block]!!
         return blockBuffer.hasBit(bits.playerBit)
     }
@@ -255,7 +255,7 @@ open class Player(override val world: World) : Pawn(world) {
         }
 
         initiated = true
-        addBlock(UpdateBlock.APPEARANCE)
+        addBlock(UpdateBlockType.APPEARANCE)
         world.plugins.executeLogin(this)
     }
 

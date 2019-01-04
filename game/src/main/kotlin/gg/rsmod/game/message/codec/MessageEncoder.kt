@@ -23,7 +23,7 @@ abstract class MessageEncoder<T: Message> {
     }
 
     /**
-     * Encode the [message] into a [GamePacket] based on the [structure].
+     * Writes data from the [message] into [builder] based on the [structure].
      */
     fun encode(message: T, builder: GamePacketBuilder, structure: MessageStructure) {
         structure.values.values.forEach { value ->

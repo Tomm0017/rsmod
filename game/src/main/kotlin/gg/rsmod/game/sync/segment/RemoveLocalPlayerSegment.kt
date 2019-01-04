@@ -15,7 +15,7 @@ class RemoveLocalPlayerSegment : SynchronizationSegment {
         buf.putBits(1, 1)
         /**
          * Signal to the client that the player does not require
-         * [gg.rsmod.game.sync.UpdateBlock] decoding.
+         * [gg.rsmod.game.sync.UpdateBlockType] decoding.
          */
         buf.putBits(1, 0)
         /**

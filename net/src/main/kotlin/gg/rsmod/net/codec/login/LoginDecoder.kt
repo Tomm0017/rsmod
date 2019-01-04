@@ -66,20 +66,21 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
         if (buf.readableBytes() >= payloadLength) {
             buf.markReaderIndex()
 
-            val secureBuf = if (rsaExponent != null && rsaModulus != null) {
+            val secureBuf: ByteBuf = if (rsaExponent != null && rsaModulus != null) {
                 val secureBufLength = buf.readUnsignedShort()
                 val secureBuf = buf.readBytes(secureBufLength)
                 val rsaValue = BigInteger(secureBuf.array()).modPow(rsaExponent, rsaModulus)
                 Unpooled.wrappedBuffer(rsaValue.toByteArray())
-            } else buf
+            } else {
+                buf
+            }
 
             val successfulEncryption = secureBuf.readUnsignedByte().toInt() == 1
             if (!successfulEncryption) {
-                logger.info("Channel '{}' login request rejected.", ctx.channel())
-                writeResponse(ctx, LoginResultType.BAD_SESSION_ID)
-
                 buf.resetReaderIndex()
                 buf.skipBytes(payloadLength)
+                logger.info("Channel '{}' login request rejected.", ctx.channel())
+                writeResponse(ctx, LoginResultType.BAD_SESSION_ID)
                 return
             }
 
@@ -100,16 +101,15 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
             }
 
             secureBuf.skipBytes(Byte.SIZE_BYTES)
-            val password = BufferUtils.readString(secureBuf)
 
+            val password = BufferUtils.readString(secureBuf)
             val username = BufferUtils.readString(buf)
 
             if (reportedSeed != serverSeed) {
-                logger.info("User '{}' login request seed mismatch [receivedSeed=$reportedSeed, expectedSeed=$serverSeed].", username, reportedSeed, serverSeed)
-                writeResponse(ctx, LoginResultType.BAD_SESSION_ID)
-
                 buf.resetReaderIndex()
                 buf.skipBytes(payloadLength)
+                logger.info("User '{}' login request seed mismatch [receivedSeed=$reportedSeed, expectedSeed=$serverSeed].", username, reportedSeed, serverSeed)
+                writeResponse(ctx, LoginResultType.BAD_SESSION_ID)
                 return
             }
 

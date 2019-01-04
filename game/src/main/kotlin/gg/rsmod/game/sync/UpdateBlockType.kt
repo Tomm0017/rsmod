@@ -3,7 +3,7 @@ package gg.rsmod.game.sync
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-enum class UpdateBlock {
+enum class UpdateBlockType {
 
     APPEARANCE,
 

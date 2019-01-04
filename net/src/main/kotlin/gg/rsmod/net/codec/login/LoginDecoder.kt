@@ -64,76 +64,48 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
 
     private fun decodePayload(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
         if (buf.readableBytes() >= payloadLength) {
-            val rsaEncryption = rsaExponent != null && rsaModulus != null
-            var badSession = false
-
-            val password: String
-            val clientSeed = IntArray(4)
-            val reportedSeed: Long
-            var authCode = -1
-            val successfulEncryption: Boolean
-
             buf.markReaderIndex()
 
-            if (rsaEncryption) {
+            val secureBuf = if (rsaExponent != null && rsaModulus != null) {
                 val secureBufLength = buf.readUnsignedShort()
-                var secureBuf = buf.readBytes(secureBufLength)
+                val secureBuf = buf.readBytes(secureBufLength)
                 val rsaValue = BigInteger(secureBuf.array()).modPow(rsaExponent, rsaModulus)
-                secureBuf = Unpooled.wrappedBuffer(rsaValue.toByteArray())
+                Unpooled.wrappedBuffer(rsaValue.toByteArray())
+            } else buf
 
-                successfulEncryption = secureBuf.readUnsignedByte().toInt() == 1
-                if (!successfulEncryption) {
-                    badSession = true
-                }
+            val successfulEncryption = secureBuf.readUnsignedByte().toInt() == 1
+            if (!successfulEncryption) {
+                logger.info("Channel '{}' login request rejected.", ctx.channel())
+                writeResponse(ctx, LoginResultType.BAD_SESSION_ID)
 
-                for (i in 0 until clientSeed.size) {
-                    clientSeed[i] = secureBuf.readInt()
-                }
-
-                reportedSeed = secureBuf.readLong()
-                if (reportedSeed != serverSeed) {
-                    badSession = true
-                }
-
-                val authRequest = secureBuf.readByte().toInt()
-                if (authRequest == 1 && authRequest == 3) {
-                    authCode = secureBuf.readUnsignedMedium()
-                } else if (authRequest == 0) {
-                    secureBuf.skipBytes(Int.SIZE_BYTES) // some info from 2fa
-                } else {
-                    secureBuf.skipBytes(Int.SIZE_BYTES)
-                }
-
-                secureBuf.skipBytes(Byte.SIZE_BYTES)
-                password = BufferUtils.readString(secureBuf)
-            } else {
-                successfulEncryption = buf.readUnsignedByte().toInt() == 1
-                if (!successfulEncryption) {
-                    badSession = true
-                }
-
-                for (i in 0 until clientSeed.size) {
-                    clientSeed[i] = buf.readInt()
-                }
-                reportedSeed = buf.readLong()
-
-                val authRequest = buf.readByte().toInt()
-                if (authRequest == 1 && authRequest == 3) {
-                    authCode = buf.readUnsignedMedium()
-                } else if (authRequest == 0) {
-                    buf.skipBytes(Int.SIZE_BYTES) // some info from 2fa
-                } else {
-                    buf.skipBytes(Int.SIZE_BYTES)
-                }
-
-                buf.skipBytes(Byte.SIZE_BYTES)
-                password = BufferUtils.readString(buf)
+                buf.resetReaderIndex()
+                buf.skipBytes(payloadLength)
+                return
             }
+
+            val clientSeed = IntArray(4)
+            for (i in 0 until clientSeed.size) {
+                clientSeed[i] = secureBuf.readInt()
+            }
+            val reportedSeed = secureBuf.readLong()
+
+            var authCode = -1
+            val authRequest = secureBuf.readByte().toInt()
+            if (authRequest == 1 && authRequest == 3) {
+                authCode = secureBuf.readUnsignedMedium()
+            } else if (authRequest == 0) {
+                secureBuf.skipBytes(Int.SIZE_BYTES) // some info from 2fa
+            } else {
+                secureBuf.skipBytes(Int.SIZE_BYTES)
+            }
+
+            secureBuf.skipBytes(Byte.SIZE_BYTES)
+            val password = BufferUtils.readString(secureBuf)
 
             val username = BufferUtils.readString(buf)
 
-            if (badSession) {
-                logger.info("User '{}' login request error - bad session [receivedSeed=$reportedSeed, expectedSeed=$serverSeed].", username, reportedSeed, serverSeed)
+            if (reportedSeed != serverSeed) {
+                logger.info("User '{}' login request seed mismatch [receivedSeed=$reportedSeed, expectedSeed=$serverSeed].", username, reportedSeed, serverSeed)
                 writeResponse(ctx, LoginResultType.BAD_SESSION_ID)
 
                 buf.resetReaderIndex()

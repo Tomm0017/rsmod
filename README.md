@@ -136,5 +136,5 @@ through e-mail: **rspsmods@gmail.com**
     - Using Collision Detection from Apollo 
     - Basic idea behind the Region system (known as Chunk on RS Mod)
 * #### OS-Scape
-    - The idea behind certain features such as TimerSystem and AttributeSystem
+    - The idea behind certain features such as TimerSystem, AttributeSystem and Services
     - The idea behind user-friendly plugin binding

@@ -4,8 +4,9 @@
 gradlew
 gradlew.bat
 
-/data/xteas/
+/data/rsa/
 /data/saves/
+/data/xteas/
 /data/packets.yml
 /data/blocks.yml
 

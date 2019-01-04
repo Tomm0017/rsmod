@@ -105,8 +105,8 @@ fun Player.sendRunEnergy() {
     write(SetRunEnergyMessage(runEnergy.toInt()))
 }
 
-fun Player.playSound(id: Int, delay: Int = 0) {
-    // TODO: add when SendSoundMessage is implemented
+fun Player.playSound(id: Int, volume: Int = 1, delay: Int = 0) {
+    write(PlaySoundMessage(sound = id, volume = volume, delay = delay))
 }
 
 fun Player.getVarp(id: Int): Int = varps.getState(id)

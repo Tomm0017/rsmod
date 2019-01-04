@@ -25,10 +25,6 @@ import gg.rsmod.game.model.Tile
  * The [Tile] that will be used as the home area and tile where new players
  * will start off.
  *
- * @param rsaEncryption
- * If RSA encryption should be used for encrypting/decrypting
- * [gg.rsmod.game.message.Message]s.
- *
  * @param skillCount
  * The max amount of skills in our game.
  *
@@ -36,5 +32,7 @@ import gg.rsmod.game.model.Tile
  */
 data class GameContext(var initialLaunch: Boolean, val name: String, val revision: Int,
                        val cycleTime: Int, val playerLimit: Int, val home: Tile,
-                       val rsaEncryption: Boolean, val skillCount: Int,
-                       val runEnergy: Boolean)
+                       val skillCount: Int, val runEnergy: Boolean) {
+
+
+}

@@ -36,7 +36,7 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
 
     private fun decodeOpcode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
         if (buf.isReadable) {
-            opcode = (buf.readUnsignedByte().toInt() - (if (rsaEncryption) (random.nextInt() and 0xFF) else 0))
+            opcode = buf.readUnsignedByte().toInt() - (if (rsaEncryption) (random.nextInt() and 0xFF) else 0)
             val metadata = packetMetadata.getType(opcode)
             if (metadata == null) {
                 if (ctx.channel().isOpen) {

@@ -7,6 +7,7 @@ import io.netty.handler.timeout.IdleStateHandler
 import io.netty.handler.traffic.ChannelTrafficShapingHandler
 import io.netty.handler.traffic.GlobalTrafficShapingHandler
 import net.runelite.cache.fs.Store
+import java.math.BigInteger
 import java.util.concurrent.Executors
 
 /**
@@ -14,7 +15,8 @@ import java.util.concurrent.Executors
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class ClientChannelInitializer(private val revision: Int, filestore: Store, world: World) : ChannelInitializer<SocketChannel>() {
+class ClientChannelInitializer(private val revision: Int, private val rsaExponent: BigInteger?,
+                               private val rsaModulus: BigInteger?, filestore: Store, world: World) : ChannelInitializer<SocketChannel>() {
 
     /**
      * A global traffic handler that limits the amount of bandwidth all channels
@@ -35,7 +37,7 @@ class ClientChannelInitializer(private val revision: Int, filestore: Store, worl
         p.addLast("channel_traffic", ChannelTrafficShapingHandler(0, 1024 * 5, 1000))
         p.addLast("timeout", IdleStateHandler(30, 0, 0))
         p.addLast("handshake_encoder", HandshakeEncoder())
-        p.addLast("handshake_decoder", HandshakeDecoder(revision))
+        p.addLast("handshake_decoder", HandshakeDecoder(revision, rsaExponent, rsaModulus))
         p.addLast("handler", handler)
     }
 }

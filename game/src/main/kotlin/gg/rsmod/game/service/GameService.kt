@@ -98,7 +98,6 @@ class GameService : Service() {
 
     val messageDecoders = MessageDecoderSet()
 
-    @Throws(Exception::class)
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         this.world = world
         populateTasks(serviceProperties)

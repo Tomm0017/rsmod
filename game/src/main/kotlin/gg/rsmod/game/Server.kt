@@ -6,6 +6,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.protocol.ClientChannelInitializer
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.Service
+import gg.rsmod.game.service.rsa.RsaService
 import gg.rsmod.util.ServerProperties
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelOption
@@ -97,7 +98,6 @@ class Server {
                 cycleTime = gameProperties.getOrDefault("cycle-time", 600),
                 playerLimit = gameProperties.getOrDefault("max-players", 2000),
                 home = Tile(gameProperties.get<Int>("home-x")!!, gameProperties.get<Int>("home-z")!!, gameProperties.getOrDefault("home-height", 0)),
-                rsaEncryption = gameProperties.getOrDefault("rsa-encryption", false),
                 skillCount = gameProperties.get<Int>("skill-count")!!,
                 runEnergy = gameProperties.getOrDefault("run-energy", true))
 
@@ -163,8 +163,11 @@ class Server {
         /**
          * Binding the network to allow incoming and outgoing connections.
          */
+        val rsaService = world.getService(RsaService::class.java, false).orElse(null)
         val serverBootstrap = ServerBootstrap()
-        val clientChannelInitializer = ClientChannelInitializer(revision = gameContext.revision, filestore = world.filestore, world = world)
+        val clientChannelInitializer = ClientChannelInitializer(revision = gameContext.revision,
+                rsaExponent = rsaService?.getExponent(), rsaModulus = rsaService?.getModulus(),
+                filestore = world.filestore, world = world)
         val port = gameProperties.get<Int>("game-port")!!
 
         serverBootstrap.group(acceptGroup, ioGroup)

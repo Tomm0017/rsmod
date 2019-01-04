@@ -24,7 +24,7 @@ class Npc(override val world: World) : Pawn(world) {
     }
 
     override fun heal(amount: Int, capValue: Int) {
-        TODO("not implemented")
+
     }
 
     override fun cycle() {

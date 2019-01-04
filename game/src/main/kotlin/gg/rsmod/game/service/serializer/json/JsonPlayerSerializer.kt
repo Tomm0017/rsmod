@@ -34,7 +34,6 @@ class JsonPlayerSerializer : PlayerSerializerService() {
 
     private lateinit var path: Path
 
-    @Throws(Exception::class)
     override fun initSerializer(server: Server, world: World, serviceProperties: ServerProperties) {
         path = Paths.get(serviceProperties.get<String>("path")!!)
         if (!Files.exists(path)) {

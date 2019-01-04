@@ -3,7 +3,6 @@
 name: "RS Mod Server"
 game-port: 43594
 revision: 172
-rsa-encryption: false
 home-x: 3087
 home-z: 3497
 skill-count: 23

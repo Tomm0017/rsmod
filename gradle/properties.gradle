@@ -8,4 +8,5 @@ ext {
     runeliteVersion = 'runelite-parent-1.5.2.1'
     commonsIoVersion = '2.4'
     scryptVersion = '1.4.0'
+    bouncycastleVersion = '1.54'
 }

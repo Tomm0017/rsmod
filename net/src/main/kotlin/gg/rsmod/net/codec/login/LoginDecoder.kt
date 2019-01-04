@@ -3,14 +3,17 @@ package gg.rsmod.net.codec.login
 import gg.rsmod.net.codec.StatefulFrameDecoder
 import gg.rsmod.util.io.BufferUtils
 import io.netty.buffer.ByteBuf
+import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import org.apache.logging.log4j.LogManager
+import java.math.BigInteger
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class LoginDecoder(private val serverRevision: Int) : StatefulFrameDecoder<LoginDecoderState>(LoginDecoderState.HANDSHAKE) {
+class LoginDecoder(private val serverRevision: Int, private val rsaExponent: BigInteger?,
+                   private val rsaModulus: BigInteger?, private val serverSeed: Long) : StatefulFrameDecoder<LoginDecoderState>(LoginDecoderState.HANDSHAKE) {
 
     companion object {
         private val logger = LogManager.getLogger(LoginDecoder::class.java)
@@ -45,7 +48,7 @@ class LoginDecoder(private val serverRevision: Int) : StatefulFrameDecoder<Login
             val size = buf.readUnsignedShort()
             if (buf.readableBytes() >= size) {
                 val revision = buf.readInt()
-                buf.skipBytes(Int.SIZE_BYTES)
+                buf.skipBytes(Int.SIZE_BYTES) // Always 1
                 buf.skipBytes(Byte.SIZE_BYTES)
                 if (revision == serverRevision) {
                     payloadLength = size - (Int.SIZE_BYTES + Int.SIZE_BYTES + Byte.SIZE_BYTES)
@@ -61,25 +64,82 @@ class LoginDecoder(private val serverRevision: Int) : StatefulFrameDecoder<Login
 
     private fun decodePayload(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
         if (buf.readableBytes() >= payloadLength) {
-            val isaacSeed = IntArray(4)
+            val rsaEncryption = rsaExponent != null && rsaModulus != null
+            var badSession = false
 
-            buf.skipBytes(Byte.SIZE_BYTES)
-            for (i in 0 until 4) {
-                isaacSeed[i] = buf.readInt()
-            }
-            buf.skipBytes(Long.SIZE_BYTES)
-
-            val authRequest = buf.readByte().toInt()
+            val password: String
+            val clientSeed = IntArray(4)
+            val reportedSeed: Long
             var authCode = -1
-            if (authRequest == 0 || authRequest == 3) {
-                authCode = buf.readUnsignedMedium()
+            val successfulEncryption: Boolean
+
+            buf.markReaderIndex()
+
+            if (rsaEncryption) {
+                val secureBufLength = buf.readUnsignedShort()
+                var secureBuf = buf.readBytes(secureBufLength)
+                val rsaValue = BigInteger(secureBuf.array()).modPow(rsaExponent, rsaModulus)
+                secureBuf = Unpooled.wrappedBuffer(rsaValue.toByteArray())
+
+                successfulEncryption = secureBuf.readUnsignedByte().toInt() == 1
+                if (!successfulEncryption) {
+                    badSession = true
+                }
+
+                for (i in 0 until clientSeed.size) {
+                    clientSeed[i] = secureBuf.readInt()
+                }
+
+                reportedSeed = secureBuf.readLong()
+                if (reportedSeed != serverSeed) {
+                    badSession = true
+                }
+
+                val authRequest = secureBuf.readByte().toInt()
+                if (authRequest == 1 && authRequest == 3) {
+                    authCode = secureBuf.readUnsignedMedium()
+                } else if (authRequest == 0) {
+                    secureBuf.skipBytes(Int.SIZE_BYTES) // some info from 2fa
+                } else {
+                    secureBuf.skipBytes(Int.SIZE_BYTES)
+                }
+
+                secureBuf.skipBytes(Byte.SIZE_BYTES)
+                password = BufferUtils.readString(secureBuf)
             } else {
-                buf.skipBytes(Int.SIZE_BYTES)
+                successfulEncryption = buf.readUnsignedByte().toInt() == 1
+                if (!successfulEncryption) {
+                    badSession = true
+                }
+
+                for (i in 0 until clientSeed.size) {
+                    clientSeed[i] = buf.readInt()
+                }
+                reportedSeed = buf.readLong()
+
+                val authRequest = buf.readByte().toInt()
+                if (authRequest == 1 && authRequest == 3) {
+                    authCode = buf.readUnsignedMedium()
+                } else if (authRequest == 0) {
+                    buf.skipBytes(Int.SIZE_BYTES) // some info from 2fa
+                } else {
+                    buf.skipBytes(Int.SIZE_BYTES)
+                }
+
+                buf.skipBytes(Byte.SIZE_BYTES)
+                password = BufferUtils.readString(buf)
             }
 
-            buf.skipBytes(Byte.SIZE_BYTES)
-            val password = BufferUtils.readString(buf)
             val username = BufferUtils.readString(buf)
+
+            if (badSession) {
+                logger.info("User '{}' login request error - bad session [receivedSeed=$reportedSeed, expectedSeed=$serverSeed].", username, reportedSeed, serverSeed)
+                writeResponse(ctx, LoginResultType.BAD_SESSION_ID)
+
+                buf.resetReaderIndex()
+                buf.skipBytes(payloadLength)
+                return
+            }
 
             val clientSettings = buf.readByte().toInt()
             val clientResizable = (clientSettings shr 1) == 1
@@ -108,6 +168,12 @@ class LoginDecoder(private val serverRevision: Int) : StatefulFrameDecoder<Login
             for (i in 0 until crcs.size) {
                 crcs[i] = buf.readInt()
             }
+
+            val isaacSeed = IntArray(4)
+            isaacSeed[0] = clientSeed[0]
+            isaacSeed[1] = clientSeed[1]
+            isaacSeed[2] = serverSeed.toInt() shr 32
+            isaacSeed[3] = serverSeed.toInt()
 
             logger.info("User '{}' login request from {}.", username, ctx.channel())
 

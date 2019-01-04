@@ -8,14 +8,15 @@ import gg.rsmod.game.protocol.GameMessageEncoder
 import gg.rsmod.game.protocol.PacketMetadataHelper
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.Service
+import gg.rsmod.game.service.rsa.RsaService
 import gg.rsmod.game.service.serializer.PlayerSerializerService
 import gg.rsmod.game.system.GameSystem
 import gg.rsmod.net.codec.game.GamePacketDecoder
 import gg.rsmod.net.codec.game.GamePacketEncoder
 import gg.rsmod.net.codec.login.LoginRequest
-import gg.rsmod.util.io.IsaacRandom
-import gg.rsmod.util.concurrency.NamedThreadFactory
 import gg.rsmod.util.ServerProperties
+import gg.rsmod.util.concurrency.NamedThreadFactory
+import gg.rsmod.util.io.IsaacRandom
 import org.apache.logging.log4j.LogManager
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
@@ -42,7 +43,7 @@ class LoginService : Service() {
      */
     val requests = LinkedBlockingQueue<LoginServiceRequest>()
 
-    @Throws(Exception::class)
+    @Throws(RuntimeException::class)
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         serializer = world.getService(PlayerSerializerService::class.java, true).get()
 
@@ -74,15 +75,16 @@ class LoginService : Service() {
          * next game cycle after completion. Should benchmark first.
          */
         val pipeline = client.channel.pipeline()
+        val rsaEncryption = client.world.getService(RsaService::class.java, false).isPresent
 
         pipeline.remove("handshake_encoder")
         pipeline.remove("login_decoder")
         pipeline.remove("login_encoder")
 
-        pipeline.addFirst("packet_encoder", GamePacketEncoder(encodeRandom, client.world.gameContext.rsaEncryption))
+        pipeline.addFirst("packet_encoder", GamePacketEncoder(encodeRandom, rsaEncryption))
         pipeline.addAfter("packet_encoder", "message_encoder", GameMessageEncoder(gameSystem.service.messageEncoders, gameSystem.service.messageStructures))
 
-        pipeline.addBefore("handler", "packet_decoder", GamePacketDecoder(decodeRandom, client.world.gameContext.rsaEncryption,
+        pipeline.addBefore("handler", "packet_decoder", GamePacketDecoder(decodeRandom, rsaEncryption,
                 PacketMetadataHelper(gameSystem.service.messageStructures)))
 
         client.login()

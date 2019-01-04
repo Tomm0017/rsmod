@@ -10,6 +10,7 @@ import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
 import org.apache.logging.log4j.LogManager
+import java.math.BigInteger
 
 /**
  * A [ByteToMessageDecoder] implementation which is responsible for handling
@@ -18,7 +19,8 @@ import org.apache.logging.log4j.LogManager
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class HandshakeDecoder(private val revision: Int) : ByteToMessageDecoder() {
+class HandshakeDecoder(private val revision: Int, private val rsaExponent: BigInteger?,
+                       private val rsaModulus: BigInteger?) : ByteToMessageDecoder() {
 
     companion object {
         private val logger = LogManager.getLogger(HandshakeDecoder::class.java)
@@ -39,11 +41,13 @@ class HandshakeDecoder(private val revision: Int) : ByteToMessageDecoder() {
             }
             HandshakeType.LOGIN -> {
                 val p = ctx.pipeline()
+                val serverSeed = (Math.random() * Long.MAX_VALUE).toLong()
+
                 p.addFirst("login_encoder", LoginEncoder())
-                p.addAfter("handshake_decoder", "login_decoder", LoginDecoder(revision))
+                p.addAfter("handshake_decoder", "login_decoder", LoginDecoder(revision, rsaExponent, rsaModulus, serverSeed))
 
                 ctx.writeAndFlush(ctx.alloc().buffer(1).writeByte(0))
-                ctx.writeAndFlush(ctx.alloc().buffer(8).writeLong((Math.random() * Long.MAX_VALUE).toLong()))
+                ctx.writeAndFlush(ctx.alloc().buffer(8).writeLong(serverSeed))
             }
             else -> {
                 /**

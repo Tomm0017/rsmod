@@ -25,7 +25,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
     private val nonLocalIndices = arrayListOf<Int>().apply { addAll(1..2047) }
 
     override fun run() {
-        val buf = GamePacketBuilder(player.world.playerUpdateOpcode, PacketType.VARIABLE_SHORT)
+        val buf = GamePacketBuilder(player.world.playerUpdateBlocks.updateOpcode, PacketType.VARIABLE_SHORT)
         val maskBuf = GamePacketBuilder()
 
         val segments = getSegments()

@@ -69,4 +69,7 @@ class ServerProperties {
         }
         return this
     }
+
+    @Suppress("UNCHECKED_CAST")
+    fun extract(key: String): ServerProperties = ServerProperties().loadMap(get<Map<*, *>>(key) as Map<String, Any>)
 }

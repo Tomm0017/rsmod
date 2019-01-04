@@ -14,13 +14,13 @@ class Npc(override val world: World) : Pawn(world) {
     override fun isRunning(): Boolean = false
 
     override fun addBlock(block: UpdateBlockType) {
-        val bits = world.updateBlocks[block]!!
-        blockBuffer.addBit(bits.npcBit)
+        val bits = world.npcUpdateBlocks.updateBlocks[block]!!
+        blockBuffer.addBit(bits.bit)
     }
 
     override fun hasBlock(block: UpdateBlockType): Boolean {
-        val bits = world.updateBlocks[block]!!
-        return blockBuffer.hasBit(bits.npcBit)
+        val bits = world.npcUpdateBlocks.updateBlocks[block]!!
+        return blockBuffer.hasBit(bits.bit)
     }
 
     override fun heal(amount: Int, capValue: Int) {

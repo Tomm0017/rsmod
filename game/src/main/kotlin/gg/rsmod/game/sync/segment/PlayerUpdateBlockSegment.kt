@@ -15,35 +15,36 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
 
     override fun encode(buf: GamePacketBuilder) {
         var mask = other.blockBuffer.blockValue()
+        val blocks = other.world.playerUpdateBlocks
 
         var forceFacePawn = false
         var forceFaceTile = false
 
         var forceFace: Tile? = null
         if (newPlayer) {
-            mask = mask or other.world.updateBlocks[UpdateBlockType.APPEARANCE]!!.playerBit
+            mask = mask or blocks.updateBlocks[UpdateBlockType.APPEARANCE]!!.bit
 
             if (other.blockBuffer.faceDegrees != 0) {
-                mask = mask or other.world.updateBlocks[UpdateBlockType.FACE_TILE]!!.playerBit
+                mask = mask or blocks.updateBlocks[UpdateBlockType.FACE_TILE]!!.bit
                 forceFaceTile = true
             } else if (other.blockBuffer.facePawnIndex != -1) {
-                mask = mask or other.world.updateBlocks[UpdateBlockType.FACE_PAWN]!!.playerBit
+                mask = mask or blocks.updateBlocks[UpdateBlockType.FACE_PAWN]!!.bit
                 forceFacePawn = true
             } else {
-                mask = mask or other.world.updateBlocks[UpdateBlockType.FACE_TILE]!!.playerBit
+                mask = mask or blocks.updateBlocks[UpdateBlockType.FACE_TILE]!!.bit
                 forceFace = other.tile.step(other.lastFacingDirection)
             }
         }
 
         if (mask >= 0x100) {
-            mask = mask or other.world.updateBlockExcessMask
+            mask = mask or blocks.updateBlockExcessMask
             buf.put(DataType.BYTE, mask and 0xFF)
             buf.put(DataType.BYTE, mask shr 8)
         } else {
             buf.put(DataType.BYTE, mask and 0xFF)
         }
 
-        other.world.updateBlockOrder.forEach { blockType ->
+        blocks.updateBlockOrder.forEach { blockType ->
             val force = when (blockType) {
                 UpdateBlockType.FACE_TILE -> forceFaceTile || forceFace != null
                 UpdateBlockType.FACE_PAWN -> forceFacePawn
@@ -57,6 +58,8 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
     }
 
     private fun write(buf: GamePacketBuilder, blockType: UpdateBlockType, forceFace: Tile?) {
+        val blocks = other.world.playerUpdateBlocks
+
         when (blockType) {
 
             UpdateBlockType.FORCE_CHAT -> {
@@ -66,13 +69,13 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
             }
 
             UpdateBlockType.MOVEMENT -> {
-                val structure = other.world.updateBlocks[blockType]!!.values
+                val structure = blocks.updateBlocks[blockType]!!.values
                 buf.put(structure[0].type, structure[0].order, structure[0].transformation,
                         if (other.teleport) 127 else if (other.steps?.runDirection != null) 2 else 1)
             }
 
             UpdateBlockType.FACE_TILE -> {
-                val structure = other.world.updateBlocks[blockType]!!.values
+                val structure = blocks.updateBlocks[blockType]!!.values
                 if (forceFace != null) {
                     val srcX = other.tile.x * 64
                     val srcZ = other.tile.z * 64
@@ -142,25 +145,25 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                 appBuf.put(DataType.SHORT, 0)
                 appBuf.put(DataType.BYTE, 0)
 
-                val structure = other.world.updateBlocks[blockType]!!.values
+                val structure = blocks.updateBlocks[blockType]!!.values
                 buf.put(structure[0].type, structure[0].order, structure[0].transformation, appBuf.getBuffer().readableBytes())
                 buf.putBytes(structure[1].transformation, appBuf.getBuffer())
             }
 
             UpdateBlockType.FACE_PAWN -> {
-                val structure = other.world.updateBlocks[blockType]!!.values
+                val structure = blocks.updateBlocks[blockType]!!.values
                 buf.put(structure[0].type, structure[0].order, structure[0].transformation,
                         other.blockBuffer.facePawnIndex)
             }
 
             UpdateBlockType.ANIMATION -> {
-                val structure = other.world.updateBlocks[blockType]!!.values
+                val structure = blocks.updateBlocks[blockType]!!.values
                 buf.put(structure[0].type, structure[0].order, structure[0].transformation, other.blockBuffer.animation)
                 buf.put(structure[1].type, structure[1].order, structure[1].transformation, other.blockBuffer.animationDelay)
             }
 
             UpdateBlockType.GFX -> {
-                val structure = other.world.updateBlocks[blockType]!!.values
+                val structure = blocks.updateBlocks[blockType]!!.values
                 buf.put(structure[0].type, structure[0].order, structure[0].transformation, other.blockBuffer.graphicId)
                 buf.put(structure[1].type, structure[1].order, structure[1].transformation, (other.blockBuffer.graphicHeight shl 16) or other.blockBuffer.graphicDelay)
             }

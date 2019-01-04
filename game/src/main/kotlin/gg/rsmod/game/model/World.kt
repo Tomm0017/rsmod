@@ -4,7 +4,6 @@ import gg.rsmod.game.DevContext
 import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.DefinitionSet
-import gg.rsmod.game.message.MessageValue
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Npc
@@ -15,12 +14,7 @@ import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.service.Service
 import gg.rsmod.game.service.xtea.XteaKeyService
-import gg.rsmod.game.sync.UpdateBlockStructure
-import gg.rsmod.game.sync.UpdateBlockType
-import gg.rsmod.net.packet.DataOrder
-import gg.rsmod.net.packet.DataSignature
-import gg.rsmod.net.packet.DataTransformation
-import gg.rsmod.net.packet.DataType
+import gg.rsmod.game.sync.UpdateBlockSet
 import gg.rsmod.util.ServerProperties
 import net.runelite.cache.fs.Store
 import org.apache.logging.log4j.LogManager
@@ -87,25 +81,9 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      */
     var xteaKeyService: XteaKeyService? = null
 
-    /**
-     * The player updating packet opcode.
-     */
-    var playerUpdateOpcode = -1
+    val playerUpdateBlocks = UpdateBlockSet()
 
-    /**
-     * When [gg.rsmod.game.sync.UpdateBlockBuffer.blockValue] exceeds the value
-     * 0xFF, we have to write it as a short. The client uses a certain bit to
-     * identify when this is the case.
-     */
-    var updateBlockExcessMask = -1
-
-    /**
-     * The order in which [UpdateBlockType]s must be handled in the player
-     * synchronization process.
-     */
-    val updateBlockOrder = arrayListOf<UpdateBlockType>()
-
-    val updateBlocks = EnumMap<UpdateBlockType, UpdateBlockStructure>(UpdateBlockType::class.java)
+    val npcUpdateBlocks = UpdateBlockSet()
 
     /**
      * A [Random] implementation used for pseudo-random purposes through-out
@@ -182,50 +160,14 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         pluginExecutor.execute(this, plugin)
     }
 
-    @Throws(Exception::class)
-    fun loadUpdateBlocks(updateBlocks: File) {
-        check(this.playerUpdateOpcode == -1)
-        check(this.updateBlockExcessMask == -1)
-        check(this.updateBlockOrder.isEmpty())
-        check(this.updateBlocks.isEmpty())
+    fun loadUpdateBlocks(blocksFile: File) {
+        val properties = ServerProperties().loadYaml(blocksFile)
 
-        val properties = ServerProperties().loadYaml(updateBlocks)
-
-        val playerUpdateOpcode = properties.get<Int>("player-updating-opcode")!!
-        val excessMask = Integer.decode(properties.get<String>("excess-mask"))
-        this.playerUpdateOpcode = playerUpdateOpcode
-        this.updateBlockExcessMask = excessMask
-
-        val orders = properties.get<ArrayList<Any>>("order")!!
-        orders.forEach { order ->
-            val blockType = UpdateBlockType.valueOf((order as String).toUpperCase())
-            this.updateBlockOrder.add(blockType)
+        if (properties.has("players")) {
+            playerUpdateBlocks.load(properties.extract("players"))
         }
-
-        val blocks = properties.get<ArrayList<Any>>("blocks")!!
-        blocks.forEach { packet ->
-            val values = packet as LinkedHashMap<*, *>
-            val blockType = (values["block"] as String).toUpperCase()
-            val playerBits = if (values.containsKey("pbit")) Integer.decode(values["pbit"] as String) else -1
-            val npcBits = if (values.containsKey("nbit")) Integer.decode(values["nbit"] as String) else -1
-            val structureValues = arrayListOf<MessageValue>()
-
-            if (values.containsKey("structure")) {
-                val structures = values["structure"] as ArrayList<*>
-                structures.forEach { structure ->
-                    val map = structure as LinkedHashMap<*, *>
-                    val name = map["name"] as String
-                    val order = if (map.containsKey("order")) DataOrder.valueOf(map["order"] as String) else DataOrder.BIG
-                    val transform = if (map.containsKey("trans")) DataTransformation.valueOf(map["trans"] as String) else DataTransformation.NONE
-                    val type = DataType.valueOf(map["type"] as String)
-                    val signature = if (map.containsKey("sign")) DataSignature.valueOf((map["sign"] as String).toUpperCase()) else DataSignature.SIGNED
-                    structureValues.add(MessageValue(id = name, order = order, transformation = transform, type = type, signature = signature))
-                }
-            }
-
-            val block = UpdateBlockType.valueOf(blockType)
-            val structure = UpdateBlockStructure(playerBit = playerBits, npcBit = npcBits, values = structureValues)
-            this.updateBlocks[block] = structure
+        if (properties.has("npcs")) {
+            npcUpdateBlocks.load(properties.extract("npcs"))
         }
     }
 

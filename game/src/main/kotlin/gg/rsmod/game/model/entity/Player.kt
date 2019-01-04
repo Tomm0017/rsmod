@@ -202,13 +202,13 @@ open class Player(override val world: World) : Pawn(world) {
     override fun isRunning(): Boolean = varps[173].state != 0
 
     override fun addBlock(block: UpdateBlockType) {
-        val bits = world.updateBlocks[block]!!
-        blockBuffer.addBit(bits.playerBit)
+        val bits = world.playerUpdateBlocks.updateBlocks[block]!!
+        blockBuffer.addBit(bits.bit)
     }
 
     override fun hasBlock(block: UpdateBlockType): Boolean {
-        val bits = world.updateBlocks[block]!!
-        return blockBuffer.hasBit(bits.playerBit)
+        val bits = world.playerUpdateBlocks.updateBlocks[block]!!
+        return blockBuffer.hasBit(bits.bit)
     }
 
     override fun heal(amount: Int, capValue: Int) {

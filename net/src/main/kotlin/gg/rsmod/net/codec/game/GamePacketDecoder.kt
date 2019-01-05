@@ -39,10 +39,8 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
             opcode = buf.readUnsignedByte().toInt() - (if (rsaEncryption) (random.nextInt() and 0xFF) else 0)
             val metadata = packetMetadata.getType(opcode)
             if (metadata == null) {
-                if (ctx.channel().isOpen) {
-                    ctx.channel().disconnect()
-                    logger.fatal("Had to kick channel {} due to non-configured packet {} metadata.", ctx.channel(), opcode)
-                }
+                logger.warn("Channel {} sent message with no valid metadata: {}.", ctx.channel(), opcode)
+                buf.skipBytes(buf.readableBytes())
                 return
             }
             type = metadata

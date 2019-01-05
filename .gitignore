@@ -5,6 +5,7 @@ gradlew
 gradlew.bat
 
 /data/cfg/
+/data/plugins/
 /data/rsa/
 /data/saves/
 /data/xteas/

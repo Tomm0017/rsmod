@@ -9,4 +9,7 @@ ext {
     commonsIoVersion = '2.4'
     scryptVersion = '1.4.0'
     bouncycastleVersion = '1.54'
+    z4jVersion = '1.3.2'
+    jsoupVersion = '1.11.2'
+    xzVersion = '1.8'
 }

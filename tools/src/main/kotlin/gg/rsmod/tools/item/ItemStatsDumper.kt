@@ -1,4 +1,4 @@
-package gg.rsmod.tools.items
+package gg.rsmod.tools.item
 
 import com.google.gson.GsonBuilder
 import gg.rsmod.game.fs.DefinitionSet

@@ -10,7 +10,8 @@ dependencies {
 
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8'
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-scripting-common'
-    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
-    compile group: 'org.tukaani', name: 'xz', version: '1.8'
+    compile group: 'org.jsoup', name: 'jsoup', version: jsoupVersion
+    compile group: 'org.tukaani', name: 'xz', version: xzVersion
+    compile group: 'net.lingala.zip4j', name: 'zip4j', version: z4jVersion
     implementation group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
 }

@@ -478,6 +478,14 @@ in-packets:
     length: 10
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 12
+    length: 13
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Keep alive message
+    opcode: 22
+    length: 0
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 29
     length: 7
 
@@ -486,12 +494,8 @@ in-packets:
     length: 6
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    opcode: 12
-    length: 13
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Keep alive message
-    opcode: 22
-    length: 0
+    opcode: 97
+    length: -1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Request new region
     opcode: 76

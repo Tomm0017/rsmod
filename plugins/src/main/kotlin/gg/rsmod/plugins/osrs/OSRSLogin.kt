@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.osrs
 
-import com.rspsmod.plugins.osrs.content.SpecialEnergy
+import gg.rsmod.plugins.osrs.content.SpecialEnergy
 import gg.rsmod.game.model.NEW_ACCOUNT_ATTR
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.plugin.PluginRepository

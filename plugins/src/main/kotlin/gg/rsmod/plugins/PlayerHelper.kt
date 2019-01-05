@@ -1,7 +1,6 @@
 package gg.rsmod.plugins
 
 import com.google.common.primitives.Ints
-import com.rspsmod.plugins.osrs.Equipment
 import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.SkillSet
@@ -144,6 +143,8 @@ fun Player.toggleVarbit(id: Int) {
 }
 
 fun Player.hasEquipped(slot: Equipment, item: Int): Boolean = equipment.hasAt(slot.id, item)
+
+fun Player.getBonus(slot: BonusSlot): Int = equipmentBonuses[slot.id]
 
 fun Player.addXp(skill: Int, xp: Double) {
     val currentXp = getSkills().getCurrentXp(skill)

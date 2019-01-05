@@ -102,6 +102,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                     val translation = arrayOf(-1, -1, -1, -1, 2, -1, 3, 5, 0, 4, 6, 1)
                     for (i in 0 until 12) {
                         val item = other.equipment[i]
+                        // TODO(Tom): equip type for hiding beards, etc
                         if (item != null) {
                             appBuf.put(DataType.SHORT, 0x200 + item.id)
                         } else {

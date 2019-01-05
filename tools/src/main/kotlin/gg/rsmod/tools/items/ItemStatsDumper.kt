@@ -198,7 +198,7 @@ open class ItemStatsDumper {
                 rawValue.replace(" ", "").startsWith("str=") -> otherBonuses[0] = value.parseWikiaInt()
                 rawValue.replace(" ", "").startsWith("rstr=") -> otherBonuses[1] = value.parseWikiaInt()
                 rawValue.replace(" ", "").startsWith("mdmg=") -> otherBonuses[2] = value.parseWikiaInt()
-                rawValue.replace(" ", "").startsWith("pray=") -> otherBonuses[3] = value.parseWikiaInt()
+                rawValue.replace(" ", "").startsWith("prayer=") -> otherBonuses[3] = value.parseWikiaInt()
             }
         }
 

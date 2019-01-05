@@ -172,7 +172,8 @@ open class Player(override val world: World) : Pawn(world) {
                 if (calculateBonuses) {
                     Arrays.fill(equipmentBonuses, 0)
                     for (i in 0 until equipment.capacity) {
-                        val stats = s.get(i) ?: continue
+                        val item = equipment[i] ?: continue
+                        val stats = s.get(item.id) ?: continue
                         stats.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
                     }
                 }

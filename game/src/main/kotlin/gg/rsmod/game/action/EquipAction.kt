@@ -28,6 +28,7 @@ object EquipAction {
         val oldItem = player.equipment[equipSlot]
         val newItem = Item(item)
 
+        // TODO(Tom): still need further logic for things like 2h swords
         if (inventorySlot == -1 || player.inventory.remove(item.id, fromIndex = inventorySlot).hasSucceeded()) {
             if (oldItem != null) {
                 val transaction = player.inventory.add(oldItem.id, oldItem.amount, beginSlot = if (inventorySlot != -1) inventorySlot else 0)

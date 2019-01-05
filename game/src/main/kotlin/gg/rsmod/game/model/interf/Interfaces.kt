@@ -130,8 +130,10 @@ class Interfaces(val player: Player) {
      * Calls the [close] method for [currentMainScreenInterface].
      */
     fun closeMain() {
-        close(currentMainScreenInterface)
-        currentMainScreenInterface = -1
+        if (currentMainScreenInterface != -1) {
+            close(currentMainScreenInterface)
+            currentMainScreenInterface = -1
+        }
     }
 
     /**

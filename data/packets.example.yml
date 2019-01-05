@@ -217,7 +217,7 @@ out-packets:
 
   - message: gg.rsmod.game.message.impl.SetInterfaceItemMessage
     type: FIXED
-    opcode: 57
+    opcode: 20
     structure:
       - name: hash
         type: INT
@@ -476,6 +476,10 @@ in-packets:
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 11
     length: 10
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 29
+    length: 7
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 41

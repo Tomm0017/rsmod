@@ -4,13 +4,13 @@ players:
   excess-mask: 0x8
 
   order:
+    - GFX
     - FORCE_CHAT
-    - MOVEMENT
     - FACE_TILE
     - APPEARANCE
     - FACE_PAWN
+    - MOVEMENT
     - ANIMATION
-    - GFX
 
   blocks:
     - block: APPEARANCE
@@ -49,7 +49,7 @@ players:
           type: SHORT
           trans: ADD
         - name: settings
-          order: INVERSED_MIDDLE
+          order: MIDDLE
           type: INT
 
     - block: PUBLIC_CHAT

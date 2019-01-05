@@ -34,9 +34,13 @@ class PluginRepository {
     private val loginPlugins = arrayListOf<Function1<Plugin, Unit>>()
 
     /**
-     * A map that contains command plugins.
+     * A map that contains command plugins. The pair has the privilege power
+     * required to use the command on the left, and the plugin on the right.
+     *
+     * The privilege power left value can be set to null, which means anyone
+     * can use the command.
      */
-    private val commandPlugins = hashMapOf<String, Function1<Plugin, Unit>>()
+    private val commandPlugins = hashMapOf<String, Pair<String?, Function1<Plugin, Unit>>>()
 
     /**
      * A map that contains plugins that should be executed when the [TimerKey]
@@ -153,19 +157,26 @@ class PluginRepository {
     }
 
     @Throws(IllegalStateException::class)
-    fun bindCommand(command: String, plugin: Function1<Plugin, Unit>) {
+    fun bindCommand(command: String, powerRequired: String? = null, plugin: Function1<Plugin, Unit>) {
         val cmd = command.toLowerCase()
         if (commandPlugins.containsKey(cmd)) {
             logger.error("Command is already bound to a plugin: $cmd")
             throw IllegalStateException()
         }
-        commandPlugins[cmd] = plugin
+        commandPlugins[cmd] = Pair(powerRequired, plugin)
         pluginCount++
     }
 
     fun executeCommand(p: Player, command: String, args: Array<String>? = null): Boolean {
-        val plugin = commandPlugins[command]
-        if (plugin != null) {
+        val commandPair = commandPlugins[command]
+        if (commandPair != null) {
+            val powerRequired = commandPair.first
+            val plugin = commandPair.second
+
+            if (powerRequired != null && !p.privilege.powers.contains(powerRequired.toLowerCase())) {
+                return false
+            }
+
             p.attr.put(COMMAND_ATTR, command)
             if (args != null) {
                 p.attr.put(COMMAND_ARGS_ATTR, args)

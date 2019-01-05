@@ -1,0 +1,16 @@
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply from: "$rootDir/gradle/kotlin.gradle"
+
+description = 'RSMod Tools'
+
+dependencies {
+    compile project(':game')
+
+    testImplementation group: 'junit', name: 'junit', version: junitVersion
+
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8'
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-scripting-common'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
+    compile group: 'org.tukaani', name: 'xz', version: '1.8'
+    implementation group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
+}

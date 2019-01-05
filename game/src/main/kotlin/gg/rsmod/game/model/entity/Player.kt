@@ -8,6 +8,7 @@ import gg.rsmod.game.model.*
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.interf.Interfaces
+import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.game.sync.UpdateBlockType
 import java.util.*
 
@@ -159,7 +160,11 @@ open class Player(override val world: World) : Pawn(world) {
         }
 
         if (calculateWeight) {
-            // TODO(Tom): set weight based on inventory + equipment items
+            world.getService(ItemStatsService::class.java, searchSubclasses = false).ifPresent { s ->
+                val inventoryWeight = inventory.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
+                val equipmentWeight = equipment.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
+                weight = inventoryWeight + equipmentWeight
+            }
         }
 
         for (i in 0 until getSkills().maxSkills) {

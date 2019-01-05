@@ -9,7 +9,7 @@ import io.netty.buffer.ByteBuf
  */
 class ItemDef(override val id: Int) : Definition(id) {
 
-    lateinit var name: String
+    var name = ""
     var stackable = false
     var cost = 0
     var members = false
@@ -32,6 +32,8 @@ class ItemDef(override val id: Int) : Definition(id) {
     var placeholderTemplateId = 0
 
     fun isStackable(): Boolean = stackable || noteTemplateId > 0
+
+    fun isNoted(): Boolean = noteTemplateId > 0
 
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {

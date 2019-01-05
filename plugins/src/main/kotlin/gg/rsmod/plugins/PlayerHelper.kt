@@ -1,6 +1,7 @@
 package gg.rsmod.plugins
 
 import com.google.common.primitives.Ints
+import com.rspsmod.plugins.osrs.Equipment
 import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.SkillSet

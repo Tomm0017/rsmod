@@ -1,11 +1,11 @@
 package gg.rsmod.plugins.osrs
 
+import com.rspsmod.plugins.osrs.content.SpecialEnergy
 import gg.rsmod.game.model.NEW_ACCOUNT_ATTR
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.plugin.ScanPlugins
 import gg.rsmod.plugins.*
-import gg.rsmod.plugins.osrs.content.SpecialEnergy
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -53,6 +53,7 @@ object OSRSLogin {
              */
             val displayName = p.username.isNotEmpty()
             p.invokeScript(1105, if (displayName) 1 else 0) // Has display name
+            p.invokeScript(423, p.username)
             if (p.attr.getOrDefault(NEW_ACCOUNT_ATTR, false) && displayName) {
                 /**
                  * A new player does not have any varp set, so we have to manually

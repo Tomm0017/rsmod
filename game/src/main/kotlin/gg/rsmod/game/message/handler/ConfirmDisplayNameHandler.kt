@@ -10,6 +10,6 @@ import gg.rsmod.game.model.entity.Client
 class ConfirmDisplayNameHandler : MessageHandler<ConfirmDisplayNameMessage> {
 
     override fun handle(client: Client, message: ConfirmDisplayNameMessage) {
-        TODO("Handle this")
+        throw RuntimeException("Unhandled.")
     }
 }

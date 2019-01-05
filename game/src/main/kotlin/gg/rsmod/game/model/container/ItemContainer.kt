@@ -411,7 +411,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
 
     operator fun get(index: Int): Item? = items[index]
 
-    private fun set(index: Int, item: Item?) {
+    fun set(index: Int, item: Item?) {
         items[index] = item
         dirty = true
     }

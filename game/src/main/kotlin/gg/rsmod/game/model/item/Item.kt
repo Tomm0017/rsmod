@@ -10,10 +10,7 @@ import gg.rsmod.game.fs.def.ItemDef
 class Item(val id: Int, var amount: Int = 1) {
 
     constructor(other: Item) : this(other.id, other.amount) {
-        if (other.hasAnyAttr()) {
-            constructAttrIfNeeded()
-            attr!!.putAll(other.attr!!)
-        }
+        copyAttr(other)
     }
 
     private var attr: HashMap<ItemAttribute, Int>? = null
@@ -41,6 +38,13 @@ class Item(val id: Int, var amount: Int = 1) {
         constructAttrIfNeeded()
         attr!![attrib] = value
         return this
+    }
+
+    fun copyAttr(other: Item) {
+        if (other.hasAnyAttr()) {
+            constructAttrIfNeeded()
+            attr!!.putAll(other.attr!!)
+        }
     }
 
     private fun constructAttrIfNeeded() {

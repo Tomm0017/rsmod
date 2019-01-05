@@ -411,6 +411,24 @@ in-packets:
         type: SHORT
         sign: UNSIGNED
 
+  - message: gg.rsmod.game.message.impl.ItemActionTwoMessage
+    type: FIXED
+    opcode: 98
+    length: 8
+    structure:
+      - name: item
+        sign: UNSIGNED
+        type: SHORT
+        trans: ADD
+      - name: interfaceHash
+        type: INT
+        order: INVERSED_MIDDLE
+      - name: slot
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+
   - message: gg.rsmod.game.message.impl.CloseMainInterfaceMessage
     type: FIXED
     opcode: 20

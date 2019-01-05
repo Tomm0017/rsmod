@@ -8,7 +8,7 @@ import gg.rsmod.game.model.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.GameObject
-import gg.rsmod.game.model.path.actions.ObjectPathfinder
+import gg.rsmod.game.action.ObjectPathAction
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -51,7 +51,7 @@ class ObjectActionOneHandler : MessageHandler<ObjectActionOneMessage> {
         client.attr.put(INTERACTING_OPT_ATTR, 1)
         client.attr.put(INTERACTING_OBJ_ATTR, obj)
         if (!client.world.plugins.executeCustomPathingObject(client, obj.id)) {
-            client.world.pluginExecutor.execute(client, ObjectPathfinder.walkPlugin)
+            client.world.pluginExecutor.execute(client, ObjectPathAction.walkPlugin)
         }
     }
 }

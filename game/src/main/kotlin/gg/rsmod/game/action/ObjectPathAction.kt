@@ -1,4 +1,4 @@
-package gg.rsmod.game.model.path.actions
+package gg.rsmod.game.action
 
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.*
@@ -15,7 +15,7 @@ import gg.rsmod.util.DataConstants
  *
  * @author Tom <rspsmods@gmail.com>
  */
-object ObjectPathfinder {
+object ObjectPathAction {
 
     /**
      * TODO: varrock anvil on east side, the entrances r being clipped for some reason

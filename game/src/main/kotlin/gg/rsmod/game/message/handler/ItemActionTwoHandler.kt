@@ -1,5 +1,6 @@
 package gg.rsmod.game.message.handler
 
+import gg.rsmod.game.action.EquipAction
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.ItemActionTwoMessage
 import gg.rsmod.game.model.INTERACTING_ITEM
@@ -41,7 +42,7 @@ class ItemActionTwoHandler : MessageHandler<ItemActionTwoMessage> {
         client.attr[INTERACTING_ITEM_ID] = item.id
         client.attr[INTERACTING_ITEM] = item
 
-        client.world.plugins.executeItem(client, item.id, 2)
+        EquipAction.equip(client, item, message.slot)
     }
 
 }

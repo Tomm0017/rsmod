@@ -3,6 +3,7 @@ package gg.rsmod.game.sync.segment
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.service.game.WeaponRenderService
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.UpdateBlockType
 import gg.rsmod.net.packet.DataType
@@ -122,13 +123,21 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                 }
 
                 if (!transmog) {
-                    appBuf.put(DataType.SHORT, 809)
-                    appBuf.put(DataType.SHORT, 823)
-                    appBuf.put(DataType.SHORT, 819)
-                    appBuf.put(DataType.SHORT, 820)
-                    appBuf.put(DataType.SHORT, 821)
-                    appBuf.put(DataType.SHORT, 822)
-                    appBuf.put(DataType.SHORT, 824)
+                    val animations = intArrayOf(809, 823, 819, 820, 821, 822, 824)
+
+                    val weapon = other.equipment[3] // Assume slot 3 is the weapon.
+                    if (weapon != null) {
+                        val renderService = other.world.getService(WeaponRenderService::class.java, searchSubclasses = false).orElse(null)
+                        if (renderService != null) {
+                            renderService.get(weapon.id)?.animations?.forEachIndexed { index, anim ->
+                                animations[index] = anim
+                            }
+                        }
+                    }
+
+                    animations.forEach { anim ->
+                        appBuf.put(DataType.SHORT, anim)
+                    }
                 } else {
                     val def = other.world.definitions.get(NpcDef::class.java, other.getTransmogId())
                     val animations = arrayOf(def.standAnim, def.walkAnim, def.walkAnim, def.render3,

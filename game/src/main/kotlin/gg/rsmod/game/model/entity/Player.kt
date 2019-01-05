@@ -116,6 +116,8 @@ open class Player(override val world: World) : Pawn(world) {
 
     var runEnergy = 100.0
 
+    val equipmentBonuses = IntArray(14)
+
     override fun getType(): EntityType = EntityType.PLAYER
 
     /**
@@ -127,6 +129,7 @@ open class Player(override val world: World) : Pawn(world) {
      */
     override fun cycle() {
         var calculateWeight = false
+        var calculateBonuses = false
 
         if (pendingLogout) {
             if (lock.canLogout()) {
@@ -157,6 +160,7 @@ open class Player(override val world: World) : Pawn(world) {
             write(SetItemContainerMessage(containerKey = 94, items = Arrays.copyOf(equipment.getBackingArray(), equipment.capacity)))
             equipment.dirty = false
             calculateWeight = true
+            calculateBonuses = true
         }
 
         if (calculateWeight) {
@@ -164,6 +168,14 @@ open class Player(override val world: World) : Pawn(world) {
                 val inventoryWeight = inventory.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
                 val equipmentWeight = equipment.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
                 weight = inventoryWeight + equipmentWeight
+
+                if (calculateBonuses) {
+                    Arrays.fill(equipmentBonuses, 0)
+                    for (i in 0 until equipment.capacity) {
+                        val stats = s.get(i) ?: continue
+                        stats.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
+                    }
+                }
             }
         }
 

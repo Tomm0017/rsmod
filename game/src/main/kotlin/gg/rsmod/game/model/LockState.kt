@@ -39,7 +39,7 @@ enum class LockState {
         else -> false
     }
 
-    fun canEat(): Boolean = when (this) {
+    fun canItemInteract(): Boolean = when (this) {
         NONE -> true
         else -> false
     }

@@ -1,7 +1,7 @@
 package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
-import gg.rsmod.game.message.impl.ItemActionOneMessage
+import gg.rsmod.game.message.impl.ItemActionTwoMessage
 import gg.rsmod.game.model.INTERACTING_ITEM
 import gg.rsmod.game.model.INTERACTING_ITEM_ID
 import gg.rsmod.game.model.INTERACTING_ITEM_SLOT
@@ -10,9 +10,9 @@ import gg.rsmod.game.model.entity.Client
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ItemActionOneHandler : MessageHandler<ItemActionOneMessage> {
+class ItemActionTwoHandler : MessageHandler<ItemActionTwoMessage> {
 
-    override fun handle(client: Client, message: ItemActionOneMessage) {
+    override fun handle(client: Client, message: ItemActionTwoMessage) {
         @Suppress("unused")
         val interfaceParent = message.interfaceHash shr 16
         @Suppress("unused")
@@ -29,19 +29,19 @@ class ItemActionOneHandler : MessageHandler<ItemActionOneMessage> {
         val item = client.inventory[message.slot] ?: return
 
         if (item.id != message.item) {
-            logAntiCheat(client, "Item action 1: id=%d, slot=%d, interface=(%d, %d), inventory=(%d, %d)",
+            logAntiCheat(client, "Item action 2: id=%d, slot=%d, interface=(%d, %d), inventory=(%d, %d)",
                     message.item, message.slot, interfaceParent, interfaceChild, item.id, item.amount)
             return
         }
 
-        log(client, "Item action 1: id=%d, slot=%d, interface=(%d, %d), inventory=(%d, %d)",
+        log(client, "Item action 2: id=%d, slot=%d, interface=(%d, %d), inventory=(%d, %d)",
                 message.item, message.slot, interfaceParent, interfaceChild, item.id, item.amount)
 
         client.attr[INTERACTING_ITEM_SLOT] = message.slot
         client.attr[INTERACTING_ITEM_ID] = item.id
         client.attr[INTERACTING_ITEM] = item
 
-        client.world.plugins.executeItem(client, item.id, 1)
+        client.world.plugins.executeItem(client, item.id, 2)
     }
 
 }

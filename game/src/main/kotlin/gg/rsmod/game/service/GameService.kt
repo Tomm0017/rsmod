@@ -127,7 +127,7 @@ class GameService : Service() {
                     ChunkCreationTask(),
                     SequentialNpcCycleTask(),
                     SequentialSynchronizationTask(),
-                    SequentialChannelFlushTask()
+                    SequentialPlayerPostCycleTask()
             ))
             logger.info("Sequential tasks preference enabled. {} tasks will be handled per cycle.", tasks.size)
         } else {
@@ -139,7 +139,7 @@ class GameService : Service() {
                     ChunkCreationTask(),
                     ParallelNpcCycleTask(executor),
                     ParallelSynchronizationTask(executor),
-                    ParallelChannelFlushTask(executor)
+                    ParallelPlayerPostCycleTask(executor)
             ))
             logger.info("Parallel tasks preference enabled. {} tasks will be handled per cycle.", tasks.size)
         }

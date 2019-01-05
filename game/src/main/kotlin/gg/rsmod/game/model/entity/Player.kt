@@ -81,6 +81,18 @@ open class Player(override val world: World) : Pawn(world) {
     val otherPlayerTiles = IntArray(2048)
 
     /**
+     * A flag that represents whether or not we want to remove our
+     * [Interfaces.currentMainScreenInterface] from our [Interfaces.visible] map
+     * near the end of the next available game cycle.
+     *
+     * It can't be removed immediately due to the [CloseMainInterfaceMessage]
+     * being received before [ClickButtonMessage], which leads to the server
+     * thinking that the player is trying to click a button on an interface
+     * that's not in their [Interfaces.visible] map.
+     */
+    var closeMainInterface = false
+
+    /**
      * Persistent attributes which must be saved from our system and loaded
      * when needed. This map does not support storing [Double]s as we convert
      * every double into an [Int] when loading. This is done because some
@@ -106,7 +118,9 @@ open class Player(override val world: World) : Pawn(world) {
     override fun getType(): EntityType = EntityType.PLAYER
 
     /**
-     * Logic that should be executed every game cycle, before a [gg.rsmod.game.sync.task.SynchronizationTask].
+     * Logic that should be executed every game cycle, before
+     * [gg.rsmod.game.sync.task.PlayerSynchronizationTask].
+     *
      * Note that this method may be handled in parallel, so be careful with race
      * conditions if any logic may modify other [Pawn]s.
      */
@@ -187,6 +201,28 @@ open class Player(override val world: World) : Pawn(world) {
         timers.getTimers().entries.forEach { timer ->
             timer.setValue(timer.value - 1)
         }
+    }
+
+    /**
+     * Logic that should be executed every game cycle, after
+     * [gg.rsmod.game.sync.task.PlayerSynchronizationTask].
+     *
+     * Note that this method may be handled in parallel, so be careful with race
+     * conditions if any logic may modify other [Pawn]s.
+     */
+    fun postCycle() {
+        /**
+         * Close the main interface if it's pending.
+         */
+        if (closeMainInterface) {
+            interfaces.closeMain()
+            closeMainInterface = false
+        }
+
+        /**
+         * Flush the channel at the end.
+         */
+        channelFlush()
     }
 
     /**

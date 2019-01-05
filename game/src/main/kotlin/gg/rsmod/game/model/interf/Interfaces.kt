@@ -23,6 +23,14 @@ class Interfaces(val player: Player) {
     private val visible = hashMapOf<Int, Int>()
 
     /**
+     * The main screen is allowed to have one 'main' interface opened (not including
+     * overlays). When a client closes a main interface, they will send a message
+     * ([gg.rsmod.game.message.impl.CloseMainInterfaceMessage]) and we have to make
+     * sure the interface is removed from our [visible] map.
+     */
+    private var currentMainScreenInterface = -1
+
+    /**
      * The current [DisplayMode] being used by the client.
      */
     var displayMode = DisplayMode.FIXED
@@ -107,6 +115,23 @@ class Interfaces(val player: Player) {
         if (found == null) {
             logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
         }
+    }
+
+    /**
+     * Calls the [open] method, but also sets the [currentMainScreenInterface]
+     * to [interfaceId].
+     */
+    fun openMain(parent: Int, child: Int, interfaceId: Int) {
+        open(parent, child, interfaceId)
+        currentMainScreenInterface = interfaceId
+    }
+
+    /**
+     * Calls the [close] method for [currentMainScreenInterface].
+     */
+    fun closeMain() {
+        close(currentMainScreenInterface)
+        currentMainScreenInterface = -1
     }
 
     /**

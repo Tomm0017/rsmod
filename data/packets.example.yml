@@ -412,8 +412,16 @@ in-packets:
         sign: UNSIGNED
 
   - message: gg.rsmod.game.message.impl.CloseMainInterfaceMessage
+    type: FIXED
     opcode: 20
     length: 0
+
+  - message: gg.rsmod.game.message.impl.ConfirmDisplayNameMessage
+    type: VARIABLE_BYTE
+    opcode: 78
+    structure:
+      - name: name
+        type: STRING
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 39
@@ -446,6 +454,10 @@ in-packets:
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 9
     length: 4
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 11
+    length: 10
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 41

@@ -8,12 +8,14 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Phaser
 
 /**
- * A [GameTask] responsible for signalling [gg.rsmod.game.model.entity.Player]s
- * that their connection channels must write all data, a.k.a flush, in parallel.
+ * A [GameTask] responsible for executing [gg.rsmod.game.model.entity.Pawn]
+ * "post" cycle logic, in parallel. Post cycle means that the this task
+ * will be handled near the end of the cycle, after the synchronization
+ * tasks.
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class ParallelChannelFlushTask(private val executor: ExecutorService) : GameTask {
+class ParallelPlayerPostCycleTask(private val executor: ExecutorService) : GameTask {
 
     private val phaser = Phaser(1)
 
@@ -23,7 +25,7 @@ class ParallelChannelFlushTask(private val executor: ExecutorService) : GameTask
 
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
-            executor.submit(PhasedTask(phaser, Runnable { p.channelFlush() }))
+            executor.submit(PhasedTask(phaser, Runnable { p.postCycle() }))
         }
         phaser.arriveAndAwaitAdvance()
     }

@@ -47,8 +47,21 @@ object OSRSLogin {
                 }
                 p.openInterface(pane.interfaceId, pane)
             }
-            p.invokeScript(1105, 1) // Has display name
-            p.invokeScript(2494, 1) // Has display name
+
+            /**
+             * Inform the client whether or not we have a display name.
+             */
+            val displayName = p.username.isNotEmpty()
+            p.invokeScript(1105, if (displayName) 1 else 0) // Has display name
+            if (p.attr.getOrDefault(NEW_ACCOUNT_ATTR, false) && displayName) {
+                /**
+                 * A new player does not have any varp set, so we have to manually
+                 * send varp 1055 which is will redraw the chatbox for us. Otherwise
+                 * the display name script won't take effect until the client types
+                 * something in their chatbox.
+                 */
+                p.syncVarp(1055)
+            }
 
             /**
              * Game-related logic.

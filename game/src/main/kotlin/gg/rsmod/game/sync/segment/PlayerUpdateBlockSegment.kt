@@ -139,8 +139,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                     }
                 }
 
-                appBuf.putBytes(other.username.toByteArray())
-                appBuf.put(DataType.BYTE, 0) // String terminator
+                appBuf.putString(other.username)
                 appBuf.put(DataType.BYTE, other.getSkills().combatLevel)
                 appBuf.put(DataType.SHORT, 0)
                 appBuf.put(DataType.BYTE, 0)

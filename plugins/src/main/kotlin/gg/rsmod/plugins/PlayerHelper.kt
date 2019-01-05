@@ -32,7 +32,7 @@ fun Player.openTab(tab: GameframeTab) {
 }
 
 fun Player.setMainInterfaceBackground(color: Int, transparency: Int) {
-    invokeScript(917, color, transparency)
+    invokeScript(2524, color, transparency)
 }
 
 fun Player.setInterfaceText(parent: Int, child: Int, text: String) {
@@ -66,17 +66,21 @@ fun Player.setInterfaceAnim(parent: Int, child: Int, anim: Int) {
 fun Player.openInterface(interfaceId: Int, pane: InterfacePane) {
     val child = getChildId(pane, interfaces.displayMode)
     val parent = getDisplayInterfaceId(interfaces.displayMode)
-    openInterface(parent, child, interfaceId, if (pane.clickThrough) 1 else 0)
+    openInterface(parent, child, interfaceId, if (pane.clickThrough) 1 else 0, mainInterface = pane == InterfacePane.MAIN_SCREEN)
 }
 
 fun Player.openInterface(pane: InterfacePane) {
     val child = getChildId(pane, interfaces.displayMode)
     val parent = getDisplayInterfaceId(interfaces.displayMode)
-    openInterface(parent, child, pane.interfaceId, if (pane.clickThrough) 1 else 0)
+    openInterface(parent, child, pane.interfaceId, if (pane.clickThrough) 1 else 0, mainInterface = pane == InterfacePane.MAIN_SCREEN)
 }
 
-fun Player.openInterface(parent: Int, child: Int, interfaceId: Int, type: Int = 0) {
-    interfaces.open(parent, child, interfaceId)
+fun Player.openInterface(parent: Int, child: Int, interfaceId: Int, type: Int = 0, mainInterface: Boolean = false) {
+    if (mainInterface) {
+        interfaces.openMain(parent, child, interfaceId)
+    } else {
+        interfaces.open(parent, child, interfaceId)
+    }
     write(OpenInterfaceMessage(parent, child, interfaceId, type))
 }
 

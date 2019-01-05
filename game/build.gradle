@@ -31,7 +31,8 @@ dependencies {
 }
 
 applicationDistribution.from("$rootDir/data") {
-    include '*.dat'
-    include '*.xml'
+    exclude '*.example.yml'
+    include '*.yml'
+    include '*.json'
     into "data/"
 }

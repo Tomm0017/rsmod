@@ -152,8 +152,10 @@ class Server {
          * Load the plugins for game content.
          */
         individualStopwatch.reset().start()
-        world.plugins.init(gameService = gameService, packagePath = gameProperties.get<String>("plugin-path")!!)
-        logger.info("Loaded {} plugins from path {} in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), gameProperties.get<String>("plugin-path")!!, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
+        world.plugins.init(gameService = gameService,
+                sourcePath = gameProperties.getOrDefault("plugin-source-path", "gg.rsmod.plugins"),
+                packedPath = gameProperties.getOrDefault("plugin-packed-path", "./data/plugins"))
+        logger.info("Loaded {} plugins in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**
          * Inform the time it took to load up all non-network logic.

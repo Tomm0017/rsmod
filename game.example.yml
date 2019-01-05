@@ -8,10 +8,6 @@ home-z: 3497
 skill-count: 23
 run-energy: true # If the player will use run energy when running
 
-# The path to the plugins for the game being launched.
-# This value does not need to be changed, usually.
-plugin-path: "gg.rsmod.plugins"
-
 # Privileges
 # Any privilege you want to be represented in-game you define here.
 privileges:

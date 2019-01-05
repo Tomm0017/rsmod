@@ -10,6 +10,11 @@ import org.apache.logging.log4j.LogManager
 import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.scanners.SubTypesScanner
+import java.net.URLClassLoader
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.*
+import java.util.jar.JarFile
 
 /**
  * A repository that is responsible for storing and executing plugins, as well
@@ -103,20 +108,20 @@ class PluginRepository {
     /**
      * Initiates and populates all our plugins.
      */
-    fun init(gameService: GameService, packagePath: String) {
-        scanForPlugins(packagePath)
+    fun init(gameService: GameService, sourcePath: String, packedPath: String) {
+        scanForPlugins(sourcePath, packedPath)
         gameService.world.pluginExecutor.init(gameService)
     }
 
     /**
-     * Goes through all the methods found in our [packagePath] system file path
+     * Goes through all the methods found in our [sourcePath] system file path
      * and looks for any [ScanPlugins] annotation to invoke.
      *
      * @throws Exception If the plugin registration function could not be invoked.
      *                   Possible reasons: must be static [JvmStatic]
      */
     @Throws(Exception::class)
-    fun scanForPlugins(packagePath: String) {
+    fun scanForPlugins(sourcePath: String, packedPath: String) {
         loginPlugins.clear()
         commandPlugins.clear()
         timerPlugins.clear()
@@ -130,15 +135,48 @@ class PluginRepository {
 
         pluginCount = 0
 
-        Reflections(packagePath, SubTypesScanner(false), MethodAnnotationsScanner()).getMethodsAnnotatedWith(ScanPlugins::class.java).forEach { method ->
+        Reflections(sourcePath, SubTypesScanner(false), MethodAnnotationsScanner()).getMethodsAnnotatedWith(ScanPlugins::class.java).forEach { method ->
             if (!method.declaringClass.name.contains("$") && !method.declaringClass.name.endsWith("Package")) {
                 try {
                     method.invoke(null, this)
                 } catch (e: Exception) {
-                    logger.error("Error loading plugin: ${method.declaringClass} [$method].", e)
+                    logger.error("Error loading source plugin: ${method.declaringClass} [$method].", e)
                     throw e
                 }
             }
+        }
+
+        val packed = Paths.get(packedPath)
+        val packedUrl = packed.toFile().toURI().toURL()
+
+        Files.list(packed).forEach { path ->
+            if (!path.fileName.toString().endsWith(".jar")) {
+                return@forEach
+            }
+            val urls = arrayOf(packedUrl, path.toFile().toURI().toURL())
+            val classLoader = URLClassLoader(urls, PluginRepository::class.java.classLoader)
+
+            val jar = JarFile(path.toFile())
+            val entries = jar.entries()
+            while (entries.hasMoreElements()) {
+                val entry = entries.nextElement()
+                if (!entry.name.endsWith(".class") || entry.name.contains("$") || entry.name.endsWith("Package")) {
+                    continue
+                }
+                val clazz = classLoader.loadClass(entry.name.replace("/", ".").replace(".class", ""))
+                clazz.methods.forEach { method ->
+                    method.isAccessible = true
+                    if (method.isAnnotationPresent(ScanPlugins::class.java)) {
+                        try {
+                            method.invoke(null, this)
+                        } catch (e: Exception) {
+                            logger.error("Error loading source plugin: ${method.declaringClass} [$method].", e)
+                            throw e
+                        }
+                    }
+                }
+            }
+            jar.close()
         }
     }
 

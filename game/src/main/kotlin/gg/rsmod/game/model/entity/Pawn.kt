@@ -4,8 +4,8 @@ import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.game.sync.UpdateBlockType
 import gg.rsmod.game.sync.UpdateBlockBuffer
+import gg.rsmod.game.sync.UpdateBlockType
 
 /**
  * A controllable character in the world that is used by something, or someone,
@@ -198,6 +198,8 @@ abstract class Pawn(open val world: World) : Entity() {
             degreesZ += (Math.floor(length / 2.0)) * 32
 
             blockBuffer.faceDegrees = (Math.atan2(degreesX, degreesZ) * 325.949).toInt() and 0x7ff
+        } else if (getType().isNpc()) {
+            blockBuffer.faceDegrees = (face.x shl 16) or face.z
         }
 
         blockBuffer.facePawnIndex = -1

@@ -169,7 +169,7 @@ class PluginRepository {
                             try {
                                 method.invoke(null, this)
                             } catch (e: Exception) {
-                                logger.error("Error loading source plugin: ${method.declaringClass} [$method].", e)
+                                logger.error("Error loading packed plugin: ${method.declaringClass} [$method].", e)
                                 throw e
                             }
                         }

@@ -40,6 +40,8 @@ enum class EntityType {
 
     fun isPlayer(): Boolean = this == CLIENT || this == PLAYER
 
+    fun isNpc(): Boolean = this == NPC
+
     fun isObject(): Boolean = this == STATIC_OBJECT || this == DYNAMIC_OBJECT
 
     fun isProjectile(): Boolean = this == PROJECTILE

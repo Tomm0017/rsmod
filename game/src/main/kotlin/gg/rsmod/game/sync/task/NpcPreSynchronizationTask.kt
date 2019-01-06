@@ -9,5 +9,6 @@ import gg.rsmod.game.sync.SynchronizationTask
 class NpcPreSynchronizationTask(val npc: Npc) : SynchronizationTask {
 
     override fun run() {
+        npc.movementQueue.pulse()
     }
 }

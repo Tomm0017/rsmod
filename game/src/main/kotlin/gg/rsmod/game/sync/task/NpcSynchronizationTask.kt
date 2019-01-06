@@ -15,7 +15,6 @@ import gg.rsmod.net.packet.PacketType
 class NpcSynchronizationTask(private val player: Player, private val worldNpcs: List<Npc?>) : SynchronizationTask {
 
     companion object {
-
         private const val MAX_LOCAL_NPCS = 255
         private const val MAX_NPC_ADDITIONS_PER_CYCLE = 25
     }
@@ -72,12 +71,12 @@ class NpcSynchronizationTask(private val player: Player, private val worldNpcs: 
                 segments.add(NpcWalkSegment(npc.steps!!.walkDirection!!.getNpcWalkIndex(),
                         npc.steps!!.runDirection?.getNpcWalkIndex() ?: -1, requiresBlockUpdate))
                 if (requiresBlockUpdate) {
-                    segments.add(NpcUpdateBlockSegment(npc))
+                    segments.add(NpcUpdateBlockSegment(npc, false))
                 }
             } else if (requiresBlockUpdate) {
                 segments.add(NpcSkipSegment(skip = false))
                 segments.add(NpcNoMovementSegment())
-                segments.add(NpcUpdateBlockSegment(npc))
+                segments.add(NpcUpdateBlockSegment(npc, false))
             } else {
                 segments.add(NpcSkipSegment(skip = true))
             }
@@ -97,7 +96,7 @@ class NpcSynchronizationTask(private val player: Player, private val worldNpcs: 
             val requiresBlockUpdate = npc.blockBuffer.isDirty()
             segments.add(AddLocalNpcSegment(player, npc, requiresBlockUpdate, largeScene))
             if (requiresBlockUpdate) {
-                segments.add(NpcUpdateBlockSegment(npc))
+                segments.add(NpcUpdateBlockSegment(npc, true))
             }
 
             added++

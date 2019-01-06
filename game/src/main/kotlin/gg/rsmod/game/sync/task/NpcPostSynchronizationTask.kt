@@ -1,5 +1,6 @@
 package gg.rsmod.game.sync.task
 
+import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.sync.SynchronizationTask
 
@@ -9,5 +10,9 @@ import gg.rsmod.game.sync.SynchronizationTask
 class NpcPostSynchronizationTask(val npc: Npc) : SynchronizationTask {
 
     override fun run() {
+        npc.teleport = false
+        npc.lastTile = Tile(npc.tile)
+        npc.steps = null
+        npc.blockBuffer.clean()
     }
 }

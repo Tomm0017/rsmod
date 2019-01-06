@@ -8,7 +8,7 @@ import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.Skills
+import gg.rsmod.plugins.osrs.model.Skills
 
 /**
  * A decoupled file that holds extensions and helper functions, related to plugins,

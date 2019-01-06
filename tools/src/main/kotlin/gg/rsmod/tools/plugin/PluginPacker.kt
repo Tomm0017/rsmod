@@ -18,10 +18,9 @@ class PluginPacker {
             val packer = PluginPacker()
 
             val source = Paths.get("game", "src", "main", "kotlin", "gg", "rsmod", "plugins", "osrs", "content", "skills", "prayer")
-            val destination = Paths.get(".", "plugins")
             val files = Files.walk(source).toList()
 
-            packer.compileSource(destination.resolve("prayer.zip"), files)
+            packer.compileSource(Paths.get(".", "plugins").resolve("prayer.zip"), files)
         }
     }
 

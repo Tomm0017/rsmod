@@ -6,6 +6,7 @@ import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.plugin.ScanPlugins
 import gg.rsmod.plugins.*
 import gg.rsmod.plugins.osrs.content.SpecialEnergy
+import gg.rsmod.plugins.osrs.model.Skills
 
 /**
  * @author Tom <rspsmods@gmail.com>

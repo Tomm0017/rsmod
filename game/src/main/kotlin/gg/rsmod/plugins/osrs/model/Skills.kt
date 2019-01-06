@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs
+package gg.rsmod.plugins.osrs.model
 
 import gg.rsmod.game.fs.def.EnumDef
 import gg.rsmod.game.model.World
@@ -39,27 +39,13 @@ object Skills {
 
     fun isCombat(skill: Int): Boolean = when (skill) {
         ATTACK, DEFENCE, HITPOINTS, STRENGTH,
-            RANGED, PRAYER, MAGIC -> true
+        RANGED, PRAYER, MAGIC -> true
         else -> false
     }
 
     fun getSkillForName(world: World, maxSkills: Int, skillName: String): Int {
-        var name = skillName.toLowerCase()
-        when (name) {
-            "con" -> name = "construction"
-            "hp" -> name = "hitpoints"
-            "craft" -> name = "crafting"
-            "hunt" -> name = "hunter"
-            "slay" -> name = "slayer"
-            "pray" -> name = "prayer"
-            "mage" -> name = "magic"
-            "fish" -> name = "fishing"
-            "herb" -> name = "herblore"
-            "rc" -> name = "runecrafting"
-            "fm" -> name = "firemaking"
-        }
         for (i in 0 until maxSkills) {
-            if (getSkillName(world, i).toLowerCase() == name) {
+            if (getSkillName(world, i).toLowerCase() == skillName) {
                 return i
             }
         }

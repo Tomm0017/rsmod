@@ -15,6 +15,7 @@ gradlew.bat
 /game/src/main/kotlin/gg/rsmod/plugins/
 !/game/src/main/kotlin/gg/rsmod/plugins/*
 !/game/src/main/kotlin/gg/rsmod/plugins/osrs/*
+!/game/src/main/kotlin/gg/rsmod/plugins/osrs/model/*
 
 game.yml
 error.log

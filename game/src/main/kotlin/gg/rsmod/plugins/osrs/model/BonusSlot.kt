@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs
+package gg.rsmod.plugins.osrs.model
 
 /**
  * @author Tom <rspsmods@gmail.com>

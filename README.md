@@ -14,11 +14,12 @@ and it'll automatically load on the next server startup!
 
         game.yml: holds information on general game information
         data/packets.yml: holds information on the packets you want to support
+        data/blocks.yml: holds information on player and npc updating
         
     Luckily, both of these files have a ```.example.yml``` file in their corresponding 
     directory, which you can simply copy and remove the ```.example``` extension.
-    The ```packets.example.yml``` file contains the structure of packets for 
-    `OSRS` ```#177```
+    The ```packets.example.yml``` and ```blocks.example.yml``` file contain the structure 
+    for `OSRS` ```#177```
 
 #### Creating Your First Script 
 - Creating your first script is super simple! Scripts are written in **Kotlin**. 

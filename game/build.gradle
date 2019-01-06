@@ -8,7 +8,6 @@ mainClassName = 'gg.rsmod.Server'
 dependencies {
     compile project(':util')
     compile project(':net')
-    runtime project(':plugins')
 
     testImplementation group: 'junit', name: 'junit', version: junitVersion
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
@@ -41,3 +40,5 @@ applicationDistribution.from("$rootDir") {
     include "game.example.yml"
     into "bin/"
 }
+
+applicationDistribution.exclude(":plugins")

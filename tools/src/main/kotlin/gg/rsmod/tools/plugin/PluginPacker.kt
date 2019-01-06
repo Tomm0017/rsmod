@@ -17,7 +17,7 @@ class PluginPacker {
         @JvmStatic fun main(vararg args: String) {
             val packer = PluginPacker()
 
-            val source = Paths.get("plugins", "src", "main", "kotlin", "gg", "rsmod", "plugins", "osrs", "content", "skills", "prayer")
+            val source = Paths.get("game", "src", "main", "kotlin", "gg", "rsmod", "plugins", "osrs", "content", "skills", "prayer")
             val destination = Paths.get(".", "data", "plugins")
             val files = Files.walk(source).toList()
 

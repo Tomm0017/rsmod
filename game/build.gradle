@@ -40,5 +40,3 @@ applicationDistribution.from("$rootDir") {
     include "game.example.yml"
     into "bin/"
 }
-
-applicationDistribution.exclude(":plugins")

@@ -147,34 +147,36 @@ class PluginRepository {
         }
 
         val packed = Paths.get(packedPath)
-        val packedUrl = packed.toFile().toURI().toURL()
-        Files.walk(packed).forEach { path ->
-            if (!path.fileName.toString().endsWith(".jar")) {
-                return@forEach
-            }
-            val urls = arrayOf(packedUrl, path.toFile().toURI().toURL())
-            val classLoader = URLClassLoader(urls, PluginRepository::class.java.classLoader)
-
-            val jar = JarFile(path.toFile())
-            val entries = jar.entries()
-            while (entries.hasMoreElements()) {
-                val entry = entries.nextElement()
-                if (!entry.name.endsWith(".class") || entry.name.contains("$") || entry.name.endsWith("Package")) {
-                    continue
+        if (Files.exists(packed)) {
+            val packedUrl = packed.toFile().toURI().toURL()
+            Files.walk(packed).forEach { path ->
+                if (!path.fileName.toString().endsWith(".jar")) {
+                    return@forEach
                 }
-                val clazz = classLoader.loadClass(entry.name.replace("/", ".").replace(".class", ""))
-                clazz.methods.forEach { method ->
-                    if (method.isAnnotationPresent(ScanPlugins::class.java)) {
-                        try {
-                            method.invoke(null, this)
-                        } catch (e: Exception) {
-                            logger.error("Error loading source plugin: ${method.declaringClass} [$method].", e)
-                            throw e
+                val urls = arrayOf(packedUrl, path.toFile().toURI().toURL())
+                val classLoader = URLClassLoader(urls, PluginRepository::class.java.classLoader)
+
+                val jar = JarFile(path.toFile())
+                val entries = jar.entries()
+                while (entries.hasMoreElements()) {
+                    val entry = entries.nextElement()
+                    if (!entry.name.endsWith(".class") || entry.name.contains("$") || entry.name.endsWith("Package")) {
+                        continue
+                    }
+                    val clazz = classLoader.loadClass(entry.name.replace("/", ".").replace(".class", ""))
+                    clazz.methods.forEach { method ->
+                        if (method.isAnnotationPresent(ScanPlugins::class.java)) {
+                            try {
+                                method.invoke(null, this)
+                            } catch (e: Exception) {
+                                logger.error("Error loading source plugin: ${method.declaringClass} [$method].", e)
+                                throw e
+                            }
                         }
                     }
                 }
+                jar.close()
             }
-            jar.close()
         }
     }
 

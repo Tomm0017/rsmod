@@ -30,13 +30,14 @@ dependencies {
 }
 
 applicationDistribution.from("$rootDir/data/") {
-    include "**"
-    exclude "saves/*"
+    include '**'
+    exclude 'saves/*'
     exclude '*.example.yml'
-    into "data/"
+    into 'bin/data/'
 }
 
 applicationDistribution.from("$rootDir") {
-    include "game.example.yml"
-    into "bin/"
+    include 'plugins/*'
+    include 'game.example.yml'
+    into 'bin/'
 }

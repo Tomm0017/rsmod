@@ -40,5 +40,9 @@ class PluginPacker {
 
     fun compileBinary(plugin: Path, paths: List<Path>) {
         // TODO(Tom): compile to .jar with only class files
+
+        // note: just include game.jar and have it compile alongside, then if it
+        // outputs game.jar files, we remove any file thats not in our [paths]. list.
+
     }
 }

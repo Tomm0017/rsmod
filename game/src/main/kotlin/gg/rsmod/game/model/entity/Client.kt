@@ -9,7 +9,10 @@ import gg.rsmod.net.codec.login.LoginRequest
 import io.netty.channel.Channel
 
 /**
- * A [Player] that is controlled by a human.
+ * A [Player] that is controlled by a human. A [Client] is responsible for
+ * handling any network related job.
+ *
+ * Anything other than network logic should be added to [Player] instead.
  *
  * @param channel
  * The [Channel] used to write and read [Message]s to and from the client.

@@ -1,5 +1,6 @@
 package gg.rsmod.game.sync.task
 
+import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.INDEX_ATTR
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.sync.SynchronizationSegment
@@ -19,10 +20,12 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         private val logger = LogManager.getLogger(PlayerSynchronizationTask::class.java)
 
         private const val MAX_LOCAL_PLAYERS = 255
-        private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 15
+        private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 40
     }
 
     private val nonLocalIndices = arrayListOf<Int>().apply { addAll(1..2047) }
+
+    private val prioritizedPlayers = getPrioritizedWorldPlayers()
 
     override fun run() {
         val buf = GamePacketBuilder(player.world.playerUpdateBlocks.updateOpcode, PacketType.VARIABLE_SHORT)
@@ -39,6 +42,29 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         for (i in 1 until 2048) {
             player.otherPlayerSkipFlags[i] = player.otherPlayerSkipFlags[i] shr 1
         }
+    }
+
+    private fun getPrioritizedWorldPlayers(): List<Player> {
+        val players = arrayListOf<Player>()
+
+        mainLoop@ for (radius in 0..Player.NORMAL_VIEW_DISTANCE) {
+            for (x in -radius..radius) {
+                for (z in -radius..radius) {
+                    val tile = player.tile.transform(x, z)
+                    val chunk = player.world.chunks.getOrCreate(tile.toChunkCoords(), create = false) ?: continue
+                    chunk.getEntities<Player>(tile, EntityType.PLAYER).forEach { p ->
+                        if (p != player && players.size < MAX_LOCAL_PLAYERS) {
+                            players.add(p)
+                        }
+                    }
+                    if (players.size >= MAX_LOCAL_PLAYERS) {
+                        break@mainLoop
+                    }
+                }
+            }
+        }
+
+        return players
     }
 
     private fun getSegments(): List<SynchronizationSegment> {
@@ -222,7 +248,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 continue
             }
 
-            val nonLocal = if (index < player.world.players.capacity) player.world.players.get(index) else null
+            val nonLocal = if (index < player.world.players.capacity) prioritizedPlayers.firstOrNull { it.index == index } else null
 
             if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE
                     && player.localPlayers.size < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
@@ -245,7 +271,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) == 0) {
                     continue
                 }
-                val next = if (nextIndex < player.world.players.capacity) player.world.players.get(nextIndex) else null
+                val next = if (nextIndex < player.world.players.capacity) prioritizedPlayers.firstOrNull { it.index == nextIndex } else null
                 if (next != null && shouldAdd(next)) {
                     break
                 }
@@ -276,7 +302,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 continue
             }
 
-            val nonLocal = if (index < player.world.players.capacity) player.world.players.get(index) else null
+            val nonLocal = if (index < player.world.players.capacity) prioritizedPlayers.firstOrNull { it.index == index } else null
 
             if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE
                     && player.localPlayers.size < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
@@ -298,7 +324,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) != 0) {
                     continue
                 }
-                val next = if (nextIndex < player.world.players.capacity) player.world.players.get(nextIndex) else null
+                val next = if (nextIndex < player.world.players.capacity) prioritizedPlayers.firstOrNull { it.index == nextIndex } else null
                 if (next != null && shouldAdd(next)) {
                     break
                 }
@@ -316,7 +342,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         return segments
     }
 
-    private fun shouldAdd(other: Player): Boolean = other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) && !player.localPlayers.contains(other) && other != player
+    private fun shouldAdd(other: Player): Boolean = other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) && !player.localPlayers.contains(other) && other != player && prioritizedPlayers.contains(other)
 
-    private fun shouldRemove(other: Player): Boolean = !other.isOnline() || !other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE)
+    private fun shouldRemove(other: Player): Boolean = !other.isOnline() || !other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) || !prioritizedPlayers.contains(other)
 }

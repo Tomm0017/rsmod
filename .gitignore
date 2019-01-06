@@ -13,16 +13,8 @@ gradlew.bat
 /data/blocks.yml
 
 /game/src/main/kotlin/gg/rsmod/plugins/
-!/game/src/main/kotlin/gg/rsmod/plugins/FirstLaunch.kt
-!/game/src/main/kotlin/gg/rsmod/plugins/GeneralHelper.kt
-!/game/src/main/kotlin/gg/rsmod/plugins/PlayerHelper.kt
-!/game/src/main/kotlin/gg/rsmod/plugins/PluginHelper.kt
-!/game/src/main/kotlin/gg/rsmod/plugins/osrs/OSRSGameframe.kt
-!/game/src/main/kotlin/gg/rsmod/plugins/osrs/OSRSInterfaces.kt
-!/game/src/main/kotlin/gg/rsmod/plugins/osrs/OSRSLogin.kt
-!/game/src/main/kotlin/gg/rsmod/plugins/osrs/OSRSMessageType.kt
-!/game/src/main/kotlin/gg/rsmod/plugins/osrs/Skills.kt
-!/game/src/main/kotlin/gg/rsmod/plugins/osrs/Equipment.kt
+!/game/src/main/kotlin/gg/rsmod/plugins/*
+!/game/src/main/kotlin/gg/rsmod/plugins/osrs/*
 
 game.yml
 error.log

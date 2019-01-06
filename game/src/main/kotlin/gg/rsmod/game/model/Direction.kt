@@ -37,6 +37,18 @@ enum class Direction(val value: Int) {
         NONE -> throw IllegalArgumentException("Invalid walk index for this direction.")
     }
 
+    fun getNpcWalkIndex(): Int = when (this) {
+        NORTH_WEST -> 0
+        NORTH -> 1
+        NORTH_EAST -> 2
+        WEST -> 3
+        EAST -> 4
+        SOUTH_WEST -> 5
+        SOUTH -> 6
+        SOUTH_EAST -> 7
+        NONE -> throw IllegalArgumentException("Invalid walk index for this direction.")
+    }
+
     fun isDiagonal(): Boolean = this == SOUTH_EAST || this == SOUTH_WEST || this == NORTH_EAST || this == NORTH_WEST
 
     fun getDeltaX(): Int = when (this) {

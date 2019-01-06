@@ -29,7 +29,7 @@ class PawnList<T : Pawn>(val capacity: Int) {
     fun count(): Int = count
 
     @Suppress("UNCHECKED_CAST")
-    fun getBackedArray(): Array<T?> = pawns as Array<T?>
+    fun toRawList(): List<T?> = pawns.map { it as? T }
 
     @Suppress("UNCHECKED_CAST")
     fun forEach(action: (T) -> Unit) {

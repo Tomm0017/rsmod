@@ -111,12 +111,12 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         players.remove(p)
     }
 
-    fun spawn(npc: Npc) {
-
+    fun spawn(npc: Npc): Boolean {
+        return npcs.add(npc)
     }
 
     fun remove(npc: Npc) {
-
+        npcs.remove(npc)
     }
 
     fun spawn(obj: GameObject) {

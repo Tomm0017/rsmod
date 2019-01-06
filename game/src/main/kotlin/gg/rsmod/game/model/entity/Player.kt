@@ -21,9 +21,14 @@ open class Player(override val world: World) : Pawn(world) {
 
     companion object {
         /**
-         * How many tiles a player can see at a time.
+         * How many tiles a player can 'see' at a time, normally.
          */
-        const val VIEW_DISTANCE = 15
+        const val NORMAL_VIEW_DISTANCE = 15
+
+        /**
+         * How many tiles a player can 'see' at a time when in a 'large' viewport.
+         */
+        const val LARGE_VIEW_DISTANCE = 127
     }
 
     /**
@@ -70,7 +75,23 @@ open class Player(override val world: World) : Pawn(world) {
 
     val varps  by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
 
+    /**
+     * Some areas have a 'large' viewport. Which means the player's client is
+     * able to render more entities in a larger radius than normal.
+     */
+    private var largeViewport = false
+
+    /**
+     * The players in our viewport, including ourselves. This list should not
+     * be used outside of our synchronization task.
+     */
     val localPlayers = arrayListOf<Player>()
+
+    /**
+     * The npcs in our viewport. This list should not be used outside of our
+     * synchronization task.
+     */
+    val localNpcs = arrayListOf<Npc>()
 
     val otherPlayerSkipFlags = IntArray(2048)
 
@@ -312,6 +333,12 @@ open class Player(override val world: World) : Pawn(world) {
         addBlock(UpdateBlockType.APPEARANCE)
         world.plugins.executeLogin(this)
     }
+
+    fun setLargeViewport(largeViewport: Boolean) {
+        this.largeViewport = largeViewport
+    }
+
+    fun hasLargeViewport(): Boolean = largeViewport
 
     /**
      * Checks if the player is registered to a [PawnList] as they should be

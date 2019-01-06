@@ -316,7 +316,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         return segments
     }
 
-    private fun shouldAdd(other: Player): Boolean = other.tile.isWithinRadius(player.tile, Player.VIEW_DISTANCE) && !player.localPlayers.contains(other) && other != player
+    private fun shouldAdd(other: Player): Boolean = other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) && !player.localPlayers.contains(other) && other != player
 
-    private fun shouldRemove(other: Player): Boolean = !other.isOnline() || !other.tile.isWithinRadius(player.tile, Player.VIEW_DISTANCE)
+    private fun shouldRemove(other: Player): Boolean = !other.isOnline() || !other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE)
 }

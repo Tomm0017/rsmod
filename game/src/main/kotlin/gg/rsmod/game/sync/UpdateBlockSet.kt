@@ -14,9 +14,14 @@ import java.util.*
 class UpdateBlockSet {
 
     /**
-     * The player updating packet opcode.
+     * The updating packet opcode.
      */
     var updateOpcode = -1
+
+    /**
+     * A secondary packet opcode used in 'large scene' synchronization.
+     */
+    var largeSceneUpdateOpcode = -1
 
     /**
      * When [gg.rsmod.game.sync.UpdateBlockBuffer.blockValue] exceeds the value
@@ -26,8 +31,8 @@ class UpdateBlockSet {
     var updateBlockExcessMask = -1
 
     /**
-     * The order in which [UpdateBlockType]s must be handled in the player
-     * synchronization process.
+     * The order in which [UpdateBlockType]s must be handled in the synchronization
+     * process.
      */
     val updateBlockOrder = arrayListOf<UpdateBlockType>()
 
@@ -41,17 +46,19 @@ class UpdateBlockSet {
         check(this.updateBlocks.isEmpty())
 
         val updateOpcode = properties.get<Int>("updating-opcode")!!
-        val excessMask = Integer.decode(properties.get<String>("excess-mask"))
+        val largeSceneUpdateOpcode = properties.getOrDefault("large-updating-opcode", -1)
+        val excessMask = if (properties.has("excess-mask")) Integer.decode(properties.get<String>("excess-mask")) else -1
         this.updateOpcode = updateOpcode
         this.updateBlockExcessMask = excessMask
+        this.largeSceneUpdateOpcode = largeSceneUpdateOpcode
 
-        val orders = properties.get<ArrayList<Any>>("order")!!
+        val orders = properties.getOrDefault("order", ArrayList<Any>())
         orders.forEach { order ->
             val blockType = UpdateBlockType.valueOf((order as String).toUpperCase())
             this.updateBlockOrder.add(blockType)
         }
 
-        val blocks = properties.get<ArrayList<Any>>("blocks")!!
+        val blocks = properties.getOrDefault("blocks", ArrayList<Any>())
         blocks.forEach { packet ->
             val values = packet as LinkedHashMap<*, *>
             val blockType = (values["block"] as String).toUpperCase()

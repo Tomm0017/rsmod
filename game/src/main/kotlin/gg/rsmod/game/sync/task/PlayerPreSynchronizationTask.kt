@@ -36,7 +36,7 @@ class PlayerPreSynchronizationTask(val player: Player) : SynchronizationTask {
         val dx = new.x - old.x
         val dz = new.z - old.z
 
-        return dx <= Player.VIEW_DISTANCE || dz <= Player.VIEW_DISTANCE || dx >= Chunk.MAX_VIEWPORT - Player.VIEW_DISTANCE - 1
-                || dz >= Chunk.MAX_VIEWPORT - Player.VIEW_DISTANCE - 1
+        return dx <= Player.NORMAL_VIEW_DISTANCE || dz <= Player.NORMAL_VIEW_DISTANCE || dx >= Chunk.MAX_VIEWPORT - Player.NORMAL_VIEW_DISTANCE - 1
+                || dz >= Chunk.MAX_VIEWPORT - Player.NORMAL_VIEW_DISTANCE - 1
     }
 }

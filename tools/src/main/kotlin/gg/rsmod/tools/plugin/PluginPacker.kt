@@ -21,11 +21,11 @@ class PluginPacker {
             val destination = Paths.get(".", "data", "plugins")
             val files = Files.walk(source).toList()
 
-            packer.compile(destination.resolve("prayer.jar"), files)
+            packer.compileSource(destination.resolve("prayer.zip"), files)
         }
     }
 
-    fun compile(plugin: Path, paths: List<Path>) {
+    fun compileSource(plugin: Path, paths: List<Path>) {
         val zip = ZipFile(plugin.toAbsolutePath().toString())
         val params = ZipParameters()
         params.compressionMethod = Zip4jConstants.COMP_DEFLATE
@@ -37,5 +37,9 @@ class PluginPacker {
                 zip.addFile(file, params)
             }
         }
+    }
+
+    fun compileBinary(plugin: Path, paths: List<Path>) {
+        // TODO(Tom): compile to .jar with only class files
     }
 }

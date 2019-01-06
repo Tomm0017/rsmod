@@ -148,8 +148,7 @@ class PluginRepository {
 
         val packed = Paths.get(packedPath)
         val packedUrl = packed.toFile().toURI().toURL()
-
-        Files.list(packed).forEach { path ->
+        Files.walk(packed).forEach { path ->
             if (!path.fileName.toString().endsWith(".jar")) {
                 return@forEach
             }
@@ -165,7 +164,6 @@ class PluginRepository {
                 }
                 val clazz = classLoader.loadClass(entry.name.replace("/", ".").replace(".class", ""))
                 clazz.methods.forEach { method ->
-                    method.isAccessible = true
                     if (method.isAnnotationPresent(ScanPlugins::class.java)) {
                         try {
                             method.invoke(null, this)

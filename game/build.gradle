@@ -30,9 +30,14 @@ dependencies {
     implementation group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
 }
 
-applicationDistribution.from("$rootDir/data") {
+applicationDistribution.from("$rootDir/data/") {
+    include "**"
+    exclude "saves/*"
     exclude '*.example.yml'
-    include '*.yml'
-    include '*.json'
     into "data/"
+}
+
+applicationDistribution.from("$rootDir") {
+    include "game.example.yml"
+    into "bin/"
 }

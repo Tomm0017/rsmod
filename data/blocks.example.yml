@@ -86,3 +86,64 @@ players:
 
     - block: HITMARK
       bit: 0x40
+
+npcs:
+
+  updating-opcode: 33
+  large-updating-opcode: 81
+
+  order:
+    - FACE_PAWN
+    - FACE_TILE
+    - ANIMATION
+    - APPEARANCE
+    - GFX
+    - FORCE_CHAT
+
+  blocks:
+    - block: FACE_PAWN
+      bit: 0x1
+      structure:
+        - name: pawnIndex
+          order: LITTLE
+          type: SHORT
+
+    - block: FACE_TILE
+      bit: 0x40
+      structure:
+        - name: x
+          order: LITTLE
+          type: SHORT
+          trans: ADD
+        - name: z
+          order: LITTLE
+          type: SHORT
+          trans: ADD
+
+    - block: ANIMATION
+      bit: 0x20
+      structure:
+        - name: animation
+          type: SHORT
+        - name: delay
+          type: BYTE
+          trans: SUBTRACT
+
+    - block: APPEARANCE
+      bit: 0x4
+      structure:
+        - name: transmog
+          type: SHORT
+
+    - block: GFX
+      bit: 0x8
+      structure:
+        - name: gfx
+          order: LITTLE
+          type: SHORT
+        - name: settings
+          order: INVERSED_MIDDLE
+          type: INT
+
+    - block: FORCE_CHAT
+      bit: 0x2

@@ -3,6 +3,7 @@ package gg.rsmod.game.sync.segment
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.game.service.game.WeaponRenderService
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.UpdateBlockType
@@ -99,10 +100,35 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                 val transmog = other.getTransmogId() >= 0
 
                 if (!transmog) {
+                    val statsService = other.world.getService(ItemStatsService::class.java, false).orElse(null)
                     val translation = arrayOf(-1, -1, -1, -1, 2, -1, 3, 5, 0, 4, 6, 1)
+
+                    val arms = 6
+                    val hair = 8
+                    val beard = 11
+
                     for (i in 0 until 12) {
+                        if (statsService != null) {
+                            if (i == arms) {
+                                val item = other.equipment[4]
+                                if (item != null) {
+                                    if (statsService.get(item.id)?.equipType == arms) {
+                                        appBuf.put(DataType.BYTE, 0)
+                                        continue
+                                    }
+                                }
+                            } else if (i == hair) {
+                                val item = other.equipment[0]
+                                if (item != null) {
+                                    val equipType = statsService.get(item.id)?.equipType ?: -1
+                                    if (equipType == hair || equipType == beard) {
+                                        appBuf.put(DataType.BYTE, 0)
+                                        continue
+                                    }
+                                }
+                            }
+                        }
                         val item = other.equipment[i]
-                        // TODO(Tom): equip type for hiding beards, etc
                         if (item != null) {
                             appBuf.put(DataType.SHORT, 0x200 + item.id)
                         } else {

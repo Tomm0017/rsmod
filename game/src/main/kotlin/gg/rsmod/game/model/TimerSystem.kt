@@ -17,13 +17,11 @@ class TimerSystem {
      */
     private var timers: HashMap<TimerKey, Int>? = null
 
-    @Suppress("UNCHECKED_CAST")
     operator fun get(key: TimerKey): Int {
         constructIfNeeded()
         return (timers!![key]!!)
     }
 
-    @Suppress("UNCHECKED_CAST")
     operator fun set(key: TimerKey, value: Int): TimerSystem {
         constructIfNeeded()
         timers!![key] = value

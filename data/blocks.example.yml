@@ -5,11 +5,11 @@ players:
 
   order:
     - GFX
+    - MOVEMENT
     - FORCE_CHAT
     - FACE_TILE
     - APPEARANCE
     - FACE_PAWN
-    - MOVEMENT
     - ANIMATION
 
   blocks:

@@ -89,19 +89,13 @@ open class ItemStatsDumper {
         }
 
         if (bonuses) {
-            dumpedDefinitions.values.forEach { def ->
-                println("${def.item}:${def.bonuses.toString().replace("]", "").replace("[", "").replace(" ", "")}")
-            }
+            // Note(Tom): dump bonuses here if u want
         }
         if (equipmentInfo) {
-            dumpedDefinitions.values.forEach { def ->
-                println("${def.item}:${def.equipSlot},${def.equipType},false") // boolean = hide hair
-            }
+            // Note(Tom): dump equipment info here if u want
         }
         if (attackSpeed) {
-            dumpedDefinitions.values.forEach { def ->
-                println("${def.item}:${def.attackSpeed}")
-            }
+            // Note(Tom): dump attack speed here if u want
         }
 
         log.info("Dumped ${dumpedDefinitions.size} items")
@@ -204,6 +198,21 @@ open class ItemStatsDumper {
 
         builder.item = definition.id
         builder.name = definition.name
+        if (builder.equipType == 0) {
+            val name = builder.name.toLowerCase()
+            if (builder.equipSlot == 0) {
+                when {
+                    name.contains("full helm") -> builder.equipType = 11
+                    name.contains("helm") -> builder.equipType = 8
+                    name.contains(" hat") -> builder.equipType = 8
+                }
+            } else if (builder.equipSlot == 4) {
+                when {
+                    name.contains("chestplate") -> builder.equipType = 6
+                    name.contains("body") && !name.contains("hide") -> builder.equipType = 6
+                }
+            }
+        }
         if (attackBonuses.sum() > 0.0 || defensiveBonuses.sum() > 0.0 || otherBonuses.sum() > 0.0) {
             attackBonuses.forEach { bonus ->
                 builder.bonuses.add(bonus)

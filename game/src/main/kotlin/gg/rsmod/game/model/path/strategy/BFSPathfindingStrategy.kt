@@ -11,7 +11,7 @@ import kotlin.collections.ArrayList
 
 /**
  * A [PathfindingStrategy] which uses breadth-first search algorithm to calculate
- * a valid path the the target location.
+ * a valid path to the target location.
  *
  * @author Tom <rspsmods@gmail.com>
  */

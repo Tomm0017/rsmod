@@ -21,8 +21,9 @@ object PluginPackerMain {
     @JvmStatic fun main(vararg args: String) {
         val packer = PluginPacker()
 
-        if (args.isNotEmpty()) {
+        if (args.isNotEmpty() && args.first().toLowerCase() != "gui") {
             val options = Options()
+
             options.addOption("t", true, "The type of packing: <zip> or <jar>")
             options.addOption("p", true, "The name you would like to give your packed plugin")
             options.addOption("s", true, "The path to the plugin files that you wish to pack")

@@ -224,6 +224,14 @@ object Bank {
             }
 
             if (amount == -1) {
+                /**
+                 * Placeholders' "release" option uses the same option
+                 * as "withdraw-x" would.
+                 */
+                if (item.amount == 0) {
+                    p.bank.set(slot, null)
+                    return@bindButton
+                }
                 it.suspendable {
                     amount = it.inputInteger("How many would you like to withdraw?")
                     if (amount > 0) {
@@ -265,14 +273,13 @@ object Bank {
             if (from[i] == null) {
                 if (placehold || p.getVarbit(ALWAYS_PLACEHOLD_VARBIT) == 1) {
                     val def = item.getDef(p.world.definitions)
-                    val placeholder =  def.placeholderId
 
                     /**
                      * Make sure the item has a valid placeholder item in its
                      * definition.
                      */
-                    if (placeholder > 0) {
-                        p.bank.set(i, Item(placeholder, 0))
+                    if (def.placeholderId > 0) {
+                        p.bank.set(i, Item(def.placeholderId, 0))
                     }
                 }
             }

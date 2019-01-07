@@ -25,7 +25,7 @@ class PluginPackerController : Initializable {
         private const val PROPERTY_FILE = "rsmod-packer.properties"
     }
 
-    var icons: List<Image>? = null
+    private var icons: List<Image>? = null
 
     lateinit var primaryStage: Stage
 
@@ -136,7 +136,7 @@ class PluginPackerController : Initializable {
             return@TextFormatter c
         }
 
-        jarPlugin.selectedProperty().addListener { observable, oldValue, newValue ->
+        jarPlugin.selectedProperty().addListener { _, _, newValue ->
             zipPlugin.isSelected = !newValue
 
             compilerPath.isDisable = !newValue
@@ -146,7 +146,7 @@ class PluginPackerController : Initializable {
             gameJarButton.isDisable = !newValue
         }
 
-        zipPlugin.selectedProperty().addListener { observable, oldValue, newValue ->
+        zipPlugin.selectedProperty().addListener { _, _, newValue ->
             jarPlugin.isSelected = !newValue
 
             compilerPath.isDisable = newValue

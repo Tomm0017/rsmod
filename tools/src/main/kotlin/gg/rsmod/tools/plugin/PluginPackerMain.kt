@@ -1,5 +1,6 @@
 package gg.rsmod.tools.plugin
 
+import gg.rsmod.ui.plugin.PluginPackerUI
 import org.apache.commons.cli.DefaultParser
 import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.Options
@@ -22,7 +23,7 @@ object PluginPackerMain {
         val packer = PluginPacker()
 
         if (args.isNotEmpty() && args.first().toLowerCase() == "gui") {
-            // TODO(Tom): launch gui
+            PluginPackerUI().start()
         } else {
             val options = Options()
 

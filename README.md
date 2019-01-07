@@ -15,7 +15,6 @@ Here are the instructions for how you would create a few different scripts.
     
     I want to create a __Command__
     -
-    
     A command is an input received when a player types something in their chatbox, 
     prefixed with `::`. For example `::food`.
 
@@ -49,7 +48,6 @@ Here are the instructions for how you would create a few different scripts.
     
     I want to create a __Scheduled Task__
     -
-    
     A scheduled task is logic that can take more than a single tick to complete.
     Some examples are skills that are continuous, dialogs that wait for input,
     or cutscenes.

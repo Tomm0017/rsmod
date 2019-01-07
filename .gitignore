@@ -12,6 +12,8 @@ gradlew.bat
 /data/packets.yml
 /data/blocks.yml
 
+/plugins/
+
 /game/src/main/kotlin/gg/rsmod/plugins/
 !/game/src/main/kotlin/gg/rsmod/plugins/*
 !/game/src/main/kotlin/gg/rsmod/plugins/osrs/*

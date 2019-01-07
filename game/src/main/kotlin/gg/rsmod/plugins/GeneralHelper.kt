@@ -14,7 +14,7 @@ fun String.plural(amount: Int): String {
     return if (amount != 1) this + "s" else this
 }
 
-fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int): Int {
+fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int, note: Boolean): Int {
     check(item.amount > 0)
 
     val copy = Item(item)
@@ -23,7 +23,8 @@ fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int): Int {
     if (removal.hasFailed()) {
         return 0
     }
-    val addition = to.add(copy.id, copy.amount, assureFullInsertion = false)
+    val noted = if (note) copy.toNoted(definitions) else copy.toUnnoted(definitions)
+    val addition = to.add(noted.id, noted.amount, assureFullInsertion = false)
     if (addition.hasSucceeded()) {
         /**
          * If there items were successfully added to [to], we copy the attributes
@@ -45,15 +46,16 @@ fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int): Int {
 /**
  * Similar to other [swap] method, however this does not copy any attributes.
  */
-fun ItemContainer.swap(to: ItemContainer, item: Int, amount: Int, beginSlot: Int): Int {
+fun ItemContainer.swap(to: ItemContainer, item: Int, amount: Int, beginSlot: Int, note: Boolean): Int {
     val copy = Item(item, amount)
 
     val removal = remove(item, amount, assureFullRemoval = true, beginSlot = beginSlot)
     if (removal.hasFailed()) {
         return 0
     }
-    val addition = to.add(copy.id, copy.amount, assureFullInsertion = false)
-    if (addition.hasSucceeded()) {
+    val noted = if (note) copy.toNoted(definitions) else copy.toUnnoted(definitions)
+    val addition = to.add(noted.id, noted.amount, assureFullInsertion = false)
+    if (addition.hasFailed()) {
         /**
          * If the items could not be added, we refund what's left over.
          */

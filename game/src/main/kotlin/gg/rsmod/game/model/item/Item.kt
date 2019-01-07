@@ -15,15 +15,17 @@ class Item(val id: Int, var amount: Int = 1) {
 
     private var attr: HashMap<ItemAttribute, Int>? = null
 
-    fun toNote(definitions: DefinitionSet): Item {
+    fun toNoted(definitions: DefinitionSet): Item {
         val def = definitions[ItemDef::class.java][id]
-        return if (def.noteTemplateId == 0 && def.noteTemplateId > 0) Item(def.noteLinkId, amount) else Item(this)
+        return if (def.noteTemplateId == 0 && def.noteLinkId > 0) Item(def.noteLinkId, amount).copyAttr(this) else Item(this).copyAttr(this)
     }
 
-    fun toUnnote(definitions: DefinitionSet): Item {
+    fun toUnnoted(definitions: DefinitionSet): Item {
         val def = definitions[ItemDef::class.java][id]
-        return if (def.noteTemplateId > 0) Item(def.noteLinkId, amount) else Item(this)
+        return if (def.noteTemplateId > 0) Item(def.noteLinkId, amount).copyAttr(this) else Item(this).copyAttr(this)
     }
+
+    fun getDef(definitions: DefinitionSet) = definitions[ItemDef::class.java][id]
 
     fun hasAnyAttr(): Boolean = attr != null && attr!!.isNotEmpty()
 
@@ -40,11 +42,12 @@ class Item(val id: Int, var amount: Int = 1) {
         return this
     }
 
-    fun copyAttr(other: Item) {
+    fun copyAttr(other: Item): Item {
         if (other.hasAnyAttr()) {
             constructAttrIfNeeded()
             attr!!.putAll(other.attr!!)
         }
+        return this
     }
 
     private fun constructAttrIfNeeded() {

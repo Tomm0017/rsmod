@@ -128,16 +128,6 @@ object Commands {
             }
         }
 
-        r.bindCommand("obank", Privilege.ADMIN_POWER) {
-            val p = it.player()
-
-            p.openInterface(12, InterfacePane.MAIN_SCREEN)
-            p.openInterface(15, InterfacePane.TAB_AREA)
-
-            p.setInterfaceSetting(parent = 15, child = 3, range = 0..27, setting = 1181438)
-            p.setInterfaceSetting(parent = 15, child = 10, range = 0..27, setting = 1054)
-        }
-
         r.bindCommand("item", Privilege.ADMIN_POWER) {
             val p = it.player()
 
@@ -146,7 +136,7 @@ object Commands {
                 val item = values[0].toInt()
                 val amount = if (values.size > 1) Misc.parseAmount(values[1]) else 1
                 if (item < p.world.definitions.getCount(ItemDef::class.java)) {
-                    val def = p.world.definitions[ItemDef::class.java][Item(item).toUnnote(p.world.definitions).id]
+                    val def = p.world.definitions[ItemDef::class.java][Item(item).toUnnoted(p.world.definitions).id]
                     val result = p.inventory.add(id = item, amount = amount, assureFullInsertion = false)
                     p.message("You have spawned <col=801700>${DecimalFormat().format(result.completed)} x ${def.name}</col></col> ($item).")
                 } else {

@@ -49,6 +49,11 @@ enum class LockState {
         else -> false
     }
 
+    fun canRestoreRunEnergy(): Boolean = when (this) {
+        DELAY_ACTIONS -> false
+        else -> true
+    }
+
     fun delaysPrayer(): Boolean = when (this) {
         DELAY_ACTIONS -> true
         else -> false

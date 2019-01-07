@@ -9,11 +9,13 @@ and it'll automatically load on the next server startup!
 - TODO
 
 ## Creating Your First Script 
+
 - Creating your first script is super simple! Scripts are written in **Kotlin**. 
 Here are the instructions for how you would create a few different scripts.
     
     I want to create a `Command`
     -
+    
     A command is an input received when a player types something in their chatbox, 
     prefixed with `::`. For example `::food`.
 
@@ -47,6 +49,7 @@ Here are the instructions for how you would create a few different scripts.
     
     I want to create a `Scheduled Task`
     -
+    
     A scheduled task is logic that can take more than a single tick to complete.
     Some examples are skills that are continuous, dialogs that wait for input,
     or cutscenes.
@@ -107,6 +110,7 @@ Here are the instructions for how you would create a few different scripts.
      Short and sweet! That's all you need for a basic dialog script. 
 
 ## FAQ
+
 #### One or more of my plugins stopped working
 - When you buy, or create, and use a Plugin **JAR** - the plugin uses code it 
 assumes you have on the core game module when it was written. If for some reason 

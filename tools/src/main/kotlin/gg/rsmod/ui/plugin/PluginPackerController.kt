@@ -3,10 +3,7 @@ package gg.rsmod.ui.plugin
 import gg.rsmod.tools.plugin.PluginPacker
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
-import javafx.scene.control.Alert
-import javafx.scene.control.Button
-import javafx.scene.control.CheckBox
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.stage.DirectoryChooser
 import javafx.stage.FileChooser
@@ -128,6 +125,15 @@ class PluginPackerController : Initializable {
                     break
                 }
             }
+        }
+
+        pluginName.textFormatter = TextFormatter<String> { c ->
+            if (c.controlNewText.isBlank()) {
+                c.text = ""
+                return@TextFormatter c
+            }
+            c.text = c.text.replace(" ", "_")
+            return@TextFormatter c
         }
 
         jarPlugin.selectedProperty().addListener { observable, oldValue, newValue ->

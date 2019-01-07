@@ -1,8 +1,11 @@
 package gg.rsmod.ui.plugin
 
 import gg.rsmod.tools.plugin.PluginPacker
+import javafx.application.Platform
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
 import javafx.fxml.Initializable
+import javafx.scene.Scene
 import javafx.scene.control.*
 import javafx.scene.image.Image
 import javafx.stage.DirectoryChooser
@@ -15,6 +18,8 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
 import kotlin.streams.toList
+
+
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -32,6 +37,29 @@ class PluginPackerController : Initializable {
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         loadSettings()
 
+        /**
+         * Menu items.
+         */
+        closeApp.setOnAction {
+            Platform.exit()
+            System.exit(0)
+        }
+
+        arrayOf(openHelp, openAbout).forEach { button ->
+            button.setOnAction {
+                val stage = Stage()
+                val loader = FXMLLoader(PluginPackerController::class.java.getResource("/ui/plugin/${if (button == openHelp) "help" else "about"}.fxml"))
+                stage.scene = Scene(loader.load())
+                stage.title = if (button == openHelp) "Help" else "About"
+                stage.initModality(Modality.WINDOW_MODAL)
+                stage.initOwner(primaryStage)
+                stage.show()
+            }
+        }
+
+        /**
+         * Pack settings.
+         */
         compilerButton.setOnAction {
             var oldDirectory: File? = null
             while (true) {
@@ -139,6 +167,9 @@ class PluginPackerController : Initializable {
             return@TextFormatter c
         }
 
+        /**
+         * Packing plugin.
+         */
         jarPlugin.selectedProperty().addListener { _, _, newValue ->
             zipPlugin.isSelected = !newValue
 
@@ -187,7 +218,7 @@ class PluginPackerController : Initializable {
                 return@setOnAction
             }
 
-            if (sourcePath.text.isBlank() || !Files.exists(sourceFolder) || !Files.isDirectory(sourceFolder)) {
+            if (sourcePath.text.isBlank() || !Files.exists(sourceFolder) || !Files.isDirectory(sourceFolder) && !sourceFolder.fileName.toString().endsWith(".kt")) {
                 alertDialog(Alert.AlertType.ERROR, "Error", "The plugin source folder does not exist!",
                         "Directory: ${sourcePath.text}", primaryStage, icons)
                 return@setOnAction
@@ -199,6 +230,7 @@ class PluginPackerController : Initializable {
                 return@setOnAction
             }
 
+            packPlugin.isDisable = true
             if (jarPlugin.isSelected) {
                 if (PluginPacker().compileBinary(compilerPath = compiler.toAbsolutePath().toString(),
                                 gameJar = gameJar.toAbsolutePath().toString(),
@@ -207,7 +239,7 @@ class PluginPackerController : Initializable {
                                 paths = Files.walk(sourceFolder).toList())) {
                     saveSettings()
                     alertDialog(Alert.AlertType.INFORMATION, "Success!", "Your plugin was packed!",
-                            "Your plugin was packed to: ${outputFolder.toAbsolutePath().toString() + plugin + ".jar"}", primaryStage, icons)
+                            "Your plugin was packed to: ${outputFolder.toAbsolutePath().toString() + "\\" + plugin + ".jar"}", primaryStage, icons)
                 } else {
                     alertDialog(Alert.AlertType.ERROR, "Error", "Could not compile plugins!",
                             "Make sure your Kotlin compiler is working properly and files do not contain errors!", primaryStage, icons)
@@ -216,12 +248,13 @@ class PluginPackerController : Initializable {
                 if (PluginPacker().compileSource(pluginName = plugin, outputPath = outputFolder, paths = Files.walk(sourceFolder).toList())) {
                     saveSettings()
                     alertDialog(Alert.AlertType.INFORMATION, "Success!", "Your plugin was packed!",
-                            "Your plugin was packed to: ${outputFolder.toAbsolutePath().toString() + plugin + ".zip"}", primaryStage, icons)
+                            "Your plugin was packed to: ${outputFolder.toAbsolutePath().toString() + "\\" + plugin + ".zip"}", primaryStage, icons)
                 } else {
                     alertDialog(Alert.AlertType.ERROR, "Error", "Something went wrong!",
                             "Make sure you have efficient privilege to add files to: $outputFolder", primaryStage, icons)
                 }
             }
+            packPlugin.isDisable = false
         }
     }
 
@@ -284,6 +317,15 @@ class PluginPackerController : Initializable {
         }
         alert.showAndWait()
     }
+
+    @FXML
+    private lateinit var closeApp: MenuItem
+
+    @FXML
+    private lateinit var openHelp: MenuItem
+
+    @FXML
+    private lateinit var openAbout: MenuItem
 
     @FXML
     private lateinit var compilerPath: TextField

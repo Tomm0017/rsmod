@@ -17,23 +17,19 @@
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
+                    <MenuItem fx:id="closeApp" mnemonicParsing="false" text="Close" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
+                    <MenuItem fx:id="openHelp" mnemonicParsing="false" text="Help" />
+                        <MenuItem fx:id="openAbout" mnemonicParsing="false" text="About" />
                   </items>
                 </Menu>
               </menus>
             </MenuBar>
          </top>
-         <bottom>
+         <center>
             <GridPane alignment="CENTER" BorderPane.alignment="CENTER">
               <columnConstraints>
                   <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="91.0" />
@@ -159,7 +155,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <GridPane>
+                              <GridPane GridPane.hgrow="NEVER" GridPane.vgrow="NEVER">
                                 <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -168,8 +164,8 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <CheckBox fx:id="zipPlugin" mnemonicParsing="false" text="ZIP" GridPane.columnIndex="1" />
-                                    <CheckBox fx:id="jarPlugin" mnemonicParsing="false" selected="true" text="JAR" />
+                                    <CheckBox fx:id="zipPlugin" mnemonicParsing="false" text="ZIP" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
+                                    <CheckBox fx:id="jarPlugin" mnemonicParsing="false" selected="true" text="JAR" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
                                  </children>
                               </GridPane>
                            </children>
@@ -204,7 +200,7 @@
                   </GridPane>
                </children>
             </GridPane>
-         </bottom>
+         </center>
       </BorderPane>
    </children>
 </AnchorPane>

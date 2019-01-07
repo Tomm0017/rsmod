@@ -5,11 +5,10 @@ modify the core game module. People without developing experience can have
 others make plugins for them and simply drop them into the Plugins module 
 and it'll automatically load on the next server startup! 
 
-## Getting Started
-#### Configuring The Project
+## Configuring The Project
 - TODO
 
-#### Creating Your First Script 
+## Creating Your First Script 
 - Creating your first script is super simple! Scripts are written in **Kotlin**. 
 Here are the instructions for how you would create a few different scripts.
     

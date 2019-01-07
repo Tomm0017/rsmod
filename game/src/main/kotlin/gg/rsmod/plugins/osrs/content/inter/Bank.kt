@@ -202,20 +202,52 @@ object Bank {
         p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 50, range = 0..3, setting = 2)
     }
 
-    private fun withdraw(p: Player, item: Int, amount: Int, slot: Int) {
+    private fun withdraw(p: Player, id: Int, amount: Int, slot: Int) {
         var withdrawn = 0
 
+        val from = p.bank
+        val to = p.inventory
 
+        for (i in slot until from.capacity) {
+            val item = from[i] ?: continue
+            if (item.id != id) {
+                continue
+            }
+
+            if (withdrawn >= amount) {
+                break
+            }
+
+            val left = amount - withdrawn
+            withdrawn += from.swap(to, item.id, Math.min(left, item.amount), beginSlot = i, note = p.getVarbit(WITHDRAW_AS_VARBIT) == 1)
+        }
 
         if (withdrawn == 0) {
-            p.message("You don't have enough space in your inventory.")
+            p.message("You don't have enough inventory space.")
+        } else if (withdrawn != amount) {
+            p.message("You don't have enough inventory space to withdraw that many.")
         }
     }
 
-    private fun deposit(p: Player, item: Int, amount: Int) {
+    private fun deposit(p: Player, id: Int, amount: Int) {
         var deposited = 0
 
+        val from = p.inventory
+        val to = p.bank
 
+        for (i in 0 until from.capacity) {
+            val item = from[i] ?: continue
+            if (item.id != id) {
+                continue
+            }
+
+            if (deposited >= amount) {
+                break
+            }
+
+            val left = amount - deposited
+            deposited += from.swap(to, item.id, Math.min(left, item.amount), beginSlot = i, note = false)
+        }
 
         if (deposited == 0) {
             p.message("Bank full.")

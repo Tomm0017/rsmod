@@ -55,13 +55,12 @@ fun ItemContainer.swap(to: ItemContainer, item: Int, amount: Int, beginSlot: Int
     }
     val noted = if (note) copy.toNoted(definitions) else copy.toUnnoted(definitions)
     val addition = to.add(noted.id, noted.amount, assureFullInsertion = false)
-    if (addition.hasFailed()) {
+    if (addition.getLeftOver() > 0) {
         /**
          * If the items could not be added, we refund what's left over.
          */
         val refund = add(copy.id, addition.getLeftOver(), assureFullInsertion = true, beginSlot = beginSlot)
         refund.items.firstOrNull()?.copyAttr(copy)
-        return 0
     }
     return addition.completed
 }

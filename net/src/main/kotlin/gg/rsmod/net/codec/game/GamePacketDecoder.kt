@@ -40,7 +40,9 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
             val metadata = packetMetadata.getType(opcode)
             if (metadata == null) {
                 logger.warn("Channel {} sent message with no valid metadata: {}.", ctx.channel(), opcode)
-                buf.skipBytes(buf.readableBytes())
+                if (buf.readableBytes() >= 0x400) {
+                    buf.skipBytes(buf.readableBytes())
+                }
                 return
             }
             type = metadata

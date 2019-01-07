@@ -102,6 +102,13 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
     }
 
     /**
+     * Wait for [predicate] to return true.
+     */
+    suspend fun wait(predicate: () -> Boolean): Unit = suspendCoroutine {
+        nextStep = SuspendableStep(PredicateCondition { predicate.invoke() }, it)
+    }
+
+    /**
      * Wait for our [ctx] to reach [tile]. Note that [ctx] MUST be an instance
      * of [Pawn] and that the height of the [tile] and [Pawn.tile] must be equal,
      * as well as the x and z coordinates.

@@ -131,17 +131,14 @@ object Commands {
         r.bindCommand("obank", Privilege.ADMIN_POWER) {
             val p = it.player()
 
-            it.suspendable {
-                p.openInterface(12, InterfacePane.MAIN_SCREEN)
-                p.openInterface(15, InterfacePane.TAB_AREA)
+            p.openInterface(12, InterfacePane.MAIN_SCREEN)
+            p.openInterface(15, InterfacePane.TAB_AREA)
+            // TODO: close this when main screen is closed.
+            // probs best to just have a bindCloseInterface and handle ^ in Bank
+            // plugin
 
-                p.setInterfaceSetting(parent = 15, child = 3, range = 0..27, setting = 1181438)
-                p.setInterfaceSetting(parent = 15, child = 10, range = 0..27, setting = 1054)
-
-                it.interruptAction = { p.closeInterface(15) }
-                it.waitInterfaceClose(12)
-                it.interruptAction?.invoke(it)
-            }
+            p.setInterfaceSetting(parent = 15, child = 3, range = 0..27, setting = 1181438)
+            p.setInterfaceSetting(parent = 15, child = 10, range = 0..27, setting = 1054)
         }
 
         r.bindCommand("item", Privilege.ADMIN_POWER) {

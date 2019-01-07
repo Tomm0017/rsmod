@@ -39,6 +39,7 @@ class MessageDecoderSet {
         put(CloseMainInterfaceMessage::class.java, CloseMainInterfaceDecoder(), CloseMainInterfaceHandler(), structures)
         put(ConfirmDisplayNameMessage::class.java, ConfirmDisplayNameDecoder(), ConfirmDisplayNameHandler(), structures)
         put(ItemActionTwoMessage::class.java, ItemActionTwoDecoder(), ItemActionTwoHandler(), structures)
+        put(IntegerInputMessage::class.java, IntegerInputDecoder(), IntegerInputHandler(), structures)
     }
 
     private fun <T: Message> put(messageType: Class<T>, decoderType: MessageDecoder<T>, handlerType: MessageHandler<T>, structures: MessageStructureSet) {

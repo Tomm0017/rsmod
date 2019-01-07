@@ -74,7 +74,26 @@ object Bank {
             if (amount == 0) {
                 amount = p.inventory.getItemCount(item.id)
             } else if (amount == -1) {
-                // Prompt for X and swap in suspendable block
+                it.suspendable {
+                    val input = it.inputInteger("How many would you like to bank?")
+                    if (input > 0) {
+                        var deposited = 0
+                        for (i in 0 until p.inventory.capacity) {
+                            val invItem = p.inventory[i] ?: continue
+                            if (invItem.id == item.id) {
+                                if (invItem.amount + deposited <= input) {
+                                    deposited += p.inventory.swap(p.bank, invItem, beginSlot = i)
+                                } else {
+                                    deposited += p.inventory.swap(p.bank, invItem.id, input - deposited, beginSlot = i)
+                                }
+                            }
+                        }
+
+                        if (deposited == 0) {
+                            p.message("Bank full.")
+                        }
+                    }
+                }
                 return@bindButton
             }
 

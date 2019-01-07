@@ -45,8 +45,8 @@ object RunEnergy {
                     p.varps.setState(OSRSGameframe.RUN_ENABLED_VARP, 0)
                 }
                 p.write(SetRunEnergyMessage(p.runEnergy.toInt()))
-            } else if (p.runEnergy < 100.0 && !p.lock.canRestoreRunEnergy()) {
-                var recovery = 8.0 + (p.getSkills().getCurrentLevel(Skills.AGILITY) / 6.0)
+            } else if (p.runEnergy < 100.0 && p.lock.canRestoreRunEnergy()) {
+                var recovery = (8.0 + (p.getSkills().getCurrentLevel(Skills.AGILITY) / 6.0)) / 100.0
                 if (isWearingFullGrace(p)) {
                     recovery *= 1.3
                 }

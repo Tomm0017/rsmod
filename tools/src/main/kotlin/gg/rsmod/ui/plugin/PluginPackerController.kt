@@ -45,16 +45,14 @@ class PluginPackerController : Initializable {
             System.exit(0)
         }
 
-        arrayOf(openHelp, openAbout).forEach { button ->
-            button.setOnAction {
-                val stage = Stage()
-                val loader = FXMLLoader(PluginPackerController::class.java.getResource("/ui/plugin/${if (button == openHelp) "help" else "about"}.fxml"))
-                stage.scene = Scene(loader.load())
-                stage.title = if (button == openHelp) "Help" else "About"
-                stage.initModality(Modality.WINDOW_MODAL)
-                stage.initOwner(primaryStage)
-                stage.show()
-            }
+        openHelp.setOnAction {
+            val stage = Stage()
+            val loader = FXMLLoader(PluginPackerController::class.java.getResource("/ui/plugin/help.fxml"))
+            stage.scene = Scene(loader.load())
+            stage.title = "Help"
+            stage.initModality(Modality.WINDOW_MODAL)
+            stage.initOwner(primaryStage)
+            stage.show()
         }
 
         /**
@@ -351,9 +349,6 @@ class PluginPackerController : Initializable {
 
     @FXML
     private lateinit var openHelp: MenuItem
-
-    @FXML
-    private lateinit var openAbout: MenuItem
 
     @FXML
     private lateinit var compilerPath: TextField

@@ -69,6 +69,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                 client.getSkills().setCurrentLevel(skill.skill, skill.lvl)
             }
             client.inventory.setItems(data.inventory)
+            client.equipment.setItems(data.equipment)
             data.attributes.forEach { key, value ->
                 if (value is Number) {
                     client.putPersistentAttr(key, value.toInt())
@@ -101,7 +102,8 @@ class JsonPlayerSerializer : PlayerSerializerService() {
         val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername,
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
                 privilege = client.privilege.id, skills = getSkills(client),
-                inventory = client.inventory.toMap(), attributes = client.__getPersistentAttrMap(),
+                inventory = client.inventory.toMap(), equipment = client.equipment.toMap(),
+                attributes = client.__getPersistentAttrMap(),
                 timers = client.timers.toPersistentTimers(), varps = client.varps.getAll().filter { it.state != 0 })
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))
         val json = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()

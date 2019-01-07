@@ -2,6 +2,7 @@ package gg.rsmod.plugins.osrs.content.inter
 
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.plugin.ScanPlugins
 import gg.rsmod.plugins.*
@@ -27,28 +28,23 @@ object Bank {
     @ScanPlugins
     fun register(r: PluginRepository) {
         r.bindCommand("obank", Privilege.ADMIN_POWER) {
-            val p = it.player()
-            open(p)
+            open(it.player())
         }
 
         r.bindInterfaceClose(BANK_INTERFACE_ID) {
             it.player().closeInterface(INV_INTERFACE_ID)
         }
 
-        r.bindButton(parent = BANK_INTERFACE_ID, child = 17) {
-            it.player().setVarbit(REARRANGE_MODE_VARBIT, 0)
+        intArrayOf(17, 19).forEachIndexed { index, button ->
+            r.bindButton(parent = BANK_INTERFACE_ID, child = button) {
+                it.player().setVarbit(REARRANGE_MODE_VARBIT, index)
+            }
         }
 
-        r.bindButton(parent = BANK_INTERFACE_ID, child = 19) {
-            it.player().setVarbit(REARRANGE_MODE_VARBIT, 1)
-        }
-
-        r.bindButton(parent = BANK_INTERFACE_ID, child = 22) {
-            it.player().setVarbit(WITHDRAW_AS_VARBIT, 0)
-        }
-
-        r.bindButton(parent = BANK_INTERFACE_ID, child = 24) {
-            it.player().setVarbit(WITHDRAW_AS_VARBIT, 1)
+        intArrayOf(22, 24).forEachIndexed { index, button ->
+            r.bindButton(parent = BANK_INTERFACE_ID, child = button) {
+                it.player().setVarbit(WITHDRAW_AS_VARBIT, index)
+            }
         }
 
         r.bindButton(parent = BANK_INTERFACE_ID, child = 38) {
@@ -181,6 +177,7 @@ object Bank {
             }
 
             var amount: Int
+            var placehold = false
 
             val quantityVarbit = p.getVarbit(QUANTITY_VARBIT)
             when {
@@ -192,6 +189,10 @@ object Bank {
                     5 -> -1 // X
                     6 -> item.amount
                     7 -> item.amount - 1
+                    8 -> {
+                        placehold = true
+                        item.amount
+                    }
                     else -> return@bindButton
                 }
                 opt == 0 -> amount = when (quantityVarbit) {
@@ -200,6 +201,10 @@ object Bank {
                     2 -> 10
                     3 -> if (p.getVarbit(LAST_X_INPUT) == 0) -1 else p.getVarbit(LAST_X_INPUT)
                     4 -> item.amount
+                    8 -> {
+                        placehold = true
+                        item.amount
+                    }
                     else -> return@bindButton
                 }
                 else -> amount = when (opt) {
@@ -210,6 +215,10 @@ object Bank {
                     5 -> -1 // X
                     6 -> item.amount
                     7 -> item.amount - 1
+                    8 -> {
+                        placehold = true
+                        item.amount
+                    }
                     else -> return@bindButton
                 }
             }
@@ -219,7 +228,7 @@ object Bank {
                     amount = it.inputInteger("How many would you like to withdraw?")
                     if (amount > 0) {
                         p.setVarbit(LAST_X_INPUT, amount)
-                        withdraw(p, item.id, amount, slot)
+                        withdraw(p, item.id, amount, slot, placehold)
                     }
                 }
                 return@bindButton
@@ -227,30 +236,12 @@ object Bank {
 
             amount = Math.max(0, amount)
             if (amount > 0) {
-                withdraw(p, item.id, amount, slot)
+                withdraw(p, item.id, amount, slot, placehold)
             }
         }
     }
 
-    private fun open(p: Player) {
-        p.setMainInterfaceBackground(-1, -2)
-        p.openInterface(BANK_INTERFACE_ID, InterfacePane.MAIN_SCREEN)
-        p.openInterface(INV_INTERFACE_ID, InterfacePane.TAB_AREA)
-
-        p.setInterfaceText(parent = BANK_INTERFACE_ID, child = 8, text = p.bank.capacity.toString())
-
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 13, range = 0..815, setting = 1312766)
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 13, range = 825..833, setting = 2)
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 13, range = 834..843, setting = 1048576)
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 11, range = 10..10, setting = 1048578)
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 11, range = 11..19, setting = 1179714)
-        p.setInterfaceSetting(parent = INV_INTERFACE_ID, child = 3, range = 0..27, setting = 1181438)
-        p.setInterfaceSetting(parent = INV_INTERFACE_ID, child = 10, range = 0..27, setting = 1054)
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 47, range = 1..816, setting = 2)
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 50, range = 0..3, setting = 2)
-    }
-
-    private fun withdraw(p: Player, id: Int, amt: Int, slot: Int) {
+    private fun withdraw(p: Player, id: Int, amt: Int, slot: Int, placehold: Boolean) {
         var withdrawn = 0
 
         val from = p.bank
@@ -270,6 +261,21 @@ object Bank {
 
             val left = amount - withdrawn
             withdrawn += from.swap(to, item.id, Math.min(left, item.amount), beginSlot = i, note = p.getVarbit(WITHDRAW_AS_VARBIT) == 1)
+
+            if (from[i] == null) {
+                if (placehold || p.getVarbit(ALWAYS_PLACEHOLD_VARBIT) == 1) {
+                    val def = item.getDef(p.world.definitions)
+                    val placeholder =  def.placeholderId
+
+                    /**
+                     * Make sure the item has a valid placeholder item in its
+                     * definition.
+                     */
+                    if (placeholder > 0) {
+                        p.bank.set(i, Item(placeholder, 0))
+                    }
+                }
+            }
         }
 
         if (withdrawn == 0) {
@@ -304,5 +310,23 @@ object Bank {
         if (deposited == 0) {
             p.message("Bank full.")
         }
+    }
+
+    private fun open(p: Player) {
+        p.setMainInterfaceBackground(-1, -2)
+        p.openInterface(BANK_INTERFACE_ID, InterfacePane.MAIN_SCREEN)
+        p.openInterface(INV_INTERFACE_ID, InterfacePane.TAB_AREA)
+
+        p.setInterfaceText(parent = BANK_INTERFACE_ID, child = 8, text = p.bank.capacity.toString())
+
+        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 13, range = 0..815, setting = 1312766)
+        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 13, range = 825..833, setting = 2)
+        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 13, range = 834..843, setting = 1048576)
+        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 11, range = 10..10, setting = 1048578)
+        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 11, range = 11..19, setting = 1179714)
+        p.setInterfaceSetting(parent = INV_INTERFACE_ID, child = 3, range = 0..27, setting = 1181438)
+        p.setInterfaceSetting(parent = INV_INTERFACE_ID, child = 10, range = 0..27, setting = 1054)
+        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 47, range = 1..816, setting = 2)
+        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 50, range = 0..3, setting = 2)
     }
 }

@@ -187,16 +187,27 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
         val stack = !forceNoStack && (def.isStackable() || stackType == ContainerStackType.STACK)
 
         /**
+         * Check if there's a placeholder in this item container corresponding to
+         * the item id.
+         */
+        val placeholderSlot = if (def.placeholderId > 0) items.indexOfFirst { it?.id == def.placeholderId && it.amount == 0 } else -1
+        val placehold = placeholderSlot != -1
+
+        /**
          * We don't need to calculate the previous amount unless the item is going
          * to stack.
          */
-        val previousAmount = if (stack) getItemCount(id) else 0
+        val previousAmount = if (stack && !placehold) getItemCount(id) else 0
 
         if (previousAmount == Int.MAX_VALUE) {
             return ItemTransaction(amount, 0, emptyList())
         }
 
-        val freeSlotCount = getFreeSlotCount()
+        /**
+         * The amount of free slots in the container.  If there's a placeholder
+         * for this item, we don't count it as an occupied slot.
+         */
+        val freeSlotCount = getFreeSlotCount() + (if (placehold) 1 else 0)
 
         if (assureFullInsertion) {
             /**
@@ -231,6 +242,10 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
         val added = arrayListOf<Item>()
 
         if (!stack) {
+            /**
+             * Placeholders only occur in stackable containers, like bank.
+             * No need to do anything with [placeholder].
+             */
             val startSlot = Math.max(0, beginSlot)
             for (i in startSlot until capacity) {
                 if (items[i] != null) {
@@ -244,7 +259,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
                 }
             }
         } else {
-            var stackIndex = getItemIndex(itemId = id, skipAttrItems = true)
+            var stackIndex = if (placehold) placeholderSlot else getItemIndex(itemId = id, skipAttrItems = true)
             if (stackIndex == -1) {
                 if (beginSlot == -1) {
                     stackIndex = getNextFreeSlot()
@@ -267,13 +282,13 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
                 }
             }
 
-            val previous = get(stackIndex)
-            val total = Math.min(Int.MAX_VALUE.toLong(), (previous?.amount ?: 0).toLong() + amount.toLong()).toInt()
+            val stackAmount = get(stackIndex)?.amount ?: 0
+            val total = Math.min(Int.MAX_VALUE.toLong(), (stackAmount).toLong() + amount.toLong()).toInt()
 
             val add = Item(id, total)
             set(stackIndex, add)
             added.add(add)
-            completed = total - (previous?.amount ?: 0)
+            completed = total - stackAmount
         }
         return ItemTransaction(amount, completed, added)
     }

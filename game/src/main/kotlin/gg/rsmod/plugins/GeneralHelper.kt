@@ -88,8 +88,10 @@ fun ItemContainer.swap(to: ItemContainer, item: Int, amount: Int, beginSlot: Int
      * to this container.
      */
     val addition = to.add(noted.id, noted.amount, assureFullInsertion = false)
+
     if (addition.getLeftOver() > 0) {
         val refund = add(copy.id, addition.getLeftOver(), assureFullInsertion = true, beginSlot = beginSlot)
+
         /**
          * As the logic could've only gotten this far if the initial item was
          * completely removed from [ItemContainer.this] container, the initial

@@ -125,32 +125,53 @@ class PluginPackerController : Initializable {
         }
 
         sourceButton.setOnAction {
-            var oldDirectory: File? = null
-            while (true) {
-                val chooser = DirectoryChooser()
-                chooser.title = "Select path to your plugin source files"
+            if (!singleSourceFile.isSelected) {
+                var oldDirectory: File? = null
+                while (true) {
+                    val chooser = DirectoryChooser()
+                    chooser.title = "Select path to your plugin source files"
+
+                    if (sourcePath.text.isNotBlank()) {
+                        val oldPath = Paths.get(sourcePath.text)
+                        chooser.initialDirectory = if (Files.exists(oldPath)) {
+                            if (Files.isDirectory(oldPath)) oldPath.toFile() else oldPath.parent.toFile()
+                        } else null
+                    } else if (oldDirectory != null) {
+                        chooser.initialDirectory = oldDirectory
+                    } else {
+                        chooser.initialDirectory = Paths.get(".").toFile()
+                    }
+
+                    val folder = chooser.showDialog(primaryStage)
+                    if (folder != null) {
+                        if (Files.walk(folder.toPath()).anyMatch { p -> p.fileName.toString().endsWith(".kt") }) {
+                            setText(sourcePath, folder.absolutePath)
+                            break
+                        } else {
+                            oldDirectory = folder
+                            alertDialog(Alert.AlertType.ERROR, "Error", "That source directory is not valid!",
+                                    "Directory must at least 1 Kotlin file.", primaryStage, icons)
+                        }
+                    } else {
+                        break
+                    }
+                }
+            } else {
+                val chooser = FileChooser()
+                chooser.title = "Select your plugin source files"
 
                 if (sourcePath.text.isNotBlank()) {
                     val oldPath = Paths.get(sourcePath.text)
-                    chooser.initialDirectory = if (Files.exists(oldPath)) oldPath.toFile() else null
-                } else if (oldDirectory != null) {
-                    chooser.initialDirectory = oldDirectory
+                    chooser.initialDirectory = if (Files.exists(oldPath)) {
+                        if (Files.isDirectory(oldPath)) oldPath.toFile() else oldPath.parent.toFile()
+                    } else null
                 } else {
                     chooser.initialDirectory = Paths.get(".").toFile()
                 }
 
-                val folder = chooser.showDialog(primaryStage)
-                if (folder != null) {
-                    if (Files.walk(folder.toPath()).anyMatch { p -> p.fileName.toString().endsWith(".kt") }) {
-                        setText(sourcePath, folder.absolutePath)
-                        break
-                    } else {
-                        oldDirectory = folder
-                        alertDialog(Alert.AlertType.ERROR, "Error", "That source directory is not valid!",
-                                "Directory must at least 1 Kotlin file.", primaryStage, icons)
-                    }
-                } else {
-                    break
+                val file = chooser.showOpenDialog(primaryStage)
+                if (file != null) {
+                    setText(sourcePath, file.absolutePath)
                 }
             }
         }
@@ -245,7 +266,9 @@ class PluginPackerController : Initializable {
                             "Make sure your Kotlin compiler is working properly and files do not contain errors!", primaryStage, icons)
                 }
             } else if (zipPlugin.isSelected) {
-                if (PluginPacker().compileSource(pluginName = plugin, outputPath = outputFolder, paths = Files.walk(sourceFolder).toList())) {
+                val prePath = Paths.get(".").toAbsolutePath().toString()
+                if (PluginPacker().compileSource(pluginName = plugin, outputPath = outputFolder, paths = Files.walk(sourceFolder).toList(),
+                                removeParent = prePath.substring(0 until prePath.length - 1).replace("\\", "/"))) {
                     saveSettings()
                     alertDialog(Alert.AlertType.INFORMATION, "Success!", "Your plugin was packed!",
                             "Your plugin was packed to: ${outputFolder.toAbsolutePath().toString() + "\\" + plugin + ".zip"}", primaryStage, icons)
@@ -281,6 +304,11 @@ class PluginPackerController : Initializable {
             }
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+
+        val source = Paths.get(sourcePath.text)
+        if (Files.exists(source)) {
+            singleSourceFile.isSelected = !Files.isDirectory(source)
         }
     }
 
@@ -338,6 +366,9 @@ class PluginPackerController : Initializable {
 
     @FXML
     private lateinit var gameJarButton: Button
+
+    @FXML
+    private lateinit var singleSourceFile: CheckBox
 
     @FXML
     private lateinit var sourcePath: TextField

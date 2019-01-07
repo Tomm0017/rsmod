@@ -9,7 +9,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="511.0" prefWidth="641.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gg.rsmod.ui.plugin.PluginPackerController">
+<AnchorPane prefHeight="511.0" prefWidth="724.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gg.rsmod.ui.plugin.PluginPackerController">
    <children>
       <BorderPane prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -33,8 +33,8 @@
             <GridPane alignment="CENTER" BorderPane.alignment="CENTER">
               <columnConstraints>
                   <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="91.0" />
-                <ColumnConstraints maxWidth="1.7976931348623157E308" minWidth="186.0" prefWidth="385.0" />
-                  <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="219.0" minWidth="58.0" prefWidth="101.0" />
+                <ColumnConstraints maxWidth="1.7976931348623157E308" minWidth="186.0" prefWidth="520.0" />
+                  <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="219.0" minWidth="58.0" prefWidth="113.0" />
               </columnConstraints>
               <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -120,7 +120,18 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                   </GridPane>
-                  <Button fx:id="sourceButton" mnemonicParsing="false" text="..." GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                  <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                     <right>
+                        <CheckBox fx:id="singleSourceFile" mnemonicParsing="false" text="Single-file" BorderPane.alignment="CENTER">
+                           <BorderPane.margin>
+                              <Insets right="3.0" />
+                           </BorderPane.margin>
+                        </CheckBox>
+                     </right>
+                     <left>
+                        <Button fx:id="sourceButton" mnemonicParsing="false" text="..." BorderPane.alignment="CENTER" />
+                     </left>
+                  </BorderPane>
                   <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Plugin Name" GridPane.columnIndex="1" GridPane.rowIndex="9">
                      <font>
                         <Font size="14.0" />

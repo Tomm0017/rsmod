@@ -12,8 +12,8 @@ import kotlin.streams.toList
  */
 class PluginPacker {
 
-    fun compileSource(pluginName: String, outputPath: Path, paths: List<Path>): Boolean {
-        return zipFiles(outputPath.resolve("$pluginName.zip"), paths, null)
+    fun compileSource(pluginName: String, outputPath: Path, paths: List<Path>, removeParent: String? = null): Boolean {
+        return zipFiles(outputPath.resolve("$pluginName.zip"), paths, removeParent)
     }
 
     fun compileBinary(compilerPath: String, gameJar: String, pluginName: String,
@@ -56,7 +56,10 @@ class PluginPacker {
                     val file = path.toFile()
                     params.rootFolderInZip = file.parent
                     if (removeParent != null) {
-                        params.rootFolderInZip = params.rootFolderInZip.replace(removeParent, "").substring(1)
+                        params.rootFolderInZip = params.rootFolderInZip.replace(removeParent, "")
+                        if (params.rootFolderInZip.startsWith("/")) {
+                            params.rootFolderInZip = params.rootFolderInZip.substring(1)
+                        }
                     }
                     if (!params.rootFolderInZip.contains("META-INF")) {
                         zip.addFile(file, params)

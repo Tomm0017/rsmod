@@ -5,6 +5,7 @@ import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.Alert
 import javafx.scene.control.Button
+import javafx.scene.control.CheckBox
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.stage.DirectoryChooser
@@ -23,11 +24,17 @@ import kotlin.streams.toList
  */
 class PluginPackerController : Initializable {
 
+    companion object {
+        private const val PROPERTY_FILE = "rsmod-packer.properties"
+    }
+
     var icons: List<Image>? = null
 
     lateinit var primaryStage: Stage
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
+        loadSettings()
+
         compilerButton.setOnAction {
             var oldDirectory: File? = null
             while (true) {
@@ -44,7 +51,7 @@ class PluginPackerController : Initializable {
                 val folder = chooser.showDialog(primaryStage)
                 if (folder != null) {
                     if (Files.exists(Paths.get(folder.absolutePath).resolve("kotlinc")) && Files.exists(Paths.get(folder.absolutePath).resolve("kotlinc.bat"))) {
-                        compilerPath.text = folder.absolutePath
+                        setText(compilerPath, folder.absolutePath)
                         break
                     } else {
                         oldDirectory = folder
@@ -59,37 +66,110 @@ class PluginPackerController : Initializable {
 
         gameJarButton.setOnAction {
             val chooser = FileChooser()
-            chooser.title = "Select your game.jar file"
+            chooser.title = "Select game.jar file"
             chooser.extensionFilters.add(FileChooser.ExtensionFilter("JAR", "*.jar"))
 
             if (gameJarPath.text.isNotBlank()) {
                 val oldPath = Paths.get(gameJarPath.text)
-                chooser.initialDirectory = if (Files.exists(oldPath)) oldPath.toFile() else null
+                chooser.initialDirectory = if (Files.exists(oldPath)) oldPath.parent.toFile() else null
+            } else {
+                chooser.initialDirectory = Paths.get(".").toFile()
             }
 
             val file = chooser.showOpenDialog(primaryStage)
             if (file != null) {
-                gameJarPath.text = file.absolutePath
+                setText(gameJarPath, file.absolutePath)
             }
         }
 
-        packJarButton.setOnAction {
+        outputButton.setOnAction {
+            val chooser = DirectoryChooser()
+            chooser.title = "Select desired output folder"
+
+            if (outputPath.text.isNotBlank()) {
+                val oldPath = Paths.get(outputPath.text)
+                chooser.initialDirectory = if (Files.exists(oldPath)) oldPath.toFile() else null
+            } else {
+                chooser.initialDirectory = Paths.get(".").toFile()
+            }
+
+            val folder = chooser.showDialog(primaryStage)
+            if (folder != null) {
+                setText(outputPath, folder.absolutePath)
+            }
+        }
+
+        sourceButton.setOnAction {
+            var oldDirectory: File? = null
+            while (true) {
+                val chooser = DirectoryChooser()
+                chooser.title = "Select path to your plugin source files"
+
+                if (sourcePath.text.isNotBlank()) {
+                    val oldPath = Paths.get(sourcePath.text)
+                    chooser.initialDirectory = if (Files.exists(oldPath)) oldPath.toFile() else null
+                } else if (oldDirectory != null) {
+                    chooser.initialDirectory = oldDirectory
+                } else {
+                    chooser.initialDirectory = Paths.get(".").toFile()
+                }
+
+                val folder = chooser.showDialog(primaryStage)
+                if (folder != null) {
+                    if (Files.walk(folder.toPath()).anyMatch { p -> p.fileName.toString().endsWith(".kt") }) {
+                        setText(sourcePath, folder.absolutePath)
+                        break
+                    } else {
+                        oldDirectory = folder
+                        alertDialog(Alert.AlertType.ERROR, "Error", "That source directory is not valid!",
+                                "Directory must at least 1 Kotlin file.", primaryStage, icons)
+                    }
+                } else {
+                    break
+                }
+            }
+        }
+
+        jarPlugin.selectedProperty().addListener { observable, oldValue, newValue ->
+            zipPlugin.isSelected = !newValue
+
+            compilerPath.isDisable = !newValue
+            compilerButton.isDisable = !newValue
+
+            gameJarPath.isDisable = !newValue
+            gameJarButton.isDisable = !newValue
+        }
+
+        zipPlugin.selectedProperty().addListener { observable, oldValue, newValue ->
+            jarPlugin.isSelected = !newValue
+
+            compilerPath.isDisable = newValue
+            compilerButton.isDisable = newValue
+
+            gameJarPath.isDisable = newValue
+            gameJarButton.isDisable = newValue
+        }
+
+
+        packPlugin.setOnAction {
             val compiler = Paths.get(compilerPath.text)
             val gameJar = Paths.get(gameJarPath.text)
             val sourceFolder = Paths.get(sourcePath.text)
             val outputFolder = Paths.get(outputPath.text)
             val plugin = pluginName.text
 
-            if (compilerPath.text.isBlank() || !Files.exists(compiler) || !Files.isDirectory(compiler)) {
-                alertDialog(Alert.AlertType.ERROR, "Error", "The Kotlin compiler folder does not exist!",
-                        "Directory: ${compilerPath.text}", primaryStage, icons)
-                return@setOnAction
-            }
+            if (jarPlugin.isSelected) {
+                if (compilerPath.text.isBlank() || !Files.exists(compiler) || !Files.isDirectory(compiler)) {
+                    alertDialog(Alert.AlertType.ERROR, "Error", "The Kotlin compiler folder does not exist!",
+                            "Directory: ${compilerPath.text}", primaryStage, icons)
+                    return@setOnAction
+                }
 
-            if (gameJarPath.text.isBlank() || !Files.exists(gameJar) || Files.isDirectory(gameJar)) {
-                alertDialog(Alert.AlertType.ERROR, "Error", "The game jar file does not exist!",
-                        "File: ${gameJarPath.text}", primaryStage, icons)
-                return@setOnAction
+                if (gameJarPath.text.isBlank() || !Files.exists(gameJar) || Files.isDirectory(gameJar)) {
+                    alertDialog(Alert.AlertType.ERROR, "Error", "The game jar file does not exist!",
+                            "File: ${gameJarPath.text}", primaryStage, icons)
+                    return@setOnAction
+                }
             }
 
             if (outputPath.text.isBlank() || !Files.exists(outputFolder) || !Files.isDirectory(outputFolder)) {
@@ -110,53 +190,73 @@ class PluginPackerController : Initializable {
                 return@setOnAction
             }
 
-            PluginPacker().compileBinary(compilerPath = compiler.toAbsolutePath().toString(),
-                    gameJar = gameJar.toAbsolutePath().toString(),
-                    pluginName = plugin,
-                    outputPath = outputFolder,
-                    paths = Files.walk(sourceFolder).toList())
+            if (jarPlugin.isSelected) {
+                if (PluginPacker().compileBinary(compilerPath = compiler.toAbsolutePath().toString(),
+                                gameJar = gameJar.toAbsolutePath().toString(),
+                                pluginName = plugin,
+                                outputPath = outputFolder,
+                                paths = Files.walk(sourceFolder).toList())) {
+                    saveSettings()
+                    alertDialog(Alert.AlertType.INFORMATION, "Success!", "Your plugin was packed!",
+                            "Your plugin was packed to: ${outputFolder.toAbsolutePath().toString() + plugin + ".jar"}", primaryStage, icons)
+                } else {
+                    alertDialog(Alert.AlertType.ERROR, "Error", "Could not compile plugins!",
+                            "Make sure your Kotlin compiler is working properly and files do not contain errors!", primaryStage, icons)
+                }
+            } else if (zipPlugin.isSelected) {
+                if (PluginPacker().compileSource(pluginName = plugin, outputPath = outputFolder, paths = Files.walk(sourceFolder).toList())) {
+                    saveSettings()
+                    alertDialog(Alert.AlertType.INFORMATION, "Success!", "Your plugin was packed!",
+                            "Your plugin was packed to: ${outputFolder.toAbsolutePath().toString() + plugin + ".zip"}", primaryStage, icons)
+                } else {
+                    alertDialog(Alert.AlertType.ERROR, "Error", "Something went wrong!",
+                            "Make sure you have efficient privilege to add files to: $outputFolder", primaryStage, icons)
+                }
+            }
         }
+    }
 
-        packZipButton.setOnAction {
-            val compiler = Paths.get(compilerPath.text)
-            val gameJar = Paths.get(gameJarPath.text)
-            val sourceFolder = Paths.get(sourcePath.text)
-            val outputFolder = Paths.get(outputPath.text)
-            val plugin = pluginName.text
+    private fun setText(field: TextField, text: String) {
+        field.text = text
+        field.positionCaret(field.text.length - 1)
+    }
 
-            if (compilerPath.text.isBlank() || !Files.exists(compiler) || !Files.isDirectory(compiler)) {
-                alertDialog(Alert.AlertType.ERROR, "Error", "The Kotlin compiler folder does not exist!",
-                        "Directory: ${compilerPath.text}", primaryStage, icons)
-                return@setOnAction
+    private fun loadSettings() {
+        try {
+            val file = Paths.get(System.getProperty("user.home"), PROPERTY_FILE)
+
+            if (Files.exists(file)) {
+                val settings = Properties()
+                Files.newBufferedReader(file).use { reader ->
+                    settings.load(reader)
+
+                    compilerPath.text = settings.getProperty("compilerPath", "")
+                    gameJarPath.text = settings.getProperty("gameJar", "")
+                    outputPath.text = settings.getProperty("outputPath", "")
+                    sourcePath.text = settings.getProperty("pluginFilesPath", "")
+                    pluginName.text = settings.getProperty("plugin", "")
+                }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
-            if (gameJarPath.text.isBlank() || !Files.exists(gameJar) || Files.isDirectory(gameJar)) {
-                alertDialog(Alert.AlertType.ERROR, "Error", "The game jar file does not exist!",
-                        "File: ${gameJarPath.text}", primaryStage, icons)
-                return@setOnAction
+    private fun saveSettings() {
+        try {
+            val properties = Properties()
+            properties.setProperty("compilerPath", compilerPath.text)
+            properties.setProperty("gameJar", gameJarPath.text)
+            properties.setProperty("outputPath", outputPath.text)
+            properties.setProperty("pluginFilesPath", sourcePath.text)
+            properties.setProperty("plugin", pluginName.text)
+
+            val file = Paths.get(System.getProperty("user.home"), PROPERTY_FILE)
+            Files.newBufferedWriter(file).use { writer ->
+                properties.store(writer, "RS Mod Plugin Packer Properties")
             }
-
-            if (outputPath.text.isBlank() || !Files.exists(outputFolder) || !Files.isDirectory(outputFolder)) {
-                alertDialog(Alert.AlertType.ERROR, "Error", "The output folder does not exist!",
-                        "Directory: ${outputPath.text}", primaryStage, icons)
-                return@setOnAction
-            }
-
-            if (sourcePath.text.isBlank() || !Files.exists(sourceFolder) || !Files.isDirectory(sourceFolder)) {
-                alertDialog(Alert.AlertType.ERROR, "Error", "The plugin source folder does not exist!",
-                        "Directory: ${sourcePath.text}", primaryStage, icons)
-                return@setOnAction
-            }
-
-            if (plugin.isBlank()) {
-                alertDialog(Alert.AlertType.ERROR, "Error", null,
-                        "You have not set a plugin name.", primaryStage, icons)
-                return@setOnAction
-            }
-
-            PluginPacker().compileSource(pluginName = plugin,
-                    outputPath = outputFolder,
-                    paths = Files.walk(sourceFolder).toList())
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -204,8 +304,11 @@ class PluginPackerController : Initializable {
     private lateinit var pluginName: TextField
 
     @FXML
-    private lateinit var packJarButton: Button
+    private lateinit var jarPlugin: CheckBox
 
     @FXML
-    private lateinit var packZipButton: Button
+    private lateinit var zipPlugin: CheckBox
+
+    @FXML
+    private lateinit var packPlugin: Button
 }

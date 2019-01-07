@@ -120,6 +120,27 @@ Here are the instructions for how you would create a few different scripts.
      Short and sweet! That's all you need for a basic dialog script. 
 
 ## FAQ
+#### One or more of my plugins stopped working
+- When you buy, or create, and use a Plugin **JAR** - the plugin uses code it 
+assumes you have on the core game module when it was written. If for some reason 
+you move, rename, or completely delete the code that the plugin is using - the 
+plugin will stop working.
+- Notes:
+    - You can add new code to the game module without this being an issue, this
+    includes adding code to existing methods and files. However, it's best to 
+    avoid writing code to the game module and you should always opt to write a 
+    suggestion for the RS Mod creators to add specific features to the official 
+    game module.
+#### I have done some modifications to the game module. How can I tell if one of my plugins is no longer compatible?
+- The only way to check is to download the plugin's source files and run it on 
+your server and see if it compiles correctly!
+- Notes:
+    - You only have to worry about **JAR** plugins suddenly becoming incompatible 
+    when you edit the game module code
+    - Delete or move the JAR plugin when you add the source plugin, otherwise 
+    the plugins will conflict when trying to bind them on server start-up
+    - In the future, we will add a tool to check if any of your JAR plugins are
+    no longer compatible with your game module
 #### I would like a feature added to the core game module
 - If you would like a feature added, please contact **rspsmods@gmail.com**
 #### I found a bug, where can I report it?

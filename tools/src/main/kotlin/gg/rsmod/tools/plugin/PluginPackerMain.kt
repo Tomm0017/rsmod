@@ -66,6 +66,10 @@ object PluginPackerMain {
                 val source = Paths.get(commands.getOptionValue('s'))
                 val output = Paths.get(".", "plugins")
 
+                if (!Files.exists(source)) {
+                    error("Source file path does not exist: $source")
+                }
+
                 if (packType == PackType.JAR) {
                     val compilerPath = commands.getOptionValue('c')
                     val gameJarPath = commands.getOptionValue('g')

@@ -5,11 +5,11 @@ package gg.rsmod.util
  */
 object Misc {
 
-    fun parseAmount(string: String): Int = when {
-        string.endsWith("k") -> string.substring(0, string.length - 1).toInt() * 1000
-        string.endsWith("m") -> string.substring(0, string.length - 1).toInt() * 1_000_000
-        string.endsWith("b") -> string.substring(0, string.length - 1).toInt() * 1_000_000_000
-        else -> string.substring(0, string.length).toInt()
+    fun parseAmount(string: String): Long = when {
+        string.endsWith("k") -> string.substring(0, string.length - 1).toLong() * 1000
+        string.endsWith("m") -> string.substring(0, string.length - 1).toLong() * 1_000_000
+        string.endsWith("b") -> string.substring(0, string.length - 1).toLong() * 1_000_000_000
+        else -> string.substring(0, string.length).toLong()
     }
 
     val DIRECTION_DELTA_X = intArrayOf(-1, 0, 1, -1, 1, -1, 0, 1)

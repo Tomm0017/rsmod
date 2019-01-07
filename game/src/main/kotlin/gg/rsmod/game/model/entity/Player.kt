@@ -182,6 +182,8 @@ open class Player(override val world: World) : Pawn(world) {
             equipment.dirty = false
             calculateWeight = true
             calculateBonuses = true
+
+            addBlock(UpdateBlockType.APPEARANCE)
         }
 
         if (bank.dirty) {
@@ -335,7 +337,6 @@ open class Player(override val world: World) : Pawn(world) {
         }
 
         initiated = true
-        addBlock(UpdateBlockType.APPEARANCE)
         world.plugins.executeLogin(this)
     }
 

@@ -150,13 +150,28 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                 }
 
                 if (!transmog) {
-                    val animations = intArrayOf(809, 823, 819, 820, 821, 822, 824)
+                    val animations = intArrayOf(808, 823, 819, 820, 821, 822, 824)
 
                     val weapon = other.equipment[3] // Assume slot 3 is the weapon.
                     if (weapon != null) {
                         val renderService = other.world.getService(WeaponRenderService::class.java, searchSubclasses = false).orElse(null)
+                        var defaultWeaponRender = true
+
                         if (renderService != null) {
-                            renderService.get(weapon.id)?.animations?.forEachIndexed { index, anim ->
+                            val stats = renderService.get(weapon.id)
+                            if (stats != null) {
+                                stats.animations.forEachIndexed { index, anim ->
+                                    animations[index] = anim
+                                }
+                                defaultWeaponRender = false
+                            }
+                        }
+
+                        /**
+                         * Default render animations while wielding a weapon.
+                         */
+                        if (defaultWeaponRender) {
+                            intArrayOf(809, 823, 819, 820, 821, 822, 824).forEachIndexed { index, anim ->
                                 animations[index] = anim
                             }
                         }

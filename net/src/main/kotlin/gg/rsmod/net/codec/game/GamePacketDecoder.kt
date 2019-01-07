@@ -56,9 +56,9 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
                         length = buf.readUnsignedShort()
                     }
                     try {
-                        buf.skipBytes(length)
+                        buf.skipBytes(Math.min(buf.readableBytes(), length))
                     } catch (e: Exception) {
-                        logger.error("Could not skip buffer for message with opcode: $opcode")
+                        logger.error("Could not skip buffer for message with opcode: $opcode", e)
                     }
                     setState(GameDecoderState.OPCODE)
                 }

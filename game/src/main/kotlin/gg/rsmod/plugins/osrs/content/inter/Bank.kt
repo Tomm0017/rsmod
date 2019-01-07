@@ -62,6 +62,54 @@ object Bank {
             }
         }
 
+        r.bindButton(parent = BANK_INTERFACE_ID, child = 42) {
+            val p = it.player()
+            val from = p.inventory
+            val to = p.bank
+
+            var any = false
+            for (i in 0 until from.capacity) {
+                val item = from[i] ?: continue
+
+                val total = item.amount
+                val deposited = from.swap(to, item, beginSlot = i, note = false)
+                if (total != deposited) {
+                    // Was not able to deposit the whole stack of [item].
+                }
+                if (deposited > 0) {
+                    any = true
+                }
+            }
+
+            if (!any) {
+                p.message("Bank full.")
+            }
+        }
+
+        r.bindButton(parent = BANK_INTERFACE_ID, child = 44) {
+            val p = it.player()
+            val from = p.equipment
+            val to = p.bank
+
+            var any = false
+            for (i in 0 until from.capacity) {
+                val item = from[i] ?: continue
+
+                val total = item.amount
+                val deposited = from.swap(to, item, beginSlot = i, note = false)
+                if (total != deposited) {
+                    // Was not able to deposit the whole stack of [item].
+                }
+                if (deposited > 0) {
+                    any = true
+                }
+            }
+
+            if (!any) {
+                p.message("Bank full.")
+            }
+        }
+
         r.bindButton(parent = INV_INTERFACE_ID, child = INV_INTERFAC_CHILD) {
             val p = it.player()
 
@@ -202,11 +250,13 @@ object Bank {
         p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 50, range = 0..3, setting = 2)
     }
 
-    private fun withdraw(p: Player, id: Int, amount: Int, slot: Int) {
+    private fun withdraw(p: Player, id: Int, amt: Int, slot: Int) {
         var withdrawn = 0
 
         val from = p.bank
         val to = p.inventory
+
+        val amount = Math.min(from.getItemCount(id), amt)
 
         for (i in slot until from.capacity) {
             val item = from[i] ?: continue
@@ -229,11 +279,13 @@ object Bank {
         }
     }
 
-    private fun deposit(p: Player, id: Int, amount: Int) {
+    private fun deposit(p: Player, id: Int, amt: Int) {
         var deposited = 0
 
         val from = p.inventory
         val to = p.bank
+
+        val amount = Math.min(from.getItemCount(id), amt)
 
         for (i in 0 until from.capacity) {
             val item = from[i] ?: continue

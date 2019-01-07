@@ -385,6 +385,14 @@ in-packets:
         type: SHORT
         trans: ADD
 
+  - message: gg.rsmod.game.message.impl.IntegerInputMessage
+    type: FIXED
+    opcode: 17
+    length: 4
+    structure:
+      - name: input
+        type: INT
+
   - message: gg.rsmod.game.message.impl.ExamineObjectMessage
     type: FIXED
     opcode: 36
@@ -468,6 +476,10 @@ in-packets:
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 7
     length: 8
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 8
+    length: -1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 9

@@ -3,7 +3,6 @@ package gg.rsmod.game.action
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.game.ItemStatsService
-import gg.rsmod.game.sync.UpdateBlockType
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -35,7 +34,6 @@ object EquipAction {
                 transaction.items[0].copyAttr(oldItem)
             }
             player.equipment.set(equipSlot, newItem)
-            player.addBlock(UpdateBlockType.APPEARANCE)
         }
         return true
     }

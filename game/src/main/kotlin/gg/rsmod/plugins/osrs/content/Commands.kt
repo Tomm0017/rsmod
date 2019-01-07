@@ -134,7 +134,7 @@ object Commands {
             val args = p.attr[COMMAND_ARGS_ATTR]
             tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::item 4151 1</col> or <col=801700>::item 4151</col>") { values ->
                 val item = values[0].toInt()
-                val amount = if (values.size > 1) Misc.parseAmount(values[1]) else 1
+                val amount = if (values.size > 1) Math.min(Int.MAX_VALUE.toLong(), Misc.parseAmount(values[1])).toInt() else 1
                 if (item < p.world.definitions.getCount(ItemDef::class.java)) {
                     val def = p.world.definitions[ItemDef::class.java][Item(item).toUnnoted(p.world.definitions).id]
                     val result = p.inventory.add(id = item, amount = amount, assureFullInsertion = false)

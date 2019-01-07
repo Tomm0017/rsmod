@@ -216,5 +216,5 @@ class Server {
      */
     fun getApiName(): String = apiProperties.getOrDefault("org", "RS Mod")
 
-    fun getApiSite(): String = apiProperties.getOrDefault("org-site", "rsmods.gg")
+    fun getApiSite(): String = apiProperties.getOrDefault("org-site", "rspsmods.com")
 }

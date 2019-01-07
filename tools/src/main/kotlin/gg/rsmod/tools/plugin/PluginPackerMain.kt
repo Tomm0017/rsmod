@@ -89,10 +89,14 @@ object PluginPackerMain {
                     if (packer.compileBinary(compilerPath, gameJarPath, pluginName, output, Files.walk(source).toList())) {
                         println("Plugin has been compiled and created as: ${output.resolve("$pluginName.jar")}")
                     } else {
-                        println("Could not pack plugin! Make sure you have ")
+                        println("Could not pack plugin! Make sure your source files do not have any errors, that you have Kotlin compiler installed and that you have write-access to $output")
                     }
                 } else {
-                    packer.compileSource(pluginName, output, Files.walk(source).toList())
+                    if (packer.compileSource(pluginName, output, Files.walk(source).toList())) {
+                        println("Plugin has been compiled and created as: ${output.resolve("$pluginName.jar")}")
+                    } else {
+                        println("Could not pack plugin! Make sure you have write-access to $output")
+                    }
                 }
             } catch (e: ParseException) {
                 println("Invalid arguments! Use -help for arg explanation.")

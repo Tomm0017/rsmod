@@ -21,7 +21,9 @@ object PluginPackerMain {
     @JvmStatic fun main(vararg args: String) {
         val packer = PluginPacker()
 
-        if (args.isNotEmpty() && args.first().toLowerCase() != "gui") {
+        if (args.isNotEmpty() && args.first().toLowerCase() == "gui") {
+            // TODO(Tom): launch gui
+        } else {
             val options = Options()
 
             options.addOption("t", true, "The type of packing: <zip> or <jar>")
@@ -94,8 +96,6 @@ object PluginPackerMain {
             } catch (e: ParseException) {
                 println("Invalid arguments! Use -help for arg explanation.")
             }
-        } else {
-            // TODO(Tom): launch gui
         }
     }
 }

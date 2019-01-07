@@ -19,24 +19,44 @@ fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int, note: Bool
 
     val copy = Item(item)
 
+    /**
+     * Try to remove the items from this container.
+     */
     val removal = remove(item.id, item.amount, assureFullRemoval = true, beginSlot = beginSlot)
     if (removal.hasFailed()) {
         return 0
     }
+
+    /**
+     * Turn the initial item into its noted or unnoted form, depending on [note].
+     */
     val noted = if (note) copy.toNoted(definitions) else copy.toUnnoted(definitions)
+
+    /**
+     * Try to add as many of the requested amount of the item to the container [to].
+     * If any of the item could not be added to the container [to], we refund it
+     * to this container.
+     */
     val addition = to.add(noted.id, noted.amount, assureFullInsertion = false)
     if (addition.hasSucceeded()) {
         /**
          * If there items were successfully added to [to], we copy the attributes
-         * from the copy of [item].
+         * from the initial [item].
          */
         val first = addition.items.firstOrNull { it.amount == 1 }
         first?.copyAttr(copy)
     } else {
-        /**
-         * If the items could not be added, we refund what's left over.
-         */
         val refund = add(copy.id, addition.getLeftOver(), assureFullInsertion = true, beginSlot = beginSlot)
+        /**
+         * As the logic could've only gotten this far if the initial item was
+         * completely removed from [ItemContainer.this] container, the initial
+         * item is now gone. We want the refunded item to copy the attributes
+         * of the original.
+         *
+         * This is so that if, for example, you try to transfer 2 toxic blowpipes,
+         * both were removed, but only 1 was transferred  the other blowpipe will
+         * get its initial attributes refunded.
+         */
         refund.items.firstOrNull()?.copyAttr(copy)
         return 0
     }
@@ -49,17 +69,37 @@ fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int, note: Bool
 fun ItemContainer.swap(to: ItemContainer, item: Int, amount: Int, beginSlot: Int, note: Boolean): Int {
     val copy = Item(item, amount)
 
+    /**
+     * Try to remove the items from this container.
+     */
     val removal = remove(item, amount, assureFullRemoval = true, beginSlot = beginSlot)
     if (removal.hasFailed()) {
         return 0
     }
+
+    /**
+     * Turn the initial item into its noted or unnoted form, depending on [note].
+     */
     val noted = if (note) copy.toNoted(definitions) else copy.toUnnoted(definitions)
+
+    /**
+     * Try to add as many of the requested amount of the item to the container [to].
+     * If any of the item could not be added to the container [to], we refund it
+     * to this container.
+     */
     val addition = to.add(noted.id, noted.amount, assureFullInsertion = false)
     if (addition.getLeftOver() > 0) {
-        /**
-         * If the items could not be added, we refund what's left over.
-         */
         val refund = add(copy.id, addition.getLeftOver(), assureFullInsertion = true, beginSlot = beginSlot)
+        /**
+         * As the logic could've only gotten this far if the initial item was
+         * completely removed from [ItemContainer.this] container, the initial
+         * item is now gone. We want the refunded item to copy the attributes
+         * of the original.
+         *
+         * This is so that if, for example, you try to transfer 2 toxic blowpipes,
+         * both were removed, but only 1 was transferred  the other blowpipe will
+         * get its initial attributes refunded.
+         */
         refund.items.firstOrNull()?.copyAttr(copy)
     }
     return addition.completed

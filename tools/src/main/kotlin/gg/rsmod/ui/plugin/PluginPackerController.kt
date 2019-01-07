@@ -128,6 +128,9 @@ class PluginPackerController : Initializable {
         }
 
         pluginName.textFormatter = TextFormatter<String> { c ->
+            if (c.text == c.controlNewText) {
+                return@TextFormatter c
+            }
             if (c.controlNewText.isBlank()) {
                 c.text = ""
                 return@TextFormatter c

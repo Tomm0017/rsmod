@@ -41,7 +41,9 @@ class ItemActionOneHandler : MessageHandler<ItemActionOneMessage> {
         client.attr[INTERACTING_ITEM_ID] = item.id
         client.attr[INTERACTING_ITEM] = item
 
-        client.world.plugins.executeItem(client, item.id, 1)
+        if (!client.world.plugins.executeItem(client, item.id, 1)) {
+            client.message("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=1]")
+        }
     }
 
 }

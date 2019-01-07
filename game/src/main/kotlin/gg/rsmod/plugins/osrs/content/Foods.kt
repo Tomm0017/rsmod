@@ -7,9 +7,9 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.plugin.ScanPlugins
 import gg.rsmod.plugins.hasEquipped
+import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.model.Equipment
 import gg.rsmod.plugins.osrs.model.Skills
-import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.playSound
 import gg.rsmod.plugins.player
 
@@ -37,7 +37,7 @@ object Foods {
                 }
 
                 val inventorySlot = it.player().attr[INTERACTING_ITEM_SLOT]
-                if (p.inventory.remove(id = food.item, fromIndex = inventorySlot).hasSucceeded()) {
+                if (p.inventory.remove(id = food.item, beginSlot = inventorySlot).hasSucceeded()) {
                     eat(p, food)
                     if (food.replacement != -1) {
                         p.inventory.add(id = food.replacement, beginSlot = inventorySlot)

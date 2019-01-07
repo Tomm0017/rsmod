@@ -64,12 +64,14 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.passwordHash = data.passwordHash
             client.tile = Tile(data.x, data.z, data.height)
             client.privilege = client.world.privileges.get(data.privilege) ?: Privilege.DEFAULT
+            client.runEnergy = data.runEnergy
             data.skills.forEach { skill ->
                 client.getSkills().setXp(skill.skill, skill.xp)
                 client.getSkills().setCurrentLevel(skill.skill, skill.lvl)
             }
             client.inventory.setItems(data.inventory)
             client.equipment.setItems(data.equipment)
+            client.bank.setItems(data.bank)
             data.attributes.forEach { key, value ->
                 if (value is Number) {
                     client.putPersistentAttr(key, value.toInt())
@@ -101,9 +103,9 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     override fun saveClientData(client: Client): Boolean {
         val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername,
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
-                privilege = client.privilege.id, skills = getSkills(client),
+                privilege = client.privilege.id, runEnergy = client.runEnergy, skills = getSkills(client),
                 inventory = client.inventory.toMap(), equipment = client.equipment.toMap(),
-                attributes = client.__getPersistentAttrMap(),
+                bank = client.bank.toMap(), attributes = client.__getPersistentAttrMap(),
                 timers = client.timers.toPersistentTimers(), varps = client.varps.getAll().filter { it.state != 0 })
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))
         val json = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()

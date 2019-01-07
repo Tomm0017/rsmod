@@ -13,6 +13,6 @@ class ExamineObjectHandler : MessageHandler<ExamineObjectMessage> {
     override fun handle(client: Client, message: ExamineObjectMessage) {
         val id = message.id
         val def = client.world.definitions.get(ObjectDef::class.java, id)
-        println("Examine object: $id, interactive=${def.interactive}, solid=${def.solid}")
+        // TODO(Tom): send examine
     }
 }

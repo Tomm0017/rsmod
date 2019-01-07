@@ -69,6 +69,8 @@ open class Player(override val world: World) : Pawn(world) {
 
     val equipment by lazy { ItemContainer(world.definitions, 14, ContainerStackType.NORMAL) }
 
+    val bank by lazy { ItemContainer(world.definitions, 800, ContainerStackType.STACK) }
+
     val interfaces by lazy { Interfaces(this) }
 
     private val normalSkills by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
@@ -172,16 +174,21 @@ open class Player(override val world: World) : Pawn(world) {
         if (inventory.dirty) {
             // NOTE(Tom): can add a plugin that executes when an item container
             // is dirty since these values can change per revision
-            write(SetItemContainerMessage(parent = 149, child = 0, containerKey = 93, items = Arrays.copyOf(inventory.getBackingArray(), inventory.capacity)))
+            write(SetItemContainerMessage(parent = 149, child = 0, containerKey = 93, items = inventory.getBackingArray()))
             inventory.dirty = false
             calculateWeight = true
         }
 
         if (equipment.dirty) {
-            write(SetItemContainerMessage(containerKey = 94, items = Arrays.copyOf(equipment.getBackingArray(), equipment.capacity)))
+            write(SetItemContainerMessage(containerKey = 94, items = equipment.getBackingArray()))
             equipment.dirty = false
             calculateWeight = true
             calculateBonuses = true
+        }
+
+        if (bank.dirty) {
+            write(SetItemContainerMessage(containerKey = 95, items = bank.getBackingArray()))
+            bank.dirty = false
         }
 
         if (calculateWeight) {

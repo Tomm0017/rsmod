@@ -319,7 +319,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
      * If [false], it will remove any item with [Item.id] of [id] which it can find
      * until [amount] have been removed or until the container has no more.
      *
-     * @param fromIndex
+     * @param beginSlot
      * The search for [id] in the [items] array will begin from this index and
      * will sequentially increment until either 1) [amount] of [id]s have been
      * removed or 2) we have iterated through every single [Item] in [items].
@@ -335,7 +335,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
      *
      * @see ItemTransaction
      */
-    fun remove(id: Int, amount: Int = 1, assureFullRemoval: Boolean = true, fromIndex: Int = -1): ItemTransaction {
+    fun remove(id: Int, amount: Int = 1, assureFullRemoval: Boolean = true, beginSlot: Int = -1): ItemTransaction {
         val hasAmount = getItemCount(id)
 
         if (assureFullRemoval && hasAmount < amount) {
@@ -347,9 +347,9 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
         var totalRemoved = 0
         val removed = arrayListOf<Item>()
 
-        val skippedIndices = if (fromIndex != -1) 0 until fromIndex else null
+        val skippedIndices = if (beginSlot != -1) 0 until beginSlot else null
 
-        val index = if (fromIndex != -1) fromIndex else 0
+        val index = if (beginSlot != -1) beginSlot else 0
         for (i in index until capacity) {
             val item = items[i] ?: continue
             if (item.id == id) {
@@ -370,13 +370,13 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
         }
 
         /**
-         * If we specified a [fromIndex] to begin the search, but we were not able
+         * If we specified a [beginSlot] to begin the search, but we were not able
          * to remove [amount] of [id] items, then we go over the skipped indices.
          * This is done to ensure that [assureFullRemoval] will always provide
          * accurate results.
          *
          * Example: One abyssal whip in slot 0 and another in slot 10, we call [remove]
-         * with [fromIndex] of [5] and [assureFullRemoval] as [true]. Our initial
+         * with [beginSlot] of [5] and [assureFullRemoval] as [true]. Our initial
          * check to make sure the container has enough of the item will succeed,
          * however the loop would only iterate through items in index 5-[capacity].
          * This would only remove one of the two items if we would not go over the

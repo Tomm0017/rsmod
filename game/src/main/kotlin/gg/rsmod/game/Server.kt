@@ -102,7 +102,8 @@ class Server {
                 runEnergy = gameProperties.getOrDefault("run-energy", true))
 
         val devContext = DevContext(debugObjects = devProperties.getOrDefault("debug-objects", false),
-                debugButtons = devProperties.getOrDefault("debug-buttons", false))
+                debugButtons = devProperties.getOrDefault("debug-buttons", false),
+                debugItemActions = devProperties.getOrDefault("debug-items", false))
 
         val world = World(this, gameContext, devContext)
 

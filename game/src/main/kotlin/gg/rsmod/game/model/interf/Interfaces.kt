@@ -77,7 +77,7 @@ class Interfaces(val player: Player) {
     fun close(interfaceId: Int): Int {
         val found = visible.filterValues { it == interfaceId }.keys.firstOrNull()
         if (found != null) {
-            visible.remove(found)
+            closeByHash(found)
             return found
         }
         logger.warn("Interface {} is not visible and cannot be closed.", interfaceId)
@@ -112,7 +112,9 @@ class Interfaces(val player: Player) {
      */
     private fun closeByHash(hash: Int) {
         val found = visible.remove(hash)
-        if (found == null) {
+        if (found != null) {
+            player.world.plugins.executeInterfaceClose(player, found)
+        } else {
             logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
         }
     }

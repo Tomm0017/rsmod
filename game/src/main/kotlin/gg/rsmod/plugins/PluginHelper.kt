@@ -68,14 +68,18 @@ suspend fun Plugin.options(vararg options: String, title: String = "Select an Op
     return requestReturnValue as? Int ?: -1
 }
 
+/**
+ * Prompts the player with an input dialog where they can only enter an integer.
+ *
+ * @return
+ * The integer input.
+ */
 suspend fun Plugin.inputInteger(description: String): Int {
     val p = player()
 
     p.invokeScript(108, description)
 
-    interruptAction = closeDialog
     waitReturnValue()
-    interruptAction?.invoke(this)
 
     return requestReturnValue as? Int ?: -1
 }

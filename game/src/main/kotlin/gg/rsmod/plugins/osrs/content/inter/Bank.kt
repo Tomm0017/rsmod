@@ -22,12 +22,17 @@ object Bank {
     @JvmStatic
     @ScanPlugins
     fun register(r: PluginRepository) {
+        r.bindInterfaceClose(BANK_INTERFACE_ID) {
+            it.player().closeInterface(INV_INTERFACE_ID)
+        }
+
         intArrayOf(28, 30, 32, 34, 36).forEach { quantity ->
             r.bindButton(parent = BANK_INTERFACE_ID, child = quantity) {
                 val state = (quantity - 28) / 2
                 it.player().setVarbit(QUANTITY_VARBIT, state)
             }
         }
+
         r.bindButton(parent = INV_INTERFACE_ID, child = INV_INTERFAC_CHILD) {
             val p = it.player()
 
@@ -86,6 +91,10 @@ object Bank {
                                 } else {
                                     deposited += p.inventory.swap(p.bank, invItem.id, input - deposited, beginSlot = i)
                                 }
+
+                                if (deposited >= input) {
+                                    break
+                                }
                             }
                         }
 
@@ -105,6 +114,10 @@ object Bank {
                         deposited += p.inventory.swap(p.bank, invItem, beginSlot = i)
                     } else {
                         deposited += p.inventory.swap(p.bank, invItem.id, amount - deposited, beginSlot = i)
+                    }
+
+                    if (deposited >= amount) {
+                        break
                     }
                 }
             }

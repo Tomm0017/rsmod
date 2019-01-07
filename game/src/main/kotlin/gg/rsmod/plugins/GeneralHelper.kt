@@ -29,7 +29,8 @@ fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int): Int {
          * If there items were successfully added to [to], we copy the attributes
          * from the copy of [item].
          */
-        addition.items.firstOrNull()?.copyAttr(copy)
+        val first = addition.items.firstOrNull { it.amount == 1 }
+        first?.copyAttr(copy)
     } else {
         /**
          * If the items could not be added, we refund what's left over.

@@ -172,8 +172,6 @@ open class Player(override val world: World) : Pawn(world) {
         }
 
         if (inventory.dirty) {
-            // NOTE(Tom): can add a plugin that executes when an item container
-            // is dirty since these values can change per revision
             write(SetItemContainerMessage(parent = 149, child = 0, containerKey = 93, items = inventory.getBackingArray()))
             inventory.dirty = false
             calculateWeight = true

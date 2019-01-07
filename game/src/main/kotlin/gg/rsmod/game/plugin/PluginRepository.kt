@@ -39,6 +39,18 @@ class PluginRepository {
     private val loginPlugins = arrayListOf<Function1<Plugin, Unit>>()
 
     /**
+     * A map that contains plugins that should be executed when the [TimerKey]
+     * hits a value of [0] time left.
+     */
+    private val timerPlugins = hashMapOf<TimerKey, Function1<Plugin, Unit>>()
+
+    /**
+     * A map that contains plugins that should be executed when an interface
+     * is closed.
+     */
+    private val interfaceClose = hashMapOf<Int, Function1<Plugin, Unit>>()
+
+    /**
      * A map that contains command plugins. The pair has the privilege power
      * required to use the command on the left, and the plugin on the right.
      *
@@ -46,12 +58,6 @@ class PluginRepository {
      * can use the command.
      */
     private val commandPlugins = hashMapOf<String, Pair<String?, Function1<Plugin, Unit>>>()
-
-    /**
-     * A map that contains plugins that should be executed when the [TimerKey]
-     * hits a value of [0] time left.
-     */
-    private val timerPlugins = hashMapOf<TimerKey, Function1<Plugin, Unit>>()
 
     /**
      * A map of button click plugins. The key is a shifted value of the parent
@@ -123,8 +129,9 @@ class PluginRepository {
     @Throws(Exception::class)
     fun scanForPlugins(sourcePath: String, packedPath: String) {
         loginPlugins.clear()
-        commandPlugins.clear()
         timerPlugins.clear()
+        interfaceClose.clear()
+        commandPlugins.clear()
         buttonPlugins.clear()
         enterRegionPlugins.clear()
         exitRegionPlugins.clear()
@@ -195,6 +202,44 @@ class PluginRepository {
     }
 
     @Throws(IllegalStateException::class)
+    fun bindTimer(key: TimerKey, plugin: Function1<Plugin, Unit>) {
+        if (timerPlugins.containsKey(key)) {
+            logger.error("Timer key is already bound to a plugin: $key")
+            throw IllegalStateException()
+        }
+        timerPlugins[key] = plugin
+        pluginCount++
+    }
+
+    fun executeTimer(pawn: Pawn, key: TimerKey): Boolean {
+        val plugin = timerPlugins[key]
+        if (plugin != null) {
+            pawn.world.pluginExecutor.execute(pawn, plugin)
+            return true
+        }
+        return false
+    }
+
+    @Throws(IllegalStateException::class)
+    fun bindInterfaceClose(parent: Int, plugin: Function1<Plugin, Unit>) {
+        if (interfaceClose.containsKey(parent)) {
+            logger.error("Interface id is already bound to a plugin: $parent")
+            throw IllegalStateException()
+        }
+        interfaceClose[parent] = plugin
+        pluginCount++
+    }
+
+    fun executeInterfaceClose(p: Player, parent: Int): Boolean {
+        val plugin = interfaceClose[parent]
+        if (plugin != null) {
+            p.world.pluginExecutor.execute(p, plugin)
+            return true
+        }
+        return false
+    }
+
+    @Throws(IllegalStateException::class)
     fun bindCommand(command: String, powerRequired: String? = null, plugin: Function1<Plugin, Unit>) {
         val cmd = command.toLowerCase()
         if (commandPlugins.containsKey(cmd)) {
@@ -222,25 +267,6 @@ class PluginRepository {
                 p.attr.put(COMMAND_ARGS_ATTR, emptyArray())
             }
             p.world.pluginExecutor.execute(p, plugin)
-            return true
-        }
-        return false
-    }
-
-    @Throws(IllegalStateException::class)
-    fun bindTimer(key: TimerKey, plugin: Function1<Plugin, Unit>) {
-        if (timerPlugins.containsKey(key)) {
-            logger.error("Timer key is already bound to a plugin: $key")
-            throw IllegalStateException()
-        }
-        timerPlugins[key] = plugin
-        pluginCount++
-    }
-
-    fun executeTimer(pawn: Pawn, key: TimerKey): Boolean {
-        val plugin = timerPlugins[key]
-        if (plugin != null) {
-            pawn.world.pluginExecutor.execute(pawn, plugin)
             return true
         }
         return false

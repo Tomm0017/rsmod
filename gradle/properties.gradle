@@ -12,5 +12,5 @@ ext {
     z4jVersion = '1.3.2'
     jsoupVersion = '1.11.2'
     xzVersion = '1.8'
-    cliVersion: '1.4'
+    cliVersion = '1.4'
 }

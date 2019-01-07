@@ -5,27 +5,32 @@ import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.util.Zip4jConstants
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
-import kotlin.streams.toList
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 class PluginPacker {
 
-    companion object {
-        @JvmStatic fun main(vararg args: String) {
-            val packer = PluginPacker()
-
-            val source = Paths.get("game", "src", "main", "kotlin", "gg", "rsmod", "plugins", "osrs", "content", "skills", "prayer")
-            val files = Files.walk(source).toList()
-
-            packer.compileSource(Paths.get(".", "plugins").resolve("prayer.zip"), files)
-        }
+    /**
+     * Alias for [zipFiles]
+     */
+    fun compileSource(output: Path, paths: List<Path>) {
+        zipFiles(output, paths)
     }
 
-    fun compileSource(plugin: Path, paths: List<Path>) {
-        val zip = ZipFile(plugin.toAbsolutePath().toString())
+    fun compileBinary(compilerPath: String, gameJar: String, plugin: Path, paths: List<Path>): Boolean {
+        val splitPaths = paths.filter { it.fileName.toString().endsWith(".kt") }.joinToString(" ") { "\"$it\"" }
+
+        val process = ProcessBuilder("$compilerPath/kotlinc.bat", "$splitPaths -classpath \"$gameJar\" -d \"$plugin\"")
+        val status = process.start()
+        status.waitFor()
+        status.destroyForcibly()
+
+        return status.exitValue() == 0
+    }
+
+    fun zipFiles(output: Path, paths: List<Path>, removeParent: String? = null) {
+        val zip = ZipFile(output.toAbsolutePath().toString())
         val params = ZipParameters()
         params.compressionMethod = Zip4jConstants.COMP_DEFLATE
         params.compressionLevel = Zip4jConstants.DEFLATE_LEVEL_ULTRA
@@ -33,16 +38,13 @@ class PluginPacker {
             if (!Files.isDirectory(path)) {
                 val file = path.toFile()
                 params.rootFolderInZip = file.parent
-                zip.addFile(file, params)
+                if (removeParent != null) {
+                    params.rootFolderInZip = params.rootFolderInZip.replace(removeParent, "").substring(1)
+                }
+                if (!params.rootFolderInZip.contains("META-INF")) {
+                    zip.addFile(file, params)
+                }
             }
         }
-    }
-
-    fun compileBinary(plugin: Path, paths: List<Path>) {
-        // TODO(Tom): compile to .jar with only class files
-
-        // note: just include game.jar and have it compile alongside, then if it
-        // outputs game.jar files, we remove any file thats not in our [paths]. list.
-
     }
 }

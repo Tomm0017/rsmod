@@ -16,7 +16,7 @@ class NpcSynchronizationTask(private val player: Player, private val worldNpcs: 
 
     companion object {
         private const val MAX_LOCAL_NPCS = 255
-        private const val MAX_NPC_ADDITIONS_PER_CYCLE = 25
+        private const val MAX_NPC_ADDITIONS_PER_CYCLE = 40
     }
 
     private val largeScene = player.hasLargeViewport()

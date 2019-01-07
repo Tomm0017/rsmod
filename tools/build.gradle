@@ -13,5 +13,6 @@ dependencies {
     compile group: 'org.jsoup', name: 'jsoup', version: jsoupVersion
     compile group: 'org.tukaani', name: 'xz', version: xzVersion
     compile group: 'net.lingala.zip4j', name: 'zip4j', version: z4jVersion
+    compile group: 'commons-cli', name: 'commons-cli', version: cliVersion
     implementation group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
 }

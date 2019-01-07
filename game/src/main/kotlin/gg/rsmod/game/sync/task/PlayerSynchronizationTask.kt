@@ -9,7 +9,6 @@ import gg.rsmod.game.sync.segment.*
 import gg.rsmod.net.packet.GamePacketBuilder
 import gg.rsmod.net.packet.PacketType
 import gg.rsmod.util.Misc
-import org.apache.logging.log4j.LogManager
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -17,8 +16,6 @@ import org.apache.logging.log4j.LogManager
 class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
     companion object {
-        private val logger = LogManager.getLogger(PlayerSynchronizationTask::class.java)
-
         private const val MAX_LOCAL_PLAYERS = 255
         private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 40
     }

@@ -6,7 +6,6 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.path.PathfindingStrategy
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.game.service.GameService
 import gg.rsmod.plugins.osrs.model.Equipment
 import java.nio.file.Paths
 
@@ -22,12 +21,11 @@ fun main(args: Array<String>) {
             blocks = Paths.get("./data", "blocks.yml"),
             devProps = Paths.get("./dev-settings.yml"))
 
-    val gameService = world.getService(GameService::class.java, false).get()
     for (i in 0 until 1998) {
         val player = Player(world)
         player.username = "Test $i"
         player.tile = Tile(world.gameContext.home).transform(world.random(-16..16), world.random(-16..16))
-        player.register()
+        //player.register()
 
         /*player.world.pluginExecutor.execute(player) {
             it.suspendable {

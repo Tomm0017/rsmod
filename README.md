@@ -13,7 +13,7 @@ and it'll automatically load on the next server startup!
 - Creating your first script is super simple! Scripts are written in **Kotlin**. 
 Here are the instructions for how you would create a few different scripts.
     
-    I want to create a *Command*
+    I want to create a Command
     -
     A command is an input received when a player types something in their chatbox, 
     prefixed with `::`. For example `::food`.
@@ -46,7 +46,7 @@ Here are the instructions for how you would create a few different scripts.
     5. This is pretty straightforward. We get the inventory for the player and
     then add item with id 392 with an amount of 100. So now you have 100 Manta ray!
     
-    I want to create a *Scheduled Task*
+    I want to create a Scheduled Task
     -
     A scheduled task is logic that can take more than a single tick to complete.
     Some examples are skills that are continuous, dialogs that wait for input,
@@ -83,7 +83,7 @@ Here are the instructions for how you would create a few different scripts.
     
     And that's it! You're on your way to creating all sorts of crazy scripts now.
     
-    I want to create a *Dialog*
+    I want to create a Dialog
     -
     Creating a dialog script is similar to that of the `scheduled task` script. 
     We will use the `npcDialog` functionality in this example, which is targeted 

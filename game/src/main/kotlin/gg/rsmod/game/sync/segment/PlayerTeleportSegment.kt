@@ -28,9 +28,9 @@ class PlayerTeleportSegment(private val player: Player, private val other: Playe
          * The difference from [other]'s last tile as far as [player]'s client is
          * concerned.
          */
-        var dx = other.tile.x - ((player.otherPlayerTiles[index] shr 14) and 0x3FFF)
-        var dz = other.tile.z - ((player.otherPlayerTiles[index] and 0x3FFF))
-        val dh = other.tile.height - ((player.otherPlayerTiles[index] shr 28) and 0x3)
+        var dx = other.tile.x - (other.lastTile?.x ?: 0)
+        var dz = other.tile.z - (other.lastTile?.z ?: 0)
+        val dh = other.tile.height - (other.lastTile?.height ?: 0)
 
         /**
          * If the move is within a short radius, we want to save some bandwidth.
@@ -50,7 +50,7 @@ class PlayerTeleportSegment(private val player: Player, private val other: Playe
             /**
              * Write the difference in tiles.
              */
-            buf.putBits(12, (dz and 0x1F) or ((dx and 0x1F) shl 5) or (dh and 0x3) shl 10)
+            buf.putBits(12, (dz and 0x1F) or ((dx and 0x1F) shl 5) or ((dh and 0x3) shl 10))
         } else {
             /**
              * Signal to the client that the difference in tiles are not within
@@ -60,7 +60,7 @@ class PlayerTeleportSegment(private val player: Player, private val other: Playe
             /**
              * Write the difference in tiles.
              */
-            buf.putBits(30, (dz and 0x3FFF) or ((dx and 0x3FFF) shl 14) or (dh and 0x3) shl 28)
+            buf.putBits(30, (dz and 0x3FFF) or ((dx and 0x3FFF) shl 14) or ((dh and 0x3) shl 28))
         }
     }
 }

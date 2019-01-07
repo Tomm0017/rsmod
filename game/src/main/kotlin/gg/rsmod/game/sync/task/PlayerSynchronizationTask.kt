@@ -49,7 +49,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 for (z in -radius..radius) {
                     val tile = player.tile.transform(x, z)
                     val chunk = player.world.chunks.getOrCreate(tile.toChunkCoords(), create = false) ?: continue
-                    chunk.getEntities<Player>(tile, EntityType.PLAYER).forEach { p ->
+                    chunk.getEntities<Player>(tile, EntityType.PLAYER, EntityType.CLIENT).forEach { p ->
                         if (p != player && players.size < MAX_LOCAL_PLAYERS) {
                             players.add(p)
                         }

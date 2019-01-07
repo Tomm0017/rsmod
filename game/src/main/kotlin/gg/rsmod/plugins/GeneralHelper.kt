@@ -24,18 +24,17 @@ fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int): Int {
         return 0
     }
     val addition = to.add(copy.id, copy.amount, assureFullInsertion = false)
-    if (addition.completed > 0) {
+    if (addition.hasSucceeded()) {
         /**
-         * If at least one item was successfully added to [to], we copy the attributes
+         * If there items were successfully added to [to], we copy the attributes
          * from the copy of [item].
          */
         addition.items.firstOrNull()?.copyAttr(copy)
     } else {
         /**
-         * If not a single item could be added, we refund the original item back
-         * to [ItemContainer.this].
+         * If the items could not be added, we refund what's left over.
          */
-        val refund = add(copy.id, copy.amount, assureFullInsertion = true, beginSlot = beginSlot)
+        val refund = add(copy.id, addition.getLeftOver(), assureFullInsertion = true, beginSlot = beginSlot)
         refund.items.firstOrNull()?.copyAttr(copy)
         return 0
     }
@@ -53,12 +52,11 @@ fun ItemContainer.swap(to: ItemContainer, item: Int, amount: Int, beginSlot: Int
         return 0
     }
     val addition = to.add(copy.id, copy.amount, assureFullInsertion = false)
-    if (addition.completed <= 0) {
+    if (addition.hasSucceeded()) {
         /**
-         * If not a single item could be added, we refund the original item back
-         * to [ItemContainer.this].
+         * If the items could not be added, we refund what's left over.
          */
-        val refund = add(copy.id, copy.amount, assureFullInsertion = true, beginSlot = beginSlot)
+        val refund = add(copy.id, addition.getLeftOver(), assureFullInsertion = true, beginSlot = beginSlot)
         refund.items.firstOrNull()?.copyAttr(copy)
         return 0
     }

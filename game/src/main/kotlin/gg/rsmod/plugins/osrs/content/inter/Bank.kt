@@ -15,6 +15,10 @@ object Bank {
 
     private const val QUANTITY_VARBIT = 6590
 
+    // withdraw as: 155
+    // rearrange mode: 304
+    // always placehold: 1052
+
     @JvmStatic
     @ScanPlugins
     fun register(r: PluginRepository) {
@@ -37,7 +41,7 @@ object Bank {
             }
 
             val quantityVarbit = p.getVarbit(QUANTITY_VARBIT)
-            var amount = 0
+            var amount: Int
 
             if (quantityVarbit != 0) {
                 if (opt == 1) {

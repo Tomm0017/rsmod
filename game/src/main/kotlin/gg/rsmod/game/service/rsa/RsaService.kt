@@ -61,7 +61,9 @@ class RsaService : Service() {
         } catch (exception: Exception) {
             throw ExceptionInInitializerError(IOException("Error parsing RSA key pair: ${keyPath.toAbsolutePath()}", exception))
         }
+    }
 
+    override fun postLoad(server: Server, world: World) {
     }
 
     override fun terminate(server: Server, world: World) {

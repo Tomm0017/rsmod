@@ -211,6 +211,7 @@ class Server {
             world.services.add(service)
             logger.info("Initiated service '{}' in {}ms.", service.javaClass.simpleName, stopwatch.elapsed(TimeUnit.MILLISECONDS))
         }
+        world.services.forEach { s -> s.postLoad(this, world) }
         logger.info("Loaded {} game services.", world.services.size)
     }
 

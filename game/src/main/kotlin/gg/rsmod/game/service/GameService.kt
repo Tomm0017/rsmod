@@ -112,6 +112,9 @@ class GameService : Service() {
         executor.scheduleAtFixedRate(this::cycle, 0, world.gameContext.cycleTime.toLong(), TimeUnit.MILLISECONDS)
     }
 
+    override fun postLoad(server: Server, world: World) {
+    }
+
     override fun terminate(server: Server, world: World) {
     }
 

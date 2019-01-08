@@ -96,6 +96,9 @@ class XteaKeyService : Service() {
 
     }
 
+    override fun postLoad(server: Server, world: World) {
+    }
+
     override fun terminate(server: Server, world: World) {
     }
 

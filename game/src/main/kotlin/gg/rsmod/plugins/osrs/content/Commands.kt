@@ -14,6 +14,7 @@ import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.plugin.ScanPlugins
 import gg.rsmod.plugins.*
 import gg.rsmod.plugins.osrs.InterfacePane
+import gg.rsmod.plugins.osrs.api.Items
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
@@ -148,7 +149,7 @@ object Commands {
         r.bindCommand("food", Privilege.ADMIN_POWER) {
             val p = it.player()
 
-            p.inventory.add(id = 391, amount = p.inventory.getFreeSlotCount())
+            p.inventory.add(id = Items.MANTA_RAY, amount = p.inventory.getFreeSlotCount())
         }
 
         r.bindCommand("varp", Privilege.ADMIN_POWER) {

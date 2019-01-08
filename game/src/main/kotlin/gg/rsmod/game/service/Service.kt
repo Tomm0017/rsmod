@@ -18,7 +18,13 @@ abstract class Service {
     abstract fun init(server: Server, world: World, serviceProperties: ServerProperties)
 
     /**
+     * Called after the server has finished started up.
+     */
+    abstract fun postLoad(server: Server, world: World)
+
+    /**
      * Called when the server is shutting off.
      */
     abstract fun terminate(server: Server, world: World)
+
 }

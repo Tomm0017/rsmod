@@ -32,6 +32,9 @@ class ItemStatsService : Service() {
         load(path)
     }
 
+    override fun postLoad(server: Server, world: World) {
+    }
+
     override fun terminate(server: Server, world: World) {
     }
 

@@ -21,12 +21,14 @@ class DefinitionIdService : Service() {
         private val logger = LogManager.getLogger(DefinitionIdService::class.java)
     }
 
+    private var dump = false
+
     private var cachePath: Path? = null
 
     private var outputPath: Path? = null
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
-        val dump = serviceProperties.getOrDefault("dump", false)
+        dump = serviceProperties.getOrDefault("dump", false)
         if (dump) {
             cachePath = Paths.get(serviceProperties.get<String>("cache-path")!!)
             outputPath = Paths.get(serviceProperties.getOrDefault("output-path", "./ids"))
@@ -41,6 +43,9 @@ class DefinitionIdService : Service() {
     }
 
     override fun postLoad(server: Server, world: World) {
+        if (!dump) {
+            return
+        }
         val definitions = world.definitions
 
         val itemNamer = Namer()
@@ -59,7 +64,7 @@ class DefinitionIdService : Service() {
 
     private fun generateWriter(file: String): PrintWriter {
         val writer = PrintWriter(outputPath!!.resolve(file).toFile())
-        writer.println("/* Auto-generated file */")
+        writer.println("/* Auto-generated file using ${this::class.java} */")
         writer.println("package gg.rsmod.plugins.osrs.api")
         writer.println("")
         writer.println("object Items {")
@@ -72,7 +77,7 @@ class DefinitionIdService : Service() {
     }
 
     private fun endWriter(writer: PrintWriter) {
-        writer.println("    /* Auto-generated file */")
+        writer.println("    /* Auto-generated file using ${this::class.java} */")
         writer.println("}")
         writer.close()
     }

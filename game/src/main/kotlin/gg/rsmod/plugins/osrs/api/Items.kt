@@ -1,4 +1,4 @@
-/* Auto-generated file */
+/* Auto-generated file using class gg.rsmod.game.service.game.DefinitionIdService */
 package gg.rsmod.plugins.osrs.api
 
 object Items {
@@ -10635,6 +10635,5 @@ object Items {
     const val GOLDEN_RINGS = 22728
     const val KNIGHT_SUMMONER = 22729
     const val COW_TAIL = 22730
-
-    /* Auto-generated file */
+    /* Auto-generated file using class gg.rsmod.game.service.game.DefinitionIdService */
 }

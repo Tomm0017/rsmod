@@ -123,7 +123,7 @@ class PluginExecutor {
      *
      * This method is reserved for internal use. Avoid using.
      */
-    fun __killAll() {
+    fun internalKillAll() {
         active.clear()
         activeQueue.clear()
     }

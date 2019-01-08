@@ -590,7 +590,7 @@ class PluginRepository {
             println("\t------------------------------------------------------------------------------------------------")
 
             executePlugins(world, warmup = false)
-            world.pluginExecutor.__killAll()
+            world.pluginExecutor.internalKillAll()
 
             println()
             println()

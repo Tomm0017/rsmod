@@ -72,8 +72,8 @@ class DefinitionIdService : Service() {
     }
 
     private fun endWriter(writer: PrintWriter) {
+        writer.println("    /* Auto-generated file */")
         writer.println("}")
-        writer.println("/* Auto-generated file */")
         writer.close()
     }
 

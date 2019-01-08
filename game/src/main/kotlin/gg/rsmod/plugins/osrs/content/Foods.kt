@@ -7,9 +7,10 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.plugin.ScanPlugins
 import gg.rsmod.plugins.hasEquipped
+import gg.rsmod.plugins.osrs.api.Equipment
+import gg.rsmod.plugins.osrs.api.Items
+import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.content.combat.Combat
-import gg.rsmod.plugins.osrs.model.Equipment
-import gg.rsmod.plugins.osrs.model.Skills
 import gg.rsmod.plugins.playSound
 import gg.rsmod.plugins.player
 
@@ -101,32 +102,32 @@ object Foods {
         /**
          * Sea food.
          */
-        SHRIMP(item = 315, heal = 3),
-        SARDINE(item = 325, heal = 4),
-        HERRING(item = 347, heal = 5),
-        MACKEREL(item = 355, heal = 6),
-        TROUT(item = 333, heal = 7),
-        SALMON(item = 329, heal = 9),
-        TUNA(item = 361, heal = 10),
-        LOBSTER(item = 379, heal = 12),
-        BASS(item = 365, heal = 13),
-        SWORDFISH(item = 373, heal = 14),
-        MONKFISH(item = 7946, heal = 16),
-        KARAMBWAN(item = 3144, heal = 18, comboFood = true),
-        SHARK(item = 385, heal = 20),
-        MANTA_RAY(item = 391, heal = 21),
-        DARK_CRAB(item = 11936, heal = 22),
-        ANGLERFISH(item = 13441, overheal = true),
+        SHRIMP(item = Items.SHRIMPS, heal = 3),
+        SARDINE(item = Items.SARDINE, heal = 4),
+        HERRING(item = Items.HERRING, heal = 5),
+        MACKEREL(item = Items.MACKEREL, heal = 6),
+        TROUT(item = Items.TROUT, heal = 7),
+        SALMON(item = Items.SALMON, heal = 9),
+        TUNA(item = Items.TUNA, heal = 10),
+        LOBSTER(item = Items.LOBSTER, heal = 12),
+        BASS(item = Items.BASS, heal = 13),
+        SWORDFISH(item = Items.SWORDFISH, heal = 14),
+        MONKFISH(item = Items.MONKFISH, heal = 16),
+        KARAMBWAN(item = Items.COOKED_KARAMBWAN, heal = 18, comboFood = true),
+        SHARK(item = Items.SHARK, heal = 20),
+        MANTA_RAY(item = Items.MANTA_RAY, heal = 21),
+        DARK_CRAB(item = Items.DARK_CRAB, heal = 22),
+        ANGLERFISH(item = Items.ANGLERFISH, overheal = true),
 
         /**
          * Meat.
          */
-        CHICKEN(item = 2140, heal = 4),
-        MEAT(item = 2142, heal = 4),
+        CHICKEN(item = Items.COOKED_CHICKEN, heal = 4),
+        MEAT(item = Items.COOKED_MEAT, heal = 4),
 
         /**
          * Pastries.
          */
-        BREAD(item = 2309, heal = 5),
+        BREAD(item = Items.BREAD, heal = 5),
     }
 }

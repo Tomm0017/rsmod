@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.model
+package gg.rsmod.plugins.osrs.api
 
 import gg.rsmod.game.fs.def.EnumDef
 import gg.rsmod.game.model.World

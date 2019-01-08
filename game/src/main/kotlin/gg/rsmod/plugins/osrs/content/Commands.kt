@@ -14,7 +14,7 @@ import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.plugin.ScanPlugins
 import gg.rsmod.plugins.*
 import gg.rsmod.plugins.osrs.InterfacePane
-import gg.rsmod.plugins.osrs.model.Skills
+import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
 

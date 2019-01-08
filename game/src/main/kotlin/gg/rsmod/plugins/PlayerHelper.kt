@@ -7,9 +7,9 @@ import gg.rsmod.game.model.SkillSet
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.plugins.osrs.*
-import gg.rsmod.plugins.osrs.model.BonusSlot
-import gg.rsmod.plugins.osrs.model.Equipment
-import gg.rsmod.plugins.osrs.model.Skills
+import gg.rsmod.plugins.osrs.api.BonusSlot
+import gg.rsmod.plugins.osrs.api.Equipment
+import gg.rsmod.plugins.osrs.api.Skills
 
 /**
  * A decoupled file that holds extensions and helper functions, related to players,

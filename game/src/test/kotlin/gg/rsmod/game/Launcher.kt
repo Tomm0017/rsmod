@@ -6,7 +6,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.path.PathfindingStrategy
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.model.Equipment
+import gg.rsmod.plugins.osrs.api.Equipment
 import java.nio.file.Paths
 
 fun main(args: Array<String>) {

@@ -6,8 +6,8 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.plugin.ScanPlugins
 import gg.rsmod.plugins.osrs.OSRSGameframe
-import gg.rsmod.plugins.osrs.model.Equipment
-import gg.rsmod.plugins.osrs.model.Skills
+import gg.rsmod.plugins.osrs.api.Equipment
+import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.player
 
 /**

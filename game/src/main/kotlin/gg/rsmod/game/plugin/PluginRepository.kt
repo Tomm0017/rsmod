@@ -590,17 +590,12 @@ class PluginRepository {
             println("\t------------------------------------------------------------------------------------------------")
 
             executePlugins(world, warmup = false)
+            world.pluginExecutor.__killAll()
 
             println()
             println()
 
             println("/*******************************************************/")
-
-
-            classPluginCount.clear()
-            currentClass = null
-            currentMethod = null
-            lastKnownPluginCount = 0
         }
 
         private fun executePlugins(world: World, warmup: Boolean) {
@@ -612,6 +607,10 @@ class PluginRepository {
 
             val measurement = TimeUnit.MILLISECONDS
             val measurementName = "ms"
+            /**
+             * If the time elapsed for a plugin type exceeds this value, relative
+             * to the measurement, then we log it further.
+             */
             val timeThreshold = 50 // Relative to [measurement]
 
             stopwatch.reset().start()
@@ -629,7 +628,6 @@ class PluginRepository {
              * execute timers to get a more accurate execution time.
              */
             val timerExecutions = 1000
-
             stopwatch.reset().start()
             repository.timerPlugins.forEach { plugin ->
                 for (i in 0 until timerExecutions) {

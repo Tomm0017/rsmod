@@ -117,4 +117,14 @@ class PluginExecutor {
             }
         }
     }
+
+    /**
+     * Removes all active and queued plugins.
+     *
+     * This method is reserved for internal use. Avoid using.
+     */
+    fun __killAll() {
+        active.clear()
+        activeQueue.clear()
+    }
 }

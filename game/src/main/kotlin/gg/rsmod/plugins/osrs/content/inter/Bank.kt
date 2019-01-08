@@ -77,7 +77,7 @@ object Bank {
                 }
             }
 
-            if (!any) {
+            if (!any && !from.isEmpty()) {
                 p.message("Bank full.")
             }
         }
@@ -101,7 +101,7 @@ object Bank {
                 }
             }
 
-            if (!any) {
+            if (!any && !from.isEmpty()) {
                 p.message("Bank full.")
             }
         }

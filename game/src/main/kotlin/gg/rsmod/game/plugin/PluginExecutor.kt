@@ -40,9 +40,9 @@ class PluginExecutor {
      */
     fun getActiveCount(): Int = active.size
 
-    fun execute(ctx: Any, logic: Function1<Plugin, Unit>) {
+    fun <T> execute(ctx: Any, logic: Function1<Plugin, T>): T {
         val plugin = Plugin(ctx, dispatcher)
-        logic.invoke(plugin)
+        val invoke = logic.invoke(plugin)
 
         /**
          * We only categorize the plugin as 'active' if the plugin has been
@@ -58,6 +58,8 @@ class PluginExecutor {
         if (!plugin.canKill()) {
             activeQueue.add(plugin)
         }
+
+        return invoke
     }
 
     /**

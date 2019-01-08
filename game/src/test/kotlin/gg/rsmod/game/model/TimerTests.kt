@@ -13,17 +13,17 @@ class TimerTests {
     fun persistenceTests() {
         val timers = TimerSystem()
 
-        val key1 = TimerKey(identifier = "persistent", tickOffline = true)
-        val key2 = TimerKey(identifier = "persistent", tickOffline = true)
-        val key3 = TimerKey(identifier = "persistent", tickOffline = false)
+        val key1 = TimerKey(persistenceKey = "persistent", tickOffline = true)
+        val key2 = TimerKey(persistenceKey = "persistent", tickOffline = true)
+        val key3 = TimerKey(persistenceKey = "persistent", tickOffline = false)
         val key4 = TimerKey()
 
         timers[key1] = 4
 
-        assertTrue(timers.has(key1))
-        assertTrue(timers.has(key2))
-        assertFalse(timers.has(key3))
-        assertFalse(timers.has(key4))
+        assertTrue(timers.exists(key1))
+        assertTrue(timers.exists(key2))
+        assertFalse(timers.exists(key3))
+        assertFalse(timers.exists(key4))
     }
 
     @Test
@@ -35,12 +35,12 @@ class TimerTests {
 
         timers[key1] = 4
 
-        assertTrue(timers.has(key1))
-        assertFalse(timers.has(key2))
+        assertTrue(timers.exists(key1))
+        assertFalse(timers.exists(key2))
 
         timers[key2] = 6
 
-        assertTrue(timers.has(key1))
-        assertTrue(timers.has(key2))
+        assertTrue(timers.exists(key1))
+        assertTrue(timers.exists(key2))
     }
 }

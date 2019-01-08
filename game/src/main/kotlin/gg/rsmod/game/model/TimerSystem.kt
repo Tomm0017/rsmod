@@ -30,6 +30,8 @@ class TimerSystem {
 
     fun has(key: TimerKey): Boolean = (timers?.getOrDefault(key, 0) ?: 0) > 0
 
+    fun exists(key: TimerKey): Boolean = timers?.containsKey(key) ?: false
+
     fun remove(key: TimerKey) {
         constructIfNeeded()
         timers!!.remove(key)
@@ -41,7 +43,7 @@ class TimerSystem {
         }
     }
 
-    fun toPersistentTimers(): List<PersistentTimer> = timers?.filter { it.key.identifier != null }?.map { PersistentTimer(it.key.identifier, it.key.tickOffline, it.value, System.currentTimeMillis()) } ?: emptyList()
+    fun toPersistentTimers(): List<PersistentTimer> = timers?.filter { it.key.persistenceKey != null }?.map { PersistentTimer(it.key.persistenceKey, it.key.tickOffline, it.value, System.currentTimeMillis()) } ?: emptyList()
 
     fun getTimers(): MutableMap<TimerKey, Int> = timers ?: HashMap(0)
 

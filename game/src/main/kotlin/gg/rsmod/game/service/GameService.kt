@@ -98,6 +98,13 @@ class GameService : Service() {
 
     val messageDecoders = MessageDecoderSet()
 
+    /**
+     * This flag indicates that the game cycles should pause.
+     *
+     * Should not be used without proper knowledge of how it works!
+     */
+    var pause = false
+
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         this.world = world
         populateTasks(serviceProperties)
@@ -153,6 +160,9 @@ class GameService : Service() {
     }
 
     private fun cycle() {
+        if (pause) {
+            return
+        }
         val start = System.currentTimeMillis()
 
         /**

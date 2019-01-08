@@ -1,19 +1,26 @@
 package gg.rsmod.game.plugin
 
-import gg.rsmod.game.model.COMMAND_ARGS_ATTR
-import gg.rsmod.game.model.COMMAND_ATTR
-import gg.rsmod.game.model.TimerKey
+import com.google.common.base.Stopwatch
+import com.google.common.collect.HashMultimap
+import com.google.common.collect.Multimap
+import gg.rsmod.game.model.*
+import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.GameService
 import org.apache.logging.log4j.LogManager
 import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
 import org.reflections.scanners.SubTypesScanner
+import java.lang.reflect.Method
 import java.net.URLClassLoader
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
+import java.text.DecimalFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import java.util.jar.JarFile
 
 /**
@@ -37,6 +44,12 @@ class PluginRepository {
      * A list of plugins that will be executed upon login.
      */
     private val loginPlugins = arrayListOf<Function1<Plugin, Unit>>()
+
+    /**
+     * The [PluginAnalyzer] used to list some specs regarding the current
+     * loaded plugins.
+     */
+    private var analyzer: PluginAnalyzer? = null
 
     /**
      * A map that contains plugins that should be executed when the [TimerKey]
@@ -64,6 +77,27 @@ class PluginRepository {
      * and child id.
      */
     private val buttonPlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
+
+    /**
+     * A map of plugins that contain plugins that should execute when equipping
+     * items from a certain equipment slot.
+     */
+    private val equipSlotPlugins: Multimap<Int, Function1<Plugin, Unit>> = HashMultimap.create()
+
+    /**
+     * A map of plugins that can stop an item from being equipped.
+     */
+    private val equipItemRequirementPlugins = hashMapOf<Int, Function1<Plugin, Boolean>>()
+
+    /**
+     * A map of plugins that are executed when a player equips an item.
+     */
+    private val equipItemPlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
+
+    /**
+     * A map of plugins that are executed when a player un-equips an item.
+     */
+    private val unequipItemPlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
 
     /**
      * A map that contains any plugin that will be executed upon entering a new
@@ -114,9 +148,10 @@ class PluginRepository {
     /**
      * Initiates and populates all our plugins.
      */
-    fun init(gameService: GameService, sourcePath: String, packedPath: String) {
-        scanForPlugins(sourcePath, packedPath)
+    fun init(gameService: GameService, sourcePath: String, packedPath: String,
+             analyzeMode: Boolean) {
         gameService.world.pluginExecutor.init(gameService)
+        scanForPlugins(sourcePath, packedPath, gameService.world, analyzeMode)
     }
 
     /**
@@ -127,12 +162,18 @@ class PluginRepository {
      *                   Possible reasons: must be static [JvmStatic]
      */
     @Throws(Exception::class)
-    fun scanForPlugins(sourcePath: String, packedPath: String) {
+    fun scanForPlugins(sourcePath: String, packedPath: String, world: World, analyzeMode: Boolean) {
+        analyzer = if (analyzeMode) PluginAnalyzer(this) else null
+
         loginPlugins.clear()
         timerPlugins.clear()
         interfaceClose.clear()
         commandPlugins.clear()
         buttonPlugins.clear()
+        equipSlotPlugins.clear()
+        equipItemRequirementPlugins.clear()
+        equipItemPlugins.clear()
+        unequipItemPlugins.clear()
         enterRegionPlugins.clear()
         exitRegionPlugins.clear()
         enterChunkPlugins.clear()
@@ -144,6 +185,8 @@ class PluginRepository {
 
         Reflections(sourcePath, SubTypesScanner(false), MethodAnnotationsScanner()).getMethodsAnnotatedWith(ScanPlugins::class.java).forEach { method ->
             if (!method.declaringClass.name.contains("$") && !method.declaringClass.name.endsWith("Package")) {
+                analyzer?.setClass(method.declaringClass)
+                analyzer?.setMethod(method)
                 try {
                     method.invoke(null, this)
                 } catch (e: Exception) {
@@ -155,36 +198,44 @@ class PluginRepository {
 
         val packed = Paths.get(packedPath)
         if (Files.exists(packed)) {
-            val packedUrl = packed.toFile().toURI().toURL()
             Files.walk(packed).forEach { path ->
                 if (!path.fileName.toString().endsWith(".jar")) {
                     return@forEach
                 }
-                val urls = arrayOf(packedUrl, path.toFile().toURI().toURL())
-                val classLoader = URLClassLoader(urls, PluginRepository::class.java.classLoader)
-
-                val jar = JarFile(path.toFile())
-                val entries = jar.entries()
-                while (entries.hasMoreElements()) {
-                    val entry = entries.nextElement()
-                    if (!entry.name.endsWith(".class") || entry.name.contains("$") || entry.name.endsWith("Package")) {
-                        continue
-                    }
-                    val clazz = classLoader.loadClass(entry.name.replace("/", ".").replace(".class", ""))
-                    clazz.methods.forEach { method ->
-                        if (method.isAnnotationPresent(ScanPlugins::class.java)) {
-                            try {
-                                method.invoke(null, this)
-                            } catch (e: Exception) {
-                                logger.error("Error loading packed plugin: ${method.declaringClass} [$method].", e)
-                                throw e
-                            }
-                        }
-                    }
-                }
-                jar.close()
+                scanJarForPlugins(path)
             }
         }
+
+        analyzer?.analyze(world)
+        analyzer = null
+    }
+
+    fun scanJarForPlugins(path: Path) {
+        val urls = arrayOf(path.toFile().toURI().toURL())
+        val classLoader = URLClassLoader(urls, PluginRepository::class.java.classLoader)
+
+        val jar = JarFile(path.toFile())
+        val entries = jar.entries()
+        while (entries.hasMoreElements()) {
+            val entry = entries.nextElement()
+            if (!entry.name.endsWith(".class") || entry.name.contains("$") || entry.name.endsWith("Package")) {
+                continue
+            }
+            val clazz = classLoader.loadClass(entry.name.replace("/", ".").replace(".class", ""))
+            clazz.methods.forEach { method ->
+                if (method.isAnnotationPresent(ScanPlugins::class.java)) {
+                    analyzer?.setClass(method.declaringClass)
+                    analyzer?.setMethod(method)
+                    try {
+                        method.invoke(null, this)
+                    } catch (e: Exception) {
+                        logger.error("Error loading packed plugin: ${method.declaringClass} [$method].", e)
+                        throw e
+                    }
+                }
+            }
+        }
+        jar.close()
     }
 
     /**
@@ -286,6 +337,84 @@ class PluginRepository {
     fun executeButton(p: Player, parent: Int, child: Int): Boolean {
         val hash = (parent shl 16) or child
         val plugin = buttonPlugins[hash]
+        if (plugin != null) {
+            p.world.pluginExecutor.execute(p, plugin)
+            return true
+        }
+        return false
+    }
+
+    @Throws(IllegalStateException::class)
+    fun bindEquipSlot(equipSlot: Int, plugin: Function1<Plugin, Unit>) {
+        equipSlotPlugins.put(equipSlot, plugin)
+        pluginCount++
+    }
+
+    fun executeEquipSlot(p: Player, equipSlot: Int): Boolean {
+        val plugin = equipSlotPlugins[equipSlot]
+        if (plugin != null) {
+            plugin.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+            return true
+        }
+        return false
+    }
+
+    @Throws(IllegalStateException::class)
+    fun bindEquipItemRequirement(item: Int, plugin: Function1<Plugin, Boolean>) {
+        if (equipItemRequirementPlugins.containsKey(item)) {
+            logger.error("Equip item requirement already bound to a plugin: [item=$item]")
+            throw IllegalStateException()
+        }
+        equipItemRequirementPlugins[item] = plugin
+        pluginCount++
+    }
+
+    fun executeEquipItemRequirement(p: Player, item: Int): Boolean {
+        val plugin = equipItemRequirementPlugins[item]
+        if (plugin != null) {
+            /**
+             * Plugin returns true if the item can be equipped, false if it
+             * should block the item from being equipped.
+             */
+            return p.world.pluginExecutor.execute(p, plugin)
+        }
+        /**
+         * Should always be able to wear items by default.
+         */
+        return true
+    }
+
+    @Throws(IllegalStateException::class)
+    fun bindEquipItem(item: Int, plugin: Function1<Plugin, Unit>) {
+        if (equipItemPlugins.containsKey(item)) {
+            logger.error("Equip item already bound to a plugin: [item=$item]")
+            throw IllegalStateException()
+        }
+        equipItemPlugins[item] = plugin
+        pluginCount++
+    }
+
+    fun executeEquipItem(p: Player, item: Int): Boolean {
+        val plugin = equipItemPlugins[item]
+        if (plugin != null) {
+            p.world.pluginExecutor.execute(p, plugin)
+            return true
+        }
+        return false
+    }
+
+    @Throws(IllegalStateException::class)
+    fun bindUnequipItem(item: Int, plugin: Function1<Plugin, Unit>) {
+        if (unequipItemPlugins.containsKey(item)) {
+            logger.error("Unequip item already bound to a plugin: [item=$item]")
+            throw IllegalStateException()
+        }
+        unequipItemPlugins[item] = plugin
+        pluginCount++
+    }
+
+    fun executeUnequipItem(p: Player, item: Int): Boolean {
+        val plugin = unequipItemPlugins[item]
         if (plugin != null) {
             p.world.pluginExecutor.execute(p, plugin)
             return true
@@ -401,5 +530,265 @@ class PluginRepository {
         val logic = customPathingObjects[id] ?: return false
         p.world.pluginExecutor.execute(p, logic)
         return true
+    }
+
+    private class PluginAnalyzer(private val repository: PluginRepository) {
+
+        private var classPluginCount = hashMapOf<Class<*>, Int>()
+
+        private var lastKnownPluginCount = 0
+
+        private var currentClass: Class<*>? = null
+
+        private var currentMethod: Method? = null
+
+        fun setClass(clazz: Class<*>) {
+            if (currentClass != null && currentClass != clazz) {
+                classPluginCount[currentClass!!] = repository.getPluginCount() - lastKnownPluginCount
+                lastKnownPluginCount = repository.getPluginCount()
+            }
+
+            this.currentClass = clazz
+        }
+
+        fun setMethod(method: Method) {
+            this.currentMethod = method
+        }
+
+        fun analyze(world: World) {
+            println("/*******************************************************/")
+            println("                Plugin Analyzing Report                  ")
+
+            println()
+            println()
+
+            println("\tWarming up JVM before analyzing...")
+            world.getService(GameService::class.java, false).ifPresent { s -> s.pause = true }
+            val warmupStart = Stopwatch.createStarted()
+            for (i in 0 until 10_000) {
+                executePlugins(world, warmup = true)
+                if (warmupStart.elapsed(TimeUnit.SECONDS) >= 10) {
+                    break
+                }
+            }
+            world.getService(GameService::class.java, false).ifPresent { s -> s.pause = false }
+
+            println()
+            println()
+
+            System.out.format("\t%-25s%-15s%-15s\n", "File", "Plugins", "Class")
+            println("\t------------------------------------------------------------------------------------------------")
+            classPluginCount.toList().sortedByDescending { it.second }.toMap().forEach { clazz, plugins ->
+                System.out.format("\t%-25s%-15d%-30s\n", clazz.simpleName, plugins, clazz)
+            }
+
+            println()
+            println()
+
+
+            System.out.format("\t%-25s%-15s%-15s\n", "Plugin", "Invoke time", "Notes")
+            println("\t------------------------------------------------------------------------------------------------")
+
+            executePlugins(world, warmup = false)
+
+            println()
+            println()
+
+            println("/*******************************************************/")
+
+
+            classPluginCount.clear()
+            currentClass = null
+            currentMethod = null
+            lastKnownPluginCount = 0
+        }
+
+        private fun executePlugins(world: World, warmup: Boolean) {
+            val times = arrayListOf<TimedPlugin>()
+            val dummy = Player(world)
+            val stopwatch = Stopwatch.createUnstarted()
+            val individualTimes = arrayListOf<TimedPlugin>()
+            val individualStopwatch = Stopwatch.createUnstarted()
+
+            val measurement = TimeUnit.MILLISECONDS
+            val measurementName = "ms"
+            val timeThreshold = 50 // Relative to [measurement]
+
+            stopwatch.reset().start()
+            repository.executeLogin(dummy)
+            times.add(TimedPlugin(name = "Login", note = "", time = stopwatch.elapsed(measurement)))
+
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+            /**
+             * Most timers take more than one execute to do certain logic,
+             * so let's try to find a sweet spot in how many times we should
+             * execute timers to get a more accurate execution time.
+             */
+            val timerExecutions = 1000
+
+            stopwatch.reset().start()
+            repository.timerPlugins.forEach { plugin ->
+                for (i in 0 until timerExecutions) {
+                    repository.executeTimer(dummy, plugin.key)
+                }
+            }
+            times.add(TimedPlugin(name = "Timer", note = "${DecimalFormat().format(timerExecutions)} executions each", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+            stopwatch.reset().start()
+            repository.interfaceClose.forEach { hash, _ ->
+                repository.executeInterfaceClose(dummy, hash shr 16)
+            }
+            times.add(TimedPlugin(name = "Close Interface", note = "", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+            stopwatch.reset().start()
+            repository.buttonPlugins.forEach { hash, _ ->
+                dummy.attr[INTERACTING_OPT_ATTR] = 0
+                dummy.attr[INTERACTING_ITEM_ID] = 0
+                dummy.attr[INTERACTING_SLOT_ATTR] = 0
+                repository.executeButton(dummy, hash shr 16, hash and 0xFFFF)
+            }
+            times.add(TimedPlugin(name = "Click Button", note = "", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+            stopwatch.reset().start()
+            repository.equipSlotPlugins.forEach { slot, _ ->
+                repository.executeEquipSlot(dummy, slot)
+            }
+            times.add(TimedPlugin(name = "Equip Slot", note = "", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+            stopwatch.reset().start()
+            repository.equipItemRequirementPlugins.forEach { item, _ ->
+                repository.executeEquipItemRequirement(dummy, item)
+            }
+            times.add(TimedPlugin(name = "Equip Requirement", note = "", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+            stopwatch.reset().start()
+            repository.equipItemPlugins.forEach { item, _ ->
+                repository.executeEquipItem(dummy, item)
+            }
+            times.add(TimedPlugin(name = "Equip Item", note = "", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+            stopwatch.reset().start()
+            repository.unequipItemPlugins.forEach { item, _ ->
+                repository.executeUnequipItem(dummy, item)
+            }
+            times.add(TimedPlugin(name = "Unequip Item", note = "", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+            stopwatch.reset().start()
+            repository.enterRegionPlugins.forEach { region, _ ->
+                repository.executeRegionEnter(dummy, region)
+            }
+            times.add(TimedPlugin(name = "Enter Region", note = "", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+            stopwatch.reset().start()
+            repository.exitRegionPlugins.forEach { region, _ ->
+                repository.executeRegionExit(dummy, region)
+            }
+            times.add(TimedPlugin(name = "Exit Region", note = "", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+            stopwatch.reset().start()
+            repository.enterChunkPlugins.forEach { chunk, _ ->
+                repository.executeChunkEnter(dummy, chunk)
+            }
+            times.add(TimedPlugin(name = "Enter Chunk", note = "", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+            stopwatch.reset().start()
+            repository.exitChunkPlugins.forEach { chunk, _ ->
+                repository.executeChunkExit(dummy, chunk)
+            }
+            times.add(TimedPlugin(name = "Exit Chunk", note = "", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+            stopwatch.reset().start()
+            repository.itemPlugins.forEach { item, map ->
+                map.keys.forEach { opt ->
+                    individualStopwatch.reset().start()
+                    dummy.attr[INTERACTING_ITEM_SLOT] = opt
+                    dummy.attr[INTERACTING_ITEM_ID] = item
+                    dummy.attr[INTERACTING_ITEM] = Item(item)
+                    repository.executeItem(dummy, item, opt)
+                    individualTimes.add(TimedPlugin(name = "Item Action", note = "id=$item, opt=$opt", time = individualStopwatch.elapsed(measurement)))
+                }
+            }
+            times.add(TimedPlugin(name = "Item Action", note = "", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+                if (times.sumBy { it.time.toInt() } >= timeThreshold) {
+                    individualTimes.sortByDescending { it.time }
+                    individualTimes.forEach { time -> System.out.format("\t\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+                }
+            }
+            times.clear()
+            individualTimes.clear()
+
+            stopwatch.reset().start()
+            repository.objectPlugins.forEach { obj, map ->
+                map.keys.forEach { opt ->
+                    individualStopwatch.reset().start()
+                    dummy.attr[INTERACTING_OBJ_ATTR] = DynamicObject(obj, 10, 0, Tile(0, 0))
+                    dummy.attr[INTERACTING_OPT_ATTR] = 0
+                    repository.executeObject(dummy, obj, opt)
+                    individualTimes.add(TimedPlugin(name = "Object Action", note = "id=$obj, opt=$opt", time = individualStopwatch.elapsed(measurement)))
+                }
+            }
+            times.add(TimedPlugin(name = "Object Action", note = "", time = stopwatch.elapsed(measurement)))
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+                if (times.sumBy { it.time.toInt() } >= timeThreshold) {
+                    individualTimes.sortByDescending { it.time }
+                    individualTimes.forEach { time -> System.out.format("\t\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+                }
+            }
+            times.clear()
+            individualTimes.clear()
+        }
+
+        private data class TimedPlugin(val name: String, val note: String, val time: Long)
     }
 }

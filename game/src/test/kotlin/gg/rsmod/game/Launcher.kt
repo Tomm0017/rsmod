@@ -19,7 +19,8 @@ fun main(args: Array<String>) {
             gameProps = Paths.get("./game.yml"),
             packets = Paths.get("./data", "packets.yml"),
             blocks = Paths.get("./data", "blocks.yml"),
-            devProps = Paths.get("./dev-settings.yml"))
+            devProps = Paths.get("./dev-settings.yml"),
+            args = args)
 
     for (i in 0 until 1998) {
         val player = Player(world)

@@ -72,7 +72,8 @@ class Server {
      * can start multiple servers with different game property files.
      */
     @Throws(Exception::class)
-    fun startGame(filestore: Path, gameProps: Path, packets: Path, blocks: Path, devProps: Path?): World {
+    fun startGame(filestore: Path, gameProps: Path, packets: Path, blocks: Path, devProps: Path?,
+                  args: Array<String>): World {
         val stopwatch = Stopwatch.createStarted()
         val individualStopwatch = Stopwatch.createUnstarted()
 
@@ -155,7 +156,8 @@ class Server {
         individualStopwatch.reset().start()
         world.plugins.init(gameService = gameService,
                 sourcePath = gameProperties.getOrDefault("plugin-source-path", "gg.rsmod.plugins"),
-                packedPath = gameProperties.getOrDefault("plugin-packed-path", "./plugins"))
+                packedPath = gameProperties.getOrDefault("plugin-packed-path", "./plugins"),
+                analyzeMode = args.any { it == "-analyze" })
         logger.info("Loaded {} plugins in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**

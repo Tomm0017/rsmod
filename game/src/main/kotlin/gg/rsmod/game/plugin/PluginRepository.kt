@@ -245,19 +245,6 @@ class PluginRepository {
                     }
                 }
             }
-
-            clazz.methods.forEach { method ->
-                if (method.isAnnotationPresent(ScanPlugins::class.java)) {
-                    analyzer?.setClass(method.declaringClass)
-                    analyzer?.setMethod(method)
-                    try {
-                        method.invoke(null, this)
-                    } catch (e: Exception) {
-                        logger.error("Error loading packed plugin: ${method.declaringClass} [$method].", e)
-                        throw e
-                    }
-                }
-            }
         }
         jar.close()
     }

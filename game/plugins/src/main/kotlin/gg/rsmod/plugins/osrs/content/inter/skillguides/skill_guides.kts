@@ -6,8 +6,8 @@ import gg.rsmod.plugins.osrs.content.inter.skillguides.SkillGuide
  * @author Tom <rspsmods@gmail.com>
  */
 
-private val skillIdVarbit = 4371
-private val subsectionVarbit = 4372
+val skillIdVarbit = 4371
+val subsectionVarbit = 4372
 
 SkillGuide.values().forEach { guide ->
     r.bindButton(320, guide.child) {

@@ -5,7 +5,7 @@ import gg.rsmod.plugins.osrs.api.Items
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-enum class WoodcuttingAxe(val item: Int, val level: Int, val animation: Int) {
+enum class AxeType(val item: Int, val level: Int, val animation: Int) {
     BRONZE(item = Items.BRONZE_AXE, level = 1, animation = 879),
     IRON(item = Items.IRON_AXE, level = 1, animation = 877),
     STEEL(item = Items.STEEL_AXE, level = 6, animation = 875),

@@ -16,7 +16,9 @@ import gg.rsmod.plugins.player
  */
 object Woodcutting {
 
-    suspend fun chopDownTree(it: Plugin, obj: GameObject, tree: WoodcuttingTree, trunkId: Int) {
+    data class Tree(val type: TreeType, val obj: Int, val trunk: Int)
+
+    suspend fun chopDownTree(it: Plugin, obj: GameObject, tree: TreeType, trunkId: Int) {
         val p = it.player()
 
         if (!canChop(p, obj, tree)) {
@@ -24,7 +26,7 @@ object Woodcutting {
         }
 
         val logName = p.world.definitions.get(ItemDef::class.java, tree.log).name
-        val axe = WoodcuttingAxe.values().firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && p.inventory.hasItem(it.item) }!!
+        val axe = AxeType.values().firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && p.inventory.hasItem(it.item) }!!
 
         p.filterableMessage("You swing your axe at the tree.")
         while (true) {
@@ -66,12 +68,12 @@ object Woodcutting {
         }
     }
 
-    private fun canChop(p: Player, obj: GameObject, tree: WoodcuttingTree): Boolean {
+    private fun canChop(p: Player, obj: GameObject, tree: TreeType): Boolean {
         if (!p.world.isSpawned(obj)) {
             return false
         }
 
-        val axe = WoodcuttingAxe.values().firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && p.inventory.hasItem(it.item) }
+        val axe = AxeType.values().firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && p.inventory.hasItem(it.item) }
         if (axe == null) {
             p.playSound(2277)
             p.message("You do not have an axe which you have the woodcutting level to use.")

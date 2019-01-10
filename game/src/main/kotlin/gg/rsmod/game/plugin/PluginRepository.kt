@@ -185,8 +185,8 @@ class PluginRepository {
             plugins.forEach { p ->
                 val pluginClass = p.loadClass(KotlinPlugin::class.java)
                 val constructor = pluginClass.getConstructor(PluginRepository::class.java)
-                val plugin = constructor.newInstance(this)
-                analyzer?.setClass(plugin.javaClass)
+                analyzer?.setClass(pluginClass)
+                constructor.newInstance(this)
             }
         }
 
@@ -574,7 +574,7 @@ class PluginRepository {
             System.out.format("\t%-25s%-15s%-15s\n", "File", "Plugins", "Class")
             println("\t------------------------------------------------------------------------------------------------")
             classPluginCount.toList().sortedByDescending { it.second }.toMap().forEach { clazz, plugins ->
-                System.out.format("\t%-25s%-15d%-30s\n", clazz.simpleName.replace("_plugin", ""), plugins, clazz)
+                System.out.format("\t%-25s%-15d%-30s\n", clazz.simpleName.toLowerCase().replace("_plugin", ""), plugins, clazz.toString().toLowerCase())
             }
 
             println()

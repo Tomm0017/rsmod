@@ -3,6 +3,7 @@ package gg.rsmod.game.model.container
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.item.Item
+import gg.rsmod.game.model.item.SlotItem
 import org.apache.logging.log4j.LogManager
 
 /**
@@ -239,7 +240,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
         }
 
         var completed = 0
-        val added = arrayListOf<Item>()
+        val added = arrayListOf<SlotItem>()
 
         if (!stack) {
             /**
@@ -253,7 +254,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
                 }
                 val add = Item(id)
                 set(i, add)
-                added.add(add)
+                added.add(SlotItem(i, add))
                 if (++completed >= amount) {
                     break
                 }
@@ -287,7 +288,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
 
             val add = Item(id, total)
             set(stackIndex, add)
-            added.add(add)
+            added.add(SlotItem(stackIndex, add))
             completed = total - stackAmount
         }
         return ItemTransaction(amount, completed, added)
@@ -360,7 +361,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
         }
 
         var totalRemoved = 0
-        val removed = arrayListOf<Item>()
+        val removed = arrayListOf<SlotItem>()
 
         val skippedIndices = if (beginSlot != -1) 0 until beginSlot else null
 
@@ -375,7 +376,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
                 if (item.amount == 0) {
                     val removedItem = Item(items[i]!!)
                     items[i] = null
-                    removed.add(removedItem)
+                    removed.add(SlotItem(i, removedItem))
                 }
 
                 if (totalRemoved == amount) {
@@ -408,7 +409,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
                     if (item.amount == 0) {
                         val removedItem = Item(items[i]!!)
                         items[i] = null
-                        removed.add(removedItem)
+                        removed.add(SlotItem(i, removedItem))
                     }
 
                     if (totalRemoved == amount) {

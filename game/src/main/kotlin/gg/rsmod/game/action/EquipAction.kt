@@ -92,7 +92,7 @@ object EquipAction {
                 val equipmentId = equipment.id
 
                 val transaction = p.inventory.add(equipment.id, equipment.amount, beginSlot = if (inventorySlot != -1) inventorySlot else 0)
-                transaction.items.first().copyAttr(equipment)
+                transaction.items.first().item.copyAttr(equipment)
 
                 /**
                  * The item in [equipSlot] will be removed afterwards, so don't

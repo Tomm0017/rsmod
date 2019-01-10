@@ -1,6 +1,6 @@
 package gg.rsmod.game.model.container
 
-import gg.rsmod.game.model.item.Item
+import gg.rsmod.game.model.item.SlotItem
 
 /**
  * Represents a transaction when adding or removing an item from [ItemContainer].
@@ -22,9 +22,9 @@ import gg.rsmod.game.model.item.Item
  *
  * @author Tom <rspsmods@gmail.com>
  */
-data class ItemTransaction(val requested: Int, val completed: Int, val items: List<Item>) : Iterable<Item> {
+data class ItemTransaction(val requested: Int, val completed: Int, val items: List<SlotItem>) : Iterable<SlotItem> {
 
-    override fun iterator(): Iterator<Item> = items.iterator()
+    override fun iterator(): Iterator<SlotItem> = items.iterator()
 
     fun getLeftOver(): Int = requested - completed
 

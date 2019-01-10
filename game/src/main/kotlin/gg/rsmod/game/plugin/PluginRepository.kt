@@ -217,15 +217,13 @@ class PluginRepository {
             }
             val clazz = classLoader.loadClass(entry.name.replace("/", ".").replace(".class", ""))
 
-            ClassGraph().addClassLoader(classLoader).enableAllInfo().scan().use { result ->
+            ClassGraph().ignoreParentClassLoaders().addClassLoader(classLoader).enableAllInfo().scan().use { result ->
                 val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
-                if (clazz.name.endsWith("_plugin")) {
-                    plugins.forEach { p ->
-                        val pluginClass = p.loadClass(KotlinPlugin::class.java)
-                        val constructor = pluginClass.getConstructor(PluginRepository::class.java)
-                        analyzer?.setClass(clazz)
-                        constructor.newInstance(this)
-                    }
+                plugins.forEach { p ->
+                    val pluginClass = p.loadClass(KotlinPlugin::class.java)
+                    val constructor = pluginClass.getConstructor(PluginRepository::class.java)
+                    analyzer?.setClass(clazz)
+                    constructor.newInstance(this)
                 }
             }
         }

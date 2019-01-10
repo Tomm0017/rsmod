@@ -268,7 +268,7 @@ class PluginPackerController : Initializable {
                 return@setOnAction
             }
 
-            if (sourcePath.text.isBlank() || !Files.exists(sourceFolder) || !Files.isDirectory(sourceFolder) && !sourceFolder.fileName.toString().endsWith(".kt")) {
+            if (sourcePath.text.isBlank() || !Files.exists(sourceFolder) || !Files.isDirectory(sourceFolder) && !sourceFolder.fileName.toString().endsWith(".kt") && !sourceFolder.fileName.toString().endsWith(".kts")) {
                 alertDialog(Alert.AlertType.ERROR, "Error", "The plugin source folder does not exist!",
                         "Directory: ${sourcePath.text}", primaryStage, icons)
                 return@setOnAction

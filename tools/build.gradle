@@ -9,7 +9,6 @@ dependencies {
     testImplementation group: 'junit', name: 'junit', version: junitVersion
 
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8'
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-scripting-common'
     compile group: 'org.jsoup', name: 'jsoup', version: jsoupVersion
     compile group: 'org.tukaani', name: 'xz', version: xzVersion
     compile group: 'net.lingala.zip4j', name: 'zip4j', version: z4jVersion

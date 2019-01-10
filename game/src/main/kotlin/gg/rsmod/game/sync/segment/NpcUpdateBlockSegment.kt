@@ -88,6 +88,8 @@ class NpcUpdateBlockSegment(private val npc: Npc, private val newAddition: Boole
             UpdateBlockType.FORCE_CHAT -> {
                 buf.putString(npc.blockBuffer.forceChat)
             }
+
+            else -> throw RuntimeException("Unhandled update block type: $blockType")
         }
     }
 }

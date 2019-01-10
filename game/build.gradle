@@ -9,24 +9,23 @@ dependencies {
     compile project(':util')
     compile project(':net')
 
-    testImplementation group: 'junit', name: 'junit', version: junitVersion
-    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
-
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8'
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-scripting-common'
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0'
 
     compile group: 'org.reflections', name: 'reflections', version: reflectionsVersion
     compile group: 'commons-io', name: 'commons-io', version: commonsIoVersion
-
-    compile 'org.apache.logging.log4j:log4j-api:2.8.2'
-    compile 'org.apache.logging.log4j:log4j-core:2.8.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+    compile group: 'io.github.classgraph', name: 'classgraph', version: classGraphVersion
 
     implementation group: 'com.lambdaworks', name: 'scrypt', version: scryptVersion
     implementation group: 'io.netty', name: 'netty-all', version: nettyVersion
     implementation group: 'com.google.guava', name: 'guava', version: guavaVersion
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: bouncycastleVersion
     implementation group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
+
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+    testImplementation group: 'junit', name: 'junit', version: junitVersion
 }
 
 applicationDistribution.from("$rootDir/data/") {

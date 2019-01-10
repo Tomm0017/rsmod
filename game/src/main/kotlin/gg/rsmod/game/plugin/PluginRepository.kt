@@ -233,6 +233,19 @@ class PluginRepository {
                 continue
             }
             val clazz = classLoader.loadClass(entry.name.replace("/", ".").replace(".class", ""))
+
+            ClassGraph().addClassLoader(classLoader).enableAllInfo().scan().use { result ->
+                val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
+                if (clazz.name.endsWith("_plugin")) {
+                    plugins.forEach { p ->
+                        val pluginClass = p.loadClass(KotlinPlugin::class.java)
+                        val constructor = pluginClass.getConstructor(PluginRepository::class.java)
+                        analyzer?.setClass(clazz)
+                        constructor.newInstance(this)
+                    }
+                }
+            }
+
             clazz.methods.forEach { method ->
                 if (method.isAnnotationPresent(ScanPlugins::class.java)) {
                     analyzer?.setClass(method.declaringClass)
@@ -553,7 +566,7 @@ class PluginRepository {
 
         private var currentMethod: Method? = null
 
-        fun setClass(clazz: Class<*>) {
+        fun setClass(clazz: Class<*>?) {
             if (currentClass != null && currentClass != clazz) {
                 classPluginCount[currentClass!!] = repository.getPluginCount() - lastKnownPluginCount
                 lastKnownPluginCount = repository.getPluginCount()
@@ -567,6 +580,11 @@ class PluginRepository {
         }
 
         fun analyze(world: World) {
+            /**
+             * Make sure to log the last class if necessary.
+             */
+            setClass(null)
+
             println("/*******************************************************/")
             println("                Plugin Analyzing Report                  ")
 
@@ -577,6 +595,8 @@ class PluginRepository {
             world.getService(GameService::class.java, false).ifPresent { s -> s.pause = true }
             val warmupStart = Stopwatch.createStarted()
             for (i in 0 until 10_000) {
+                // Note(Tom): we could also use future to do this just in case
+                // one of the plugins has a deadlock.
                 executePlugins(world, warmup = true)
                 if (warmupStart.elapsed(TimeUnit.SECONDS) >= 10) {
                     break
@@ -590,7 +610,7 @@ class PluginRepository {
             System.out.format("\t%-25s%-15s%-15s\n", "File", "Plugins", "Class")
             println("\t------------------------------------------------------------------------------------------------")
             classPluginCount.toList().sortedByDescending { it.second }.toMap().forEach { clazz, plugins ->
-                System.out.format("\t%-25s%-15d%-30s\n", clazz.simpleName, plugins, clazz)
+                System.out.format("\t%-25s%-15d%-30s\n", clazz.simpleName.replace("_plugin", ""), plugins, clazz)
             }
 
             println()

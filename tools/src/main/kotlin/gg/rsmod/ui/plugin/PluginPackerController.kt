@@ -253,6 +253,7 @@ class PluginPackerController : Initializable {
             if (jarPlugin.isSelected) {
                 if (PluginPacker().compileBinary(compilerPath = compiler.toAbsolutePath().toString(),
                                 gameJar = gameJar.toAbsolutePath().toString(),
+                                pluginJar = "",
                                 pluginName = plugin,
                                 outputPath = outputFolder,
                                 paths = Files.walk(sourceFolder).toList())) {

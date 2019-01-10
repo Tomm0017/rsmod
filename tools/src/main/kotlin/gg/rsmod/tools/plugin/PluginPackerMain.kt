@@ -90,7 +90,7 @@ object PluginPackerMain {
                         error("Plugin distribution jar could not be found in: $gameJar")
                     }
 
-                    if (packer.compileBinary(compilerPath, gameJarPath, pluginName, output, Files.walk(source).toList())) {
+                    if (packer.compileBinary(compilerPath, gameJarPath, pluginJarPath, pluginName, output, Files.walk(source).toList())) {
                         println("Plugin has been compiled and created as: ${output.resolve("$pluginName.jar")}")
                     } else {
                         println("Could not pack plugin! Make sure your source files do not have any errors, that you have Kotlin compiler installed and that you have write-access to $output")

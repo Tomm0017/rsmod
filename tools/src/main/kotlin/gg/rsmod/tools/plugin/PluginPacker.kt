@@ -17,12 +17,12 @@ class PluginPacker {
         return zipFiles(outputPath.resolve("$pluginName.zip"), paths, removeParent)
     }
 
-    fun compileBinary(compilerPath: String, gameJar: String, pluginName: String,
-                      outputPath: Path, paths: List<Path>): Boolean {
+    fun compileBinary(compilerPath: String, gameJar: String, pluginJar: String,
+                      pluginName: String, outputPath: Path, paths: List<Path>): Boolean {
         val tmpOutput = outputPath.resolve("$pluginName.tmp")
         val output = outputPath.resolve("$pluginName.jar")
 
-        val success = compileKotlin(compilerPath, gameJar, "game/plugins/build/libs/plugins-0.0.1.jar", tmpOutput, paths)
+        val success = compileKotlin(compilerPath, gameJar, pluginJar, tmpOutput, paths)
         if (success) {
             try {
                 zipFiles(output = output, paths = Files.walk(tmpOutput).toList(),

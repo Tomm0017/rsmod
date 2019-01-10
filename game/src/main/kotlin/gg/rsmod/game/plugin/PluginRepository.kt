@@ -9,6 +9,7 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.GameService
+import io.github.classgraph.ClassGraph
 import org.apache.logging.log4j.LogManager
 import org.reflections.Reflections
 import org.reflections.scanners.MethodAnnotationsScanner
@@ -182,6 +183,16 @@ class PluginRepository {
         objectPlugins.clear()
 
         pluginCount = 0
+
+        ClassGraph().enableAllInfo().whitelistModules().scan().use { result ->
+            val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
+            plugins.forEach { p ->
+                val pluginClass = p.loadClass(KotlinPlugin::class.java)
+                val constructor = pluginClass.getConstructor(PluginRepository::class.java)
+                val plugin = constructor.newInstance(this)
+                analyzer?.setClass(plugin.javaClass)
+            }
+        }
 
         Reflections(sourcePath, SubTypesScanner(false), MethodAnnotationsScanner()).getMethodsAnnotatedWith(ScanPlugins::class.java).forEach { method ->
             if (!method.declaringClass.name.contains("$") && !method.declaringClass.name.endsWith("Package")) {

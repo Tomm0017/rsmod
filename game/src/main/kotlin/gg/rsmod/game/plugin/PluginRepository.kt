@@ -11,10 +11,6 @@ import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.GameService
 import io.github.classgraph.ClassGraph
 import org.apache.logging.log4j.LogManager
-import org.reflections.Reflections
-import org.reflections.scanners.MethodAnnotationsScanner
-import org.reflections.scanners.SubTypesScanner
-import java.lang.reflect.Method
 import java.net.URLClassLoader
 import java.nio.file.Files
 import java.nio.file.Path
@@ -191,19 +187,6 @@ class PluginRepository {
                 val constructor = pluginClass.getConstructor(PluginRepository::class.java)
                 val plugin = constructor.newInstance(this)
                 analyzer?.setClass(plugin.javaClass)
-            }
-        }
-
-        Reflections(sourcePath, SubTypesScanner(false), MethodAnnotationsScanner()).getMethodsAnnotatedWith(ScanPlugins::class.java).forEach { method ->
-            if (!method.declaringClass.name.contains("$") && !method.declaringClass.name.endsWith("Package")) {
-                analyzer?.setClass(method.declaringClass)
-                analyzer?.setMethod(method)
-                try {
-                    method.invoke(null, this)
-                } catch (e: Exception) {
-                    logger.error("Error loading source plugin: ${method.declaringClass} [$method].", e)
-                    throw e
-                }
             }
         }
 
@@ -551,8 +534,6 @@ class PluginRepository {
 
         private var currentClass: Class<*>? = null
 
-        private var currentMethod: Method? = null
-
         fun setClass(clazz: Class<*>?) {
             if (currentClass != null && currentClass != clazz) {
                 classPluginCount[currentClass!!] = repository.getPluginCount() - lastKnownPluginCount
@@ -560,10 +541,6 @@ class PluginRepository {
             }
 
             this.currentClass = clazz
-        }
-
-        fun setMethod(method: Method) {
-            this.currentMethod = method
         }
 
         fun analyze(world: World) {

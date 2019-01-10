@@ -6,10 +6,11 @@ import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.SkillSet
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
-import gg.rsmod.plugins.osrs.*
-import gg.rsmod.plugins.osrs.api.BonusSlot
-import gg.rsmod.plugins.osrs.api.Equipment
-import gg.rsmod.plugins.osrs.api.Skills
+import gg.rsmod.plugins.osrs.GameframeTab
+import gg.rsmod.plugins.osrs.InterfacePane
+import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.getChildId
+import gg.rsmod.plugins.osrs.getDisplayInterfaceId
 
 /**
  * A decoupled file that holds extensions and helper functions, related to players,
@@ -18,12 +19,12 @@ import gg.rsmod.plugins.osrs.api.Skills
  * @author Tom <rspsmods@gmail.com>
  */
 
-fun Player.message(message: String, type: OSRSMessageType = OSRSMessageType.GAME) {
+fun Player.message(message: String, type: ChatMessageType = ChatMessageType.GAME) {
     write(SendChatboxTextMessage(type = type.id, message = message, username = null))
 }
 
 fun Player.filterableMessage(message: String) {
-    write(SendChatboxTextMessage(type = OSRSMessageType.FILTERED.id, message = message, username = null))
+    write(SendChatboxTextMessage(type = ChatMessageType.FILTERED.id, message = message, username = null))
 }
 
 fun Player.invokeScript(id: Int, vararg args: Any) {

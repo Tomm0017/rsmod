@@ -1,9 +1,9 @@
-package gg.rsmod.plugins.osrs
+package gg.rsmod.plugins.osrs.api
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-enum class OSRSMessageType(val id: Int) {
+enum class ChatMessageType(val id: Int) {
     SERVER(0),
     PUBLIC_MOD(1),
     PUBLIC(2),

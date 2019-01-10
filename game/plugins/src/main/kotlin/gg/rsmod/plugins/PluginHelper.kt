@@ -21,7 +21,7 @@ import gg.rsmod.plugins.osrs.api.Skills
  * The child id of the chat box in the gameframe interface. This can change
  * with revision.
  */
-private const val CHATBOX_CHILD = 561
+const val CHATBOX_CHILD = 561
 
 /**
  * The default action that will occur when interrupting or finishing a dialog.

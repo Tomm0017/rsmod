@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.content
+package gg.rsmod.plugins.osrs.content.items.potion
 
 import gg.rsmod.game.model.TimerKey
 

@@ -7,6 +7,6 @@ import kotlin.script.experimental.annotations.KotlinScript
  */
 @KotlinScript(
         displayName = "Kotlin Plugin",
-        fileExtension = "plugin.kts"
+        fileExtension = "kts"
 )
 abstract class KotlinPlugin(val r: PluginRepository)

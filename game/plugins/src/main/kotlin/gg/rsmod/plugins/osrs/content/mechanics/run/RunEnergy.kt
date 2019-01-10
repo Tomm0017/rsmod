@@ -1,58 +1,44 @@
-package gg.rsmod.plugins.osrs.content
+package gg.rsmod.plugins.osrs.content.mechanics.run
 
 import gg.rsmod.game.message.impl.SetRunEnergyMessage
 import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.plugin.PluginRepository
-import gg.rsmod.game.plugin.ScanPlugins
-import gg.rsmod.plugins.osrs.OSRSGameframe
 import gg.rsmod.plugins.osrs.api.Equipment
 import gg.rsmod.plugins.osrs.api.Skills
-import gg.rsmod.plugins.player
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 object RunEnergy {
 
-    private val RUN_DRAIN = TimerKey()
+    val RUN_DRAIN = TimerKey()
 
     /**
      * Reduces run energy depletion by 70%
      */
     val STAMINA_BOOST = TimerKey("stamina_boost", tickOffline = false)
 
-    @JvmStatic
-    @ScanPlugins
-    fun register(r: PluginRepository) {
-        r.bindLogin {
-            it.player().timers[RUN_DRAIN] = 1
-        }
+    const val RUN_ENABLED_VARP = 173
 
-        r.bindTimer(RUN_DRAIN) {
-            val p = it.player()
-
-            p.timers[RUN_DRAIN] = 1
-
-            if (p.isRunning() && p.movementQueue.hasDestination()) {
-                val weight = Math.max(0.0, p.weight)
-                var decrement = (Math.min(weight, 64.0) / 100.0) + 0.64
-                if (p.timers.has(STAMINA_BOOST)) {
-                    decrement *= 0.3
-                }
-                p.runEnergy = Math.max(0.0, (p.runEnergy - decrement))
-                if (p.runEnergy <= 0) {
-                    p.varps.setState(OSRSGameframe.RUN_ENABLED_VARP, 0)
-                }
-                p.write(SetRunEnergyMessage(p.runEnergy.toInt()))
-            } else if (p.runEnergy < 100.0 && p.lock.canRestoreRunEnergy()) {
-                var recovery = (8.0 + (p.getSkills().getCurrentLevel(Skills.AGILITY) / 6.0)) / 100.0
-                if (isWearingFullGrace(p)) {
-                    recovery *= 1.3
-                }
-                p.runEnergy = Math.min(100.0, (p.runEnergy + recovery))
-                p.write(SetRunEnergyMessage(p.runEnergy.toInt()))
+    fun drain(p: Player) {
+        if (p.isRunning() && p.movementQueue.hasDestination()) {
+            val weight = Math.max(0.0, p.weight)
+            var decrement = (Math.min(weight, 64.0) / 100.0) + 0.64
+            if (p.timers.has(RunEnergy.STAMINA_BOOST)) {
+                decrement *= 0.3
             }
+            p.runEnergy = Math.max(0.0, (p.runEnergy - decrement))
+            if (p.runEnergy <= 0) {
+                p.varps.setState(RUN_ENABLED_VARP, 0)
+            }
+            p.write(SetRunEnergyMessage(p.runEnergy.toInt()))
+        } else if (p.runEnergy < 100.0 && p.lock.canRestoreRunEnergy()) {
+            var recovery = (8.0 + (p.getSkills().getCurrentLevel(Skills.AGILITY) / 6.0)) / 100.0
+            if (RunEnergy.isWearingFullGrace(p)) {
+                recovery *= 1.3
+            }
+            p.runEnergy = Math.min(100.0, (p.runEnergy + recovery))
+            p.write(SetRunEnergyMessage(p.runEnergy.toInt()))
         }
     }
 

@@ -1,8 +1,8 @@
 
 import gg.rsmod.plugins.osrs.content.mechanics.run.RunEnergy
-import gg.rsmod.plugins.osrs.api.player
-import gg.rsmod.plugins.osrs.api.setVarp
-import gg.rsmod.plugins.osrs.api.toggleVarp
+import gg.rsmod.plugins.osrs.api.helper.player
+import gg.rsmod.plugins.osrs.api.helper.setVarp
+import gg.rsmod.plugins.osrs.api.helper.toggleVarp
 
 /**
  * @author Tom <rspsmods@gmail.com>

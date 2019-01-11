@@ -1,6 +1,6 @@
 import gg.rsmod.plugins.osrs.content.mechanics.multi.MultiwayCombat
-import gg.rsmod.plugins.osrs.api.player
-import gg.rsmod.plugins.osrs.api.setVarbit
+import gg.rsmod.plugins.osrs.api.helper.player
+import gg.rsmod.plugins.osrs.api.helper.setVarbit
 
 /**
  * @author Tom <rspsmods@gmail.com>

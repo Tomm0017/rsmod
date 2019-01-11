@@ -3,6 +3,7 @@ package gg.rsmod.plugins.osrs.content.inter.bank
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.api.helper.*
 
 /**
  * @author Tom <rspsmods@gmail.com>

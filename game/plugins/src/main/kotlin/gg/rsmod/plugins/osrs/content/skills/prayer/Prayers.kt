@@ -6,6 +6,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.UpdateBlockType
 import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.api.helper.*
 
 object Prayers {
 

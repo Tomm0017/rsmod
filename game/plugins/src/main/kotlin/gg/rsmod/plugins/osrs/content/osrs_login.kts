@@ -2,6 +2,7 @@
 import gg.rsmod.game.model.NEW_ACCOUNT_ATTR
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.mechanics.special.SpecialEnergy
 
 /**

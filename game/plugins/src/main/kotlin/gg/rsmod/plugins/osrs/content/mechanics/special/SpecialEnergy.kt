@@ -1,7 +1,7 @@
 package gg.rsmod.plugins.osrs.content.mechanics.special
 
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.osrs.api.setVarp
+import gg.rsmod.plugins.osrs.api.helper.setVarp
 
 /**
  * @author Tom <rspsmods@gmail.com>

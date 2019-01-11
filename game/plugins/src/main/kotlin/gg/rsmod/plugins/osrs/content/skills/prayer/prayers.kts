@@ -1,6 +1,7 @@
 
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.skills.prayer.Prayer
 import gg.rsmod.plugins.osrs.content.skills.prayer.Prayers
 

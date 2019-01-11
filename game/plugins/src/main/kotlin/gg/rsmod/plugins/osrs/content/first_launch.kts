@@ -1,9 +1,9 @@
 
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.api.doubleItemDialog
-import gg.rsmod.plugins.osrs.api.itemDialog
-import gg.rsmod.plugins.osrs.api.player
+import gg.rsmod.plugins.osrs.api.helper.doubleItemDialog
+import gg.rsmod.plugins.osrs.api.helper.itemDialog
+import gg.rsmod.plugins.osrs.api.helper.player
 
 /**
  * @author Tom <rspsmods@gmail.com>

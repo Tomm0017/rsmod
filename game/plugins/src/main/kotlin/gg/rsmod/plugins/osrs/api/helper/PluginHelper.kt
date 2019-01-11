@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.api
+package gg.rsmod.plugins.osrs.api.helper
 
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.INTERACTING_OBJ_ATTR
@@ -8,6 +8,7 @@ import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.plugins.osrs.api.Skills
 
 /**
  * A decoupled file that holds extensions and helper functions, related to plugins,

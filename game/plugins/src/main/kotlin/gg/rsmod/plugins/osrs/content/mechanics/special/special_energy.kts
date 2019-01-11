@@ -1,7 +1,7 @@
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.content.mechanics.special.SpecialEnergy
-import gg.rsmod.plugins.osrs.api.player
-import gg.rsmod.plugins.osrs.api.setVarp
+import gg.rsmod.plugins.osrs.api.helper.player
+import gg.rsmod.plugins.osrs.api.helper.setVarp
 
 /**
  * @author Tom <rspsmods@gmail.com>

@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.api
+package gg.rsmod.plugins.osrs.api.helper
 
 import com.google.common.primitives.Ints
 import gg.rsmod.game.fs.def.ItemDef
@@ -9,6 +9,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.game.WeaponConfigService
+import gg.rsmod.plugins.osrs.api.*
 
 /**
  * A decoupled file that holds extensions and helper functions, related to players,

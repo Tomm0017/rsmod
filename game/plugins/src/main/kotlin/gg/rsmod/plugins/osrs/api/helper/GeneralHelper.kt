@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.api
+package gg.rsmod.plugins.osrs.api.helper
 
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.item.Item

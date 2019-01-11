@@ -4,7 +4,6 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.coroutine.*
-import gg.rsmod.plugins.player
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.*
@@ -121,7 +120,7 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
      * Wait for our [ctx] as [Player] to close the interface [interfaceId].
      */
     suspend fun waitInterfaceClose(interfaceId: Int): Unit = suspendCoroutine {
-        nextStep = SuspendableStep(PredicateCondition { !player().interfaces.isVisible(interfaceId) }, it)
+        nextStep = SuspendableStep(PredicateCondition { !(ctx as Player).interfaces.isVisible(interfaceId) }, it)
     }
 
     /**

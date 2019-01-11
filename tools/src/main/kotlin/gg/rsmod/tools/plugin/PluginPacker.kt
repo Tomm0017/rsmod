@@ -5,6 +5,7 @@ import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.util.Zip4jConstants
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.concurrent.TimeUnit
 import kotlin.streams.toList
 
 /**
@@ -16,12 +17,12 @@ class PluginPacker {
         return zipFiles(outputPath.resolve("$pluginName.zip"), paths, removeParent)
     }
 
-    fun compileBinary(compilerPath: String, gameJar: String, pluginName: String,
-                      outputPath: Path, paths: List<Path>): Boolean {
+    fun compileBinary(compilerPath: String, gameJar: String, pluginJar: String,
+                      pluginName: String, outputPath: Path, paths: List<Path>): Boolean {
         val tmpOutput = outputPath.resolve("$pluginName.tmp")
         val output = outputPath.resolve("$pluginName.jar")
 
-        val success = compileKotlin(compilerPath, gameJar, tmpOutput, paths)
+        val success = compileKotlin(compilerPath, gameJar, pluginJar, tmpOutput, paths)
         if (success) {
             try {
                 zipFiles(output = output, paths = Files.walk(tmpOutput).toList(),
@@ -34,13 +35,14 @@ class PluginPacker {
         return false
     }
 
-    private fun compileKotlin(compilerPath: String, gameJar: String, plugin: Path, paths: List<Path>): Boolean {
-        val splitPaths = paths.filter { it.fileName.toString().endsWith(".kt") }.joinToString(" ") { "\"$it\"" }
+    private fun compileKotlin(compilerPath: String, gameJar: String, pluginJar: String, plugin: Path, paths: List<Path>): Boolean {
+        val splitPaths = paths.filter { it.fileName.toString().endsWith(".kt") || it.fileName.toString().endsWith(".kts") }.joinToString(" ") { "\"$it\"" }
 
-        val process = ProcessBuilder("$compilerPath/kotlinc.bat", "$splitPaths -classpath \"$gameJar\" -d \"$plugin\"")
+        val process = ProcessBuilder("$compilerPath/kotlinc.bat", "$splitPaths -classpath \"$gameJar\";$pluginJar -d \"$plugin\"").inheritIO()
         val status = process.start()
-        status.waitFor()
+        status.waitFor(30, TimeUnit.SECONDS)
         status.destroyForcibly()
+
 
         return status.exitValue() == 0
     }

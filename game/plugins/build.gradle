@@ -1,0 +1,10 @@
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply from: "$rootDir/gradle/kotlin.gradle"
+
+dependencies {
+    implementation project(':game')
+    implementation project(':net')
+    implementation project(':util')
+
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion
+}

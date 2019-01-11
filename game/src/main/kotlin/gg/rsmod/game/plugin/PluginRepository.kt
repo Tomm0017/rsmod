@@ -9,11 +9,8 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.GameService
+import io.github.classgraph.ClassGraph
 import org.apache.logging.log4j.LogManager
-import org.reflections.Reflections
-import org.reflections.scanners.MethodAnnotationsScanner
-import org.reflections.scanners.SubTypesScanner
-import java.lang.reflect.Method
 import java.net.URLClassLoader
 import java.nio.file.Files
 import java.nio.file.Path
@@ -148,21 +145,13 @@ class PluginRepository {
     /**
      * Initiates and populates all our plugins.
      */
-    fun init(gameService: GameService, sourcePath: String, packedPath: String,
-             analyzeMode: Boolean) {
+    fun init(gameService: GameService, packedPath: String, analyzeMode: Boolean) {
         gameService.world.pluginExecutor.init(gameService)
-        scanForPlugins(sourcePath, packedPath, gameService.world, analyzeMode)
+        scanForPlugins(packedPath, gameService.world, analyzeMode)
     }
 
-    /**
-     * Goes through all the methods found in our [sourcePath] system file path
-     * and looks for any [ScanPlugins] annotation to invoke.
-     *
-     * @throws Exception If the plugin registration function could not be invoked.
-     *                   Possible reasons: must be static [JvmStatic]
-     */
     @Throws(Exception::class)
-    fun scanForPlugins(sourcePath: String, packedPath: String, world: World, analyzeMode: Boolean) {
+    fun scanForPlugins(packedPath: String, world: World, analyzeMode: Boolean) {
         analyzer = if (analyzeMode) PluginAnalyzer(this) else null
 
         loginPlugins.clear()
@@ -183,16 +172,13 @@ class PluginRepository {
 
         pluginCount = 0
 
-        Reflections(sourcePath, SubTypesScanner(false), MethodAnnotationsScanner()).getMethodsAnnotatedWith(ScanPlugins::class.java).forEach { method ->
-            if (!method.declaringClass.name.contains("$") && !method.declaringClass.name.endsWith("Package")) {
-                analyzer?.setClass(method.declaringClass)
-                analyzer?.setMethod(method)
-                try {
-                    method.invoke(null, this)
-                } catch (e: Exception) {
-                    logger.error("Error loading source plugin: ${method.declaringClass} [$method].", e)
-                    throw e
-                }
+        ClassGraph().enableAllInfo().whitelistModules().scan().use { result ->
+            val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
+            plugins.forEach { p ->
+                val pluginClass = p.loadClass(KotlinPlugin::class.java)
+                val constructor = pluginClass.getConstructor(PluginRepository::class.java)
+                analyzer?.setClass(pluginClass)
+                constructor.newInstance(this)
             }
         }
 
@@ -222,16 +208,14 @@ class PluginRepository {
                 continue
             }
             val clazz = classLoader.loadClass(entry.name.replace("/", ".").replace(".class", ""))
-            clazz.methods.forEach { method ->
-                if (method.isAnnotationPresent(ScanPlugins::class.java)) {
-                    analyzer?.setClass(method.declaringClass)
-                    analyzer?.setMethod(method)
-                    try {
-                        method.invoke(null, this)
-                    } catch (e: Exception) {
-                        logger.error("Error loading packed plugin: ${method.declaringClass} [$method].", e)
-                        throw e
-                    }
+
+            ClassGraph().ignoreParentClassLoaders().addClassLoader(classLoader).enableAllInfo().scan().use { result ->
+                val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
+                plugins.forEach { p ->
+                    val pluginClass = p.loadClass(KotlinPlugin::class.java)
+                    val constructor = pluginClass.getConstructor(PluginRepository::class.java)
+                    analyzer?.setClass(clazz)
+                    constructor.newInstance(this)
                 }
             }
         }
@@ -540,9 +524,7 @@ class PluginRepository {
 
         private var currentClass: Class<*>? = null
 
-        private var currentMethod: Method? = null
-
-        fun setClass(clazz: Class<*>) {
+        fun setClass(clazz: Class<*>?) {
             if (currentClass != null && currentClass != clazz) {
                 classPluginCount[currentClass!!] = repository.getPluginCount() - lastKnownPluginCount
                 lastKnownPluginCount = repository.getPluginCount()
@@ -551,11 +533,12 @@ class PluginRepository {
             this.currentClass = clazz
         }
 
-        fun setMethod(method: Method) {
-            this.currentMethod = method
-        }
-
         fun analyze(world: World) {
+            /**
+             * Make sure to log the last class if necessary.
+             */
+            setClass(null)
+
             println("/*******************************************************/")
             println("                Plugin Analyzing Report                  ")
 
@@ -566,6 +549,8 @@ class PluginRepository {
             world.getService(GameService::class.java, false).ifPresent { s -> s.pause = true }
             val warmupStart = Stopwatch.createStarted()
             for (i in 0 until 10_000) {
+                // Note(Tom): we could also use future to do this just in case
+                // one of the plugins has a deadlock.
                 executePlugins(world, warmup = true)
                 if (warmupStart.elapsed(TimeUnit.SECONDS) >= 10) {
                     break
@@ -579,7 +564,7 @@ class PluginRepository {
             System.out.format("\t%-25s%-15s%-15s\n", "File", "Plugins", "Class")
             println("\t------------------------------------------------------------------------------------------------")
             classPluginCount.toList().sortedByDescending { it.second }.toMap().forEach { clazz, plugins ->
-                System.out.format("\t%-25s%-15d%-30s\n", clazz.simpleName, plugins, clazz)
+                System.out.format("\t%-25s%-15d%-30s\n", clazz.simpleName.toLowerCase().replace("_plugin", ""), plugins, clazz.toString().toLowerCase())
             }
 
             println()

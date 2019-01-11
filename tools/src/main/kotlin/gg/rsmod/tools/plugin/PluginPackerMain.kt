@@ -28,19 +28,20 @@ object PluginPackerMain {
             val options = Options()
 
             options.addOption("t", true, "The type of packing: <zip> or <jar>")
-            options.addOption("p", true, "The name you would like to give your packed plugin")
+            options.addOption("n", true, "The name you would like to give your packed plugin")
             options.addOption("s", true, "The path to the plugin files that you wish to pack")
             options.addOption("c", true, "The path to your Kotlin compiler [only for <jar> packing]")
             options.addOption("g", true, "The path to your Game jar [only for <jar> packing]")
+            options.addOption("p", true, "The path to your Plugins jar [only for <jar> packing]")
 
             val parser = DefaultParser()
             val commands = parser.parse(options, args)
 
             if (commands.args.contains("help")) {
-                HelpFormatter().printHelp("<t> <c> <g> <s> <p>", options)
+                HelpFormatter().printHelp("<t> <c> <g> <p> <s> <n>", options)
                 return
             } else if (!commands.hasOption('t')) {
-                HelpFormatter().printHelp("<t> <c> <g> <s> <p>", options)
+                HelpFormatter().printHelp("<t> <c> <g> <p> <s> <n>", options)
                 return
             }
 
@@ -51,21 +52,20 @@ object PluginPackerMain {
             }
 
             if (packType == null) {
-                HelpFormatter().printHelp("<t> <c> <g> <s> <p>", options)
+                HelpFormatter().printHelp("<t> <c> <g> <s> <n>", options)
                 return
             }
             val requiredOptions = when (packType) {
-                PackType.ZIP -> arrayOf(options.getOption("p"), options.getOption("s"))
-                PackType.JAR -> arrayOf(options.getOption("p"), options.getOption("s"), options.getOption("c"), options.getOption("g"))
+                PackType.ZIP -> arrayOf(options.getOption("n"), options.getOption("s"))
+                PackType.JAR -> arrayOf(options.getOption("n"), options.getOption("s"), options.getOption("c"), options.getOption("g"), options.getOption("p"))
             }
             if (requiredOptions.any { !commands.hasOption(it.opt) }) {
-                val formatter = HelpFormatter()
-                formatter.printHelp("<c> <g> <s> <p>", options)
+                HelpFormatter().printHelp("<t> <c> <g> <p> <s> <n>", options)
                 return
             }
 
             try {
-                val pluginName = commands.getOptionValue('p')
+                val pluginName = commands.getOptionValue('n')
                 val source = Paths.get(commands.getOptionValue('s'))
                 val output = Paths.get(".", "plugins")
 
@@ -76,24 +76,28 @@ object PluginPackerMain {
                 if (packType == PackType.JAR) {
                     val compilerPath = commands.getOptionValue('c')
                     val gameJarPath = commands.getOptionValue('g')
+                    val pluginJarPath = commands.getOptionValue('p')
 
                     val compiler = Paths.get(compilerPath).resolve("kotlinc")
                     val gameJar = Paths.get(gameJarPath)
+                    val pluginJar = Paths.get(pluginJarPath)
 
                     if (!Files.exists(compiler)) {
                         error("Kotlin compiler could not be found in: $compiler")
                     } else if (!Files.exists(gameJar)) {
                         error("Game distribution jar could not be found in: $gameJar")
+                    } else if (!Files.exists(pluginJar)) {
+                        error("Plugin distribution jar could not be found in: $gameJar")
                     }
 
-                    if (packer.compileBinary(compilerPath, gameJarPath, pluginName, output, Files.walk(source).toList())) {
+                    if (packer.compileBinary(compilerPath, gameJarPath, pluginJarPath, pluginName, output, Files.walk(source).toList())) {
                         println("Plugin has been compiled and created as: ${output.resolve("$pluginName.jar")}")
                     } else {
                         println("Could not pack plugin! Make sure your source files do not have any errors, that you have Kotlin compiler installed and that you have write-access to $output")
                     }
                 } else {
                     if (packer.compileSource(pluginName, output, Files.walk(source).toList())) {
-                        println("Plugin has been compiled and created as: ${output.resolve("$pluginName.jar")}")
+                        println("Plugin has been compiled and created as: ${output.resolve("$pluginName.zip")}")
                     } else {
                         println("Could not pack plugin! Make sure you have write-access to $output")
                     }

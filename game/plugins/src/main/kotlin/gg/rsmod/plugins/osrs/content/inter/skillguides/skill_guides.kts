@@ -1,5 +1,4 @@
-import gg.rsmod.plugins.*
-import gg.rsmod.plugins.osrs.InterfacePane
+import gg.rsmod.plugins.osrs.api.*
 import gg.rsmod.plugins.osrs.content.inter.skillguides.SkillGuide
 
 /**

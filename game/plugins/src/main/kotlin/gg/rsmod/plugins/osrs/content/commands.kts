@@ -1,3 +1,4 @@
+
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.model.COMMAND_ARGS_ATTR
@@ -8,10 +9,8 @@ import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.plugins.*
-import gg.rsmod.plugins.osrs.InterfacePane
+import gg.rsmod.plugins.osrs.api.*
 import gg.rsmod.plugins.osrs.api.cfg.Items
-import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
 

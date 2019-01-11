@@ -1,6 +1,6 @@
 
 import gg.rsmod.game.model.Privilege
-import gg.rsmod.plugins.*
+import gg.rsmod.plugins.osrs.api.*
 import gg.rsmod.plugins.osrs.content.inter.bank.Bank
 
 /**

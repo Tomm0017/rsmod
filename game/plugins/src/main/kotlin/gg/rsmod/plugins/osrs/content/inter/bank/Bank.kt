@@ -2,8 +2,7 @@ package gg.rsmod.plugins.osrs.content.inter.bank
 
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.plugins.*
-import gg.rsmod.plugins.osrs.InterfacePane
+import gg.rsmod.plugins.osrs.api.*
 
 /**
  * @author Tom <rspsmods@gmail.com>

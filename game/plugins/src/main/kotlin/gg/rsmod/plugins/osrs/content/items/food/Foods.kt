@@ -3,12 +3,12 @@ package gg.rsmod.plugins.osrs.content.items.food
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.hasEquipped
+import gg.rsmod.plugins.osrs.api.hasEquipped
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.content.items.potion.Potions
 import gg.rsmod.plugins.osrs.content.combat.Combat
-import gg.rsmod.plugins.playSound
+import gg.rsmod.plugins.osrs.api.playSound
 
 /**
  * @author Tom <rspsmods@gmail.com>

@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs
+package gg.rsmod.plugins.osrs.api
 
 import gg.rsmod.game.model.interf.DisplayMode
 
@@ -67,23 +67,6 @@ enum class InterfacePane(val interfaceId: Int, val fixedChildId: Int, val resize
             clickThrough = false),
 }
 
-enum class GameframeTab(val id: Int) {
-    ATTACK(id = 0),
-    SKILLS(id = 1),
-    QUEST(id = 2),
-    INVENTORY(id = 3),
-    EQUIPMENT(id = 4),
-    PRAYER(id = 5),
-    MAGIC(id = 6),
-    CLAN_CHAT(id = 7),
-    FRIENDS(id = 8),
-    IGNORES(id = 9),
-    LOG_OUT(id = 10),
-    SETTINGS(id = 11),
-    EMOTES(id = 12),
-    MUSIC(id = 13)
-}
-
 fun getDisplayInterfaceId(displayMode: DisplayMode) = when (displayMode) {
     DisplayMode.FIXED -> 548
     DisplayMode.RESIZABLE_NORMAL -> 161
@@ -97,9 +80,4 @@ fun getChildId(pane: InterfacePane, displayMode: DisplayMode): Int = when (displ
     DisplayMode.RESIZABLE_NORMAL -> pane.resizeChildId
     DisplayMode.RESIZABLE_LIST -> pane.resizeListChildId
     else -> throw RuntimeException("Unhandled display mode.")
-}
-
-object OSRSGameframe {
-    val XP_DROPS_VISIBLE_VARBIT = 4702
-    val DATA_ORBS_HIDDEN_VARBIT = 4084
 }

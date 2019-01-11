@@ -1,9 +1,9 @@
 
 import gg.rsmod.game.action.EquipAction
 import gg.rsmod.plugins.osrs.api.EquipmentType
-import gg.rsmod.plugins.playSound
-import gg.rsmod.plugins.player
-import gg.rsmod.plugins.sendWeaponInterfaceInformation
+import gg.rsmod.plugins.osrs.api.playSound
+import gg.rsmod.plugins.osrs.api.player
+import gg.rsmod.plugins.osrs.api.sendWeaponInterfaceInformation
 
 /**
  * @author Tom <rspsmods@gmail.com>

@@ -3,8 +3,8 @@ import gg.rsmod.game.model.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.model.Tile
-import gg.rsmod.plugins.isPrivilegeEligible
-import gg.rsmod.plugins.player
+import gg.rsmod.plugins.osrs.api.isPrivilegeEligible
+import gg.rsmod.plugins.osrs.api.player
 
 /**
  * Museum staircase to basement.

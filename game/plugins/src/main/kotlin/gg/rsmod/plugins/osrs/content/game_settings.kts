@@ -1,7 +1,6 @@
+
 import gg.rsmod.game.message.impl.SendLogoutMessage
-import gg.rsmod.plugins.*
-import gg.rsmod.plugins.osrs.InterfacePane
-import gg.rsmod.plugins.osrs.OSRSGameframe
+import gg.rsmod.plugins.osrs.api.*
 
 /**
  * @author Tom <rspsmods@gmail.com>

@@ -5,11 +5,7 @@ import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.UpdateBlockType
-import gg.rsmod.plugins.*
-import gg.rsmod.plugins.osrs.GameframeTab
-import gg.rsmod.plugins.osrs.InterfacePane
-import gg.rsmod.plugins.osrs.api.BonusSlot
-import gg.rsmod.plugins.osrs.api.Skills
+import gg.rsmod.plugins.osrs.api.*
 
 object Prayers {
 

@@ -1,5 +1,5 @@
 
-import gg.rsmod.plugins.getInteractingGameObj
+import gg.rsmod.plugins.osrs.api.getInteractingGameObj
 import gg.rsmod.plugins.osrs.content.skills.woodcutting.TreeType
 import gg.rsmod.plugins.osrs.content.skills.woodcutting.Woodcutting
 import gg.rsmod.plugins.osrs.content.skills.woodcutting.Woodcutting.Tree

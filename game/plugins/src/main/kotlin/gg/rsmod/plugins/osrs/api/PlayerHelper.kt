@@ -1,4 +1,4 @@
-package gg.rsmod.plugins
+package gg.rsmod.plugins.osrs.api
 
 import com.google.common.primitives.Ints
 import gg.rsmod.game.fs.def.ItemDef
@@ -9,14 +9,6 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.game.WeaponConfigService
-import gg.rsmod.plugins.osrs.GameframeTab
-import gg.rsmod.plugins.osrs.InterfacePane
-import gg.rsmod.plugins.osrs.api.BonusSlot
-import gg.rsmod.plugins.osrs.api.ChatMessageType
-import gg.rsmod.plugins.osrs.api.EquipmentType
-import gg.rsmod.plugins.osrs.api.Skills
-import gg.rsmod.plugins.osrs.getChildId
-import gg.rsmod.plugins.osrs.getDisplayInterfaceId
 
 /**
  * A decoupled file that holds extensions and helper functions, related to players,

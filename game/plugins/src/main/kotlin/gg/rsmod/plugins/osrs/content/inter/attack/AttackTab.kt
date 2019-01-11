@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.content.mechanics.special
+package gg.rsmod.plugins.osrs.content.inter.attack
 
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.helper.setVarp
@@ -6,7 +6,10 @@ import gg.rsmod.plugins.osrs.api.helper.setVarp
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-object SpecialEnergy {
+object AttackTab {
+
+    const val ATTACK_STYLE_VARP = 43
+    const val AUTO_RETALIATE_VARP = 172
 
     const val ENERGY_VARP = 300
     const val ENABLED_VARP = 301

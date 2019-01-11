@@ -1,9 +1,12 @@
 
 import gg.rsmod.game.model.NEW_ACCOUNT_ATTR
 import gg.rsmod.game.model.interf.DisplayMode
-import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.api.ChatMessageType
+import gg.rsmod.plugins.osrs.api.InterfacePane
+import gg.rsmod.plugins.osrs.api.OSRSGameframe
+import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.helper.*
-import gg.rsmod.plugins.osrs.content.mechanics.special.SpecialEnergy
+import gg.rsmod.plugins.osrs.content.inter.attack.AttackTab
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -16,7 +19,7 @@ r.bindLogin {
      * First log-in logic (when accounts have just been made).
      */
     if (p.attr.getOrDefault(NEW_ACCOUNT_ATTR, false)) {
-        SpecialEnergy.setEnergy(p, 100)
+        AttackTab.setEnergy(p, 100)
     }
 
     /**

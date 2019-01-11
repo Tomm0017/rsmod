@@ -4,7 +4,7 @@ import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.service.game.ItemStatsService
-import gg.rsmod.game.service.game.WeaponRenderService
+import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.UpdateBlockType
 import gg.rsmod.net.packet.DataType
@@ -154,7 +154,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
 
                     val weapon = other.equipment[3] // Assume slot 3 is the weapon.
                     if (weapon != null) {
-                        val renderService = other.world.getService(WeaponRenderService::class.java, searchSubclasses = false).orElse(null)
+                        val renderService = other.world.getService(WeaponConfigService::class.java, searchSubclasses = false).orElse(null)
                         var defaultWeaponRender = true
 
                         if (renderService != null) {

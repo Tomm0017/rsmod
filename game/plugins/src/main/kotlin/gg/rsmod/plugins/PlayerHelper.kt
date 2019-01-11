@@ -1,14 +1,20 @@
 package gg.rsmod.plugins
 
 import com.google.common.primitives.Ints
+import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.SkillSet
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
+import gg.rsmod.game.model.item.Item
+import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.plugins.osrs.GameframeTab
 import gg.rsmod.plugins.osrs.InterfacePane
-import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.api.BonusSlot
+import gg.rsmod.plugins.osrs.api.ChatMessageType
+import gg.rsmod.plugins.osrs.api.Equipment
+import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.getChildId
 import gg.rsmod.plugins.osrs.getDisplayInterfaceId
 
@@ -148,7 +154,34 @@ fun Player.toggleVarbit(id: Int) {
 
 fun Player.hasEquipped(slot: Equipment, item: Int): Boolean = equipment.hasAt(slot.id, item)
 
+fun Player.getEquipment(slot: Equipment): Item? = equipment[slot.id]
+
 fun Player.getBonus(slot: BonusSlot): Int = equipmentBonuses[slot.id]
+
+fun Player.sendCombatLevelText() {
+    setInterfaceText(593, 2, "Combat Lvl: ${getSkills().combatLevel}")
+}
+
+fun Player.sendWeaponInterfaceInformation() {
+    val weapon = getEquipment(Equipment.WEAPON)
+
+    val name: String
+    val panel: Int
+
+    if (weapon != null) {
+        val definition = world.definitions.get(ItemDef::class.java, weapon.id)
+        name = definition.name
+
+        val weaponConfig = world.getService(WeaponConfigService::class.java, false).orElse(null)
+        panel = weaponConfig?.get(weapon.id)?.type ?: 0
+    } else {
+        name = "Unarmed"
+        panel = 0
+    }
+
+    setInterfaceText(593, 1, name)
+    setVarp(843, panel)
+}
 
 fun Player.addXp(skill: Int, xp: Double) {
     val currentXp = getSkills().getCurrentXp(skill)
@@ -198,7 +231,7 @@ fun Player.calculateAndSetCombatLevel(): Boolean {
     val changed = getSkills().combatLevel != old
     if (changed) {
         invokeScript(389, getSkills().combatLevel)
-        setInterfaceText(593, 2, "Combat Lvl: ${getSkills().combatLevel}")
+        sendCombatLevelText()
         return true
     }
 

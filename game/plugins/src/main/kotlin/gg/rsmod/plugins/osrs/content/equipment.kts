@@ -3,6 +3,7 @@ import gg.rsmod.game.action.EquipAction
 import gg.rsmod.plugins.osrs.api.Equipment
 import gg.rsmod.plugins.playSound
 import gg.rsmod.plugins.player
+import gg.rsmod.plugins.sendWeaponInterfaceInformation
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -13,7 +14,11 @@ val equipItemSound = 2238
 for (equipment in Equipment.values()) {
     r.bindEquipSlot(equipment.id) {
         val p = it.player()
+
         p.playSound(equipItemSound)
+        if (equipment == Equipment.WEAPON) {
+            p.sendWeaponInterfaceInformation()
+        }
     }
 }
 
@@ -31,6 +36,11 @@ bindUnequip(Equipment.RING, child = 15)
 
 fun bindUnequip(equipment: Equipment, child: Int) {
     r.bindButton(parent = 387, child = child) {
-        EquipAction.unequip(it.player(), equipment.id)
+        val p = it.player()
+
+        val result = EquipAction.unequip(p, equipment.id)
+        if (equipment == Equipment.WEAPON && result == EquipAction.Result.SUCCESS) {
+            p.sendWeaponInterfaceInformation()
+        }
     }
 }

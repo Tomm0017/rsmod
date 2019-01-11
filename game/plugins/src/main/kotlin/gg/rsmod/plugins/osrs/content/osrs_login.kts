@@ -28,8 +28,8 @@ r.bindLogin {
         p.getSkills().setBaseLevel(Skills.HITPOINTS, 10)
     }
     p.calculateAndSetCombatLevel()
-    p.setInterfaceText(593, 1, "Unarmed")
-    p.setInterfaceText(593, 2, "Combat Lvl: ${p.getSkills().combatLevel}")
+    p.sendWeaponInterfaceInformation()
+    p.sendCombatLevelText()
 
     /**
      * Interface-related logic.

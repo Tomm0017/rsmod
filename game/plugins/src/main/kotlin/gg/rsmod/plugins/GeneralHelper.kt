@@ -43,8 +43,8 @@ fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int, note: Bool
          * If there items were successfully added to [to], we copy the attributes
          * from the initial [item].
          */
-        val first = addition.items.firstOrNull { it.amount == 1 }
-        first?.copyAttr(copy)
+        val first = addition.items.firstOrNull { it.item.amount == 1 }
+        first?.item?.copyAttr(copy)
     } else {
         val refund = add(copy.id, addition.getLeftOver(), assureFullInsertion = true, beginSlot = beginSlot)
         /**
@@ -57,7 +57,7 @@ fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int, note: Bool
          * both were removed, but only 1 was transferred  the other blowpipe will
          * get its initial attributes refunded.
          */
-        refund.items.firstOrNull()?.copyAttr(copy)
+        refund.items.firstOrNull()?.item?.copyAttr(copy)
         return 0
     }
     return addition.completed
@@ -102,7 +102,7 @@ fun ItemContainer.swap(to: ItemContainer, item: Int, amount: Int, beginSlot: Int
          * both were removed, but only 1 was transferred  the other blowpipe will
          * get its initial attributes refunded.
          */
-        refund.items.firstOrNull()?.copyAttr(copy)
+        refund.items.firstOrNull()?.item?.copyAttr(copy)
     }
     return addition.completed
 }

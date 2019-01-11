@@ -20,7 +20,7 @@ r.bindCustomPathingObject(24428) {
         }
         it.wait(1)
         if (p.isPrivilegeEligible(Privilege.DEV_POWER)) {
-            p.message("Unhandled staircase: ${Varrock::class.java}")
+            p.message("Unhandled staircase - varrock script.")
         }
     }
 }

@@ -170,11 +170,11 @@ r.bindCommand("varbit", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("varbitsof", Privilege.ADMIN_POWER) {
+r.bindCommand("getvarbits", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = p.attr[COMMAND_ARGS_ATTR]
-    tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::varbitsof 83</col>") { values ->
+    tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::getvarbits 83</col>") { values ->
         val varp = values[0].toInt()
         val varbits = arrayListOf<VarbitDef>()
         val totalVarbits = p.world.definitions.getCount(VarbitDef::class.java)
@@ -184,7 +184,7 @@ r.bindCommand("varbitsof", Privilege.ADMIN_POWER) {
                 varbits.add(varbit)
             }
         }
-        p.message("Varbits of varp <col=801700>$varp</col>:")
+        p.message("Varbits for varp <col=801700>$varp</col>:")
         varbits.forEach { varbit ->
             p.message("  ${varbit.id} [bits ${varbit.startBit}-${varbit.endBit}]")
         }

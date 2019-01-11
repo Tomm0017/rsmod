@@ -145,21 +145,13 @@ class PluginRepository {
     /**
      * Initiates and populates all our plugins.
      */
-    fun init(gameService: GameService, sourcePath: String, packedPath: String,
-             analyzeMode: Boolean) {
+    fun init(gameService: GameService, packedPath: String, analyzeMode: Boolean) {
         gameService.world.pluginExecutor.init(gameService)
-        scanForPlugins(sourcePath, packedPath, gameService.world, analyzeMode)
+        scanForPlugins(packedPath, gameService.world, analyzeMode)
     }
 
-    /**
-     * Goes through all the methods found in our [sourcePath] system file path
-     * and looks for any [ScanPlugins] annotation to invoke.
-     *
-     * @throws Exception If the plugin registration function could not be invoked.
-     *                   Possible reasons: must be static [JvmStatic]
-     */
     @Throws(Exception::class)
-    fun scanForPlugins(sourcePath: String, packedPath: String, world: World, analyzeMode: Boolean) {
+    fun scanForPlugins(packedPath: String, world: World, analyzeMode: Boolean) {
         analyzer = if (analyzeMode) PluginAnalyzer(this) else null
 
         loginPlugins.clear()

@@ -150,6 +150,9 @@ open class ItemStatsDumper {
     }
 
     private fun dump(definition: ItemDef, text: List<String>): ItemStats {
+        if (definition.id == 6570) {
+            println("attempt to dump firecape!")
+        }
         val builder = WikiDefBuilder()
 
         val attackBonuses = IntArray(5) { 0 }

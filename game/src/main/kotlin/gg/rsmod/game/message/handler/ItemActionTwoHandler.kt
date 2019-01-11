@@ -42,9 +42,9 @@ class ItemActionTwoHandler : MessageHandler<ItemActionTwoMessage> {
         client.attr[INTERACTING_ITEM_ID] = item.id
         client.attr[INTERACTING_ITEM] = item
 
-        if (!EquipAction.equip(client, item, message.slot)) {
+        val result = EquipAction.equip(client, item, message.slot)
+        if (result == EquipAction.Result.UNHANDLED) {
             client.message("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=2]")
         }
     }
-
 }

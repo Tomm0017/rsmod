@@ -155,7 +155,6 @@ class Server {
          */
         individualStopwatch.reset().start()
         world.plugins.init(gameService = gameService,
-                sourcePath = gameProperties.getOrDefault("plugin-source-path", "gg.rsmod.plugins"),
                 packedPath = gameProperties.getOrDefault("plugin-packed-path", "../plugins"),
                 analyzeMode = args.any { it == "-analyze" })
         logger.info("Loaded {} plugins in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))

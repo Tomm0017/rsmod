@@ -13,6 +13,10 @@ class Item(val id: Int, var amount: Int = 1) {
         copyAttr(other)
     }
 
+    constructor(other: Item, amount: Int) : this(other.id, amount) {
+        copyAttr(other)
+    }
+
     private var attr: HashMap<ItemAttribute, Int>? = null
 
     fun toNoted(definitions: DefinitionSet): Item {

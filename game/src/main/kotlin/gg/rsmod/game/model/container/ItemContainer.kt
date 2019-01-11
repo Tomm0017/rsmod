@@ -101,7 +101,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
      * @return
      * [-1] if no item with [itemId] could be found.
      */
-    private fun getItemIndex(itemId: Int, skipAttrItems: Boolean): Int {
+    fun getItemIndex(itemId: Int, skipAttrItems: Boolean): Int {
         for (i in 0 until capacity) {
             if (items[i]?.id == itemId && (!skipAttrItems || !items[i]!!.hasAnyAttr())) {
                 return i

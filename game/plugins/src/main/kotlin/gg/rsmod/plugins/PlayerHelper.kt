@@ -13,7 +13,7 @@ import gg.rsmod.plugins.osrs.GameframeTab
 import gg.rsmod.plugins.osrs.InterfacePane
 import gg.rsmod.plugins.osrs.api.BonusSlot
 import gg.rsmod.plugins.osrs.api.ChatMessageType
-import gg.rsmod.plugins.osrs.api.Equipment
+import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.getChildId
 import gg.rsmod.plugins.osrs.getDisplayInterfaceId
@@ -152,9 +152,9 @@ fun Player.toggleVarbit(id: Int) {
     varps.setBit(def.varp, def.startBit, def.endBit, getVarbit(id) xor 1)
 }
 
-fun Player.hasEquipped(slot: Equipment, item: Int): Boolean = equipment.hasAt(slot.id, item)
+fun Player.hasEquipped(slot: EquipmentType, item: Int): Boolean = equipment.hasAt(slot.id, item)
 
-fun Player.getEquipment(slot: Equipment): Item? = equipment[slot.id]
+fun Player.getEquipment(slot: EquipmentType): Item? = equipment[slot.id]
 
 fun Player.getBonus(slot: BonusSlot): Int = equipmentBonuses[slot.id]
 
@@ -163,7 +163,7 @@ fun Player.sendCombatLevelText() {
 }
 
 fun Player.sendWeaponInterfaceInformation() {
-    val weapon = getEquipment(Equipment.WEAPON)
+    val weapon = getEquipment(EquipmentType.WEAPON)
 
     val name: String
     val panel: Int

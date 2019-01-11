@@ -1,5 +1,5 @@
 /* Auto-generated file using class gg.rsmod.game.service.game.DefinitionIdService */
-package gg.rsmod.plugins.osrs.api
+package gg.rsmod.plugins.osrs.api.cfg
 
 object Items {
 

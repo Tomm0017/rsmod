@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.osrs.content.skills.woodcutting
 
-import gg.rsmod.plugins.osrs.api.Items
+import gg.rsmod.plugins.osrs.api.cfg.Items
 
 /**
  * @author Tom <rspsmods@gmail.com>

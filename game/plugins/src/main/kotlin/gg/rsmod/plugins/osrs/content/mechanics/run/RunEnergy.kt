@@ -3,7 +3,7 @@ package gg.rsmod.plugins.osrs.content.mechanics.run
 import gg.rsmod.game.message.impl.SetRunEnergyMessage
 import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.osrs.api.Equipment
+import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.Skills
 
 /**
@@ -43,12 +43,12 @@ object RunEnergy {
     }
 
     private fun isWearingFullGrace(p: Player): Boolean =
-            p.equipment[Equipment.HEAD.id]?.id ?: -1 in GRACEFUL_HOODS &&
-                    p.equipment[Equipment.CAPE.id]?.id ?: -1 in GRACEFUL_CAPE &&
-                    p.equipment[Equipment.CHEST.id]?.id ?: -1 in GRACEFUL_TOP &&
-                    p.equipment[Equipment.LEGS.id]?.id ?: -1 in GRACEFUL_LEGS &&
-                    p.equipment[Equipment.GLOVES.id]?.id ?: -1 in GRACEFUL_GLOVES &&
-                    p.equipment[Equipment.BOOTS.id]?.id ?: -1 in GRACEFUL_BOOTS
+            p.equipment[EquipmentType.HEAD.id]?.id ?: -1 in GRACEFUL_HOODS &&
+                    p.equipment[EquipmentType.CAPE.id]?.id ?: -1 in GRACEFUL_CAPE &&
+                    p.equipment[EquipmentType.CHEST.id]?.id ?: -1 in GRACEFUL_TOP &&
+                    p.equipment[EquipmentType.LEGS.id]?.id ?: -1 in GRACEFUL_LEGS &&
+                    p.equipment[EquipmentType.GLOVES.id]?.id ?: -1 in GRACEFUL_GLOVES &&
+                    p.equipment[EquipmentType.BOOTS.id]?.id ?: -1 in GRACEFUL_BOOTS
 
     private val GRACEFUL_HOODS = intArrayOf(11850, 13579, 13591, 13603, 13615, 13627, 13667, 21061)
 

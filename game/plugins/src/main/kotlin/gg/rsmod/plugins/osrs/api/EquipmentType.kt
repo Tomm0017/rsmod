@@ -3,7 +3,7 @@ package gg.rsmod.plugins.osrs.api
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-enum class Equipment(val id: Int) {
+enum class EquipmentType(val id: Int) {
     HEAD(id = 0),
     CAPE(id = 1),
     AMULET(id = 2),

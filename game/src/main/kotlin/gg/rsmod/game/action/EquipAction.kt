@@ -23,7 +23,7 @@ object EquipAction {
          */
         PLUGIN,
         /**
-         * No free space to equip item.
+         * No free space, either in inventory or equipment, to equip item.
          */
         NO_FREE_SPACE,
         /**

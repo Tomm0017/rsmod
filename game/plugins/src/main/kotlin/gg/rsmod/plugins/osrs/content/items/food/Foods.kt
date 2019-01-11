@@ -4,7 +4,7 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.hasEquipped
-import gg.rsmod.plugins.osrs.api.Equipment
+import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.content.items.potion.Potions
 import gg.rsmod.plugins.osrs.content.combat.Combat
@@ -26,7 +26,7 @@ object Foods {
 
     fun eat(p: Player, food: Food) {
         val delay = if (food.comboFood) COMBO_FOOD_DELAY else FOOD_DELAY
-        val anim = if (p.hasEquipped(slot = Equipment.WEAPON, item = 1469)) EAT_FOOD_ON_SLED_ANIM else EAT_FOOD_ANIM
+        val anim = if (p.hasEquipped(slot = EquipmentType.WEAPON, item = 1469)) EAT_FOOD_ON_SLED_ANIM else EAT_FOOD_ANIM
 
         val heal = when (food) {
             Food.ANGLERFISH -> {

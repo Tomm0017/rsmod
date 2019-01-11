@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.osrs.content.items.food
 
-import gg.rsmod.plugins.osrs.api.Items
+import gg.rsmod.plugins.osrs.api.cfg.Items
 
 enum class Food(val item: Int, val heal: Int = 0, val overheal: Boolean = false,
                 val replacement: Int = -1, val tickDelay: Int = 3,

@@ -12,7 +12,6 @@ object OptionsTab {
     val GAME_NOTIFICATIONS = BitStorage(persistenceKey = "game_notifications")
 
     const val INTERFACE_ID = 261
-    const val CHILD_START = 18
 
     const val ACCEPT_AID_VARP = 427
     const val SCREEN_BRIGHTNESS_VARP = 166
@@ -20,7 +19,7 @@ object OptionsTab {
 
     const val MUSIC_VOLUME_VARP = 168
     const val SFX_VOLUME_VARP = 169
-    const val ASE_VOLUME_VARP = 170
+    const val ASX_VOLUME_VARP = 872
 
     const val CHAT_EFFECTS_VARP = 171
     const val SPLIT_PRIVATE_VARP = 287

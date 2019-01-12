@@ -1,11 +1,11 @@
 
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.plugins.osrs.api.InterfacePane
 import gg.rsmod.plugins.osrs.api.helper.*
-import gg.rsmod.plugins.osrs.content.inter.options.GameNotificationType
 import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
 
-fun bindSetting(childOffset: Int, plugin: Function1<Plugin, Unit>) {
-    r.bindButton(parent = OptionsTab.INTERFACE_ID, child = OptionsTab.CHILD_START + childOffset) {
+fun bindSetting(child: Int, plugin: Function1<Plugin, Unit>) {
+    r.bindButton(parent = OptionsTab.INTERFACE_ID, child = child) {
         plugin.invoke(it)
     }
 }
@@ -27,7 +27,7 @@ r.bindButton(parent = OptionsTab.INTERFACE_ID, child = 5) {
  * Screen brightness.
  */
 for (offset in 0..3) {
-    bindSetting(childOffset = offset) {
+    bindSetting(child = 18 + offset) {
         it.player().setVarp(OptionsTab.SCREEN_BRIGHTNESS_VARP, offset + 1)
     }
 }
@@ -35,40 +35,40 @@ for (offset in 0..3) {
 /**
  * Music volume.
  */
-for (offset in 10..14) {
-    bindSetting(childOffset = offset) {
-        it.player().setVarp(OptionsTab.SCREEN_BRIGHTNESS_VARP, Math.abs(offset - 14))
+for (offset in 0..4) {
+    bindSetting(child = 45 + offset) {
+        it.player().setVarp(OptionsTab.MUSIC_VOLUME_VARP, Math.abs(offset - 4))
     }
 }
 
 /**
  * Sound effect volume.
  */
-for (offset in 16..20) {
-    bindSetting(childOffset = offset) {
-        it.player().setVarp(OptionsTab.SCREEN_BRIGHTNESS_VARP, Math.abs(offset - 20))
+for (offset in 0..4) {
+    bindSetting(child = 51 + offset) {
+        it.player().setVarp(OptionsTab.SFX_VOLUME_VARP, Math.abs(offset - 4))
     }
 }
 /**
  * Area of sound effect volume.
  */
-for (offset in 22..26) {
-    bindSetting(childOffset = offset) {
-        it.player().setVarp(OptionsTab.SCREEN_BRIGHTNESS_VARP, Math.abs(offset - 26))
+for (offset in 0..4) {
+    bindSetting(child = 57 + offset) {
+        it.player().setVarp(OptionsTab.ASX_VOLUME_VARP, Math.abs(offset - 4))
     }
 }
 
 /**
  * Toggle chat effects.
  */
-bindSetting(childOffset = 45) {
+bindSetting(child = 63) {
     it.player().toggleVarp(OptionsTab.CHAT_EFFECTS_VARP)
 }
 
 /**
  * Toggle split private chat.
  */
-bindSetting(childOffset = 47) {
+bindSetting(child = 65) {
     val p = it.player()
     p.toggleVarp(OptionsTab.SPLIT_PRIVATE_VARP)
     p.invokeScript(83)
@@ -77,7 +77,7 @@ bindSetting(childOffset = 47) {
 /**
  * Hide private messages when chat hidden.
  */
-bindSetting(childOffset = 49) {
+bindSetting(child = 67) {
     val p = it.player()
     if (!p.isClientResizable() || p.getVarp(OptionsTab.SPLIT_PRIVATE_VARP) == 0) {
         p.message("That option is applicable only in resizable mode with 'Split Private Chat' enabled.")
@@ -89,54 +89,77 @@ bindSetting(childOffset = 49) {
 /**
  * Toggle profanity filter.
  */
-bindSetting(childOffset = 51) {
+bindSetting(child = 69) {
     it.player().toggleVarbit(OptionsTab.PROFANITY_VARP)
 }
 
 /**
- * Toggle game notifications.
+ * Toggle idle timeout notification.
  */
-bindSetting(childOffset = 53) {
-    it.suspendable {
-        val p = it.player()
-        while (true) {
+bindSetting(child = 73) {
+    it.player().toggleVarbit(OptionsTab.IDLE_NOTIFICATION_VARBIT)
+}
 
-            /**
-             * Notification, option text, "flipped" (the notification type is the opposite of what text describes)
-             *
-             * Flipped would be enabled when you want something to "start off as enabled".
-             * For example we want yells to be enabled by default, but don't want the text
-             * to be "Disable Yell Broadcasts", so we just flip it instead.
-             */
-            val notifications = arrayOf(
-                    Triple(GameNotificationType.DISABLE_YELL, "Yell broadcasts", true),
-                    Triple(null, "Cancel", false)
-            )
+/**
+ * Toggle number of mouse buttons.
+ */
+bindSetting(child = 77) {
+    it.player().toggleVarp(OptionsTab.MOUSE_BUTTONS_VARP)
+}
 
-            // NOTE(Tom): this currently only supports one "page" of options (dialog),
-            // we can just splice up notifications and handle it from there once we
-            // need to.
-            val page1 = notifications.map { n ->
-                var text = n.second
-                if (n.first != null) {
-                    if (n.third) {
-                        text += ": ${if (p.hasStorageBit(OptionsTab.GAME_NOTIFICATIONS, n.first!!)) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}"
-                    } else {
-                        text += ": ${if (p.hasStorageBit(OptionsTab.GAME_NOTIFICATIONS, n.first!!)) "<col=178000>enabled</col>" else "<col=801700>disabled</col>"}"
-                    }
-                }
-                text
-            }
+/**
+ * Toggle mouse camera.
+ */
+bindSetting(child = 79) {
+    it.player().toggleVarbit(OptionsTab.MOUSE_CAMERA_VARBIT)
+}
 
-            val option = it.options(options = *page1.toTypedArray(), title = "Select an option to toggle")
-            if (option >= 1 && option <= notifications.size) {
-                val notification = notifications[option - 1]
-                if (notification.first != null) {
-                    p.toggleStorageBit(OptionsTab.GAME_NOTIFICATIONS, notification.first!!)
-                } else {
-                    break
-                }
-            }
-        }
+/**
+ * Toggle follower (pet) options.
+ */
+bindSetting(child = 81) {
+    it.player().toggleVarbit(OptionsTab.PET_OPTIONS_VARBIT)
+}
+
+/**
+ * Set hotkey binds.
+ */
+bindSetting(child = 83) {
+    val p = it.player()
+    if (!p.lock.canInterfaceInteract()) {
+        return@bindSetting
     }
+    p.setMainInterfaceBackground(color = -1, transparency = -1)
+    p.setInterfaceSetting(parent = 121, child = 112, range = 0..13, setting = 2)
+    p.openInterface(interfaceId = 121, pane = InterfacePane.MAIN_SCREEN)
+}
+
+/**
+ * Toggle shift-click dropping.
+ */
+bindSetting(child = 85) {
+    it.player().toggleVarbit(OptionsTab.SHIFT_CLICK_DROP_VARBIT)
+}
+
+/**
+ * Set player option priority.
+ */
+bindSetting(child = 106) {
+    val slot = it.getInteractingSlot()
+    it.player().setVarp(OptionsTab.PLAYER_ATTACK_PRIORITY_VARP, slot)
+}
+
+/**
+ * Set player option priority.
+ */
+bindSetting(child = 107) {
+    val slot = it.getInteractingSlot()
+    it.player().setVarp(OptionsTab.NPC_ATTACK_PRIORITY_VARP, slot)
+}
+
+/**
+ * Toggle aid.
+ */
+bindSetting(child = 92) {
+    it.player().toggleVarp(OptionsTab.ACCEPT_AID_VARP)
 }

@@ -213,7 +213,7 @@ open class Player(override val world: World) : Pawn(world) {
             if (varps.isDirty(i)) {
                 val varp = varps[i]
                 val message = when {
-                    varp.state <= Byte.MAX_VALUE -> SetSmallVarpMessage(varp.id, varp.state)
+                    varp.state >= -Byte.MAX_VALUE && varp.state <= Byte.MAX_VALUE -> SetSmallVarpMessage(varp.id, varp.state)
                     else -> SetBigVarpMessage(varp.id, varp.state)
                 }
                 write(message)

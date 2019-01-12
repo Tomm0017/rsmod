@@ -34,7 +34,7 @@ r.bindLogin {
     InterfacePane.values().filter { pane -> pane.interfaceId != -1 }.forEach { pane ->
         if (pane == InterfacePane.XP_COUNTER && p.getVarbit(OSRSGameframe.XP_DROPS_VISIBLE_VARBIT) == 0) {
             return@forEach
-        } else if (pane == InterfacePane.MINI_MAP && p.getVarbit(OSRSGameframe.DATA_ORBS_HIDDEN_VARBIT) == 1) {
+        } else if (pane == InterfacePane.MINI_MAP && p.getVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT) == 1) {
             return@forEach
         }
         p.openInterface(pane.interfaceId, pane)

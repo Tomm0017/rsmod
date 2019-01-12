@@ -1,6 +1,7 @@
 
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.api.InterfacePane
+import gg.rsmod.plugins.osrs.api.OSRSGameframe
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
 
@@ -20,7 +21,7 @@ r.bindButton(parent = OptionsTab.INTERFACE_ID, child = 5) {
     //
     //  NORMAL:  id=1055, state=467456
     //  CROSSED: id=1055, state=537338368
-    it.player().toggleVarbit(OptionsTab.DISABLE_MOUSEWHEEL_ZOOM_VARBIT)
+    it.player().toggleVarbit(OSRSGameframe.DISABLE_MOUSEWHEEL_ZOOM_VARBIT)
 }
 
 /**
@@ -28,8 +29,20 @@ r.bindButton(parent = OptionsTab.INTERFACE_ID, child = 5) {
  */
 for (offset in 0..3) {
     bindSetting(child = 18 + offset) {
-        it.player().setVarp(OptionsTab.SCREEN_BRIGHTNESS_VARP, offset + 1)
+        it.player().setVarp(OSRSGameframe.SCREEN_BRIGHTNESS_VARP, offset + 1)
     }
+}
+
+/**
+ * Advanced options.
+ */
+bindSetting(child = 35) {
+    val p = it.player()
+    if (!p.lock.canInterfaceInteract()) {
+        return@bindSetting
+    }
+    p.setMainInterfaceBackground(color = -1, transparency = -1)
+    p.openInterface(interfaceId = OptionsTab.ADVANCED_INTERFACE_ID, pane = InterfacePane.MAIN_SCREEN)
 }
 
 /**
@@ -37,7 +50,7 @@ for (offset in 0..3) {
  */
 for (offset in 0..4) {
     bindSetting(child = 45 + offset) {
-        it.player().setVarp(OptionsTab.MUSIC_VOLUME_VARP, Math.abs(offset - 4))
+        it.player().setVarp(OSRSGameframe.MUSIC_VOLUME_VARP, Math.abs(offset - 4))
     }
 }
 
@@ -46,7 +59,7 @@ for (offset in 0..4) {
  */
 for (offset in 0..4) {
     bindSetting(child = 51 + offset) {
-        it.player().setVarp(OptionsTab.SFX_VOLUME_VARP, Math.abs(offset - 4))
+        it.player().setVarp(OSRSGameframe.SFX_VOLUME_VARP, Math.abs(offset - 4))
     }
 }
 /**
@@ -54,7 +67,7 @@ for (offset in 0..4) {
  */
 for (offset in 0..4) {
     bindSetting(child = 57 + offset) {
-        it.player().setVarp(OptionsTab.ASX_VOLUME_VARP, Math.abs(offset - 4))
+        it.player().setVarp(OSRSGameframe.ASX_VOLUME_VARP, Math.abs(offset - 4))
     }
 }
 
@@ -62,7 +75,7 @@ for (offset in 0..4) {
  * Toggle chat effects.
  */
 bindSetting(child = 63) {
-    it.player().toggleVarp(OptionsTab.CHAT_EFFECTS_VARP)
+    it.player().toggleVarp(OSRSGameframe.CHAT_EFFECTS_VARP)
 }
 
 /**
@@ -70,7 +83,7 @@ bindSetting(child = 63) {
  */
 bindSetting(child = 65) {
     val p = it.player()
-    p.toggleVarp(OptionsTab.SPLIT_PRIVATE_VARP)
+    p.toggleVarp(OSRSGameframe.SPLIT_PRIVATE_VARP)
     p.invokeScript(83)
 }
 
@@ -79,10 +92,10 @@ bindSetting(child = 65) {
  */
 bindSetting(child = 67) {
     val p = it.player()
-    if (!p.isClientResizable() || p.getVarp(OptionsTab.SPLIT_PRIVATE_VARP) == 0) {
+    if (!p.isClientResizable() || p.getVarp(OSRSGameframe.SPLIT_PRIVATE_VARP) == 0) {
         p.message("That option is applicable only in resizable mode with 'Split Private Chat' enabled.")
     } else {
-        p.toggleVarbit(OptionsTab.HIDE_PM_WHEN_CHAT_HIDDEN_VARBIT)
+        p.toggleVarbit(OSRSGameframe.HIDE_PM_WHEN_CHAT_HIDDEN_VARBIT)
     }
 }
 
@@ -90,35 +103,35 @@ bindSetting(child = 67) {
  * Toggle profanity filter.
  */
 bindSetting(child = 69) {
-    it.player().toggleVarbit(OptionsTab.PROFANITY_VARP)
+    it.player().toggleVarbit(OSRSGameframe.PROFANITY_VARP)
 }
 
 /**
  * Toggle idle timeout notification.
  */
 bindSetting(child = 73) {
-    it.player().toggleVarbit(OptionsTab.IDLE_NOTIFICATION_VARBIT)
+    it.player().toggleVarbit(OSRSGameframe.IDLE_NOTIFICATION_VARBIT)
 }
 
 /**
  * Toggle number of mouse buttons.
  */
 bindSetting(child = 77) {
-    it.player().toggleVarp(OptionsTab.MOUSE_BUTTONS_VARP)
+    it.player().toggleVarp(OSRSGameframe.MOUSE_BUTTONS_VARP)
 }
 
 /**
  * Toggle mouse camera.
  */
 bindSetting(child = 79) {
-    it.player().toggleVarbit(OptionsTab.MOUSE_CAMERA_VARBIT)
+    it.player().toggleVarbit(OSRSGameframe.MOUSE_CAMERA_VARBIT)
 }
 
 /**
  * Toggle follower (pet) options.
  */
 bindSetting(child = 81) {
-    it.player().toggleVarbit(OptionsTab.PET_OPTIONS_VARBIT)
+    it.player().toggleVarbit(OSRSGameframe.PET_OPTIONS_VARBIT)
 }
 
 /**
@@ -138,7 +151,7 @@ bindSetting(child = 83) {
  * Toggle shift-click dropping.
  */
 bindSetting(child = 85) {
-    it.player().toggleVarbit(OptionsTab.SHIFT_CLICK_DROP_VARBIT)
+    it.player().toggleVarbit(OSRSGameframe.SHIFT_CLICK_DROP_VARBIT)
 }
 
 /**
@@ -146,7 +159,7 @@ bindSetting(child = 85) {
  */
 bindSetting(child = 106) {
     val slot = it.getInteractingSlot()
-    it.player().setVarp(OptionsTab.PLAYER_ATTACK_PRIORITY_VARP, slot)
+    it.player().setVarp(OSRSGameframe.PLAYER_ATTACK_PRIORITY_VARP, slot)
 }
 
 /**
@@ -154,12 +167,12 @@ bindSetting(child = 106) {
  */
 bindSetting(child = 107) {
     val slot = it.getInteractingSlot()
-    it.player().setVarp(OptionsTab.NPC_ATTACK_PRIORITY_VARP, slot)
+    it.player().setVarp(OSRSGameframe.NPC_ATTACK_PRIORITY_VARP, slot)
 }
 
 /**
  * Toggle aid.
  */
 bindSetting(child = 92) {
-    it.player().toggleVarp(OptionsTab.ACCEPT_AID_VARP)
+    it.player().toggleVarp(OSRSGameframe.ACCEPT_AID_VARP)
 }

@@ -57,6 +57,12 @@ r.bindButton(parent = 387, child = 17) {
     p.setInterfaceSetting(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0, range = 0..27, setting = 1180674)
 
     EquipmentStats.sendBonuses(p)
+
+    /**
+     * Have to refresh in case we've sent a different item container on the tab
+     * area. Such as opening the price checker guide and then the equipment stats.
+     */
+    p.inventory.dirty = true
 }
 
 r.bindInterfaceClose(parent = EquipmentStats.INTERFACE_ID) {

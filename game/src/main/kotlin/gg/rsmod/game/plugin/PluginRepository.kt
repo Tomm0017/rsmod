@@ -312,7 +312,7 @@ class PluginRepository {
         val hash = (parent shl 16) or child
         if (buttonPlugins.containsKey(hash)) {
             logger.error("Button hash already bound to a plugin: [parent=$parent, child=$child]")
-            throw IllegalStateException()
+            throw IllegalStateException("Button hash already bound to a plugin: [parent=$parent, child=$child]")
         }
         buttonPlugins[hash] = plugin
         pluginCount++
@@ -347,7 +347,7 @@ class PluginRepository {
     fun bindEquipItemRequirement(item: Int, plugin: Function1<Plugin, Boolean>) {
         if (equipItemRequirementPlugins.containsKey(item)) {
             logger.error("Equip item requirement already bound to a plugin: [item=$item]")
-            throw IllegalStateException()
+            throw IllegalStateException("Equip item requirement already bound to a plugin: [item=$item]")
         }
         equipItemRequirementPlugins[item] = plugin
         pluginCount++
@@ -372,7 +372,7 @@ class PluginRepository {
     fun bindEquipItem(item: Int, plugin: Function1<Plugin, Unit>) {
         if (equipItemPlugins.containsKey(item)) {
             logger.error("Equip item already bound to a plugin: [item=$item]")
-            throw IllegalStateException()
+            throw IllegalStateException("Equip item already bound to a plugin: [item=$item]")
         }
         equipItemPlugins[item] = plugin
         pluginCount++
@@ -391,7 +391,7 @@ class PluginRepository {
     fun bindUnequipItem(item: Int, plugin: Function1<Plugin, Unit>) {
         if (unequipItemPlugins.containsKey(item)) {
             logger.error("Unequip item already bound to a plugin: [item=$item]")
-            throw IllegalStateException()
+            throw IllegalStateException("Unequip item already bound to a plugin: [item=$item]")
         }
         unequipItemPlugins[item] = plugin
         pluginCount++
@@ -467,7 +467,7 @@ class PluginRepository {
         val optMap = itemPlugins[id] ?: HashMap()
         if (optMap.containsKey(opt)) {
             logger.error("Item is already bound to a plugin: $id [opt=$opt]")
-            throw IllegalStateException()
+            throw IllegalStateException("Item is already bound to a plugin: $id [opt=$opt]")
         }
         optMap[opt] = plugin
         itemPlugins[id] = optMap
@@ -486,7 +486,7 @@ class PluginRepository {
         val optMap = objectPlugins[id] ?: HashMap()
         if (optMap.containsKey(opt)) {
             logger.error("Object is already bound to a plugin: $id [opt=$opt]")
-            throw IllegalStateException()
+            throw IllegalStateException("Object is already bound to a plugin: $id [opt=$opt]")
         }
         optMap[opt] = plugin
         objectPlugins[id] = optMap
@@ -504,7 +504,7 @@ class PluginRepository {
     fun bindCustomPathingObject(id: Int, plugin: Function1<Plugin, Unit>) {
         if (customPathingObjects.containsKey(id)) {
             logger.error("Object is already bound to a custom path-finder plugin: $id")
-            throw IllegalStateException()
+            throw IllegalStateException("Object is already bound to a custom path-finder plugin: $id")
         }
         customPathingObjects[id] = plugin
         pluginCount++

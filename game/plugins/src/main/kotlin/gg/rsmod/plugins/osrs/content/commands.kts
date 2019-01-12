@@ -1,7 +1,6 @@
 
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
-import gg.rsmod.game.model.COMMAND_ARGS_ATTR
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.model.entity.DynamicObject
@@ -9,7 +8,8 @@ import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.api.InterfacePane
+import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.util.Misc
@@ -22,7 +22,7 @@ r.bindCommand("empty") {
 r.bindCommand("tele", Privilege.ADMIN_POWER) {
     val p = it.player()
 
-    val args = p.attr[COMMAND_ARGS_ATTR]
+    val args = it.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::tele 3200 3200</col>") { values ->
         val x = values[0].toInt()
         val z = values[1].toInt()
@@ -34,7 +34,7 @@ r.bindCommand("tele", Privilege.ADMIN_POWER) {
 r.bindCommand("npc", Privilege.ADMIN_POWER) {
     val p = it.player()
 
-    val args = p.attr[COMMAND_ARGS_ATTR]
+    val args = it.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::obj 1</col>") { values ->
         val id = values[0].toInt()
         val npc = Npc(id, p.tile, p.world)
@@ -45,7 +45,7 @@ r.bindCommand("npc", Privilege.ADMIN_POWER) {
 r.bindCommand("obj", Privilege.ADMIN_POWER) {
     val p = it.player()
 
-    val args = p.attr[COMMAND_ARGS_ATTR]
+    val args = it.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::obj 1</col>") { values ->
         val id = values[0].toInt()
         val obj = DynamicObject(id, 10, 0, p.tile)
@@ -86,7 +86,7 @@ r.bindCommand("reset", Privilege.ADMIN_POWER) {
 r.bindCommand("setlvl", Privilege.ADMIN_POWER) {
     val p = it.player()
 
-    val args = p.attr[COMMAND_ARGS_ATTR]
+    val args = it.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::setlvl 0 99</col> or <col=801700>::setlvl attack 99</col>") { values ->
         var skill: Int
         try {
@@ -120,7 +120,7 @@ r.bindCommand("setlvl", Privilege.ADMIN_POWER) {
 r.bindCommand("item", Privilege.ADMIN_POWER) {
     val p = it.player()
 
-    val args = p.attr[COMMAND_ARGS_ATTR]
+    val args = it.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::item 4151 1</col> or <col=801700>::item 4151</col>") { values ->
         val item = values[0].toInt()
         val amount = if (values.size > 1) Math.min(Int.MAX_VALUE.toLong(), Misc.parseAmount(values[1])).toInt() else 1
@@ -143,7 +143,7 @@ r.bindCommand("food", Privilege.ADMIN_POWER) {
 r.bindCommand("varp", Privilege.ADMIN_POWER) {
     val p = it.player()
 
-    val args = p.attr[COMMAND_ARGS_ATTR]
+    val args = it.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::varp 173 1</col>") { values ->
         val varp = values[0].toInt()
         val state = values[1].toInt()
@@ -156,7 +156,7 @@ r.bindCommand("varp", Privilege.ADMIN_POWER) {
 r.bindCommand("varbit", Privilege.ADMIN_POWER) {
     val p = it.player()
 
-    val args = p.attr[COMMAND_ARGS_ATTR]
+    val args = it.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::varbit 5451 1</col>") { values ->
         val varbit = values[0].toInt()
         val state = values[1].toInt()
@@ -169,7 +169,7 @@ r.bindCommand("varbit", Privilege.ADMIN_POWER) {
 r.bindCommand("getvarbits", Privilege.ADMIN_POWER) {
     val p = it.player()
 
-    val args = p.attr[COMMAND_ARGS_ATTR]
+    val args = it.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::getvarbits 83</col>") { values ->
         val varp = values[0].toInt()
         val varbits = arrayListOf<VarbitDef>()
@@ -190,7 +190,7 @@ r.bindCommand("getvarbits", Privilege.ADMIN_POWER) {
 r.bindCommand("interface", Privilege.ADMIN_POWER) {
     val p = it.player()
 
-    val args = p.attr[COMMAND_ARGS_ATTR]
+    val args = it.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::interface 214</col>") { values ->
         val interfaceId = values[0].toInt()
         p.openInterface(interfaceId, InterfacePane.MAIN_SCREEN)

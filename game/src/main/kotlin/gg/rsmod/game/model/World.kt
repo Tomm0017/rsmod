@@ -101,7 +101,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     fun register(p: Player): Boolean {
         val registered = players.add(p)
         if (registered) {
-            p.attr.put(INDEX_ATTR, p.index)
+            p.lastIndex = p.index
             return true
         }
         return false

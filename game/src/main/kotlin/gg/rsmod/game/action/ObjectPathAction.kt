@@ -31,8 +31,8 @@ object ObjectPathAction {
 
     val walkPlugin: (Plugin) -> Unit = {
         val p = it.ctx as Player
-        val obj = p.attr[INTERACTING_OBJ_ATTR]
-        val opt = p.attr[INTERACTING_OPT_ATTR]
+        val obj = p.attr[INTERACTING_OBJ_ATTR]!!
+        val opt = p.attr[INTERACTING_OPT_ATTR]!!
 
         val validTiles = getValidTiles(p.world, obj)
         if (p.tile !in validTiles) {

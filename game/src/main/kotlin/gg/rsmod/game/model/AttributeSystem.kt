@@ -19,13 +19,7 @@ class AttributeSystem {
     private var attributes: HashMap<AttributeKey<*>, Any>? = null
 
     @Suppress("UNCHECKED_CAST")
-    operator fun <T> get(key: AttributeKey<T>): T {
-        constructIfNeeded()
-        return (attributes!![key] as? T)!!
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    fun <T> getNullable(key: AttributeKey<T>): T? {
+    operator fun <T> get(key: AttributeKey<T>): T? {
         constructIfNeeded()
         return (attributes!![key] as? T)
     }

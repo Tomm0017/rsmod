@@ -13,6 +13,13 @@ import org.apache.logging.log4j.LogManager
  */
 class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private val stackType: ContainerStackType) : Iterable<Item?> {
 
+    constructor(other: ItemContainer) : this(other.definitions, other.capacity, other.stackType) {
+        for (i in 0 until capacity) {
+            val item = if (other[i] != null) Item(other[i]!!) else null
+            set(i, item)
+        }
+    }
+
     companion object {
         private val logger = LogManager.getLogger(ItemContainer::class.java)
     }
@@ -185,7 +192,11 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
      */
     fun add(id: Int, amount: Int = 1, assureFullInsertion: Boolean = true, forceNoStack: Boolean = false, beginSlot: Int = -1): ItemTransaction {
         val def = definitions.get(ItemDef::class.java, id)
-        val stack = !forceNoStack && (def.isStackable() || stackType == ContainerStackType.STACK)
+
+        /**
+         * Should the item stack?
+         */
+        val stack = !forceNoStack && stackType != ContainerStackType.NO_STACK && (def.isStackable() || stackType == ContainerStackType.STACK)
 
         /**
          * Check if there's a placeholder in this item container corresponding to
@@ -351,7 +362,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
      *
      * @see ItemTransaction
      */
-    fun remove(id: Int, amount: Int = 1, assureFullRemoval: Boolean = true, beginSlot: Int = -1): ItemTransaction {
+    fun remove(id: Int, amount: Int = 1, assureFullRemoval: Boolean = false, beginSlot: Int = -1): ItemTransaction {
         val hasAmount = getItemCount(id)
 
         if (assureFullRemoval && hasAmount < amount) {

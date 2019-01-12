@@ -5,11 +5,16 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.SkillSet
+import gg.rsmod.game.model.container.ContainerStackType
+import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.content.skills.prayer.Prayer
+import gg.rsmod.plugins.osrs.content.skills.prayer.Prayers
+import gg.rsmod.plugins.osrs.service.value.ItemValueService
 
 /**
  * A decoupled file that holds extensions and helper functions, related to players,
@@ -128,6 +133,14 @@ fun Player.sendDisplayInterface(displayMode: DisplayMode) {
     write(SetDisplayInterfaceMessage(interfaceId))
 }
 
+fun Player.sendContainer(key: Int, container: ItemContainer) {
+    write(SetItemContainerMessage(containerKey = key, items = container.getBackingArray()))
+}
+
+fun Player.sendContainer(parent: Int, child: Int, container: ItemContainer) {
+    write(SetItemContainerMessage(parent = parent, child = child, items = container.getBackingArray()))
+}
+
 fun Player.sendRunEnergy() {
     write(SetRunEnergyMessage(runEnergy.toInt()))
 }
@@ -170,6 +183,10 @@ fun Player.hasEquipped(slot: EquipmentType, item: Int): Boolean = equipment.hasA
 fun Player.getEquipment(slot: EquipmentType): Item? = equipment[slot.id]
 
 fun Player.getBonus(slot: BonusSlot): Int = equipmentBonuses[slot.id]
+
+fun Player.hasPrayerIcon(icon: PrayerIcon): Boolean = prayerIcon == icon.id
+
+fun Player.hasSkullIcon(icon: SkullIcon): Boolean = skullIcon == icon.id
 
 fun Player.sendCombatLevelText() {
     setInterfaceText(593, 2, "Combat Lvl: ${getSkills().combatLevel}")
@@ -249,6 +266,39 @@ fun Player.calculateAndSetCombatLevel(): Boolean {
     }
 
     return false
+}
+
+fun Player.calculateDeathContainers(): DeathContainers {
+    var keepAmount = if (hasSkullIcon(SkullIcon.WHITE)) 0 else 3
+    if (Prayers.isActive(this, Prayer.PROTECT_ITEM)) {
+        keepAmount++
+    }
+
+    val keptContainer = ItemContainer(world.definitions, keepAmount, ContainerStackType.NO_STACK)
+    val lostContainer = ItemContainer(world.definitions, inventory.capacity + equipment.capacity, ContainerStackType.NORMAL)
+
+    var totalItems = inventory.getBackingArray().filterNotNull() + equipment.getBackingArray().filterNotNull()
+    val valueService = world.getService(ItemValueService::class.java, searchSubclasses = false).orElse(null)
+
+    if (valueService != null) {
+        totalItems = totalItems.sortedByDescending { valueService.get(it.id) }
+    } else {
+        totalItems = totalItems.sortedByDescending { world.definitions.getNullable(ItemDef::class.java, it.id)?.cost ?: 0 }
+    }
+
+    totalItems.forEach { item ->
+        if (keepAmount > 0 && !keptContainer.isFull()) {
+            val add = keptContainer.add(item, assureFullInsertion = false)
+            keepAmount -= add.completed
+            if (add.getLeftOver() > 0) {
+                lostContainer.add(item.id, add.getLeftOver())
+            }
+        } else {
+            lostContainer.add(item)
+        }
+    }
+
+    return DeathContainers(kept = keptContainer, lost = lostContainer)
 }
 
 fun Player.isPrivilegeEligible(to: String): Boolean = world.privileges.isEligible(privilege, to)

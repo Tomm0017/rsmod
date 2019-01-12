@@ -1,7 +1,6 @@
 package gg.rsmod.game.sync.task
 
 import gg.rsmod.game.model.EntityType
-import gg.rsmod.game.model.INDEX_ATTR
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.SynchronizationTask
@@ -76,7 +75,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         segments.add(SetBitAccessSegment())
         for (i in 0 until locals.size) {
             val local = locals[i]
-            val index = local.attr[INDEX_ATTR]
+            val index = local.lastIndex
 
             nonLocalIndices.remove(index)
 
@@ -131,7 +130,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             } else {
                 for (j in i + 1 until locals.size) {
                     val next = locals[j]
-                    val nextIndex = next.attr[INDEX_ATTR]
+                    val nextIndex = next.lastIndex
                     if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) != 0) {
                         continue
                     }
@@ -155,7 +154,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         segments.add(SetBitAccessSegment())
         for (i in 0 until locals.size) {
             val local = locals[i]
-            val index = local.attr[INDEX_ATTR]
+            val index = local.lastIndex
 
             if ((player.otherPlayerSkipFlags[index] and 0x1) == 0) {
                 continue
@@ -208,7 +207,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             } else {
                 for (j in i + 1 until locals.size) {
                     val next = locals[j]
-                    val nextIndex = next.attr[INDEX_ATTR]
+                    val nextIndex = next.lastIndex
                     if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) == 0) {
                         continue
                     }

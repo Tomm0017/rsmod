@@ -17,5 +17,10 @@ enum class ContainerStackType {
      * Represents an [ItemContainer] which stacks the same items on top of one another,
      * if possible, even if it contradicts their metadata.
      */
-    STACK;
+    STACK,
+
+    /**
+     * Represents an [ItemContainer] which never stacks any item.
+     */
+    NO_STACK;
 }

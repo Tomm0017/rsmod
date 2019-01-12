@@ -291,6 +291,15 @@ out-packets:
 
 in-packets:
 
+  - message: gg.rsmod.game.message.impl.SearchedItemMessage
+    type: FIXED
+    opcode: 42
+    length: 2
+    structure:
+      - name: item
+        type: SHORT
+        sign: UNSIGNED
+
   - message: gg.rsmod.game.message.impl.CommandMessage
     type: VARIABLE_BYTE
     opcode: 60

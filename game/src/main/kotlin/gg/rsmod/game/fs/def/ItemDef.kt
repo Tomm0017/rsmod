@@ -35,6 +35,8 @@ class ItemDef(override val id: Int) : Definition(id) {
 
     fun isNoted(): Boolean = noteTemplateId > 0
 
+    fun isTradeable(): Boolean = tradeable
+
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {
             1 -> buf.readUnsignedShort()

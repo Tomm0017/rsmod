@@ -1,7 +1,10 @@
 package gg.rsmod.plugins.osrs.api.helper
 
+import gg.rsmod.game.fs.def.ItemDef
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.item.Item
+import gg.rsmod.plugins.osrs.service.value.ItemValueService
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -12,6 +15,18 @@ fun String.plural(amount: Int): String {
         return this
     }
     return if (amount != 1) this + "s" else this
+}
+
+fun ItemContainer.networth(world: World): Long {
+    val service = world.getService(ItemValueService::class.java, searchSubclasses = false).orElse(null)
+    var networth = 0L
+    getBackingArray().forEach { item ->
+        if (item != null) {
+            val cost = service?.get(item.id) ?: world.definitions.getNullable(ItemDef::class.java, item.id)?.cost ?: 0
+            networth += cost * item.amount
+        }
+    }
+    return networth
 }
 
 fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int, note: Boolean): Int {

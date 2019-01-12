@@ -1,7 +1,8 @@
-import gg.rsmod.game.model.INTERACTING_ITEM_SLOT
+
+import gg.rsmod.plugins.osrs.api.helper.getInteractingItemSlot
+import gg.rsmod.plugins.osrs.api.helper.player
 import gg.rsmod.plugins.osrs.content.items.food.Food
 import gg.rsmod.plugins.osrs.content.items.food.Foods
-import gg.rsmod.plugins.osrs.api.helper.player
 
 Food.values().forEach { food ->
     r.bindItem(food.item, 1) {
@@ -11,7 +12,7 @@ Food.values().forEach { food ->
             return@bindItem
         }
 
-        val inventorySlot = it.player().attr[INTERACTING_ITEM_SLOT]
+        val inventorySlot = it.getInteractingItemSlot()
         if (p.inventory.remove(id = food.item, beginSlot = inventorySlot).hasSucceeded()) {
             Foods.eat(p, food)
             if (food.replacement != -1) {

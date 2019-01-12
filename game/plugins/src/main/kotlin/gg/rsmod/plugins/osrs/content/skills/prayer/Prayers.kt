@@ -186,7 +186,7 @@ object Prayers {
         }
     }
 
-    private fun isActive(p: Player, prayer: Prayer): Boolean = p.getVarbit(prayer.varbit) != 0
+    fun isActive(p: Player, prayer: Prayer): Boolean = p.getVarbit(prayer.varbit) != 0
 
     private suspend fun checkRequirements(it: Plugin, prayer: Prayer): Boolean {
         val p = it.player()
@@ -237,17 +237,17 @@ object Prayers {
 
     private fun setOverhead(p: Player) {
         val icon = when {
-            isActive(p, Prayer.PROTECT_FROM_MELEE) -> 0
-            isActive(p, Prayer.PROTECT_FROM_MISSILES) -> 1
-            isActive(p, Prayer.PROTECT_FROM_MAGIC) -> 2
-            isActive(p, Prayer.RETRIBUTION) -> 3
-            isActive(p, Prayer.SMITE) -> 4
-            isActive(p, Prayer.REDEMPTION) -> 5
-            else -> -1
+            isActive(p, Prayer.PROTECT_FROM_MELEE) -> PrayerIcon.PROTECT_FROM_MELEE
+            isActive(p, Prayer.PROTECT_FROM_MISSILES) -> PrayerIcon.PROTECT_FROM_MISSILES
+            isActive(p, Prayer.PROTECT_FROM_MAGIC) -> PrayerIcon.PROTECT_FROM_MAGIC
+            isActive(p, Prayer.RETRIBUTION) -> PrayerIcon.RETRIBUTION
+            isActive(p, Prayer.SMITE) -> PrayerIcon.SMITE
+            isActive(p, Prayer.REDEMPTION) -> PrayerIcon.REDEMPTION
+            else -> null
         }
 
-        if (p.prayerIcon != icon) {
-            p.prayerIcon = icon
+        if (icon != null && p.prayerIcon != icon.id) {
+            p.prayerIcon = icon.id
             p.addBlock(UpdateBlockType.APPEARANCE)
         }
     }

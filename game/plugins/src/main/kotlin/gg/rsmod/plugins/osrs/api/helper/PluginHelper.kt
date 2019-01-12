@@ -41,17 +41,19 @@ fun Plugin.player(): Player = ctx as Player
  */
 fun Plugin.pawn(): Pawn = ctx as Pawn
 
-fun Plugin.getInteractingSlot(): Int = pawn().attr[INTERACTING_SLOT_ATTR]
+fun Plugin.getCommandArgs(): Array<String> = pawn().attr[COMMAND_ARGS_ATTR]!!
 
-fun Plugin.getInteractingItem(): Item = pawn().attr[INTERACTING_ITEM]
+fun Plugin.getInteractingSlot(): Int = pawn().attr[INTERACTING_SLOT_ATTR]!!
 
-fun Plugin.getInteractingItemId(): Int = pawn().attr[INTERACTING_ITEM_ID]
+fun Plugin.getInteractingItem(): Item = pawn().attr[INTERACTING_ITEM]!!
 
-fun Plugin.getInteractingItemSlot(): Int = pawn().attr[INTERACTING_ITEM_SLOT]
+fun Plugin.getInteractingItemId(): Int = pawn().attr[INTERACTING_ITEM_ID]!!
 
-fun Plugin.getInteractingOption(): Int = pawn().attr[INTERACTING_OPT_ATTR]
+fun Plugin.getInteractingItemSlot(): Int = pawn().attr[INTERACTING_ITEM_SLOT]!!
 
-fun Plugin.getInteractingGameObj(): GameObject = pawn().attr[INTERACTING_OBJ_ATTR]
+fun Plugin.getInteractingOption(): Int = pawn().attr[INTERACTING_OPT_ATTR]!!
+
+fun Plugin.getInteractingGameObj(): GameObject = pawn().attr[INTERACTING_OBJ_ATTR]!!
 
 /**
  * Prompts the player with options.
@@ -79,7 +81,7 @@ suspend fun Plugin.options(vararg options: String, title: String = "Select an Op
  * @return
  * The integer input.
  */
-suspend fun Plugin.inputInteger(description: String): Int {
+suspend fun Plugin.inputInteger(description: String = "Enter amount"): Int {
     val p = player()
 
     p.invokeScript(108, description)
@@ -191,6 +193,16 @@ suspend fun Plugin.doubleItemDialog(message: String, item1: Int, item2: Int, amo
     interruptAction = closeDialog
     waitReturnValue()
     interruptAction?.invoke(this)
+}
+
+suspend fun Plugin.searchItemDialog(message: String): Int {
+    val p = player()
+
+    p.invokeScript(750, message, 1, -1)
+
+    waitReturnValue()
+
+    return requestReturnValue as? Int ?: -1
 }
 
 suspend fun Plugin.levelUpDialog(skill: Int, levels: Int) {

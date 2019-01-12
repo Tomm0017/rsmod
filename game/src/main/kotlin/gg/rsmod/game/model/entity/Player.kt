@@ -57,6 +57,13 @@ open class Player(override val world: World) : Pawn(world) {
     var initiated = false
 
     /**
+     * The index that was assigned to a [Player] when they are first registered to the
+     * [World]. This is needed to remove local players from the synchronization task
+     * as once that logic is reached, the local player would have an index of [-1].
+     */
+    var lastIndex = -1
+
+    /**
      * A flag which indicates the player is attempting to log out. There can be
      * certain circumstances where the player should not be unregistered from
      * the world.

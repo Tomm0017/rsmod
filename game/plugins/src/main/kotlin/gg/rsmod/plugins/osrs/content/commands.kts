@@ -149,7 +149,7 @@ r.bindCommand("varp", Privilege.ADMIN_POWER) {
         val state = values[1].toInt()
         val oldState = p.getVarp(varp)
         p.setVarp(varp, state)
-        p.message("Set varp (<col=801700>$varp</col>) from <col=801700>$oldState</col> to <col=801700>$state</col>")
+        p.message("Set varp (<col=801700>$varp</col>) from <col=801700>$oldState</col> to <col=801700>${p.getVarp(varp)}</col>")
     }
 }
 
@@ -162,7 +162,7 @@ r.bindCommand("varbit", Privilege.ADMIN_POWER) {
         val state = values[1].toInt()
         val oldState = p.getVarbit(varbit)
         p.setVarbit(varbit, state)
-        p.message("Set varbit (<col=801700>$varbit</col>) from <col=801700>$oldState</col> to <col=801700>$state</col>")
+        p.message("Set varbit (<col=801700>$varbit</col>) from <col=801700>$oldState</col> to <col=801700>${p.getVarbit(varbit)}</col>")
     }
 }
 

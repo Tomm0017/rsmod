@@ -13,7 +13,7 @@ r.bindButton(parent = 387, child = 19) {
     PriceGuide.open(it.player())
 }
 
-r.bindInterfaceClose(parent = PriceGuide.INTERFACE_ID) {
+r.bindInterfaceClose(interfaceId = PriceGuide.INTERFACE_ID) {
     PriceGuide.close(it.player())
 }
 

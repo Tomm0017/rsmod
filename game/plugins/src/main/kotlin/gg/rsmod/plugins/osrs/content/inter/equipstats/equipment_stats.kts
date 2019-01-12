@@ -1,5 +1,6 @@
 
 import gg.rsmod.game.action.EquipAction
+import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.InterfacePane
 import gg.rsmod.plugins.osrs.api.helper.*
@@ -15,7 +16,8 @@ fun bindUnequip(equipment: EquipmentType, child: Int) {
             p.calculateWeightAndBonus(weight = false, bonuses = true)
             EquipmentStats.sendBonuses(p)
         } else if (opt == 9) {
-            // TODO(Tom): send examine
+            val item = p.equipment[equipment.id] ?: return@bindButton
+            p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
         } else {
             val item = p.equipment[equipment.id] ?: return@bindButton
             if (!p.world.plugins.executeItem(p, item.id, opt)) {
@@ -32,14 +34,19 @@ r.bindButton(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0) {
     val p = it.player()
 
     val slot = it.getInteractingSlot()
+    val opt = it.getInteractingOption()
     val item = p.inventory[slot] ?: return@bindButton
 
-    val result = EquipAction.equip(p, item, inventorySlot = slot)
-    if (result == EquipAction.Result.SUCCESS) {
-        p.calculateWeightAndBonus(weight = false, bonuses = true)
-        EquipmentStats.sendBonuses(p)
-    } else if (result == EquipAction.Result.UNHANDLED) {
-        p.message("You can't equip that.")
+    if (opt == 0) {
+        val result = EquipAction.equip(p, item, inventorySlot = slot)
+        if (result == EquipAction.Result.SUCCESS) {
+            p.calculateWeightAndBonus(weight = false, bonuses = true)
+            EquipmentStats.sendBonuses(p)
+        } else if (result == EquipAction.Result.UNHANDLED) {
+            p.message("You can't equip that.")
+        }
+    } else if (opt == 9) {
+        p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
     }
 }
 
@@ -57,15 +64,9 @@ r.bindButton(parent = 387, child = 17) {
     p.setInterfaceSetting(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0, range = 0..27, setting = 1180674)
 
     EquipmentStats.sendBonuses(p)
-
-    /**
-     * Have to refresh in case we've sent a different item container on the tab
-     * area. Such as opening the price checker guide and then the equipment stats.
-     */
-    p.inventory.dirty = true
 }
 
-r.bindInterfaceClose(parent = EquipmentStats.INTERFACE_ID) {
+r.bindInterfaceClose(interfaceId = EquipmentStats.INTERFACE_ID) {
     it.player().closeInterface(interfaceId = EquipmentStats.TAB_INTERFACE_ID)
 }
 

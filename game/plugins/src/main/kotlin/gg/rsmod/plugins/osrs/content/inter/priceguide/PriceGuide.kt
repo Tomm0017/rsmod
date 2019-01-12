@@ -2,6 +2,7 @@ package gg.rsmod.plugins.osrs.content.inter.priceguide
 
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.AttributeKey
+import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
@@ -150,7 +151,10 @@ object PriceGuide {
             2 -> 10
             3 -> container.getItemCount(item.id)
             4 -> it.inputInteger()
-            9 -> return // TODO(Tom): send examine
+            9 -> {
+                p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
+                return
+            }
             else -> return
         }
         remove(p = p, slot = slot, amount = amount)
@@ -167,7 +171,10 @@ object PriceGuide {
             2 -> 10
             3 -> container.getItemCount(item.id)
             4 -> it.inputInteger()
-            9 -> return // TODO(Tom): send examine
+            9 -> {
+                p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
+                return
+            }
             else -> return
         }
         add(p = p, item = item.id, amount = amount)

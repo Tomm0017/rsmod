@@ -10,6 +10,8 @@ import java.text.DecimalFormat
  */
 object KeptOnDeath {
 
+    const val INTERFACE_ID = 4
+
     fun open(p: Player) {
         val deathContainers = p.calculateDeathContainers()
         val keptContainer = deathContainers.kept

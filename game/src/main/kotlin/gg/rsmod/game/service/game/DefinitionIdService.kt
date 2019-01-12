@@ -31,7 +31,7 @@ class DefinitionIdService : Service() {
         dump = serviceProperties.getOrDefault("dump", false)
         if (dump) {
             cachePath = Paths.get(serviceProperties.get<String>("cache-path")!!)
-            outputPath = Paths.get(serviceProperties.getOrDefault("output-path", "../ids"))
+            outputPath = Paths.get(serviceProperties.getOrDefault("output-path", "./ids"))
 
             if (!Files.exists(outputPath)) {
                 Files.createDirectory(outputPath)

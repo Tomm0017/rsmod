@@ -13,6 +13,7 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.service.Service
+import gg.rsmod.game.service.game.EntityExamineService
 import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.game.sync.UpdateBlockSet
 import gg.rsmod.util.ServerProperties
@@ -166,8 +167,23 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         if (properties.has("players")) {
             playerUpdateBlocks.load(properties.extract("players"))
         }
+
         if (properties.has("npcs")) {
             npcUpdateBlocks.load(properties.extract("npcs"))
+        }
+    }
+
+    fun sendExamine(p: Player, id: Int, type: ExamineEntityType) {
+        val service = getService(EntityExamineService::class.java, searchSubclasses = false).orElse(null)
+        if (service != null) {
+            val examine = when (type) {
+                ExamineEntityType.ITEM -> service.getItem(id)
+                ExamineEntityType.NPC -> service.getNpc(id)
+                ExamineEntityType.OBJECT -> service.getObj(id)
+            }
+            p.message(examine)
+        } else {
+            logger.warn("No examine service found! Could not send examine message to player: ${p.username}.")
         }
     }
 

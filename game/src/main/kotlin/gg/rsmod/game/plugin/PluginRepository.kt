@@ -240,7 +240,7 @@ class PluginRepository {
     fun bindTimer(key: TimerKey, plugin: Function1<Plugin, Unit>) {
         if (timerPlugins.containsKey(key)) {
             logger.error("Timer key is already bound to a plugin: $key")
-            throw IllegalStateException()
+            throw IllegalStateException("Timer key is already bound to a plugin: $key")
         }
         timerPlugins[key] = plugin
         pluginCount++
@@ -256,12 +256,12 @@ class PluginRepository {
     }
 
     @Throws(IllegalStateException::class)
-    fun bindInterfaceClose(parent: Int, plugin: Function1<Plugin, Unit>) {
-        if (interfaceClose.containsKey(parent)) {
-            logger.error("Interface id is already bound to a plugin: $parent")
-            throw IllegalStateException()
+    fun bindInterfaceClose(interfaceId: Int, plugin: Function1<Plugin, Unit>) {
+        if (interfaceClose.containsKey(interfaceId)) {
+            logger.error("Interface id is already bound to a plugin: $interfaceId")
+            throw IllegalStateException("Interface id is already bound to a plugin: $interfaceId")
         }
-        interfaceClose[parent] = plugin
+        interfaceClose[interfaceId] = plugin
         pluginCount++
     }
 
@@ -279,7 +279,7 @@ class PluginRepository {
         val cmd = command.toLowerCase()
         if (commandPlugins.containsKey(cmd)) {
             logger.error("Command is already bound to a plugin: $cmd")
-            throw IllegalStateException()
+            throw IllegalStateException("Command is already bound to a plugin: $cmd")
         }
         commandPlugins[cmd] = Pair(powerRequired, plugin)
         pluginCount++

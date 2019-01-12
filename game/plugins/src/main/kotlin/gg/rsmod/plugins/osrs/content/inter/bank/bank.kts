@@ -1,4 +1,5 @@
 
+import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.bank.Bank
@@ -90,7 +91,7 @@ r.bindButton(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) {
     val item = p.inventory[slot] ?: return@bindButton
 
     if (opt == 9) {
-        // TODO(Tom): examine message
+        p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
         return@bindButton
     }
 
@@ -148,7 +149,7 @@ r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = 13) {
     val item = p.bank[slot] ?: return@bindButton
 
     if (opt == 9) {
-        // TODO(Tom): examine message
+        p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
         return@bindButton
     }
 

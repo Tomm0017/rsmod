@@ -151,3 +151,4 @@ through e-mail: **rspsmods@gmail.com**
     - The idea behind user-friendly plugin binding
 * #### Kris
     - Some information on player GPI
+    - Sharing #168 examines

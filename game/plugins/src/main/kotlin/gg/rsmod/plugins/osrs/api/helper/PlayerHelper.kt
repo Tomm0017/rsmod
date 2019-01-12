@@ -81,9 +81,13 @@ fun Player.setInterfaceAnim(parent: Int, child: Int, anim: Int) {
  *
  * as it holds logic that must be handled for certain [InterfacePane]s.
  */
-fun Player.openInterface(interfaceId: Int, pane: InterfacePane) {
-    val child = getChildId(pane, interfaces.displayMode)
-    val parent = getDisplayInterfaceId(interfaces.displayMode)
+fun Player.openInterface(interfaceId: Int, pane: InterfacePane, fullscreen: Boolean = false) {
+    val displayMode = if (!fullscreen || pane.fullscreenChildId == -1) interfaces.displayMode else DisplayMode.FULLSCREEN
+    val child = getChildId(pane, displayMode)
+    val parent = getDisplayInterfaceId(displayMode)
+    if (displayMode == DisplayMode.FULLSCREEN) {
+        sendDisplayInterface(displayMode)
+    }
     openInterface(parent, child, interfaceId, if (pane.clickThrough) 1 else 0, mainInterface = pane == InterfacePane.MAIN_SCREEN)
 }
 
@@ -97,9 +101,13 @@ fun Player.openInterface(interfaceId: Int, pane: InterfacePane) {
  *
  * as it holds logic that must be handled for certain [InterfacePane]s.
  */
-fun Player.openInterface(pane: InterfacePane) {
-    val child = getChildId(pane, interfaces.displayMode)
-    val parent = getDisplayInterfaceId(interfaces.displayMode)
+fun Player.openInterface(pane: InterfacePane, fullscreen: Boolean = false) {
+    val displayMode = if (!fullscreen || pane.fullscreenChildId == -1) interfaces.displayMode else DisplayMode.FULLSCREEN
+    val child = getChildId(pane, displayMode)
+    val parent = getDisplayInterfaceId(displayMode)
+    if (displayMode == DisplayMode.FULLSCREEN) {
+        sendDisplayInterface(displayMode)
+    }
     openInterface(parent, child, pane.interfaceId, if (pane.clickThrough) 1 else 0, mainInterface = pane == InterfacePane.MAIN_SCREEN)
 }
 
@@ -124,10 +132,12 @@ fun Player.closeInterface(parent: Int, child: Int) {
     write(CloseInterfaceMessage((parent shl 16) or child))
 }
 
-fun Player.sendDisplayInterface(displayMode: DisplayMode) {
-    interfaces.setVisible(getDisplayInterfaceId(interfaces.displayMode), false)
-    interfaces.displayMode = displayMode
+fun Player.isInterfaceVisible(interfaceId: Int): Boolean = interfaces.isVisible(interfaceId)
 
+fun Player.sendDisplayInterface(displayMode: DisplayMode) {
+    if (displayMode != interfaces.displayMode) {
+        interfaces.setVisible(getDisplayInterfaceId(interfaces.displayMode), false)
+    }
     val interfaceId = getDisplayInterfaceId(displayMode)
     interfaces.setVisible(interfaceId, true)
     write(SetDisplayInterfaceMessage(interfaceId))
@@ -187,6 +197,10 @@ fun Player.getBonus(slot: BonusSlot): Int = equipmentBonuses[slot.id]
 fun Player.hasPrayerIcon(icon: PrayerIcon): Boolean = prayerIcon == icon.id
 
 fun Player.hasSkullIcon(icon: SkullIcon): Boolean = skullIcon == icon.id
+
+fun Player.sendWorldMapTile() {
+    invokeScript(1749, tile.to30BitInteger())
+}
 
 fun Player.sendCombatLevelText() {
     setInterfaceText(593, 2, "Combat Lvl: ${getSkills().combatLevel}")

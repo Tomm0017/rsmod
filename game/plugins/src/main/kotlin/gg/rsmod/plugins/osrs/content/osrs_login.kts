@@ -1,6 +1,5 @@
 
 import gg.rsmod.game.model.NEW_ACCOUNT_ATTR
-import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.plugins.osrs.api.ChatMessageType
 import gg.rsmod.plugins.osrs.api.InterfacePane
 import gg.rsmod.plugins.osrs.api.OSRSGameframe
@@ -31,7 +30,7 @@ r.bindLogin {
     /**
      * Interface-related logic.
      */
-    p.sendDisplayInterface(DisplayMode.FIXED)
+    p.sendDisplayInterface(p.interfaces.displayMode)
     InterfacePane.values().filter { pane -> pane.interfaceId != -1 }.forEach { pane ->
         if (pane == InterfacePane.XP_COUNTER && p.getVarbit(OSRSGameframe.XP_DROPS_VISIBLE_VARBIT) == 0) {
             return@forEach

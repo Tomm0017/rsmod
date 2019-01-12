@@ -6,7 +6,7 @@ import gg.rsmod.game.model.interf.DisplayMode
  * @author Tom <rspsmods@gmail.com>
  */
 enum class InterfacePane(val interfaceId: Int, val fixedChildId: Int, val resizeChildId: Int, val resizeListChildId: Int,
-                         val clickThrough: Boolean = true) {
+                         val fullscreenChildId: Int = -1, val clickThrough: Boolean = true) {
     CHAT_BOX(interfaceId = 162, fixedChildId = 24, resizeChildId = 29, resizeListChildId = 31),
 
     USERNAME(interfaceId = 163, fixedChildId = 19, resizeChildId = 9, resizeListChildId = 9),
@@ -61,10 +61,11 @@ enum class InterfacePane(val interfaceId: Int, val fixedChildId: Int, val resize
 
     WALKABLE(interfaceId = -1, fixedChildId = 14, resizeChildId = 3, resizeListChildId = 3),
 
-    WORLD_MAP(interfaceId = -1, fixedChildId = 22, resizeChildId = 14, resizeListChildId = 14),
+    WORLD_MAP(interfaceId = -1, fixedChildId = 22, resizeChildId = 14, resizeListChildId = 14,
+            fullscreenChildId = 28),
 
     WORLD_MAP_FULL(interfaceId = -1, fixedChildId = 27, resizeChildId = 27, resizeListChildId = 27,
-            clickThrough = false),
+            fullscreenChildId = 27, clickThrough = false),
 }
 
 fun getDisplayInterfaceId(displayMode: DisplayMode) = when (displayMode) {
@@ -79,5 +80,6 @@ fun getChildId(pane: InterfacePane, displayMode: DisplayMode): Int = when (displ
     DisplayMode.FIXED -> pane.fixedChildId
     DisplayMode.RESIZABLE_NORMAL -> pane.resizeChildId
     DisplayMode.RESIZABLE_LIST -> pane.resizeListChildId
+    DisplayMode.FULLSCREEN -> pane.fullscreenChildId
     else -> throw RuntimeException("Unhandled display mode.")
 }

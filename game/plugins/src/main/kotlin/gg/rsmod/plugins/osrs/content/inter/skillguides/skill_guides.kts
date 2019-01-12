@@ -10,6 +10,10 @@ SkillGuide.values().forEach { guide ->
     r.bindButton(320, guide.child) {
         val p = it.player()
 
+        if (!p.lock.canInterfaceInteract()) {
+            return@bindButton
+        }
+
         p.setVarbit(subsectionVarbit, 0)
         p.setVarbit(skillIdVarbit, guide.bit)
         p.setInterfaceSetting(parent = 214, child = 25, from = -1, to = -1, setting = 0)

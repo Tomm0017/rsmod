@@ -1,8 +1,6 @@
 
-import gg.rsmod.plugins.osrs.content.mechanics.run.RunEnergy
 import gg.rsmod.plugins.osrs.api.helper.player
-import gg.rsmod.plugins.osrs.api.helper.setVarp
-import gg.rsmod.plugins.osrs.api.helper.toggleVarp
+import gg.rsmod.plugins.osrs.content.mechanics.run.RunEnergy
 
 r.bindLogin {
     it.player().timers[RunEnergy.RUN_DRAIN] = 1
@@ -14,11 +12,16 @@ r.bindTimer(RunEnergy.RUN_DRAIN) {
     RunEnergy.drain(p)
 }
 
-r.bindButton(160, 22) {
-    if (it.player().runEnergy >= 1.0) {
-        it.player().toggleVarp(RunEnergy.RUN_ENABLED_VARP)
-    } else {
-        it.player().setVarp(RunEnergy.RUN_ENABLED_VARP, 0)
-        it.player().message("You don't have enough run energy left.")
-    }
+/**
+ * Button by minimap.
+ */
+r.bindButton(parent = 160, child = 22) {
+    RunEnergy.toggle(it.player())
+}
+
+/**
+ * Settings button.
+ */
+r.bindButton(parent = 261, child = 95) {
+    RunEnergy.toggle(it.player())
 }

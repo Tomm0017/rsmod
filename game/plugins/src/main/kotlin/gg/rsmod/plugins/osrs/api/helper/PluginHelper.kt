@@ -64,7 +64,9 @@ fun Plugin.getInteractingGameObj(): GameObject = pawn().attr[INTERACTING_OBJ_ATT
 suspend fun Plugin.options(vararg options: String, title: String = "Select an Option"): Int {
     val p = player()
 
-    p.setInterfaceSetting(parent = 219, child = 0, from = 1, to = options.size, setting = 1)
+    p.setVarbit(5983, 1)
+    p.invokeScript(2379)
+    p.setInterfaceSetting(parent = 219, child = 1, from = 1, to = options.size, setting = 1)
     p.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 219)
     p.invokeScript(58, title, options.joinToString("|"))
 
@@ -135,7 +137,7 @@ suspend fun Plugin.npcDialog(message: String, npc: Int, animation: Int = 588, ti
 
     var dialogTitle = title
     if (dialogTitle == null) {
-        dialogTitle = player().world.definitions[NpcDef::class.java].getOrNull(npc)!!.name
+        dialogTitle = p.world.definitions.get(NpcDef::class.java, npc).name
     }
 
     p.setInterfaceNpc(parent = 231, child = 1, npc = npc)

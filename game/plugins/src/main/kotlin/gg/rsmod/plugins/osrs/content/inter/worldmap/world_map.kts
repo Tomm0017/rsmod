@@ -23,8 +23,11 @@ r.bindButton(parent = 160, child = 42) {
 }
 
 r.bindButton(parent = WorldMap.INTERFACE_ID, child = 37) {
-    it.player().closeInterface(WorldMap.INTERFACE_ID)
-    it.player().sendDisplayInterface(it.player().interfaces.displayMode)
+    val p = it.player()
+    p.closeInterface(WorldMap.INTERFACE_ID)
+    p.sendDisplayInterface(p.interfaces.displayMode)
+    p.attr.remove(WorldMap.LAST_TILE)
+    p.timers.remove(WorldMap.UPDATE_TIMER)
 }
 
 r.bindTimer(WorldMap.UPDATE_TIMER) {
@@ -32,8 +35,9 @@ r.bindTimer(WorldMap.UPDATE_TIMER) {
 
     if (p.isInterfaceVisible(WorldMap.INTERFACE_ID)) {
         /**
-         * Only send the world map so we're not needlessly sending the script
-         * every cycle.
+         * Only send the world when the last tile recorded is not the same as
+         * the current one being stood on, so we're not needlessly sending the
+         * script every cycle.
          */
         val lastTile = p.attr[WorldMap.LAST_TILE]
         if (lastTile == null || !lastTile.sameAs(p.tile)) {

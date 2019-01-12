@@ -4,7 +4,9 @@ import com.google.common.primitives.Ints
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.message.impl.*
+import gg.rsmod.game.model.BitStorage
 import gg.rsmod.game.model.SkillSet
+import gg.rsmod.game.model.StorageBits
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
@@ -15,6 +17,7 @@ import gg.rsmod.plugins.osrs.api.*
 import gg.rsmod.plugins.osrs.content.skills.prayer.Prayer
 import gg.rsmod.plugins.osrs.content.skills.prayer.Prayers
 import gg.rsmod.plugins.osrs.service.value.ItemValueService
+import gg.rsmod.util.BitManipulation
 
 /**
  * A decoupled file that holds extensions and helper functions, related to players,
@@ -188,6 +191,25 @@ fun Player.toggleVarbit(id: Int) {
     varps.setBit(def.varp, def.startBit, def.endBit, getVarbit(id) xor 1)
 }
 
+fun Player.sendVisualVarbit(id: Int, value: Int) {
+    val def = world.definitions[VarbitDef::class.java][id]
+    val state = BitManipulation.setBit(varps.getState(def.varp), def.startBit, def.endBit, value)
+    val message = if (state < Byte.MAX_VALUE) SetSmallVarpMessage(def.varp, state) else SetBigVarpMessage(def.varp, state)
+    write(message)
+}
+
+fun Player.getStorageBit(storage: BitStorage, bits: StorageBits): Int = storage.get(this, bits)
+
+fun Player.hasStorageBit(storage: BitStorage, bits: StorageBits): Boolean = storage.get(this, bits) != 0
+
+fun Player.setStorageBit(storage: BitStorage, bits: StorageBits, value: Int) {
+    storage.set(this, bits, value)
+}
+
+fun Player.toggleStorageBit(storage: BitStorage, bits: StorageBits) {
+    storage.set(this, bits, storage.get(this, bits) xor 1)
+}
+
 fun Player.hasEquipped(slot: EquipmentType, item: Int): Boolean = equipment.hasAt(slot.id, item)
 
 fun Player.getEquipment(slot: EquipmentType): Item? = equipment[slot.id]
@@ -197,6 +219,8 @@ fun Player.getBonus(slot: BonusSlot): Int = equipmentBonuses[slot.id]
 fun Player.hasPrayerIcon(icon: PrayerIcon): Boolean = prayerIcon == icon.id
 
 fun Player.hasSkullIcon(icon: SkullIcon): Boolean = skullIcon == icon.id
+
+fun Player.isClientResizable(): Boolean = interfaces.displayMode == DisplayMode.RESIZABLE_NORMAL || interfaces.displayMode == DisplayMode.RESIZABLE_LIST
 
 fun Player.sendWorldMapTile() {
     invokeScript(1749, tile.to30BitInteger())

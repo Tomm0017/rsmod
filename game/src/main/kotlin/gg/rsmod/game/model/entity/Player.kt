@@ -412,10 +412,7 @@ open class Player(override val world: World) : Pawn(world) {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getPersistentAttr(key: String): T = (persistentAttr[key] as? T)!!
-
-    @Suppress("UNCHECKED_CAST")
-    fun <T> getPersistentNullableAttr(key: String): T? = (persistentAttr[key] as? T)
+    fun <T> getPersistentAttr(key: String): T? = (persistentAttr[key] as? T)
 
     @Suppress("UNCHECKED_CAST")
     fun <T> getPersistentOrDefaultAttr(key: String, default: T): T = (persistentAttr[key] as? T) ?: default

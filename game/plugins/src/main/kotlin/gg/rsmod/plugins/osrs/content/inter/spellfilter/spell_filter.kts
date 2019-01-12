@@ -1,11 +1,15 @@
-import gg.rsmod.plugins.osrs.api.helper.getInteractingSlot
-import gg.rsmod.plugins.osrs.api.helper.player
-import gg.rsmod.plugins.osrs.api.helper.setInterfaceSetting
-import gg.rsmod.plugins.osrs.api.helper.toggleVarbit
+import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.spellfilter.SpellFilters
 
 r.bindLogin {
     it.player().setInterfaceSetting(parent = SpellFilters.INTERFACE_ID, child = 184, range = 0..4, setting = 2)
+}
+
+r.bindButton(parent = 548, child = 54) {
+    val opt = it.getInteractingOption()
+    if (opt == 1) {
+        it.player().toggleVarbit(SpellFilters.DISABLE_FILTERS_VARBIT)
+    }
 }
 
 r.bindButton(parent = SpellFilters.INTERFACE_ID, child = 184) {

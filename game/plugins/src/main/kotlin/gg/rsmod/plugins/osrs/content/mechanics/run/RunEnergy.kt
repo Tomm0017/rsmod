@@ -5,6 +5,8 @@ import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.Skills
+import gg.rsmod.plugins.osrs.api.helper.setVarp
+import gg.rsmod.plugins.osrs.api.helper.toggleVarp
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -19,6 +21,15 @@ object RunEnergy {
     val STAMINA_BOOST = TimerKey("stamina_boost", tickOffline = false)
 
     const val RUN_ENABLED_VARP = 173
+
+    fun toggle(p: Player) {
+        if (p.runEnergy >= 1.0) {
+            p.toggleVarp(RunEnergy.RUN_ENABLED_VARP)
+        } else {
+            p.setVarp(RunEnergy.RUN_ENABLED_VARP, 0)
+            p.message("You don't have enough run energy left.")
+        }
+    }
 
     fun drain(p: Player) {
         if (p.isRunning() && p.movementQueue.hasDestination()) {

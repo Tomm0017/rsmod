@@ -1,6 +1,6 @@
 package gg.rsmod.game.model
 
-import gg.rsmod.util.DataConstants
+import gg.rsmod.util.BitManipulation
 
 /**
  * Holds all [Varp]s for a player.
@@ -45,10 +45,7 @@ class VarpSet(val maxVarps: Int) {
      * @param endBit
      * The end of the bits to get the value from.
      */
-    fun getBit(id: Int, startBit: Int, endBit: Int): Int {
-        val position = DataConstants.BIT_SIZES[endBit - startBit]
-        return ((getState(id) shr startBit) and position)
-    }
+    fun getBit(id: Int, startBit: Int, endBit: Int): Int = BitManipulation.getBit(getState(id), startBit, endBit)
 
     /**
      * Set the bits ranging from [startBit] to [endBit] to equal [value].
@@ -69,8 +66,7 @@ class VarpSet(val maxVarps: Int) {
      *
      */
     fun setBit(id: Int, startBit: Int, endBit: Int, value: Int): VarpSet {
-        val position = DataConstants.BIT_SIZES[endBit - startBit] shl startBit
-        return setState(id, (getState(id) and position.inv()) or (position and (value shl startBit)))
+        return setState(id, BitManipulation.setBit(getState(id), startBit, endBit, value))
     }
 
     fun isDirty(id: Int): Boolean {

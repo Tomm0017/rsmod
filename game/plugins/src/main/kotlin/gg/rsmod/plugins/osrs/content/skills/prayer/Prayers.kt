@@ -243,10 +243,10 @@ object Prayers {
             isActive(p, Prayer.RETRIBUTION) -> PrayerIcon.RETRIBUTION
             isActive(p, Prayer.SMITE) -> PrayerIcon.SMITE
             isActive(p, Prayer.REDEMPTION) -> PrayerIcon.REDEMPTION
-            else -> null
+            else -> PrayerIcon.NONE
         }
 
-        if (icon != null && p.prayerIcon != icon.id) {
+        if (p.prayerIcon != icon.id) {
             p.prayerIcon = icon.id
             p.addBlock(UpdateBlockType.APPEARANCE)
         }

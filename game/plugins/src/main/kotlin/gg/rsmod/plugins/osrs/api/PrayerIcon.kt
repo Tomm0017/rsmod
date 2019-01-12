@@ -4,6 +4,7 @@ package gg.rsmod.plugins.osrs.api
  * @author Tom <rspsmods@gmail.com>
  */
 enum class PrayerIcon(val id: Int) {
+    NONE(id = -1),
     PROTECT_FROM_MELEE(id = 0),
     PROTECT_FROM_MISSILES(id = 1),
     PROTECT_FROM_MAGIC(id = 2),

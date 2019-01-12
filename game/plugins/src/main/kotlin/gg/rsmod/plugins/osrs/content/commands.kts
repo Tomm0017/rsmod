@@ -182,7 +182,7 @@ r.bindCommand("getvarbits", Privilege.ADMIN_POWER) {
         }
         p.message("Varbits for varp <col=801700>$varp</col>:")
         varbits.forEach { varbit ->
-            p.message("  ${varbit.id} [bits ${varbit.startBit}-${varbit.endBit}]")
+            p.message("  ${varbit.id} [bits ${varbit.startBit}-${varbit.endBit}] [current ${p.getVarbit(varbit.id)}]")
         }
     }
 }
@@ -195,6 +195,17 @@ r.bindCommand("interface", Privilege.ADMIN_POWER) {
         val interfaceId = values[0].toInt()
         p.openInterface(interfaceId, InterfacePane.MAIN_SCREEN)
         p.message("Opening interface <col=801700>$interfaceId</col>")
+    }
+}
+
+r.bindCommand("dialogs", Privilege.ADMIN_POWER) {
+    it.suspendable {
+        it.options("test")
+        it.inputInteger("test")
+        it.messageDialog("test")
+        it.npcDialog("test", 3080)
+        it.itemDialog("test", 4151)
+        it.doubleItemDialog("test", 4151, 11802)
     }
 }
 

@@ -52,6 +52,8 @@ class AttributeSystem {
         attributes!!.remove(key)
     }
 
+    fun has(key: AttributeKey<*>): Boolean = attributes?.containsKey(key) ?: false
+
     private fun constructIfNeeded() {
         if (attributes == null) {
             attributes = hashMapOf()

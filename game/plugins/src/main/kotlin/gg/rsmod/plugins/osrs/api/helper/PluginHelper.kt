@@ -1,12 +1,11 @@
 package gg.rsmod.plugins.osrs.api.helper
 
 import gg.rsmod.game.fs.def.NpcDef
-import gg.rsmod.game.model.INTERACTING_OBJ_ATTR
-import gg.rsmod.game.model.INTERACTING_OPT_ATTR
-import gg.rsmod.game.model.INTERACTING_SLOT_ATTR
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.api.Skills
 
@@ -43,6 +42,12 @@ fun Plugin.player(): Player = ctx as Player
 fun Plugin.pawn(): Pawn = ctx as Pawn
 
 fun Plugin.getInteractingSlot(): Int = pawn().attr[INTERACTING_SLOT_ATTR]
+
+fun Plugin.getInteractingItem(): Item = pawn().attr[INTERACTING_ITEM]
+
+fun Plugin.getInteractingItemId(): Int = pawn().attr[INTERACTING_ITEM_ID]
+
+fun Plugin.getInteractingItemSlot(): Int = pawn().attr[INTERACTING_ITEM_SLOT]
 
 fun Plugin.getInteractingOption(): Int = pawn().attr[INTERACTING_OPT_ATTR]
 

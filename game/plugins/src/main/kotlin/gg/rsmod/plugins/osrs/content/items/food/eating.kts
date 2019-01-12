@@ -3,10 +3,6 @@ import gg.rsmod.plugins.osrs.content.items.food.Food
 import gg.rsmod.plugins.osrs.content.items.food.Foods
 import gg.rsmod.plugins.osrs.api.helper.player
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 Food.values().forEach { food ->
     r.bindItem(food.item, 1) {
         val p = it.player()

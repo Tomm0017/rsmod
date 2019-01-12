@@ -282,6 +282,13 @@ out-packets:
       - name: delay
         type: SHORT
 
+  - message: gg.rsmod.game.message.impl.WeightMessage
+    type: FIXED
+    opcode: 71
+    structure:
+      - name: weight
+        type: SHORT
+
 in-packets:
 
   - message: gg.rsmod.game.message.impl.CommandMessage
@@ -464,6 +471,18 @@ in-packets:
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 1
     length: 3
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 2
+    length: 14
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 3
+    length: 7
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    opcode: 4
+    length: -1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 5

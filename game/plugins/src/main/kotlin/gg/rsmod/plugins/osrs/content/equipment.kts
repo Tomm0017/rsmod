@@ -5,10 +5,6 @@ import gg.rsmod.plugins.osrs.api.helper.playSound
 import gg.rsmod.plugins.osrs.api.helper.player
 import gg.rsmod.plugins.osrs.api.helper.sendWeaponInterfaceInformation
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 val equipItemSound = 2238
 
 for (equipment in EquipmentType.values()) {

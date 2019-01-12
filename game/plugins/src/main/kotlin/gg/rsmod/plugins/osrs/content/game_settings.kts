@@ -1,11 +1,8 @@
 
 import gg.rsmod.game.message.impl.SendLogoutMessage
-import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.api.InterfacePane
+import gg.rsmod.plugins.osrs.api.OSRSGameframe
 import gg.rsmod.plugins.osrs.api.helper.*
-
-/**
- * @author Tom <rspsmods@gmail.com>
- */
 
 /**
  * Logout button.

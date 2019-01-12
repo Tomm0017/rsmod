@@ -4,10 +4,6 @@ import gg.rsmod.plugins.osrs.api.helper.player
 import gg.rsmod.plugins.osrs.api.helper.setVarp
 import gg.rsmod.plugins.osrs.api.helper.toggleVarp
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 r.bindLogin {
     it.player().timers[RunEnergy.RUN_DRAIN] = 1
 }

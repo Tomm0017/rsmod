@@ -25,38 +25,39 @@ class Launcher {
                     devProps = Paths.get("../dev-settings.yml"),
                     args = args)
 
+            //val gameService = world.getService(GameService::class.java, false).orElse(null)
+
             for (i in 0 until 1998) {
                 val player = Player(world)
                 player.username = "Test $i"
                 player.tile = Tile(world.gameContext.home).transform(world.random(-16..16), world.random(-16..16))
-                //player.register()
 
-                /*player.world.pluginExecutor.execute(player) {
-                    it.suspendable {
-                        walkPlugin(it)
+                /*gameService?.submitGameThreadJob {
+                    player.register()
+                    player.world.pluginExecutor.execute(player) {
+                        it.suspendable {
+                            walkPlugin(it)
+                        }
                     }
                 }*/
             }
         }
-    }
 
-    suspend fun walkPlugin(it: Plugin) {
-        val p = it.ctx as Player
+        private suspend fun walkPlugin(it: Plugin) {
+            val p = it.ctx as Player
 
-        val start = Tile(p.tile)
-        while (true) {
-            it.wait(10 + p.world.random(0..25))
+            val start = Tile(p.tile)
+            while (true) {
+                it.wait(10 + p.world.random(0..25))
 
-            var randomX = p.tile.x + (-6 + p.world.random(0..12))
-            var randomZ = p.tile.z + (-6 + p.world.random(0..12))
-            if (!start.isWithinRadius(Tile(randomX, randomZ), PathfindingStrategy.MAX_DISTANCE - 1)) {
-                randomX = start.x
-                randomZ = start.z
+                var randomX = p.tile.x + (-6 + p.world.random(0..12))
+                var randomZ = p.tile.z + (-6 + p.world.random(0..12))
+                if (!start.isWithinRadius(Tile(randomX, randomZ), PathfindingStrategy.MAX_DISTANCE - 1)) {
+                    randomX = start.x
+                    randomZ = start.z
+                }
+                p.walkTo(randomX, randomZ, MovementQueue.StepType.FORCED_RUN)
             }
-            p.walkTo(randomX, randomZ, MovementQueue.StepType.FORCED_RUN)
-            /*it.wait(1)
-            p.equipment.setItems(randomItems.random())
-            p.addBlock(UpdateBlockType.APPEARANCE)*/
         }
     }
 }

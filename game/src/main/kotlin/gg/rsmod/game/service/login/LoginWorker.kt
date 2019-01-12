@@ -39,7 +39,7 @@ class LoginWorker(private val boss: LoginService) : Runnable {
                     val encodeRandom = IsaacRandom(request.login.isaacSeed.map { it + 50 }.toIntArray())
                     val decodeRandom = IsaacRandom(request.login.isaacSeed)
 
-                    service.submitGameThreadJob(Runnable {
+                    service.submitGameThreadJob {
                         val loginResult: LoginResultType = when {
                             world.getPlayerForName(client.username).isPresent -> LoginResultType.ALREADY_ONLINE
                             world.players.count() >= world.players.capacity -> LoginResultType.MAX_PLAYERS
@@ -52,7 +52,7 @@ class LoginWorker(private val boss: LoginService) : Runnable {
                             request.login.channel.writeAndFlush(loginResult).addListener(ChannelFutureListener.CLOSE)
                             logger.info("User '{}' login denied with code {}.", client.username, loginResult)
                         }
-                    })
+                    }
                 } else {
                     val errorCode = when (loadResult) {
                         PlayerLoadResult.INVALID_CREDENTIALS -> LoginResultType.INVALID_CREDENTIALS

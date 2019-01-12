@@ -5,10 +5,6 @@ import gg.rsmod.plugins.osrs.api.helper.doubleItemDialog
 import gg.rsmod.plugins.osrs.api.helper.itemDialog
 import gg.rsmod.plugins.osrs.api.helper.player
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 r.bindLogin {
     val p = it.player()
     if (p.world.gameContext.initialLaunch) {

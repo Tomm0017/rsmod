@@ -182,7 +182,7 @@ object Prayers {
         } else if (opt == 1) {
             p.setInterfaceSetting(parent = 77, child = 4, from = 0, to = 29, setting = 2)
             p.openInterface(interfaceId = 77, pane = InterfacePane.PRAYER)
-            p.openTab(GameframeTab.PRAYER)
+            p.focusTab(GameframeTab.PRAYER)
         }
     }
 

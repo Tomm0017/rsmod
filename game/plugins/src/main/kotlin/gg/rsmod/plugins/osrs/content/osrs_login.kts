@@ -8,10 +8,6 @@ import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.attack.AttackTab
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 r.bindLogin {
     val p = it.player()
 

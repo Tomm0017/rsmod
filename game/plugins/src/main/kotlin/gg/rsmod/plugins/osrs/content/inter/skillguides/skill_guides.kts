@@ -1,10 +1,7 @@
-import gg.rsmod.plugins.osrs.api.*
+
+import gg.rsmod.plugins.osrs.api.InterfacePane
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.skillguides.SkillGuide
-
-/**
- * @author Tom <rspsmods@gmail.com>
- */
 
 val skillIdVarbit = 4371
 val subsectionVarbit = 4372

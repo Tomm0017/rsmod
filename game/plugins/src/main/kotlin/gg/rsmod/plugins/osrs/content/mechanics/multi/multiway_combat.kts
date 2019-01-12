@@ -1,10 +1,7 @@
-import gg.rsmod.plugins.osrs.content.mechanics.multi.MultiwayCombat
+
 import gg.rsmod.plugins.osrs.api.helper.player
 import gg.rsmod.plugins.osrs.api.helper.setVarbit
-
-/**
- * @author Tom <rspsmods@gmail.com>
- */
+import gg.rsmod.plugins.osrs.content.mechanics.multi.MultiwayCombat
 
 MultiwayCombat.MULTI_REGIONS.forEach { region ->
     r.bindRegionEnter(region) {

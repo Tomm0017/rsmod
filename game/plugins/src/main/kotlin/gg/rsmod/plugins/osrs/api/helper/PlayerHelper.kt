@@ -30,7 +30,7 @@ fun Player.invokeScript(id: Int, vararg args: Any) {
     write(InvokeScriptMessage(id, *args))
 }
 
-fun Player.openTab(tab: GameframeTab) {
+fun Player.focusTab(tab: GameframeTab) {
     invokeScript(915, tab.id)
 }
 
@@ -66,12 +66,32 @@ fun Player.setInterfaceAnim(parent: Int, child: Int, anim: Int) {
     write(SetInterfaceAnimationMessage(hash = ((parent shl 16) or child), anim = anim))
 }
 
+/**
+ * Use this method to open an interface id on top of an [InterfacePane]. This
+ * method should always be preferred over
+ *
+ * ```
+ * openInterface(parent: Int, child: Int, interfaceId: Int, type: Int, mainInterface: Boolean)
+ * ```
+ *
+ * as it holds logic that must be handled for certain [InterfacePane]s.
+ */
 fun Player.openInterface(interfaceId: Int, pane: InterfacePane) {
     val child = getChildId(pane, interfaces.displayMode)
     val parent = getDisplayInterfaceId(interfaces.displayMode)
     openInterface(parent, child, interfaceId, if (pane.clickThrough) 1 else 0, mainInterface = pane == InterfacePane.MAIN_SCREEN)
 }
 
+/**
+ * Use this method to "re-open" an [InterfacePane]. This method should always
+ * be preferred over
+ *
+ * ```
+ * openInterface(parent: Int, child: Int, interfaceId: Int, type: Int, mainInterface: Boolean)
+ * ````
+ *
+ * as it holds logic that must be handled for certain [InterfacePane]s.
+ */
 fun Player.openInterface(pane: InterfacePane) {
     val child = getChildId(pane, interfaces.displayMode)
     val parent = getDisplayInterfaceId(interfaces.displayMode)
@@ -87,15 +107,6 @@ fun Player.openInterface(parent: Int, child: Int, interfaceId: Int, type: Int = 
     write(OpenInterfaceMessage(parent, child, interfaceId, type))
 }
 
-fun Player.sendDisplayInterface(displayMode: DisplayMode) {
-    interfaces.setVisible(getDisplayInterfaceId(interfaces.displayMode), false)
-    interfaces.displayMode = displayMode
-
-    val interfaceId = getDisplayInterfaceId(displayMode)
-    interfaces.setVisible(interfaceId, true)
-    write(SetDisplayInterfaceMessage(interfaceId))
-}
-
 fun Player.closeInterface(interfaceId: Int) {
     val hash = interfaces.close(interfaceId)
     if (hash != -1) {
@@ -106,6 +117,15 @@ fun Player.closeInterface(interfaceId: Int) {
 fun Player.closeInterface(parent: Int, child: Int) {
     interfaces.close(parent, child)
     write(CloseInterfaceMessage((parent shl 16) or child))
+}
+
+fun Player.sendDisplayInterface(displayMode: DisplayMode) {
+    interfaces.setVisible(getDisplayInterfaceId(interfaces.displayMode), false)
+    interfaces.displayMode = displayMode
+
+    val interfaceId = getDisplayInterfaceId(displayMode)
+    interfaces.setVisible(interfaceId, true)
+    write(SetDisplayInterfaceMessage(interfaceId))
 }
 
 fun Player.sendRunEnergy() {

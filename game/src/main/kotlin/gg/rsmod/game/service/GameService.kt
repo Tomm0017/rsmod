@@ -57,7 +57,7 @@ class GameService : Service() {
      * A list of jobs that will be executed on the next cycle after being
      * submitted.
      */
-    private val gameThreadJobs = ConcurrentLinkedQueue<Runnable>()
+    private val gameThreadJobs = ConcurrentLinkedQueue<Function0<Unit>>()
 
     /**
      * The amount of ticks that have gone by since the last debug log.
@@ -158,7 +158,7 @@ class GameService : Service() {
     /**
      * Submits a job that must be performed on the game-thread.
      */
-    fun submitGameThreadJob(job: Runnable) {
+    fun submitGameThreadJob(job: Function0<Unit>) {
         gameThreadJobs.offer(job)
     }
 
@@ -179,7 +179,7 @@ class GameService : Service() {
          */
         gameThreadJobs.forEach { job ->
             try {
-                job.run()
+                job.invoke()
             } catch (e: Exception) {
                 logger.error("Error executing game-thread job.", e)
             }

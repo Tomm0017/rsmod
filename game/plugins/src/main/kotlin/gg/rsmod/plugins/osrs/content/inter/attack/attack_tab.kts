@@ -2,38 +2,51 @@
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.helper.player
 import gg.rsmod.plugins.osrs.api.helper.setVarp
-import gg.rsmod.plugins.osrs.api.helper.toggleVarbit
+import gg.rsmod.plugins.osrs.api.helper.toggleVarp
 import gg.rsmod.plugins.osrs.content.inter.attack.AttackTab
 
 /**
- * @author Tom <rspsmods@gmail.com>
+ * Attack style buttons
  */
-
-r.bindButton(593, 3) {
+r.bindButton(parent = 593, child = 3) {
     val p = it.player()
     p.setVarp(AttackTab.ATTACK_STYLE_VARP, 0)
 }
 
-r.bindButton(593, 7) {
+r.bindButton(parent = 593, child = 7) {
     val p = it.player()
     p.setVarp(AttackTab.ATTACK_STYLE_VARP, 1)
 }
 
-r.bindButton(593, 11) {
+r.bindButton(parent = 593, child = 11) {
     val p = it.player()
     p.setVarp(AttackTab.ATTACK_STYLE_VARP, 2)
 }
 
-r.bindButton(593, 15) {
+r.bindButton(parent = 593, child = 15) {
     val p = it.player()
     p.setVarp(AttackTab.ATTACK_STYLE_VARP, 3)
 }
 
-r.bindButton(593, 27) {
+/**
+ * Toggle auto-retaliate button.
+ */
+r.bindButton(parent = 593, child = 29) {
     val p = it.player()
-    p.toggleVarbit(AttackTab.AUTO_RETALIATE_VARP)
+    p.toggleVarp(AttackTab.AUTO_RETALIATE_VARP)
 }
 
+/**
+ * Toggle special attack.
+ */
+r.bindButton(parent = 593, child = 35) {
+    val p = it.player()
+    p.toggleVarp(AttackTab.SPECIAL_ATTACK_VARP)
+}
+
+/**
+ * Disable special attack when switching weapons.
+ */
 r.bindEquipSlot(EquipmentType.WEAPON.id) {
-    it.player().setVarp(AttackTab.ENABLED_VARP, 0)
+    it.player().setVarp(AttackTab.SPECIAL_ATTACK_VARP, 0)
 }

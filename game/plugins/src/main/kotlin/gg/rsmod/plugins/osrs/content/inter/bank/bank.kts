@@ -3,10 +3,6 @@ import gg.rsmod.game.model.Privilege
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.bank.Bank
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 r.bindCommand("obank", Privilege.ADMIN_POWER) {
     Bank.open(it.player())
 }

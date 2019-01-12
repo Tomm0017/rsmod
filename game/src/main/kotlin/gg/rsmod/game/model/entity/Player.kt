@@ -191,21 +191,8 @@ open class Player(override val world: World) : Pawn(world) {
             bank.dirty = false
         }
 
-        if (calculateWeight) {
-            world.getService(ItemStatsService::class.java, searchSubclasses = false).ifPresent { s ->
-                val inventoryWeight = inventory.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
-                val equipmentWeight = equipment.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
-                weight = inventoryWeight + equipmentWeight
-
-                if (calculateBonuses) {
-                    Arrays.fill(equipmentBonuses, 0)
-                    for (i in 0 until equipment.capacity) {
-                        val item = equipment[i] ?: continue
-                        val stats = s.get(item.id) ?: continue
-                        stats.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
-                    }
-                }
-            }
+        if (calculateWeight || calculateBonuses) {
+            calculateWeightAndBonus(weight = calculateWeight, bonuses = calculateBonuses)
         }
 
         for (i in 0 until getSkills().maxSkills) {
@@ -338,6 +325,27 @@ open class Player(override val world: World) : Pawn(world) {
 
         initiated = true
         world.plugins.executeLogin(this)
+    }
+
+    fun calculateWeightAndBonus(weight: Boolean, bonuses: Boolean = true) {
+        world.getService(ItemStatsService::class.java, searchSubclasses = false).ifPresent { s ->
+
+            if (weight) {
+                val inventoryWeight = inventory.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
+                val equipmentWeight = equipment.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
+                this.weight = inventoryWeight + equipmentWeight
+                write(WeightMessage(this.weight.toInt()))
+            }
+
+            if (bonuses) {
+                Arrays.fill(equipmentBonuses, 0)
+                for (i in 0 until equipment.capacity) {
+                    val item = equipment[i] ?: continue
+                    val stats = s.get(item.id) ?: continue
+                    stats.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
+                }
+            }
+        }
     }
 
     fun setLargeViewport(largeViewport: Boolean) {

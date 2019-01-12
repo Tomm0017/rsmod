@@ -4,9 +4,6 @@ import gg.rsmod.plugins.osrs.content.skills.woodcutting.TreeType
 import gg.rsmod.plugins.osrs.content.skills.woodcutting.Woodcutting
 import gg.rsmod.plugins.osrs.content.skills.woodcutting.Woodcutting.Tree
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
 val trees = arrayListOf(
         Tree(TreeType.TREE, obj = 1278, trunk = 1342),
         Tree(TreeType.TREE, obj = 1276, trunk = 1342),

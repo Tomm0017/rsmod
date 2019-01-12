@@ -15,10 +15,6 @@ import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 r.bindCommand("empty") {
     it.player().inventory.removeAll()
 }

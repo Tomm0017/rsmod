@@ -143,7 +143,7 @@ bindSetting(child = 83) {
         return@bindSetting
     }
     p.setMainInterfaceBackground(color = -1, transparency = -1)
-    p.setInterfaceSetting(parent = 121, child = 112, range = 0..13, setting = 2)
+    p.setInterfaceSetting(parent = 121, child = 111, range = 0..13, setting = 2)
     p.openInterface(interfaceId = 121, pane = InterfacePane.MAIN_SCREEN)
 }
 

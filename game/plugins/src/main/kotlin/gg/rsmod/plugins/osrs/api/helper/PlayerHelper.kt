@@ -182,7 +182,7 @@ fun Player.sendDisplayInterface(displayMode: DisplayMode) {
         interfaces.setVisible(parent = getDisplayInterfaceId(interfaces.displayMode), child = getChildId(InterfacePane.MAIN_SCREEN, interfaces.displayMode), visible = false)
     }
     val interfaceId = getDisplayInterfaceId(displayMode)
-    interfaces.setVisible(parent = getDisplayInterfaceId(displayMode), child = getChildId(InterfacePane.MAIN_SCREEN, displayMode), visible = true)
+    interfaces.setVisible(parent = getDisplayInterfaceId(displayMode), child = 0, visible = true)
     write(SetDisplayInterfaceMessage(interfaceId))
 }
 

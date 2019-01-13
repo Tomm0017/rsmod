@@ -119,10 +119,9 @@ class Interfaces(val player: Player) {
         if (found != null) {
             player.world.plugins.executeInterfaceClose(player, found)
             return found
-        } else {
-            logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
-            return -1
         }
+        logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
+        return -1
     }
 
     /**

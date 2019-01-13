@@ -10,6 +10,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
+import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.service.serializer.PlayerLoadResult
 import gg.rsmod.game.service.serializer.PlayerSaveData
 import gg.rsmod.game.service.serializer.PlayerSerializerService
@@ -65,6 +66,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.tile = Tile(data.x, data.z, data.height)
             client.privilege = client.world.privileges.get(data.privilege) ?: Privilege.DEFAULT
             client.runEnergy = data.runEnergy
+            client.interfaces.displayMode = DisplayMode.values().firstOrNull { it.id == data.displayMode } ?: DisplayMode.FIXED
             data.skills.forEach { skill ->
                 client.getSkills().setXp(skill.skill, skill.xp)
                 client.getSkills().setCurrentLevel(skill.skill, skill.lvl)
@@ -103,8 +105,8 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     override fun saveClientData(client: Client): Boolean {
         val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername,
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
-                privilege = client.privilege.id, runEnergy = client.runEnergy, skills = getSkills(client),
-                inventory = client.inventory.toMap(), equipment = client.equipment.toMap(),
+                privilege = client.privilege.id, runEnergy = client.runEnergy, displayMode = client.interfaces.displayMode.id,
+                skills = getSkills(client), inventory = client.inventory.toMap(), equipment = client.equipment.toMap(),
                 bank = client.bank.toMap(), attributes = client.__getPersistentAttrMap(),
                 timers = client.timers.toPersistentTimers(), varps = client.varps.getAll().filter { it.state != 0 })
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))

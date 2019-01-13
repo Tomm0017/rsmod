@@ -46,6 +46,7 @@ class MessageEncoderSet {
         put(RemoveObjectEncoder(), RemoveObjectMessage::class.java)
         put(SpawnEntityGroupsEncoder(), SpawnEntityGroupsMessage::class.java)
         put(WeightEncoder(), WeightMessage::class.java)
+        put(InterfaceSwitchEncoder(), InterfaceSwitchMessage::class.java)
     }
 
     private fun <T: Message> put(encoder: MessageEncoder<T>, message: Class<out T>) {

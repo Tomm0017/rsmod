@@ -137,12 +137,52 @@ fun Player.closeInterface(parent: Int, child: Int) {
 
 fun Player.isInterfaceVisible(interfaceId: Int): Boolean = interfaces.isVisible(interfaceId)
 
+fun Player.toggleDisplayInterface(newMode: DisplayMode) {
+    if (interfaces.displayMode != newMode) {
+        val oldMode = interfaces.displayMode
+        interfaces.displayMode = newMode
+
+        sendDisplayInterface(newMode)
+
+        InterfacePane.values().filter { it.isSwitchable() }.forEach { pane ->
+            val fromParent = getDisplayInterfaceId(oldMode)
+            val fromChild = getChildId(pane, oldMode)
+            val toParent = getDisplayInterfaceId(newMode)
+            val toChild = getChildId(pane, newMode)
+
+            /**
+             * Remove the interfaces from the old display mode's chilren and add
+             * them to the new display mode's children.
+             */
+            if (interfaces.isOccupied(parent = fromParent, child = fromChild)) {
+                val oldInterface = interfaces.close(parent = fromParent, child = fromChild)
+                if (oldInterface != -1) {
+                    if (pane != InterfacePane.MAIN_SCREEN) {
+                        interfaces.open(parent = toParent, child = toChild, interfaceId = oldInterface)
+                    } else {
+                        interfaces.openMain(parent = toParent, child = toChild, interfaceId = oldInterface)
+                    }
+                }
+            }
+
+            write(InterfaceSwitchMessage(from = (fromParent shl 16) or fromChild, to = (toParent shl 16) or toChild))
+        }
+
+        if (newMode.isResizable()) {
+            setMainInterfaceBackground(color = -1, transparency = -1)
+        }
+        if (oldMode.isResizable()) {
+            openInterface(parent = getDisplayInterfaceId(newMode), child = getChildId(InterfacePane.MAIN_SCREEN, newMode), interfaceId = 60, type = 0)
+        }
+    }
+}
+
 fun Player.sendDisplayInterface(displayMode: DisplayMode) {
     if (displayMode != interfaces.displayMode) {
-        interfaces.setVisible(getDisplayInterfaceId(interfaces.displayMode), false)
+        interfaces.setVisible(parent = getDisplayInterfaceId(interfaces.displayMode), child = getChildId(InterfacePane.MAIN_SCREEN, interfaces.displayMode), visible = false)
     }
     val interfaceId = getDisplayInterfaceId(displayMode)
-    interfaces.setVisible(interfaceId, true)
+    interfaces.setVisible(parent = getDisplayInterfaceId(displayMode), child = getChildId(InterfacePane.MAIN_SCREEN, displayMode), visible = true)
     write(SetDisplayInterfaceMessage(interfaceId))
 }
 

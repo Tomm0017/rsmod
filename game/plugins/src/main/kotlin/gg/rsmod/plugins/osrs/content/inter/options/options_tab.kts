@@ -1,4 +1,6 @@
 
+import gg.rsmod.game.model.DISPLAY_MODE_CHANGE_ATTR
+import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.api.InterfacePane
 import gg.rsmod.plugins.osrs.api.OSRSGameframe
@@ -9,6 +11,13 @@ fun bindSetting(child: Int, plugin: Function1<Plugin, Unit>) {
     r.bindButton(parent = OptionsTab.INTERFACE_ID, child = child) {
         plugin.invoke(it)
     }
+}
+
+r.bindLogin {
+    val p = it.player()
+
+    p.setInterfaceSetting(parent = OptionsTab.INTERFACE_ID, child = 106, range = 1..4, setting = 2) // Player option priority
+    p.setInterfaceSetting(parent = OptionsTab.INTERFACE_ID, child = 107, range = 1..4, setting = 2) // Npc option priority
 }
 
 /**
@@ -31,6 +40,19 @@ for (offset in 0..3) {
     bindSetting(child = 18 + offset) {
         it.player().setVarp(OSRSGameframe.SCREEN_BRIGHTNESS_VARP, offset + 1)
     }
+}
+
+/**
+ * Changing display modes (fixed, resizable).
+ */
+r.bindDisplayModeChange {
+    val p = it.player()
+    val change = p.attr[DISPLAY_MODE_CHANGE_ATTR]
+    val mode = when (change) {
+        2 -> if (p.getVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT) == 1) DisplayMode.RESIZABLE_LIST else DisplayMode.RESIZABLE_NORMAL
+        else -> DisplayMode.FIXED
+    }
+    p.toggleDisplayInterface(mode)
 }
 
 /**
@@ -159,15 +181,15 @@ bindSetting(child = 85) {
  */
 bindSetting(child = 106) {
     val slot = it.getInteractingSlot()
-    it.player().setVarp(OSRSGameframe.PLAYER_ATTACK_PRIORITY_VARP, slot)
+    it.player().setVarp(OSRSGameframe.PLAYER_ATTACK_PRIORITY_VARP, slot - 1)
 }
 
 /**
- * Set player option priority.
+ * Set npc option priority.
  */
 bindSetting(child = 107) {
     val slot = it.getInteractingSlot()
-    it.player().setVarp(OSRSGameframe.NPC_ATTACK_PRIORITY_VARP, slot)
+    it.player().setVarp(OSRSGameframe.NPC_ATTACK_PRIORITY_VARP, slot - 1)
 }
 
 /**

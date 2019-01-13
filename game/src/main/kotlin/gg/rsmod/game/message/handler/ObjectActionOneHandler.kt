@@ -1,5 +1,6 @@
 package gg.rsmod.game.message.handler
 
+import gg.rsmod.game.action.ObjectPathAction
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.ObjectActionOneMessage
 import gg.rsmod.game.model.EntityType
@@ -8,7 +9,6 @@ import gg.rsmod.game.model.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.GameObject
-import gg.rsmod.game.action.ObjectPathAction
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -41,11 +41,11 @@ class ObjectActionOneHandler : MessageHandler<ObjectActionOneMessage> {
          * [GameObject] doesn't exist in the region.
          */
         if (obj == null) {
-            logAntiCheat(client, "Object Action 1: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
+            logAntiCheat(client, "Object action 1: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
             return
         }
 
-        log(client, "Object Action 1: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
+        log(client, "Object action 1: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
 
         client.interruptPlugins()
         client.attr.put(INTERACTING_OPT_ATTR, 1)

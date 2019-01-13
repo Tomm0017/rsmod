@@ -92,10 +92,11 @@ class Interfaces(val player: Player) {
      * you will have to define a specific method or function that will call this
      * method and also send a [gg.rsmod.game.message.Message] to signal the client
      * to close the interface.
+     *
+     * @return
+     * The interface associated with the hash, otherwise -1
      */
-    fun close(parent: Int, child: Int) {
-        closeByHash((parent shl 16) or child)
-    }
+    fun close(parent: Int, child: Int): Int = closeByHash((parent shl 16) or child)
 
     /**
      * Closes any interface that is currently being drawn on the [hash].
@@ -109,13 +110,18 @@ class Interfaces(val player: Player) {
      * you will have to define a specific method or function that will call this
      * method and also send a [gg.rsmod.game.message.Message] to signal the client
      * to close the interface.
+     *
+     * @return
+     * The interface associated with the hash, otherwise -1
      */
-    private fun closeByHash(hash: Int) {
+    private fun closeByHash(hash: Int): Int {
         val found = visible.remove(hash)
         if (found != null) {
             player.world.plugins.executeInterfaceClose(player, found)
+            return found
         } else {
             logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
+            return -1
         }
     }
 
@@ -138,6 +144,8 @@ class Interfaces(val player: Player) {
         }
     }
 
+    fun isOccupied(parent: Int, child: Int): Boolean = visible.containsKey((parent shl 16) or child)
+
     /**
      * Checks if the [interfaceId] is currently visible on any interface.
      */
@@ -147,11 +155,12 @@ class Interfaces(val player: Player) {
      * Set an interface as being visible. This should be reserved for settings
      * interfaces such as display mode as visible.
      */
-    fun setVisible(interfaceId: Int, isVisible: Boolean) {
-        if (isVisible) {
-            visible[interfaceId shl 16] = interfaceId
+    fun setVisible(parent: Int, child: Int, visible: Boolean) {
+        val hash = (parent shl 16) or child
+        if (visible) {
+            this.visible[hash] = parent
         } else {
-            visible.remove(interfaceId shl 16)
+            this.visible.remove(hash)
         }
     }
 }

@@ -12,7 +12,7 @@ import gg.rsmod.game.model.entity.Client
 class ClickMapHandler : MessageHandler<ClickMapMessage> {
 
     override fun handle(client: Client, message: ClickMapMessage) {
-        log(client, "Click Map: x=%d, z=%d, type=%d", message.x, message.z, message.movementType)
+        log(client, "Click map: x=%d, z=%d, type=%d", message.x, message.z, message.movementType)
         client.interruptPlugins()
 
         if (message.movementType == 2 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {

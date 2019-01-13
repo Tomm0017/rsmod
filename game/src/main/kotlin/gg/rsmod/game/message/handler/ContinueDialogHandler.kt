@@ -10,7 +10,7 @@ import gg.rsmod.game.model.entity.Client
 class ContinueDialogHandler : MessageHandler<ContinueDialogMessage> {
 
     override fun handle(client: Client, message: ContinueDialogMessage) {
-        log(client, "Continue Dialog: parent=%d, child=%d, slot=%d", message.parent, message.child, message.slot)
+        log(client, "Continue dialog: parent=%d, child=%d, slot=%d", message.parent, message.child, message.slot)
         client.world.pluginExecutor.submitReturnType(client, message.slot)
     }
 }

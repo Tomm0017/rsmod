@@ -19,6 +19,11 @@ import gg.rsmod.game.model.item.Item
 val NEW_ACCOUNT_ATTR = AttributeKey<Boolean>()
 
 /**
+ * The display mode that the player has submitted as a message.
+ */
+val DISPLAY_MODE_CHANGE_ATTR = AttributeKey<Int>()
+
+/**
  * The command that the player has submitted to the server using the '::' prefix.
  */
 val COMMAND_ATTR = AttributeKey<String>()

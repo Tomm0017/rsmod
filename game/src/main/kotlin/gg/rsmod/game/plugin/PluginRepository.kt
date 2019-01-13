@@ -38,6 +38,11 @@ class PluginRepository {
     private var pluginCount = 0
 
     /**
+     * The plugin that will execute when changing display modes.
+     */
+    private var displayModePlugin: Function1<Plugin, Unit>? = null
+
+    /**
      * A list of plugins that will be executed upon login.
      */
     private val loginPlugins = arrayListOf<Function1<Plugin, Unit>>()
@@ -154,6 +159,7 @@ class PluginRepository {
     fun scanForPlugins(packedPath: String, world: World, analyzeMode: Boolean) {
         analyzer = if (analyzeMode) PluginAnalyzer(this) else null
 
+        displayModePlugin = null
         loginPlugins.clear()
         timerPlugins.clear()
         interfaceClose.clear()
@@ -226,6 +232,20 @@ class PluginRepository {
      * Get the total amount of plugins loaded from the plugins path.
      */
     fun getPluginCount(): Int = pluginCount
+
+    fun bindDisplayModeChange(plugin: Function1<Plugin, Unit>) {
+        if (displayModePlugin != null) {
+            logger.error("Display mode change is already bound to a plugin")
+            throw IllegalStateException("Display mode change is already bound to a plugin")
+        }
+        displayModePlugin = plugin
+    }
+
+    fun executeDisplayModeChange(p: Player) {
+        if (displayModePlugin != null) {
+            p.world.pluginExecutor.execute(p, displayModePlugin!!)
+        }
+    }
 
     fun bindLogin(plugin: Function1<Plugin, Unit>) {
         loginPlugins.add(plugin)

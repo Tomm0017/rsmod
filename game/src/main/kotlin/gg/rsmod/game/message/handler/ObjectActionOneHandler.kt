@@ -9,6 +9,7 @@ import gg.rsmod.game.model.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.GameObject
+import gg.rsmod.game.model.entity.Player
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -19,7 +20,7 @@ class ObjectActionOneHandler : MessageHandler<ObjectActionOneMessage> {
         /**
          * If player can't move, we don't do anything.
          */
-        if (!client.canMove()) {
+        if (!client.lock.canMove()) {
             return
         }
 
@@ -27,7 +28,7 @@ class ObjectActionOneHandler : MessageHandler<ObjectActionOneMessage> {
          * If tile is too far away, don't process it.
          */
         val tile = Tile(message.x, message.z, client.tile.height)
-        if (!tile.viewableFrom(client.tile, 24)) {
+        if (!tile.viewableFrom(client.tile, Player.TILE_VIEW_DISTANCE)) {
             return
         }
 

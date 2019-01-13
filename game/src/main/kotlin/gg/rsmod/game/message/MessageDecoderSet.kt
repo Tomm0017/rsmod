@@ -41,6 +41,8 @@ class MessageDecoderSet {
         put(ItemActionTwoMessage::class.java, ItemActionTwoDecoder(), ItemActionTwoHandler(), structures)
         put(IntegerInputMessage::class.java, IntegerInputDecoder(), IntegerInputHandler(), structures)
         put(SearchedItemMessage::class.java, SearchedItemDecoder(), SearchedItemHandler(), structures)
+        put(DropItemMessage::class.java, DropItemDecoder(), DropItemHandler(), structures)
+        put(GroundItemActionThreeMessage::class.java, GroundItemActionThreeDecoder(), GroundItemActionThreeHandler(), structures)
     }
 
     private fun <T: Message> put(messageType: Class<T>, decoderType: MessageDecoder<T>, handlerType: MessageHandler<T>, structures: MessageStructureSet) {

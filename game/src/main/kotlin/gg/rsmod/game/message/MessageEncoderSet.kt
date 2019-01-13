@@ -47,6 +47,9 @@ class MessageEncoderSet {
         put(SpawnEntityGroupsEncoder(), SpawnEntityGroupsMessage::class.java)
         put(WeightEncoder(), WeightMessage::class.java)
         put(InterfaceSwitchEncoder(), InterfaceSwitchMessage::class.java)
+        put(SpawnGroundItemEncoder(), SpawnGroundItemMessage::class.java)
+        put(RemoveGroundItemEncoder(), RemoveGroundItemMessage::class.java)
+        put(UpdateGroundItemEncoder(), UpdateGroundItemMessage::class.java)
     }
 
     private fun <T: Message> put(encoder: MessageEncoder<T>, message: Class<out T>) {

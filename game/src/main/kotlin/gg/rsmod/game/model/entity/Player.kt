@@ -29,6 +29,13 @@ open class Player(override val world: World) : Pawn(world) {
          * How many tiles a player can 'see' at a time when in a 'large' viewport.
          */
         const val LARGE_VIEW_DISTANCE = 127
+
+        /**
+         * How many tiles in each direction a player can see at a given time.
+         * This should be as far as players can see entities such as ground items
+         * and objects.
+         */
+        const val TILE_VIEW_DISTANCE = 32
     }
 
     /**
@@ -36,7 +43,7 @@ open class Player(override val world: World) : Pawn(world) {
      * of our [Player] when registered to the [World], it is a value determined
      * when the [Player] first registers their account.
      */
-    var id = -1
+    var uid: Any? = null
 
     var username = ""
 

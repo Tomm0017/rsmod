@@ -3,6 +3,15 @@
 
 out-packets:
 
+  - message: gg.rsmod.game.message.impl.InterfaceSwitchMessage
+    type: FIXED
+    opcode: 82
+    structure:
+      - name: to
+        type: INT
+      - name: from
+        type: INT
+
   - message: gg.rsmod.game.message.impl.LoginRegionMessage
     type: VARIABLE_SHORT
     opcode: 0
@@ -72,10 +81,10 @@ out-packets:
     type: VARIABLE_SHORT
     opcode: 17
     structure:
-      - name: x
+      - name: z
         type: BYTE
         trans: SUBTRACT
-      - name: z
+      - name: x
         type: BYTE
         trans: NEGATE
       - name: payload
@@ -105,6 +114,51 @@ out-packets:
       - name: settings
         type: BYTE
         trans: SUBTRACT
+
+  - message: gg.rsmod.game.message.impl.SpawnGroundItemMessage
+    type: FIXED
+    opcode: 26
+    structure:
+      - name: amount
+        type: SHORT
+        trans: ADD
+      - name: item
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: tile
+        type: BYTE
+        trans: ADD
+
+  - message: gg.rsmod.game.message.impl.RemoveGroundItemMessage
+    type: FIXED
+    opcode: 14
+    structure:
+      - name: tile
+        type: BYTE
+        tran: ADD
+      - name: item
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+
+  - message: gg.rsmod.game.message.impl.UpdateGroundItemMessage
+    type: FIXED
+    opcode: 15
+    structure:
+      - name: item
+        order: LITTLE
+        type: SHORT
+      - name: new_amount
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: old_amount
+        order: LITTLE
+        type: SHORT
+      - name: tile
+        type: BYTE
+        trans: ADD
 
   - message: gg.rsmod.game.message.impl.SetSmallVarpMessage
     type: FIXED
@@ -290,6 +344,38 @@ out-packets:
         type: SHORT
 
 in-packets:
+
+  - message: gg.rsmod.game.message.impl.GroundItemActionThreeMessage
+    type: FIXED
+    opcode: 6
+    length: 7
+    structure:
+      - name: z
+        order: LITTLE
+        type: SHORT
+      - name: movement_type
+        type: BYTE
+        trans: SUBTRACT
+      - name: x
+        order: LITTLE
+        type: SHORT
+      - name: item
+        order: LITTLE
+        type: SHORT
+
+  - message: gg.rsmod.game.message.impl.DropItemMessage
+    type: FIXED
+    opcode: 58
+    length: 8
+    structure:
+      - name: hash
+        type: INT
+      - name: slot
+        type: SHORT
+        sign: UNSIGNED
+      - name: item
+        type: SHORT
+        sign: UNSIGNED
 
   - message: gg.rsmod.game.message.impl.SearchedItemMessage
     type: FIXED
@@ -495,10 +581,6 @@ in-packets:
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 5
-    length: 7
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    opcode: 6
     length: 7
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message

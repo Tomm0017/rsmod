@@ -61,6 +61,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             }
 
             client.loginUsername = data.username
+            client.uid = data.username
             client.username = data.displayName
             client.passwordHash = data.passwordHash
             client.tile = Tile(data.x, data.z, data.height)

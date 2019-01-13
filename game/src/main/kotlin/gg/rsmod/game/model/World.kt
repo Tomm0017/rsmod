@@ -4,8 +4,10 @@ import gg.rsmod.game.DevContext
 import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.DefinitionSet
+import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.entity.GameObject
+import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.region.ChunkSet
@@ -82,8 +84,14 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      */
     var xteaKeyService: XteaKeyService? = null
 
+    /**
+     * The [UpdateBlockSet] for players.
+     */
     val playerUpdateBlocks = UpdateBlockSet()
 
+    /**
+     * The [UpdateBlockSet] for npcs.
+     */
     val npcUpdateBlocks = UpdateBlockSet()
 
     /**
@@ -122,7 +130,6 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     fun spawn(obj: GameObject) {
         val tile = obj.tile
-
         val chunk = chunks.getForTile(tile)
 
         val oldObj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.type == obj.type }
@@ -135,13 +142,41 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     fun remove(obj: GameObject) {
         val tile = obj.tile
-
         val chunk = chunks.getForTile(tile)
 
         chunk.removeEntity(this, obj, tile)
     }
 
+    fun spawn(item: GroundItem) {
+        val tile = item.tile
+        val chunk = chunks.getForTile(tile)
+
+        val def = definitions.get(ItemDef::class.java, item.item)
+
+        if (def.isStackable()) {
+            val oldItem = chunk.getEntities<GroundItem>(tile, EntityType.GROUND_ITEM).firstOrNull { it.item == item.item && it.owner == item.owner }
+            if (oldItem != null) {
+                val oldAmount = oldItem.amount
+                val newAmount = Math.max(Int.MAX_VALUE.toLong(), item.amount.toLong() + oldItem.amount.toLong()).toInt()
+                oldItem.amount = newAmount
+                chunk.updateGroundItem(this, item, oldAmount, newAmount)
+                return
+            }
+        }
+
+        chunk.addEntity(this, item, tile)
+    }
+
+    fun remove(item: GroundItem) {
+        val tile = item.tile
+        val chunk = chunks.getForTile(tile)
+
+        chunk.removeEntity(this, item, tile)
+    }
+
     fun isSpawned(obj: GameObject): Boolean = chunks.getForTile(obj.tile).getEntities<GameObject>(obj.tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).contains(obj)
+
+    fun isSpawned(item: GroundItem): Boolean = chunks.getForTile(item.tile).getEntities<GroundItem>(item.tile, EntityType.GROUND_ITEM).contains(item)
 
     fun getPlayerForName(username: String): Optional<Player> {
         for (i in 0 until players.capacity) {

@@ -31,6 +31,11 @@ abstract class Pawn(open val world: World) : Entity() {
     var lastTile: Tile? = null
 
     /**
+     * The last tile that was set for the pawn's [gg.rsmod.game.model.region.Chunk].
+     */
+    var lastChunkTile: Tile? = null
+
+    /**
      * Whether or not this pawn can teleported this game cycle.
      */
     var teleport = false
@@ -102,8 +107,6 @@ abstract class Pawn(open val world: World) : Entity() {
         addBlock(UpdateBlockType.APPEARANCE)
     }
 
-    fun canMove(): Boolean = !isDead() && lock.canMove()
-
     /**
      * Handles the walking to the specified [x] and [z] coordinates. The height
      * level used is the one this pawn is currently on.
@@ -152,7 +155,7 @@ abstract class Pawn(open val world: World) : Entity() {
         }
     }
 
-    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, validSurroundingTiles: Array<Tile>?) {
+    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, validSurroundingTiles: Array<Tile>? = null) {
         walkTo(tile.x, tile.z, stepType, validSurroundingTiles)
     }
 

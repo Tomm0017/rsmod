@@ -1,5 +1,6 @@
 package gg.rsmod.game.task
 
+import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.GameService
 
@@ -13,11 +14,19 @@ class ChunkCreationTask : GameTask {
 
     override fun execute(world: World, service: GameService) {
         world.players.forEach { p ->
-            val oldChunk = if (p.lastTile != null) world.chunks.getOrCreate(p.lastTile!!.toChunkCoords(), create = false) else null
-            val newChunk = world.chunks.getOrCreate(p.tile.toChunkCoords(), create = true)!!
+            if (p.lastChunkTile == null || !p.tile.sameAs(p.lastChunkTile!!)) {
 
-            oldChunk?.removeEntity(world, p, p.lastTile!!)
-            newChunk.addEntity(world, p, p.tile)
+                if (p.lastChunkTile != null) {
+                    val tile = p.lastChunkTile!!
+                    val oldChunk = world.chunks.getOrCreate(tile.toChunkCoords(), create = false)
+                    oldChunk?.removeEntity(world, p, tile)
+                }
+
+                val newChunk = world.chunks.getOrCreate(p.tile.toChunkCoords(), create = true)!!
+                newChunk.addEntity(world, p, p.tile)
+
+                p.lastChunkTile = Tile(p.tile)
+            }
         }
     }
 }

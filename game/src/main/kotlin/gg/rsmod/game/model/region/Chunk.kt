@@ -11,14 +11,8 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.collision.CollisionMatrix
 import gg.rsmod.game.model.collision.CollisionUpdate
-import gg.rsmod.game.model.entity.Client
-import gg.rsmod.game.model.entity.Entity
-import gg.rsmod.game.model.entity.GameObject
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.region.update.EntityUpdate
-import gg.rsmod.game.model.region.update.EntityUpdateType
-import gg.rsmod.game.model.region.update.ObjectRemoveUpdate
-import gg.rsmod.game.model.region.update.ObjectSpawnUpdate
+import gg.rsmod.game.model.entity.*
+import gg.rsmod.game.model.region.update.*
 import gg.rsmod.game.service.GameService
 
 /**
@@ -68,10 +62,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
 
     fun contains(tile: Tile): Boolean = coords == tile.toChunkCoords()
 
-    fun canTraverse(tile: Tile, direction: Direction, projectile: Boolean): Boolean {
-        val matrix = matrices[tile.height]
-        return !matrix.isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
-    }
+    fun canTraverse(tile: Tile, direction: Direction, projectile: Boolean): Boolean = !matrices[tile.height].isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
 
     fun addEntity(world: World, entity: Entity, tile: Tile) {
         world.collision.submit(entity, CollisionUpdate.Type.ADD)
@@ -101,6 +92,17 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
         }
     }
 
+    fun updateGroundItem(world: World, item: GroundItem, oldAmount: Int, newAmount: Int) {
+        if (item.getType().isGroundItem()) {
+            val update = GroundItemRefreshUpdate(EntityUpdateType.UPDATE_GROUND_ITEM, item, oldAmount, newAmount)
+            sendUpdate(world, update)
+
+            if (updates.removeIf { it.entity == item }) {
+                updates.add(createUpdateFor(item, spawn = true)!!)
+            }
+        }
+    }
+
     fun getSurroundingCoords(chunkRadius: Int = CHUNK_VIEW_RADIUS): MutableSet<ChunkCoords> {
         val surrounding = hashSetOf<ChunkCoords>()
 
@@ -114,9 +116,15 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
     }
 
     private fun sendUpdate(world: World, update: EntityUpdate<*>) {
-        getSurroundingCoords().forEach { coords ->
-            val chunk = world.chunks.getOrCreate(coords, create = false) ?: return@forEach
-            chunk.getEntities<Client>(EntityType.CLIENT).forEach { client ->
+        val surrounding = getSurroundingCoords()
+
+        for (coords in surrounding) {
+            val chunk = world.chunks.getOrCreate(coords, create = false) ?: continue
+            val clients = chunk.getEntities<Client>(EntityType.CLIENT)
+            for (client in clients) {
+                if (!canBeViewed(client, update.entity)) {
+                    continue
+                }
                 val local = client.lastKnownRegionBase!!.toLocal(update.entity.tile)
                 client.write(SetChunkToRegionOffset(local.x, local.z))
                 client.write(update.toMessage())
@@ -138,10 +146,24 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
         }
     }
 
+    private fun canBeViewed(p: Player, entity: Entity): Boolean {
+        if (entity.getType().isGroundItem()) {
+            val item = entity as GroundItem
+            return item.isPublic() || item.isOwnedBy(p)
+        }
+        return true
+    }
+
     private fun <T: Entity> createUpdateFor(entity: T, spawn: Boolean): EntityUpdate<*>? = when (entity.getType()) {
+
         EntityType.DYNAMIC_OBJECT, EntityType.STATIC_OBJECT ->
             if (spawn) ObjectSpawnUpdate(EntityUpdateType.SPAWN_OBJECT, entity as GameObject)
             else ObjectRemoveUpdate(EntityUpdateType.REMOVE_OBJECT, entity as GameObject)
+
+        EntityType.GROUND_ITEM ->
+            if (spawn) GroundItemSpawnUpdate(EntityUpdateType.SPAWN_GROUND_ITEM, entity as GroundItem)
+            else GroundItemRemoveUpdate(EntityUpdateType.REMOVE_GROUND_ITEM, entity as GroundItem)
+
         else -> null
     }
 

@@ -436,6 +436,14 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
         return ItemTransaction(amount, totalRemoved, removed)
     }
 
+    /**
+     * Alias for
+     * ```
+     * remove(id: Int, amount: Int, assureFullRemoval: Boolean = false, beginSlot: Int = -1)
+     * ```
+     */
+    fun remove(item: Item, assureFullRemoval: Boolean = false, beginSlot: Int = -1): ItemTransaction = remove(item.id, item.amount, assureFullRemoval, beginSlot)
+
     operator fun get(index: Int): Item? = items[index]
 
     fun set(index: Int, item: Item?) {

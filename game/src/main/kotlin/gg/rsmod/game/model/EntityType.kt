@@ -32,6 +32,11 @@ enum class EntityType {
     DYNAMIC_OBJECT,
 
     /**
+     * An item on the floor.
+     */
+    GROUND_ITEM,
+
+    /**
      * A projectile.
      */
     PROJECTILE;
@@ -46,9 +51,5 @@ enum class EntityType {
 
     fun isProjectile(): Boolean = this == PROJECTILE
 
-    /**
-     * Checks if the entity type should not be added to a region as an entity
-     * that should be spawned in for players who just enter its region.
-     */
-    fun isTransient(): Boolean = this == PROJECTILE
+    fun isGroundItem(): Boolean = this == GROUND_ITEM
 }

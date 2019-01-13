@@ -1,6 +1,7 @@
 package gg.rsmod.game.model
 
 import gg.rsmod.game.model.entity.GameObject
+import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.item.Item
 
 /**
@@ -34,6 +35,11 @@ val COMMAND_ATTR = AttributeKey<String>()
  * [COMMAND_ATTR] attribute.
  */
 val COMMAND_ARGS_ATTR = AttributeKey<Array<String>>()
+
+/**
+ * The [GroundItem] that was last clicked on.
+ */
+val INTERACTING_GROUNDITEM_ATTR = AttributeKey<GroundItem>()
 
 /**
  * The option that was last selected on any entity message.

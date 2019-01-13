@@ -22,7 +22,7 @@ class ItemActionOneHandler : MessageHandler<ItemActionOneMessage> {
             return
         }
 
-        if (client.isDead() || !client.lock.canItemInteract()) {
+        if (!client.lock.canItemInteract()) {
             return
         }
 

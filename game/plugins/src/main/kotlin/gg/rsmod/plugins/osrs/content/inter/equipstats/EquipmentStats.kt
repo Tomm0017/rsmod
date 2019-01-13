@@ -19,6 +19,7 @@ object EquipmentStats {
     }
 
     fun sendBonuses(p: Player) {
+        // TODO: these two bonuses
         var undeadBonus = 0.0
         var slayerBonus = 0.0
 

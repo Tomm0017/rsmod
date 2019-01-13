@@ -4,6 +4,7 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.api.helper.doubleItemDialog
 import gg.rsmod.plugins.osrs.api.helper.itemDialog
 import gg.rsmod.plugins.osrs.api.helper.player
+import gg.rsmod.plugins.osrs.content.inter.emotes.EmotesTab
 
 r.bindLogin {
     val p = it.player()
@@ -14,6 +15,7 @@ r.bindLogin {
                 ?: p.world.privileges.get(Privilege.ADMIN_POWER)
                 ?: p.world.privileges.get(Privilege.DEV_POWER)
                 ?: Privilege.DEFAULT
+        EmotesTab.unlockAll(p)
         it.suspendable { dialog(it) }
     }
 }

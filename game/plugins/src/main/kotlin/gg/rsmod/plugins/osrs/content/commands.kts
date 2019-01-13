@@ -207,10 +207,6 @@ r.bindCommand("dialogs", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("test", Privilege.ADMIN_POWER) {
-    it.player().world.spawn(GroundItem(item = 4151, amount = 1, tile = Tile(it.player().tile)))
-}
-
 fun tryWithUsage(player: Player, args: Array<String>, failMessage: String, tryUnit: Function1<Array<String>, Unit>) {
     try {
         tryUnit.invoke(args)

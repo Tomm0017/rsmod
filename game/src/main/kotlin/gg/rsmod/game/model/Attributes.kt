@@ -37,11 +37,6 @@ val COMMAND_ATTR = AttributeKey<String>()
 val COMMAND_ARGS_ATTR = AttributeKey<Array<String>>()
 
 /**
- * The [GroundItem] that was last clicked on.
- */
-val INTERACTING_GROUNDITEM_ATTR = AttributeKey<GroundItem>()
-
-/**
  * The option that was last selected on any entity message.
  * For example: object action one will set this attribute to [1].
  */
@@ -51,6 +46,11 @@ val INTERACTING_OPT_ATTR = AttributeKey<Int>()
  * The slot that was last selected on any entity message.
  */
 val INTERACTING_SLOT_ATTR = AttributeKey<Int>()
+
+/**
+ * The [GroundItem] that was last clicked on.
+ */
+val INTERACTING_GROUNDITEM_ATTR = AttributeKey<GroundItem>()
 
 /**
  * The [GameObject] that was last clicked on.

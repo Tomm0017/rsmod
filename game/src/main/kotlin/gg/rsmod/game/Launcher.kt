@@ -30,7 +30,7 @@ class Launcher {
             for (i in 0 until 1998) {
                 val player = Player(world)
                 player.username = "Test $i"
-                player.tile = Tile(world.gameContext.home).transform(world.random(-16..16), world.random(-16..16))
+                player.tile = Tile(world.gameContext.home).transform(world.random(-0..0), world.random(-0..0))
 
                 /*gameService?.submitGameThreadJob {
                     player.register()

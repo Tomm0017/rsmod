@@ -157,7 +157,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             val oldItem = chunk.getEntities<GroundItem>(tile, EntityType.GROUND_ITEM).firstOrNull { it.item == item.item && it.owner == item.owner }
             if (oldItem != null) {
                 val oldAmount = oldItem.amount
-                val newAmount = Math.max(Int.MAX_VALUE.toLong(), item.amount.toLong() + oldItem.amount.toLong()).toInt()
+                val newAmount = Math.min(Int.MAX_VALUE.toLong(), item.amount.toLong() + oldItem.amount.toLong()).toInt()
                 oldItem.amount = newAmount
                 chunk.updateGroundItem(this, item, oldAmount, newAmount)
                 return

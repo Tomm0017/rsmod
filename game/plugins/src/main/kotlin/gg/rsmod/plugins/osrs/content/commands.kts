@@ -3,10 +3,8 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Privilege
-import gg.rsmod.game.model.entity.DynamicObject
-import gg.rsmod.game.model.entity.GameObject
-import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.osrs.api.InterfacePane
 import gg.rsmod.plugins.osrs.api.Skills
@@ -207,6 +205,10 @@ r.bindCommand("dialogs", Privilege.ADMIN_POWER) {
         it.itemDialog("test", 4151)
         it.doubleItemDialog("test", 4151, 11802)
     }
+}
+
+r.bindCommand("test", Privilege.ADMIN_POWER) {
+    it.player().world.spawn(GroundItem(item = 4151, amount = 1, tile = Tile(it.player().tile)))
 }
 
 fun tryWithUsage(player: Player, args: Array<String>, failMessage: String, tryUnit: Function1<Array<String>, Unit>) {

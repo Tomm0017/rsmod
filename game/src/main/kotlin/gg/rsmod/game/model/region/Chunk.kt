@@ -65,29 +65,94 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
     fun canTraverse(tile: Tile, direction: Direction, projectile: Boolean): Boolean = !matrices[tile.height].isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
 
     fun addEntity(world: World, entity: Entity, tile: Tile) {
-        world.collision.submit(entity, CollisionUpdate.Type.ADD)
-        entities.put(tile, entity)
+        /**
+         * Objects will affect the collision map.
+         */
+        if (entity.getType().isObject()) {
+            world.collision.submit(entity as GameObject, CollisionUpdate.Type.ADD)
+        }
 
+        /**
+         * Transient entities will <strong>not</strong> be registered to one of
+         * our [Chunk]'s tiles.
+         */
+        if (!entity.getType().isTransient()) {
+            entities.put(tile, entity)
+        }
+
+        /**
+         * Create an [EntityUpdate] for our local players to receive and view.
+         */
         val update = createUpdateFor(entity, spawn = true)
         if (update != null) {
+            /**
+             * [EntityType.STATIC_OBJECT]s shouldn't be sent to local players
+             * for them to view since the client is already aware of them as
+             * they are loaded from the game resources (cache).
+             */
             if (entity.getType() != EntityType.STATIC_OBJECT) {
-                updates.add(update)
+                /**
+                 * [EntityType]s marked as transient will only be sent to local
+                 * players who are currently in the viewport, but will now be
+                 * sent to players who enter the region later on.
+                 */
+                if (!entity.getType().isTransient()) {
+                    updates.add(update)
+                }
+                /**
+                 * Send the update to all players in viewport.
+                 */
                 sendUpdate(world, update)
             }
         }
     }
 
     fun removeEntity(world: World, entity: Entity, tile: Tile) {
-        world.collision.submit(entity, CollisionUpdate.Type.REMOVE)
-        entities.remove(tile, entity)
+        /**
+         * [EntityType]s that are considered objects will be removed from our
+         * collision map.
+         */
+        if (entity.getType().isObject()) {
+            world.collision.submit(entity as GameObject, CollisionUpdate.Type.REMOVE)
+        }
 
+        /**
+         * Transient entities do not get added to our [Chunk]'s tiles, so no use
+         * in trying to remove it.
+         */
+        if (!entity.getType().isTransient()) {
+            entities.remove(tile, entity)
+        }
+
+        /**
+         * Create an [EntityUpdate] for our local players to receive and view.
+         */
         val update = createUpdateFor(entity, spawn = false)
         if (update != null) {
+
+            /**
+             * If the entity is an [EntityType.STATIC_OBJECT], we want to cache
+             * an [EntityUpdate] that will remove the entity when new players come
+             * into this [Chunk]'s viewport.
+             *
+             * This is done because the client will always load [EntityType.STATIC_OBJECT]
+             * through the game resources and have to be removed manually by our server.
+             */
             if (entity.getType() == EntityType.STATIC_OBJECT) {
                 updates.add(update)
-            } else {
+            }
+
+            /**
+             * Transient entities don't register [EntityUpdate]s, so only remove
+             * them for entities which aren't transient.
+             */
+            if (!entity.getType().isTransient()) {
                 updates.removeIf { it.entity == entity }
             }
+
+            /**
+             * Send the update to all players in viewport.
+             */
             sendUpdate(world, update)
         }
     }
@@ -163,6 +228,10 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
         EntityType.GROUND_ITEM ->
             if (spawn) GroundItemSpawnUpdate(EntityUpdateType.SPAWN_GROUND_ITEM, entity as GroundItem)
             else GroundItemRemoveUpdate(EntityUpdateType.REMOVE_GROUND_ITEM, entity as GroundItem)
+
+        EntityType.PROJECTILE ->
+            if (spawn) ProjectileSpawnUpdate(EntityUpdateType.SPAWN_PROJECTILE, entity as Projectile)
+            else throw RuntimeException("${entity.getType()} can only be spawned, not removed!")
 
         else -> null
     }

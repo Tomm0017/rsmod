@@ -1,5 +1,6 @@
 package gg.rsmod.game.model.entity
 
+import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
@@ -36,6 +37,10 @@ class Npc private constructor(val id: Int, override val world: World) : Pawn(wor
         val bits = world.npcUpdateBlocks.updateBlocks[block]!!
         return blockBuffer.hasBit(bits.bit)
     }
+
+    // TODO(Tom): should benchmark and see if it's worth caching since this would
+    // have a tendency of being called repeatedly every cycle for combat.
+    override fun getTileSize(): Int = world.definitions.get(NpcDef::class.java, id).size
 
     override fun heal(amount: Int, capValue: Int) {
 

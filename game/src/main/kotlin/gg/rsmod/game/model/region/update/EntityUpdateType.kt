@@ -2,8 +2,7 @@ package gg.rsmod.game.model.region.update
 
 /**
  *
- * TODO(Tom): externalize the id if they can vary on revision (mainly looking for
- * differences in between osrs, rs2, rs3)
+ * TODO(Tom): externalize the id as it changes every revision
  *
  * @author Tom <rspsmods@gmail.com>
  */

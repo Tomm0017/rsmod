@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.content.skills.prayer
+package gg.rsmod.plugins.osrs.content.mechanics.prayer
 
 import gg.rsmod.game.model.AttributeKey
 import gg.rsmod.game.model.TimerKey

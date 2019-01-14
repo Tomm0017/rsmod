@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.content.skills.prayer
+package gg.rsmod.plugins.osrs.content.mechanics.prayer
 
 /**
  * @author Tom <rspsmods@gmail.com>

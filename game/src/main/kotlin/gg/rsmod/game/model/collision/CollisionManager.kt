@@ -4,7 +4,6 @@ import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
-import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.region.Chunk
 
@@ -15,13 +14,11 @@ class CollisionManager(val world: World) {
         const val BRIDGE_TILE = 0x2
     }
 
-    fun submit(entity: Entity, updateType: CollisionUpdate.Type) {
-        if (entity.getType().isObject()) {
-            val builder = CollisionUpdate.Builder()
-            builder.setType(updateType)
-            builder.putObject(world.definitions, entity as GameObject)
-            apply(builder.build())
-        }
+    fun submit(obj: GameObject, updateType: CollisionUpdate.Type) {
+        val builder = CollisionUpdate.Builder()
+        builder.setType(updateType)
+        builder.putObject(world.definitions, obj)
+        apply(builder.build())
     }
 
     fun canTraverse(tile: Tile, direction: Direction, type: EntityType): Boolean {

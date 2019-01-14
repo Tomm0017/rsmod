@@ -6,10 +6,7 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.collision.CollisionManager
-import gg.rsmod.game.model.entity.GameObject
-import gg.rsmod.game.model.entity.GroundItem
-import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.region.ChunkSet
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.plugin.PluginExecutor
@@ -172,6 +169,13 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         val chunk = chunks.getForTile(tile)
 
         chunk.removeEntity(this, item, tile)
+    }
+
+    fun spawn(projectile: Projectile) {
+        val tile = projectile.tile
+        val chunk = chunks.getForTile(tile)
+
+        chunk.addEntity(this, projectile, tile)
     }
 
     fun isSpawned(obj: GameObject): Boolean = chunks.getForTile(obj.tile).getEntities<GameObject>(obj.tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).contains(obj)

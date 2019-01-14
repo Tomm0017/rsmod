@@ -52,4 +52,6 @@ enum class EntityType {
     fun isProjectile(): Boolean = this == PROJECTILE
 
     fun isGroundItem(): Boolean = this == GROUND_ITEM
+
+    fun isTransient(): Boolean = this == PROJECTILE
 }

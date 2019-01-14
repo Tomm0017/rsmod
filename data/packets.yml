@@ -3,6 +3,42 @@
 
 out-packets:
 
+  - message: gg.rsmod.game.message.impl.SpawnProjectileMessage
+    type: FIXED
+    opcode: 11
+    structure:
+      - name: end_height
+        type: BYTE
+        trans: SUBTRACT
+      - name: lifespan
+        type: SHORT
+      - name: gfx
+        type: SHORT
+        trans: ADD
+      - name: start_height
+        type: BYTE
+        trans: SUBTRACT
+      - name: target_index
+        order: LITTLE
+        type: SHORT
+      - name: angle
+        type: BYTE
+      - name: steepness
+        type: BYTE
+        trans: SUBTRACT
+      - name: delay
+        order: LITTLE
+        type: SHORT
+      - name: tile
+        type: BYTE
+        trans: ADD
+      - name: offset_z
+        type: BYTE
+        trans: ADD
+      - name: offset_x
+        type: BYTE
+        trans: ADD
+
   - message: gg.rsmod.game.message.impl.InterfaceSwitchMessage
     type: FIXED
     opcode: 82

@@ -98,6 +98,8 @@ abstract class Pawn(open val world: World) : Entity() {
 
     abstract fun hasBlock(block: UpdateBlockType): Boolean
 
+    abstract fun getTileSize(): Int
+
     abstract fun heal(amount: Int, capValue: Int = 0)
 
     fun getTransmogId(): Int = transmogId
@@ -105,6 +107,17 @@ abstract class Pawn(open val world: World) : Entity() {
     fun setTransmogId(transmogId: Int) {
         this.transmogId = transmogId
         addBlock(UpdateBlockType.APPEARANCE)
+    }
+
+    /**
+     * Calculates the middle tile that this pawn occupies.
+     */
+    fun calculateCentreTile(): Tile {
+        val size = getTileSize()
+        if (size > 1) {
+            return tile.transform(size / 2, size / 2)
+        }
+        return Tile(tile)
     }
 
     /**

@@ -63,7 +63,8 @@ object CombatPathAction {
             val bestScore = minDistance.getDistance(tail) + minDistance.getDelta(start)
 
             val closest = borderTiles.filter { tile -> tile.getDistance(tail) + tile.getDelta(start) == bestScore }
-                    .sortedBy { tile -> tile.getDelta(start) }.firstOrNull { world.collision.raycast(it, end, projectile = false) } ?: return false
+                    .sortedBy { tile -> tile.getDelta(start) }.firstOrNull { world.collision.raycast(it, end, projectile = false) }
+                    ?: borderTiles.sortedBy { tile -> tile.getDistance(tail) + tile.getDelta(start) }.firstOrNull() ?: return false
 
             if (pawn.tile.sameAs(closest)) {
                 return true

@@ -13,7 +13,9 @@ class ClickMapHandler : MessageHandler<ClickMapMessage> {
 
     override fun handle(client: Client, message: ClickMapMessage) {
         log(client, "Click map: x=%d, z=%d, type=%d", message.x, message.z, message.movementType)
+
         client.interruptPlugins()
+        client.resetInteractions()
 
         if (message.movementType == 2 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
             client.teleport(message.x, message.z, client.tile.height)

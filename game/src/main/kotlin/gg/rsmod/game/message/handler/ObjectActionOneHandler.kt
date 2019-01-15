@@ -49,6 +49,8 @@ class ObjectActionOneHandler : MessageHandler<ObjectActionOneMessage> {
         log(client, "Object action 1: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
 
         client.interruptPlugins()
+        client.resetInteractions()
+
         client.attr.put(INTERACTING_OPT_ATTR, 1)
         client.attr.put(INTERACTING_OBJ_ATTR, obj)
         if (!client.world.plugins.executeCustomPathingObject(client, obj.id)) {

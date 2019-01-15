@@ -2,6 +2,7 @@ package gg.rsmod.game.model.entity
 
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.path.PathfindingStrategy
 import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.UpdateBlockBuffer
@@ -120,6 +121,14 @@ abstract class Pawn(open val world: World) : Entity() {
         return Tile(tile)
     }
 
+    fun attack(target: Pawn) {
+        resetInteractions()
+        interruptPlugins()
+
+        attr[COMBAT_TARGET_FOCUS] = target
+        world.plugins.executeCombat(this)
+    }
+
     /**
      * Handles the walking to the specified [x] and [z] coordinates. The height
      * level used is the one this pawn is currently on.
@@ -133,21 +142,22 @@ abstract class Pawn(open val world: World) : Entity() {
      * This is useful for pathfinding on things like objects, where the object
      * has metadata which defines the surrounding tiles that it can be interacted
      * from.
+     *
+     * @return
+     * The last tile in the path. `null` if no path could be made.
      */
-    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, validSurroundingTiles: Array<Tile>? = null) {
+    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false, validSurroundingTiles: Array<Tile>? = null): Tile? {
         /**
-         * This will cause desync since the player is already on the tile,
-         * they should not be able to add a step in a tile they are already
-         * standing on.
+         * If the player is already in a valid tile, why would be bother path finding.
          */
         if (validSurroundingTiles != null && tile in validSurroundingTiles) {
-            return
+            return null
         }
 
-        val path = BFSPathfindingStrategy(world).getPath(tile, Tile(x, z, tile.height), getType(), validSurroundingTiles)
+        val path = createPathingStrategy().getPath(tile, Tile(x, z, tile.height), if (projectilePath) EntityType.PROJECTILE else getType(), validSurroundingTiles)
         if (path.isEmpty() && this is Player) {
             write(SetMinimapMarkerMessage(255, 255))
-            return
+            return null
         }
 
         var tail: Tile? = null
@@ -163,14 +173,22 @@ abstract class Pawn(open val world: World) : Entity() {
             next = poll
         }
 
-        if (tail != null && this is Player && lastKnownRegionBase != null) {
+        /**
+         * If the tail is null (should never be unless we mess with code above), or
+         * if the tail is the tile we're standing on, then we don't have to move at all!
+         */
+        if (tail == null || tail.sameAs(tile)) {
+            movementQueue.clear()
+            return tail
+        }
+
+        if (this is Player && lastKnownRegionBase != null) {
             write(SetMinimapMarkerMessage(tail.x - lastKnownRegionBase!!.x, tail.z - lastKnownRegionBase!!.z))
         }
+        return tail
     }
 
-    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, validSurroundingTiles: Array<Tile>? = null) {
-        walkTo(tile.x, tile.z, stepType, validSurroundingTiles)
-    }
+    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false, validSurroundingTiles: Array<Tile>? = null): Tile? = walkTo(tile.x, tile.z, stepType, projectilePath, validSurroundingTiles)
 
     fun teleport(x: Int, z: Int, height: Int = 0) {
         teleport = true
@@ -223,10 +241,18 @@ abstract class Pawn(open val world: World) : Entity() {
     }
 
     fun facePawn(pawn: Pawn?) {
-        blockBuffer.facePawnIndex = if (pawn == null) -1 else if (pawn.getType().isPlayer()) pawn.index + 32768 else pawn.index
-
         blockBuffer.faceDegrees = 0
-        addBlock(UpdateBlockType.FACE_PAWN)
+
+        val index = if (pawn == null) -1 else if (pawn.getType().isPlayer()) pawn.index + 32768 else pawn.index
+        if (blockBuffer.facePawnIndex != index) {
+            blockBuffer.facePawnIndex = index
+            addBlock(UpdateBlockType.FACE_PAWN)
+        }
+    }
+
+    fun resetInteractions() {
+        attr.remove(COMBAT_TARGET_FOCUS)
+        facePawn(null)
     }
 
     /**
@@ -242,4 +268,6 @@ abstract class Pawn(open val world: World) : Entity() {
     fun interruptPlugins() {
         world.pluginExecutor.interruptPluginsWithContext(this)
     }
+
+    fun createPathingStrategy(): PathfindingStrategy = BFSPathfindingStrategy(world)
 }

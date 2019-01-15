@@ -49,6 +49,8 @@ class GroundItemActionThreeHandler : MessageHandler<GroundItemActionThreeMessage
         log(client, "Ground item action 3: id=%d, x=%d, z=%d, movement=%d", message.item, message.x, message.z, message.movementType)
 
         client.interruptPlugins()
+        client.resetInteractions()
+
         client.attr.put(INTERACTING_OPT_ATTR, 3)
         client.attr.put(INTERACTING_GROUNDITEM_ATTR, item)
         client.world.pluginExecutor.execute(client, GroundItemTakeAction.walkPlugin)

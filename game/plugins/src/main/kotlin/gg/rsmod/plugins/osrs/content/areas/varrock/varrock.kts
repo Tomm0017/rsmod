@@ -14,7 +14,7 @@ r.bindCustomPathingObject(24428) {
     val obj = it.getInteractingGameObj()
     it.suspendable {
         val validTiles = arrayOf(Tile(3257, 3450), Tile(3258, 3451), Tile(3258, 3452), Tile(3258, 3453), Tile(3257, 3454))
-        p.walkTo(obj.tile, MovementQueue.StepType.NORMAL, validTiles)
+        p.walkTo(obj.tile, MovementQueue.StepType.NORMAL, validSurroundingTiles = validTiles)
         while (p.tile !in validTiles) {
             it.wait(1)
         }

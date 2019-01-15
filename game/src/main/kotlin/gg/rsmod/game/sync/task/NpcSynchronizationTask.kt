@@ -36,7 +36,7 @@ class NpcSynchronizationTask(private val player: Player, private val worldNpcs: 
         }
 
         if (maskBuf.getBuffer().writerIndex() > 0) {
-            maskBuf.putBits(15, 0x7FFF)
+            buf.putBits(15, 0x7FFF)
         }
 
         buf.switchToByteAccess()

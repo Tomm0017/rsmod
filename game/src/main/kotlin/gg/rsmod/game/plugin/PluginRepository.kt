@@ -33,6 +33,12 @@ class PluginRepository {
     }
 
     /**
+     * The [PluginAnalyzer] used to list some specs regarding the current
+     * loaded plugins.
+     */
+    private var analyzer: PluginAnalyzer? = null
+
+    /**
      * The total amount of plugins.
      */
     private var pluginCount = 0
@@ -48,10 +54,9 @@ class PluginRepository {
     private val loginPlugins = arrayListOf<Function1<Plugin, Unit>>()
 
     /**
-     * The [PluginAnalyzer] used to list some specs regarding the current
-     * loaded plugins.
+     * The plugin that will handle initiating combat.
      */
-    private var analyzer: PluginAnalyzer? = null
+    private var combatPlugin: Function1<Plugin, Unit>? = null
 
     /**
      * A map that contains plugins that should be executed when the [TimerKey]
@@ -160,6 +165,7 @@ class PluginRepository {
         analyzer = if (analyzeMode) PluginAnalyzer(this) else null
 
         displayModePlugin = null
+        combatPlugin = null
         loginPlugins.clear()
         timerPlugins.clear()
         interfaceClose.clear()
@@ -232,6 +238,20 @@ class PluginRepository {
      * Get the total amount of plugins loaded from the plugins path.
      */
     fun getPluginCount(): Int = pluginCount
+
+    fun bindCombat(plugin: Function1<Plugin, Unit>) {
+        if (combatPlugin != null) {
+            logger.error("Combat plugin is already bound")
+            throw IllegalStateException("Combat plugin is already bound")
+        }
+        combatPlugin = plugin
+    }
+
+    fun executeCombat(pawn: Pawn) {
+        if (combatPlugin != null) {
+            pawn.world.pluginExecutor.execute(pawn, combatPlugin!!)
+        }
+    }
 
     fun bindDisplayModeChange(plugin: Function1<Plugin, Unit>) {
         if (displayModePlugin != null) {

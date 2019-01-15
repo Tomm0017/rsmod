@@ -36,7 +36,7 @@ object ObjectPathAction {
 
         val validTiles = getValidTiles(p.world, obj)
         if (p.tile !in validTiles) {
-            p.walkTo(obj.tile.x, obj.tile.z, MovementQueue.StepType.NORMAL, validTiles)
+            p.walkTo(obj.tile.x, obj.tile.z, MovementQueue.StepType.NORMAL, validSurroundingTiles = validTiles)
             it.suspendable {
                 awaitArrival(it, obj, opt)
             }
@@ -63,6 +63,7 @@ object ObjectPathAction {
         val p = it.ctx as Player
         val destination = p.movementQueue.peekLast()
         if (destination == null) {
+            faceObj(p, obj)
             p.message(Entity.YOU_CANT_REACH_THAT)
             return
         }

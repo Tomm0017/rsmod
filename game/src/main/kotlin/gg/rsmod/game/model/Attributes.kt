@@ -2,6 +2,7 @@ package gg.rsmod.game.model
 
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.GroundItem
+import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.item.Item
 
 /**
@@ -23,6 +24,12 @@ val NEW_ACCOUNT_ATTR = AttributeKey<Boolean>()
  * The display mode that the player has submitted as a message.
  */
 val DISPLAY_MODE_CHANGE_ATTR = AttributeKey<Int>()
+
+/**
+ * The [Pawn] which another pawn wants to initiate combat with, whether they meet
+ * the criteria to attack or not (including being in attack range).
+ */
+val COMBAT_TARGET_FOCUS = AttributeKey<Pawn>()
 
 /**
  * The command that the player has submitted to the server using the '::' prefix.

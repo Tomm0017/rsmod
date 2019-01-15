@@ -3,8 +3,10 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Privilege
-import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.entity.*
+import gg.rsmod.game.model.entity.DynamicObject
+import gg.rsmod.game.model.entity.GameObject
+import gg.rsmod.game.model.entity.Npc
+import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.osrs.api.InterfacePane
 import gg.rsmod.plugins.osrs.api.Skills
@@ -15,6 +17,11 @@ import java.text.DecimalFormat
 
 r.bindCommand("empty") {
     it.player().inventory.removeAll()
+}
+
+r.bindCommand("mypos") {
+    val p = it.player()
+    p.message(p.tile.toString())
 }
 
 r.bindCommand("tele", Privilege.ADMIN_POWER) {

@@ -20,7 +20,7 @@ class ProjectileSpawnUpdate(override val type: EntityUpdateType,
         }
         val target = entity.targetTile!!
         return SpawnProjectileMessage(
-                start = ((entity.tile.x and 0x7) shl 4) or (entity.tile.z),
+                start = ((entity.tile.x and 0x7) shl 4) or (entity.tile.z and 0x7),
                 pawnTargetIndex = 0, offsetX = target.x - entity.tile.x, offsetZ = target.z - entity.tile.z,
                 gfx = entity.gfx, startHeight = entity.startHeight, endHeight = entity.endHeight, delay = entity.delay,
                 lifespan = entity.lifespan, angle = entity.angle, steepness = entity.steepness)

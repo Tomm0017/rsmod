@@ -68,7 +68,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
 
         if (tail == null && closed.isNotEmpty()) {
             val min = closed.minBy { it.tile.getDistance(target) }!!
-            val valid = closed.filter { !it.tile.sameAs(origin) && it.tile.getDistance(target) <= min.tile.getDistance(target) }
+            val valid = closed.filter { it.tile.getDistance(target) <= min.tile.getDistance(target) }
             if (valid.isNotEmpty()) {
                 tail = valid.minBy { it.tile.getDelta(origin) }
             }

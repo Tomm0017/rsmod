@@ -37,7 +37,7 @@ out-packets:
         trans: ADD
       - name: offset_x
         type: BYTE
-        trans: ADD
+        trans: NEGATE
 
   - message: gg.rsmod.game.message.impl.InterfaceSwitchMessage
     type: FIXED
@@ -381,6 +381,17 @@ out-packets:
 
 in-packets:
 
+  - message: gg.rsmod.game.message.impl.NpcAttackActionMessage
+    type: FIXED
+    opcode: 1
+    length: 3
+    structure:
+      - name: index
+        type: SHORT
+        trans: ADD
+      - name: movement_type
+        type: BYTE
+
   - message: gg.rsmod.game.message.impl.GroundItemActionThreeMessage
     type: FIXED
     opcode: 6
@@ -598,10 +609,6 @@ in-packets:
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 34
     length: -1
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    opcode: 1
-    length: 3
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     opcode: 2

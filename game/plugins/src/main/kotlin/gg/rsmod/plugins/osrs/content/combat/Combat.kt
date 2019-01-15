@@ -1,10 +1,10 @@
 package gg.rsmod.plugins.osrs.content.combat
 
+import gg.rsmod.game.model.COMBAT_TARGET_FOCUS
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Projectile
-import gg.rsmod.plugins.osrs.api.CombatClass
 import gg.rsmod.plugins.osrs.api.ProjectileType
 
 /**
@@ -14,18 +14,8 @@ object Combat {
 
     val ATTACK_DELAY = TimerKey()
 
-    fun calculateHitDelay(start: Tile, target: Tile, combatClass: CombatClass): Int = when (combatClass) {
-        CombatClass.MELEE -> 1
-
-        CombatClass.RANGED -> {
-            val distance = start.getDistance(target)
-            2 + (Math.floor((3.0 + distance) / 6.0)).toInt()
-        }
-
-        CombatClass.MAGIC -> {
-            val distance = start.getDistance(target)
-            2 + (Math.floor((1.0 + distance) / 3.0)).toInt()
-        }
+    fun reset(pawn: Pawn) {
+        pawn.attr.remove(COMBAT_TARGET_FOCUS)
     }
 
     fun createProjectile(source: Pawn, target: Tile, gfx: Int, type: ProjectileType): Projectile {

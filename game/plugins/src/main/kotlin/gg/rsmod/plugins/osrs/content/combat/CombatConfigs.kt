@@ -13,7 +13,7 @@ import gg.rsmod.plugins.osrs.api.helper.getEquipment
 import gg.rsmod.plugins.osrs.api.helper.hasWeaponType
 import gg.rsmod.plugins.osrs.content.combat.strategy.CombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MeleeCombatStrategy
-import gg.rsmod.plugins.osrs.content.combat.strategy.RangedCombatStrategy
+import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.RangedCombatStrategy
 
 /**
  * @author Tom <rspsmods@gmail.com>

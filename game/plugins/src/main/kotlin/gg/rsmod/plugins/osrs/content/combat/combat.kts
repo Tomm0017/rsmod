@@ -54,8 +54,11 @@ suspend fun cycle(it: Plugin): Boolean {
     }
 
     if (!pawn.timers.has(Combat.ATTACK_DELAY)) {
-        strategy.attack(pawn, target)
-        target.facePawn(pawn)
+        if (strategy.canAttack(pawn, target)) {
+            strategy.attack(pawn, target)
+        } else {
+            Combat.reset(pawn)
+        }
         pawn.timers[Combat.ATTACK_DELAY] = CombatConfigs.getAttackDelay(pawn)
     }
     return true

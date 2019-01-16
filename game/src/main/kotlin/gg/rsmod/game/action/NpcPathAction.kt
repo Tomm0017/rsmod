@@ -47,10 +47,12 @@ object NpcPathAction {
     suspend fun walkTo(it: Plugin, pawn: Pawn, target: Pawn, interactionRange: Int): Boolean {
         var start = pawn.calculateCentreTile()
         var end = target.calculateCentreTile()
+
         val pawnSize = pawn.getTileSize() - 1
         val targetSize = target.getTileSize() - 1
         val targetRadius = Math.floor(targetSize / 2.0).toInt()
         val border = getBorderTiles(target)
+
         val world = pawn.world
 
         /**

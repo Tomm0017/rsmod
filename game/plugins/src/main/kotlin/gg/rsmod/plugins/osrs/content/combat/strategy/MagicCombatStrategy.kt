@@ -11,6 +11,10 @@ object MagicCombatStrategy : CombatStrategy {
 
     override fun getAttackRange(pawn: Pawn): Int = 10
 
+    override fun canAttack(pawn: Pawn, target: Pawn): Boolean {
+        return true
+    }
+
     override fun attack(pawn: Pawn, target: Pawn) {
         val animation = CombatConfigs.getAttackAnimation(pawn)
         pawn.animate(animation)

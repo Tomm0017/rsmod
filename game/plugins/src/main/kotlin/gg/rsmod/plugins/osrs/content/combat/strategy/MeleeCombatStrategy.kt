@@ -20,6 +20,10 @@ object MeleeCombatStrategy : CombatStrategy {
         return 1
     }
 
+    override fun canAttack(pawn: Pawn, target: Pawn): Boolean {
+        return true
+    }
+
     override fun attack(pawn: Pawn, target: Pawn) {
         val animation = CombatConfigs.getAttackAnimation(pawn)
         pawn.animate(animation)

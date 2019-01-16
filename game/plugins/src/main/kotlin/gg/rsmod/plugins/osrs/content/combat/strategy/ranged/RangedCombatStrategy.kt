@@ -1,13 +1,18 @@
-package gg.rsmod.plugins.osrs.content.combat.strategy
+package gg.rsmod.plugins.osrs.content.combat.strategy.ranged
 
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.AttackStyle
 import gg.rsmod.plugins.osrs.api.EquipmentType
+import gg.rsmod.plugins.osrs.api.WeaponType
 import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.helper.getEquipment
+import gg.rsmod.plugins.osrs.api.helper.hasWeaponType
+import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
+import gg.rsmod.plugins.osrs.content.combat.strategy.CombatStrategy
+import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.weapon.CrossbowType
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -79,8 +84,39 @@ object RangedCombatStrategy : CombatStrategy {
         return DEFAULT_ATTACK_RANGE
     }
 
+    override fun canAttack(pawn: Pawn, target: Pawn): Boolean {
+        if (pawn is Player) {
+            val weapon = pawn.getEquipment(EquipmentType.WEAPON)
+            val ammo = pawn.getEquipment(EquipmentType.AMMO)
+
+            val crossbow = CrossbowType.values().firstOrNull { it.item == weapon?.id }
+            if (crossbow != null && ammo?.id !in crossbow.ammo) {
+                val message = if (ammo != null) "You can't use that ammo with your crossbow." else "There is no ammo left in your quiver."
+                pawn.message(message)
+                return false
+            }
+        }
+        return true
+    }
+
     override fun attack(pawn: Pawn, target: Pawn) {
         val animation = CombatConfigs.getAttackAnimation(pawn)
+
+        if (pawn is Player) {
+
+            val ammoSlot = when {
+                pawn.hasWeaponType(WeaponType.THROWN) || pawn.hasWeaponType(WeaponType.CHINCHOMPA) -> EquipmentType.WEAPON
+                else -> EquipmentType.AMMO
+            }
+
+            val ammo = pawn.getEquipment(ammoSlot)
+            val ammoProjectile = if (ammo != null) RangedProjectile.values().firstOrNull { ammo.id in it.items } else null
+
+            if (ammoProjectile != null) {
+                val projectile = Combat.createProjectile(pawn, target, ammoProjectile.gfx, ammoProjectile.type)
+                pawn.world.spawn(projectile)
+            }
+        }
         pawn.animate(animation)
     }
 

@@ -12,9 +12,10 @@ class ProjectileSpawnUpdate(override val type: EntityUpdateType,
 
     override fun toMessage(): Message {
         if (entity.targetPawn != null) {
+            val targetIndex = if (entity.targetPawn.getType().isNpc()) entity.targetPawn.index + 1 else -(entity.targetPawn.index + 1)
             return SpawnProjectileMessage(
                     start = ((entity.tile.x and 0x7) shl 4) or (entity.tile.z and 0x7),
-                    pawnTargetIndex = entity.targetPawn.index, offsetX = 0, offsetZ = 0,
+                    pawnTargetIndex = targetIndex, offsetX = 0, offsetZ = 0,
                     gfx = entity.gfx, startHeight = entity.startHeight, endHeight = entity.endHeight,
                     delay = entity.delay, lifespan = entity.lifespan, angle = entity.angle, steepness = entity.steepness)
         }

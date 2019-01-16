@@ -47,7 +47,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
             Direction.RS_ORDER.forEach { direction ->
                 val tile = head.tile.step(direction)
                 val node = Node(tile = tile, parent = head)
-                if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE) && world.collision.canTraverse(head.tile, direction, type)) {
+                if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE) && (world.collision.canTraverse(head.tile, direction, type) && world.collision.canTraverse(tile, direction.getOpposite(), type))) {
                     node.cost = head.cost + 1
                     nodes.add(node)
                     closed.add(node)

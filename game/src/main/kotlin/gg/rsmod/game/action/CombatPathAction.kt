@@ -89,7 +89,7 @@ object CombatPathAction {
                     if (pawn.tile.sameAs(tail)) {
                         return true
                     }
-                    dst = pawn.walkTo(tail.x, tail.z, MovementQueue.StepType.NORMAL, projectilePath = projectile) ?: continue
+                    dst = pawn.walkTo(tail.x, tail.z, MovementQueue.StepType.NORMAL, projectilePath = false) ?: continue
                     break
                 }
                 lastTile = tail
@@ -100,7 +100,7 @@ object CombatPathAction {
              * "they can't reach that", this is how it is on 07.
              */
             if (dst == null && lastTile != null) {
-                dst = pawn.walkTo(lastTile.x, lastTile.z, MovementQueue.StepType.NORMAL, projectilePath = projectile) ?: return false
+                dst = pawn.walkTo(lastTile.x, lastTile.z, MovementQueue.StepType.NORMAL, projectilePath = false) ?: return false
             }
             if (dst == null) {
                 return false

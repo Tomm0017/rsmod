@@ -250,6 +250,10 @@ fun Player.toggleStorageBit(storage: BitStorage, bits: StorageBits) {
     storage.set(this, bits, storage.get(this, bits) xor 1)
 }
 
+fun Player.getWeaponType(): Int = getVarp(843)
+
+fun Player.hasWeaponType(type: WeaponType, vararg others: WeaponType): Boolean = getWeaponType() == type.id || others.isNotEmpty() && getWeaponType() in others.map { it.id }
+
 fun Player.hasEquipped(slot: EquipmentType, item: Int): Boolean = equipment.hasAt(slot.id, item)
 
 fun Player.getEquipment(slot: EquipmentType): Item? = equipment[slot.id]

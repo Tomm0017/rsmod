@@ -76,6 +76,11 @@ abstract class Pawn(open val world: World) : Entity() {
     val timers = TimerSystem()
 
     /**
+     * The equipment bonus for the pawn.
+     */
+    val equipmentBonuses = IntArray(14)
+
+    /**
      * The current prayer icon that the pawn has active.
      */
     var prayerIcon = -1

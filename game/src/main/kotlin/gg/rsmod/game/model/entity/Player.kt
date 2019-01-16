@@ -153,8 +153,6 @@ open class Player(override val world: World) : Pawn(world) {
 
     var runEnergy = 100.0
 
-    val equipmentBonuses = IntArray(14)
-
     override fun getType(): EntityType = EntityType.PLAYER
 
     /**

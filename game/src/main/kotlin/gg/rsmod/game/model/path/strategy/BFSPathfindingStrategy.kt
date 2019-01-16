@@ -79,6 +79,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
             path.addFirst(tail.tile)
             tail = tail.parent
         }
+        path.addFirst(origin)
 
         return path
     }

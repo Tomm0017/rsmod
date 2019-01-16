@@ -2,6 +2,7 @@ package gg.rsmod.game.model
 
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.GroundItem
+import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.item.Item
 
@@ -63,6 +64,11 @@ val INTERACTING_GROUNDITEM_ATTR = AttributeKey<GroundItem>()
  * The [GameObject] that was last clicked on.
  */
 val INTERACTING_OBJ_ATTR = AttributeKey<GameObject>()
+
+/**
+ * The [Npc] that was last clicked on.
+ */
+val INTERACTING_NPC_ATTR = AttributeKey<Npc>()
 
 /**
  * The slot of the interacting item in its item container.

@@ -1,5 +1,6 @@
 package gg.rsmod.game.model.entity
 
+import gg.rsmod.game.action.NpcPathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.path.PathfindingStrategy
@@ -194,6 +195,13 @@ abstract class Pawn(open val world: World) : Entity() {
     }
 
     fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false, validSurroundingTiles: Array<Tile>? = null): Tile? = walkTo(tile.x, tile.z, stepType, projectilePath, validSurroundingTiles)
+
+    fun walkTo(npc: Npc) {
+        if (world.plugins.executeCustomNpcPath(this, npc.id)) {
+            return
+        }
+        executePlugin(NpcPathAction.walkPlugin)
+    }
 
     fun teleport(x: Int, z: Int, height: Int = 0) {
         teleport = true

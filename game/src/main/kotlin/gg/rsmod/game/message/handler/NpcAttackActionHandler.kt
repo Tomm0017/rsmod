@@ -12,8 +12,11 @@ class NpcAttackActionHandler : MessageHandler<NpcAttackActionMessage> {
     override fun handle(client: Client, message: NpcAttackActionMessage) {
         val npc = client.world.npcs.get(message.index) ?: return
 
-        log(client, "Npc attack: index=%d, movement=%d", message.index, message.movementType)
+        if (!client.lock.canAttack()) {
+            return
+        }
 
+        log(client, "Npc attack: index=%d, movement=%d", message.index, message.movementType)
         client.attack(npc)
     }
 }

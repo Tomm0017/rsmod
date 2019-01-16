@@ -53,7 +53,7 @@ class ObjectActionOneHandler : MessageHandler<ObjectActionOneMessage> {
 
         client.attr.put(INTERACTING_OPT_ATTR, 1)
         client.attr.put(INTERACTING_OBJ_ATTR, obj)
-        if (!client.world.plugins.executeCustomPathingObject(client, obj.id)) {
+        if (!client.world.plugins.executeCustomObjectPath(client, obj.id)) {
             client.world.pluginExecutor.execute(client, ObjectPathAction.walkPlugin)
         }
     }

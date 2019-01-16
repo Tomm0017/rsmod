@@ -5,6 +5,7 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.WeaponType
 import gg.rsmod.plugins.osrs.api.helper.hasWeaponType
+import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -19,7 +20,10 @@ object MeleeCombatStrategy : CombatStrategy {
         return 1
     }
 
-    override fun getAttackAnimation(pawn: Pawn): Int = 422
+    override fun attack(pawn: Pawn, target: Pawn) {
+        val animation = CombatConfigs.getAttackAnimation(pawn)
+        pawn.animate(animation)
+    }
 
     override fun getHitDelay(start: Tile, target: Tile): Int = 1
 }

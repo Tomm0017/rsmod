@@ -1,39 +1,76 @@
 package gg.rsmod.game.action
 
-import gg.rsmod.game.model.Direction
-import gg.rsmod.game.model.MovementQueue
-import gg.rsmod.game.model.Tile
+import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
+import gg.rsmod.game.model.*
+import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Pawn
+import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-object CombatPathAction {
+object NpcPathAction {
 
-    /**
-     * Handles the path-finding from [pawn] to [target].
-     */
-    suspend fun walkTo(it: Plugin, pawn: Pawn, target: Pawn, attackRange: Int): Boolean {
+    val walkPlugin: (Plugin) -> Unit = {
+        val pawn = it.ctx as Pawn
+        val world = pawn.world
+        val npc = pawn.attr[INTERACTING_NPC_ATTR]!!
+        val opt = pawn.attr[INTERACTING_OPT_ATTR]!!
+
+        it.suspendable {
+            pawn.facePawn(npc)
+
+            val pathFound = walkTo(it, pawn, npc, interactionRange = 1)
+
+            if (!pathFound) {
+                pawn.movementQueue.clear()
+                if (pawn is Player) {
+                    if (!pawn.timers.has(FROZEN_TIMER)) {
+                        pawn.message(Entity.YOU_CANT_REACH_THAT)
+                    }
+                    pawn.write(SetMinimapMarkerMessage(255, 255))
+                }
+                pawn.facePawn(null)
+                return@suspendable
+            }
+
+            if (pawn is Player) {
+                val handled = world.plugins.executeNpc(pawn, npc.id, opt)
+                if (!handled) {
+                    pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
+                }
+            }
+        }
+    }
+
+    suspend fun walkTo(it: Plugin, pawn: Pawn, target: Pawn, interactionRange: Int): Boolean {
         var start = pawn.calculateCentreTile()
         var end = target.calculateCentreTile()
         val targetRadius = Math.floor(target.getTileSize() / 2.0).toInt()
         val world = pawn.world
 
         /**
-         * The minimum distance to initiate attack.
+         * The minimum distance to interact with [target].
          */
-        val range = Math.max(targetRadius + 1, attackRange)
+        val range = Math.max(targetRadius + 1, interactionRange)
 
         /**
-         * If the attack range is greater than 1, we assume we need to find a
+         * If the interaction range is greater than 1, we assume we need to find a
          * path for projectiles instead.
          *
          * The difference lies in that projectile pathing will allow for objects
          * that allow projectiles to stand in the way, instead of completely
          * blocking them out as a valid path.
          */
-        val projectile = attackRange > 1
+        val projectile = interactionRange > 1
+
+        /**
+         * Check to see if [pawn] is currently standing in a diagonal tile and
+         * both [pawn] and [target] have a tile size of 1. You shouldn't be able
+         * to interact with [target] while standing diagonally from the target.
+         */
+        val diagonal = !projectile && targetRadius == 0 && pawn.getTileSize() == 1 && start.isWithinRadius(end, 1) && Direction.between(start, end).isDiagonal()
 
         /**
          * The tile that the player will walk towards.
@@ -41,10 +78,22 @@ object CombatPathAction {
         var dst: Tile? = null
 
         /**
-         * If the player is within attack range and raycast is successful, let's just return true.
+         * If the player is within interaction range and raycast is successful,
+         * let's just return true.
          */
-        if (!start.isWithinRadius(end, targetRadius) && start.isWithinRadius(end, range) && world.collision.raycast(start, end, projectile = projectile)) {
+        if (!start.isWithinRadius(end, targetRadius) && !diagonal && start.isWithinRadius(end, range) && world.collision.raycast(start, end, projectile = projectile)) {
             return true
+        }
+
+        /**
+         * If the player is frozen and not within interaction range, they can't
+         * do anything.
+         */
+        if (pawn.timers.has(FROZEN_TIMER)) {
+            if (pawn is Player) {
+                pawn.message("A magical force stops you from moving.")
+            }
+            return false
         }
 
         /**
@@ -81,23 +130,40 @@ object CombatPathAction {
 
             /**
              * Check to see if any of the tiles in our path are valid tiles
-             * to attack [target] from. If so we set that as our destination.
+             * to interact with [target] from. If so we set that as our destination.
              */
             while (true) {
                 tail = path.poll() ?: break
                 if (!tail.isWithinRadius(end, targetRadius) && tail.isWithinRadius(end, range) && world.collision.raycast(tail, end, projectile = projectile)) {
+
+                    /**
+                     * If the last tile is within a 1 tile radius of the end
+                     * target tile, we check to make sure the tail isn't diagonal
+                     * in relation to the end tile.
+                     *
+                     * This is to stop diagonal interactions with targets that
+                     * have a size of 1.
+                     */
+                    if (end.isWithinRadius(tail, 1) && Direction.between(end, tail).isDiagonal()) {
+                        val borderTiles = getBorderTiles(target)
+                        val tile = borderTiles.sortedBy { tile -> tile.getDistance(start) }.firstOrNull { world.collision.raycast(it, end, projectile = false) } ?: return false
+                        dst = pawn.walkTo(tile.x, tile.z, MovementQueue.StepType.NORMAL, projectilePath = false) ?: return false
+                        break
+                    }
+
                     if (pawn.tile.sameAs(tail)) {
                         return true
                     }
+
                     dst = pawn.walkTo(tail.x, tail.z, MovementQueue.StepType.NORMAL, projectilePath = false) ?: continue
                     break
                 }
                 lastTile = tail
             }
             /**
-             * If there's no valid attack tile in our path, we still want the
-             * player to walk to the end of the path before letting them know
-             * "they can't reach that", this is how it is on 07.
+             * If there's no valid interaction tile in our path, we still want
+             * the player to walk to the end of the path before letting them
+             * know "they can't reach that" - this is how it is on 07.
              */
             if (dst == null && lastTile != null) {
                 dst = pawn.walkTo(lastTile.x, lastTile.z, MovementQueue.StepType.NORMAL, projectilePath = false) ?: return false
@@ -118,12 +184,12 @@ object CombatPathAction {
          */
         if (!pawn.tile.sameAs(dst)) {
             it.wait(1)
-            return walkTo(it, pawn, target, attackRange)
+            return walkTo(it, pawn, target, interactionRange)
         }
 
         /**
          * If the [pawn] has arrived at their destination, check to see if they
-         * can successfully attack the [target] and return the result.
+         * can successfully interact with the [target] and return the result.
          */
         start = pawn.calculateCentreTile()
         end = target.calculateCentreTile()
@@ -131,7 +197,7 @@ object CombatPathAction {
         return start.isWithinRadius(end, range) && world.collision.raycast(start, end, projectile = projectile)
     }
 
-    private fun getBorderTiles(target: Pawn): Array<Tile> {
+    private fun getBorderTiles(target: Pawn): List<Tile> {
         val tiles = arrayListOf<Tile>()
 
         val size = target.getTileSize()
@@ -160,6 +226,6 @@ object CombatPathAction {
             }
         }
 
-        return tiles.toTypedArray()
+        return tiles
     }
 }

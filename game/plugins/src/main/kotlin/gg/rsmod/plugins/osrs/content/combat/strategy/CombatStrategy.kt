@@ -10,7 +10,7 @@ interface CombatStrategy {
 
     fun getAttackRange(pawn: Pawn): Int
 
-    fun getAttackAnimation(pawn: Pawn): Int
+    fun attack(pawn: Pawn, target: Pawn)
 
     fun getHitDelay(start: Tile, target: Tile): Int
 }

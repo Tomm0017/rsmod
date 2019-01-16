@@ -39,6 +39,11 @@ enum class LockState {
         else -> false
     }
 
+    fun canAttack(): Boolean = when (this) {
+        NONE -> true
+        else -> false
+    }
+
     fun canDropItems(): Boolean = when (this) {
         NONE -> true
         else -> false

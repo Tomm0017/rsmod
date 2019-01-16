@@ -147,10 +147,22 @@ class PluginRepository {
     private val objectPlugins = hashMapOf<Int, HashMap<Int, Function1<Plugin, Unit>>>()
 
     /**
+     * A map that contains npcs and any associated menu-click and its respective
+     * plugin executor, if any (would not be in the map if it doesn't have a plugin).
+     */
+    private val npcPlugins = hashMapOf<Int, HashMap<Int, Function1<Plugin, Unit>>>()
+
+    /**
      * A map of objects that have custom path finding. This means that the plugin
      * is responsible for walking to the object if necessary.
      */
-    private val customPathingObjects = hashMapOf<Int, Function1<Plugin, Unit>>()
+    private val customObjectPaths = hashMapOf<Int, Function1<Plugin, Unit>>()
+
+    /**
+     * A map of npcs that have custom path finding. This means that the plugin
+     * is responsible for walking to the npc if necessary.
+     */
+    private val customNpcPaths = hashMapOf<Int, Function1<Plugin, Unit>>()
 
     /**
      * Initiates and populates all our plugins.
@@ -181,6 +193,9 @@ class PluginRepository {
         exitChunkPlugins.clear()
         itemPlugins.clear()
         objectPlugins.clear()
+        npcPlugins.clear()
+        customObjectPaths.clear()
+        customNpcPaths.clear()
 
         pluginCount = 0
 
@@ -533,6 +548,25 @@ class PluginRepository {
         pluginCount++
     }
 
+    fun executeNpc(p: Player, id: Int, opt: Int): Boolean {
+        val optMap = npcPlugins[id] ?: return false
+        val logic = optMap[opt] ?: return false
+        p.world.pluginExecutor.execute(p, logic)
+        return true
+    }
+
+    @Throws(IllegalStateException::class)
+    fun bindNpc(id: Int, opt: Int, plugin: Function1<Plugin, Unit>) {
+        val optMap = npcPlugins[id] ?: HashMap()
+        if (optMap.containsKey(opt)) {
+            logger.error("Npc is already bound to a plugin: $id [opt=$opt]")
+            throw IllegalStateException("Npc is already bound to a plugin: $id [opt=$opt]")
+        }
+        optMap[opt] = plugin
+        npcPlugins[id] = optMap
+        pluginCount++
+    }
+
     fun executeObject(p: Player, id: Int, opt: Int): Boolean {
         val optMap = objectPlugins[id] ?: return false
         val logic = optMap[opt] ?: return false
@@ -541,18 +575,34 @@ class PluginRepository {
     }
 
     @Throws(IllegalStateException::class)
-    fun bindCustomPathingObject(id: Int, plugin: Function1<Plugin, Unit>) {
-        if (customPathingObjects.containsKey(id)) {
+    fun bindCustomObjectPath(id: Int, plugin: Function1<Plugin, Unit>) {
+        if (customObjectPaths.containsKey(id)) {
             logger.error("Object is already bound to a custom path-finder plugin: $id")
             throw IllegalStateException("Object is already bound to a custom path-finder plugin: $id")
         }
-        customPathingObjects[id] = plugin
+        customObjectPaths[id] = plugin
         pluginCount++
     }
 
-    fun executeCustomPathingObject(p: Player, id: Int): Boolean {
-        val logic = customPathingObjects[id] ?: return false
-        p.world.pluginExecutor.execute(p, logic)
+    fun executeCustomObjectPath(pawn: Pawn, id: Int): Boolean {
+        val logic = customObjectPaths[id] ?: return false
+        pawn.world.pluginExecutor.execute(pawn, logic)
+        return true
+    }
+
+    @Throws(IllegalStateException::class)
+    fun bindCustomNpcPath(id: Int, plugin: Function1<Plugin, Unit>) {
+        if (customNpcPaths.containsKey(id)) {
+            logger.error("Npc is already bound to a custom path-finder plugin: $id")
+            throw IllegalStateException("Npc is already bound to a custom path-finder plugin: $id")
+        }
+        customNpcPaths[id] = plugin
+        pluginCount++
+    }
+
+    fun executeCustomNpcPath(pawn: Pawn, id: Int): Boolean {
+        val logic = customNpcPaths[id] ?: return false
+        pawn.world.pluginExecutor.execute(pawn, logic)
         return true
     }
 

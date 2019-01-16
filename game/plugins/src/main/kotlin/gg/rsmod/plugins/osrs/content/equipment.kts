@@ -5,13 +5,13 @@ import gg.rsmod.plugins.osrs.api.helper.playSound
 import gg.rsmod.plugins.osrs.api.helper.player
 import gg.rsmod.plugins.osrs.api.helper.sendWeaponInterfaceInformation
 
-val equipItemSound = 2238
+val EQUIP_ITEM_SOUND = 2238
 
 for (equipment in EquipmentType.values()) {
     r.bindEquipSlot(equipment.id) {
         val p = it.player()
 
-        p.playSound(equipItemSound)
+        p.playSound(EQUIP_ITEM_SOUND)
         if (equipment == EquipmentType.WEAPON) {
             p.sendWeaponInterfaceInformation()
         }

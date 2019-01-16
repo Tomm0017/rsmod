@@ -47,7 +47,10 @@ object NpcPathAction {
     suspend fun walkTo(it: Plugin, pawn: Pawn, target: Pawn, interactionRange: Int): Boolean {
         var start = pawn.calculateCentreTile()
         var end = target.calculateCentreTile()
-        val targetRadius = Math.floor(target.getTileSize() / 2.0).toInt()
+        val pawnSize = pawn.getTileSize() - 1
+        val targetSize = target.getTileSize() - 1
+        val targetRadius = Math.floor(targetSize / 2.0).toInt()
+        val border = getBorderTiles(target)
         val world = pawn.world
 
         /**
@@ -81,7 +84,8 @@ object NpcPathAction {
          * If the player is within interaction range and raycast is successful,
          * let's just return true.
          */
-        if (!start.isWithinRadius(end, targetRadius) && !diagonal && start.isWithinRadius(end, range) && world.collision.raycast(start, end, projectile = projectile)) {
+        var valid = if (!projectile) pawn.tile in border else !overlap(pawn.tile, pawnSize, target.tile, targetSize) && start.isWithinRadius(end, range)
+        if (valid && !diagonal && world.collision.raycast(start, end, projectile = projectile)) {
             return true
         }
 
@@ -100,7 +104,7 @@ object NpcPathAction {
          * Check to see if the [pawn] is inside of the [target]. If so, we have
          * to move outwards.
          */
-        if (start.isWithinRadius(end, targetRadius)) {
+        if (overlap(pawn.tile, pawnSize, target.tile, targetSize)) {
             /**
              * If the target has a size of 1 (radius of 0) then we just do a quick
              * calculation to move out of their way. On 07, the west side has priority
@@ -112,8 +116,7 @@ object NpcPathAction {
                 val tile = validTiles.firstOrNull { world.collision.canTraverse(start, Direction.between(end, it), pawn.getType()) } ?: return false
                 dst = pawn.walkTo(tile.x, tile.z, MovementQueue.StepType.NORMAL, projectilePath = projectile) ?: return false
             } else {
-                val borderTiles = getBorderTiles(target)
-                val tile = borderTiles.sortedBy { tile -> tile.getDistance(pawn.tile) }.firstOrNull { world.collision.raycast(it, end, projectile = false) } ?: return false
+                val tile = border.sortedBy { tile -> tile.getDistance(pawn.tile) }.firstOrNull { world.collision.raycast(it, end, projectile = false) } ?: return false
                 dst = pawn.walkTo(tile.x, tile.z, MovementQueue.StepType.NORMAL, projectilePath = projectile) ?: return false
                 if (dst == pawn.tile) {
                     return false
@@ -121,9 +124,21 @@ object NpcPathAction {
             }
         } else {
             /**
+             * Choose what destination we want our path finder to use. This varies
+             * when trying to interact by being next to the [target] or if it can
+             * be done in a bigger radius.
+             *
+             * When it can be done in a bigger radius, we just need to normal
+             * target tile. Otherwise, if the interaction must be on the borders
+             * of the target, we want to find the closest border tile that isn't
+             * clipped.
+             */
+            val pathEndTile = if (projectile) end else border.sortedBy { tile -> tile.getDistance(pawn.tile) }.firstOrNull { tile -> world.collision.raycast(pawn.tile, tile, projectile = false) } ?: end
+
+            /**
              * Get the shortest path using our path-finding strategy...
              */
-            val path = pawn.createPathingStrategy().getPath(start, end, pawn.getType())
+            val path = pawn.createPathingStrategy().getPath(start, pathEndTile, pawn.getType())
 
             var tail: Tile
             var lastTile: Tile? = null
@@ -134,7 +149,17 @@ object NpcPathAction {
              */
             while (true) {
                 tail = path.poll() ?: break
-                if (!tail.isWithinRadius(end, targetRadius) && tail.isWithinRadius(end, range) && world.collision.raycast(tail, end, projectile = projectile)) {
+
+                /**
+                 * Check to see if the tail is a valid tile for interaction.
+                 * This varies depending on if the [interactionRange] is > 1
+                 * (is projectile) as non-projectile interactions must be in
+                 * a border tile for interaction, while projectiles just need
+                 * to be within the [interactionRange].
+                 */
+                valid = if (!projectile) tail in border else !overlap(tail, 0, target.tile, targetSize) && tail.isWithinRadius(end, range)
+
+                if (valid && world.collision.raycast(tail, end, projectile = projectile)) {
 
                     /**
                      * If the last tile is within a 1 tile radius of the end
@@ -145,8 +170,8 @@ object NpcPathAction {
                      * have a size of 1.
                      */
                     if (end.isWithinRadius(tail, 1) && Direction.between(end, tail).isDiagonal()) {
-                        val borderTiles = getBorderTiles(target)
-                        val tile = borderTiles.sortedBy { tile -> tile.getDistance(start) }.firstOrNull { world.collision.raycast(it, end, projectile = false) } ?: return false
+                        val tile = border.sortedBy { tile -> tile.getDistance(start) }.firstOrNull { world.collision.raycast(it, end, projectile = false) }
+                                ?: return false
                         dst = pawn.walkTo(tile.x, tile.z, MovementQueue.StepType.NORMAL, projectilePath = false) ?: return false
                         break
                     }
@@ -194,9 +219,32 @@ object NpcPathAction {
         start = pawn.calculateCentreTile()
         end = target.calculateCentreTile()
 
-        return start.isWithinRadius(end, range) && world.collision.raycast(start, end, projectile = projectile)
+        valid = if (!projectile) start in border else start.isWithinRadius(end, range)
+
+        return valid && world.collision.raycast(start, end, projectile = projectile)
     }
 
+    /**
+     * Checks to see if two AABB (axis-aligned bounding box) overlap.
+     */
+    private fun overlap(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean {
+        val a = Pair(tile1, tile1.transform(size1, size1))
+        val b = Pair(tile2, tile2.transform(size2, size2))
+
+        if (a.first.x > b.second.x || b.first.x > a.second.x) {
+            return false
+        }
+
+        if (a.first.z > b.second.z || b.first.z > a.second.z) {
+            return false
+        }
+
+        return true
+    }
+
+    /**
+     * Get the border tiles around a [target] pawn.
+     */
     private fun getBorderTiles(target: Pawn): List<Tile> {
         val tiles = arrayListOf<Tile>()
 

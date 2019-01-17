@@ -3,8 +3,8 @@ package gg.rsmod.game.sync.segment
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.service.game.ItemStatsService
-import gg.rsmod.game.service.game.WeaponConfigService
+import gg.rsmod.game.service.game.item.ItemStatsService
+import gg.rsmod.game.service.game.item.WeaponConfigService
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.UpdateBlockType
 import gg.rsmod.net.packet.DataType
@@ -100,7 +100,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                 val transmog = other.getTransmogId() >= 0
 
                 if (!transmog) {
-                    val statsService = other.world.getService(ItemStatsService::class.java, false).orElse(null)
+                    val statsService = other.world.getService(ItemStatsService::class.java).orElse(null)
                     val translation = arrayOf(-1, -1, -1, -1, 2, -1, 3, 5, 0, 4, 6, 1)
 
                     val arms = 6
@@ -154,7 +154,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
 
                     val weapon = other.equipment[3] // Assume slot 3 is the weapon.
                     if (weapon != null) {
-                        val renderService = other.world.getService(WeaponConfigService::class.java, searchSubclasses = false).orElse(null)
+                        val renderService = other.world.getService(WeaponConfigService::class.java).orElse(null)
                         var defaultWeaponRender = true
 
                         if (renderService != null) {

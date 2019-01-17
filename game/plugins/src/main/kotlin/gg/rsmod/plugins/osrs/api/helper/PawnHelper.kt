@@ -31,6 +31,6 @@ fun Pawn.doubleHit(damage1: Int, damage2: Int, delay: Int = 0,
     pendingHits.add(hit)
 }
 
-fun Pawn.showHitbar(type: HitbarType) {
-    pendingHits.add(Hit.Builder().onlyShowHitbar().setHitbarType(type.id).setHitbarMaxPercentage(type.percentage).build())
+fun Pawn.showHitbar(percentage: Int, type: HitbarType) {
+    pendingHits.add(Hit.Builder().onlyShowHitbar().setHitbarType(type.id).setHitbarPercentage(percentage).setHitbarMaxPercentage(type.percentage).build())
 }

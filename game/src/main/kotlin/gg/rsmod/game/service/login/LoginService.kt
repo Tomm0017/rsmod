@@ -45,7 +45,7 @@ class LoginService : Service() {
 
     @Throws(RuntimeException::class)
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
-        serializer = world.getService(PlayerSerializerService::class.java, true).get()
+        serializer = world.getService(PlayerSerializerService::class.java, searchSubclasses = true).get()
 
         val threadCount = serviceProperties.getOrDefault("thread-count", 3)
         val executorService = Executors.newFixedThreadPool(threadCount, NamedThreadFactory().setName("login-worker").build())
@@ -67,7 +67,7 @@ class LoginService : Service() {
 
     fun successfulLogin(client: Client, encodeRandom: IsaacRandom, decodeRandom: IsaacRandom) {
         val gameSystem = GameSystem(channel = client.channel, client = client,
-                service = client.world.getService(GameService::class.java, false).get())
+                service = client.world.getService(GameService::class.java).get())
 
         client.gameSystem = gameSystem
         client.channel.attr(GameHandler.SYSTEM_KEY).set(gameSystem)
@@ -78,7 +78,7 @@ class LoginService : Service() {
          * next game cycle after completion. Should benchmark first.
          */
         val pipeline = client.channel.pipeline()
-        val rsaEncryption = client.world.getService(RsaService::class.java, false).isPresent
+        val rsaEncryption = client.world.getService(RsaService::class.java).isPresent
 
         pipeline.remove("handshake_encoder")
         pipeline.remove("login_decoder")

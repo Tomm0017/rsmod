@@ -18,7 +18,7 @@ fun String.plural(amount: Int): String {
 }
 
 fun ItemContainer.networth(world: World): Long {
-    val service = world.getService(ItemValueService::class.java, searchSubclasses = false).orElse(null)
+    val service = world.getService(ItemValueService::class.java).orElse(null)
     var networth = 0L
     getBackingArray().forEach { item ->
         if (item != null) {

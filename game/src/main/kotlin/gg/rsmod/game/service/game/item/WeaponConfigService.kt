@@ -1,4 +1,4 @@
-package gg.rsmod.game.service.game
+package gg.rsmod.game.service.game.item
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

@@ -3,7 +3,7 @@ package gg.rsmod.game.action
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.game.service.game.ItemStatsService
+import gg.rsmod.game.service.game.item.ItemStatsService
 
 /**
  * This class is responsible for handling armor equip and unequip related
@@ -37,7 +37,7 @@ object EquipAction {
     }
 
     fun equip(p: Player, item: Item, inventorySlot: Int = -1): Result {
-        val statService = p.world.getService(ItemStatsService::class.java, searchSubclasses = false).orElse(null)
+        val statService = p.world.getService(ItemStatsService::class.java).orElse(null)
         if (statService == null) {
             if (p.world.plugins.executeItem(p, item.id, 2)) {
                 return Result.PLUGIN

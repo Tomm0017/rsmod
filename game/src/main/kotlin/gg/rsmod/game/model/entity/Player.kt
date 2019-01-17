@@ -8,7 +8,7 @@ import gg.rsmod.game.model.*
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.interf.Interfaces
-import gg.rsmod.game.service.game.ItemStatsService
+import gg.rsmod.game.service.game.item.ItemStatsService
 import gg.rsmod.game.sync.UpdateBlockType
 import java.util.*
 
@@ -311,7 +311,7 @@ open class Player(override val world: World) : Pawn(world) {
     }
 
     fun calculateWeightAndBonus(weight: Boolean, bonuses: Boolean = true) {
-        world.getService(ItemStatsService::class.java, searchSubclasses = false).ifPresent { s ->
+        world.getService(ItemStatsService::class.java).ifPresent { s ->
 
             if (weight) {
                 val inventoryWeight = inventory.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }

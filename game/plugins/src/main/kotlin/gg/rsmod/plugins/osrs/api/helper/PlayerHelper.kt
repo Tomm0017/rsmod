@@ -12,7 +12,7 @@ import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.game.service.game.WeaponConfigService
+import gg.rsmod.game.service.game.item.WeaponConfigService
 import gg.rsmod.plugins.osrs.api.*
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayer
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
@@ -290,7 +290,7 @@ fun Player.sendWeaponInterfaceInformation() {
         val definition = world.definitions.get(ItemDef::class.java, weapon.id)
         name = definition.name
 
-        val weaponConfig = world.getService(WeaponConfigService::class.java, false).orElse(null)
+        val weaponConfig = world.getService(WeaponConfigService::class.java).orElse(null)
         panel = weaponConfig?.get(weapon.id)?.type ?: 0
     } else {
         name = "Unarmed"
@@ -366,7 +366,7 @@ fun Player.calculateDeathContainers(): DeathContainers {
     val lostContainer = ItemContainer(world.definitions, inventory.capacity + equipment.capacity, ContainerStackType.NORMAL)
 
     var totalItems = inventory.getBackingArray().filterNotNull() + equipment.getBackingArray().filterNotNull()
-    val valueService = world.getService(ItemValueService::class.java, searchSubclasses = false).orElse(null)
+    val valueService = world.getService(ItemValueService::class.java).orElse(null)
 
     if (valueService != null) {
         totalItems = totalItems.sortedByDescending { valueService.get(it.id) }

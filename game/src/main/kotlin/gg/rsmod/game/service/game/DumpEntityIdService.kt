@@ -15,10 +15,10 @@ import java.nio.file.Paths
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class DefinitionIdService : Service() {
+class DumpEntityIdService : Service() {
 
     companion object {
-        private val logger = LogManager.getLogger(DefinitionIdService::class.java)
+        private val logger = LogManager.getLogger(DumpEntityIdService::class.java)
     }
 
     private var dump = false

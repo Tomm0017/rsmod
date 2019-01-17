@@ -117,7 +117,11 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     }
 
     fun spawn(npc: Npc): Boolean {
-        return npcs.add(npc)
+        val added = npcs.add(npc)
+        if (added) {
+            //val combatDefs =
+        }
+        return added
     }
 
     fun remove(npc: Npc) {
@@ -219,7 +223,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     }
 
     fun sendExamine(p: Player, id: Int, type: ExamineEntityType) {
-        val service = getService(EntityExamineService::class.java, searchSubclasses = false).orElse(null)
+        val service = getService(EntityExamineService::class.java).orElse(null)
         if (service != null) {
             val examine = when (type) {
                 ExamineEntityType.ITEM -> service.getItem(id)
@@ -239,7 +243,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * When [searchSubclasses] is false: the service class must be equal to the [type].
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T: Service> getService(type: Class<out T>, searchSubclasses: Boolean): Optional<T> {
+    fun <T: Service> getService(type: Class<out T>, searchSubclasses: Boolean = false): Optional<T> {
         if (searchSubclasses) {
             val service = services.firstOrNull { type.isAssignableFrom(it::class.java) }
             return if (service != null) Optional.of(service) as Optional<T> else Optional.empty()

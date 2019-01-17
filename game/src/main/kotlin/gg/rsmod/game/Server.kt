@@ -125,7 +125,7 @@ class Server {
         /**
          * Fetch the [GameService].
          */
-        val gameService = world.getService(type = GameService::class.java, searchSubclasses = false).get()
+        val gameService = world.getService(type = GameService::class.java).get()
 
         /**
          * Load the packets for the game.
@@ -167,7 +167,7 @@ class Server {
         /**
          * Binding the network to allow incoming and outgoing connections.
          */
-        val rsaService = world.getService(RsaService::class.java, false).orElse(null)
+        val rsaService = world.getService(RsaService::class.java).orElse(null)
         val serverBootstrap = ServerBootstrap()
         val clientChannelInitializer = ClientChannelInitializer(revision = gameContext.revision,
                 rsaExponent = rsaService?.getExponent(), rsaModulus = rsaService?.getModulus(),

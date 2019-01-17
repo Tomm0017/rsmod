@@ -1,5 +1,7 @@
 package gg.rsmod.game.sync
 
+import gg.rsmod.game.model.Hit
+
 /**
  * @author Tom <rspsmods@gmail.com>
  */
@@ -17,10 +19,13 @@ class UpdateBlockBuffer {
     var graphicHeight = 0
     var graphicDelay = 0
 
+    val hits = arrayListOf<Hit>()
+
     fun isDirty(): Boolean = mask != 0
 
     fun clean() {
         mask = 0
+        hits.clear()
     }
 
     fun addBit(bit: Int) {

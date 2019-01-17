@@ -4,6 +4,7 @@ players:
   excess-mask: 0x8
 
   order:
+    - HITMARK
     - GFX
     - MOVEMENT
     - FORCE_CHAT
@@ -86,6 +87,18 @@ players:
 
     - block: HITMARK
       bit: 0x40
+      structure:
+        - name: hitmarks
+          type: BYTE
+          trans: ADD
+        - name: hitbars
+          type: BYTE
+          trans: NEGATE
+        - name: hitbar_percentage
+          type: BYTE
+          trans: ADD
+        - name: hitbar_to_percentage
+          type: BYTE
 
 npcs:
 

@@ -93,6 +93,11 @@ abstract class Pawn(open val world: World) : Entity() {
     private var transmogId = -1
 
     /**
+     * A list of pending [Hit]s.
+     */
+    val pendingHits = arrayListOf<Hit>()
+
+    /**
      * Handles logic before any synchronization tasks are executed.
      */
     abstract fun cycle()
@@ -106,8 +111,6 @@ abstract class Pawn(open val world: World) : Entity() {
     abstract fun hasBlock(block: UpdateBlockType): Boolean
 
     abstract fun getTileSize(): Int
-
-    abstract fun heal(amount: Int, capValue: Int = 0)
 
     fun getTransmogId(): Int = transmogId
 

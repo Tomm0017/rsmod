@@ -383,7 +383,7 @@ class GamePacketBuilder {
         if (value < 128) {
             buffer.writeByte(value)
         } else {
-            buffer.writeShort(value)
+            buffer.writeShort(value or 0x8000)
         }
     }
 

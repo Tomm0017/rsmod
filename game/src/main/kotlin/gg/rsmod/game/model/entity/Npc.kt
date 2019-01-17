@@ -42,10 +42,6 @@ class Npc private constructor(val id: Int, override val world: World) : Pawn(wor
     // have a tendency of being called repeatedly every cycle for combat.
     override fun getTileSize(): Int = world.definitions.get(NpcDef::class.java, id).size
 
-    override fun heal(amount: Int, capValue: Int) {
-
-    }
-
     override fun cycle() {
 
     }

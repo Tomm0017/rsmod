@@ -20,7 +20,6 @@ import net.runelite.cache.fs.Store
 import org.apache.logging.log4j.LogManager
 import java.io.File
 import java.util.*
-import java.util.concurrent.ThreadLocalRandom
 
 /**
  * The game world, which stores all the entities and nodes that the world
@@ -95,7 +94,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * A [Random] implementation used for pseudo-random purposes through-out
      * the game world.
      */
-    private val random: Random = ThreadLocalRandom.current()
+    private val random: Random = Random()
 
     /**
      * The amount of game cycles that have gone by since the world was first

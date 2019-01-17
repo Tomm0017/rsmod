@@ -214,6 +214,12 @@ r.bindCommand("dialogs", Privilege.ADMIN_POWER) {
     }
 }
 
+r.bindCommand("test", Privilege.ADMIN_POWER) {
+    val p = it.player()
+
+    p.hit(damage = p.world.random(10))
+}
+
 fun tryWithUsage(player: Player, args: Array<String>, failMessage: String, tryUnit: Function1<Array<String>, Unit>) {
     try {
         tryUnit.invoke(args)

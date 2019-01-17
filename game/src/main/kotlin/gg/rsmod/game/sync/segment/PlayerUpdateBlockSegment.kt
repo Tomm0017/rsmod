@@ -200,6 +200,69 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                 buf.putBytes(structure[1].transformation, appBuf.getBuffer())
             }
 
+            UpdateBlockType.HITMARK -> {
+                val structure = blocks.updateBlocks[blockType]!!.values
+
+                val hitmarkCountStructure = structure[0]
+                val hitbarCountStructure = structure[1]
+                val hitbarPercentageStructure = structure[2]
+                val hitbarToPercentageStructure = structure[3]
+
+                val hits = other.blockBuffer.hits
+                val hitbars = hits.filter { it.hitbar != null }
+
+                buf.put(hitmarkCountStructure.type, hitmarkCountStructure.order, hitmarkCountStructure.transformation, hits.size)
+                hits.forEach { hit ->
+                    val hitmarks = Math.min(2, hit.hitmarks.size)
+
+                    /**
+                     * Inform the client of how many hitmarkers to decode.
+                     */
+                    if (hitmarks == 0) {
+                        buf.putSmart(32766)
+                    } else if (hitmarks > 1) {
+                        buf.putSmart(32767)
+                    }
+
+                    for (i in 0 until hitmarks) {
+                        val hitmark = hit.hitmarks[i]
+                        buf.putSmart(hitmark.type)
+                        buf.putSmart(hitmark.damage)
+                    }
+
+                    buf.putSmart(hit.hitDelay)
+                }
+
+                buf.put(hitbarCountStructure.type, hitbarCountStructure.order, hitbarCountStructure.transformation, hitbars.size)
+                hitbars.forEach { hit ->
+                    val hitbar = hit.hitbar!!
+                    buf.putSmart(hitbar.type)
+                    buf.putSmart(hitbar.depleteSpeed)
+
+                    if (hitbar.depleteSpeed != 32767) {
+
+                        val max = other.getSkills().getMaxLevel(3)
+                        val curr = Math.min(max, other.getSkills().getCurrentLevel(3))
+                        var percentage = if (max == 0) 0 else ((curr.toDouble() * hitbar.percentage.toDouble() / max.toDouble())).toInt()
+                        if (percentage == 0 && curr > 0) {
+                            percentage = 1
+                        }
+
+                        buf.putSmart(hitbar.delay)
+                        buf.put(hitbarPercentageStructure.type, hitbarPercentageStructure.order, hitbarPercentageStructure.transformation, percentage)
+                        if (hitbar.depleteSpeed > 0) {
+                            /**
+                             * // TODO: correct value
+                                int delay = packet.readUSmart();
+                                int percentage = packet.readUByte();
+                                int toPercentage = speed > 0 ? packet.readUByte() : percentage;
+                             */
+                            buf.put(hitbarToPercentageStructure.type, hitbarToPercentageStructure.order, hitbarToPercentageStructure.transformation, 0)
+                        }
+                    }
+                }
+            }
+
             UpdateBlockType.FACE_PAWN -> {
                 val structure = blocks.updateBlocks[blockType]!!.values
                 buf.put(structure[0].type, structure[0].order, structure[0].transformation,

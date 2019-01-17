@@ -1,6 +1,7 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
+import gg.rsmod.game.action.DeathAction
 import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.*
@@ -207,25 +208,6 @@ open class Player(override val world: World) : Pawn(world) {
             calculateWeightAndBonus(weight = calculateWeight, bonuses = calculateBonuses)
         }
 
-        for (i in 0 until getSkills().maxSkills) {
-            if (getSkills().isDirty(i)) {
-                write(SendSkillMessage(skill = i, level = getSkills().getCurrentLevel(i), xp = getSkills().getCurrentXp(i).toInt()))
-            }
-        }
-        getSkills().clean()
-
-        for (i in 0 until varps.maxVarps) {
-            if (varps.isDirty(i)) {
-                val varp = varps[i]
-                val message = when {
-                    varp.state >= -Byte.MAX_VALUE && varp.state <= Byte.MAX_VALUE -> SetSmallVarpMessage(varp.id, varp.state)
-                    else -> SetBigVarpMessage(varp.id, varp.state)
-                }
-                write(message)
-            }
-        }
-        varps.clean()
-
         val timerIterator = timers.getTimers().entries.iterator()
         while (timerIterator.hasNext()) {
             val timer = timerIterator.next()
@@ -246,6 +228,54 @@ open class Player(override val world: World) : Pawn(world) {
         timers.getTimers().entries.forEach { timer ->
             timer.setValue(timer.value - 1)
         }
+
+        val hitIterator = pendingHits.iterator()
+        iterator@ while (hitIterator.hasNext()) {
+            val hit = hitIterator.next()
+
+            if (lock.delaysDamage()) {
+                hit.damageDelay = Math.max(0, hit.damageDelay - 1)
+                continue
+            }
+
+            if (hit.damageDelay-- == 0) {
+
+                blockBuffer.hits.add(hit)
+                addBlock(UpdateBlockType.HITMARK)
+
+                for (hitmark in hit.hitmarks) {
+                    val hp = getSkills().getCurrentLevel(3)
+                    if (hitmark.damage > hp) {
+                        hitmark.damage = hp
+                    }
+                    getSkills().setCurrentLevel(3, getSkills().getCurrentLevel(3) - hitmark.damage)
+                    if (getSkills().getCurrentLevel(3) == 0) {
+                        executePlugin(DeathAction.playerDeathPlugin)
+                        break@iterator
+                    }
+                }
+                hitIterator.remove()
+            }
+        }
+
+        for (i in 0 until varps.maxVarps) {
+            if (varps.isDirty(i)) {
+                val varp = varps[i]
+                val message = when {
+                    varp.state >= -Byte.MAX_VALUE && varp.state <= Byte.MAX_VALUE -> SetSmallVarpMessage(varp.id, varp.state)
+                    else -> SetBigVarpMessage(varp.id, varp.state)
+                }
+                write(message)
+            }
+        }
+        varps.clean()
+
+        for (i in 0 until getSkills().maxSkills) {
+            if (getSkills().isDirty(i)) {
+                write(SendSkillMessage(skill = i, level = getSkills().getCurrentLevel(i), xp = getSkills().getCurrentXp(i).toInt()))
+            }
+        }
+        getSkills().clean()
     }
 
     /**
@@ -293,10 +323,6 @@ open class Player(override val world: World) : Pawn(world) {
     }
 
     override fun getTileSize(): Int = 1
-
-    override fun heal(amount: Int, capValue: Int) {
-        getSkills().alterCurrentLevel(skill = 3, value = amount, capValue = capValue)
-    }
 
     fun getSkills(): SkillSet = normalSkills
 

@@ -79,7 +79,7 @@ object CombatConfigs {
                 pawn.hasWeaponType(WeaponType.MACE) -> if (style == 2) 400 else 401
                 pawn.hasWeaponType(WeaponType.THROWN) -> 929
                 pawn.hasWeaponType(WeaponType.WHIP) -> 1658
-                pawn.hasWeaponType(WeaponType.SPEAR) -> if (style == 1) 440 else if (style == 2) 429 else 428
+                pawn.hasWeaponType(WeaponType.SPEAR) || pawn.hasWeaponType(WeaponType.HALBERD) -> if (style == 1) 440 else if (style == 2) 429 else 428
                 pawn.hasWeaponType(WeaponType.CLAWS) -> 493
                 else -> if (style == 1) 423 else 422
             }
@@ -127,6 +127,13 @@ object CombatConfigs {
                 pawn.hasWeaponType(WeaponType.SPEAR) -> when (style) {
                     3 -> AttackStyle.DEFENSIVE
                     else -> AttackStyle.CONTROLLED
+                }
+
+                pawn.hasWeaponType(WeaponType.HALBERD) -> when (style) {
+                    0 -> AttackStyle.CONTROLLED
+                    1 -> AttackStyle.AGGRESSIVE
+                    3 -> AttackStyle.DEFENSIVE
+                    else -> AttackStyle.NONE
                 }
 
                 pawn.hasWeaponType(WeaponType.SCYTHE) -> when (style) {

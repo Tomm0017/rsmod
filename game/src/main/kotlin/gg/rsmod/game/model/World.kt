@@ -196,6 +196,13 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     fun random(range: IntRange): Int = random.nextInt(range.endInclusive - range.start + 1) + range.start
 
+    fun chance(chance: Int, probability: Int): Boolean = random.nextInt(chance + 1) <= probability
+
+    fun percentChance(probability: Double): Boolean {
+        check(probability in 0.0 .. 100.0) { "Chance must be within range of [0.0 - 100.0]" }
+        return random.nextDouble() <= (probability / 100.0)
+    }
+
     fun executePlugin(plugin: Function1<Plugin, Unit>) {
         pluginExecutor.execute(this, plugin)
     }

@@ -1,6 +1,7 @@
 package gg.rsmod.plugins.osrs.content.combat.strategy.ranged
 
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.AttackStyle
@@ -8,6 +9,7 @@ import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.WeaponType
 import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.helper.getEquipment
+import gg.rsmod.plugins.osrs.api.helper.hasEquipped
 import gg.rsmod.plugins.osrs.api.helper.hasWeaponType
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
@@ -104,17 +106,46 @@ object RangedCombatStrategy : CombatStrategy {
 
         if (pawn is Player) {
 
+            /**
+             * Get the [EquipmentType] for the ranged weapon you're using.
+             */
             val ammoSlot = when {
                 pawn.hasWeaponType(WeaponType.THROWN) || pawn.hasWeaponType(WeaponType.CHINCHOMPA) -> EquipmentType.WEAPON
                 else -> EquipmentType.AMMO
             }
 
             val ammo = pawn.getEquipment(ammoSlot)
-            val ammoProjectile = if (ammo != null) RangedProjectile.values().firstOrNull { ammo.id in it.items } else null
 
+            /**
+             * Create a projectile based on ammo.
+             */
+            val ammoProjectile = if (ammo != null) RangedProjectile.values().firstOrNull { ammo.id in it.items } else null
             if (ammoProjectile != null) {
                 val projectile = Combat.createProjectile(pawn, target, ammoProjectile.gfx, ammoProjectile.type)
                 pawn.world.spawn(projectile)
+            }
+
+            /**
+             * Remove or drop ammo if applicable.
+             */
+            if (ammo != null) {
+                val chance = pawn.world.random(99)
+                val breakAmmo = chance in 0..19
+                val dropAmmo = when {
+                    pawn.hasEquipped(EquipmentType.CAPE, Items.AVAS_ACCUMULATOR) -> chance in 20..27
+                    pawn.hasEquipped(EquipmentType.CAPE, Items.AVAS_ASSEMBLER) -> false
+                    else -> !breakAmmo
+                }
+
+                val amount = 1
+                if (breakAmmo || dropAmmo) {
+                    pawn.equipment.remove(ammo.id, amount)
+                }
+                if (dropAmmo) {
+                    // NOTE: should this wait until the projectile hits its target
+                    // before spawning?
+                    pawn.world.spawn(GroundItem(ammo.id, amount, target.tile, pawn.uid))
+                }
             }
         }
         pawn.animate(animation)

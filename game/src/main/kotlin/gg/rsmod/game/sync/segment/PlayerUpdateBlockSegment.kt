@@ -230,7 +230,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                         buf.putSmart(hitmark.damage)
                     }
 
-                    buf.putSmart(hit.hitDelay)
+                    buf.putSmart(hit.clientDelay)
                 }
 
                 buf.put(hitbarCountStructure.type, hitbarCountStructure.order, hitbarCountStructure.transformation, hitbars.size)
@@ -240,23 +240,19 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                     buf.putSmart(hitbar.depleteSpeed)
 
                     if (hitbar.depleteSpeed != 32767) {
-
-                        val max = other.getSkills().getMaxLevel(3)
-                        val curr = Math.min(max, other.getSkills().getCurrentLevel(3))
-                        var percentage = if (max == 0) 0 else ((curr.toDouble() * hitbar.percentage.toDouble() / max.toDouble())).toInt()
-                        if (percentage == 0 && curr > 0) {
-                            percentage = 1
+                        var percentage = hitbar.percentage
+                        if (percentage == -1) {
+                            val max = other.getMaxHp()
+                            val curr = Math.min(max, other.getCurrentHp())
+                            percentage = if (max == 0) 0 else ((curr.toDouble() * hitbar.maxPercentage.toDouble() / max.toDouble())).toInt()
+                            if (percentage == 0 && curr > 0) {
+                                percentage = 1
+                            }
                         }
 
                         buf.putSmart(hitbar.delay)
                         buf.put(hitbarPercentageStructure.type, hitbarPercentageStructure.order, hitbarPercentageStructure.transformation, percentage)
                         if (hitbar.depleteSpeed > 0) {
-                            /**
-                             * // TODO: correct value
-                                int delay = packet.readUSmart();
-                                int percentage = packet.readUByte();
-                                int toPercentage = speed > 0 ? packet.readUByte() : percentage;
-                             */
                             buf.put(hitbarToPercentageStructure.type, hitbarToPercentageStructure.order, hitbarToPercentageStructure.transformation, 0)
                         }
                     }

@@ -5,7 +5,6 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.BitStorage
-import gg.rsmod.game.model.Hit
 import gg.rsmod.game.model.SkillSet
 import gg.rsmod.game.model.StorageBits
 import gg.rsmod.game.model.container.ContainerStackType
@@ -253,20 +252,6 @@ fun Player.toggleStorageBit(storage: BitStorage, bits: StorageBits) {
 
 fun Player.heal(amount: Int, capValue: Int = 0) {
     getSkills().alterCurrentLevel(skill = Skills.HITPOINTS, value = amount, capValue = capValue)
-}
-
-fun Player.hit(damage: Int, hitType: HitType = if (damage == 0) HitType.BLOCK else HitType.HIT, delay: Int = 0) {
-    val hit = Hit.Builder()
-            .setHitDelay(delay)
-            .addHit(damage = damage, type = hitType.id)
-            .setHitbarPercentage(HitbarType.NORMAL.percentage)
-            .build()
-
-    pendingHits.add(hit)
-}
-
-fun Player.showHitbar(type: HitbarType) {
-    pendingHits.add(Hit.Builder().onlyShowHitbar().setHitbarType(type.id).setHitbarPercentage(type.percentage).build())
 }
 
 fun Player.getWeaponType(): Int = getVarp(843)

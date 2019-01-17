@@ -89,6 +89,65 @@ class NpcUpdateBlockSegment(private val npc: Npc, private val newAddition: Boole
                 buf.putString(npc.blockBuffer.forceChat)
             }
 
+            UpdateBlockType.HITMARK -> {
+                val structure = blocks.updateBlocks[blockType]!!.values
+
+                val hitmarkCountStructure = structure[0]
+                val hitbarCountStructure = structure[1]
+                val hitbarPercentageStructure = structure[2]
+                val hitbarToPercentageStructure = structure[3]
+
+                val hits = npc.blockBuffer.hits
+                val hitbars = hits.filter { it.hitbar != null }
+
+                buf.put(hitmarkCountStructure.type, hitmarkCountStructure.order, hitmarkCountStructure.transformation, hits.size)
+                hits.forEach { hit ->
+                    val hitmarks = Math.min(2, hit.hitmarks.size)
+
+                    /**
+                     * Inform the client of how many hitmarkers to decode.
+                     */
+                    if (hitmarks == 0) {
+                        buf.putSmart(32766)
+                    } else if (hitmarks > 1) {
+                        buf.putSmart(32767)
+                    }
+
+                    for (i in 0 until hitmarks) {
+                        val hitmark = hit.hitmarks[i]
+                        buf.putSmart(hitmark.type)
+                        buf.putSmart(hitmark.damage)
+                    }
+
+                    buf.putSmart(hit.clientDelay)
+                }
+
+                buf.put(hitbarCountStructure.type, hitbarCountStructure.order, hitbarCountStructure.transformation, hitbars.size)
+                hitbars.forEach { hit ->
+                    val hitbar = hit.hitbar!!
+                    buf.putSmart(hitbar.type)
+                    buf.putSmart(hitbar.depleteSpeed)
+
+                    if (hitbar.depleteSpeed != 32767) {
+                        var percentage = hitbar.percentage
+                        if (percentage == 0) {
+                            val max = npc.getMaxHp()
+                            val curr = Math.min(max, npc.getCurrentHp())
+                            percentage = if (max == 0) 0 else ((curr.toDouble() * hitbar.maxPercentage.toDouble() / max.toDouble())).toInt()
+                            if (percentage == 0 && curr > 0) {
+                                percentage = 1
+                            }
+                        }
+
+                        buf.putSmart(hitbar.delay)
+                        buf.put(hitbarPercentageStructure.type, hitbarPercentageStructure.order, hitbarPercentageStructure.transformation, percentage)
+                        if (hitbar.depleteSpeed > 0) {
+                            buf.put(hitbarToPercentageStructure.type, hitbarToPercentageStructure.order, hitbarToPercentageStructure.transformation, 0)
+                        }
+                    }
+                }
+            }
+
             else -> throw RuntimeException("Unhandled update block type: $blockType")
         }
     }

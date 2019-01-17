@@ -1,7 +1,6 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
-import gg.rsmod.game.action.DeathAction
 import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.*
@@ -87,8 +86,6 @@ open class Player(override val world: World) : Pawn(world) {
     val bank by lazy { ItemContainer(world.definitions, 800, ContainerStackType.STACK) }
 
     val interfaces by lazy { Interfaces(this) }
-
-    private val normalSkills by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
 
     val varps  by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
 
@@ -208,55 +205,9 @@ open class Player(override val world: World) : Pawn(world) {
             calculateWeightAndBonus(weight = calculateWeight, bonuses = calculateBonuses)
         }
 
-        val timerIterator = timers.getTimers().entries.iterator()
-        while (timerIterator.hasNext()) {
-            val timer = timerIterator.next()
+        timerCycle()
 
-            if (timer.value <= 0) {
-                // NOTE(Tom): if any timer may modify another [Pawn], we will
-                // need to iterate timers on a sequential task and execute
-                // any of them which have a value (time) of [0], instead of
-                // handling it here. This would only apply if we are using
-                // a parallel task to call [cycle].
-                world.plugins.executeTimer(this, timer.key)
-                if (!timers.has(timer.key)) {
-                    timerIterator.remove()
-                }
-            }
-        }
-
-        timers.getTimers().entries.forEach { timer ->
-            timer.setValue(timer.value - 1)
-        }
-
-        val hitIterator = pendingHits.iterator()
-        iterator@ while (hitIterator.hasNext()) {
-            val hit = hitIterator.next()
-
-            if (lock.delaysDamage()) {
-                hit.damageDelay = Math.max(0, hit.damageDelay - 1)
-                continue
-            }
-
-            if (hit.damageDelay-- == 0) {
-
-                blockBuffer.hits.add(hit)
-                addBlock(UpdateBlockType.HITMARK)
-
-                for (hitmark in hit.hitmarks) {
-                    val hp = getSkills().getCurrentLevel(3)
-                    if (hitmark.damage > hp) {
-                        hitmark.damage = hp
-                    }
-                    getSkills().setCurrentLevel(3, getSkills().getCurrentLevel(3) - hitmark.damage)
-                    if (getSkills().getCurrentLevel(3) == 0) {
-                        executePlugin(DeathAction.playerDeathPlugin)
-                        break@iterator
-                    }
-                }
-                hitIterator.remove()
-            }
-        }
+        hitsCycle()
 
         for (i in 0 until varps.maxVarps) {
             if (varps.isDirty(i)) {
@@ -301,12 +252,6 @@ open class Player(override val world: World) : Pawn(world) {
     }
 
     /**
-     * Default method to check if a player is dead. We assume that the [Skill]
-     * with id of [3] is Hitpoints.
-     */
-    override fun isDead(): Boolean = getSkills().getCurrentLevel(3) == 0
-
-    /**
      * Checks if the player is running. We assume that the [Varp] with id of
      * [173] is the running state varp.
      */
@@ -323,8 +268,6 @@ open class Player(override val world: World) : Pawn(world) {
     }
 
     override fun getTileSize(): Int = 1
-
-    fun getSkills(): SkillSet = normalSkills
 
     /**
      * Handles the logic that must be executed once a player has successfully

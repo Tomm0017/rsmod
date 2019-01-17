@@ -110,6 +110,7 @@ npcs:
     - FACE_TILE
     - ANIMATION
     - APPEARANCE
+    - HITMARK
     - GFX
     - FORCE_CHAT
 
@@ -160,3 +161,18 @@ npcs:
 
     - block: FORCE_CHAT
       bit: 0x2
+
+    - block: HITMARK
+      bit: 0x10
+      structure:
+        - name: hitmarks
+          type: BYTE
+          trans: NEGATE
+        - name: hitbars
+          type: BYTE
+          trans: ADD
+        - name: hitbar_percentage
+          type: BYTE
+        - name: hitbar_to_percentage
+          type: BYTE
+          trans: SUBTRACT

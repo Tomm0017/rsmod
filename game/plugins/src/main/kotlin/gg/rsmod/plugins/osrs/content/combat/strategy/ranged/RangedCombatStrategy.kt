@@ -11,6 +11,7 @@ import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.helper.getEquipment
 import gg.rsmod.plugins.osrs.api.helper.hasEquipped
 import gg.rsmod.plugins.osrs.api.helper.hasWeaponType
+import gg.rsmod.plugins.osrs.api.helper.hit
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
 import gg.rsmod.plugins.osrs.content.combat.strategy.CombatStrategy
@@ -149,6 +150,7 @@ object RangedCombatStrategy : CombatStrategy {
             }
         }
         pawn.animate(animation)
+        target.hit(pawn.world.random(10), delay = getHitDelay(pawn.calculateCentreTile(), target.calculateCentreTile()))
     }
 
     override fun getHitDelay(start: Tile, target: Tile): Int {

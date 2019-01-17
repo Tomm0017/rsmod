@@ -1,5 +1,6 @@
 package gg.rsmod.game.model.entity
 
+import gg.rsmod.game.action.DeathAction
 import gg.rsmod.game.action.NpcPathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
@@ -58,6 +59,11 @@ abstract class Pawn(open val world: World) : Entity() {
     var lastFacingDirection: Direction = Direction.NONE
 
     /**
+     * The pawn's [SkillSet].
+     */
+    private val skillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
+
+    /**
      * The current [LockState] which filters what actions this pawn can perform.
      */
     var lock = LockState.NONE
@@ -102,7 +108,7 @@ abstract class Pawn(open val world: World) : Entity() {
      */
     abstract fun cycle()
 
-    abstract fun isDead(): Boolean
+    fun isDead() = getCurrentHp() == 0
 
     abstract fun isRunning(): Boolean
     
@@ -111,6 +117,16 @@ abstract class Pawn(open val world: World) : Entity() {
     abstract fun hasBlock(block: UpdateBlockType): Boolean
 
     abstract fun getTileSize(): Int
+
+    fun getCurrentHp(): Int = getSkills().getCurrentLevel(3)
+
+    fun getMaxHp(): Int = getSkills().getMaxLevel(3)
+
+    fun setCurrentHp(level: Int) {
+        getSkills().setCurrentLevel(3, level)
+    }
+
+    fun getSkills(): SkillSet = skillSet
 
     fun getTransmogId(): Int = transmogId
 
@@ -136,6 +152,65 @@ abstract class Pawn(open val world: World) : Entity() {
 
         attr[COMBAT_TARGET_FOCUS] = target
         world.plugins.executeCombat(this)
+    }
+
+    fun timerCycle() {
+        val timerIterator = timers.getTimers().entries.iterator()
+        while (timerIterator.hasNext()) {
+            val timer = timerIterator.next()
+
+            if (timer.value <= 0) {
+                // NOTE(Tom): if any timer may modify another [Pawn], we will
+                // need to iterate timers on a sequential task and execute
+                // any of them which have a value (time) of [0], instead of
+                // handling it here. This would only apply if we are using
+                // a parallel task to call [cycle].
+                world.plugins.executeTimer(this, timer.key)
+                if (!timers.has(timer.key)) {
+                    timerIterator.remove()
+                }
+            }
+        }
+
+        timers.getTimers().entries.forEach { timer ->
+            timer.setValue(timer.value - 1)
+        }
+    }
+
+    fun hitsCycle() {
+        val hitIterator = pendingHits.iterator()
+        iterator@ while (hitIterator.hasNext()) {
+            val hit = hitIterator.next()
+
+            if (lock.delaysDamage()) {
+                hit.damageDelay = Math.max(0, hit.damageDelay - 1)
+                continue
+            }
+
+            if (hit.damageDelay-- == 0) {
+
+                blockBuffer.hits.add(hit)
+                addBlock(UpdateBlockType.HITMARK)
+
+                for (hitmark in hit.hitmarks) {
+                    val hp = getCurrentHp()
+                    if (hitmark.damage > hp) {
+                        hitmark.damage = hp
+                    }
+                    setCurrentHp(hp - hitmark.damage)
+                    if (getCurrentHp() == 0) {
+                        if (getType().isPlayer()) {
+                            executePlugin(DeathAction.playerDeathPlugin)
+                        } else {
+                            executePlugin(DeathAction.npcDeathPlugin)
+                        }
+                        hitIterator.remove()
+                        break@iterator
+                    }
+                }
+                hitIterator.remove()
+            }
+        }
     }
 
     /**

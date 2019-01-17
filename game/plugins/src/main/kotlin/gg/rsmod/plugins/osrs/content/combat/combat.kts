@@ -27,6 +27,11 @@ suspend fun cycle(it: Plugin): Boolean {
     val target = pawn.attr[COMBAT_TARGET_FOCUS] ?: return false
 
     pawn.facePawn(target)
+
+    if (target.isDead()) {
+        return false
+    }
+
     if (pawn is Player) {
         pawn.setVarp(Combat.PRIORITY_PID_VARP, target.index)
     }
@@ -56,10 +61,10 @@ suspend fun cycle(it: Plugin): Boolean {
     if (!pawn.timers.has(Combat.ATTACK_DELAY)) {
         if (strategy.canAttack(pawn, target)) {
             strategy.attack(pawn, target)
+            pawn.timers[Combat.ATTACK_DELAY] = CombatConfigs.getAttackDelay(pawn)
         } else {
             Combat.reset(pawn)
         }
-        pawn.timers[Combat.ATTACK_DELAY] = CombatConfigs.getAttackDelay(pawn)
     }
     return true
 }

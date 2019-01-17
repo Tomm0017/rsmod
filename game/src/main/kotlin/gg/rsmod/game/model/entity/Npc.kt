@@ -24,8 +24,6 @@ class Npc private constructor(val id: Int, override val world: World) : Pawn(wor
      */
     private var active = false
 
-    override fun isDead(): Boolean = false
-
     override fun isRunning(): Boolean = false
 
     override fun addBlock(block: UpdateBlockType) {
@@ -43,7 +41,8 @@ class Npc private constructor(val id: Int, override val world: World) : Pawn(wor
     override fun getTileSize(): Int = world.definitions.get(NpcDef::class.java, id).size
 
     override fun cycle() {
-
+        timerCycle()
+        hitsCycle()
     }
 
     override fun getType(): EntityType = EntityType.NPC

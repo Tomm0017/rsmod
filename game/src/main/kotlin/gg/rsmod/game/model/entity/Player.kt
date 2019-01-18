@@ -79,6 +79,8 @@ open class Player(override val world: World) : Pawn(world) {
      */
     @Volatile private var pendingLogout = false
 
+    @Volatile private var setDisconnectionTimer = false
+
     private val skillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
 
     val inventory by lazy { ItemContainer(world.definitions, 28, ContainerStackType.NORMAL) }
@@ -193,12 +195,35 @@ open class Player(override val world: World) : Pawn(world) {
         var calculateBonuses = false
 
         if (pendingLogout) {
-            if (lock.canLogout()) {
-                // TODO: check if can log out (not in combat)
-                handleLogout()
-                return
+
+            /**
+             * If a channel is suddenly inactive (disconnected), we don't to 
+             * immediately unregister the player. However, we do want to
+             * unregister the player abruptly if a certain amount of time
+             * passes since their channel disconnected.
+             */
+            if (setDisconnectionTimer) {
+                timers[FORCE_DISCONNECTION_TIMER] = 250 // 2 mins 30 secs
+                setDisconnectionTimer = false
             }
-            pendingLogout = false
+
+            /**
+             * A player should only be unregistered from the world when they
+             * do not have [ACTIVE_COMBAT_TIMER] or its cycles are <= 0, or if
+             * their channel has been inactive for a while.
+             *
+             * We do allow players to disconnect even if they are in combat, but
+             * only if the most recent damage dealt to them are by npcs.
+             */
+            val stopLogout = timers.has(ACTIVE_COMBAT_TIMER) && damageMap.getAll(type = EntityType.PLAYER, timeFrameMs = 30_000).isEmpty()
+            val forceLogout = timers.exists(FORCE_DISCONNECTION_TIMER) && !timers.has(FORCE_DISCONNECTION_TIMER)
+
+            if (!stopLogout || forceLogout) {
+                if (lock.canLogout()) {
+                    handleLogout()
+                    return
+                }
+            }
         }
 
         val oldRegion = lastTile?.toRegionId() ?: -1
@@ -298,6 +323,7 @@ open class Player(override val world: World) : Pawn(world) {
      */
     fun requestLogout() {
         pendingLogout = true
+        setDisconnectionTimer = true
     }
 
     /**

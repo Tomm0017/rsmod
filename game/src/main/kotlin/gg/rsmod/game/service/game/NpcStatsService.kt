@@ -3,7 +3,7 @@ package gg.rsmod.game.service.game
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import gg.rsmod.game.Server
-import gg.rsmod.game.model.NpcCombatDef
+import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties

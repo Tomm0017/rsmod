@@ -6,6 +6,7 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.collision.CollisionManager
+import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.region.ChunkSet
 import gg.rsmod.game.plugin.Plugin

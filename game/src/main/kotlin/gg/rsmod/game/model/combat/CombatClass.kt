@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.api
+package gg.rsmod.game.model.combat
 
 /**
  * @author Tom <rspsmods@gmail.com>

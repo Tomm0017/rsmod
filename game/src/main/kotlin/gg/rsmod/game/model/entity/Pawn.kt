@@ -4,6 +4,7 @@ import gg.rsmod.game.action.DeathAction
 import gg.rsmod.game.action.NpcPathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.combat.DamageMap
 import gg.rsmod.game.model.path.PathfindingStrategy
 import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
 import gg.rsmod.game.plugin.Plugin
@@ -99,6 +100,11 @@ abstract class Pawn(open val world: World) : Entity() {
     val pendingHits = arrayListOf<Hit>()
 
     /**
+     * A [DamageMap] to keep track of who has dealt damage to this pawn.
+     */
+    val damageMap = DamageMap()
+
+    /**
      * Handles logic before any synchronization tasks are executed.
      */
     abstract fun cycle()
@@ -141,7 +147,7 @@ abstract class Pawn(open val world: World) : Entity() {
         resetInteractions()
         interruptPlugins()
 
-        attr[COMBAT_TARGET_FOCUS] = target
+        attr[COMBAT_TARGET_FOCUS_ATTR] = target
         world.plugins.executeCombat(this)
     }
 
@@ -333,7 +339,7 @@ abstract class Pawn(open val world: World) : Entity() {
     }
 
     fun resetInteractions() {
-        attr.remove(COMBAT_TARGET_FOCUS)
+        attr.remove(COMBAT_TARGET_FOCUS_ATTR)
         facePawn(null)
     }
 

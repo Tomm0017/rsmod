@@ -19,7 +19,7 @@ object ObjectPathAction {
 
     /**
      * TODO: varrock anvil on east side, the entrances r being clipped for some reason
-     * TODO: [getValidTiles] for other object types. i.e object type 5 needs other rotations support
+     * [getValidTiles] for other object types. i.e object type 5 needs other rotations support
      *
      * TODO: id=8175, mask=0, flag=0, type=10, rot=1, flipped=false, width=1, length=1, tile=Tile{x=3231, z=3313, height=0}
      * This object (farm patch) has the its tile flagged as not being able to traverse to the side it can be interacted from

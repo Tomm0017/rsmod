@@ -29,7 +29,7 @@ class ItemActionOneHandler : MessageHandler<ItemActionOneMessage> {
         val item = client.inventory[message.slot] ?: return
 
         if (item.id != message.item) {
-            logAntiCheat(client, "Item action 1: id=%d, slot=%d, interface=(%d, %d), inventory=(%d, %d)",
+            logVerificationFail(client, "Item action 1: id=%d, slot=%d, interface=(%d, %d), inventory=(%d, %d)",
                     message.item, message.slot, interfaceParent, interfaceChild, item.id, item.amount)
             return
         }

@@ -1,7 +1,7 @@
 package gg.rsmod.plugins.osrs.content.combat
 
 import gg.rsmod.game.action.NpcPathAction
-import gg.rsmod.game.model.COMBAT_TARGET_FOCUS
+import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Pawn
@@ -19,7 +19,7 @@ object Combat {
     const val PRIORITY_PID_VARP = 1075
 
     fun reset(pawn: Pawn) {
-        pawn.attr.remove(COMBAT_TARGET_FOCUS)
+        pawn.attr.remove(COMBAT_TARGET_FOCUS_ATTR)
     }
 
     fun raycast(pawn: Pawn, target: Pawn, distance: Int): Boolean {

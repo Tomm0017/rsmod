@@ -30,8 +30,7 @@ interface MessageHandler<T: Message> {
         //logger.info(String.format(format, *args))
     }
 
-    fun logAntiCheat(client: Client, format: String, vararg args: Any) {
-        // TODO: log that someone is trying to cheat, though not succeeding.
+    fun logVerificationFail(client: Client, format: String, vararg args: Any) {
         logger.warn(String.format(format, *args))
     }
 }

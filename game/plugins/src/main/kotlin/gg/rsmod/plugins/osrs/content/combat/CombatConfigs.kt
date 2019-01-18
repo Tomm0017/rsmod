@@ -1,19 +1,21 @@
 package gg.rsmod.plugins.osrs.content.combat
 
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.combat.AttackStyle
+import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.service.game.ItemStatsService
-import gg.rsmod.plugins.osrs.api.AttackStyle
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.WeaponType
 import gg.rsmod.plugins.osrs.api.helper.getAttackStyle
 import gg.rsmod.plugins.osrs.api.helper.getEquipment
 import gg.rsmod.plugins.osrs.api.helper.hasWeaponType
 import gg.rsmod.plugins.osrs.content.combat.strategy.CombatStrategy
+import gg.rsmod.plugins.osrs.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MeleeCombatStrategy
-import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.RangedCombatStrategy
+import gg.rsmod.plugins.osrs.content.combat.strategy.RangedCombatStrategy
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -24,43 +26,51 @@ object CombatConfigs {
 
     private const val PLAYER_DEFAULT_ATTACK_SPEED = 4
 
-    private const val NPC_DEFAULT_ATTACK_SPEED = 4
-
     private const val MIN_ATTACK_SPEED = 1
 
     fun getCombatStrategy(pawn: Pawn): CombatStrategy {
-        /**
-         * TODO(Tom): add a way to specify what combat class npcs are currently using,
-         * and also add a way to load in a custom combat script for npcs to use instead
-         * of this script.
-         */
-        if (pawn !is Player) {
+        if (pawn is Npc) {
+            return when (pawn.combatClass) {
+                CombatClass.MELEE -> MeleeCombatStrategy
+                CombatClass.RANGED -> RangedCombatStrategy
+                CombatClass.MAGIC -> MagicCombatStrategy
+            }
+        }
+
+        if (pawn is Player) {
+            if (pawn.hasWeaponType(WeaponType.BOW, WeaponType.CHINCHOMPA, WeaponType.CROSSBOW, WeaponType.THROWN)) {
+                return RangedCombatStrategy
+            }
             return MeleeCombatStrategy
         }
 
-        if (pawn.hasWeaponType(WeaponType.BOW, WeaponType.CHINCHOMPA, WeaponType.CROSSBOW, WeaponType.THROWN)) {
-            return RangedCombatStrategy
-        }
-
-        return MeleeCombatStrategy
+        throw IllegalArgumentException("Invalid pawn type.")
     }
 
     fun getAttackDelay(pawn: Pawn): Int {
-        // TODO: get attack delay from npc combat defs
         if (pawn is Npc) {
-            return NPC_DEFAULT_ATTACK_SPEED
+            return pawn.combatDef.attackSpeed
         }
+
         if (pawn is Player) {
             val weapon = pawn.getEquipment(EquipmentType.WEAPON) ?: return PLAYER_DEFAULT_ATTACK_SPEED
             val stats = getItemStats(pawn.world) ?: return PLAYER_DEFAULT_ATTACK_SPEED
             val weaponStats = stats.get(weapon.id) ?: return PLAYER_DEFAULT_ATTACK_SPEED
             return Math.max(MIN_ATTACK_SPEED, weaponStats.attackSpeed)
         }
-        return PLAYER_DEFAULT_ATTACK_SPEED
+
+        throw IllegalArgumentException("Invalid pawn type.")
     }
 
     fun getAttackAnimation(pawn: Pawn): Int {
-        // TODO: get attack animation for npcs
+        if (pawn is Npc) {
+            when (pawn.combatClass) {
+                CombatClass.MELEE -> pawn.combatDef.meleeAnimation
+                CombatClass.RANGED -> pawn.combatDef.rangedAnimation
+                CombatClass.MAGIC -> pawn.combatDef.magicAnimation
+            }
+        }
+
         if (pawn is Player) {
             val style = pawn.getAttackStyle()
 
@@ -84,11 +94,15 @@ object CombatConfigs {
                 else -> if (style == 1) 423 else 422
             }
         }
-        return -1
+
+        throw IllegalArgumentException("Invalid pawn type.")
     }
 
     fun getAttackStyle(pawn: Pawn): AttackStyle {
-        // TODO: get attack style for npcs
+        if (pawn.getType().isNpc()) {
+            return AttackStyle.NONE
+        }
+
         if (pawn is Player) {
             val style = pawn.getAttackStyle()
 
@@ -161,7 +175,8 @@ object CombatConfigs {
                 else -> AttackStyle.NONE
             }
         }
-        return AttackStyle.NONE
+
+        throw IllegalArgumentException("Invalid pawn type.")
     }
 
     private fun getItemStats(world: World): ItemStatsService? {

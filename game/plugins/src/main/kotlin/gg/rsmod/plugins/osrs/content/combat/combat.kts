@@ -1,7 +1,7 @@
 
 import gg.rsmod.game.action.NpcPathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
-import gg.rsmod.game.model.COMBAT_TARGET_FOCUS
+import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.FROZEN_TIMER
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Player
@@ -24,7 +24,7 @@ r.bindCombat {
 
 suspend fun cycle(it: Plugin): Boolean {
     val pawn = it.pawn()
-    val target = pawn.attr[COMBAT_TARGET_FOCUS] ?: return false
+    val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR] ?: return false
 
     pawn.facePawn(target)
 

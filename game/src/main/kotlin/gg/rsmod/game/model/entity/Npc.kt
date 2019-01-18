@@ -1,10 +1,10 @@
 package gg.rsmod.game.model.entity
 
 import gg.rsmod.game.fs.def.NpcDef
-import gg.rsmod.game.model.EntityType
-import gg.rsmod.game.model.NpcCombatDef
-import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.World
+import gg.rsmod.game.model.*
+import gg.rsmod.game.model.combat.CombatClass
+import gg.rsmod.game.model.combat.CombatStyle
+import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.sync.UpdateBlockType
 
 /**
@@ -25,16 +25,18 @@ class Npc private constructor(val id: Int, override val world: World) : Pawn(wor
      */
     private var active = false
 
-    lateinit var combatDef: NpcCombatDef
-
     private var hitpoints = 10
+
+    var combatClass = CombatClass.MELEE
+
+    var combatStyle = CombatStyle.NONE
+
+    lateinit var combatDef: NpcCombatDef
 
     override fun getType(): EntityType = EntityType.NPC
 
     override fun isRunning(): Boolean = false
 
-    // TODO(Tom): should benchmark and see if it's worth caching since this would
-    // have a tendency of being called repeatedly every cycle for combat.
     override fun getTileSize(): Int = world.definitions.get(NpcDef::class.java, id).size
 
     override fun getCurrentHp(): Int = hitpoints

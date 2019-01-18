@@ -42,7 +42,7 @@ class GroundItemActionThreeHandler : MessageHandler<GroundItemActionThreeMessage
          * [GroundItem] doesn't exist in the region.
          */
         if (item == null) {
-            logAntiCheat(client, "Ground item action 3: id=%d, x=%d, z=%d, movement=%d", message.item, message.x, message.z, message.movementType)
+            logVerificationFail(client, "Ground item action 3: id=%d, x=%d, z=%d, movement=%d", message.item, message.x, message.z, message.movementType)
             return
         }
 

@@ -42,7 +42,7 @@ class ObjectActionOneHandler : MessageHandler<ObjectActionOneMessage> {
          * [GameObject] doesn't exist in the region.
          */
         if (obj == null) {
-            logAntiCheat(client, "Object action 1: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
+            logVerificationFail(client, "Object action 1: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
             return
         }
 

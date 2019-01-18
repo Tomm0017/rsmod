@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.service.value
+package gg.rsmod.plugins.osrs.service.item
 
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.def.ItemDef

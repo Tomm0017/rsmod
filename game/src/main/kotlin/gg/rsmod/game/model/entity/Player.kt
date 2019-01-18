@@ -8,7 +8,7 @@ import gg.rsmod.game.model.*
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.interf.Interfaces
-import gg.rsmod.game.service.game.item.ItemStatsService
+import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.game.sync.UpdateBlockType
 import java.util.*
 
@@ -78,6 +78,8 @@ open class Player(override val world: World) : Pawn(world) {
      * For example: when the player is in combat.
      */
     @Volatile private var pendingLogout = false
+
+    private val skillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
 
     val inventory by lazy { ItemContainer(world.definitions, 28, ContainerStackType.NORMAL) }
 
@@ -152,6 +154,32 @@ open class Player(override val world: World) : Pawn(world) {
     var runEnergy = 100.0
 
     override fun getType(): EntityType = EntityType.PLAYER
+
+    /**
+     * Checks if the player is running. We assume that the [Varp] with id of
+     * [173] is the running state varp.
+     */
+    override fun isRunning(): Boolean = varps[173].state != 0
+
+    override fun getTileSize(): Int = 1
+
+    override fun getCurrentHp(): Int = getSkills().getCurrentLevel(3)
+
+    override fun getMaxHp(): Int = getSkills().getMaxLevel(3)
+
+    override fun setCurrentHp(level: Int) {
+        getSkills().setCurrentLevel(3, level)
+    }
+
+    override fun addBlock(block: UpdateBlockType) {
+        val bits = world.playerUpdateBlocks.updateBlocks[block]!!
+        blockBuffer.addBit(bits.bit)
+    }
+
+    override fun hasBlock(block: UpdateBlockType): Boolean {
+        val bits = world.playerUpdateBlocks.updateBlocks[block]!!
+        return blockBuffer.hasBit(bits.bit)
+    }
 
     /**
      * Logic that should be executed every game cycle, before
@@ -250,24 +278,6 @@ open class Player(override val world: World) : Pawn(world) {
          */
         channelFlush()
     }
-
-    /**
-     * Checks if the player is running. We assume that the [Varp] with id of
-     * [173] is the running state varp.
-     */
-    override fun isRunning(): Boolean = varps[173].state != 0
-
-    override fun addBlock(block: UpdateBlockType) {
-        val bits = world.playerUpdateBlocks.updateBlocks[block]!!
-        blockBuffer.addBit(bits.bit)
-    }
-
-    override fun hasBlock(block: UpdateBlockType): Boolean {
-        val bits = world.playerUpdateBlocks.updateBlocks[block]!!
-        return blockBuffer.hasBit(bits.bit)
-    }
-
-    override fun getTileSize(): Int = 1
 
     /**
      * Handles the logic that must be executed once a player has successfully
@@ -386,6 +396,8 @@ open class Player(override val world: World) : Pawn(world) {
     fun message(message: String) {
         write(SendChatboxTextMessage(type = 0, message = message, username = null))
     }
+
+    fun getSkills(): SkillSet = skillSet
 
     @Suppress("UNCHECKED_CAST")
     fun <T> getPersistentAttr(key: String): T? = (persistentAttr[key] as? T)

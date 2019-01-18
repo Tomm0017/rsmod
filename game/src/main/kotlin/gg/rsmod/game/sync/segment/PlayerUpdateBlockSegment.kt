@@ -3,8 +3,8 @@ package gg.rsmod.game.sync.segment
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.service.game.item.ItemStatsService
-import gg.rsmod.game.service.game.item.WeaponConfigService
+import gg.rsmod.game.service.game.ItemStatsService
+import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.UpdateBlockType
 import gg.rsmod.net.packet.DataType

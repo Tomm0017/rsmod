@@ -4,7 +4,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.service.game.item.ItemStatsService
+import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.plugins.osrs.api.AttackStyle
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.WeaponType

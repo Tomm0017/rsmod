@@ -3,7 +3,7 @@ package gg.rsmod.game.action
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.game.service.game.item.ItemStatsService
+import gg.rsmod.game.service.game.ItemStatsService
 
 /**
  * This class is responsible for handling armor equip and unequip related

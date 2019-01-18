@@ -59,11 +59,6 @@ abstract class Pawn(open val world: World) : Entity() {
     var lastFacingDirection: Direction = Direction.NONE
 
     /**
-     * The pawn's [SkillSet].
-     */
-    private val skillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
-
-    /**
      * The current [LockState] which filters what actions this pawn can perform.
      */
     var lock = LockState.NONE
@@ -111,22 +106,18 @@ abstract class Pawn(open val world: World) : Entity() {
     fun isDead() = getCurrentHp() == 0
 
     abstract fun isRunning(): Boolean
-    
-    abstract fun addBlock(block: UpdateBlockType)
-
-    abstract fun hasBlock(block: UpdateBlockType): Boolean
 
     abstract fun getTileSize(): Int
 
-    fun getCurrentHp(): Int = getSkills().getCurrentLevel(3)
+    abstract fun getCurrentHp(): Int
 
-    fun getMaxHp(): Int = getSkills().getMaxLevel(3)
+    abstract fun getMaxHp(): Int
 
-    fun setCurrentHp(level: Int) {
-        getSkills().setCurrentLevel(3, level)
-    }
+    abstract fun setCurrentHp(level: Int)
 
-    fun getSkills(): SkillSet = skillSet
+    abstract fun addBlock(block: UpdateBlockType)
+
+    abstract fun hasBlock(block: UpdateBlockType): Boolean
 
     fun getTransmogId(): Int = transmogId
 

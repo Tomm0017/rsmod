@@ -4,7 +4,7 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.plugins.osrs.service.value.ItemValueService
+import gg.rsmod.plugins.osrs.service.item.ItemValueService
 
 /**
  * @author Tom <rspsmods@gmail.com>

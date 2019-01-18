@@ -12,7 +12,7 @@ fun Pawn.hit(damage: Int, type: HitType = if (damage == 0) HitType.BLOCK else Hi
     val hit = Hit.Builder()
             .setDamageDelay(delay)
             .addHit(damage = damage, type = type.id)
-            .setHitbarMaxPercentage(HitbarType.NORMAL.percentage)
+            .setHitbarMaxPercentage(HitbarType.NORMAL.pixelsWide)
             .build()
 
     pendingHits.add(hit)
@@ -25,12 +25,12 @@ fun Pawn.doubleHit(damage1: Int, damage2: Int, delay: Int = 0,
             .setDamageDelay(delay)
             .addHit(damage = damage1, type = type1.id)
             .addHit(damage = damage2, type = type2.id)
-            .setHitbarMaxPercentage(HitbarType.NORMAL.percentage)
+            .setHitbarMaxPercentage(HitbarType.NORMAL.pixelsWide)
             .build()
 
     pendingHits.add(hit)
 }
 
 fun Pawn.showHitbar(percentage: Int, type: HitbarType) {
-    pendingHits.add(Hit.Builder().onlyShowHitbar().setHitbarType(type.id).setHitbarPercentage(percentage).setHitbarMaxPercentage(type.percentage).build())
+    pendingHits.add(Hit.Builder().onlyShowHitbar().setHitbarType(type.id).setHitbarPercentage(percentage).setHitbarMaxPercentage(type.pixelsWide).build())
 }

@@ -20,10 +20,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-open class ItemStatsDumper {
+class ItemStatsDumper {
 
     private val log = LogManager.getLogger(ItemStatsDumper::class.java)
 

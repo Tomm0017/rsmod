@@ -13,6 +13,7 @@ import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.service.Service
 import gg.rsmod.game.service.game.EntityExamineService
+import gg.rsmod.game.service.game.NpcStatsService
 import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.game.sync.UpdateBlockSet
 import gg.rsmod.util.ServerProperties
@@ -119,7 +120,13 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     fun spawn(npc: Npc): Boolean {
         val added = npcs.add(npc)
         if (added) {
-            //val combatDefs =
+            var combatDef: NpcCombatDef? = null
+            val statService = getService(NpcStatsService::class.java).orElse(null)
+            if (statService != null) {
+                combatDef = statService.get(npc.id)
+            }
+
+            npc.combatDef = combatDef ?: NpcCombatDef.DEFAULT
         }
         return added
     }

@@ -12,11 +12,11 @@ import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.game.service.game.item.WeaponConfigService
+import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.plugins.osrs.api.*
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayer
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
-import gg.rsmod.plugins.osrs.service.value.ItemValueService
+import gg.rsmod.plugins.osrs.service.item.ItemValueService
 import gg.rsmod.util.BitManipulation
 
 /**

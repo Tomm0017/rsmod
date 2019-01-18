@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.osrs.api.helper
 
+import gg.rsmod.game.model.ACTIVE_COMBAT_TIMER
+import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.Hit
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.plugins.osrs.api.HitType
@@ -34,3 +36,7 @@ fun Pawn.doubleHit(damage1: Int, damage2: Int, delay: Int = 0,
 fun Pawn.showHitbar(percentage: Int, type: HitbarType) {
     pendingHits.add(Hit.Builder().onlyShowHitbar().setHitbarType(type.id).setHitbarPercentage(percentage).setHitbarMaxPercentage(type.pixelsWide).build())
 }
+
+fun Pawn.isAttacking(): Boolean = attr.has(COMBAT_TARGET_FOCUS_ATTR)
+
+fun Pawn.isBeingAttacked(): Boolean = timers.has(ACTIVE_COMBAT_TIMER)

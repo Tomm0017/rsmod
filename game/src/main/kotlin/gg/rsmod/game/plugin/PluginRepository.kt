@@ -5,6 +5,7 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.DynamicObject
+import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
@@ -52,6 +53,21 @@ class PluginRepository {
      * A list of plugins that will be executed upon login.
      */
     private val loginPlugins = arrayListOf<Function1<Plugin, Unit>>()
+
+    /**
+     * A list of plugins that will be executed upon an [gg.rsmod.game.model.entity.Npc]
+     * being spawned into the world. Use sparingly.
+     */
+    private val globalNpcSpawnPlugins = arrayListOf<Function1<Plugin, Unit>>()
+
+    /**
+     * A list of plugins that will be executed upon an [gg.rsmod.game.model.entity.Npc]
+     * with a specific id being spawned into the world. Use sparingly.
+     *
+     * Note: any npc added to this map will <strong>not</strong> call the
+     * [globalNpcSpawnPlugins] plugin.
+     */
+    private val npcSpawnPlugins = hashMapOf<Int, MutableList<Function1<Plugin, Unit>>>()
 
     /**
      * The plugin that will handle initiating combat.
@@ -179,6 +195,8 @@ class PluginRepository {
         displayModePlugin = null
         combatPlugin = null
         loginPlugins.clear()
+        globalNpcSpawnPlugins.clear()
+        npcSpawnPlugins.clear()
         timerPlugins.clear()
         interfaceClose.clear()
         commandPlugins.clear()
@@ -289,6 +307,35 @@ class PluginRepository {
 
     fun executeLogin(p: Player) {
         loginPlugins.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+    }
+
+    fun bindGlobalNpcSpawn(plugin: Function1<Plugin, Unit>) {
+        globalNpcSpawnPlugins.add(plugin)
+        pluginCount++
+    }
+
+    /**
+     * Binding an individual npc's spawn with a plugin will make it so [globalNpcSpawnPlugins]
+     * does not get invoked when an npc with [npc] id is spawned. This functionality may or may
+     * not be kept.
+     */
+    fun bindNpcSpawn(npc: Int, plugin: Function1<Plugin, Unit>) {
+        val plugins = npcSpawnPlugins[npc]
+        if (plugins != null) {
+            plugins.add(plugin)
+        } else {
+            npcSpawnPlugins[npc] = arrayListOf(plugin)
+        }
+        pluginCount++
+    }
+
+    fun executeNpcSpawn(n: Npc) {
+        val customPlugins = npcSpawnPlugins[n.id]
+        if (customPlugins != null && customPlugins.isNotEmpty()) {
+            customPlugins.forEach { logic -> n.world.pluginExecutor.execute(n, logic) }
+        } else {
+            globalNpcSpawnPlugins.forEach { logic -> n.world.pluginExecutor.execute(n, logic) }
+        }
     }
 
     @Throws(IllegalStateException::class)

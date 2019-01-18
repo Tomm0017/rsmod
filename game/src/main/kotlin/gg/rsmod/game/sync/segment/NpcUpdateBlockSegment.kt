@@ -130,7 +130,7 @@ class NpcUpdateBlockSegment(private val npc: Npc, private val newAddition: Boole
 
                     if (hitbar.depleteSpeed != 32767) {
                         var percentage = hitbar.percentage
-                        if (percentage == 0) {
+                        if (percentage == -1) {
                             val max = npc.getMaxHp()
                             val curr = Math.min(max, npc.getCurrentHp())
                             percentage = if (max == 0) 0 else ((curr.toDouble() * hitbar.maxPercentage.toDouble() / max.toDouble())).toInt()

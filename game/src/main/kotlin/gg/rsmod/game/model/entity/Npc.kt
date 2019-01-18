@@ -1,7 +1,9 @@
 package gg.rsmod.game.model.entity
 
 import gg.rsmod.game.fs.def.NpcDef
-import gg.rsmod.game.model.*
+import gg.rsmod.game.model.EntityType
+import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.CombatStyle
 import gg.rsmod.game.model.combat.NpcCombatDef
@@ -32,6 +34,10 @@ class Npc private constructor(val id: Int, override val world: World) : Pawn(wor
     var combatStyle = CombatStyle.NONE
 
     lateinit var combatDef: NpcCombatDef
+
+    // TODO(Tom): switch this to an AttributeKey instead? only being used by
+    // the aggro plugin itself
+    var aggressivenessCheck: ((Npc, Player) -> Boolean)? = null
 
     override fun getType(): EntityType = EntityType.NPC
 

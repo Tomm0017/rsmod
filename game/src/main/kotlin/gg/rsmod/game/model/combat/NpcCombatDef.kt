@@ -1,27 +1,93 @@
 package gg.rsmod.game.model.combat
 
 /**
+ * @param hitpoints
+ * The maximum amount of hitpoints.
+ *
+ * @param combatLvl
+ * The combat level.
+ *
+ * @param attackLvl
+ * The combat attack level.
+ *
+ * @param strengthLvl
+ * The combat strength level.
+ *
+ * @param defenceLvl
+ * The combat defence level.
+ *
+ * @param magicLvl
+ * The combat magic level.
+ *
+ * @param rangedLvl
+ * The combat ranged level.
+ *
+ * @param meleeMaxHit
+ * The max hit while using melee.
+ *
+ * @param magicMaxHit
+ * The max hit while casting magic.
+ *
+ * @param rangedMaxHit
+ * The max hit while using ranged.
+ *
+ * @param attackSpeed
+ * The attack speed, in game cycles.
+ *
+ * @param aggressiveRadius
+ * The radius in which a target can be found, in tiles.
+ *
+ * @param findTargetDelay
+ * The amount of time in between searching for new targets within the
+ * [aggressiveRadius], in game cycles.
+ *
+ * @param meleeAnimation
+ * The animation while using melee.
+ *
+ * @param magicAnimation
+ * The animation while casting magic.
+ *
+ * @param rangedAnimation
+ * The animation while using ranged.
+ *
+ * @param poisonChance
+ * The chance of afflicting poison onto targets, can range from [0.0 - 1.0].
+ *
+ * @param poisonImmunity
+ * Cannot be poisoned when true.
+ *
+ * @param venomImmunity
+ * Cannot be venomed when true.
+ *
+ * @param slayerReq
+ * Slayer level required be attacked, if none, set to -1.
+ *
+ * @param slayerXp
+ * Slayer XP given when killed, if none, set to -1.0.
+ *
+ * @param bonuses
+ * The bonuses.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: Int, val strengthLvl: Int,
                         val defenceLvl: Int, val magicLvl: Int, val rangedLvl: Int, val meleeMaxHit: Int,
-                        val magicMaxHit: Int, val rangedMaxHit: Int, val attackSpeed: Int, val aggressive: Boolean,
-                        val meleeAnimation: Int, val magicAnimation: Int, val rangedAnimation: Int,
+                        val magicMaxHit: Int, val rangedMaxHit: Int, val attackSpeed: Int, val aggressiveRadius: Int,
+                        val findTargetDelay: Int, val meleeAnimation: Int, val magicAnimation: Int, val rangedAnimation: Int,
                         val poisonChance: Double, val poisonImmunity: Boolean, val venomImmunity: Boolean,
-                        val slayerReq: Int, val slayerXp: Double, val stats: Array<Int>, val bonuses: Array<Int>) {
+                        val slayerReq: Int, val slayerXp: Double, val bonuses: Array<Int>) {
 
     constructor(other: NpcCombatDef) : this(other.hitpoints, other.combatLvl, other.attackLvl, other.strengthLvl,
             other.defenceLvl, other.magicLvl, other.rangedLvl, other.meleeMaxHit, other.magicMaxHit, other.rangedMaxHit,
-            other.attackSpeed, other.aggressive, other.meleeAnimation, other.magicAnimation, other.rangedAnimation,
-            other.poisonChance, other.poisonImmunity, other.venomImmunity, other.slayerReq, other.slayerXp,
-            other.stats.copyOf(), other.bonuses.copyOf())
-
+            other.attackSpeed, other.aggressiveRadius, other.findTargetDelay, other.meleeAnimation, other.magicAnimation,
+            other.rangedAnimation, other.poisonChance, other.poisonImmunity, other.venomImmunity, other.slayerReq, other.slayerXp,
+            other.bonuses.copyOf())
 
     companion object {
         val DEFAULT = NpcCombatDef(hitpoints = 10, combatLvl = 1, attackLvl = 1, strengthLvl = 1, defenceLvl = 1,
                 magicLvl = 1, rangedLvl = 1, meleeMaxHit = 1, magicMaxHit = 1, rangedMaxHit = 1, attackSpeed = 4,
-                aggressive = false, meleeAnimation = 422, rangedAnimation = -1, magicAnimation = -1, poisonChance = 0.0,
-                poisonImmunity = false, venomImmunity = false, slayerReq = 1, slayerXp = 0.0, stats = Array(5) { 0 },
+                aggressiveRadius = 0, findTargetDelay = 0, meleeAnimation = 422, rangedAnimation = -1, magicAnimation = -1,
+                poisonChance = 0.0, poisonImmunity = false, venomImmunity = false, slayerReq = 1, slayerXp = 0.0,
                 bonuses = Array(14) { 0 })
     }
 
@@ -42,7 +108,7 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
         if (magicMaxHit != other.magicMaxHit) return false
         if (rangedMaxHit != other.rangedMaxHit) return false
         if (attackSpeed != other.attackSpeed) return false
-        if (aggressive != other.aggressive) return false
+        if (aggressiveRadius != other.aggressiveRadius) return false
         if (meleeAnimation != other.meleeAnimation) return false
         if (magicAnimation != other.magicAnimation) return false
         if (rangedAnimation != other.rangedAnimation) return false
@@ -51,7 +117,6 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
         if (venomImmunity != other.venomImmunity) return false
         if (slayerReq != other.slayerReq) return false
         if (slayerXp != other.slayerXp) return false
-        if (!stats.contentEquals(other.stats)) return false
         if (!bonuses.contentEquals(other.bonuses)) return false
 
         return true
@@ -69,7 +134,7 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
         result = 31 * result + magicMaxHit
         result = 31 * result + rangedMaxHit
         result = 31 * result + attackSpeed
-        result = 31 * result + aggressive.hashCode()
+        result = 31 * result + aggressiveRadius.hashCode()
         result = 31 * result + meleeAnimation
         result = 31 * result + magicAnimation
         result = 31 * result + rangedAnimation
@@ -78,7 +143,6 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
         result = 31 * result + venomImmunity.hashCode()
         result = 31 * result + slayerReq
         result = 31 * result + slayerXp.hashCode()
-        result = 31 * result + stats.contentHashCode()
         result = 31 * result + bonuses.contentHashCode()
         return result
     }

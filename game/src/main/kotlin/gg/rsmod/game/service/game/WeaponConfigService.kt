@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
-import gg.rsmod.game.model.item.WeaponConfig
+import gg.rsmod.game.model.combat.WeaponConfig
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
 import org.apache.logging.log4j.LogManager

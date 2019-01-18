@@ -61,21 +61,23 @@ object NpcPathAction {
         val range = Math.max(targetRadius + 1, interactionRange)
 
         /**
-         * If the interaction range is greater than 1, we assume we need to find a
-         * path for projectiles instead.
+         * If the interaction range is greater than 2, we assume we need to find a
+         * path for projectiles instead. This value is 2 because halberds have an
+         * interaction range of 2 tiles, but is not considered a projectile.
          *
          * The difference lies in that projectile pathing will allow for objects
          * that allow projectiles to stand in the way, instead of completely
          * blocking them out as a valid path.
          */
-        val projectile = interactionRange > 1
+        val projectile = interactionRange > 2
+        val distantInteraction = interactionRange > 1
 
         /**
          * Check to see if [pawn] is currently standing in a diagonal tile and
          * both [pawn] and [target] have a tile size of 1. You shouldn't be able
          * to interact with [target] while standing diagonally from the target.
          */
-        val diagonal = !projectile && targetRadius == 0 && pawn.getTileSize() == 1 && start.isWithinRadius(end, 1) && Direction.between(start, end).isDiagonal()
+        val diagonal = !distantInteraction && targetRadius == 0 && pawn.getTileSize() == 1 && start.isWithinRadius(end, 1) && Direction.between(start, end).isDiagonal()
 
         /**
          * The tile that the player will walk towards.
@@ -86,7 +88,7 @@ object NpcPathAction {
          * If the player is within interaction range and raycast is successful,
          * let's just return true.
          */
-        var valid = if (!projectile) pawn.tile in border else !overlap(pawn.tile, pawnSize, target.tile, targetSize) && start.isWithinRadius(end, range)
+        var valid = if (!distantInteraction) pawn.tile in border else !overlap(pawn.tile, pawnSize, target.tile, targetSize) && start.isWithinRadius(end, range)
         if (valid && !diagonal && world.collision.raycast(start, end, projectile = projectile)) {
             return true
         }
@@ -116,10 +118,10 @@ object NpcPathAction {
                 val order = Direction.WNES
                 val validTiles = order.map { end.step(it) }
                 val tile = validTiles.firstOrNull { world.collision.canTraverse(start, Direction.between(end, it), pawn.getType()) } ?: return false
-                dst = pawn.walkTo(tile.x, tile.z, MovementQueue.StepType.NORMAL, projectilePath = projectile) ?: return false
+                dst = pawn.walkTo(tile.x, tile.z, MovementQueue.StepType.NORMAL, projectilePath = distantInteraction) ?: return false
             } else {
                 val tile = border.sortedBy { tile -> tile.getDistance(pawn.tile) }.firstOrNull { world.collision.raycast(it, end, projectile = false) } ?: return false
-                dst = pawn.walkTo(tile.x, tile.z, MovementQueue.StepType.NORMAL, projectilePath = projectile) ?: return false
+                dst = pawn.walkTo(tile.x, tile.z, MovementQueue.StepType.NORMAL, projectilePath = distantInteraction) ?: return false
                 if (dst == pawn.tile) {
                     return false
                 }
@@ -135,7 +137,7 @@ object NpcPathAction {
              * of the target, we want to find the closest border tile that isn't
              * clipped.
              */
-            val pathEndTile = if (projectile) end else border.sortedBy { tile -> tile.getDistance(pawn.tile) }.firstOrNull { tile -> world.collision.raycast(pawn.tile, tile, projectile = false) } ?: end
+            val pathEndTile = if (distantInteraction) end else border.sortedBy { tile -> tile.getDistance(pawn.tile) }.firstOrNull { tile -> world.collision.raycast(pawn.tile, tile, projectile = false) } ?: end
 
             /**
              * Get the shortest path using our path-finding strategy...
@@ -159,7 +161,7 @@ object NpcPathAction {
                  * a border tile for interaction, while projectiles just need
                  * to be within the [interactionRange].
                  */
-                valid = if (!projectile) tail in border else !overlap(tail, 0, target.tile, targetSize) && tail.isWithinRadius(end, range)
+                valid = if (!distantInteraction) tail in border else !overlap(tail, 0, target.tile, targetSize) && tail.isWithinRadius(end, range)
 
                 if (valid && world.collision.raycast(tail, end, projectile = projectile)) {
 
@@ -221,7 +223,7 @@ object NpcPathAction {
         start = pawn.calculateCentreTile()
         end = target.calculateCentreTile()
 
-        valid = if (!projectile) start in border else start.isWithinRadius(end, range)
+        valid = if (!distantInteraction) start in border else start.isWithinRadius(end, range)
 
         return valid && world.collision.raycast(start, end, projectile = projectile)
     }

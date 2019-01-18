@@ -106,9 +106,9 @@ class NpcSynchronizationTask(private val player: Player, private val worldNpcs: 
         return segments
     }
 
-    private fun shouldRemove(npc: Npc): Boolean = !npc.isSpawned() || !isWithinView(npc.tile)
+    private fun shouldRemove(npc: Npc): Boolean = !npc.isSpawned() || npc.invisible || !isWithinView(npc.tile)
 
-    private fun shouldAdd(npc: Npc): Boolean = npc.isSpawned() && isWithinView(npc.tile)
+    private fun shouldAdd(npc: Npc): Boolean = npc.isSpawned() && !npc.invisible && isWithinView(npc.tile)
 
     private fun isWithinView(tile: Tile): Boolean = tile.isWithinRadius(player.tile, if (largeScene) Player.LARGE_VIEW_DISTANCE else Player.NORMAL_VIEW_DISTANCE)
 }

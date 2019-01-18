@@ -105,6 +105,11 @@ abstract class Pawn(open val world: World) : Entity() {
     val damageMap = DamageMap()
 
     /**
+     * A flag which indicates if this pawn is visible to players in the world.
+     */
+    var invisible = false
+
+    /**
      * Handles logic before any synchronization tasks are executed.
      */
     abstract fun cycle()

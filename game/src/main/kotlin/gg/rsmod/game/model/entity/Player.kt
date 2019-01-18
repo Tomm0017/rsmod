@@ -79,6 +79,10 @@ open class Player(override val world: World) : Pawn(world) {
      */
     @Volatile private var pendingLogout = false
 
+    /**
+     * A flag which indicates that our [FORCE_DISCONNECTION_TIMER] must be set
+     * when [pendingLogout] logic is handled.
+     */
     @Volatile private var setDisconnectionTimer = false
 
     private val skillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
@@ -215,7 +219,7 @@ open class Player(override val world: World) : Pawn(world) {
              * We do allow players to disconnect even if they are in combat, but
              * only if the most recent damage dealt to them are by npcs.
              */
-            val stopLogout = timers.has(ACTIVE_COMBAT_TIMER) && damageMap.getAll(type = EntityType.PLAYER, timeFrameMs = 30_000).isEmpty()
+            val stopLogout = timers.has(ACTIVE_COMBAT_TIMER) && damageMap.getAll(type = EntityType.PLAYER, timeFrameMs = 10_000).isNotEmpty()
             val forceLogout = timers.exists(FORCE_DISCONNECTION_TIMER) && !timers.has(FORCE_DISCONNECTION_TIMER)
 
             if (!stopLogout || forceLogout) {

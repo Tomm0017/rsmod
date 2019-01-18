@@ -1,4 +1,4 @@
-package gg.rsmod.game.model.item
+package gg.rsmod.game.model.combat
 
 /**
  * @author Tom <rspsmods@gmail.com>

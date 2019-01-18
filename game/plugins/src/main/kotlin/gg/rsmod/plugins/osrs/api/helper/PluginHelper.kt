@@ -3,6 +3,7 @@ package gg.rsmod.plugins.osrs.api.helper
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.GameObject
+import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
@@ -30,16 +31,22 @@ private val closeDialog = { it: Plugin ->
 }
 
 /**
+ * Gets the [ctx] as a [Pawn]. If [ctx] is not a [Pawn], a cast exception
+ * will be thrown.
+ */
+fun Plugin.pawn(): Pawn = ctx as Pawn
+
+/**
  * Gets the [ctx] as a [Player]. If [ctx] is not a [Player], a cast exception
  * will be thrown.
  */
 fun Plugin.player(): Player = ctx as Player
 
 /**
- * Gets the [ctx] as a [Pawn]. If [ctx] is not a [Pawn], a cast exception
+ * Gets the [ctx] as an [Npc]. If [ctx] is not an [Npc], a cast exception
  * will be thrown.
  */
-fun Plugin.pawn(): Pawn = ctx as Pawn
+fun Plugin.npc(): Npc = ctx as Npc
 
 fun Plugin.getCommandArgs(): Array<String> = pawn().attr[COMMAND_ARGS_ATTR]!!
 

@@ -53,9 +53,10 @@ object CombatConfigs {
         }
 
         if (pawn is Player) {
-            val weapon = pawn.getEquipment(EquipmentType.WEAPON) ?: return PLAYER_DEFAULT_ATTACK_SPEED
-            val stats = getItemStats(pawn.world) ?: return PLAYER_DEFAULT_ATTACK_SPEED
-            val weaponStats = stats.get(weapon.id) ?: return PLAYER_DEFAULT_ATTACK_SPEED
+            val default = PLAYER_DEFAULT_ATTACK_SPEED
+            val weapon = pawn.getEquipment(EquipmentType.WEAPON) ?: return default
+            val stats = getItemStats(pawn.world) ?: return default
+            val weaponStats = stats.get(weapon.id) ?: return default
             return Math.max(MIN_ATTACK_SPEED, weaponStats.attackSpeed)
         }
 
@@ -64,7 +65,7 @@ object CombatConfigs {
 
     fun getAttackAnimation(pawn: Pawn): Int {
         if (pawn is Npc) {
-            when (pawn.combatClass) {
+            return when (pawn.combatClass) {
                 CombatClass.MELEE -> pawn.combatDef.meleeAnimation
                 CombatClass.RANGED -> pawn.combatDef.rangedAnimation
                 CombatClass.MAGIC -> pawn.combatDef.magicAnimation

@@ -128,6 +128,11 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             }
 
             npc.combatDef = combatDef ?: NpcCombatDef.DEFAULT
+
+            /**
+             * Execute npc spawn plugins.
+             */
+            plugins.executeNpcSpawn(npc)
         }
         return added
     }

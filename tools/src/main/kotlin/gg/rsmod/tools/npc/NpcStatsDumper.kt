@@ -63,7 +63,7 @@ class NpcStatsDumper {
 
         var combatLvl = -1
         var hitpoints = -1
-        var aggressive = false
+        var aggressiveRadius = 0
         var poison = false
         var meleeMaxHit = -1
         var magicMaxHit = -1
@@ -86,7 +86,7 @@ class NpcStatsDumper {
                     when (href) {
                         "combat level" -> combatLvl = text.toInt()
                         "hitpoints" -> hitpoints = text.toInt()
-                        "aggressiveness" -> aggressive = parseYesOrNo(text)
+                        "aggressiveness" -> if (parseYesOrNo(text)) 6 else 0
                         "poisonous" -> poison = parseYesOrNo(text)
                         "monster maximum hit" -> {
                             val maxHits = text.split(",")
@@ -169,12 +169,13 @@ class NpcStatsDumper {
             }
         }
 
-        val def = NpcCombatDef(hitpoints = hitpoints, combatLvl = combatLvl, attackLvl = 1, strengthLvl = 1,
-                defenceLvl = 1, magicLvl = 1, rangedLvl = 1, meleeMaxHit = meleeMaxHit, magicMaxHit = magicMaxHit,
-                rangedMaxHit = rangedMaxHit, attackSpeed = 4, aggressive = aggressive, meleeAnimation = 422,
-                magicAnimation = -1, rangedAnimation = -1, poisonChance = if (poison) 0.15 else 0.0,
+        val def = NpcCombatDef(hitpoints = hitpoints, combatLvl = combatLvl, attackLvl = stats[0], strengthLvl = stats[1],
+                defenceLvl = stats[2], magicLvl = stats[3], rangedLvl = stats[4],
+                meleeMaxHit = meleeMaxHit, magicMaxHit = magicMaxHit, rangedMaxHit = rangedMaxHit,
+                attackSpeed = 4, aggressiveRadius = aggressiveRadius, findTargetDelay = if (aggressiveRadius > 0) 1 else 0,
+                meleeAnimation = 422, magicAnimation = -1, rangedAnimation = -1, poisonChance = if (poison) 0.15 else 0.0,
                 poisonImmunity = poisonImmunity, venomImmunity = venomImmunity, slayerReq = slayerReq, slayerXp = slayerXp,
-                stats = stats, bonuses = bonuses)
+                bonuses = bonuses)
 
         if (hitpoints != -1) {
             return def

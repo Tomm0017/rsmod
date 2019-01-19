@@ -9,8 +9,10 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.WeaponType
+import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.helper.getAttackStyle
 import gg.rsmod.plugins.osrs.api.helper.getEquipment
+import gg.rsmod.plugins.osrs.api.helper.hasEquipped
 import gg.rsmod.plugins.osrs.api.helper.hasWeaponType
 import gg.rsmod.plugins.osrs.content.combat.strategy.CombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MagicCombatStrategy
@@ -88,7 +90,8 @@ object CombatConfigs {
                 pawn.hasWeaponType(WeaponType.DAGGER) -> if (style == 2) 390 else 386
                 pawn.hasWeaponType(WeaponType.MAGIC_STAFF) || pawn.hasWeaponType(WeaponType.STAFF) -> 419
                 pawn.hasWeaponType(WeaponType.MACE) -> if (style == 2) 400 else 401
-                pawn.hasWeaponType(WeaponType.THROWN) -> 929
+                pawn.hasWeaponType(WeaponType.CHINCHOMPA) -> 7618
+                pawn.hasWeaponType(WeaponType.THROWN) -> if (pawn.hasEquipped(EquipmentType.WEAPON, Items.TOKTZXILUL)) 7558 else 929
                 pawn.hasWeaponType(WeaponType.WHIP) -> 1658
                 pawn.hasWeaponType(WeaponType.SPEAR) || pawn.hasWeaponType(WeaponType.HALBERD) -> if (style == 1) 440 else if (style == 2) 429 else 428
                 pawn.hasWeaponType(WeaponType.CLAWS) -> 493

@@ -156,7 +156,7 @@ npcs:
           order: LITTLE
           type: SHORT
         - name: settings
-          order: INVERSED_MIDDLE
+          order: MIDDLE
           type: INT
 
     - block: FORCE_CHAT

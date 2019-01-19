@@ -22,6 +22,9 @@ import java.util.*
 
 class ItemStatsDumper {
 
+    // TODO: redo and use new wiki page. Doesn't have db dumps but we can just
+    // make our system only fetch items we need and not just all items
+
     private val log = LogManager.getLogger(ItemStatsDumper::class.java)
 
     private val downloadPageURL = "http://oldschoolrunescape.wikia.com/wiki/Special:Statistics"

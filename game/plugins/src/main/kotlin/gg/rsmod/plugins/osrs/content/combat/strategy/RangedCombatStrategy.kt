@@ -105,13 +105,14 @@ object RangedCombatStrategy : CombatStrategy {
             if (ammoProjectile != null) {
                 val projectile = Combat.createProjectile(pawn, target, ammoProjectile.gfx, ammoProjectile.type)
                 ammoProjectile.drawback?.let { drawback -> pawn.graphic(drawback) }
+                ammoProjectile.impact?.let { impact -> target.graphic(impact.id, impact.height, projectile.lifespan) }
                 pawn.world.spawn(projectile)
             }
 
             /**
              * Remove or drop ammo if applicable.
              */
-            if (ammo != null) {
+            if (ammo != null && (ammoProjectile == null || !ammoProjectile.breakOnImpact())) {
                 val chance = pawn.world.random(99)
                 val breakAmmo = chance in 0..19
                 val dropAmmo = when {

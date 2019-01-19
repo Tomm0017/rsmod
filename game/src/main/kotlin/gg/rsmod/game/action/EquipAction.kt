@@ -126,6 +126,14 @@ object EquipAction {
 
             if (inventorySlot == -1 || p.inventory.remove(item.id, item.amount, beginSlot = inventorySlot).hasSucceeded()) {
                 var initialSlot = inventorySlot
+
+                /**
+                 * If the item being equipped it stackable and replacing an item
+                 * already equipped, we want to see if the item being replaced already
+                 * occupies a space in the player's inventory - if so we want to add
+                 * the item to that stack if possible. If the stack is too big, we
+                 * don't equip the new item and let the player know of this issue.
+                 */
                 if (stackable && replace != null) {
                     val maxAmount = Int.MAX_VALUE - p.inventory.getItemCount(replace.id)
                     if (replace.amount > maxAmount) {
@@ -135,8 +143,14 @@ object EquipAction {
                         p.message("You don't have enough free inventory space to do that.")
                         return Result.NO_FREE_SPACE
                     }
-                    initialSlot = p.inventory.getItemIndex(replace.id, skipAttrItems = true)
+                    if (maxAmount != Int.MAX_VALUE) {
+                        initialSlot = p.inventory.getItemIndex(replace.id, skipAttrItems = true)
+                    }
                 }
+
+                /**
+                 * Unequip any overlapping items.
+                 */
                 unequip.forEach { slot ->
                     val equipment = p.equipment[slot] ?: return@forEach
                     val equipmentId = equipment.id

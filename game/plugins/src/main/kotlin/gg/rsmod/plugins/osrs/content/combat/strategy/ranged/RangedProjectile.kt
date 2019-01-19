@@ -2,6 +2,7 @@ package gg.rsmod.plugins.osrs.content.combat.strategy.ranged
 
 import gg.rsmod.game.model.Graphic
 import gg.rsmod.plugins.osrs.api.ProjectileType
+import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.ammo.Arrows.ADAMANT_ARROWS
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.ammo.Arrows.AMETHYST_ARROWS
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.ammo.Arrows.BRONZE_ARROWS
@@ -40,7 +41,7 @@ import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.ammo.Knives.STEEL_KN
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-enum class RangedProjectile(val gfx: Int, val drawback: Graphic? = null, val type: ProjectileType, val items: Array<Int>) {
+enum class RangedProjectile(val gfx: Int, val drawback: Graphic? = null, val impact: Graphic? = null, val type: ProjectileType, val items: Array<Int>) {
 
     BOLTS(gfx = 27, type = ProjectileType.BOLT, items = Bolts.BRONZE_BOLTS + Bolts.IRON_BOLTS + Bolts.STEEL_BOLTS + Bolts.MITHRIL_BOLTS
             + Bolts.ADAMANT_BOLTS + Bolts.RUNITE_BOLTS + Bolts.DRAGON_BOLTS + Bolts.BLURITE_BOLTS + Bolts.KEBBIT_BOLTS + Bolts.BONE_BOLTS),
@@ -64,21 +65,40 @@ enum class RangedProjectile(val gfx: Int, val drawback: Graphic? = null, val typ
     AMETHYST_JAVELIN(gfx = 1386, type = ProjectileType.JAVELIN, items = AMETHYST_JAVELINS),
     DRAGON_JAVELIN(gfx = 1301, type = ProjectileType.JAVELIN, items = DRAGON_JAVELINS),
 
-    BRONZE_KNIFE(gfx = 212, drawback = Graphic(id = 219, height = 96), type = ProjectileType.KNIFE, items = BRONZE_KNIVES),
-    IRON_KNIFE(gfx = 213, drawback = Graphic(id = 220, height = 96), type = ProjectileType.KNIFE, items = IRON_KNIVES),
-    STEEL_KNIFE(gfx = 214, drawback = Graphic(id = 221, height = 96), type = ProjectileType.KNIFE, items = STEEL_KNIVES),
-    BLACK_KNIFE(gfx = 215, drawback = Graphic(id = 222, height = 96), type = ProjectileType.KNIFE, items = BLACK_KNIVES),
-    MITHRIL_KNIFE(gfx = 216, drawback = Graphic(id = 223, height = 96), type = ProjectileType.KNIFE, items = MITHRIL_KNIVES),
-    ADAMANT_KNIFE(gfx = 217, drawback = Graphic(id = 224, height = 96), type = ProjectileType.KNIFE, items = ADAMANT_KNIVES),
-    RUNE_KNIFE(gfx = 218, drawback = Graphic(id = 225, height = 96), type = ProjectileType.KNIFE, items = RUNE_KNIVES),
-    DRAGON_KNIFE(gfx = 28, type = ProjectileType.KNIFE, items = DRAGON_KNIVES),
+    BRONZE_KNIFE(gfx = 212, drawback = Graphic(id = 219, height = 96), type = ProjectileType.THROWN, items = BRONZE_KNIVES),
+    IRON_KNIFE(gfx = 213, drawback = Graphic(id = 220, height = 96), type = ProjectileType.THROWN, items = IRON_KNIVES),
+    STEEL_KNIFE(gfx = 214, drawback = Graphic(id = 221, height = 96), type = ProjectileType.THROWN, items = STEEL_KNIVES),
+    BLACK_KNIFE(gfx = 215, drawback = Graphic(id = 222, height = 96), type = ProjectileType.THROWN, items = BLACK_KNIVES),
+    MITHRIL_KNIFE(gfx = 216, drawback = Graphic(id = 223, height = 96), type = ProjectileType.THROWN, items = MITHRIL_KNIVES),
+    ADAMANT_KNIFE(gfx = 217, drawback = Graphic(id = 224, height = 96), type = ProjectileType.THROWN, items = ADAMANT_KNIVES),
+    RUNE_KNIFE(gfx = 218, drawback = Graphic(id = 225, height = 96), type = ProjectileType.THROWN, items = RUNE_KNIVES),
+    DRAGON_KNIFE(gfx = 28, type = ProjectileType.THROWN, items = DRAGON_KNIVES),
 
-    BRONZE_DART(gfx = 226, drawback = Graphic(id = 232, height = 96), type = ProjectileType.DART, items = BRONZE_DARTS),
-    IRON_DART(gfx = 227, drawback = Graphic(id = 233, height = 96), type = ProjectileType.DART, items = IRON_DARTS),
-    STEEL_DART(gfx = 228, drawback = Graphic(id = 234, height = 96), type = ProjectileType.DART, items = STEEL_DARTS),
-    BLACK_DART(gfx = 229, drawback = Graphic(id = 235, height = 96), type = ProjectileType.DART, items = BLACK_DARTS), // TODO: get real projectile/drawback id
-    MITHRIL_DART(gfx = 229, drawback = Graphic(id = 235, height = 96), type = ProjectileType.DART, items = MITHRIL_DARTS),
-    ADAMANT_DART(gfx = 230, drawback = Graphic(id = 236, height = 96), type = ProjectileType.DART, items = ADAMANT_DARTS),
-    RUNE_DART(gfx = 231, drawback = Graphic(id = 237, height = 96), type = ProjectileType.DART, items = RUNE_DARTS),
-    DRAGON_DART(gfx = 1122, drawback = Graphic(id = 1123, height = 96), type = ProjectileType.DART, items = DRAGON_DARTS),
+    BRONZE_DART(gfx = 226, drawback = Graphic(id = 232, height = 96), type = ProjectileType.THROWN, items = BRONZE_DARTS),
+    IRON_DART(gfx = 227, drawback = Graphic(id = 233, height = 96), type = ProjectileType.THROWN, items = IRON_DARTS),
+    STEEL_DART(gfx = 228, drawback = Graphic(id = 234, height = 96), type = ProjectileType.THROWN, items = STEEL_DARTS),
+    BLACK_DART(gfx = 34, drawback = Graphic(id = 273, height = 96), type = ProjectileType.THROWN, items = BLACK_DARTS),
+    MITHRIL_DART(gfx = 229, drawback = Graphic(id = 235, height = 96), type = ProjectileType.THROWN, items = MITHRIL_DARTS),
+    ADAMANT_DART(gfx = 230, drawback = Graphic(id = 236, height = 96), type = ProjectileType.THROWN, items = ADAMANT_DARTS),
+    RUNE_DART(gfx = 231, drawback = Graphic(id = 237, height = 96), type = ProjectileType.THROWN, items = RUNE_DARTS),
+    DRAGON_DART(gfx = 1122, drawback = Graphic(id = 1123, height = 96), type = ProjectileType.THROWN, items = DRAGON_DARTS),
+
+    BRONZE_THROWING_AXE(gfx = 36, drawback = Graphic(id = 43, height = 96), type = ProjectileType.THROWN, items = arrayOf(Items.BRONZE_THROWNAXE)),
+    IRON_THROWING_AXE(gfx = 35, drawback = Graphic(id = 42, height = 96), type = ProjectileType.THROWN, items = arrayOf(Items.IRON_THROWNAXE)),
+    STEEL_THROWING_AXE(gfx = 37, drawback = Graphic(id = 44, height = 96), type = ProjectileType.THROWN, items = arrayOf(Items.STEEL_THROWNAXE)),
+    MITHRIL_THROWING_AXE(gfx = 38, drawback = Graphic(id = 45, height = 96), type = ProjectileType.THROWN, items = arrayOf(Items.MITHRIL_THROWNAXE)),
+    ADAMANT_THROWING_AXE(gfx = 39, drawback = Graphic(id = 46, height = 96), type = ProjectileType.THROWN, items = arrayOf(Items.ADAMANT_THROWNAXE)),
+    RUNE_THROWING_AXE(gfx = 41, drawback = Graphic(id = 48, height = 96), type = ProjectileType.THROWN, items = arrayOf(Items.RUNE_THROWNAXE)),
+    DRAGON_THROWING_AXE(gfx = 1319, drawback = Graphic(id = 1320, height = 96), type = ProjectileType.THROWN, items = arrayOf(Items.DRAGON_THROWNAXE)),
+
+    TOKTZ_XIL_UL(gfx = 442, type = ProjectileType.THROWN, items = arrayOf(Items.TOKTZXILUL)),
+
+    GREY_CHINCHOMA(gfx = 908, impact = Graphic(id = 157, height = 92), type = ProjectileType.THROWN, items = arrayOf(Items.CHINCHOMPA_10033)),
+    RED_CHINCHOMA(gfx = 909, impact = Graphic(id = 157, height = 92), type = ProjectileType.THROWN, items = arrayOf(Items.RED_CHINCHOMPA_10034)),
+    BLACK_CHINCHOMA(gfx = 1272, impact = Graphic(id = 157, height = 92), type = ProjectileType.THROWN, items = arrayOf(Items.BLACK_CHINCHOMPA));
+
+    fun breakOnImpact(): Boolean = when (this) {
+        GREY_CHINCHOMA, RED_CHINCHOMA, BLACK_CHINCHOMA -> true
+        else -> false
+    }
 }

@@ -17,6 +17,7 @@ import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.RangedProjectile
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.ammo.Darts
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.ammo.Knives
+import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.weapon.BowType
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.weapon.Bows
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.weapon.CrossbowType
 
@@ -65,6 +66,13 @@ object RangedCombatStrategy : CombatStrategy {
                 pawn.message(message)
                 return false
             }
+
+            val bow = BowType.values().firstOrNull { it.item == weapon?.id }
+            if (bow != null && bow.ammo.isNotEmpty() && ammo?.id !in bow.ammo) {
+                val message = if (ammo != null) "You can't use that ammo with your bow." else "There is no ammo left in your quiver."
+                pawn.message(message)
+                return false
+            }
         }
         return true
     }
@@ -90,6 +98,7 @@ object RangedCombatStrategy : CombatStrategy {
             val ammoProjectile = if (ammo != null) RangedProjectile.values().firstOrNull { ammo.id in it.items } else null
             if (ammoProjectile != null) {
                 val projectile = Combat.createProjectile(pawn, target, ammoProjectile.gfx, ammoProjectile.type)
+                ammoProjectile.drawback?.let { drawback -> pawn.graphic(drawback) }
                 pawn.world.spawn(projectile)
             }
 
@@ -110,8 +119,7 @@ object RangedCombatStrategy : CombatStrategy {
                     pawn.equipment.remove(ammo.id, amount)
                 }
                 if (dropAmmo) {
-                    // NOTE: should this wait until the projectile hits its target
-                    // before spawning?
+                    // TODO: this should wait until projectile hits target
                     pawn.world.spawn(GroundItem(ammo.id, amount, target.tile, pawn.uid))
                 }
             }

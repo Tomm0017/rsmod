@@ -75,6 +75,11 @@ class PluginRepository {
     private var combatPlugin: Function1<Plugin, Unit>? = null
 
     /**
+     * A map of plugins that contain custom combat plugins for specific npcs.
+     */
+    private val npcCombatPlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
+
+    /**
      * A map that contains plugins that should be executed when the [TimerKey]
      * hits a value of [0] time left.
      */
@@ -197,6 +202,7 @@ class PluginRepository {
         loginPlugins.clear()
         globalNpcSpawnPlugins.clear()
         npcSpawnPlugins.clear()
+        npcCombatPlugins.clear()
         timerPlugins.clear()
         interfaceClose.clear()
         commandPlugins.clear()
@@ -284,6 +290,21 @@ class PluginRepository {
         if (combatPlugin != null) {
             pawn.world.pluginExecutor.execute(pawn, combatPlugin!!)
         }
+    }
+
+    fun bindNpcCombat(npc: Int, plugin: Function1<Plugin, Unit>) {
+        if (npcCombatPlugins.containsKey(npc)) {
+            logger.error("Npc is already bound to a combat plugin: $npc")
+            throw IllegalStateException("Npc is already bound to a combat plugin: $npc")
+        }
+        npcCombatPlugins[npc] = plugin
+        pluginCount++
+    }
+
+    fun executeNpcCombat(n: Npc): Boolean {
+        val plugin = npcCombatPlugins[n.id] ?: return false
+        n.world.pluginExecutor.execute(n, plugin)
+        return true
     }
 
     fun bindDisplayModeChange(plugin: Function1<Plugin, Unit>) {

@@ -29,15 +29,13 @@ class Npc private constructor(val id: Int, override val world: World) : Pawn(wor
 
     private var hitpoints = 10
 
+    lateinit var combatDef: NpcCombatDef
+
     var combatClass = CombatClass.MELEE
 
     var combatStyle = CombatStyle.NONE
 
-    lateinit var combatDef: NpcCombatDef
-
-    // TODO(Tom): switch this to an AttributeKey instead? only being used by
-    // the aggro plugin itself
-    var aggressivenessCheck: ((Npc, Player) -> Boolean)? = null
+    var aggroCheck: ((Npc, Player) -> Boolean)? = null
 
     override fun getType(): EntityType = EntityType.NPC
 

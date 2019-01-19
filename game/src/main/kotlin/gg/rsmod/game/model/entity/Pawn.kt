@@ -153,7 +153,15 @@ abstract class Pawn(open val world: World) : Entity() {
         interruptPlugins()
 
         attr[COMBAT_TARGET_FOCUS_ATTR] = target
-        world.plugins.executeCombat(this)
+
+        /**
+         * Players always have the default combat, and npcs will use default
+         * combat <strong>unless</strong> they have a custom npc combat plugin
+         * bound to their npc id.
+         */
+        if (getType().isPlayer() || this is Npc && !world.plugins.executeNpcCombat(this)) {
+            world.plugins.executeCombat(this)
+        }
     }
 
     fun timerCycle() {
@@ -304,6 +312,10 @@ abstract class Pawn(open val world: World) : Entity() {
         blockBuffer.graphicHeight = height
         blockBuffer.graphicDelay = delay
         addBlock(UpdateBlockType.GFX)
+    }
+
+    fun graphic(graphic: Graphic) {
+        graphic(graphic.id, graphic.height, graphic.delay)
     }
 
     fun forceChat(message: String) {

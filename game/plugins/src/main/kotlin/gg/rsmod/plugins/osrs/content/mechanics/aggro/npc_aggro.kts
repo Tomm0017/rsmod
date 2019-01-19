@@ -19,7 +19,7 @@ r.bindGlobalNpcSpawn {
     val npc = it.npc()
 
     if (npc.combatDef.aggressiveRadius > 0 && npc.combatDef.findTargetDelay > 0) {
-        npc.aggressivenessCheck = defaultAggressiveness
+        npc.aggroCheck = defaultAggressiveness
         npc.timers[AGGRO_CHECK_TIMER] = npc.combatDef.findTargetDelay
     }
 }
@@ -65,5 +65,5 @@ fun canAttack(npc: Npc, target: Player): Boolean {
     if (!target.isOnline() || target.invisible) {
         return false
     }
-    return npc.aggressivenessCheck == null || npc.aggressivenessCheck!!.invoke(npc, target)
+    return npc.aggroCheck?.invoke(npc, target) == true
 }

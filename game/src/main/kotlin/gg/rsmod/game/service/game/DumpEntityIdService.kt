@@ -65,7 +65,7 @@ class DumpEntityIdService : Service() {
     private fun generateWriter(file: String): PrintWriter {
         val writer = PrintWriter(outputPath!!.resolve(file).toFile())
         writer.println("/* Auto-generated file using ${this::class.java} */")
-        writer.println("package gg.rsmod.plugins.osrs.api")
+        writer.println("package gg.rsmod.plugins.osrs.api.cfg")
         writer.println("")
         writer.println("object Items {")
         writer.println("")

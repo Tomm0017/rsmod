@@ -24,4 +24,8 @@ object MagicCombatStrategy : CombatStrategy {
         val distance = start.getDistance(target)
         return 2 + (Math.floor((1.0 + distance) / 3.0)).toInt()
     }
+
+    override fun getMaxHit(pawn: Pawn): Int = pawn.world.random(10)
+
+    override fun rollAccuracy(pawn: Pawn, target: Pawn): Boolean = pawn.world.chance(2, 1)
 }

@@ -80,6 +80,12 @@ object RangedCombatStrategy : CombatStrategy {
     override fun attack(pawn: Pawn, target: Pawn) {
         val animation = CombatConfigs.getAttackAnimation(pawn)
 
+        /**
+         * A list of actions that will be executed upon this hit dealing damage
+         * to the [target].
+         */
+        val hitActions = arrayListOf<Function0<Unit>>()
+
         if (pawn is Player) {
 
             /**
@@ -119,17 +125,23 @@ object RangedCombatStrategy : CombatStrategy {
                     pawn.equipment.remove(ammo.id, amount)
                 }
                 if (dropAmmo) {
-                    // TODO: this should wait until projectile hits target
-                    pawn.world.spawn(GroundItem(ammo.id, amount, target.tile, pawn.uid))
+                    hitActions.add { pawn.world.spawn(GroundItem(ammo.id, amount, target.tile, pawn.uid)) }
                 }
             }
         }
         pawn.animate(animation)
-        target.hit(pawn.world.random(10), delay = getHitDelay(pawn.calculateCentreTile(), target.calculateCentreTile()))
+
+        val damage = if (rollAccuracy(pawn, target)) getMaxHit(pawn) else 0
+        target.hit(damage = damage, delay = getHitDelay(pawn.calculateCentreTile(), target.calculateCentreTile()))
+                .addActions(hitActions)
     }
 
     override fun getHitDelay(start: Tile, target: Tile): Int {
         val distance = start.getDistance(target)
         return 2 + (Math.floor((3.0 + distance) / 6.0)).toInt()
     }
+
+    override fun getMaxHit(pawn: Pawn): Int = pawn.world.random(10)
+
+    override fun rollAccuracy(pawn: Pawn, target: Pawn): Boolean = pawn.world.chance(2, 1)
 }

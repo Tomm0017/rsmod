@@ -5,6 +5,24 @@ package gg.rsmod.game.model
  */
 class Hit private constructor(val hitmarks: List<Hitmark>, val hitbar: Hitbar?, val clientDelay: Int, var damageDelay: Int) {
 
+    /**
+     * A list of actions that will be invoked upon this hit dealing damage
+     * to whichever entity it may.
+     *
+     * There is no guarantee that this action will occur under certain
+     * circumstances, such as if the entity dies before this hit deals
+     * damage.
+     */
+    val actions = arrayListOf<Function0<Unit>>()
+
+    fun addAction(action: Function0<Unit>) {
+        actions.add(action)
+    }
+
+    fun addActions(actions: Collection<Function0<Unit>>) {
+        this.actions.addAll(actions)
+    }
+
     data class Hitmark(val type: Int, var damage: Int)
 
     data class Hitbar(val type: Int, val percentage: Int, val maxPercentage: Int, val depleteSpeed: Int, val delay: Int)

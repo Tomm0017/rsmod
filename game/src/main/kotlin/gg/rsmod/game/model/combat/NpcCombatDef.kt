@@ -50,6 +50,15 @@ package gg.rsmod.game.model.combat
  * @param rangedAnimation
  * The animation while using ranged.
  *
+ * @param deathAnimation
+ * The animation to perform on death.
+ *
+ * @param deathDelay
+ * The time length of the death animation, in game cycles.
+ *
+ * @param respawnDelay
+ * The delay to respawn after being killed, in game cycles.
+ *
  * @param poisonChance
  * The chance of afflicting poison onto targets, can range from [0.0 - 1.0].
  *
@@ -74,21 +83,22 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
                         val defenceLvl: Int, val magicLvl: Int, val rangedLvl: Int, val meleeMaxHit: Int,
                         val magicMaxHit: Int, val rangedMaxHit: Int, val attackSpeed: Int, val aggressiveRadius: Int,
                         val findTargetDelay: Int, val meleeAnimation: Int, val magicAnimation: Int, val rangedAnimation: Int,
-                        val poisonChance: Double, val poisonImmunity: Boolean, val venomImmunity: Boolean,
-                        val slayerReq: Int, val slayerXp: Double, val bonuses: Array<Int>) {
+                        val deathAnimation: Int, val deathDelay: Int, val respawnDelay: Int, val poisonChance: Double,
+                        val poisonImmunity: Boolean, val venomImmunity: Boolean, val slayerReq: Int, val slayerXp: Double,
+                        val bonuses: Array<Int>) {
 
     constructor(other: NpcCombatDef) : this(other.hitpoints, other.combatLvl, other.attackLvl, other.strengthLvl,
             other.defenceLvl, other.magicLvl, other.rangedLvl, other.meleeMaxHit, other.magicMaxHit, other.rangedMaxHit,
             other.attackSpeed, other.aggressiveRadius, other.findTargetDelay, other.meleeAnimation, other.magicAnimation,
-            other.rangedAnimation, other.poisonChance, other.poisonImmunity, other.venomImmunity, other.slayerReq, other.slayerXp,
-            other.bonuses.copyOf())
+            other.rangedAnimation, other.deathAnimation, other.deathDelay, other.respawnDelay, other.poisonChance,
+            other.poisonImmunity, other.venomImmunity, other.slayerReq, other.slayerXp, other.bonuses.copyOf())
 
     companion object {
         val DEFAULT = NpcCombatDef(hitpoints = 10, combatLvl = 1, attackLvl = 1, strengthLvl = 1, defenceLvl = 1,
                 magicLvl = 1, rangedLvl = 1, meleeMaxHit = 1, magicMaxHit = 1, rangedMaxHit = 1, attackSpeed = 4,
                 aggressiveRadius = 0, findTargetDelay = 0, meleeAnimation = 422, rangedAnimation = -1, magicAnimation = -1,
-                poisonChance = 0.0, poisonImmunity = false, venomImmunity = false, slayerReq = 1, slayerXp = 0.0,
-                bonuses = Array(14) { 0 })
+                deathAnimation = 836, deathDelay = 4, respawnDelay = 25, poisonChance = 0.0, poisonImmunity = false, venomImmunity = false,
+                slayerReq = 1, slayerXp = 0.0, bonuses = Array(14) { 0 })
     }
 
     override fun equals(other: Any?): Boolean {
@@ -109,9 +119,13 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
         if (rangedMaxHit != other.rangedMaxHit) return false
         if (attackSpeed != other.attackSpeed) return false
         if (aggressiveRadius != other.aggressiveRadius) return false
+        if (findTargetDelay != other.findTargetDelay) return false
         if (meleeAnimation != other.meleeAnimation) return false
         if (magicAnimation != other.magicAnimation) return false
         if (rangedAnimation != other.rangedAnimation) return false
+        if (deathAnimation != other.deathAnimation) return false
+        if (deathDelay != other.deathDelay) return false
+        if (respawnDelay != other.respawnDelay) return false
         if (poisonChance != other.poisonChance) return false
         if (poisonImmunity != other.poisonImmunity) return false
         if (venomImmunity != other.venomImmunity) return false
@@ -134,10 +148,14 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
         result = 31 * result + magicMaxHit
         result = 31 * result + rangedMaxHit
         result = 31 * result + attackSpeed
-        result = 31 * result + aggressiveRadius.hashCode()
+        result = 31 * result + aggressiveRadius
+        result = 31 * result + findTargetDelay
         result = 31 * result + meleeAnimation
         result = 31 * result + magicAnimation
         result = 31 * result + rangedAnimation
+        result = 31 * result + deathAnimation
+        result = 31 * result + deathDelay
+        result = 31 * result + respawnDelay
         result = 31 * result + poisonChance.hashCode()
         result = 31 * result + poisonImmunity.hashCode()
         result = 31 * result + venomImmunity.hashCode()
@@ -146,4 +164,5 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
         result = 31 * result + bonuses.contentHashCode()
         return result
     }
+
 }

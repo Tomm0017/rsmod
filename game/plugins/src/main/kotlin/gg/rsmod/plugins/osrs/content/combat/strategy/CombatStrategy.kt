@@ -15,4 +15,8 @@ interface CombatStrategy {
     fun attack(pawn: Pawn, target: Pawn)
 
     fun getHitDelay(start: Tile, target: Tile): Int
+
+    fun getMaxHit(pawn: Pawn): Int
+
+    fun rollAccuracy(pawn: Pawn, target: Pawn): Boolean
 }

@@ -54,7 +54,6 @@ enum class RangedProjectile(val gfx: Int, val drawback: Graphic? = null, val typ
     AMETHYST_ARROW(gfx = 1384, drawback = Graphic(id = 1385, height = 96), type = ProjectileType.ARROW, items = AMETHYST_ARROWS),
     DRAGON_ARROW(gfx = 1120, drawback = Graphic(id = 1111, height = 96), type = ProjectileType.ARROW, items = DRAGON_ARROWS),
     OGRE_ARROW(gfx = 242, drawback = Graphic(id = 243, height = 50), type = ProjectileType.ARROW, items = OGRE_ARROWS),
-    // TODO: dragon arrows
 
     BRONZE_JAVELIN(gfx = 200, type = ProjectileType.JAVELIN, items = BRONZE_JAVELINS),
     IRON_JAVELIN(gfx = 201, type = ProjectileType.JAVELIN, items = IRON_JAVELINS),

@@ -1,7 +1,8 @@
 package gg.rsmod.game.model.entity
 
-import gg.rsmod.game.action.DeathAction
+import gg.rsmod.game.action.NpcDeathAction
 import gg.rsmod.game.action.NpcPathAction
+import gg.rsmod.game.action.PlayerDeathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.combat.DamageMap
@@ -202,6 +203,8 @@ abstract class Pawn(open val world: World) : Entity() {
                 blockBuffer.hits.add(hit)
                 addBlock(UpdateBlockType.HITMARK)
 
+                hit.actions.forEach { it.invoke() }
+
                 for (hitmark in hit.hitmarks) {
                     val hp = getCurrentHp()
                     if (hitmark.damage > hp) {
@@ -210,9 +213,9 @@ abstract class Pawn(open val world: World) : Entity() {
                     setCurrentHp(hp - hitmark.damage)
                     if (getCurrentHp() == 0) {
                         if (getType().isPlayer()) {
-                            executePlugin(DeathAction.playerDeathPlugin)
+                            executePlugin(PlayerDeathAction.deathPlugin)
                         } else {
-                            executePlugin(DeathAction.npcDeathPlugin)
+                            executePlugin(NpcDeathAction.deathPlugin)
                         }
                         hitIterator.remove()
                         break@iterator

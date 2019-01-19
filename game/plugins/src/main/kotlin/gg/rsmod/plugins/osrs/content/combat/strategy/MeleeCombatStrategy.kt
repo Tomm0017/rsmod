@@ -30,4 +30,8 @@ object MeleeCombatStrategy : CombatStrategy {
     }
 
     override fun getHitDelay(start: Tile, target: Tile): Int = 1
+
+    override fun getMaxHit(pawn: Pawn): Int = pawn.world.random(10)
+
+    override fun rollAccuracy(pawn: Pawn, target: Pawn): Boolean = pawn.world.chance(2, 1)
 }

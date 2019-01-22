@@ -429,26 +429,6 @@ open class Player(override val world: World) : Pawn(world) {
 
     fun getSkills(): SkillSet = skillSet
 
-    @Suppress("UNCHECKED_CAST")
-    fun <T> getPersistentAttr(key: String): T? = (persistentAttr[key] as? T)
-
-    @Suppress("UNCHECKED_CAST")
-    fun <T> getPersistentOrDefaultAttr(key: String, default: T): T = (persistentAttr[key] as? T) ?: default
-
-    @Suppress("UNCHECKED_CAST")
-    fun <T> putPersistentAttr(key: String, value: T) {
-        persistentAttr[key] = value as Any
-    }
-
-    fun removePersistentAttr(key: String) {
-        persistentAttr.remove(key)
-    }
-
-    /**
-     * Should only be used when saving [persistentAttr] attributes.
-     */
-    fun __getPersistentAttrMap(): Map<String, Any> = persistentAttr
-
     override fun toString(): String = MoreObjects.toStringHelper(this)
             .add("name", username)
             .add("pid", index)

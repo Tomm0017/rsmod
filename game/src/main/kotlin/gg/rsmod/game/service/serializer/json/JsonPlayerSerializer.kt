@@ -5,10 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.lambdaworks.crypto.SCryptUtil
 import gg.rsmod.game.Server
-import gg.rsmod.game.model.Privilege
-import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.TimerKey
-import gg.rsmod.game.model.World
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.service.serializer.PlayerLoadResult
@@ -76,11 +73,8 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.equipment.setItems(data.equipment)
             client.bank.setItems(data.bank)
             data.attributes.forEach { key, value ->
-                if (value is Number) {
-                    client.putPersistentAttr(key, value.toInt())
-                } else {
-                    client.putPersistentAttr(key, value)
-                }
+                val attribute = AttributeKey<Any>(key)
+                client.attr[attribute] = if (value is Double) value.toInt() else value
             }
             data.timers.forEach { timer ->
                 var time = timer.timeLeft
@@ -108,7 +102,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
                 privilege = client.privilege.id, runEnergy = client.runEnergy, displayMode = client.interfaces.displayMode.id,
                 skills = getSkills(client), inventory = client.inventory.toMap(), equipment = client.equipment.toMap(),
-                bank = client.bank.toMap(), attributes = client.__getPersistentAttrMap(),
+                bank = client.bank.toMap(), attributes = client.attr.toPersistentMap(),
                 timers = client.timers.toPersistentTimers(), varps = client.varps.getAll().filter { it.state != 0 })
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))
         val json = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()

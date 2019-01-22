@@ -6,17 +6,12 @@ import gg.rsmod.util.BitManipulation
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class BitStorage private constructor(val key: AttributeKey<Int>?, private val persistentKey: String?) {
-
-    /**
-     * Use when this [StorageBits] does not need to persist (save) on log-out.
-     */
-    constructor(key: AttributeKey<Int>) : this(key, null)
+class BitStorage(val key: AttributeKey<Int>) {
 
     /**
      * Use when this [BitStorage] should persist (save) on log-out.
      */
-    constructor(persistenceKey: String) : this(null, persistenceKey)
+    constructor(persistenceKey: String) : this(AttributeKey<Int>(persistenceKey))
 
     fun get(p: Player, bits: StorageBits): Int = BitManipulation.getBit(packed = get(p), startBit = bits.startBit, endBit = bits.endBit)
 
@@ -24,13 +19,9 @@ class BitStorage private constructor(val key: AttributeKey<Int>?, private val pe
         set(p, BitManipulation.setBit(packed = get(p), startBit = bits.startBit, endBit = bits.endBit, value = value))
     }
 
-    private fun get(p: Player): Int = if (persistentKey != null) (p.getPersistentAttr(persistentKey) ?: 0) else (p.attr[key!!] ?: 0)
+    private fun get(p: Player): Int = p.attr[key] ?: 0
 
     private fun set(p: Player, packed: Int) {
-        if (persistentKey != null) {
-            p.putPersistentAttr(persistentKey, packed)
-        } else {
-            p.attr.put(key!!, packed)
-        }
+        p.attr.put(key, packed)
     }
 }

@@ -48,6 +48,8 @@ class AttributeSystem {
 
     fun has(key: AttributeKey<*>): Boolean = attributes?.containsKey(key) ?: false
 
+    fun toPersistentMap(): Map<String, Any> = attributes?.filterKeys { it.persistenceKey != null }?.mapKeys { it.key.persistenceKey!! } ?: emptyMap()
+
     private fun constructIfNeeded() {
         if (attributes == null) {
             attributes = hashMapOf()

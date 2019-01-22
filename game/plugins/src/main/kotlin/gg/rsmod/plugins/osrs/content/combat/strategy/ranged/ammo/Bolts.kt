@@ -6,6 +6,7 @@ import gg.rsmod.plugins.osrs.api.cfg.Items
  * @author Tom <rspsmods@gmail.com>
  */
 object Bolts {
+
     val BRONZE_BOLTS = arrayOf(Items.BRONZE_BOLTS, Items.BRONZE_BOLTS_P, Items.BRONZE_BOLTS_P_6061, Items.BRONZE_BOLTS_P_6062)
     val IRON_BOLTS = arrayOf(Items.IRON_BOLTS, Items.IRON_BOLTS_P, Items.IRON_BOLTS_P_9294, Items.IRON_BOLTS_P_9301)
     val STEEL_BOLTS = arrayOf(Items.STEEL_BOLTS, Items.STEEL_BOLTS_P, Items.STEEL_BOLTS_P_9295, Items.STEEL_BOLTS_P_9302)

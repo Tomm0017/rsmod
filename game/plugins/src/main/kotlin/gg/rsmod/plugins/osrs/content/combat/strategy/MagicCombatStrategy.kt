@@ -5,6 +5,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.ProjectileType
+import gg.rsmod.plugins.osrs.api.helper.hit
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.skills.magic.Magic
 
@@ -16,6 +17,15 @@ object MagicCombatStrategy : CombatStrategy {
     override fun getAttackRange(pawn: Pawn): Int = 10
 
     override fun canAttack(pawn: Pawn, target: Pawn): Boolean {
+        if (pawn is Player) {
+            val spell = pawn.attr[Combat.CASTING_SPELL]!!
+            val struct = Magic.combatStructs[spell]
+            struct?.let {
+                if (!Magic.canCast(pawn, it.lvl, it.items)) {
+                    return false
+                }
+            }
+        }
         return true
     }
 
@@ -35,6 +45,9 @@ object MagicCombatStrategy : CombatStrategy {
                 Magic.removeRunes(pawn, struct.items)
             }
         }
+
+        val damage = if (rollAccuracy(pawn, target)) getMaxHit(pawn) else 0
+        target.hit(damage = damage, delay = getHitDelay(pawn.calculateCentreTile(), target.calculateCentreTile()))
     }
 
     override fun getHitDelay(start: Tile, target: Tile): Int {

@@ -14,6 +14,7 @@ import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.bank.Bank
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
+import gg.rsmod.plugins.osrs.content.skills.magic.Magic
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
 
@@ -46,6 +47,13 @@ r.bindCommand("infpray", Privilege.ADMIN_POWER) {
     val p = it.player()
     p.toggleVarbit(Prayers.INF_PRAY_VARBIT)
     p.message("Infinite prayer: ${if (p.getVarbit(Prayers.INF_PRAY_VARBIT) == 0) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
+}
+
+r.bindCommand("infrunes", Privilege.ADMIN_POWER) {
+    val p = it.player()
+    val enabled = p.getVarp(Magic.INF_RUNES_VARP) shr 1 == 1
+    p.setVarp(Magic.INF_RUNES_VARP, (if (enabled) 0 else 1) shl 1)
+    p.message("Infinite runes: ${if ((p.getVarp(Magic.INF_RUNES_VARP) shr 1) != 1) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
 }
 
 r.bindCommand("npc", Privilege.ADMIN_POWER) {

@@ -1,10 +1,7 @@
 package gg.rsmod.plugins.osrs.content.combat
 
 import gg.rsmod.game.action.NpcPathAction
-import gg.rsmod.game.model.ACTIVE_COMBAT_TIMER
-import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
-import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.TimerKey
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
@@ -14,11 +11,13 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.api.ProjectileType
 import gg.rsmod.plugins.osrs.api.WeaponType
 import gg.rsmod.plugins.osrs.api.helper.getAttackStyle
+import gg.rsmod.plugins.osrs.api.helper.getVarbit
 import gg.rsmod.plugins.osrs.api.helper.hasWeaponType
 import gg.rsmod.plugins.osrs.content.combat.strategy.CombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MeleeCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.RangedCombatStrategy
+import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -27,7 +26,12 @@ object Combat {
 
     val ATTACK_DELAY = TimerKey()
 
+    val CASTING_SPELL = AttributeKey<CombatSpell>()
+
     const val PRIORITY_PID_VARP = 1075
+
+    const val SELECTED_AUTOCAST_VARBIT = 276
+    const val DEFENSIVE_MAGIC_CAST_VARBIT = 2668
 
     fun reset(pawn: Pawn) {
         pawn.attr.remove(COMBAT_TARGET_FOCUS_ATTR)
@@ -42,6 +46,14 @@ object Combat {
     fun postAttack(pawn: Pawn, target: Pawn) {
         pawn.timers[ATTACK_DELAY] = CombatConfigs.getAttackDelay(pawn)
         target.timers[ACTIVE_COMBAT_TIMER] = 17 // 10,2 seconds
+
+        if (pawn is Player) {
+            if (pawn.getVarbit(SELECTED_AUTOCAST_VARBIT) == 0) {
+                pawn.attr.remove(CASTING_SPELL)
+            } else {
+                pawn.attr[CASTING_SPELL] = CombatSpell.values().first { it.autoCastId == pawn.getVarbit(SELECTED_AUTOCAST_VARBIT) }
+            }
+        }
     }
 
     fun raycast(pawn: Pawn, target: Pawn, distance: Int, projectile: Boolean): Boolean {

@@ -40,10 +40,11 @@ object CombatConfigs {
         }
 
         if (pawn is Player) {
-            if (pawn.hasWeaponType(WeaponType.BOW, WeaponType.CHINCHOMPA, WeaponType.CROSSBOW, WeaponType.THROWN)) {
-                return RangedCombatStrategy
+            return when {
+                pawn.attr.has(Combat.CASTING_SPELL) -> MagicCombatStrategy
+                pawn.hasWeaponType(WeaponType.BOW, WeaponType.CHINCHOMPA, WeaponType.CROSSBOW, WeaponType.THROWN) -> RangedCombatStrategy
+                else -> MeleeCombatStrategy
             }
-            return MeleeCombatStrategy
         }
 
         throw IllegalArgumentException("Invalid pawn type.")

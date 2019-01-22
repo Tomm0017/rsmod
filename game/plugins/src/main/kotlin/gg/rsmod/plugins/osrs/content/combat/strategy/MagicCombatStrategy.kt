@@ -1,8 +1,12 @@
 package gg.rsmod.plugins.osrs.content.combat.strategy
 
+import gg.rsmod.game.model.Graphic
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
-import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
+import gg.rsmod.game.model.entity.Player
+import gg.rsmod.plugins.osrs.api.ProjectileType
+import gg.rsmod.plugins.osrs.content.combat.Combat
+import gg.rsmod.plugins.osrs.content.skills.magic.Magic
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -16,8 +20,21 @@ object MagicCombatStrategy : CombatStrategy {
     }
 
     override fun attack(pawn: Pawn, target: Pawn) {
-        val animation = CombatConfigs.getAttackAnimation(pawn)
-        pawn.animate(animation)
+        val spell = pawn.attr[Combat.CASTING_SPELL]!!
+        val projectile = Combat.createProjectile(pawn, target, gfx = spell.projectile, type = ProjectileType.MAGIC)
+
+        // TODO: GLOBAL SOUND
+        pawn.animate(spell.castAnimation)
+        pawn.graphic(spell.castGfx)
+        target.graphic(Graphic(spell.impactGfx.id, spell.impactGfx.height, projectile.lifespan))
+        pawn.world.spawn(projectile)
+
+        if (pawn is Player) {
+            val struct = Magic.combatStructs[spell]
+            struct?.let {
+                Magic.removeRunes(pawn, struct.items)
+            }
+        }
     }
 
     override fun getHitDelay(start: Tile, target: Tile): Int {

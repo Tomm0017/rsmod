@@ -1,7 +1,7 @@
 package gg.rsmod.game.model
 
 import gg.rsmod.game.model.entity.Pawn
-import gg.rsmod.game.sync.UpdateBlockType
+import gg.rsmod.game.sync.block.UpdateBlockType
 import java.util.*
 
 /**
@@ -20,25 +20,6 @@ class MovementQueue(val pawn: Pawn) {
     fun clear() {
         steps.clear()
         lastSteps.clear()
-    }
-
-    fun setFirstStep(step: Tile, type: StepType) {
-        steps.clear()
-
-        val previous: Queue<Step> = ArrayDeque()
-        while (lastSteps.isNotEmpty()) {
-            val last = lastSteps.pollLast()
-            previous.add(last)
-
-            if (last.tile.sameAs(step)) {
-                previous.forEach { prev -> addStep(prev.tile, type) }
-                lastSteps.clear()
-                return
-            }
-        }
-
-        lastSteps.clear()
-        addStep(step, type)
     }
 
     fun addStep(step: Tile, type: StepType) {

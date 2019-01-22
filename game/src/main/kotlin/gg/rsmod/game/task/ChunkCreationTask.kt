@@ -6,7 +6,8 @@ import gg.rsmod.game.service.GameService
 
 /**
  * A [GameTask] responsible for creating any non-existent [gg.rsmod.game.model.region.Chunk]
- * that players are standing on.
+ * that players are standing on as well as registering and de-registering the
+ * player from the respective [gg.rsmod.game.model.region.Chunk]s.
  *
  * @author Tom <rspsmods@gmail.com>
  */

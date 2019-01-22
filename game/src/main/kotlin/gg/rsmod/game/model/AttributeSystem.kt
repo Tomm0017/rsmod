@@ -10,7 +10,8 @@ package gg.rsmod.game.model
 class AttributeSystem {
 
     /**
-     * Temporary attributes that can be attached to our system.
+     * Attributes that can be attached to our system.
+     *
      * We do not initialize it as this system can be used for entities such as
      * [gg.rsmod.game.model.entity.GameObject]s, of which there can be millions
      * of in the world at a time. The amount of overhead wouldn't be worth it as
@@ -48,11 +49,11 @@ class AttributeSystem {
 
     fun has(key: AttributeKey<*>): Boolean = attributes?.containsKey(key) ?: false
 
-    fun toPersistentMap(): Map<String, Any> = attributes?.filterKeys { it.persistenceKey != null }?.mapKeys { it.key.persistenceKey!! } ?: emptyMap()
-
     private fun constructIfNeeded() {
         if (attributes == null) {
             attributes = hashMapOf()
         }
     }
+
+    fun toPersistentMap(): Map<String, Any> = attributes?.filterKeys { it.persistenceKey != null }?.mapKeys { it.key.persistenceKey!! } ?: emptyMap()
 }

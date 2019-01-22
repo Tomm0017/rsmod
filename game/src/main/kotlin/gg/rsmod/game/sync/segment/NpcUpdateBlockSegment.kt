@@ -2,7 +2,7 @@ package gg.rsmod.game.sync.segment
 
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.sync.SynchronizationSegment
-import gg.rsmod.game.sync.UpdateBlockType
+import gg.rsmod.game.sync.block.UpdateBlockType
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
 

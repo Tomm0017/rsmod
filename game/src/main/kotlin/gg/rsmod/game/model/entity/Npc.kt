@@ -7,7 +7,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.CombatStyle
 import gg.rsmod.game.model.combat.NpcCombatDef
-import gg.rsmod.game.sync.UpdateBlockType
+import gg.rsmod.game.sync.block.UpdateBlockType
 
 /**
  * @author Tom <rspsmods@gmail.com>

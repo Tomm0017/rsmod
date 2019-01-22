@@ -32,7 +32,4 @@ import gg.rsmod.game.model.Tile
  */
 data class GameContext(var initialLaunch: Boolean, val name: String, val revision: Int,
                        val cycleTime: Int, val playerLimit: Int, val home: Tile,
-                       val skillCount: Int, val runEnergy: Boolean) {
-
-
-}
+                       val skillCount: Int, val runEnergy: Boolean)

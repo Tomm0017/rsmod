@@ -9,7 +9,7 @@ import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.interf.Interfaces
 import gg.rsmod.game.service.game.ItemStatsService
-import gg.rsmod.game.sync.UpdateBlockType
+import gg.rsmod.game.sync.block.UpdateBlockType
 import java.util.*
 
 /**

@@ -1,4 +1,4 @@
-package gg.rsmod.game.sync
+package gg.rsmod.game.sync.block
 
 import gg.rsmod.game.message.MessageValue
 import gg.rsmod.net.packet.DataOrder
@@ -9,6 +9,9 @@ import gg.rsmod.util.ServerProperties
 import java.util.*
 
 /**
+ * A set of [UpdateBlockType] information that is required to encode its respective
+ * block data.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class UpdateBlockSet {

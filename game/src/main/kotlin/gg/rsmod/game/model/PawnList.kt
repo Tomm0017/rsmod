@@ -5,11 +5,12 @@ import gg.rsmod.game.model.entity.Pawn
 /**
  * A custom list of [Pawn]s backed by an [Array].
  *
- * @param capacity The maximum amount of [Pawn]s that can be stored at a time.
+ * @param capacity
+ * The maximum amount of [Pawn]s that can be stored at a time.
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class PawnList<T : Pawn>(val capacity: Int) {
+class PawnList<T: Pawn>(val capacity: Int) {
 
     /**
      * The [Array] of [Pawn]s registered on this list.

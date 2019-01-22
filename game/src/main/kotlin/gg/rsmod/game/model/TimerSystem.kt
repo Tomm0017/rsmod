@@ -3,12 +3,16 @@ package gg.rsmod.game.model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
+ * A system responsible for storing and exposing [TimerKey]s and their associated
+ * values. These values represent game cycles left for the timer to "complete".
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class TimerSystem {
 
     /**
-     * Temporary timers that can be attached to our system.
+     * Timers that can be attached to our system.
+     *
      * We do not initialize it as this system can be used for entities such as
      * [gg.rsmod.game.model.entity.GameObject]s, of which there can be millions
      * of in the world at a time. The amount of overhead from always initializing

@@ -1,6 +1,8 @@
 package gg.rsmod.game.model
 
 /**
+ * Represents a type of entity that can be spawned in the world.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 enum class EntityType {

@@ -1,4 +1,4 @@
-package gg.rsmod.game.sync
+package gg.rsmod.game.sync.block
 
 import gg.rsmod.game.message.MessageValue
 

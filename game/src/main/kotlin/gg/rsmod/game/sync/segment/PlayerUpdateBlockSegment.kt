@@ -6,7 +6,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.game.sync.SynchronizationSegment
-import gg.rsmod.game.sync.UpdateBlockType
+import gg.rsmod.game.sync.block.UpdateBlockType
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
 

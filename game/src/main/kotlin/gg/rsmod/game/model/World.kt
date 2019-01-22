@@ -16,7 +16,7 @@ import gg.rsmod.game.service.Service
 import gg.rsmod.game.service.game.EntityExamineService
 import gg.rsmod.game.service.game.NpcStatsService
 import gg.rsmod.game.service.xtea.XteaKeyService
-import gg.rsmod.game.sync.UpdateBlockSet
+import gg.rsmod.game.sync.block.UpdateBlockSet
 import gg.rsmod.util.ServerProperties
 import net.runelite.cache.fs.Store
 import org.apache.logging.log4j.LogManager

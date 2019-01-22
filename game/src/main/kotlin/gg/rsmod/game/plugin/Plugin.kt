@@ -11,7 +11,11 @@ import kotlin.coroutines.*
 /**
  * Represents a plugin that can be executed at any time by a context.
  *
- * @param ctx Can be anything from [Player] to [gg.rsmod.game.model.entity.Pawn].
+ * @param ctx
+ * Can be anything from [Player] to [gg.rsmod.game.model.entity.Pawn].
+ *
+ * @param dispatcher
+ * The [CoroutineDispatcher] used to create the scope for our suspendable plugins.
  *
  * @author Tom <rspsmods@gmail.com>
  */

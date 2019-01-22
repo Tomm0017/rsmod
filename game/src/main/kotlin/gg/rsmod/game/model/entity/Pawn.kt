@@ -11,8 +11,8 @@ import gg.rsmod.game.model.combat.DamageMap
 import gg.rsmod.game.model.path.PathfindingStrategy
 import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.game.sync.UpdateBlockBuffer
-import gg.rsmod.game.sync.UpdateBlockType
+import gg.rsmod.game.sync.block.UpdateBlockBuffer
+import gg.rsmod.game.sync.block.UpdateBlockType
 
 /**
  * A controllable character in the world that is used by something, or someone,

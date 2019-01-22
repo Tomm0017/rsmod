@@ -3,6 +3,10 @@ package gg.rsmod.game.model
 import com.google.common.base.MoreObjects
 
 /**
+ * A value used for [TimerSystem] as a key.
+ *
+ * @see TimerSystem
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 data class TimerKey(val persistenceKey: String? = null, val tickOffline: Boolean = true) {

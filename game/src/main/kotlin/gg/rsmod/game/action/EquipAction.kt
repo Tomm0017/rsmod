@@ -13,6 +13,9 @@ import gg.rsmod.game.service.game.ItemStatsService
  */
 object EquipAction {
 
+    /**
+     * All possible results when trying to equip or unequip an item.
+     */
     enum class Result {
         /**
          * The item could not be equipped.

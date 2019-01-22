@@ -2,6 +2,8 @@ package gg.rsmod.game.action
 
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.INTERACTING_NPC_ATTR
+import gg.rsmod.game.model.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player

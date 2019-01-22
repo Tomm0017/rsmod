@@ -5,13 +5,13 @@ import gg.rsmod.util.BitManipulation
 
 /**
  * A storage for up to thirty-two (32) bits. This means you can have up to 32
- * possible values stored in a single integer instead of say 32 separate booleans.
+ * possible values stored in a single integer instead of say, 32 separate booleans.
  *
  * @param key
  * The attribute key used to store the packed bit values for this storage.
  *
  * If the given [AttributeKey] is persistent, the bits in this storage will
- * be saved for any player that uses it.
+ * be persistent.
  *
  * @author Tom <rspsmods@gmail.com>
  */

@@ -1,6 +1,23 @@
 package gg.rsmod.game.model
 
 /**
+ * Represents a hit that can be dealt. A hit can deal multiple damage splats
+ * ([Hitmark]s).
+ *
+ * @param hitmarks
+ * A list of all the [Hitmark]s this [Hit] will deal.
+ *
+ * @param hitbar
+ * The [Hitbar] this hit will cause to appear, if any. If this hit should not show
+ * a hitbar, this value should be null.
+ *
+ * @param clientDelay
+ * The delay for the client to show this hit.
+ *
+ * @param damageDelay
+ * The delay for the server to handle the [hitmarks]s and deal damage, in
+ * game cycles.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class Hit private constructor(val hitmarks: List<Hitmark>, val hitbar: Hitbar?, val clientDelay: Int, var damageDelay: Int) {

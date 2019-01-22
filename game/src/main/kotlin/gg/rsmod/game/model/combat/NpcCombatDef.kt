@@ -1,6 +1,8 @@
 package gg.rsmod.game.model.combat
 
 /**
+ * Represents the combat definition for an npc.
+ *
  * @param hitpoints
  * The maximum amount of hitpoints.
  *

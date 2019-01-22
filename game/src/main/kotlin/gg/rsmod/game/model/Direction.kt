@@ -25,6 +25,8 @@ enum class Direction(val value: Int) {
 
     SOUTH_EAST(7);
 
+    // TODO(Tom); this and [getNpcWalkIndex] be handled in a better way.
+    // These can change per revision, so should think about externalizing
     fun getPlayerWalkIndex(): Int = when (this) {
         SOUTH_WEST -> 0
         SOUTH -> 1

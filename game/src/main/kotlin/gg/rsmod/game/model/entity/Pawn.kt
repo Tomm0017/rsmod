@@ -5,6 +5,8 @@ import gg.rsmod.game.action.NpcPathAction
 import gg.rsmod.game.action.PlayerDeathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.AttributeSystem
+import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.combat.DamageMap
 import gg.rsmod.game.model.path.PathfindingStrategy
 import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy

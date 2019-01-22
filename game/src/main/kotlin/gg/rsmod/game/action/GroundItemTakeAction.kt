@@ -8,6 +8,9 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
 
 /**
+ * This class is responsible for moving towards a [GroundItem] and handling
+ * the pick-up logic.
+ * 
  * @author Tom <rspsmods@gmail.com>
  */
 object GroundItemTakeAction {

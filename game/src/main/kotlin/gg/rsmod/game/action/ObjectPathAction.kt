@@ -2,6 +2,8 @@ package gg.rsmod.game.action
 
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.INTERACTING_OBJ_ATTR
+import gg.rsmod.game.model.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.collision.ObjectType
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GameObject

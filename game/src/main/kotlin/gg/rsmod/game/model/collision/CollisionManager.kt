@@ -15,11 +15,11 @@ class CollisionManager(val world: World) {
         const val BRIDGE_TILE = 0x2
     }
 
-    fun submit(obj: GameObject, updateType: CollisionUpdate.Type) {
+    fun applyCollision(obj: GameObject, updateType: CollisionUpdate.Type) {
         val builder = CollisionUpdate.Builder()
         builder.setType(updateType)
         builder.putObject(world.definitions, obj)
-        apply(builder.build())
+        applyUpdate(builder.build())
     }
 
     fun canTraverse(tile: Tile, direction: Direction, type: EntityType): Boolean {
@@ -56,7 +56,7 @@ class CollisionManager(val world: World) {
         }
     }
 
-    fun apply(update: CollisionUpdate) {
+    fun applyUpdate(update: CollisionUpdate) {
         var chunk: Chunk? = null
 
         val type = update.type
@@ -92,6 +92,15 @@ class CollisionManager(val world: World) {
         }
     }
 
+    /**
+     * Casts a line using Bresenham's Line Algorithm with point A [start] and
+     * point B [target] being its two points and makes sure that there's no
+     * collision flag that can block movement from and to both points.
+     *
+     * @param projectile
+     * Projectiles have a higher tolerance for certain objects when the object's
+     * metadata explicitly allows them to.
+     */
     fun raycast(start: Tile, target: Tile, projectile: Boolean): Boolean {
         check(start.height == target.height) { "Tiles must be on the same height level." }
 

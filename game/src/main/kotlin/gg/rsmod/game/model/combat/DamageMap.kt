@@ -4,18 +4,20 @@ import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.entity.Pawn
 
 /**
+ * Represents a map of hits from different [Pawn]s and their information.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class DamageMap {
 
     private val map = hashMapOf<Pawn, DamageStack>()
 
-    operator fun set(pawn: Pawn, damage: Int) {
+    operator fun get(pawn: Pawn): DamageStack? = map[pawn]
+
+    fun add(pawn: Pawn, damage: Int) {
         val total = (map[pawn]?.totalDamage ?: 0) + damage
         map[pawn] = DamageStack(total, System.currentTimeMillis())
     }
-
-    operator fun get(pawn: Pawn): DamageStack? = map[pawn]
 
     fun getAll(type: EntityType, timeFrameMs: Long? = null): Collection<DamageStack> = map.filter { it.key.getType() == type && (timeFrameMs == null || System.currentTimeMillis() - it.value.lastHit < timeFrameMs) }.values
 

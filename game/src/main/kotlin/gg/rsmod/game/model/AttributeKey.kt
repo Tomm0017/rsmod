@@ -9,6 +9,10 @@ import com.google.common.base.MoreObjects
  * @param T
  * The type of the value that this attribute will store.
  *
+ * @param persistenceKey
+ * A string key that will be used for persistence. If [persistenceKey] != null,
+ * the value of this key in an object's [AttributeSystem] will persist (be saved).
+ *
  * <strong>Note</strong>- do not use Double or Float if your key needs to be
  * persistent ([persistenceKey] != null). Not all saving and loading systems
  * would be able to differentiate doubles and ints when being loaded, so for

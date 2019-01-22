@@ -189,7 +189,7 @@ class DefinitionSet {
         blocked.forEach { tile ->
             blockedTileBuilder.putTile(tile, false, *Direction.NESW)
         }
-        world.collision.apply(blockedTileBuilder.build())
+        world.collision.applyUpdate(blockedTileBuilder.build())
 
         if (xteaService == null) {
             /**

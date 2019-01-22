@@ -143,6 +143,9 @@ class Interfaces(val player: Player) {
         }
     }
 
+    /**
+     * Checks if an interface id was placed on interface ([parent], [child]).
+     */
     fun isOccupied(parent: Int, child: Int): Boolean = visible.containsKey((parent shl 16) or child)
 
     /**

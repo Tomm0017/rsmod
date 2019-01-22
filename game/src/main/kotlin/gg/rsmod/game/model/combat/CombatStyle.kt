@@ -1,6 +1,8 @@
 package gg.rsmod.game.model.combat
 
 /**
+ * Represents a valid combat style.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 enum class CombatStyle(val id: Int) {

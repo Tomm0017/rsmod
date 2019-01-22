@@ -62,6 +62,8 @@ fun Plugin.getInteractingOption(): Int = pawn().attr[INTERACTING_OPT_ATTR]!!
 
 fun Plugin.getInteractingGameObj(): GameObject = pawn().attr[INTERACTING_OBJ_ATTR]!!
 
+fun Plugin.getInteractingNpc(): Npc = pawn().attr[INTERACTING_NPC_ATTR]!!
+
 /**
  * Prompts the player with options.
  *

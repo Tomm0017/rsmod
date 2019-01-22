@@ -80,6 +80,12 @@ class PluginRepository {
     private val npcCombatPlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
 
     /**
+     * A map of plugins that will handle spells on npcs depending on the interface
+     * hash of the spell.
+     */
+    private val spellOnNpcPlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
+
+    /**
      * A map that contains plugins that should be executed when the [TimerKey]
      * hits a value of [0] time left.
      */
@@ -203,6 +209,7 @@ class PluginRepository {
         globalNpcSpawnPlugins.clear()
         npcSpawnPlugins.clear()
         npcCombatPlugins.clear()
+        spellOnNpcPlugins.clear()
         timerPlugins.clear()
         interfaceClose.clear()
         commandPlugins.clear()
@@ -227,9 +234,9 @@ class PluginRepository {
             val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
             plugins.forEach { p ->
                 val pluginClass = p.loadClass(KotlinPlugin::class.java)
-                val constructor = pluginClass.getConstructor(PluginRepository::class.java)
+                val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java)
                 analyzer?.setClass(pluginClass)
-                constructor.newInstance(this)
+                constructor.newInstance(this, world)
             }
         }
 
@@ -239,7 +246,7 @@ class PluginRepository {
                 if (!path.fileName.toString().endsWith(".jar")) {
                     return@forEach
                 }
-                scanJarForPlugins(path)
+                scanJarForPlugins(world, path)
             }
         }
 
@@ -247,7 +254,7 @@ class PluginRepository {
         analyzer = null
     }
 
-    fun scanJarForPlugins(path: Path) {
+    fun scanJarForPlugins(world: World, path: Path) {
         val urls = arrayOf(path.toFile().toURI().toURL())
         val classLoader = URLClassLoader(urls, PluginRepository::class.java.classLoader)
 
@@ -264,9 +271,9 @@ class PluginRepository {
                 val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
                 plugins.forEach { p ->
                     val pluginClass = p.loadClass(KotlinPlugin::class.java)
-                    val constructor = pluginClass.getConstructor(PluginRepository::class.java)
+                    val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java)
                     analyzer?.setClass(clazz)
-                    constructor.newInstance(this)
+                    constructor.newInstance(this, world)
                 }
             }
         }
@@ -304,6 +311,23 @@ class PluginRepository {
     fun executeNpcCombat(n: Npc): Boolean {
         val plugin = npcCombatPlugins[n.id] ?: return false
         n.world.pluginExecutor.execute(n, plugin)
+        return true
+    }
+
+    fun bindSpellOnNpc(interfaceId: Int, child: Int, plugin: Function1<Plugin, Unit>) {
+        val hash = (interfaceId shl 16) or child
+        if (spellOnNpcPlugins.containsKey(hash)) {
+            logger.error("Spell is already bound to a plugin: [$interfaceId, $child]")
+            throw IllegalStateException("Spell is already bound to a plugin: [$interfaceId, $child]")
+        }
+        spellOnNpcPlugins[hash] = plugin
+        pluginCount++
+    }
+
+    fun executeSpellOnNpc(p: Player, interfaceId: Int, child: Int): Boolean {
+        val hash = (interfaceId shl 16) or child
+        val plugin = spellOnNpcPlugins[hash] ?: return false
+        p.world.pluginExecutor.execute(p, plugin)
         return true
     }
 

@@ -7,6 +7,7 @@ import gg.rsmod.game.model.interf.DisplayMode
  */
 enum class InterfacePane(val interfaceId: Int, val fixedChildId: Int, val resizeChildId: Int, val resizeListChildId: Int,
                          val fullscreenChildId: Int = -1, val clickThrough: Boolean = true) {
+
     CHAT_BOX(interfaceId = 162, fixedChildId = 24, resizeChildId = 29, resizeListChildId = 31),
 
     USERNAME(interfaceId = 163, fixedChildId = 19, resizeChildId = 9, resizeListChildId = 9),

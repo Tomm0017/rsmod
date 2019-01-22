@@ -1,12 +1,7 @@
 
 import gg.rsmod.game.model.ExamineEntityType
-import gg.rsmod.game.model.Privilege
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.bank.Bank
-
-r.bindCommand("obank", Privilege.ADMIN_POWER) {
-    Bank.open(it.player())
-}
 
 r.bindInterfaceClose(Bank.BANK_INTERFACE_ID) {
     it.player().closeInterface(Bank.INV_INTERFACE_ID)

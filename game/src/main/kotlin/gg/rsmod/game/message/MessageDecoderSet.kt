@@ -44,6 +44,7 @@ class MessageDecoderSet {
         put(DropItemMessage::class.java, DropItemDecoder(), DropItemHandler(), structures)
         put(GroundItemActionThreeMessage::class.java, GroundItemActionThreeDecoder(), GroundItemActionThreeHandler(), structures)
         put(NpcAttackActionMessage::class.java, NpcAttackActionDecoder(), NpcAttackActionHandler(), structures)
+        put(SpellOnNpcMessage::class.java, SpellOnNpcDecoder(), SpellOnNpcHandler(), structures)
     }
 
     private fun <T: Message> put(messageType: Class<T>, decoderType: MessageDecoder<T>, handlerType: MessageHandler<T>, structures: MessageStructureSet) {

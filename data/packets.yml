@@ -381,6 +381,25 @@ out-packets:
 
 in-packets:
 
+  - message: gg.rsmod.game.message.impl.SpellOnNpcMessage
+    type: FIXED
+    opcode: 86
+    length: 9
+    structure:
+      - name: npc_index
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: movement_type
+        type: BYTE
+        trans: NEGATE
+      - name: interface_hash
+        order: LITTLE
+        type: INT
+      - name: interface_slot
+        type: SHORT
+        trans: ADD
+
   - message: gg.rsmod.game.message.impl.NpcAttackActionMessage
     type: FIXED
     opcode: 1

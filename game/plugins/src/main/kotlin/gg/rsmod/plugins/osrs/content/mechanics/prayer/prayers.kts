@@ -6,15 +6,6 @@ import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayer
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
 
 /**
- * Infinite prayer command.
- */
-r.bindCommand("infpray", Privilege.ADMIN_POWER) {
-    val p = it.player()
-    p.toggleVarbit(Prayers.INF_PRAY_VARBIT)
-    p.message("Infinite prayer: ${if (p.getVarbit(Prayers.INF_PRAY_VARBIT) == 0) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
-}
-
-/**
  * Activate prayers.
  */
 Prayer.values.forEach { prayer ->

@@ -104,7 +104,8 @@ class Server {
 
         val devContext = DevContext(debugObjects = devProperties.getOrDefault("debug-objects", false),
                 debugButtons = devProperties.getOrDefault("debug-buttons", false),
-                debugItemActions = devProperties.getOrDefault("debug-items", false))
+                debugItemActions = devProperties.getOrDefault("debug-items", false),
+                debugMagicSpells = devProperties.getOrDefault("debug-spells", false))
 
         val world = World(this, gameContext, devContext)
 

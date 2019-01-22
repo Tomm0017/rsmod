@@ -23,16 +23,19 @@ abstract class Definition(open val id: Int) {
 
     abstract fun decode(buf: ByteBuf, opcode: Int)
 
-    fun readParams(buf: ByteBuf) {
+    fun readParams(buf: ByteBuf): Map<Int, Any> {
+        val map = hashMapOf<Int, Any>()
+
         val length = buf.readUnsignedByte()
         for (i in 0 until length) {
             val isString = buf.readUnsignedByte().toInt() == 1
-            buf.readUnsignedMedium()
+            val id = buf.readUnsignedMedium()
             if (isString) {
-                BufferUtils.readString(buf)
+                map[id] = BufferUtils.readString(buf)
             } else {
-                buf.readInt()
+                map[id] = buf.readInt()
             }
         }
+        return map
     }
 }

@@ -5,7 +5,9 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.coroutine.*
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import org.apache.logging.log4j.LogManager
 import kotlin.coroutines.*
 
 /**
@@ -20,6 +22,10 @@ import kotlin.coroutines.*
  * @author Tom <rspsmods@gmail.com>
  */
 data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continuation<Unit> {
+
+    companion object {
+        private val logger = LogManager.getLogger(Plugin::class.java)
+    }
 
     /**
      * A value that can be requested by a plugin, such as an input for dialogs.
@@ -63,7 +69,7 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
      * Boilerplate to signal the use of suspendable logic.
      */
     fun suspendable(block: suspend CoroutineScope.() -> Unit) {
-        val coroutine = block.createCoroutine(receiver = CoroutineScope(dispatcher), completion = this)
+        val coroutine = block.createCoroutine(receiver = CoroutineScope(dispatcher + CoroutineExceptionHandler { _, exception -> logger.error(exception) }), completion = this)
         coroutine.resume(Unit)
     }
 

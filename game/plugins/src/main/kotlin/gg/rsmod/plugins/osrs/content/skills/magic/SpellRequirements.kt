@@ -58,7 +58,7 @@ object SpellRequirements {
         }
     }
 
-    fun load(world: World, enumId: Int) {
+    fun loadSpellRequirements(world: World, enumId: Int) {
         val enum = world.definitions.get(EnumDef::class.java, enumId)
         val dataItems = enum.values.values.map { it as Int }
 

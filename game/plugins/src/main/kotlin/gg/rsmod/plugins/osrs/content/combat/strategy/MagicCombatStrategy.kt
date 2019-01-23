@@ -29,13 +29,16 @@ object MagicCombatStrategy : CombatStrategy {
 
     override fun attack(pawn: Pawn, target: Pawn) {
         val spell = pawn.attr[Combat.CASTING_SPELL]!!
-        val projectile = Combat.createProjectile(pawn, target, gfx = spell.projectile, type = ProjectileType.MAGIC)
+
+        val projectile = Combat.createProjectile(pawn, target, gfx = spell.projectile, type = ProjectileType.MAGIC, endHeight = spell.projectilEndHeight)
 
         // TODO: GLOBAL SOUND
         pawn.animate(spell.castAnimation)
-        pawn.graphic(spell.castGfx)
-        target.graphic(Graphic(spell.impactGfx.id, spell.impactGfx.height, projectile.lifespan))
-        pawn.world.spawn(projectile)
+        spell.castGfx?.let { gfx -> pawn.graphic(gfx) }
+        spell.impactGfx?.let { gfx -> target.graphic(Graphic(gfx.id, gfx.height, projectile.lifespan)) }
+        if (spell.projectile > 0) {
+            pawn.world.spawn(projectile)
+        }
 
         if (pawn is Player) {
             SpellRequirements.getRequirements(spell.id)?.let { requirement ->

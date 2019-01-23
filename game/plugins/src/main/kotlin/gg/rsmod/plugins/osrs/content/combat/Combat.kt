@@ -70,22 +70,22 @@ object Combat {
         return withinRange || NpcPathAction.walkTo(it, pawn, target, interactionRange = distance)
     }
 
-    fun createProjectile(source: Pawn, target: Tile, gfx: Int, type: ProjectileType): Projectile {
+    fun createProjectile(source: Pawn, target: Tile, gfx: Int, type: ProjectileType, endHeight: Int = -1): Projectile {
         val builder = Projectile.Builder()
                 .setTiles(start = source.calculateCentreTile(), target = target)
                 .setGfx(gfx = gfx)
-                .setHeights(startHeight = type.startHeight, endHeight = type.endHeight)
+                .setHeights(startHeight = type.startHeight, endHeight = if (endHeight != -1) endHeight else type.endHeight)
                 .setSlope(angle = type.angle, steepness = type.steepness)
                 .setTimes(delay = type.delay, lifespan = type.delay + getProjectileLifespan(source, target, type))
 
         return builder.build()
     }
 
-    fun createProjectile(source: Pawn, target: Pawn, gfx: Int, type: ProjectileType): Projectile {
+    fun createProjectile(source: Pawn, target: Pawn, gfx: Int, type: ProjectileType, endHeight: Int = -1): Projectile {
         val builder = Projectile.Builder()
                 .setTiles(start = source.calculateCentreTile(), target = target)
                 .setGfx(gfx = gfx)
-                .setHeights(startHeight = type.startHeight, endHeight = type.endHeight)
+                .setHeights(startHeight = type.startHeight, endHeight = if (endHeight != -1) endHeight else type.endHeight)
                 .setSlope(angle = type.angle, steepness = type.steepness)
                 .setTimes(delay = type.delay, lifespan = type.delay + getProjectileLifespan(source, target.calculateCentreTile(), type))
 

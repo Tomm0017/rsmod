@@ -5,9 +5,13 @@ import gg.rsmod.game.model.Graphic
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-enum class CombatSpell(val id: Int, val castAnimation: Int, val castSound: Int, val castGfx: Graphic,
-                       val projectile: Int, val impactGfx: Graphic, val autoCastId: Int) {
+enum class CombatSpell(val id: Int, val castAnimation: Int, val castSound: Int, val castGfx: Graphic?,
+                       val projectile: Int, val projectilEndHeight: Int = -1, val impactGfx: Graphic?,
+                       val autoCastId: Int) {
 
+    /**
+     * Standard.
+     */
     WIND_STRIKE(id = 0, castAnimation = 711, castSound = 220, castGfx = Graphic(id = 90, height = 92),
             projectile = 91, impactGfx = Graphic(id = 92, height = 124), autoCastId = 1),
 
@@ -70,7 +74,67 @@ enum class CombatSpell(val id: Int, val castAnimation: Int, val castSound: Int, 
             projectile = 1462, impactGfx = Graphic(id = 1463, height = 124), autoCastId = 50),
 
     FIRE_SURGE(id = 1751, castAnimation = 7855, castSound = 4032, castGfx = Graphic(id = 1464, height = 92),
-            projectile = 1465, impactGfx = Graphic(id = 1466, height = 124), autoCastId = 51);
+            projectile = 1465, impactGfx = Graphic(id = 1466, height = 124), autoCastId = 51),
+
+    /**
+     * Ancient.
+     */
+    SMOKE_RUSH(id = 1896, castAnimation = 1978, castSound = 183, castGfx = null,
+            projectile = 384, impactGfx = Graphic(id = 385, height = 0), autoCastId = 31),
+
+    SHADOW_RUSH(id = 1904, castAnimation = 1978, castSound = 178, castGfx = null,
+            projectile = 378, impactGfx = Graphic(id = 379, height = 0), autoCastId = 32),
+
+    BLOOD_RUSH(id = 1900, castAnimation = 1978, castSound = 106, castGfx = null,
+            projectile = 0, impactGfx = Graphic(id = 373, height = 0), autoCastId = 33),
+
+    ICE_RUSH(id = 1892, castAnimation = 1978, castSound = 171, castGfx = null,
+            projectile = 360, impactGfx = Graphic(id = 361, height = 0), autoCastId = 34,
+            projectilEndHeight = 0),
+
+
+    SMOKE_BURST(id = 1897, castAnimation = 1979, castSound = 183, castGfx = null,
+            projectile = 388, impactGfx = Graphic(id = 389, height = 0), autoCastId = 35),
+
+    SHADOW_BURST(id = 1905, castAnimation = 1979, castSound = 178, castGfx = null,
+            projectile = 0, impactGfx = Graphic(id = 382, height = 0), autoCastId = 36),
+
+    BLOOD_BURST(id = 1901, castAnimation = 1979, castSound = 469, castGfx = null,
+            projectile = 0, impactGfx = Graphic(id = 376, height = 0), autoCastId = 37),
+
+    ICE_BURST(id = 1893, castAnimation = 1979, castSound = 171, castGfx = null,
+            projectile = 366, impactGfx = Graphic(id = 389, height = 0), autoCastId = 38,
+            projectilEndHeight = 0),
+
+
+    SMOKE_BLITZ(id = 1898, castAnimation = 1978, castSound = 183, castGfx = null,
+            projectile = 386, impactGfx = Graphic(id = 387, height = 124), autoCastId = 39),
+
+    SHADOW_BLITZ(id = 1906, castAnimation = 1978, castSound = 178, castGfx = null,
+            projectile = 380, impactGfx = Graphic(id = 381, height = 0), autoCastId = 40,
+            projectilEndHeight = 0),
+
+    BLOOD_BLITZ(id = 1902, castAnimation = 1978, castSound = 106, castGfx = null,
+            projectile = 374, impactGfx = Graphic(id = 375, height = 0), autoCastId = 41,
+            projectilEndHeight = 0),
+
+    ICE_BLITZ(id = 1894, castAnimation = 1978, castSound = 171, castGfx = null,
+            projectile = 0, impactGfx = Graphic(id = 367, height = 0), autoCastId = 42),
+
+
+    SMOKE_BARRAGE(id = 1899, castAnimation = 1979, castSound = 183, castGfx = null,
+            projectile = 390, impactGfx = Graphic(id = 391, height = 124), autoCastId = 43),
+
+    SHADOW_BARRAGE(id = 1907, castAnimation = 1979, castSound = 178, castGfx = null,
+            projectile = 0, impactGfx = Graphic(id = 383, height = 0), autoCastId = 44),
+
+    BLOOD_BARRAGE(id = 1903, castAnimation = 1979, castSound = 106, castGfx = null,
+            projectile = 0, impactGfx = Graphic(id = 377, height = 0), autoCastId = 45),
+
+    ICE_BARRAGE(id = 1895, castAnimation = 1979, castSound = 171, castGfx = null,
+            projectile = 368, impactGfx = Graphic(id = 369, height = 0), autoCastId = 46,
+            projectilEndHeight = 0),
+    ;
 
     companion object {
         val values = enumValues<CombatSpell>()

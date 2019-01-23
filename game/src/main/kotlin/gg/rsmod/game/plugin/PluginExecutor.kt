@@ -41,30 +41,25 @@ class PluginExecutor {
     fun getActiveCount(): Int = active.size
 
     fun <T> execute(ctx: Any, logic: Function1<Plugin, T>): T {
-        try {
-            val plugin = Plugin(ctx, dispatcher)
-            val invoke = logic.invoke(plugin)
+        val plugin = Plugin(ctx, dispatcher)
+        val invoke = logic.invoke(plugin)
 
-            /**
-             * We only categorize the plugin as 'active' if the plugin has been
-             * suspended. This is to avoid non-suspendable plugins from removing
-             * suspendable plugins.
-             *
-             * For example, if we didn't do this, a simple timer plugin, such as a
-             * prayer drain timer, which isn't suspendable but executed every cycle,
-             * would cancel suspendable plugins such as dialogs. (so you wouldn't be
-             * able to continue the dialog as it has been removed from 'active'
-             * plugins and would no longer pulse).
-             */
-            if (!plugin.canKill()) {
-                activeQueue.add(plugin)
-            }
-
-            return invoke
-        } catch (e: Exception) {
-            logger.error(e)
-            throw e
+        /**
+         * We only categorize the plugin as 'active' if the plugin has been
+         * suspended. This is to avoid non-suspendable plugins from removing
+         * suspendable plugins.
+         *
+         * For example, if we didn't do this, a simple timer plugin, such as a
+         * prayer drain timer, which isn't suspendable but executed every cycle,
+         * would cancel suspendable plugins such as dialogs. (so you wouldn't be
+         * able to continue the dialog as it has been removed from 'active'
+         * plugins and would no longer pulse).
+         */
+        if (!plugin.canKill()) {
+            activeQueue.add(plugin)
         }
+
+        return invoke
     }
 
     /**
@@ -107,22 +102,18 @@ class PluginExecutor {
 
         val iterator = active.iterator()
         while (iterator.hasNext()) {
-            try {
-                val plugin = iterator.next()
-                /**
-                 * The first pulse must be completely skipped, otherwise the initial
-                 * logic executes 1-tick too soon.
-                 */
-                if (plugin.started) {
-                    plugin.pulse()
-                    if (plugin.canKill()) {
-                        iterator.remove()
-                    }
-                } else {
-                    plugin.started = true
+            val plugin = iterator.next()
+            /**
+             * The first pulse must be completely skipped, otherwise the initial
+             * logic executes 1-tick too soon.
+             */
+            if (plugin.started) {
+                plugin.pulse()
+                if (plugin.canKill()) {
+                    iterator.remove()
                 }
-            } catch (e: Exception) {
-                logger.error(e)
+            } else {
+                plugin.started = true
             }
         }
     }

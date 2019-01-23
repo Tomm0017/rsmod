@@ -5,7 +5,6 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.coroutine.*
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import org.apache.logging.log4j.LogManager
 import kotlin.coroutines.*
@@ -63,13 +62,14 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
      */
     override fun resumeWith(result: Result<Unit>) {
         nextStep = null
+        result.exceptionOrNull()?.let { e -> logger.error("Error with plugin!", e) }
     }
 
     /**
      * Boilerplate to signal the use of suspendable logic.
      */
     fun suspendable(block: suspend CoroutineScope.() -> Unit) {
-        val coroutine = block.createCoroutine(receiver = CoroutineScope(dispatcher + CoroutineExceptionHandler { _, exception -> logger.error(exception) }), completion = this)
+        val coroutine = block.createCoroutine(receiver = CoroutineScope(dispatcher), completion = this)
         coroutine.resume(Unit)
     }
 

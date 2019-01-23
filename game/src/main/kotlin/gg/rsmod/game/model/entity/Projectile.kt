@@ -41,9 +41,9 @@ class Projectile private constructor(val targetPawn: Pawn?, val targetTile: Tile
         private var lifespan = -1
 
         fun build(): Projectile {
-            checkNotNull(start)
-            check(targetPawn != null || targetTile != null)
-            check(gfx != -1)
+            checkNotNull(start) { "Start must be set." }
+            check(targetPawn != null || targetTile != null) { "Target must be set." }
+            check(gfx != -1) { "Gfx must be set." }
 
             val start = start!!
             val target = targetPawn?.tile ?: targetTile!!

@@ -7,7 +7,7 @@ import gg.rsmod.game.model.Tile
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class Projectile private constructor(val targetPawn: Pawn?, val targetTile: Tile?,
+class Projectile private constructor(val targetPawn: Pawn?, val targetTile: Tile,
                                      val gfx: Int, val startHeight: Int, val endHeight: Int,
                                      val steepness: Int, val angle: Int, val delay: Int, val lifespan: Int) : Entity() {
 
@@ -69,10 +69,10 @@ class Projectile private constructor(val targetPawn: Pawn?, val targetTile: Tile
             }
 
             if (lifespan == -1) {
-                lifespan = start.getDistance(target) * 10
+                lifespan = start.getDistance(target) * 5
             }
 
-            val projectile = Projectile(targetPawn, targetTile, gfx, startHeight, endHeight, steepness, angle, delay, lifespan)
+            val projectile = Projectile(targetPawn, target, gfx, startHeight, endHeight, steepness, angle, delay, lifespan)
             projectile.tile = start
             return projectile
         }

@@ -70,5 +70,9 @@ enum class CombatSpell(val id: Int, val castAnimation: Int, val castSound: Int, 
             projectile = 1462, impactGfx = Graphic(id = 1463, height = 124), autoCastId = 50),
 
     FIRE_SURGE(id = 1751, castAnimation = 7855, castSound = 4032, castGfx = Graphic(id = 1464, height = 92),
-            projectile = 1465, impactGfx = Graphic(id = 1466, height = 124), autoCastId = 51),
+            projectile = 1465, impactGfx = Graphic(id = 1466, height = 124), autoCastId = 51);
+
+    companion object {
+        val values = enumValues<CombatSpell>()
+    }
 }

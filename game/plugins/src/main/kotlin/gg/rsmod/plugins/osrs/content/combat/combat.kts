@@ -6,10 +6,12 @@ import gg.rsmod.game.model.FROZEN_TIMER
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.plugins.osrs.api.helper.getVarbit
 import gg.rsmod.plugins.osrs.api.helper.pawn
 import gg.rsmod.plugins.osrs.api.helper.setVarp
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
+import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
 
 r.bindCombat {
     it.suspendable {
@@ -24,7 +26,12 @@ r.bindCombat {
 
 suspend fun cycle(it: Plugin): Boolean {
     val pawn = it.pawn()
-    val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR] ?: return false
+    val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR]
+
+    if (target == null) {
+        pawn.facePawn(null)
+        return false
+    }
 
     if (!pawn.lock.canAttack()) {
         return false
@@ -38,6 +45,13 @@ suspend fun cycle(it: Plugin): Boolean {
 
     if (pawn is Player) {
         pawn.setVarp(Combat.PRIORITY_PID_VARP, target.index)
+
+        if (!pawn.attr.has(Combat.CASTING_SPELL) && pawn.getVarbit(Combat.SELECTED_AUTOCAST_VARBIT) != 0) {
+            val spell = CombatSpell.values.firstOrNull { it.autoCastId == pawn.getVarbit(Combat.SELECTED_AUTOCAST_VARBIT) }
+            if (spell != null) {
+                pawn.attr[Combat.CASTING_SPELL] = spell
+            }
+        }
     }
 
     val strategy = CombatConfigs.getCombatStrategy(pawn)
@@ -57,10 +71,6 @@ suspend fun cycle(it: Plugin): Boolean {
     }
 
     pawn.movementQueue.clear()
-
-    if (pawn is Player) {
-        // TODO: check if autocasting, if so wait 1 cycle before attacking
-    }
 
     if (Combat.isAttackDelayReady(pawn)) {
         if (Combat.canAttack(pawn, target, strategy)) {

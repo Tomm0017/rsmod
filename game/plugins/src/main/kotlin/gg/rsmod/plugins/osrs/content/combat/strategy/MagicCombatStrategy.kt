@@ -7,7 +7,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.ProjectileType
 import gg.rsmod.plugins.osrs.api.helper.hit
 import gg.rsmod.plugins.osrs.content.combat.Combat
-import gg.rsmod.plugins.osrs.content.skills.magic.Magic
+import gg.rsmod.plugins.osrs.content.skills.magic.SpellRequirements
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -19,11 +19,9 @@ object MagicCombatStrategy : CombatStrategy {
     override fun canAttack(pawn: Pawn, target: Pawn): Boolean {
         if (pawn is Player) {
             val spell = pawn.attr[Combat.CASTING_SPELL]!!
-            val struct = Magic.combatStructs[spell]
-            struct?.let {
-                if (!Magic.canCast(pawn, it.lvl, it.items)) {
-                    return false
-                }
+            val requirements = SpellRequirements.getRequirements(spell.id)
+            if (requirements != null && !SpellRequirements.canCast(pawn, requirements.lvl, requirements.items)) {
+                return false
             }
         }
         return true
@@ -40,9 +38,8 @@ object MagicCombatStrategy : CombatStrategy {
         pawn.world.spawn(projectile)
 
         if (pawn is Player) {
-            val struct = Magic.combatStructs[spell]
-            struct?.let {
-                Magic.removeRunes(pawn, struct.items)
+            SpellRequirements.getRequirements(spell.id)?.let { requirement ->
+                SpellRequirements.removeRunes(pawn, requirement.items)
             }
         }
 
@@ -52,7 +49,7 @@ object MagicCombatStrategy : CombatStrategy {
 
     override fun getHitDelay(start: Tile, target: Tile): Int {
         val distance = start.getDistance(target)
-        return 2 + (Math.floor((1.0 + distance) / 3.0)).toInt()
+        return 2 + Math.floor((1.0 + distance) / 3.0).toInt()
     }
 
     override fun getMaxHit(pawn: Pawn): Int = pawn.world.random(10)

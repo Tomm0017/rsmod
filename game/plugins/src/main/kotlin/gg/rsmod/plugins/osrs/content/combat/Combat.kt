@@ -47,12 +47,9 @@ object Combat {
         pawn.timers[ATTACK_DELAY] = CombatConfigs.getAttackDelay(pawn)
         target.timers[ACTIVE_COMBAT_TIMER] = 17 // 10,2 seconds
 
-        if (pawn is Player) {
-            if (pawn.getVarbit(SELECTED_AUTOCAST_VARBIT) == 0) {
-                pawn.attr.remove(CASTING_SPELL)
-            } else {
-                pawn.attr[CASTING_SPELL] = CombatSpell.values().first { it.autoCastId == pawn.getVarbit(SELECTED_AUTOCAST_VARBIT) }
-            }
+        if (pawn.attr.has(CASTING_SPELL) && pawn is Player && pawn.getVarbit(SELECTED_AUTOCAST_VARBIT) == 0) {
+            pawn.attr.remove(CASTING_SPELL)
+            reset(pawn)
         }
     }
 
@@ -74,28 +71,36 @@ object Combat {
     }
 
     fun createProjectile(source: Pawn, target: Tile, gfx: Int, type: ProjectileType): Projectile {
-        val distance = source.calculateCentreTile().getDistance(target)
-
         val builder = Projectile.Builder()
                 .setTiles(start = source.calculateCentreTile(), target = target)
                 .setGfx(gfx = gfx)
                 .setHeights(startHeight = type.startHeight, endHeight = type.endHeight)
                 .setSlope(angle = type.angle, steepness = type.steepness)
-                .setTimes(delay = type.delay, lifespan = type.delay + type.calculateLife(distance))
+                .setTimes(delay = type.delay, lifespan = type.delay + getProjectileLifespan(source, target, type))
 
         return builder.build()
     }
 
     fun createProjectile(source: Pawn, target: Pawn, gfx: Int, type: ProjectileType): Projectile {
-        val distance = source.calculateCentreTile().getDistance(target.calculateCentreTile())
         val builder = Projectile.Builder()
                 .setTiles(start = source.calculateCentreTile(), target = target)
                 .setGfx(gfx = gfx)
                 .setHeights(startHeight = type.startHeight, endHeight = type.endHeight)
                 .setSlope(angle = type.angle, steepness = type.steepness)
-                .setTimes(delay = type.delay, lifespan = type.delay + type.calculateLife(distance))
+                .setTimes(delay = type.delay, lifespan = type.delay + getProjectileLifespan(source, target.calculateCentreTile(), type))
 
         return builder.build()
+    }
+
+    private fun getProjectileLifespan(source: Pawn, target: Tile, type: ProjectileType): Int = when (type) {
+        ProjectileType.MAGIC -> {
+            val path = source.createPathingStrategy().getPath(source.tile, target, source.getType())
+            5 + ((path.size - 2) * 10)
+        }
+        else -> {
+            val distance = source.calculateCentreTile().getDistance(target)
+            type.calculateLife(distance)
+        }
     }
 
     private fun canEngage(pawn: Pawn, target: Pawn): Boolean {

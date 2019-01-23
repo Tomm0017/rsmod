@@ -41,7 +41,12 @@ enum class EntityType {
     /**
      * A projectile.
      */
-    PROJECTILE;
+    PROJECTILE,
+
+    /**
+     * An area sound effect.
+     */
+    AREA_SOUND;
 
     fun isHumanControlled(): Boolean = this == CLIENT
 
@@ -55,5 +60,5 @@ enum class EntityType {
 
     fun isGroundItem(): Boolean = this == GROUND_ITEM
 
-    fun isTransient(): Boolean = this == PROJECTILE
+    fun isTransient(): Boolean = this == PROJECTILE || this == AREA_SOUND
 }

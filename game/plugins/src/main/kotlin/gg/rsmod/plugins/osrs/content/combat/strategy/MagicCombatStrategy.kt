@@ -6,6 +6,7 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.ProjectileType
 import gg.rsmod.plugins.osrs.api.helper.hit
+import gg.rsmod.plugins.osrs.api.helper.playSound
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.skills.magic.SpellRequirements
 
@@ -29,10 +30,8 @@ object MagicCombatStrategy : CombatStrategy {
 
     override fun attack(pawn: Pawn, target: Pawn) {
         val spell = pawn.attr[Combat.CASTING_SPELL]!!
-
         val projectile = Combat.createProjectile(pawn, target, gfx = spell.projectile, type = ProjectileType.MAGIC, endHeight = spell.projectilEndHeight)
 
-        // TODO: GLOBAL SOUND
         pawn.animate(spell.castAnimation)
         spell.castGfx?.let { gfx -> pawn.graphic(gfx) }
         spell.impactGfx?.let { gfx -> target.graphic(Graphic(gfx.id, gfx.height, projectile.lifespan)) }
@@ -41,9 +40,10 @@ object MagicCombatStrategy : CombatStrategy {
         }
 
         if (pawn is Player) {
-            SpellRequirements.getRequirements(spell.id)?.let { requirement ->
-                SpellRequirements.removeRunes(pawn, requirement.items)
+            if (spell.castSound != -1) {
+                pawn.playSound(id = spell.castSound, volume = 1, delay = 0)
             }
+            SpellRequirements.getRequirements(spell.id)?.let { requirement -> SpellRequirements.removeRunes(pawn, requirement.items) }
         }
 
         val damage = if (rollAccuracy(pawn, target)) getMaxHit(pawn) else 0

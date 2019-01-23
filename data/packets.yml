@@ -3,6 +3,23 @@
 
 out-packets:
 
+  - message: gg.rsmod.game.message.impl.PlayAreaSoundMessage
+    type: FIXED
+    opcode: 12
+    structure:
+      - name: tile
+        type: BYTE
+      - name: delay
+        type: BYTE
+        trans: SUBTRACT
+      - name: settings
+        type: BYTE
+        trans: ADD
+      - name: sound
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+
   - message: gg.rsmod.game.message.impl.SpawnProjectileMessage
     type: FIXED
     opcode: 11

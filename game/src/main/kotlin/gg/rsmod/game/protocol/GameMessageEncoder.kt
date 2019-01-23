@@ -26,8 +26,18 @@ class GameMessageEncoder(private val encoders: MessageEncoderSet, private val st
     }
 
     override fun encode(ctx: ChannelHandlerContext, msg: Message, out: MutableList<Any>) {
-        val encoder = encoders.get(msg.javaClass)!!
-        val structure = structures.get(msg.javaClass)!!
+        val encoder = encoders.get(msg.javaClass)
+        val structure = structures.get(msg.javaClass)
+
+        if (encoder == null) {
+            logger.error("No encoder found for message $msg")
+            return
+        }
+
+        if (structure == null) {
+            logger.error("No packet structure found for message $msg")
+            return
+        }
 
         val builder = GamePacketBuilder(structure.opcodes.first(), structure.type)
         encoder.encode(msg, builder, structure)

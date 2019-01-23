@@ -109,6 +109,12 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
 
     fun removeEntity(world: World, entity: Entity, tile: Tile) {
         /**
+         * Transient entities do not get added to our [Chunk]'s tiles, so no use
+         * in trying to remove it.
+         */
+        check(!entity.getType().isTransient()) { "Transient entities cannot be removed from chunks." }
+
+        /**
          * [EntityType]s that are considered objects will be removed from our
          * collision map.
          */
@@ -116,13 +122,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
             world.collision.applyCollision(entity as GameObject, CollisionUpdate.Type.REMOVE)
         }
 
-        /**
-         * Transient entities do not get added to our [Chunk]'s tiles, so no use
-         * in trying to remove it.
-         */
-        if (!entity.getType().isTransient()) {
-            entities.remove(tile, entity)
-        }
+        entities.remove(tile, entity)
 
         /**
          * Create an [EntityUpdate] for our local players to receive and view.
@@ -142,13 +142,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
                 updates.add(update)
             }
 
-            /**
-             * Transient entities don't register [EntityUpdate]s, so only remove
-             * them for entities which aren't transient.
-             */
-            if (!entity.getType().isTransient()) {
-                updates.removeIf { it.entity == entity }
-            }
+            updates.removeIf { it.entity == entity }
 
             /**
              * Send the update to all players in viewport.
@@ -231,6 +225,10 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
 
         EntityType.PROJECTILE ->
             if (spawn) ProjectileSpawnUpdate(EntityUpdateType.SPAWN_PROJECTILE, entity as Projectile)
+            else throw RuntimeException("${entity.getType()} can only be spawned, not removed!")
+
+        EntityType.AREA_SOUND ->
+            if (spawn) PlayAreaSoundUpdate(EntityUpdateType.PLAY_TILE_SOUND, entity as AreaSound)
             else throw RuntimeException("${entity.getType()} can only be spawned, not removed!")
 
         else -> null

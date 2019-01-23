@@ -51,6 +51,8 @@ class MessageEncoderSet {
         put(RemoveGroundItemEncoder(), RemoveGroundItemMessage::class.java)
         put(UpdateGroundItemEncoder(), UpdateGroundItemMessage::class.java)
         put(SpawnProjectileEncoder(), SpawnProjectileMessage::class.java)
+        put(PlaySoundEncoder(), PlaySoundMessage::class.java)
+        put(PlayAreaSoundEncoder(), PlayAreaSoundMessage::class.java)
     }
 
     private fun <T: Message> put(encoder: MessageEncoder<T>, message: Class<out T>) {

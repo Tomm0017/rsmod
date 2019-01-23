@@ -194,6 +194,13 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         chunk.addEntity(this, projectile, tile)
     }
 
+    fun spawn(sound: AreaSound) {
+        val tile = sound.tile
+        val chunk = chunks.getForTile(tile)
+
+        chunk.addEntity(this, sound, tile)
+    }
+
     fun isSpawned(obj: GameObject): Boolean = chunks.getForTile(obj.tile).getEntities<GameObject>(obj.tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).contains(obj)
 
     fun isSpawned(item: GroundItem): Boolean = chunks.getForTile(item.tile).getEntities<GroundItem>(item.tile, EntityType.GROUND_ITEM).contains(item)

@@ -1,6 +1,8 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
+import gg.rsmod.game.fs.DefinitionSet
+import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.AttributeSystem
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.TimerSystem
@@ -45,6 +47,8 @@ abstract class GameObject : Entity {
     }
 
     constructor(id: Int, type: Int, rot: Int, tile: Tile) : this(id, (type shl 2) or rot, tile)
+
+    fun getDef(definitions: DefinitionSet): ObjectDef = definitions.get(ObjectDef::class.java, id)
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("id", id).add("type", type).add("rot", rot).add("tile", tile.toString()).toString()
 }

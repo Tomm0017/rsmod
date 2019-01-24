@@ -5,11 +5,10 @@ import gg.rsmod.game.action.NpcPathAction
 import gg.rsmod.game.action.PlayerDeathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
-import gg.rsmod.game.model.AttributeSystem
-import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.combat.DamageMap
 import gg.rsmod.game.model.path.PathfindingStrategy
 import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
+import gg.rsmod.game.model.path.strategy.SimplePathfindingStrategy
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.block.UpdateBlockBuffer
 import gg.rsmod.game.sync.block.UpdateBlockType
@@ -117,7 +116,9 @@ abstract class Pawn(open val world: World) : Entity() {
      */
     abstract fun cycle()
 
-    fun isDead() = getCurrentHp() == 0
+    fun isDead(): Boolean = getCurrentHp() == 0
+
+    fun isAlive(): Boolean = !isDead()
 
     abstract fun isRunning(): Boolean
 
@@ -205,8 +206,6 @@ abstract class Pawn(open val world: World) : Entity() {
                 blockBuffer.hits.add(hit)
                 addBlock(UpdateBlockType.HITMARK)
 
-                hit.actions.forEach { it.invoke() }
-
                 for (hitmark in hit.hitmarks) {
                     val hp = getCurrentHp()
                     if (hitmark.damage > hp) {
@@ -214,6 +213,8 @@ abstract class Pawn(open val world: World) : Entity() {
                     }
                     setCurrentHp(hp - hitmark.damage)
                     if (getCurrentHp() == 0) {
+                        hit.actions.forEach { it.invoke() }
+                        interruptPlugins()
                         if (getType().isPlayer()) {
                             executePlugin(PlayerDeathAction.deathPlugin)
                         } else {
@@ -223,6 +224,8 @@ abstract class Pawn(open val world: World) : Entity() {
                         break@iterator
                     }
                 }
+
+                hit.actions.forEach { it.invoke() }
                 hitIterator.remove()
             }
         }
@@ -236,24 +239,11 @@ abstract class Pawn(open val world: World) : Entity() {
      * The [MovementQueue.StepType] that the movement to the coordinates will
      * use.
      *
-     * @param validSurroundingTiles
-     * If we have a list of predetermined [Tile]s, we set this value to that list.
-     * This is useful for pathfinding on things like objects, where the object
-     * has metadata which defines the surrounding tiles that it can be interacted
-     * from.
-     *
      * @return
      * The last tile in the path. `null` if no path could be made.
      */
-    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false, validSurroundingTiles: Array<Tile>? = null): Tile? {
-        /**
-         * If the player is already in a valid tile, why would be bother path finding.
-         */
-        if (validSurroundingTiles != null && tile in validSurroundingTiles) {
-            return null
-        }
-
-        val path = createPathingStrategy().getPath(tile, Tile(x, z, tile.height), if (projectilePath) EntityType.PROJECTILE else getType(), validSurroundingTiles)
+    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? {
+        val path = createPathingStrategy().getPath(tile, Tile(x, z, tile.height), if (projectilePath) EntityType.PROJECTILE else getType())
         if (path.isEmpty() && this is Player) {
             write(SetMinimapMarkerMessage(255, 255))
             return null
@@ -287,7 +277,7 @@ abstract class Pawn(open val world: World) : Entity() {
         return tail
     }
 
-    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false, validSurroundingTiles: Array<Tile>? = null): Tile? = walkTo(tile.x, tile.z, stepType, projectilePath, validSurroundingTiles)
+    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? = walkTo(tile.x, tile.z, stepType, projectilePath)
 
     fun walkTo(npc: Npc) {
         if (world.plugins.executeCustomNpcPath(this, npc.id)) {
@@ -379,5 +369,5 @@ abstract class Pawn(open val world: World) : Entity() {
         world.pluginExecutor.interruptPluginsWithContext(this)
     }
 
-    fun createPathingStrategy(): PathfindingStrategy = BFSPathfindingStrategy(world)
+    fun createPathingStrategy(): PathfindingStrategy = if (getType().isPlayer()) BFSPathfindingStrategy(world) else SimplePathfindingStrategy(world)
 }

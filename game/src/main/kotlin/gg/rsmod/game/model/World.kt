@@ -250,7 +250,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
                 ExamineEntityType.NPC -> service.getNpc(id)
                 ExamineEntityType.OBJECT -> service.getObj(id)
             }
-            p.message(examine)
+            val extension = if (devContext.debugExamines) " ($id)" else ""
+            p.message(examine + extension)
         } else {
             logger.warn("No examine service found! Could not send examine message to player: ${p.username}.")
         }

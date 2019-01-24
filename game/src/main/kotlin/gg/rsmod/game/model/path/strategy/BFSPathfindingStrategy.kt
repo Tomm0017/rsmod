@@ -7,7 +7,6 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.path.PathfindingStrategy
 import org.apache.logging.log4j.LogManager
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * A [PathfindingStrategy] which uses breadth-first search algorithm to calculate
@@ -21,17 +20,16 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
         private val logger = LogManager.getLogger(BFSPathfindingStrategy::class.java)
     }
 
-    override fun calculatePath(origin: Tile, target: Tile, type: EntityType, validSurroundingTiles: Array<Tile>?): Queue<Tile> {
-        if (!target.isWithinRadius(origin, MAX_DISTANCE)) {
-            logger.error("Target tile is not within view distance of origin. [origin=$origin, target=$target, distance=${origin.getDistance(target)}]")
+    override fun calculatePath(start: Tile, target: Tile, type: EntityType): Queue<Tile> {
+        if (!target.isWithinRadius(start, MAX_DISTANCE)) {
+            logger.error("Target tile is not within view distance of start. [start=$start, target=$target, distance=${start.getDistance(target)}]")
             return ArrayDeque()
         }
 
         val nodes = ArrayDeque<Node>()
         val closed = hashSetOf<Node>()
-        val surroundingNodes = ArrayList<Node>(if (validSurroundingTiles != null) 8 else 0)
 
-        nodes.add(Node(tile = origin, parent = null))
+        nodes.add(Node(tile = start, parent = null))
 
         var tail: Node? = null
 
@@ -51,26 +49,19 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
                     node.cost = head.cost + 1
                     nodes.add(node)
                     closed.add(node)
-                    if (validSurroundingTiles != null && node.tile in validSurroundingTiles) {
-                        surroundingNodes.add(node)
-                    }
                 }
             }
         }
 
         if (maxSearch == 0) {
-            logger.warn("Had to exit path early as max search samples ran out. [origin=$origin, target=$target, distance=${origin.getDistance(target)}]")
-        }
-
-        if (tail == null && surroundingNodes.isNotEmpty()) {
-            tail = surroundingNodes.minBy { it.cost }
+            logger.warn("Had to exit path early as max search samples ran out. [origin=$start, target=$target, distance=${start.getDistance(target)}]")
         }
 
         if (tail == null && closed.isNotEmpty()) {
             val min = closed.minBy { it.tile.getDistance(target) }!!
             val valid = closed.filter { it.tile.getDistance(target) <= min.tile.getDistance(target) }
             if (valid.isNotEmpty()) {
-                tail = valid.minBy { it.tile.getDelta(origin) }
+                tail = valid.minBy { it.tile.getDelta(start) }
             }
         }
 
@@ -79,7 +70,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
             path.addFirst(tail.tile)
             tail = tail.parent
         }
-        path.addFirst(origin)
+        path.addFirst(start)
 
         return path
     }

@@ -10,8 +10,9 @@ import gg.rsmod.game.plugin.Plugin
 object NpcDeathAction {
 
     val deathPlugin: (Plugin) -> Unit = {
+        val npc = it.ctx as Npc
         it.suspendable {
-            death(it, it.ctx as Npc)
+            death(it, npc)
         }
     }
 
@@ -27,10 +28,12 @@ object NpcDeathAction {
 
         npc.lock = LockState.FULL
         if (deathAnimation != -1) {
+            npc.facePawn(null)
             npc.animate(deathAnimation)
         }
 
         it.wait(deathDelay)
+        npc.animate(-1)
         world.remove(npc)
 
         if (npc.respawns) {

@@ -102,7 +102,9 @@ class Server {
                 skillCount = gameProperties.get<Int>("skill-count")!!,
                 runEnergy = gameProperties.getOrDefault("run-energy", true))
 
-        val devContext = DevContext(debugObjects = devProperties.getOrDefault("debug-objects", false),
+        val devContext = DevContext(
+                debugExamines = devProperties.getOrDefault("debug-examines", false),
+                debugObjects = devProperties.getOrDefault("debug-objects", false),
                 debugButtons = devProperties.getOrDefault("debug-buttons", false),
                 debugItemActions = devProperties.getOrDefault("debug-items", false),
                 debugMagicSpells = devProperties.getOrDefault("debug-spells", false))

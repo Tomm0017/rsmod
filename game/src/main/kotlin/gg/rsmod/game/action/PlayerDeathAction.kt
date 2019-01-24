@@ -9,8 +9,9 @@ import gg.rsmod.game.plugin.Plugin
 object PlayerDeathAction {
 
     val deathPlugin: (Plugin) -> Unit = {
+        val player = it.ctx as Player
         it.suspendable {
-            death(it, it.ctx as Player)
+            death(it, player)
         }
     }
 

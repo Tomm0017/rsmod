@@ -2,11 +2,10 @@ package gg.rsmod.game.action
 
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.*
-import gg.rsmod.game.model.INTERACTING_OBJ_ATTR
-import gg.rsmod.game.model.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.collision.ObjectType
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GameObject
+import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.DataConstants
@@ -32,20 +31,36 @@ object ObjectPathAction {
      */
 
     val walkPlugin: (Plugin) -> Unit = {
-        val p = it.ctx as Player
-        val obj = p.attr[INTERACTING_OBJ_ATTR]!!
-        val opt = p.attr[INTERACTING_OPT_ATTR]!!
+        val player = it.ctx as Player
+        val obj = player.attr[INTERACTING_OBJ_ATTR]!!
+        val opt = player.attr[INTERACTING_OPT_ATTR]!!
 
-        val validTiles = getValidTiles(p.world, obj)
-        if (p.tile !in validTiles) {
-            p.walkTo(obj.tile.x, obj.tile.z, MovementQueue.StepType.NORMAL, validSurroundingTiles = validTiles)
-            it.suspendable {
-                awaitArrival(it, obj, opt)
-            }
-        } else {
-            it.suspendable {
-                faceObj(p, obj)
+        it.suspendable {
+            walkTo(it, obj)
+            faceObj(player, obj)
+            if (player.tile in getValidTiles(player.world, obj)) {
+                it.wait(1)
                 handleAction(it, obj, opt)
+            } else {
+                player.message(Entity.YOU_CANT_REACH_THAT)
+            }
+        }
+    }
+
+    suspend fun walkTo(it: Plugin, obj: GameObject, validTiles: Array<Tile>? = null) {
+        val pawn = it.ctx as Pawn
+        val tiles = validTiles ?: getValidTiles(pawn.world, obj)
+        if (pawn.tile !in tiles) {
+            while (true) {
+                val closest = tiles.minBy { tile -> tile.getDelta(pawn.tile) }!!
+                pawn.walkTo(closest.x, closest.z, MovementQueue.StepType.NORMAL)
+
+                val destination = pawn.movementQueue.peekLast() ?: return
+                if (!pawn.tile.sameAs(destination)) {
+                    it.wait(1)
+                    continue
+                }
+                break
             }
         }
     }
@@ -61,32 +76,8 @@ object ObjectPathAction {
         }
     }
 
-    private suspend fun awaitArrival(it: Plugin, obj: GameObject, opt: Int) {
-        val p = it.ctx as Player
-        val destination = p.movementQueue.peekLast()
-        if (destination == null) {
-            faceObj(p, obj)
-            p.message(Entity.YOU_CANT_REACH_THAT)
-            return
-        }
-        while (true) {
-            if (!p.tile.sameAs(destination)) {
-                it.wait(1)
-                continue
-            }
-            faceObj(p, obj)
-            it.wait(1)
-            if (p.tile in getValidTiles(p.world, obj)) {
-                handleAction(it, obj, opt)
-            } else {
-                p.message(Entity.YOU_CANT_REACH_THAT)
-            }
-            break
-        }
-    }
-
-    private fun faceObj(p: Player, obj: GameObject) {
-        val def = p.world.definitions.get(ObjectDef::class.java, obj.id)
+    private fun faceObj(pawn: Pawn, obj: GameObject) {
+        val def = pawn.world.definitions.get(ObjectDef::class.java, obj.id)
         val rot = obj.rot
         val type = obj.type
 
@@ -101,19 +92,19 @@ object ObjectPathAction {
         when (type) {
             ObjectType.LENGTHWISE_WALL.value -> {
                 /**
-                 * Doors and walls, otherwise you end up facing the same direction
-                 * the object is facing.
+                 * Specially logic for facing doors and walls, otherwise you
+                 * end up facing the same direction the object is facing.
                  */
                 val dir = when (rot) {
-                    0 -> obj.tile.transform(if (p.tile.x == obj.tile.x) -1 else 0, 0)
+                    0 -> obj.tile.transform(if (pawn.tile.x == obj.tile.x) -1 else 0, 0)
                     1 -> obj.tile.transform(0, 1)
                     2 -> obj.tile.transform(1, 0)
                     else -> obj.tile.transform(0, -1)
                 }
-                p.faceTile(dir)
+                pawn.faceTile(dir)
             }
             else -> {
-                p.faceTile(obj.tile.transform(width shr 1, length shr 1), width, length)
+                pawn.faceTile(obj.tile.transform(width shr 1, length shr 1), width, length)
             }
         }
     }

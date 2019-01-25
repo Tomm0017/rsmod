@@ -254,6 +254,10 @@ fun Player.heal(amount: Int, capValue: Int = 0) {
     getSkills().alterCurrentLevel(skill = Skills.HITPOINTS, value = amount, capValue = capValue)
 }
 
+fun Player.hasSpellbook(book: Spellbook): Boolean = getVarbit(4070) == book.id
+
+fun Player.getSpellbook(): Spellbook = Spellbook.values().first { getVarbit(4070) == it.id }
+
 fun Player.getWeaponType(): Int = getVarp(843)
 
 fun Player.getAttackStyle(): Int = getVarp(43)

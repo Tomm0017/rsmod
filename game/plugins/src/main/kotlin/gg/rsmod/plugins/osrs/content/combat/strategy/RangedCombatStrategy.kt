@@ -85,6 +85,7 @@ object RangedCombatStrategy : CombatStrategy {
          * to the [target].
          */
         val hitActions = arrayListOf<Function0<Unit>>()
+        hitActions.add { postDamage(pawn, target) }
 
         if (pawn is Player) {
 

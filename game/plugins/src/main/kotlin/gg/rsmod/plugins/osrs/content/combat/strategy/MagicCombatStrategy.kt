@@ -8,7 +8,7 @@ import gg.rsmod.plugins.osrs.api.ProjectileType
 import gg.rsmod.plugins.osrs.api.helper.hit
 import gg.rsmod.plugins.osrs.api.helper.playSound
 import gg.rsmod.plugins.osrs.content.combat.Combat
-import gg.rsmod.plugins.osrs.content.skills.magic.SpellRequirements
+import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -21,7 +21,7 @@ object MagicCombatStrategy : CombatStrategy {
         if (pawn is Player) {
             val spell = pawn.attr[Combat.CASTING_SPELL]!!
             val requirements = SpellRequirements.getRequirements(spell.id)
-            if (requirements != null && !SpellRequirements.canCast(pawn, requirements.lvl, requirements.items)) {
+            if (requirements != null && !SpellRequirements.canCast(pawn, requirements.lvl, requirements.items, requirements.spellbook)) {
                 return false
             }
         }
@@ -29,6 +29,13 @@ object MagicCombatStrategy : CombatStrategy {
     }
 
     override fun attack(pawn: Pawn, target: Pawn) {
+        /**
+         * A list of actions that will be executed upon this hit dealing damage
+         * to the [target].
+         */
+        val hitActions = arrayListOf<Function0<Unit>>()
+        hitActions.add { RangedCombatStrategy.postDamage(pawn, target) }
+
         val spell = pawn.attr[Combat.CASTING_SPELL]!!
         val projectile = Combat.createProjectile(pawn, target, gfx = spell.projectile, type = ProjectileType.MAGIC, endHeight = spell.projectilEndHeight)
 
@@ -48,6 +55,7 @@ object MagicCombatStrategy : CombatStrategy {
 
         val damage = if (rollAccuracy(pawn, target)) getMaxHit(pawn) else 0
         target.hit(damage = damage, delay = getHitDelay(pawn.calculateCentreTile(), target.calculateCentreTile()))
+                .addActions(hitActions)
     }
 
     override fun getHitDelay(start: Tile, target: Tile): Int {

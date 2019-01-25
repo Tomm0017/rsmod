@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.content.skills.magic
+package gg.rsmod.plugins.osrs.content.mechanics.spells
 
 import gg.rsmod.game.fs.def.EnumDef
 import gg.rsmod.game.fs.def.ItemDef
@@ -6,6 +6,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.osrs.api.Skills
+import gg.rsmod.plugins.osrs.api.helper.getSpellbook
 import gg.rsmod.plugins.osrs.api.helper.getVarp
 
 /**
@@ -15,6 +16,7 @@ object SpellRequirements {
 
     const val INF_RUNES_VARP = 375
 
+    private const val SPELL_SPELLBOOK_KEY = 336
     private const val SPELL_RUNE1_ID_KEY = 365
     private const val SPELL_RUNE1_AMT_KEY = 366
     private const val SPELL_RUNE2_ID_KEY = 367
@@ -32,8 +34,11 @@ object SpellRequirements {
 
     fun getRequirements(spellId: Int): SpellRequirement? = requirements[spellId]
 
-    // TODO: check if on same spellbook
-    fun canCast(p: Player, lvl: Int, items: List<Item>): Boolean {
+    fun canCast(p: Player, lvl: Int, items: List<Item>, requiredBook: Int): Boolean {
+        if (requiredBook != -1 && p.getSpellbook().id != requiredBook) {
+            p.message("You can't cast this spell.")
+            return false
+        }
         if (p.getSkills().getMaxLevel(Skills.MAGIC) < lvl) {
             p.message("Your Magic level is not high enough for this spell.")
             return false
@@ -66,11 +71,13 @@ object SpellRequirements {
             val def = world.definitions.get(ItemDef::class.java, dataItem)
             val data = def.data
 
+            val spellbook = data[SPELL_SPELLBOOK_KEY] as Int
             val name = data[SPELL_NAME_KEY] as String
             val lvl = data[SPELL_LVL_REQ_KEY] as Int
             val interfaceHash = data[SPELL_INTERFACE_HASH_KEY] as Int
             val spellId = data[SPELL_ID_KEY] as Int
-            val combat = (data[SPELL_TYPE_KEY] as Int) == 0
+            val combat = (data[SPELL_TYPE_KEY] as Int) == 0 && spellbook in 0..1 // Only standard and ancient spellbooks have combat spells
+
             val parent = interfaceHash shr 16
             val child = interfaceHash and 0xFFFF
             val runes = arrayListOf<Item>()
@@ -78,16 +85,14 @@ object SpellRequirements {
             if (data.containsKey(SPELL_RUNE1_ID_KEY)) {
                 runes.add(Item(data[SPELL_RUNE1_ID_KEY] as Int, data[SPELL_RUNE1_AMT_KEY] as Int))
             }
-
             if (data.containsKey(SPELL_RUNE2_ID_KEY)) {
                 runes.add(Item(data[SPELL_RUNE2_ID_KEY] as Int, data[SPELL_RUNE2_AMT_KEY] as Int))
             }
-
             if (data.containsKey(SPELL_RUNE3_ID_KEY)) {
                 runes.add(Item(data[SPELL_RUNE3_ID_KEY] as Int, data[SPELL_RUNE3_AMT_KEY] as Int))
             }
 
-            val spell = SpellRequirement(parent, child, spellId, name, lvl, runes, combat)
+            val spell = SpellRequirement(parent, child, spellbook, spellId, name, lvl, runes, combat)
             requirements[spellId] = spell
         }
     }

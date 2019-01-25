@@ -1,6 +1,7 @@
 
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
+import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.model.entity.DynamicObject
@@ -14,7 +15,7 @@ import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.bank.Bank
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
-import gg.rsmod.plugins.osrs.content.skills.magic.SpellRequirements
+import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
 
@@ -232,6 +233,21 @@ r.bindCommand("dialogs", Privilege.ADMIN_POWER) {
         it.itemDialog("test", 4151)
         it.doubleItemDialog("test", 4151, 11802)
     }
+}
+
+r.bindCommand("clip", Privilege.ADMIN_POWER) {
+    val player = it.player()
+    val chunk = player.world.chunks.getForTile(player.tile)
+    val matrix = chunk.getMatrix(player.tile.height)
+    val lx = player.tile.x % 8
+    val lz = player.tile.z % 8
+
+    val blockedNorth = matrix.isBlocked(lx, lz, Direction.NORTH, false)
+    val blockedWest = matrix.isBlocked(lx, lz, Direction.WEST, false)
+    val blockedSouth = matrix.isBlocked(lx, lz, Direction.SOUTH, false)
+    val blockedEast = matrix.isBlocked(lx, lz, Direction.EAST, false)
+
+    player.message("Tile flags: ${chunk.getMatrix(player.tile.height).get(lx, lz)}, block=[$blockedNorth, $blockedWest, $blockedSouth, $blockedEast]")
 }
 
 fun tryWithUsage(player: Player, args: Array<String>, failMessage: String, tryUnit: Function1<Array<String>, Unit>) {

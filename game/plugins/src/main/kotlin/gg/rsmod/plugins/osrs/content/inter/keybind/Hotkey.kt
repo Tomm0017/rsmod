@@ -12,7 +12,7 @@ enum class Hotkey(val id: Int, val child: Int, val varbit: Int, val defaultValue
     PRAYERS(id = 5, child = 44, varbit = 4680, defaultValue = 3),
     MAGIC(id = 6, child = 51, varbit = 4682, defaultValue = 4),
     SOCIAL(id = 7, child = 58, varbit = 4684, defaultValue = 8),
-    ACCOUNT_MANAGEMENT(id = 8, child = 65, varbit = 4685, defaultValue = 9),
+    ACCOUNT_MANAGEMENT(id = 8, child = 65, varbit = 6517, defaultValue = 9),
     LOG_OUT(id = 9, child = 72, varbit = 4689, defaultValue = 0),
     SETTINGS(id = 10, child = 79, varbit = 4686, defaultValue = 10),
     EMOTES(id = 11, child = 86, varbit = 4687, defaultValue = 11),

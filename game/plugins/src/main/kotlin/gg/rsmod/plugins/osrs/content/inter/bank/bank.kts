@@ -116,6 +116,7 @@ r.bindButton(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) {
             4 -> 10
             5 -> p.getVarbit(Bank.LAST_X_INPUT)
             6 -> -1 // X
+            7 -> 0 // All
             else -> return@bindButton
         }
     }

@@ -60,12 +60,19 @@ suspend fun cycle(it: Plugin): Boolean {
     val pathFound = NpcPathAction.walkTo(it, pawn, target, attackRange)
     if (!pathFound) {
         pawn.movementQueue.clear()
+        if (pawn.getType().isNpc()) {
+            /**
+             * Npcs will keep trying to find a path to engage in combat.
+             */
+            return true
+        }
         if (pawn is Player) {
             if (!pawn.timers.has(FROZEN_TIMER)) {
                 pawn.message(Entity.YOU_CANT_REACH_THAT)
             }
             pawn.write(SetMinimapMarkerMessage(255, 255))
         }
+        pawn.facePawn(null)
         Combat.reset(pawn)
         return false
     }

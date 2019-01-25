@@ -72,7 +72,7 @@ object Combat {
 
     fun createProjectile(source: Pawn, target: Tile, gfx: Int, type: ProjectileType, endHeight: Int = -1): Projectile {
         val builder = Projectile.Builder()
-                .setTiles(start = source.calculateCentreTile(), target = target)
+                .setTiles(start = source.tile, target = target)
                 .setGfx(gfx = gfx)
                 .setHeights(startHeight = type.startHeight, endHeight = if (endHeight != -1) endHeight else type.endHeight)
                 .setSlope(angle = type.angle, steepness = type.steepness)
@@ -83,11 +83,11 @@ object Combat {
 
     fun createProjectile(source: Pawn, target: Pawn, gfx: Int, type: ProjectileType, endHeight: Int = -1): Projectile {
         val builder = Projectile.Builder()
-                .setTiles(start = source.calculateCentreTile(), target = target)
+                .setTiles(start = source.tile, target = target)
                 .setGfx(gfx = gfx)
                 .setHeights(startHeight = type.startHeight, endHeight = if (endHeight != -1) endHeight else type.endHeight)
                 .setSlope(angle = type.angle, steepness = type.steepness)
-                .setTimes(delay = type.delay, lifespan = type.delay + getProjectileLifespan(source, target.calculateCentreTile(), type))
+                .setTimes(delay = type.delay, lifespan = type.delay + getProjectileLifespan(source, target.tile, type))
 
         return builder.build()
     }
@@ -98,7 +98,7 @@ object Combat {
             5 + ((path.size - 2) * 10)
         }
         else -> {
-            val distance = source.calculateCentreTile().getDistance(target)
+            val distance = source.tile.getDistance(target)
             type.calculateLife(distance)
         }
     }

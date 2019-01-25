@@ -21,8 +21,7 @@ fun Pawn.hit(damage: Int, type: HitType = if (damage == 0) HitType.BLOCK else Hi
     return hit
 }
 
-fun Pawn.doubleHit(damage1: Int, damage2: Int, delay: Int = 0,
-                   type1: HitType = if (damage1 == 0) HitType.BLOCK else HitType.HIT,
+fun Pawn.doubleHit(damage1: Int, damage2: Int, delay: Int = 0, type1: HitType = if (damage1 == 0) HitType.BLOCK else HitType.HIT,
                    type2: HitType = if (damage2 == 0) HitType.BLOCK else HitType.HIT): Hit {
     val hit = Hit.Builder()
             .setDamageDelay(delay)

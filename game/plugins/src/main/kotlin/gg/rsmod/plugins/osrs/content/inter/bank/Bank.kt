@@ -2,7 +2,7 @@ package gg.rsmod.plugins.osrs.content.inter.bank
 
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.api.InterfacePane
 import gg.rsmod.plugins.osrs.api.helper.*
 
 /**
@@ -103,7 +103,7 @@ object Bank {
         p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 13, range = 834..843, setting = 1048576)
         p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 11, range = 10..10, setting = 1048578)
         p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 11, range = 11..19, setting = 1179714)
-        p.setInterfaceSetting(parent = INV_INTERFACE_ID, child = 3, range = 0..27, setting = 1181438)
+        p.setInterfaceSetting(parent = INV_INTERFACE_ID, child = 3, range = 0..27, setting = 1181694)
         p.setInterfaceSetting(parent = INV_INTERFACE_ID, child = 10, range = 0..27, setting = 1054)
         p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 47, range = 1..816, setting = 2)
         p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 50, range = 0..3, setting = 2)

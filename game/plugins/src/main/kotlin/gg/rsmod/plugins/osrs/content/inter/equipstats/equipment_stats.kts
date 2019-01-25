@@ -7,7 +7,7 @@ import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.equipstats.EquipmentStats
 
 fun bindUnequip(equipment: EquipmentType, child: Int) {
-    r.bindButton(parent = EquipmentStats.INTERFACE_ID, child = child) {
+    onButton(parent = EquipmentStats.INTERFACE_ID, child = child) {
         val p = it.player()
         val opt = it.getInteractingOption()
 
@@ -16,10 +16,10 @@ fun bindUnequip(equipment: EquipmentType, child: Int) {
             p.calculateWeightAndBonus(weight = false, bonuses = true)
             EquipmentStats.sendBonuses(p)
         } else if (opt == 9) {
-            val item = p.equipment[equipment.id] ?: return@bindButton
+            val item = p.equipment[equipment.id] ?: return@onButton
             p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
         } else {
-            val item = p.equipment[equipment.id] ?: return@bindButton
+            val item = p.equipment[equipment.id] ?: return@onButton
             if (!p.world.plugins.executeItem(p, item.id, opt)) {
                 val slot = it.getInteractingSlot()
                 if (p.world.devContext.debugButtons) {
@@ -30,12 +30,12 @@ fun bindUnequip(equipment: EquipmentType, child: Int) {
     }
 }
 
-r.bindButton(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0) {
+onButton(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0) {
     val p = it.player()
 
     val slot = it.getInteractingSlot()
     val opt = it.getInteractingOption()
-    val item = p.inventory[slot] ?: return@bindButton
+    val item = p.inventory[slot] ?: return@onButton
 
     if (opt == 0) {
         val result = EquipAction.equip(p, item, inventorySlot = slot)
@@ -50,11 +50,11 @@ r.bindButton(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0) {
     }
 }
 
-r.bindButton(parent = 387, child = 17) {
+onButton(parent = 387, child = 17) {
     val p = it.player()
 
     if (!p.lock.canInterfaceInteract()) {
-        return@bindButton
+        return@onButton
     }
 
     p.setMainInterfaceBackground(-1, -1)
@@ -66,7 +66,7 @@ r.bindButton(parent = 387, child = 17) {
     EquipmentStats.sendBonuses(p)
 }
 
-r.bindInterfaceClose(interfaceId = EquipmentStats.INTERFACE_ID) {
+onInterfaceClose(interfaceId = EquipmentStats.INTERFACE_ID) {
     it.player().closeInterface(interfaceId = EquipmentStats.TAB_INTERFACE_ID)
 }
 

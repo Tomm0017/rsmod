@@ -314,11 +314,11 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    fun bindSpellOnNpc(interfaceId: Int, child: Int, plugin: Function1<Plugin, Unit>) {
-        val hash = (interfaceId shl 16) or child
+    fun bindSpellOnNpc(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) {
+        val hash = (parent shl 16) or child
         if (spellOnNpcPlugins.containsKey(hash)) {
-            logger.error("Spell is already bound to a plugin: [$interfaceId, $child]")
-            throw IllegalStateException("Spell is already bound to a plugin: [$interfaceId, $child]")
+            logger.error("Spell is already bound to a plugin: [$parent, $child]")
+            throw IllegalStateException("Spell is already bound to a plugin: [$parent, $child]")
         }
         spellOnNpcPlugins[hash] = plugin
         pluginCount++

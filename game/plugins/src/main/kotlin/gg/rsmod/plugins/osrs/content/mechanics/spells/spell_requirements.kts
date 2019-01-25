@@ -16,7 +16,7 @@ arrayOf(STANDARD_SPELL_DATA_ENUM, ANCIENT_SPELL_DATA_ENUM, LUNAR_SPELL_DATA_ENUM
 
 SpellRequirements.requirements.filter { it.value.combat }.forEach { entry ->
     val requirement = entry.value
-    r.bindSpellOnNpc(requirement.parent, requirement.child) {
+    onSpellOnNpc(requirement.parent, requirement.child) {
         val player = it.player()
         val npc = it.getInteractingNpc()
         val combatSpell = CombatSpell.values.firstOrNull { spell -> spell.id == requirement.spellId }

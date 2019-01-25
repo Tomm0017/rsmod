@@ -5,7 +5,7 @@ import gg.rsmod.plugins.osrs.api.helper.player
 import gg.rsmod.plugins.osrs.api.helper.setMainInterfaceBackground
 import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
 
-r.bindButton(parent = OptionsTab.INTERFACE_ID, child = 100) {
+onButton(parent = OptionsTab.INTERFACE_ID, child = 100) {
     /**
     [Varp (SHORT)]: id=1780, state=6
     [Varp (SHORT)]: id=1781, state=4
@@ -18,7 +18,7 @@ r.bindButton(parent = OptionsTab.INTERFACE_ID, child = 100) {
      */
     val p = it.player()
     if (!p.lock.canInterfaceInteract()) {
-        return@bindButton
+        return@onButton
     }
     p.setMainInterfaceBackground(color = -1, transparency = -1)
     p.openInterface(interfaceId = 65, pane = InterfacePane.MAIN_SCREEN)

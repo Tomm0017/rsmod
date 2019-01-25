@@ -3,34 +3,34 @@ import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.bank.Bank
 
-r.bindInterfaceClose(Bank.BANK_INTERFACE_ID) {
+onInterfaceClose(Bank.BANK_INTERFACE_ID) {
     it.player().closeInterface(Bank.INV_INTERFACE_ID)
 }
 
 intArrayOf(17, 19).forEachIndexed { index, button ->
-    r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = button) {
+    onButton(parent = Bank.BANK_INTERFACE_ID, child = button) {
         it.player().setVarbit(Bank.REARRANGE_MODE_VARBIT, index)
     }
 }
 
 intArrayOf(22, 24).forEachIndexed { index, button ->
-    r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = button) {
+    onButton(parent = Bank.BANK_INTERFACE_ID, child = button) {
         it.player().setVarbit(Bank.WITHDRAW_AS_VARBIT, index)
     }
 }
 
-r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = 38) {
+onButton(parent = Bank.BANK_INTERFACE_ID, child = 38) {
     it.player().toggleVarbit(Bank.ALWAYS_PLACEHOLD_VARBIT)
 }
 
 intArrayOf(28, 30, 32, 34, 36).forEach { quantity ->
-    r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = quantity) {
+    onButton(parent = Bank.BANK_INTERFACE_ID, child = quantity) {
         val state = (quantity - 28) / 2
         it.player().setVarbit(Bank.QUANTITY_VARBIT, state)
     }
 }
 
-r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = 42) {
+onButton(parent = Bank.BANK_INTERFACE_ID, child = 42) {
     val p = it.player()
     val from = p.inventory
     val to = p.bank
@@ -54,7 +54,7 @@ r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = 42) {
     }
 }
 
-r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = 44) {
+onButton(parent = Bank.BANK_INTERFACE_ID, child = 44) {
     val p = it.player()
     val from = p.equipment
     val to = p.bank
@@ -78,16 +78,16 @@ r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = 44) {
     }
 }
 
-r.bindButton(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) {
+onButton(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) p@ {
     val p = it.player()
 
     val opt = it.getInteractingOption()
     val slot = it.getInteractingSlot()
-    val item = p.inventory[slot] ?: return@bindButton
+    val item = p.inventory[slot] ?: return@p
 
     if (opt == 9) {
         p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
-        return@bindButton
+        return@p
     }
 
     val quantityVarbit = p.getVarbit(Bank.QUANTITY_VARBIT)
@@ -101,14 +101,14 @@ r.bindButton(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) {
             5 -> p.getVarbit(Bank.LAST_X_INPUT)
             6 -> -1 // X
             7 -> 0 // All
-            else -> return@bindButton
+            else -> return@p
         }
         opt == 1 -> amount = when (quantityVarbit) {
             1 -> 5
             2 -> 10
             3 -> if (p.getVarbit(Bank.LAST_X_INPUT) == 0) -1 else p.getVarbit(Bank.LAST_X_INPUT)
             4 -> 0 // All
-            else -> return@bindButton
+            else -> return@p
         }
         else -> amount = when (opt) {
             2 -> 1
@@ -117,7 +117,7 @@ r.bindButton(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) {
             5 -> p.getVarbit(Bank.LAST_X_INPUT)
             6 -> -1 // X
             7 -> 0 // All
-            else -> return@bindButton
+            else -> return@p
         }
     }
 
@@ -131,22 +131,22 @@ r.bindButton(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) {
                 Bank.deposit(p, item.id, amount)
             }
         }
-        return@bindButton
+        return@p
     }
 
     Bank.deposit(p, item.id, amount)
 }
 
-r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = 13) {
+onButton(parent = Bank.BANK_INTERFACE_ID, child = 13) p@ {
     val p = it.player()
 
     val opt = it.getInteractingOption()
     val slot = it.getInteractingSlot()
-    val item = p.bank[slot] ?: return@bindButton
+    val item = p.bank[slot] ?: return@p
 
     if (opt == 9) {
         p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
-        return@bindButton
+        return@p
     }
 
     var amount: Int
@@ -166,7 +166,7 @@ r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = 13) {
                 placehold = true
                 item.amount
             }
-            else -> return@bindButton
+            else -> return@p
         }
         opt == 0 -> amount = when (quantityVarbit) {
             0 -> 1
@@ -178,7 +178,7 @@ r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = 13) {
                 placehold = true
                 item.amount
             }
-            else -> return@bindButton
+            else -> return@p
         }
         else -> amount = when (opt) {
             1 -> 1
@@ -192,7 +192,7 @@ r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = 13) {
                 placehold = true
                 item.amount
             }
-            else -> return@bindButton
+            else -> return@p
         }
     }
 
@@ -203,7 +203,7 @@ r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = 13) {
          */
         if (item.amount == 0) {
             p.bank.set(slot, null)
-            return@bindButton
+            return@p
         }
         it.suspendable {
             amount = it.inputInteger("How many would you like to withdraw?")
@@ -212,7 +212,7 @@ r.bindButton(parent = Bank.BANK_INTERFACE_ID, child = 13) {
                 Bank.withdraw(p, item.id, amount, slot, placehold)
             }
         }
-        return@bindButton
+        return@p
     }
 
     amount = Math.max(0, amount)

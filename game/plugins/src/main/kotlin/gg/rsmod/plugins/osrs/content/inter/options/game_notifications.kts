@@ -5,7 +5,7 @@ import gg.rsmod.plugins.osrs.api.helper.toggleStorageBit
 import gg.rsmod.plugins.osrs.content.inter.options.GameNotificationType
 import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
 
-r.bindButton(parent = OptionsTab.INTERFACE_ID, child = 71) {
+onButton(parent = OptionsTab.INTERFACE_ID, child = 71) {
     it.suspendable {
         val p = it.player()
         while (true) {

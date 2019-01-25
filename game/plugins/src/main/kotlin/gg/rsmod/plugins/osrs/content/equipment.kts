@@ -8,7 +8,7 @@ import gg.rsmod.plugins.osrs.api.helper.sendWeaponInterfaceInformation
 val EQUIP_ITEM_SOUND = 2238
 
 for (equipment in EquipmentType.values()) {
-    r.bindEquipSlot(equipment.id) {
+    onEquipSlot(equipment.id) {
         val p = it.player()
 
         p.playSound(EQUIP_ITEM_SOUND)
@@ -31,7 +31,7 @@ bindUnequip(EquipmentType.BOOTS, child = 14)
 bindUnequip(EquipmentType.RING, child = 15)
 
 fun bindUnequip(equipment: EquipmentType, child: Int) {
-    r.bindButton(parent = 387, child = child) {
+    onButton(parent = 387, child = child) {
         val p = it.player()
 
         val result = EquipAction.unequip(p, equipment.id)

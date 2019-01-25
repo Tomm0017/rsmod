@@ -7,7 +7,7 @@ import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.attack.AttackTab
 
-r.bindLogin {
+onLogin {
     val p = it.player()
 
     /**

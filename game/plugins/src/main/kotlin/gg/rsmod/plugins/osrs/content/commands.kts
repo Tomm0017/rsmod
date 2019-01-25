@@ -19,20 +19,20 @@ import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
 
-r.bindCommand("empty") {
+onCommand("empty") {
     it.player().inventory.removeAll()
 }
 
-r.bindCommand("obank", Privilege.ADMIN_POWER) {
+onCommand("obank", Privilege.ADMIN_POWER) {
     Bank.open(it.player())
 }
 
-r.bindCommand("mypos", Privilege.ADMIN_POWER) {
+onCommand("mypos", Privilege.ADMIN_POWER) {
     val p = it.player()
     p.message(p.tile.toString())
 }
 
-r.bindCommand("tele", Privilege.ADMIN_POWER) {
+onCommand("tele", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -44,20 +44,20 @@ r.bindCommand("tele", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("infpray", Privilege.ADMIN_POWER) {
+onCommand("infpray", Privilege.ADMIN_POWER) {
     val p = it.player()
     p.toggleVarbit(Prayers.INF_PRAY_VARBIT)
     p.message("Infinite prayer: ${if (p.getVarbit(Prayers.INF_PRAY_VARBIT) == 0) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
 }
 
-r.bindCommand("infrunes", Privilege.ADMIN_POWER) {
+onCommand("infrunes", Privilege.ADMIN_POWER) {
     val p = it.player()
     val enabled = p.getVarp(SpellRequirements.INF_RUNES_VARP) shr 1 == 1
     p.setVarp(SpellRequirements.INF_RUNES_VARP, (if (enabled) 0 else 1) shl 1)
     p.message("Infinite runes: ${if ((p.getVarp(SpellRequirements.INF_RUNES_VARP) shr 1) != 1) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
 }
 
-r.bindCommand("npc", Privilege.ADMIN_POWER) {
+onCommand("npc", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -68,7 +68,7 @@ r.bindCommand("npc", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("obj", Privilege.ADMIN_POWER) {
+onCommand("obj", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -79,7 +79,7 @@ r.bindCommand("obj", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("removeobj", Privilege.ADMIN_POWER) {
+onCommand("removeobj", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val chunk = p.world.chunks.getForTile(p.tile)
@@ -91,7 +91,7 @@ r.bindCommand("removeobj", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("master", Privilege.ADMIN_POWER) {
+onCommand("master", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     for (i in 0 until p.getSkills().maxSkills) {
@@ -100,7 +100,7 @@ r.bindCommand("master", Privilege.ADMIN_POWER) {
     p.calculateAndSetCombatLevel()
 }
 
-r.bindCommand("reset", Privilege.ADMIN_POWER) {
+onCommand("reset", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     for (i in 0 until p.getSkills().maxSkills) {
@@ -109,7 +109,7 @@ r.bindCommand("reset", Privilege.ADMIN_POWER) {
     p.calculateAndSetCombatLevel()
 }
 
-r.bindCommand("setlvl", Privilege.ADMIN_POWER) {
+onCommand("setlvl", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -143,7 +143,7 @@ r.bindCommand("setlvl", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("item", Privilege.ADMIN_POWER) {
+onCommand("item", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -160,13 +160,13 @@ r.bindCommand("item", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("food", Privilege.ADMIN_POWER) {
+onCommand("food", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     p.inventory.add(id = Items.MANTA_RAY, amount = p.inventory.getFreeSlotCount())
 }
 
-r.bindCommand("varp", Privilege.ADMIN_POWER) {
+onCommand("varp", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -179,7 +179,7 @@ r.bindCommand("varp", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("varbit", Privilege.ADMIN_POWER) {
+onCommand("varbit", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -192,7 +192,7 @@ r.bindCommand("varbit", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("getvarbits", Privilege.ADMIN_POWER) {
+onCommand("getvarbits", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -213,7 +213,7 @@ r.bindCommand("getvarbits", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("interface", Privilege.ADMIN_POWER) {
+onCommand("interface", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -224,7 +224,7 @@ r.bindCommand("interface", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("dialogs", Privilege.ADMIN_POWER) {
+onCommand("dialogs", Privilege.ADMIN_POWER) {
     it.suspendable {
         it.options("test")
         it.inputInteger("test")
@@ -235,7 +235,7 @@ r.bindCommand("dialogs", Privilege.ADMIN_POWER) {
     }
 }
 
-r.bindCommand("clip", Privilege.ADMIN_POWER) {
+onCommand("clip", Privilege.ADMIN_POWER) {
     val player = it.player()
     val chunk = player.world.chunks.getForTile(player.tile)
     val matrix = chunk.getMatrix(player.tile.height)

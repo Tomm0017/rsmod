@@ -5,11 +5,11 @@ import gg.rsmod.plugins.osrs.content.items.food.Food
 import gg.rsmod.plugins.osrs.content.items.food.Foods
 
 Food.values().forEach { food ->
-    r.bindItem(food.item, 1) {
+    onItemOption(food.item, 1) {
         val p = it.player()
 
         if (!Foods.canEat(p, food)) {
-            return@bindItem
+            return@onItemOption
         }
 
         val inventorySlot = it.getInteractingItemSlot()

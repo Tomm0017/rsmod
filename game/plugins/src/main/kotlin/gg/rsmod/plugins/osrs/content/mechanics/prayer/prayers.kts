@@ -1,7 +1,9 @@
 
-import gg.rsmod.game.model.Privilege
-import gg.rsmod.plugins.osrs.api.*
-import gg.rsmod.plugins.osrs.api.helper.*
+import gg.rsmod.plugins.osrs.api.InterfacePane
+import gg.rsmod.plugins.osrs.api.helper.getInteractingOption
+import gg.rsmod.plugins.osrs.api.helper.getInteractingSlot
+import gg.rsmod.plugins.osrs.api.helper.openInterface
+import gg.rsmod.plugins.osrs.api.helper.player
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayer
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
 
@@ -9,7 +11,7 @@ import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
  * Activate prayers.
  */
 Prayer.values.forEach { prayer ->
-    r.bindButton(parent = 541, child = prayer.child) {
+    onButton(parent = 541, child = prayer.child) {
         it.suspendable {
             Prayers.toggle(it, prayer)
         }
@@ -19,11 +21,11 @@ Prayer.values.forEach { prayer ->
 /**
  * Prayer drain.
  */
-r.bindLogin {
+onLogin {
     it.player().timers[Prayers.PRAYER_DRAIN] = 1
 }
 
-r.bindTimer(Prayers.PRAYER_DRAIN) {
+onTimer(Prayers.PRAYER_DRAIN) {
     val p = it.player()
     p.timers[Prayers.PRAYER_DRAIN] = 1
     Prayers.drainPrayer(p)
@@ -32,7 +34,7 @@ r.bindTimer(Prayers.PRAYER_DRAIN) {
 /**
  * Toggle quick-prayers.
  */
-r.bindButton(parent = 160, child = 14) {
+onButton(parent = 160, child = 14) {
     val p = it.player()
     val opt = it.getInteractingOption()
     Prayers.toggleQuickPrayers(p, opt)
@@ -41,16 +43,16 @@ r.bindButton(parent = 160, child = 14) {
 /**
  * Select quick-prayer.
  */
-r.bindButton(parent = 77, child = 4) {
+onButton(parent = 77, child = 4) {
     val slot = it.getInteractingSlot()
-    val prayer = Prayer.values.firstOrNull { prayer -> prayer.quickPrayerSlot == slot } ?: return@bindButton
+    val prayer = Prayer.values.firstOrNull { prayer -> prayer.quickPrayerSlot == slot } ?: return@onButton
     Prayers.selectQuickPrayer(it, prayer)
 }
 
 /**
  * Accept selected quick-prayer.
  */
-r.bindButton(parent = 77, child = 5) {
+onButton(parent = 77, child = 5) {
     val p = it.player()
     p.openInterface(InterfacePane.PRAYER)
 }

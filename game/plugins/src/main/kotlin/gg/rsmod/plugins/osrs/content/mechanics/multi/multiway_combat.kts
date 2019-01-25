@@ -4,11 +4,11 @@ import gg.rsmod.plugins.osrs.api.helper.setVarbit
 import gg.rsmod.plugins.osrs.content.mechanics.multi.MultiwayCombat
 
 MultiwayCombat.MULTI_REGIONS.forEach { region ->
-    r.bindRegionEnter(region) {
+    onRegionEnter(region) {
         it.player().setVarbit(MultiwayCombat.MULTIWAY_VARBIT, 1)
     }
 
-    r.bindRegionExit(region) {
+    onRegionExit(region) {
         it.player().setVarbit(MultiwayCombat.MULTIWAY_VARBIT, 1)
     }
 }

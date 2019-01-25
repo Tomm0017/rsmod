@@ -13,7 +13,7 @@ import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
 
-r.bindCombat {
+onCombat {
     it.suspendable {
         while (true) {
             if (!cycle(it)) {

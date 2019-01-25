@@ -5,12 +5,12 @@ import gg.rsmod.plugins.osrs.api.helper.setInterfaceSetting
 import gg.rsmod.plugins.osrs.content.inter.emotes.Emote
 import gg.rsmod.plugins.osrs.content.inter.emotes.EmotesTab
 
-r.bindLogin {
+onLogin {
     it.player().setInterfaceSetting(parent = EmotesTab.INTERFACE_ID, child = 1, range = 0..47, setting = 2)
 }
 
-r.bindButton(parent = EmotesTab.INTERFACE_ID, child = 1) {
+onButton(parent = EmotesTab.INTERFACE_ID, child = 1) p@ {
     val slot = it.getInteractingSlot()
-    val emote = Emote.values().firstOrNull { e -> e.slot == slot } ?: return@bindButton
+    val emote = Emote.values().firstOrNull { e -> e.slot == slot } ?: return@p
     EmotesTab.performEmote(it.player(), emote)
 }

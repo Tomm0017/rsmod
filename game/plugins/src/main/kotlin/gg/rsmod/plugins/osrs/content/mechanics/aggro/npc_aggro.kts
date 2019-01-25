@@ -15,7 +15,7 @@ val defaultAggressiveness: (Npc, Player) -> Boolean = boolean@ { n, p ->
     return@boolean playerLvl > npcLvl * 2
 }
 
-r.bindGlobalNpcSpawn {
+onAnyNpcSpawn {
     val npc = it.npc()
 
     if (npc.combatDef.aggressiveRadius > 0 && npc.combatDef.findTargetDelay > 0) {
@@ -24,7 +24,7 @@ r.bindGlobalNpcSpawn {
     }
 }
 
-r.bindTimer(AGGRO_CHECK_TIMER) {
+onTimer(AGGRO_CHECK_TIMER) {
     val npc = it.npc()
 
     if (!npc.isAttacking() && npc.lock.canAttack() && npc.isActive()) {

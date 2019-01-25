@@ -8,12 +8,12 @@ import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
 
 fun bindSetting(child: Int, plugin: Function1<Plugin, Unit>) {
-    r.bindButton(parent = OptionsTab.INTERFACE_ID, child = child) {
+    onButton(parent = OptionsTab.INTERFACE_ID, child = child) {
         plugin.invoke(it)
     }
 }
 
-r.bindLogin {
+onLogin {
     val p = it.player()
 
     p.setInterfaceSetting(parent = OptionsTab.INTERFACE_ID, child = 106, range = 1..4, setting = 2) // Player option priority
@@ -23,7 +23,7 @@ r.bindLogin {
 /**
  * Toggle mouse scroll wheel zoom.
  */
-r.bindButton(parent = OptionsTab.INTERFACE_ID, child = 5) {
+onButton(parent = OptionsTab.INTERFACE_ID, child = 5) {
     // TODO(Tom): figure out why this varbit isn't causing the cross to be drawn.
     // It technically works since it won't allow zooming with mouse wheel, but it
     // doesn't visually show on the interface.
@@ -45,7 +45,7 @@ for (offset in 0..3) {
 /**
  * Changing display modes (fixed, resizable).
  */
-r.bindDisplayModeChange {
+onDisplayModeChange {
     val p = it.player()
     val change = p.attr[DISPLAY_MODE_CHANGE_ATTR]
     val mode = when (change) {

@@ -5,7 +5,7 @@ import gg.rsmod.plugins.osrs.api.helper.player
 /**
  * Logout button.
  */
-r.bindButton(parent = 182, child = 8) {
+onButton(parent = 182, child = 8) {
     val p = it.player()
     if (!p.timers.has(ACTIVE_COMBAT_TIMER)) {
         p.requestLogout()

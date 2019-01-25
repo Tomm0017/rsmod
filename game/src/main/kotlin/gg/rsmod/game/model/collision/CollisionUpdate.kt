@@ -95,7 +95,7 @@ class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Ti
         private fun unwalkable(def: ObjectDef, type: Int): Boolean {
             val isSolidFloorDecoration = type == ObjectType.FLOOR_DECORATION.value && def.interactive
             val isRoof = type > ObjectType.DIAGONAL_INTERACTABLE.value && type < ObjectType.FLOOR_DECORATION.value
-            val isWall = type >= ObjectType.LENGTHWISE_WALL.value && type <= ObjectType.RECTANGULAR_CORNER.value || type == ObjectType.DIAGONAL_WALL.value
+            val isWall = (type >= ObjectType.LENGTHWISE_WALL.value && type <= ObjectType.RECTANGULAR_CORNER.value || type == ObjectType.DIAGONAL_WALL.value) && def.solid
             val isSolidInteractable = (type == ObjectType.DIAGONAL_INTERACTABLE.value || type == ObjectType.INTERACTABLE.value) && def.solid
 
             return isWall || isRoof || isSolidInteractable || isSolidFloorDecoration

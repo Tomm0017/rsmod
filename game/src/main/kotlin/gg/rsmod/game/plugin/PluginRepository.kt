@@ -27,7 +27,7 @@ import java.util.jar.JarFile
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class PluginRepository {
+class PluginRepository(val world: World) {
 
     companion object {
         private val logger = LogManager.getLogger(PluginRepository::class.java)

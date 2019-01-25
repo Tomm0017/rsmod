@@ -68,7 +68,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     /**
      * The plugin repository that's responsible for storing all the plugins found.
      */
-    val plugins = PluginRepository()
+    val plugins = PluginRepository(this)
 
     /**
      * The [PrivilegeSet] that is attached to our game.

@@ -14,6 +14,6 @@ class SimplePathfindingStrategy(override val world: World) : PathfindingStrategy
 
     override fun calculateRoute(request: PathRequest): Route {
         val path = ArrayDeque<Tile>()
-        return Route(path, true)
+        return Route(path, true, request.start)
     }
 }

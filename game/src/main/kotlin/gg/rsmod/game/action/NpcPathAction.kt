@@ -1,13 +1,11 @@
 package gg.rsmod.game.action
 
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
-import gg.rsmod.game.model.FROZEN_TIMER
-import gg.rsmod.game.model.INTERACTING_NPC_ATTR
-import gg.rsmod.game.model.INTERACTING_OPT_ATTR
-import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.plugin.Plugin
 
 /**
@@ -48,7 +46,36 @@ object NpcPathAction {
     }
 
     suspend fun walkTo(it: Plugin, pawn: Pawn, target: Pawn, interactionRange: Int): Boolean {
-        return false
+        val world = pawn.world
+        val sourceSize = pawn.getSize()
+        val targetSize = target.getSize()
+        val projectile = interactionRange > 2
+        val frozen = pawn.timers.has(FROZEN_TIMER)
+
+        if (frozen && (!pawn.tile.isWithinRadius(target.calculateCentreTile(), interactionRange) || overlap(pawn.tile, sourceSize, target.tile, targetSize))) {
+            return false
+        }
+
+        val request = PathRequest.Builder()
+                .setPoints(pawn.tile, target.tile)
+                .setSourceSize(sourceSize, sourceSize)
+                .setTargetSize(targetSize, targetSize)
+                .setProjectilePath(projectile)
+                .setTouchRadius(interactionRange)
+                .clipBorderTiles(world.collision)
+                .clipPathNodes(world.collision, tile = true, face = true)
+                .clipDiagonalTiles()
+                .clipOverlapTiles()
+                .build()
+
+        val route = pawn.createPathingStrategy().calculateRoute(request)
+        pawn.walkPath(route.path, MovementQueue.StepType.NORMAL)
+
+        while (!pawn.tile.sameAs(route.tail)) {
+            it.wait(1)
+        }
+
+        return route.success
     }
 
     /**
@@ -67,40 +94,5 @@ object NpcPathAction {
         }
 
         return true
-    }
-
-    /**
-     * Get the border tiles around a [target] pawn.
-     */
-    private fun getBorderTiles(target: Pawn): List<Tile> {
-        val tiles = arrayListOf<Tile>()
-
-        val size = target.getSize()
-
-        for (z in -1..size) {
-            for (x in -1..size) {
-                /**
-                 * Tiles inside the target aren't valid.
-                 */
-                if (x in 0 until size && z in 0 until size) {
-                    continue
-                }
-                /**
-                 * Diagonal tiles aren't valid!
-                 */
-                val southWest = x == -1 && z == -1
-                val northWest = x == -1 && z == size
-                val southEast = x == size && z == -1
-                val northEast = x == size && z == size
-                if (southWest || northWest || southEast || northEast) {
-                    continue
-                }
-
-                val tile = target.tile.transform(x, z)
-                tiles.add(tile)
-            }
-        }
-
-        return tiles
     }
 }

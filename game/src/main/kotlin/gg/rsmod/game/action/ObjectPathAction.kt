@@ -49,8 +49,8 @@ object ObjectPathAction {
         val rot = obj.rot
         var width = def.width
         var length = def.length
-        val group = ObjectType.values().first { it.value == type }.group
         val clipMask = def.clipMask
+        val group = ObjectType.values().first { it.value == type }.group
         val blockDirections = hashSetOf<Direction>()
 
         if (type == ObjectType.INTERACTABLE.value || type == ObjectType.DIAGONAL_INTERACTABLE.value || type == ObjectType.FLOOR_DECORATION.value) {
@@ -83,6 +83,7 @@ object ObjectPathAction {
                 .clipPathNodes(pawn.world.collision, tile = true, face = true)
                 .clipBorderTiles(pawn.world.collision, *blockDirections.toTypedArray())
 
+        // TODO(Tom): work on doors & wall objects (such as rooftop agility start or varrock museum wall displays)
         if (group != ObjectGroup.WALL) {
             builder.clipOverlapTiles().clipDiagonalTiles()
         }

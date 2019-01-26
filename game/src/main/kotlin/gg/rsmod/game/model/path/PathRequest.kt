@@ -7,10 +7,9 @@ import gg.rsmod.game.model.collision.CollisionManager
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val sourceLength: Int,
-                                      val end: Tile, val targetWidth: Int, val targetLength: Int,
-                                      private val borderValidation: List<(Tile) -> (Boolean)> = arrayListOf(),
-                                      val validWalk: (Tile, Tile) -> (Boolean)) {
+class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val sourceLength: Int, val end: Tile,
+                                      val targetWidth: Int, val targetLength: Int, val touchRadius: Int, val projectilePath: Boolean,
+                                      private val borderValidation: List<(Tile) -> (Boolean)>, val validWalk: (Tile, Tile) -> (Boolean)) {
 
     val validateBorder: (Tile) -> (Boolean)
         get() = { node -> borderValidation.none { !it.invoke(node) } }
@@ -29,6 +28,8 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
 
         private var targetLength = -1
 
+        private var touchRadius = -1
+
         private var projectilePath = false
 
         private var borderValidations = arrayListOf<(Tile) -> (Boolean)>()
@@ -40,7 +41,13 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
             check(sourceWidth != -1 && sourceLength != -1) { "Source size must be set." }
             check(targetWidth != -1 && targetLength != -1) { "Target size must be set." }
 
-            return PathRequest(start!!, sourceWidth, sourceLength, end!!, targetWidth, targetLength, borderValidations.toList(), walkValidation ?: { _, _ -> true })
+            var touchRadius = this.touchRadius
+            if (touchRadius == -1) {
+                touchRadius = 0
+            }
+
+            return PathRequest(start!!, sourceWidth, sourceLength, end!!, targetWidth, targetLength, touchRadius, projectilePath,
+                    borderValidations.toList(), walkValidation ?: { _, _ -> true })
         }
 
         fun setPoints(start: Tile, end: Tile): Builder {
@@ -61,6 +68,12 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
             check(this.targetWidth == -1 && this.targetLength == -1) { "Target size has already been set." }
             this.targetWidth = width
             this.targetLength = length
+            return this
+        }
+
+        fun setTouchRadius(touchRadius: Int): Builder {
+            check(this.touchRadius == -1) { "Touch radius has already been set." }
+            this.touchRadius = touchRadius
             return this
         }
 
@@ -156,8 +169,8 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
             check(walkValidation == null) { "Node validation has already been set." }
 
             walkValidation = { node, facing ->
-                val nodeWalkable = !tile || collision.canTraverse(node, Direction.between(node, facing), projectilePath)
-                val faceWalkable = !face || collision.canTraverse(facing, Direction.between(facing, node), projectilePath)
+                val nodeWalkable = !tile || collision.canTraverse(node, Direction.between(node, facing), projectile = false)
+                val faceWalkable = !face || collision.canTraverse(facing, Direction.between(facing, node), projectile = false)
                 nodeWalkable && faceWalkable
             }
 

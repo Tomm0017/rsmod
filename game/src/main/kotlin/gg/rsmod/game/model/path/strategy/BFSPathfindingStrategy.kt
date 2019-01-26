@@ -29,8 +29,11 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
         val sourceLength = request.sourceLength
         val targetWidth = request.targetWidth
         val targetLength = request.targetLength
+        val touchRadius = request.touchRadius
+        val projectilePath = request.projectilePath
+        val radius = touchRadius / 2
 
-        val validTiles = arrayListOf<Tile>()
+        val validTiles = hashSetOf<Tile>()
 
         if (targetWidth > 0 || targetLength > 0) {
             for (x in -1..targetWidth) {
@@ -53,8 +56,8 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
         var success = false
 
         nodes.add(Node(tile = start, parent = null))
-        while (nodes.isNotEmpty()) {
 
+        while (nodes.isNotEmpty()) {
             if (searchLimit-- == 0) {
                 logger.warn("Had to exit path early as max search samples ran out. [start=$start, end=$end, distance=${start.getDistance(end)}]")
                 break
@@ -70,17 +73,16 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
 
             val order = Direction.RS_ORDER.sortedBy { head.tile.step(it).getDelta(end) + head.tile.step(it).getDelta(head.tile) }
 
-            order.forEach { direction ->
+            for (direction in order) {
                 val tile = head.tile.step(direction)
                 val node = Node(tile = tile, parent = head)
                 if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE)) {
-
                     var canTraverse = true
 
                     sourceLoop@
                     for (x in 0 until sourceWidth) {
                         for (z in 0 until sourceLength) {
-                            if (!request.validWalk.invoke(head.tile, tile)) {
+                            if (!request.validWalk.invoke(head.tile.transform(x, z), tile)) {
                                 canTraverse = false
                                 break@sourceLoop
                             }
@@ -104,13 +106,15 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
             }
         }
 
+        val last = tail?.tile
+
         val path = ArrayDeque<Tile>()
         while (tail?.parent != null) {
             path.addFirst(tail.tile)
             tail = tail.parent
         }
 
-        return Route(path = path, success = success)
+        return Route(path = path, success = success, tail = last ?: start)
     }
 
     /**

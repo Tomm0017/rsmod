@@ -5,6 +5,7 @@ import gg.rsmod.game.action.PlayerDeathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.combat.DamageMap
+import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.PathfindingStrategy
 import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
 import gg.rsmod.game.model.path.strategy.SimplePathfindingStrategy
@@ -282,12 +283,16 @@ abstract class Pawn(open val world: World) : Entity() {
      * The last tile in the path. `null` if no path could be made.
      */
     fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? {
-        val size = getSize()
 
-        val route = createPathingStrategy().calculateRoute(
-                start = tile, end = Tile(x, z, tile.height), sourceWidth = size, sourceLength = size,
-                targetWidth = 0, targetLength = 0, type = if (projectilePath) EntityType.PROJECTILE else getType(),
-                invalidBorderTile = { false })
+        val request = PathRequest.Builder()
+                .setPoints(tile, Tile(x, z, tile.height))
+                .setSourceSize(getSize(), getSize())
+                .setTargetSize(width = 0, length = 0)
+                .setProjectilePath(projectilePath)
+                .clipPathNodes(world.collision, tile = true, face = true)
+                .build()
+
+        val route = createPathingStrategy().calculateRoute(request)
         return walkPath(route.path, stepType)
     }
 

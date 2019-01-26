@@ -38,7 +38,7 @@ class MovementQueue(val pawn: Pawn) {
 
             walkDirection = Direction.between(tile, next.tile)
 
-            if (collision.canTraverse(tile, walkDirection, pawn.getType())) {
+            if (collision.canTraverse(tile, walkDirection, projectile = false)) {
                 lastSteps.add(next)
                 tile = Tile(next.tile)
                 pawn.lastFacingDirection = walkDirection
@@ -53,7 +53,7 @@ class MovementQueue(val pawn: Pawn) {
                     if (next != null) {
                         runDirection = Direction.between(tile, next.tile)
 
-                        if (collision.canTraverse(tile, runDirection, pawn.getType())) {
+                        if (collision.canTraverse(tile, runDirection, projectile = false)) {
                             lastSteps.add(next)
                             tile = Tile(next.tile)
                             pawn.lastFacingDirection = runDirection

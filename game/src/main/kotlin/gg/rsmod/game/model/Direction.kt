@@ -95,8 +95,6 @@ enum class Direction(val value: Int) {
 
         val RS_ORDER = arrayOf(WEST, EAST, NORTH, SOUTH, SOUTH_WEST, SOUTH_EAST, NORTH_WEST, NORTH_EAST)
 
-        val DIAGONALS = arrayOf(SOUTH_WEST, SOUTH_EAST, NORTH_WEST, NORTH_EAST)
-
         fun between(current: Tile, next: Tile): Direction {
             val deltaX = next.x - current.x
             val deltaZ = next.z - current.z

@@ -29,7 +29,7 @@ enum class ObjectType(val value: Int, val group: ObjectGroup) {
     RECTANGULAR_CORNER(3, ObjectGroup.WALL),
 
 
-    INTERACTABLE_WALL_DECORATION(4, ObjectGroup.WALL_DECORATION),
+    INTERACTABLE_WALL_DECORATION(4, ObjectGroup.WALL),
 
     /**
      * A wall that you can interact with.

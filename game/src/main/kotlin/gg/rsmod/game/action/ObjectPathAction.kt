@@ -2,12 +2,14 @@ package gg.rsmod.game.action
 
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.collision.ObjectGroup
 import gg.rsmod.game.model.collision.ObjectType
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.path.PathfindingStrategy
+import gg.rsmod.game.model.path.PathRequest
+import gg.rsmod.game.model.path.Route
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.DataConstants
 
@@ -36,25 +38,54 @@ object ObjectPathAction {
         }
     }
 
-    private suspend fun walkTo(it: Plugin, obj: GameObject): PathfindingStrategy.Route {
+    private suspend fun walkTo(it: Plugin, obj: GameObject): Route {
         val pawn = it.ctx as Pawn
 
         val def = obj.getDef(pawn.world.definitions)
-        var tile = obj.tile
+        val tile = obj.tile
         val type = obj.type
         val rot = obj.rot
         var width = def.width
         var length = def.length
+        val group = ObjectType.values().first { it.value == type }.group
+        val clipFlag = def.clipFlag
+        val blockDirections = hashSetOf<Direction>()
 
         if (rot == 1 || rot == 3) {
             width = def.length
             length = def.width
         }
 
-        val route = pawn.createPathingStrategy().calculateRoute(
-                start = pawn.tile, end = tile, sourceWidth = pawn.getSize(), sourceLength = pawn.getSize(),
-                targetWidth = width, targetLength = length, type = pawn.getType(),
-                invalidBorderTile = { isInvalid(it, obj, width, length) || getBlockedDirections(pawn.world, obj).contains(it) })
+        if ((clipFlag and 0x1) != 0) {
+            blockDirections.add(Direction.NORTH)
+        }
+
+        if ((clipFlag and 0x2) != 0) {
+            blockDirections.add(Direction.WEST)
+        }
+
+        if ((clipFlag and 0x4) != 0) {
+            blockDirections.add(Direction.SOUTH)
+        }
+
+        if ((clipFlag and 0x8) != 0) {
+            blockDirections.add(Direction.EAST)
+        }
+
+        println("width=$width, length=$length, clipFlag=${def.clipFlag}, blocked=$blockDirections")
+
+        val builder = PathRequest.Builder()
+                .setPoints(pawn.tile, tile)
+                .setSourceSize(pawn.getSize(), pawn.getSize())
+                .setTargetSize(width, length)
+                .clipPathNodes(pawn.world.collision, tile = true, face = true)
+                .clipBorderTiles(pawn.world.collision, *blockDirections.toTypedArray())
+
+        if (group != ObjectGroup.WALL) {
+            builder.clipOverlapTiles().clipDiagonalTiles()
+        }
+
+        val route = pawn.createPathingStrategy().calculateRoute(builder.build())
 
         pawn.walkPath(route.path, MovementQueue.StepType.NORMAL)
 

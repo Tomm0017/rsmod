@@ -1,7 +1,6 @@
 package gg.rsmod.game.model.collision
 
 import gg.rsmod.game.model.Direction
-import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.GameObject
@@ -24,9 +23,8 @@ class CollisionManager(val world: World) {
 
     fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = world.chunks.getForTile(tile).isBlocked(tile, direction, projectile)
 
-    fun canTraverse(tile: Tile, direction: Direction, type: EntityType): Boolean {
+    fun canTraverse(tile: Tile, direction: Direction, projectile: Boolean): Boolean {
         val chunk = world.chunks.getForTile(tile)
-        val projectile = type.isProjectile()
 
         if (chunk.isBlocked(tile, direction, projectile)) {
             return false
@@ -115,7 +113,6 @@ class CollisionManager(val world: World) {
         var err = dx - dy
         var err2: Int
 
-        val type = if (projectile) EntityType.PROJECTILE else EntityType.PLAYER
         var old = Tile(x0, y0, start.height)
 
         while (x0 != x1 || y0 != y1) {
@@ -133,7 +130,7 @@ class CollisionManager(val world: World) {
 
             val tile = Tile(x0, y0, old.height)
             val dir = Direction.between(old, tile)
-            if (!canTraverse(old, dir, type) || !canTraverse(tile, dir.getOpposite(), type)) {
+            if (!canTraverse(old, dir, projectile) || !canTraverse(tile, dir.getOpposite(), projectile)) {
                 return false
             }
             old = tile

@@ -1,10 +1,11 @@
 package gg.rsmod.game.model.path.strategy
 
 import gg.rsmod.game.model.Direction
-import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.PathfindingStrategy
+import gg.rsmod.game.model.path.Route
 import org.apache.logging.log4j.LogManager
 import java.util.*
 
@@ -20,8 +21,14 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
         private val logger = LogManager.getLogger(BFSPathfindingStrategy::class.java)
     }
 
-    override fun calculateRoute(start: Tile, end: Tile, type: EntityType, sourceWidth: Int, sourceLength: Int,
-                                targetWidth: Int, targetLength: Int, invalidBorderTile: (Tile) -> (Boolean)): Route {
+    override fun calculateRoute(request: PathRequest): Route {
+        val start = request.start
+        val end = request.end
+
+        val sourceWidth = request.sourceWidth
+        val sourceLength = request.sourceLength
+        val targetWidth = request.targetWidth
+        val targetLength = request.targetLength
 
         val validTiles = arrayListOf<Tile>()
 
@@ -29,7 +36,7 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
             for (x in -1..targetWidth) {
                 for (z in -1..targetLength) {
                     val tile = end.transform(x, z)
-                    if (invalidBorderTile.invoke(tile)) {
+                    if (!request.validateBorder.invoke(tile)) {
                         continue
                     }
                     validTiles.add(tile)
@@ -46,7 +53,6 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
         var success = false
 
         nodes.add(Node(tile = start, parent = null))
-
         while (nodes.isNotEmpty()) {
 
             if (searchLimit-- == 0) {
@@ -70,9 +76,11 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
                 if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE)) {
 
                     var canTraverse = true
-                    sourceLoop@ for (x in 0 until sourceWidth) {
+
+                    sourceLoop@
+                    for (x in 0 until sourceWidth) {
                         for (z in 0 until sourceLength) {
-                            if (!world.collision.canTraverse(head.tile, direction, type) || !world.collision.canTraverse(tile, direction.getOpposite(), type)) {
+                            if (!request.validWalk.invoke(head.tile, tile)) {
                                 canTraverse = false
                                 break@sourceLoop
                             }

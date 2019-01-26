@@ -40,6 +40,8 @@ class CollisionMatrix private constructor(val length: Int, val width: Int, val m
 
     fun hasAnyFlags(x: Int, y: Int, vararg flags: CollisionFlag): Boolean = flags.any { hasFlag(x, y, it) }
 
+    fun isClipped(x: Int, y: Int): Boolean = CollisionFlag.values.any { hasFlag(x, y, it) }
+
     fun addFlag(x: Int, y: Int, flag: CollisionFlag) {
         val index = indexOf(x, y)
         matrix[index] = matrix[index] or flag.getBitAsShort()

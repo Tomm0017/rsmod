@@ -64,6 +64,8 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
 
     fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = matrices[tile.height].isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
 
+    fun isClipped(tile: Tile): Boolean = matrices[tile.height].isClipped(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE)
+
     fun addEntity(world: World, entity: Entity, tile: Tile) {
         /**
          * Objects will affect the collision map.

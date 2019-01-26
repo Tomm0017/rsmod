@@ -5,6 +5,7 @@ import gg.rsmod.game.message.impl.SpellOnNpcMessage
 import gg.rsmod.game.model.INTERACTING_INTERFACE_CHILD
 import gg.rsmod.game.model.INTERACTING_INTERFACE_PARENT
 import gg.rsmod.game.model.INTERACTING_NPC_ATTR
+import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.Entity
 
@@ -19,6 +20,13 @@ class SpellOnNpcHandler : MessageHandler<SpellOnNpcMessage> {
         val child = message.interfaceHash and 0xFFFF
 
         log(client, "Spell on npc: npc=%d. index=%d, interface=[%d, %d], movement=%d", npc.id, message.npcIndex, parent, child, message.movementType)
+
+        client.interruptPlugins()
+        client.resetInteractions()
+
+        if (message.movementType == 1 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
+            client.teleport(client.world.findRandomTileAround(npc.tile, 1) ?: npc.tile)
+        }
 
         client.attr[INTERACTING_NPC_ATTR] = npc
         client.attr[INTERACTING_INTERFACE_PARENT] = parent

@@ -31,7 +31,6 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
         val targetLength = request.targetLength
         val touchRadius = request.touchRadius
         val projectilePath = request.projectilePath
-        val radius = touchRadius / 2
 
         val validTiles = hashSetOf<Tile>()
 
@@ -49,6 +48,16 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
             validTiles.add(end)
         }
 
+        for (x in -touchRadius .. touchRadius) {
+            for (z in -touchRadius .. touchRadius) {
+                if (x in 0 until targetWidth && z in 0 until targetLength) {
+                    continue
+                }
+                val tile = end.transform(x, z)
+                validTiles.add(tile)
+            }
+        }
+
         val nodes = ArrayDeque<Node>()
         val closed = hashSetOf<Node>()
         var tail: Node? = null
@@ -57,38 +66,33 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
 
         nodes.add(Node(tile = start, parent = null))
 
+        mainLoop@
         while (nodes.isNotEmpty()) {
             if (searchLimit-- == 0) {
                 logger.warn("Had to exit path early as max search samples ran out. [start=$start, end=$end, distance=${start.getDistance(end)}]")
                 break
             }
-
             val head = nodes.poll()
-
-            if (head.tile in validTiles) {
+            if (head.tile in validTiles && (!projectilePath || world.collision.raycast(head.tile, end, projectilePath))) {
                 tail = head
                 success = true
                 break
             }
-
             val order = Direction.RS_ORDER.sortedBy { head.tile.step(it).getDelta(end) + head.tile.step(it).getDelta(head.tile) }
-
             for (direction in order) {
                 val tile = head.tile.step(direction)
                 val node = Node(tile = tile, parent = head)
                 if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE)) {
                     var canTraverse = true
-
-                    sourceLoop@
+                    out@
                     for (x in 0 until sourceWidth) {
                         for (z in 0 until sourceLength) {
                             if (!request.validWalk.invoke(head.tile.transform(x, z), tile)) {
                                 canTraverse = false
-                                break@sourceLoop
+                                break@out
                             }
                         }
                     }
-
                     if (canTraverse) {
                         node.cost = head.cost + 1
                         nodes.add(node)

@@ -38,6 +38,8 @@ enum class CollisionFlag(private val bit: Int) {
 
     companion object {
 
+        val values = enumValues<CollisionFlag>()
+
         fun getFlags(projectiles: Boolean): Array<CollisionFlag> = if (projectiles) projectileFlags() else pawnFlags()
 
         fun pawnFlags(): Array<CollisionFlag> = arrayOf(

@@ -226,6 +226,23 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         return random.nextDouble() <= (probability / 100.0)
     }
 
+    fun findRandomTileAround(centre: Tile, radius: Int, centreWidth: Int = 0, centreLength: Int = 0): Tile? {
+        val tiles = arrayListOf<Tile>()
+        for (x in -radius .. radius) {
+            for (z in -radius .. radius) {
+                if (x in 0 until centreWidth && z in 0 until centreLength) {
+                    continue
+                }
+                tiles.add(centre.transform(x, z))
+            }
+        }
+        val filtered = tiles.filter { tile -> !collision.isClipped(tile) }
+        if (filtered.isNotEmpty()) {
+            return filtered.random()
+        }
+        return null
+    }
+
     fun executePlugin(plugin: Function1<Plugin, Unit>) {
         pluginExecutor.execute(this, plugin)
     }

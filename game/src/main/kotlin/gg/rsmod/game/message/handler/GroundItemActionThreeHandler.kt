@@ -3,10 +3,7 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.action.GroundItemTakeAction
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.GroundItemActionThreeMessage
-import gg.rsmod.game.model.EntityType
-import gg.rsmod.game.model.INTERACTING_GROUNDITEM_ATTR
-import gg.rsmod.game.model.INTERACTING_OPT_ATTR
-import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Player
@@ -46,10 +43,12 @@ class GroundItemActionThreeHandler : MessageHandler<GroundItemActionThreeMessage
             return
         }
 
-        log(client, "Ground item action 3: id=%d, x=%d, z=%d, movement=%d", message.item, message.x, message.z, message.movementType)
-
         client.interruptPlugins()
         client.resetInteractions()
+
+        if (message.movementType == 1 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
+            client.teleport(item.tile)
+        }
 
         client.attr.put(INTERACTING_OPT_ATTR, 3)
         client.attr.put(INTERACTING_GROUNDITEM_ATTR, item)

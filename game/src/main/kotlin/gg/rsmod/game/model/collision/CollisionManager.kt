@@ -21,6 +21,8 @@ class CollisionManager(val world: World) {
         applyUpdate(builder.build())
     }
 
+    fun isClipped(tile: Tile): Boolean = world.chunks.getForTile(tile).isClipped(tile)
+
     fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = world.chunks.getForTile(tile).isBlocked(tile, direction, projectile)
 
     fun canTraverse(tile: Tile, direction: Direction, projectile: Boolean): Boolean {

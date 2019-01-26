@@ -14,6 +14,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.Route
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.util.DataConstants
 
 /**
  * Responsible for calculating distances and valid interaction tiles for
@@ -60,19 +61,22 @@ object ObjectPathAction {
             }
         }
 
-        if ((0x1 and clipMask) != 0) {
+        val blockBits = 4
+        val clipFlag = (DataConstants.BIT_MASK[blockBits] and (clipMask shl rot)) or (clipMask shr (blockBits - rot))
+
+        if ((0x1 and clipFlag) != 0) {
             blockDirections.add(Direction.NORTH)
         }
 
-        if ((0x2 and clipMask) != 0) {
+        if ((0x2 and clipFlag) != 0) {
             blockDirections.add(Direction.EAST)
         }
 
-        if ((0x4 and clipMask) != 0) {
+        if ((0x4 and clipFlag) != 0) {
             blockDirections.add(Direction.SOUTH)
         }
 
-        if ((clipMask and 0x8) != 0) {
+        if ((clipFlag and 0x8) != 0) {
             blockDirections.add(Direction.WEST)
         }
 

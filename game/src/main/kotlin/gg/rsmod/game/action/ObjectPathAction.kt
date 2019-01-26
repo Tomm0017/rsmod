@@ -48,31 +48,34 @@ object ObjectPathAction {
         var width = def.width
         var length = def.length
         val group = ObjectType.values().first { it.value == type }.group
-        val clipFlag = def.clipFlag
+        val clipMask = def.clipMask
         val blockDirections = hashSetOf<Direction>()
 
-        if (rot == 1 || rot == 3) {
-            width = def.length
-            length = def.width
+        if (type == ObjectType.INTERACTABLE.value || type == ObjectType.DIAGONAL_INTERACTABLE.value || type == ObjectType.FLOOR_DECORATION.value) {
+            if (rot == 1 || rot == 3) {
+                width = def.length
+                length = def.width
+            }
         }
 
-        if ((clipFlag and 0x1) != 0) {
+        // only allow from north to south -> 14
+        // allow from north, east, west to south -> 11
+
+        if ((0x1 and clipMask) != 0) {
             blockDirections.add(Direction.NORTH)
         }
 
-        if ((clipFlag and 0x2) != 0) {
-            blockDirections.add(Direction.WEST)
-        }
-
-        if ((clipFlag and 0x4) != 0) {
-            blockDirections.add(Direction.SOUTH)
-        }
-
-        if ((clipFlag and 0x8) != 0) {
+        if ((0x2 and clipMask) != 0) {
             blockDirections.add(Direction.EAST)
         }
 
-        println("width=$width, length=$length, clipFlag=${def.clipFlag}, blocked=$blockDirections")
+        if ((0x4 and clipMask) != 0) {
+            blockDirections.add(Direction.SOUTH)
+        }
+
+        if ((clipMask and 0x8) != 0) {
+            blockDirections.add(Direction.WEST)
+        }
 
         val builder = PathRequest.Builder()
                 .setPoints(pawn.tile, tile)
@@ -160,7 +163,7 @@ object ObjectPathAction {
         val def = world.definitions.get(ObjectDef::class.java, obj.id)
 
         val blockBits = 4
-        val clipMask = def.clipFlag
+        val clipMask = def.clipMask
         val clipFlag = (DataConstants.BIT_MASK[blockBits] and (clipMask shl obj.rot)) or (clipMask shr (blockBits - obj.rot))
 
         val tile = obj.tile

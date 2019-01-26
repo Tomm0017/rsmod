@@ -124,7 +124,7 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
                     (dz == length) -> Direction.SOUTH
                     else -> Direction.NONE
                 }
-                face == Direction.NONE || !blockedDirection.contains(face) && !collision.isBlocked(tile, face, projectile = projectilePath)
+                face == Direction.NONE || !blockedDirection.contains(face.getOpposite()) && !collision.isBlocked(tile, face, projectile = projectilePath)
             }
 
             return this

@@ -16,7 +16,7 @@ class ObjectDef(override val id: Int) : Definition(id) {
     var impenetrable = true
     var interactive = false
     var obstructive = false
-    var clipFlag = 0
+    var clipMask = 0
     var varbit = -1
     var varp = -1
     var animation = -1
@@ -80,7 +80,7 @@ class ObjectDef(override val id: Int) : Definition(id) {
             66 -> buf.readUnsignedShort()
             67 -> buf.readUnsignedShort()
             68 -> buf.readUnsignedShort()
-            69 -> clipFlag = buf.readUnsignedByte().toInt()
+            69 -> clipMask = buf.readUnsignedByte().toInt()
             70 -> buf.readShort()
             71 -> buf.readShort()
             72 -> buf.readShort()

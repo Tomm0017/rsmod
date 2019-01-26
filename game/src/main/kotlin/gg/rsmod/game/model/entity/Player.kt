@@ -167,7 +167,7 @@ open class Player(override val world: World) : Pawn(world) {
      */
     override fun isRunning(): Boolean = varps[173].state != 0
 
-    override fun getTileSize(): Int = 1
+    override fun getSize(): Int = 1
 
     override fun getCurrentHp(): Int = getSkills().getCurrentLevel(3)
 

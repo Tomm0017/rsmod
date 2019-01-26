@@ -46,7 +46,7 @@ class Npc private constructor(val id: Int, override val world: World, val spawnT
 
     override fun isRunning(): Boolean = false
 
-    override fun getTileSize(): Int = world.definitions.get(NpcDef::class.java, id).size
+    override fun getSize(): Int = world.definitions.get(NpcDef::class.java, id).size
 
     override fun getCurrentHp(): Int = hitpoints
 

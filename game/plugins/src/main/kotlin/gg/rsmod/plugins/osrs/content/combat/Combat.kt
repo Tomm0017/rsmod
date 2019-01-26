@@ -94,8 +94,9 @@ object Combat {
 
     private fun getProjectileLifespan(source: Pawn, target: Tile, type: ProjectileType): Int = when (type) {
         ProjectileType.MAGIC -> {
-            val path = source.createPathingStrategy().getPath(source.tile, target, source.getType())
-            5 + ((path.size - 2) * 10)
+            val path = source.createPathingStrategy().calculateRoute(source.tile, target, source.getType(), source.getSize(),
+                    source.getSize(), 1, 1, invalidBorderTile = { false }).path
+            5 + ((path.size - 1) * 10)
         }
         else -> {
             val distance = source.tile.getDistance(target)

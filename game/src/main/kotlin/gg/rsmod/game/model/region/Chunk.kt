@@ -62,7 +62,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
 
     fun contains(tile: Tile): Boolean = coords == tile.toChunkCoords()
 
-    fun canTraverse(tile: Tile, direction: Direction, projectile: Boolean): Boolean = !matrices[tile.height].isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
+    fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = matrices[tile.height].isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
 
     fun addEntity(world: World, entity: Entity, tile: Tile) {
         /**

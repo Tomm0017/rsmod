@@ -7,6 +7,7 @@ import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.path.PathfindingStrategy
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.DataConstants
 
@@ -18,27 +19,15 @@ import gg.rsmod.util.DataConstants
  */
 object ObjectPathAction {
 
-    /**
-     * TODO: varrock anvil on east side, the entrances r being clipped for some reason
-     * [getValidTiles] for other object types. i.e object type 5 needs other rotations support
-     *
-     * TODO: id=8175, mask=0, flag=0, type=10, rot=1, flipped=false, width=1, length=1, tile=Tile{x=3231, z=3313, height=0}
-     * This object (farm patch) has the its tile flagged as not being able to traverse to the side it can be interacted from
-     * (the tile the player will walk to, to interact). We use the object tile and compare it to the interaction tile to
-     * make sure it's not being blocked for things like walls. However, with our current system, we only have a concept of
-     * penetrable and impenetrable flags. We could use a custom object pathing plugin for farming patches, but unsure if this
-     * can occur to other objects.
-     */
-
     val walkPlugin: (Plugin) -> Unit = {
         val player = it.ctx as Player
         val obj = player.attr[INTERACTING_OBJ_ATTR]!!
         val opt = player.attr[INTERACTING_OPT_ATTR]!!
 
         it.suspendable {
-            walkTo(it, obj)
+            val route = walkTo(it, obj)
             faceObj(player, obj)
-            if (player.tile in getValidTiles(player.world, obj)) {
+            if (route.success) {
                 it.wait(1)
                 handleAction(it, obj, opt)
             } else {
@@ -47,22 +36,49 @@ object ObjectPathAction {
         }
     }
 
-    suspend fun walkTo(it: Plugin, obj: GameObject, validTiles: Array<Tile>? = null) {
+    private suspend fun walkTo(it: Plugin, obj: GameObject): PathfindingStrategy.Route {
         val pawn = it.ctx as Pawn
-        val tiles = validTiles ?: getValidTiles(pawn.world, obj)
-        if (pawn.tile !in tiles) {
-            while (true) {
-                val closest = tiles.minBy { tile -> tile.getDelta(pawn.tile) }!!
-                pawn.walkTo(closest.x, closest.z, MovementQueue.StepType.NORMAL)
 
-                val destination = pawn.movementQueue.peekLast() ?: return
-                if (!pawn.tile.sameAs(destination)) {
-                    it.wait(1)
-                    continue
-                }
-                break
-            }
+        val def = obj.getDef(pawn.world.definitions)
+        var tile = obj.tile
+        val type = obj.type
+        val rot = obj.rot
+        var width = def.width
+        var length = def.length
+
+        if (rot == 1 || rot == 3) {
+            width = def.length
+            length = def.width
         }
+
+        val route = pawn.createPathingStrategy().calculateRoute(
+                start = pawn.tile, end = tile, sourceWidth = pawn.getSize(), sourceLength = pawn.getSize(),
+                targetWidth = width, targetLength = length, type = pawn.getType(),
+                invalidBorderTile = { isInvalid(it, obj, width, length) || getBlockedDirections(pawn.world, obj).contains(it) })
+
+        pawn.walkPath(route.path, MovementQueue.StepType.NORMAL)
+
+        val last = pawn.movementQueue.peekLast()
+        while (last != null && !pawn.tile.sameAs(last)) {
+            it.wait(1)
+        }
+        return route
+    }
+
+    private fun isInvalid(tile: Tile, obj: GameObject, width: Int, length: Int): Boolean {
+        if (obj.type == ObjectType.LENGTHWISE_WALL.value) {
+            val valid = when (obj.rot) {
+                0 -> tile.x >= obj.tile.x - width && tile.x <= obj.tile.x && tile.z >= obj.tile.z - length && tile.z <= obj.tile.z + length
+                1 -> tile.sameAs(obj.tile) || tile.sameAs(obj.tile.transform(0, 1))
+                2 -> tile.sameAs(obj.tile) || tile.sameAs(obj.tile.transform(1, 0))
+                3 -> tile.sameAs(obj.tile) || tile.sameAs(obj.tile.transform(0, -1)) || tile.sameAs(obj.tile.transform(-1, 0))
+                else -> true
+            }
+            return !valid
+        } else if (obj.type == ObjectType.INTERACTABLE_WALL.value || obj.type == ObjectType.INTERACTABLE_WALL_DECORATION.value) {
+            return !tile.sameAs(obj.tile)
+        }
+        return tile.x in obj.tile.x until obj.tile.x + width && tile.z in obj.tile.z until obj.tile.z + length
     }
 
     private fun handleAction(it: Plugin, obj: GameObject, opt: Int) {
@@ -109,12 +125,16 @@ object ObjectPathAction {
         }
     }
 
-    private fun getValidTiles(world: World, obj: GameObject): Array<Tile> {
-        val directions = hashSetOf<Tile>()
-
+    private fun getBlockedDirections(world: World, obj: GameObject): Set<Tile> {
         val def = world.definitions.get(ObjectDef::class.java, obj.id)
-        val rot = obj.rot
+
+        val blockBits = 4
+        val clipMask = def.clipFlag
+        val clipFlag = (DataConstants.BIT_MASK[blockBits] and (clipMask shl obj.rot)) or (clipMask shr (blockBits - obj.rot))
+
+        val tile = obj.tile
         val type = obj.type
+        val rot = obj.rot
         var width = def.width
         var length = def.length
 
@@ -123,118 +143,62 @@ object ObjectPathAction {
             length = def.width
         }
 
-        val blockBits = 4
-        val clipMask = def.clipFlag
-        val clipFlag = (DataConstants.BIT_MASK[blockBits] and (clipMask shl rot)) or (clipMask shr (blockBits - rot))
+        val tiles = hashSetOf<Tile>()
 
-        //println("id=${obj.id}, mask=$clipMask, flag=$clipFlag, type=${obj.type}, rot=${obj.rot}, flipped=${def.rotated}, obstructive=${def.obstructive}, width=$width, length=$length, tile=${obj.tile}")
+        val blockNorth = (clipFlag and 0x1) != 0
+        val blockEast = (clipFlag and 0x2) != 0
+        val blockSouth = (clipFlag and 0x4) != 0
+        val blockWest = (clipFlag and 0x8) != 0
 
-        when (clipFlag) {
-            7 -> { // West to east
-                for (z in 0 until length) {
-                    directions.add(obj.tile.transform(-1, z))
-                }
-                return directions.toTypedArray()
-            }
-            11 -> { // South to north.
-                for (x in 0 until width) {
-                    directions.add(obj.tile.transform(x, -1))
-                }
-                return directions.toTypedArray()
-            }
-            13 -> { // East to west
-                for (z in 0 until length) {
-                    directions.add(obj.tile.transform(width, z))
-                }
-                return directions.toTypedArray()
-            }
-            14 -> { // North to south
-                for (x in 0 until width) {
-                    directions.add(obj.tile.transform(x, length))
-                }
-                return directions.toTypedArray()
+        if (blockNorth) {
+            for (x in 0 until width) {
+                tiles.add(tile.transform(x, length))
             }
         }
 
-        if (type >= ObjectType.INTERACTABLE.value && type <= ObjectType.FLOOR_DECORATION.value) {
-            /**
-             * Same dimension objects can be interacted from any side.
-             */
-            if (width == length) {
-                for (x in -1..width) {
-                    for (z in -1..length) {
-
-                        if (x == -1 && z == -1 || x == width && z == -1
-                                || x == -1 && z == length || x == width && z == length) {
-                            continue
-                        }
-
-                        val tile = obj.tile.transform(x, z)
-
-                        /**
-                         * We make sure the object can be reached from this [tile].
-                         */
-                        val objFace: Direction = when {
-                            (x in 0..width) && z == -1 -> Direction.NORTH
-                            (x in 0..width) && z == length -> Direction.SOUTH
-                            (z in 0..length) && x == -1 -> Direction.EAST
-                            (z in 0..length) && x == width -> Direction.WEST
-                            else -> Direction.NONE // Inside object - can always interact
-                        }
-                        if (objFace == Direction.NONE || world.collision.canTraverse(tile.step(objFace), Direction.between(tile.step(objFace), tile), EntityType.PLAYER)) {
-                            directions.add(tile)
-                        }
-                    }
-                }
-                return directions.toTypedArray()
-            }
-
-            /**
-             * Rotation one can only be accessed from the south & north side.
-             * Rotation three can only be accessed from the north side.
-             */
-            if (rot == 1 || rot == 3) {
-                for (x in 0 until width) {
-                    directions.add(obj.tile.transform(x, if (rot == 1) -1 else length))
-                    if (rot == 1) {
-                        directions.add(obj.tile.transform(x, length))
-                    }
-                }
-                return directions.toTypedArray()
-            }
-
-            /**
-             * Rotation zero can only be accessed from the south side.
-             * Rotation two can only be accessed from the north side.
-             */
-            if (rot == 0 || rot == 2) {
-                for (x in 0 until width) {
-                    directions.add(obj.tile.transform(x, if (rot == 0) -1 else length))
-                }
-                return directions.toTypedArray()
-            }
-        } else if (type == ObjectType.LENGTHWISE_WALL.value) {
-            /**
-             * Doors, mainly.
-             */
-            return when (rot) {
-                1 -> arrayOf(obj.tile.transform(-1, 0), obj.tile.transform(0, 0), obj.tile.transform(0, 1), obj.tile.transform(0, -1))
-                2 -> arrayOf(obj.tile.transform(0, 0), obj.tile.transform(1, 0))
-                3 -> arrayOf(obj.tile.transform(0, -1), obj.tile.transform(0, 0))
-                else -> arrayOf(obj.tile.transform(0, 0), obj.tile.transform(-1, 0))
-            }
-        } else if (type == 4 || type == 5) {
-            /**
-             * Varrock agility course start is type 5. Look more into this type
-             * to insert it into [ObjectType] properly.
-             *
-             * Edit: Seems to be wall object "decorations" that you can interact with
-             */
-            return when (rot) {
-                else -> arrayOf(obj.tile.transform(0, 0))
+        if (blockEast) {
+            for (z in 0 until length) {
+                tiles.add(tile.transform(width, z))
             }
         }
 
-        return directions.toTypedArray()
+        if (blockSouth) {
+            for (x in 0 until width) {
+                tiles.add(tile.transform(x, -1))
+            }
+        }
+
+        if (blockWest) {
+            for (z in 0 until length) {
+                tiles.add(tile.transform(-1, z))
+            }
+        }
+
+        if (type == ObjectType.DIAGONAL_INTERACTABLE.value || type == ObjectType.INTERACTABLE.value) {
+            for (x in -1..width) {
+                loop@ for (z in -1..length) {
+                    if (x in 0 until width && z in 0 until length) {
+                        continue
+                    }
+                    val transform = tile.transform(x, z)
+                    val face = when {
+                        (x == -1 && z != -1 && z != length) -> Direction.EAST
+                        (x == width && z != -1 && z != length) -> Direction.WEST
+                        (z == -1 && x != -1 && x != width) -> Direction.NORTH
+                        (z == length && x != -1 && x != width) -> Direction.SOUTH
+                        (x == -1 && z == -1) -> Direction.SOUTH_WEST
+                        (x == -1 && z == length) -> Direction.NORTH_WEST
+                        (z == -1 && x == width) -> Direction.SOUTH_EAST
+                        (z == length && x == width) -> Direction.NORTH_EAST
+                        else -> continue@loop
+                    }
+                    if (face.isDiagonal() || world.collision.isBlocked(transform, face, projectile = false)) {
+                        tiles.add(transform)
+                    }
+                }
+            }
+        }
+
+        return tiles
     }
 }

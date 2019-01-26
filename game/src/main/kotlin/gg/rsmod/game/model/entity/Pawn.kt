@@ -1,7 +1,6 @@
 package gg.rsmod.game.model.entity
 
 import gg.rsmod.game.action.NpcDeathAction
-import gg.rsmod.game.action.NpcPathAction
 import gg.rsmod.game.action.PlayerDeathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
@@ -12,6 +11,7 @@ import gg.rsmod.game.model.path.strategy.SimplePathfindingStrategy
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.block.UpdateBlockBuffer
 import gg.rsmod.game.sync.block.UpdateBlockType
+import java.util.*
 
 /**
  * A controllable character in the world that is used by something, or someone,
@@ -122,7 +122,7 @@ abstract class Pawn(open val world: World) : Entity() {
 
     abstract fun isRunning(): Boolean
 
-    abstract fun getTileSize(): Int
+    abstract fun getSize(): Int
 
     abstract fun getCurrentHp(): Int
 
@@ -145,7 +145,7 @@ abstract class Pawn(open val world: World) : Entity() {
      * Calculates the middle tile that this pawn occupies.
      */
     fun calculateCentreTile(): Tile {
-        val size = getTileSize()
+        val size = getSize()
         if (size > 1) {
             return tile.transform(size / 2, size / 2)
         }
@@ -231,27 +231,17 @@ abstract class Pawn(open val world: World) : Entity() {
         }
     }
 
-    /**
-     * Handles the walking to the specified [x] and [z] coordinates. The height
-     * level used is the one this pawn is currently on.
-     *
-     * @param stepType
-     * The [MovementQueue.StepType] that the movement to the coordinates will
-     * use.
-     *
-     * @return
-     * The last tile in the path. `null` if no path could be made.
-     */
-    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? {
-        val path = createPathingStrategy().getPath(tile, Tile(x, z, tile.height), if (projectilePath) EntityType.PROJECTILE else getType())
-        if (path.isEmpty() && this is Player) {
-            write(SetMinimapMarkerMessage(255, 255))
+    fun walkPath(path: ArrayDeque<Tile>, stepType: MovementQueue.StepType): Tile? {
+        if (path.isEmpty()) {
+            if (this is Player) {
+                write(SetMinimapMarkerMessage(255, 255))
+            }
             return null
         }
 
-        var tail: Tile? = null
-
         movementQueue.clear()
+
+        var tail: Tile? = null
         var next = path.poll()
         while (next != null) {
             movementQueue.addStep(next, stepType)
@@ -267,6 +257,9 @@ abstract class Pawn(open val world: World) : Entity() {
          * if the tail is the tile we're standing on, then we don't have to move at all!
          */
         if (tail == null || tail.sameAs(tile)) {
+            if (this is Player) {
+                write(SetMinimapMarkerMessage(255, 255))
+            }
             movementQueue.clear()
             return tail
         }
@@ -277,14 +270,28 @@ abstract class Pawn(open val world: World) : Entity() {
         return tail
     }
 
-    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? = walkTo(tile.x, tile.z, stepType, projectilePath)
+    /**
+     * Handles the walking to the specified [x] and [z] coordinates. The height
+     * level used is the one this pawn is currently on.
+     *
+     * @param stepType
+     * The [MovementQueue.StepType] that the movement to the coordinates will
+     * use.
+     *
+     * @return
+     * The last tile in the path. `null` if no path could be made.
+     */
+    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? {
+        val size = getSize()
 
-    fun walkTo(npc: Npc) {
-        if (world.plugins.executeCustomNpcPath(this, npc.id)) {
-            return
-        }
-        executePlugin(NpcPathAction.walkPlugin)
+        val route = createPathingStrategy().calculateRoute(
+                start = tile, end = Tile(x, z, tile.height), sourceWidth = size, sourceLength = size,
+                targetWidth = 0, targetLength = 0, type = if (projectilePath) EntityType.PROJECTILE else getType(),
+                invalidBorderTile = { false })
+        return walkPath(route.path, stepType)
     }
+
+    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? = walkTo(tile.x, tile.z, stepType, projectilePath)
 
     fun teleport(x: Int, z: Int, height: Int = 0) {
         teleport = true

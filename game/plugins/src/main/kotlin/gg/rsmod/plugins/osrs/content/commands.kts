@@ -74,7 +74,8 @@ onCommand("obj", Privilege.ADMIN_POWER) {
     val args = it.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::obj 1</col>") { values ->
         val id = values[0].toInt()
-        val obj = DynamicObject(id, 10, 0, p.tile)
+        val type = if (values.size > 1) values[1].toInt() else 10
+        val obj = DynamicObject(id, type, 0, p.tile)
         p.world.spawn(obj)
     }
 }
@@ -241,13 +242,14 @@ onCommand("clip", Privilege.ADMIN_POWER) {
     val matrix = chunk.getMatrix(player.tile.height)
     val lx = player.tile.x % 8
     val lz = player.tile.z % 8
-
-    val blockedNorth = matrix.isBlocked(lx, lz, Direction.NORTH, false)
-    val blockedWest = matrix.isBlocked(lx, lz, Direction.WEST, false)
-    val blockedSouth = matrix.isBlocked(lx, lz, Direction.SOUTH, false)
-    val blockedEast = matrix.isBlocked(lx, lz, Direction.EAST, false)
-
-    player.message("Tile flags: ${chunk.getMatrix(player.tile.height).get(lx, lz)}, block=[$blockedNorth, $blockedWest, $blockedSouth, $blockedEast]")
+    player.message("Tile flags: ${chunk.getMatrix(player.tile.height).get(lx, lz)}")
+    Direction.RS_ORDER.forEach { dir ->
+        val walkBlocked = matrix.isBlocked(lx, lz, dir, projectile = false)
+        val projectileBlocked = matrix.isBlocked(lx, lz, dir, projectile = true)
+        val walkable = if (walkBlocked) "<col=801700>blocked</col>" else "<col=178000>walkable</col>"
+        val projectile = if (projectileBlocked) "<col=801700>projectiles blocked" else "<col=178000>projectiles allowed"
+        player.message("$dir: $walkable - $projectile")
+    }
 }
 
 fun tryWithUsage(player: Player, args: Array<String>, failMessage: String, tryUnit: Function1<Array<String>, Unit>) {

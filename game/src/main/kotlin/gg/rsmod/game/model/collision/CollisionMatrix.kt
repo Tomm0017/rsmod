@@ -76,14 +76,14 @@ class CollisionMatrix private constructor(val length: Int, val width: Int, val m
         val southeast = 7
 
         return when (direction) {
-            Direction.NORTH_WEST -> hasFlag(x, y, flags[southeast]) || hasFlag(x, y, flags[south]) || hasFlag(x, y, flags[east])
-            Direction.NORTH -> hasFlag(x, y, flags[south])
-            Direction.NORTH_EAST -> hasFlag(x, y, flags[southwest]) || hasFlag(x, y, flags[south]) || hasFlag(x, y, flags[west])
-            Direction.EAST -> hasFlag(x, y, flags[west])
-            Direction.SOUTH_EAST -> hasFlag(x, y, flags[northwest]) || hasFlag(x, y, flags[north]) || hasFlag(x, y, flags[west])
-            Direction.SOUTH -> hasFlag(x, y, flags[north])
-            Direction.SOUTH_WEST -> hasFlag(x, y, flags[northeast]) || hasFlag(x, y, flags[north]) || hasFlag(x, y, flags[east])
-            Direction.WEST -> hasFlag(x, y, flags[east])
+            Direction.NORTH_WEST -> hasFlag(x, y, flags[northwest]) || hasFlag(x, y, flags[north]) || hasFlag(x, y, flags[west])
+            Direction.NORTH -> hasFlag(x, y, flags[north])
+            Direction.NORTH_EAST -> hasFlag(x, y, flags[northeast]) || hasFlag(x, y, flags[north]) || hasFlag(x, y, flags[east])
+            Direction.EAST -> hasFlag(x, y, flags[east])
+            Direction.SOUTH_EAST -> hasFlag(x, y, flags[southeast]) || hasFlag(x, y, flags[south]) || hasFlag(x, y, flags[east])
+            Direction.SOUTH -> hasFlag(x, y, flags[south])
+            Direction.SOUTH_WEST -> hasFlag(x, y, flags[southwest]) || hasFlag(x, y, flags[south]) || hasFlag(x, y, flags[west])
+            Direction.WEST -> hasFlag(x, y, flags[west])
             else -> throw IllegalArgumentException("Unrecognised direction $direction.")
         }
     }

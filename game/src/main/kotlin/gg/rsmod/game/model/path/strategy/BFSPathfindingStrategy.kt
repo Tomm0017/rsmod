@@ -20,46 +20,77 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
         private val logger = LogManager.getLogger(BFSPathfindingStrategy::class.java)
     }
 
-    override fun calculatePath(start: Tile, target: Tile, type: EntityType): Queue<Tile> {
-        if (!target.isWithinRadius(start, MAX_DISTANCE)) {
-            logger.error("Target tile is not within view distance of start. [start=$start, target=$target, distance=${start.getDistance(target)}]")
-            return ArrayDeque()
+    override fun calculateRoute(start: Tile, end: Tile, type: EntityType, sourceWidth: Int, sourceLength: Int,
+                                targetWidth: Int, targetLength: Int, invalidBorderTile: (Tile) -> (Boolean)): Route {
+
+        val validTiles = arrayListOf<Tile>()
+
+        if (targetWidth > 0 || targetLength > 0) {
+            for (x in -1..targetWidth) {
+                for (z in -1..targetLength) {
+                    val tile = end.transform(x, z)
+                    if (invalidBorderTile.invoke(tile)) {
+                        continue
+                    }
+                    validTiles.add(tile)
+                }
+            }
+        } else {
+            validTiles.add(end)
         }
 
         val nodes = ArrayDeque<Node>()
         val closed = hashSetOf<Node>()
+        var tail: Node? = null
+        var searchLimit = 256 * 10
+        var success = false
 
         nodes.add(Node(tile = start, parent = null))
 
-        var tail: Node? = null
+        while (nodes.isNotEmpty()) {
 
-        var maxSearch = (256 * 10)
-        while (nodes.isNotEmpty() && maxSearch-- > 0) {
-            val head = nodes.poll()
-
-            if (head.tile.sameAs(target)) {
-                tail = head
+            if (searchLimit-- == 0) {
+                logger.warn("Had to exit path early as max search samples ran out. [start=$start, end=$end, distance=${start.getDistance(end)}]")
                 break
             }
 
-            Direction.RS_ORDER.forEach { direction ->
+            val head = nodes.poll()
+
+            if (head.tile in validTiles) {
+                tail = head
+                success = true
+                break
+            }
+
+            val order = Direction.RS_ORDER.sortedBy { head.tile.step(it).getDelta(end) + head.tile.step(it).getDelta(head.tile) }
+
+            order.forEach { direction ->
                 val tile = head.tile.step(direction)
                 val node = Node(tile = tile, parent = head)
-                if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE) && (world.collision.canTraverse(head.tile, direction, type) && world.collision.canTraverse(tile, direction.getOpposite(), type))) {
-                    node.cost = head.cost + 1
-                    nodes.add(node)
-                    closed.add(node)
+                if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE)) {
+
+                    var canTraverse = true
+                    sourceLoop@ for (x in 0 until sourceWidth) {
+                        for (z in 0 until sourceLength) {
+                            if (!world.collision.canTraverse(head.tile, direction, type) || !world.collision.canTraverse(tile, direction.getOpposite(), type)) {
+                                canTraverse = false
+                                break@sourceLoop
+                            }
+                        }
+                    }
+
+                    if (canTraverse) {
+                        node.cost = head.cost + 1
+                        nodes.add(node)
+                        closed.add(node)
+                    }
                 }
             }
         }
 
-        if (maxSearch == 0) {
-            logger.warn("Had to exit path early as max search samples ran out. [origin=$start, target=$target, distance=${start.getDistance(target)}]")
-        }
-
         if (tail == null && closed.isNotEmpty()) {
-            val min = closed.minBy { it.tile.getDistance(target) }!!
-            val valid = closed.filter { it.tile.getDistance(target) <= min.tile.getDistance(target) }
+            val min = closed.minBy { it.tile.getDistance(end) }!!
+            val valid = closed.filter { it.tile.getDistance(end) <= min.tile.getDistance(end) }
             if (valid.isNotEmpty()) {
                 tail = valid.minBy { it.tile.getDelta(start) }
             }
@@ -70,9 +101,8 @@ class BFSPathfindingStrategy(override val world: World) : PathfindingStrategy(wo
             path.addFirst(tail.tile)
             tail = tail.parent
         }
-        path.addFirst(start)
 
-        return path
+        return Route(path = path, success = success)
     }
 
     /**

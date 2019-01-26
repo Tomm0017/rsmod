@@ -19,7 +19,8 @@ abstract class PathfindingStrategy(open val world: World) {
         const val MAX_DISTANCE = 20
     }
 
-    fun getPath(start: Tile, target: Tile, type: EntityType): Queue<Tile> = calculatePath(start, target, type)
+    abstract fun calculateRoute(start: Tile, end: Tile, type: EntityType, sourceWidth: Int, sourceLength: Int,
+                                targetWidth: Int, targetLength: Int, invalidBorderTile: (Tile) -> (Boolean)): Route
 
-    protected abstract fun calculatePath(start: Tile, target: Tile, type: EntityType): Queue<Tile>
+    data class Route(val path: ArrayDeque<Tile>, val success: Boolean)
 }

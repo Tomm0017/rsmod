@@ -50,6 +50,7 @@ object PawnPathAction {
         val sourceSize = pawn.getSize()
         val targetSize = target.getSize()
         val projectile = interactionRange > 2
+        val targetTile = target.tile
         val frozen = pawn.timers.has(FROZEN_TIMER)
 
         if (frozen && (!pawn.tile.isWithinRadius(target.calculateCentreTile(), interactionRange) || overlap(pawn.tile, sourceSize, target.tile, targetSize))) {
@@ -72,6 +73,9 @@ object PawnPathAction {
         pawn.walkPath(route.path, MovementQueue.StepType.NORMAL)
 
         while (!pawn.tile.sameAs(route.tail)) {
+            if (!targetTile.sameAs(target.tile)) {
+                return walkTo(it, pawn, target, interactionRange)
+            }
             it.wait(1)
         }
 

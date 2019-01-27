@@ -19,6 +19,7 @@ class BFSPathFindingStrategy(override val world: World) : PathFindingStrategy(wo
     override fun calculateRoute(request: PathRequest): Route {
         val start = request.start
         val end = request.end
+
         val sourceWidth = request.sourceWidth
         val sourceLength = request.sourceLength
         val projectilePath = request.projectilePath
@@ -32,36 +33,27 @@ class BFSPathFindingStrategy(override val world: World) : PathFindingStrategy(wo
 
         nodes.add(Node(tile = start, parent = null))
 
-        mainLoop@
         while (nodes.isNotEmpty()) {
             if (searchLimit-- == 0) {
                 break
             }
             val head = nodes.poll()
-            if (head.tile in targetTiles && (!projectilePath || world.collision.raycast(head.tile, end, projectilePath))) {
+
+            val inRange = head.tile in targetTiles && (!projectilePath || world.collision.raycast(head.tile, end, projectilePath))
+            if (inRange) {
                 tail = head
                 success = true
                 break
             }
+
             val order = Direction.RS_ORDER.sortedBy { head.tile.step(it).getDelta(end) + head.tile.step(it).getDelta(head.tile) }
             for (direction in order) {
                 val tile = head.tile.step(direction)
                 val node = Node(tile = tile, parent = head)
-                if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE)) {
-                    var canTraverse = true
-                    out@ for (x in 0 until sourceWidth) {
-                        for (z in 0 until sourceLength) {
-                            if (!request.validWalk.invoke(head.tile.transform(x, z), tile)) {
-                                canTraverse = false
-                                break@out
-                            }
-                        }
-                    }
-                    if (canTraverse) {
-                        node.cost = head.cost + 1
-                        nodes.add(node)
-                        closed.add(node)
-                    }
+                if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE) && canTraverse(request, head.tile, tile, sourceWidth, sourceLength)) {
+                    node.cost = head.cost + 1
+                    nodes.add(node)
+                    closed.add(node)
                 }
             }
         }
@@ -85,6 +77,17 @@ class BFSPathFindingStrategy(override val world: World) : PathFindingStrategy(wo
         return Route(path = path, success = success, tail = last ?: start)
     }
 
+    private fun canTraverse(request: PathRequest, node: Tile, to: Tile, width: Int, length: Int): Boolean {
+        for (x in 0 until width) {
+            for (z in 0 until length) {
+                if (!request.validWalk.invoke(node.transform(x, z), to)) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
     private fun getTargetTiles(request: PathRequest): Set<Tile> {
         val end = request.end
         val targetWidth = request.targetWidth
@@ -106,13 +109,15 @@ class BFSPathFindingStrategy(override val world: World) : PathFindingStrategy(wo
             targetTiles.add(end)
         }
 
-        for (x in -touchRadius .. touchRadius) {
-            for (z in -touchRadius .. touchRadius) {
-                if (x in 0 until targetWidth && z in 0 until targetLength) {
-                    continue
+        if (touchRadius > 1) {
+            for (x in -touchRadius..touchRadius) {
+                for (z in -touchRadius..touchRadius) {
+                    if (x in 0 until targetWidth && z in 0 until targetLength) {
+                        continue
+                    }
+                    val tile = end.transform(x, z)
+                    targetTiles.add(tile)
                 }
-                val tile = end.transform(x, z)
-                targetTiles.add(tile)
             }
         }
 

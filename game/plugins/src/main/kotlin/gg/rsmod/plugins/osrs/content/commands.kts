@@ -61,7 +61,7 @@ onCommand("npc", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
-    tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::obj 1</col>") { values ->
+    tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::npc 1</col>") { values ->
         val id = values[0].toInt()
         val npc = Npc(id, p.tile, p.world)
         p.world.spawn(npc)

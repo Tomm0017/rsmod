@@ -11,7 +11,7 @@ import gg.rsmod.game.plugin.Plugin
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-object NpcPathAction {
+object PawnPathAction {
 
     val walkPlugin: (Plugin) -> Unit = {
         val pawn = it.ctx as Pawn

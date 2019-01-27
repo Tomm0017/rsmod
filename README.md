@@ -150,7 +150,11 @@ through e-mail: **rspsmods@gmail.com**
     - The idea behind certain features such as TimerSystem, AttributeSystem and Services
     - The idea behind user-friendly plugin binding
 * #### Rune-Status
-    - Discord members such as Polar & Bart have been extremely helpful and kind :)
+    - Discord members lending a hand and being helpful:
+        * Bart
+        * Polar
+        * Kris
+        * Ryley (suggested using KotlinScript)
 * #### Kris
     - Some information on player GPI
     - Sharing #168 examines

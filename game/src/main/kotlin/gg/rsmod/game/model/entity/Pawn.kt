@@ -5,10 +5,10 @@ import gg.rsmod.game.action.PlayerDeathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.combat.DamageMap
+import gg.rsmod.game.model.path.PathFindingStrategy
 import gg.rsmod.game.model.path.PathRequest
-import gg.rsmod.game.model.path.PathfindingStrategy
-import gg.rsmod.game.model.path.strategy.BFSPathfindingStrategy
-import gg.rsmod.game.model.path.strategy.SimplePathfindingStrategy
+import gg.rsmod.game.model.path.strategy.BFSPathFindingStrategy
+import gg.rsmod.game.model.path.strategy.SimplePathFindingStrategy
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.block.UpdateBlockBuffer
 import gg.rsmod.game.sync.block.UpdateBlockType
@@ -381,5 +381,5 @@ abstract class Pawn(open val world: World) : Entity() {
         world.pluginExecutor.interruptPluginsWithContext(this)
     }
 
-    fun createPathingStrategy(): PathfindingStrategy = if (getType().isPlayer()) BFSPathfindingStrategy(world) else SimplePathfindingStrategy(world)
+    fun createPathingStrategy(): PathFindingStrategy = if (getType().isPlayer()) BFSPathFindingStrategy(world) else SimplePathFindingStrategy(world)
 }

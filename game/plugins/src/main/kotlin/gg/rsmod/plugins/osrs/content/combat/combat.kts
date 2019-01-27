@@ -1,5 +1,5 @@
 
-import gg.rsmod.game.action.NpcPathAction
+import gg.rsmod.game.action.PawnPathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.FROZEN_TIMER
@@ -57,7 +57,7 @@ suspend fun cycle(it: Plugin): Boolean {
     val strategy = CombatConfigs.getCombatStrategy(pawn)
     val attackRange = strategy.getAttackRange(pawn)
 
-    val pathFound = NpcPathAction.walkTo(it, pawn, target, attackRange)
+    val pathFound = PawnPathAction.walkTo(it, pawn, target, attackRange)
     if (!pathFound) {
         pawn.movementQueue.clear()
         if (pawn.getType().isNpc()) {

@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.osrs.content.combat
 
-import gg.rsmod.game.action.NpcPathAction
+import gg.rsmod.game.action.PawnPathAction
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.entity.Npc
@@ -68,7 +68,7 @@ object Combat {
         val end = target.calculateCentreTile()
 
         val withinRange = start.isWithinRadius(end, distance) && world.collision.raycast(start, end, projectile = projectile)
-        return withinRange || NpcPathAction.walkTo(it, pawn, target, interactionRange = distance)
+        return withinRange || PawnPathAction.walkTo(it, pawn, target, interactionRange = distance)
     }
 
     fun createProjectile(source: Pawn, target: Tile, gfx: Int, type: ProjectileType, endHeight: Int = -1): Projectile {

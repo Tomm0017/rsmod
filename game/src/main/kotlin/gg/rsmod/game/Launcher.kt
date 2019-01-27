@@ -3,7 +3,7 @@ package gg.rsmod.game
 import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.path.PathfindingStrategy
+import gg.rsmod.game.model.path.PathFindingStrategy
 import gg.rsmod.game.plugin.Plugin
 import java.nio.file.Paths
 
@@ -52,7 +52,7 @@ class Launcher {
 
                 var randomX = p.tile.x + (-6 + p.world.random(0..12))
                 var randomZ = p.tile.z + (-6 + p.world.random(0..12))
-                if (!start.isWithinRadius(Tile(randomX, randomZ), PathfindingStrategy.MAX_DISTANCE - 1)) {
+                if (!start.isWithinRadius(Tile(randomX, randomZ), PathFindingStrategy.MAX_DISTANCE - 1)) {
                     randomX = start.x
                     randomZ = start.z
                 }

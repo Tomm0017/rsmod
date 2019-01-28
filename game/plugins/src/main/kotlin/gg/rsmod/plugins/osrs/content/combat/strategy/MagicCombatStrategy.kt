@@ -53,7 +53,7 @@ object MagicCombatStrategy : CombatStrategy {
             SpellRequirements.getRequirements(spell.id)?.let { requirement -> SpellRequirements.removeRunes(pawn, requirement.items) }
         }
 
-        val damage = if (rollAccuracy(pawn, target)) getMaxHit(pawn) else 0
+        val damage = if (landHit(pawn, target)) getMaxHit(pawn, target) else 0
         target.hit(damage = damage, delay = getHitDelay(pawn.calculateCentreTile(), target.calculateCentreTile()))
                 .addActions(hitActions)
     }
@@ -63,7 +63,7 @@ object MagicCombatStrategy : CombatStrategy {
         return 2 + Math.floor((1.0 + distance) / 3.0).toInt()
     }
 
-    override fun getMaxHit(pawn: Pawn): Int = pawn.world.random(10)
+    private fun getMaxHit(pawn: Pawn, target: Pawn): Int = pawn.world.random(10)
 
-    override fun rollAccuracy(pawn: Pawn, target: Pawn): Boolean = pawn.world.chance(2, 1)
+    private fun landHit(pawn: Pawn, target: Pawn): Boolean = pawn.world.chance(2, 1)
 }

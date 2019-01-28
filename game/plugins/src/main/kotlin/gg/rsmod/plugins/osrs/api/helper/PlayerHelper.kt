@@ -264,13 +264,9 @@ fun Player.getAttackStyle(): Int = getVarp(43)
 
 fun Player.hasWeaponType(type: WeaponType, vararg others: WeaponType): Boolean = getWeaponType() == type.id || others.isNotEmpty() && getWeaponType() in others.map { it.id }
 
-fun Player.hasEquipped(slot: EquipmentType, item: Int): Boolean = equipment.hasAt(slot.id, item)
+fun Player.hasEquipped(slot: EquipmentType, item: Int, vararg others: Int): Boolean = equipment.hasAt(slot.id, item) || others.isNotEmpty() && others.any { equipment.hasAt(slot.id, it) }
 
 fun Player.getEquipment(slot: EquipmentType): Item? = equipment[slot.id]
-
-fun Player.getBonus(slot: BonusSlot): Int = equipmentBonuses[slot.id]
-
-fun Player.hasPrayerIcon(icon: PrayerIcon): Boolean = prayerIcon == icon.id
 
 fun Player.hasSkullIcon(icon: SkullIcon): Boolean = skullIcon == icon.id
 

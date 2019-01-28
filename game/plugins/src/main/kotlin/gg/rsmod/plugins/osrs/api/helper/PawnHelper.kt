@@ -4,12 +4,19 @@ import gg.rsmod.game.model.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.Hit
 import gg.rsmod.game.model.entity.Pawn
+import gg.rsmod.plugins.osrs.api.BonusSlot
 import gg.rsmod.plugins.osrs.api.HitType
 import gg.rsmod.plugins.osrs.api.HitbarType
+import gg.rsmod.plugins.osrs.api.PrayerIcon
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
+
+fun Pawn.hasPrayerIcon(icon: PrayerIcon): Boolean = prayerIcon == icon.id
+
+fun Pawn.getBonus(slot: BonusSlot): Int = equipmentBonuses[slot.id]
+
 fun Pawn.hit(damage: Int, type: HitType = if (damage == 0) HitType.BLOCK else HitType.HIT, delay: Int = 0): Hit {
     val hit = Hit.Builder()
             .setDamageDelay(delay)

@@ -40,7 +40,7 @@ object EquipmentStats {
         p.setComponentText(parent = COMPONENT_ID, child = index, text = "Magic: ${getBonusPercentage(p, BonusSlot.DEFENCE_MAGIC)}")
 
         index = 35
-        p.setComponentText(parent = COMPONENT_ID, child = index++, text = "Melee strength: ${getBonusPercentage(p, BonusSlot.STRENGTH)}")
+        p.setComponentText(parent = COMPONENT_ID, child = index++, text = "Melee strength: ${getBonusPercentage(p, BonusSlot.MELEE_STRENGTH)}")
         p.setComponentText(parent = COMPONENT_ID, child = index++, text = "Ranged strength: ${getBonusPercentage(p, BonusSlot.RANGED_STRENGTH)}")
         p.setComponentText(parent = COMPONENT_ID, child = index, text = "Magic damage: ${getBonusPercentage(p, BonusSlot.MAGIC_DAMAGE)}")
 

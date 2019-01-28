@@ -20,10 +20,6 @@ interface CombatStrategy {
 
     fun getHitDelay(start: Tile, target: Tile): Int
 
-    fun getMaxHit(pawn: Pawn): Int
-
-    fun rollAccuracy(pawn: Pawn, target: Pawn): Boolean
-
     fun postDamage(pawn: Pawn, target: Pawn) {
         if (target.isDead()) {
             return

@@ -8,10 +8,19 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.api.helper.getVarbit
 import gg.rsmod.plugins.osrs.api.helper.pawn
+import gg.rsmod.plugins.osrs.api.helper.player
 import gg.rsmod.plugins.osrs.api.helper.setVarp
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
+import gg.rsmod.plugins.osrs.content.combat.formula.MeleeCombatFormula
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
+
+onCommand("max") {
+    val player = it.player()
+    val bonuses = MeleeCombatFormula.getDefaultBonuses(player)
+    val max = MeleeCombatFormula.getMaxHit(player, player, bonuses)
+    player.message("Max hit: $max")
+}
 
 onCombat {
     it.suspendable {

@@ -7,7 +7,7 @@ import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
-import gg.rsmod.game.model.interf.Interfaces
+import gg.rsmod.game.model.interf.ComponentSet
 import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.game.sync.block.UpdateBlockType
 import java.util.*
@@ -93,7 +93,7 @@ open class Player(override val world: World) : Pawn(world) {
 
     val bank by lazy { ItemContainer(world.definitions, 800, ContainerStackType.STACK) }
 
-    val interfaces by lazy { Interfaces(this) }
+    val interfaces by lazy { ComponentSet(this) }
 
     val varps  by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
 
@@ -126,13 +126,13 @@ open class Player(override val world: World) : Pawn(world) {
 
     /**
      * A flag that represents whether or not we want to remove our
-     * [Interfaces.currentMainScreenInterface] from our [Interfaces.visible] map
+     * [ComponentSet.currentMainScreenInterface] from our [ComponentSet.visible] map
      * near the end of the next available game cycle.
      *
      * It can't be removed immediately due to the [CloseMainInterfaceMessage]
      * being received before [ClickButtonMessage], which leads to the server
      * thinking that the player is trying to click a button on an interface
-     * that's not in their [Interfaces.visible] map.
+     * that's not in their [ComponentSet.visible] map.
      */
     var closeMainInterface = false
 

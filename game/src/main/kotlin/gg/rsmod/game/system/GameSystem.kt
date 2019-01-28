@@ -31,10 +31,14 @@ class GameSystem(override val channel: Channel, val client: Client,
         if (msg is GamePacket) {
             val decoder = service.messageDecoders.get(msg.opcode)
             if (decoder == null) {
-                logger.warn("No decoder found for packet $msg.")
+                logger.warn("No decoder found for message $msg.")
                 return
             }
-            val handler = service.messageDecoders.getHandler(msg.opcode)!!
+            val handler = service.messageDecoders.getHandler(msg.opcode)
+            if (handler == null) {
+                logger.warn("No handler found for message $msg")
+                return
+            }
             val message = decoder.decode(msg.opcode, service.messageStructures.get(msg.opcode)!!, GamePacketReader(msg))
             messages.add(MessageHandle(message, handler, msg.opcode, msg.payload.readableBytes()))
 

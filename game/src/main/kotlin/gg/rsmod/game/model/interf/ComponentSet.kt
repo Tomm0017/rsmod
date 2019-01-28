@@ -4,14 +4,16 @@ import gg.rsmod.game.model.entity.Player
 import org.apache.logging.log4j.LogManager
 
 /**
- * Holds the data for interfaces that can be opened.
+ * Stores components that are visible.
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class Interfaces(val player: Player) {
+class ComponentSet(val player: Player) {
+
+    // TODO(Tom): continue renaming from interface -> component
 
     companion object {
-        private val logger = LogManager.getLogger(Interfaces::class.java)
+        private val logger = LogManager.getLogger(ComponentSet::class.java)
     }
 
     /**
@@ -28,7 +30,7 @@ class Interfaces(val player: Player) {
      * ([gg.rsmod.game.message.impl.CloseMainInterfaceMessage]) and we have to make
      * sure the interface is removed from our [visible] map.
      */
-    private var currentMainScreenInterface = -1
+    private var currentMainScreenComponent = -1
 
     /**
      * The current [DisplayMode] being used by the client.
@@ -64,7 +66,7 @@ class Interfaces(val player: Player) {
     }
 
     /**
-     * Closes the [interfaceId] if, and only if, it's currently visible.
+     * Closes the [parent] if, and only if, it's currently visible.
      *
      * @return The hash key of the visible interface, [-1] if not found.
      *
@@ -74,13 +76,13 @@ class Interfaces(val player: Player) {
      * method and also send a [gg.rsmod.game.message.Message] to signal the client
      * to close the interface.
      */
-    fun close(interfaceId: Int): Int {
-        val found = visible.filterValues { it == interfaceId }.keys.firstOrNull()
+    fun close(parent: Int): Int {
+        val found = visible.filterValues { it == parent }.keys.firstOrNull()
         if (found != null) {
             closeByHash(found)
             return found
         }
-        logger.warn("Interface {} is not visible and cannot be closed.", interfaceId)
+        logger.warn("Interface {} is not visible and cannot be closed.", parent)
         return -1
     }
 
@@ -125,21 +127,21 @@ class Interfaces(val player: Player) {
     }
 
     /**
-     * Calls the [open] method, but also sets the [currentMainScreenInterface]
+     * Calls the [open] method, but also sets the [currentMainScreenComponent]
      * to [interfaceId].
      */
     fun openMain(parent: Int, child: Int, interfaceId: Int) {
         open(parent, child, interfaceId)
-        currentMainScreenInterface = interfaceId
+        currentMainScreenComponent = interfaceId
     }
 
     /**
-     * Calls the [close] method for [currentMainScreenInterface].
+     * Calls the [close] method for [currentMainScreenComponent].
      */
     fun closeMain() {
-        if (currentMainScreenInterface != -1) {
-            close(currentMainScreenInterface)
-            currentMainScreenInterface = -1
+        if (currentMainScreenComponent != -1) {
+            close(currentMainScreenComponent)
+            currentMainScreenComponent = -1
         }
     }
 
@@ -149,9 +151,9 @@ class Interfaces(val player: Player) {
     fun isOccupied(parent: Int, child: Int): Boolean = visible.containsKey((parent shl 16) or child)
 
     /**
-     * Checks if the [interfaceId] is currently visible on any interface.
+     * Checks if the [componentId] is currently visible on any interface.
      */
-    fun isVisible(interfaceId: Int): Boolean = visible.values.contains(interfaceId)
+    fun isVisible(componentId: Int): Boolean = visible.values.contains(componentId)
 
     /**
      * Set an interface as being visible. This should be reserved for settings

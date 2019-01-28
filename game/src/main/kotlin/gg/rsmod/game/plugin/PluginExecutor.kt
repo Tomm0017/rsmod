@@ -2,7 +2,6 @@ package gg.rsmod.game.plugin
 
 import gg.rsmod.game.service.GameService
 import kotlinx.coroutines.CoroutineDispatcher
-import org.apache.logging.log4j.LogManager
 
 /**
  * Handles the boiler-plate code needed to execute a plugin.
@@ -10,10 +9,6 @@ import org.apache.logging.log4j.LogManager
  * @author Tom <rspsmods@gmail.com>
  */
 class PluginExecutor {
-
-    companion object {
-        private val logger = LogManager.getLogger(PluginExecutor::class.java)
-    }
 
     /**
      * The [CoroutineDispatcher] used to schedule suspendable plugins.
@@ -49,11 +44,11 @@ class PluginExecutor {
          * suspended. This is to avoid non-suspendable plugins from removing
          * suspendable plugins.
          *
-         * For example, if we didn't do this, a simple timer plugin, such as a
-         * prayer drain timer, which isn't suspendable but executed every cycle,
-         * would cancel suspendable plugins such as dialogs. (so you wouldn't be
-         * able to continue the dialog as it has been removed from 'active'
-         * plugins and would no longer pulse).
+         * For example: a simple timer plugin, such as a prayer drain timer,
+         * which isn't suspendable but executed every cycle, would cancel
+         * suspendable plugins such as dialogs. (so you wouldn't be able
+         * to continue the dialog as it has been removed from 'active' plugins
+         * and would no longer pulse).
          */
         if (!plugin.canKill()) {
             activeQueue.add(plugin)

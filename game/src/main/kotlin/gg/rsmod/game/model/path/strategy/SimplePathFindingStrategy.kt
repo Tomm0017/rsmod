@@ -14,6 +14,9 @@ import java.util.*
  */
 class SimplePathFindingStrategy(override val world: World) : PathFindingStrategy(world) {
 
+    // TODO(Tom): redo this whole strategy (used for npcs). Fucking hate how
+    // it is atm (jan 27 2019).
+
     override fun calculateRoute(request: PathRequest): Route {
         val start = request.start
         val end = request.end
@@ -23,150 +26,59 @@ class SimplePathFindingStrategy(override val world: World) : PathFindingStrategy
         val sourceLength = request.sourceLength
         val targetWidth = request.targetWidth
         val targetLength = request.targetLength
-        val target = getTargetTiles(request).sortedBy { it.getDelta(start) }.first()
 
         val path = ArrayDeque<Tile>()
-        path.add(start)
-
-        if (areBordering(path.peekLast(), sourceWidth - 1, end, targetWidth - 1)
-                && world.collision.raycast(path.peekLast(), end, projectile)
-                && !areDiagonal(path.peekLast(), sourceWidth - 1, end, targetWidth - 1)) {
-            return Route(path, success = true, tail = path.peekLast())
-        }
-
-        val optimalRoute = raycastPath(world.collision, start, target, sourceWidth, sourceLength, targetWidth, projectile)
-        path.addAll(optimalRoute.path)
-
-        println("optimal=$optimalRoute")
-
-        if (!optimalRoute.success) {
-            while (true) {
-                if (areBordering(path.peekLast(), sourceWidth - 1, target, targetWidth - 1)) {
-                    break
-                }
-                val verticalRoute = raycastPath(world.collision, path.peekLast(), Tile(path.peekLast().x, target.z, end.height), sourceWidth, sourceLength, targetLength, projectile)
-                path.addAll(verticalRoute.path)
-
-                if (areBordering(path.peekLast(), sourceLength - 1, target, targetLength - 1)) {
-                    break
-                }
-                val horizontalRoute = raycastPath(world.collision, path.peekLast(), Tile(target.x, path.peekLast().z, start.height), sourceWidth, sourceLength, targetWidth, projectile)
-                path.addAll(horizontalRoute.path)
-
-                if (horizontalRoute.path.isEmpty()) {
-                    break
-                }
-            }
-        }
-
-        val canReach = areBordering(path.peekLast(), sourceWidth - 1, end, targetWidth - 1)
-                && world.collision.raycast(path.peekLast(), end, projectile)
-                && !areDiagonal(path.peekLast(), sourceWidth - 1, end, targetWidth - 1)
-        return Route(path, success = canReach, tail = path.peekLast())
-    }
-
-    private fun getTargetTiles(request: PathRequest): Set<Tile> {
-        val end = request.end
-        val targetWidth = request.targetWidth
-        val targetLength = request.targetLength
-        val touchRadius = request.touchRadius
-        val targetTiles = hashSetOf<Tile>()
-
-        if (targetWidth > 0 || targetLength > 0) {
-            for (x in -1..targetWidth) {
-                for (z in -1..targetLength) {
-                    val tile = end.transform(x, z)
-                    if (!request.validateBorder.invoke(tile)) {
-                        continue
-                    }
-                    targetTiles.add(tile)
-                }
-            }
-        } else {
-            targetTiles.add(end)
-        }
-
-        if (touchRadius > 1) {
-            for (x in -touchRadius..touchRadius) {
-                for (z in -touchRadius..touchRadius) {
-                    if (x in 0 until targetWidth && z in 0 until targetLength) {
-                        continue
-                    }
-                    val tile = end.transform(x, z)
-                    targetTiles.add(tile)
-                }
-            }
-        }
-
-        return targetTiles
-    }
-
-    private fun raycastPath(collision: CollisionManager, start: Tile, target: Tile, sourceWidth: Int, sourceLength: Int,
-                            targetSize: Int, projectile: Boolean): Route {
-        check(start.height == target.height) { "Tiles must be on the same height level." }
-
-        val path = ArrayDeque<Tile>()
-
-        var x0 = start.x
-        var y0 = start.z
-        val x1 = target.x
-        val y1 = target.z
-
-        val dx = Math.abs(x1 - x0)
-        val dy = Math.abs(y1 - y0)
-
-        val sx = if (x0 < x1) 1 else -1
-        val sy = if (y0 < y1) 1 else -1
-
-        var err = dx - dy
-        var err2: Int
-
-        var old = Tile(x0, y0, start.height)
-
         var success = false
-        while (x0 != x1 || y0 != y1) {
-            err2 = err shl 1
 
-            if (err2 > -dy) {
-                err -= dy
-                x0 += sx
-            }
-
-            if (err2 < dx) {
-                err += dx
-                y0 += sy
-            }
-
-            val tile = Tile(x0, y0, start.height)
-            val dir = Direction.between(old, tile)
-            if (!canTraverse(collision, old, sourceWidth, sourceLength, dir, projectile)) {
-                success = false
+        var searchLimit = 2
+        while (searchLimit-- > 0) {
+            var tail = if (path.isNotEmpty()) path.peekLast() else start
+            if (areBordering(tail, sourceWidth - 1, end, targetWidth - 1) && !areDiagonal(tail, sourceWidth - 1, end, targetWidth - 1)
+                    && world.collision.raycast(tail, end, projectile)) {
+                success = true
                 break
             }
-            old = tile
-            path.add(old)
-            success = true
 
-            if (areBordering(tile, sourceWidth - 1, target, targetSize - 1)) {
-                break
+            var eastOrWest = if (tail.x < end.x) Direction.EAST else Direction.WEST
+            var northOrSouth = if (tail.z < end.z) Direction.NORTH else Direction.SOUTH
+            var overlapped = false
+
+            if (overlap(tail, sourceWidth - 1, end, targetWidth - 1)) {
+                eastOrWest = eastOrWest.getOpposite()
+                northOrSouth = northOrSouth.getOpposite()
+                overlapped = true
+            }
+
+            while ((!areCoordinatesInRange(tail.z, sourceLength - 1, end.z, targetLength - 1) || areDiagonal(tail, sourceLength - 1, end, targetLength - 1) || overlap(tail, sourceLength - 1, end, targetLength - 1))
+                    && (overlapped || !overlap(tail.step(northOrSouth), sourceLength - 1, end, targetLength - 1))
+                    && canTraverse(world.collision, tail, sourceWidth, sourceLength, northOrSouth, projectile)) {
+                tail = tail.step(northOrSouth)
+                path.add(tail)
+            }
+
+            while ((!areCoordinatesInRange(tail.x, sourceWidth - 1, end.x, targetWidth - 1) || areDiagonal(tail, sourceWidth - 1, end, targetWidth - 1) || overlap(tail, sourceWidth - 1, end, targetWidth - 1))
+                    && (overlapped || !overlap(tail.step(eastOrWest), sourceWidth - 1, end, targetWidth - 1))
+                    && canTraverse(world.collision, tail, sourceWidth, sourceLength, eastOrWest, projectile)) {
+                tail = tail.step(eastOrWest)
+                path.add(tail)
             }
         }
 
-        return Route(path, success, if (path.isNotEmpty()) path.peekLast() else start)
+        return Route(path, success, tail = if (path.isNotEmpty()) path.peekLast() else start)
     }
 
     private fun canTraverse(collision: CollisionManager, tile: Tile, width: Int, length: Int, direction: Direction, projectile: Boolean): Boolean {
         for (x in 0 until width) {
             for (z in 0 until length) {
                 val transform = tile.transform(x, z)
-                if (!collision.canTraverse(transform, direction, projectile)
-                        || !collision.canTraverse(transform.step(direction), direction.getOpposite(), projectile)) {
+                if (!collision.canTraverse(transform, direction, projectile) || !collision.canTraverse(transform.step(direction), direction.getOpposite(), projectile)) {
                     return false
                 }
             }
         }
         return true
     }
+
 
     /**
      * Checks to see if two AABB (axis-aligned bounding box) are bordering,
@@ -232,5 +144,38 @@ class SimplePathFindingStrategy(override val world: World) : PathFindingStrategy
         }
 
         return false
+    }
+
+    private fun areCoordinatesInRange(coord1: Int, size1: Int, coord2: Int, size2: Int): Boolean {
+        val a = Pair(coord1, coord1 + size1)
+        val b = Pair(coord2, coord2 + size2)
+
+        if (a.second < b.first) {
+            return false
+        }
+
+        if (a.first > b.second) {
+            return false
+        }
+
+        return true
+    }
+
+    /**
+     * Checks to see if two AABB (axis-aligned bounding box) overlap.
+     */
+    private fun overlap(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean {
+        val a = Pair(tile1, tile1.transform(size1, size1))
+        val b = Pair(tile2, tile2.transform(size2, size2))
+
+        if (a.first.x > b.second.x || b.first.x > a.second.x) {
+            return false
+        }
+
+        if (a.first.z > b.second.z || b.first.z > a.second.z) {
+            return false
+        }
+
+        return true
     }
 }

@@ -64,36 +64,40 @@ object SpellRequirements {
     }
 
     fun loadSpellRequirements(world: World, enumId: Int) {
-        val enum = world.definitions.get(EnumDef::class.java, enumId)
-        val dataItems = enum.values.values.map { it as Int }
+        val spellBookEnums = world.definitions.get(EnumDef::class.java, enumId)
+        val spellBooks = spellBookEnums.values.values.map { it as Int }
+        spellBooks.forEach { spellBook ->
+            val spellBookEnum = world.definitions.get(EnumDef::class.java, spellBook)
+            val spellItems = spellBookEnum.values.values.map { it as Int }
 
-        for (dataItem in dataItems) {
-            val def = world.definitions.get(ItemDef::class.java, dataItem)
-            val data = def.data
+            for (item in spellItems) {
+                val itemDef = world.definitions.get(ItemDef::class.java, item)
+                val params = itemDef.params
 
-            val spellbook = data[SPELL_SPELLBOOK_KEY] as Int
-            val name = data[SPELL_NAME_KEY] as String
-            val lvl = data[SPELL_LVL_REQ_KEY] as Int
-            val componentHash = data[SPELL_COMPONENT_HASH_KEY] as Int
-            val spellId = data[SPELL_ID_KEY] as Int
-            val combat = (data[SPELL_TYPE_KEY] as Int) == 0 && spellbook in 0..1 // Only standard and ancient spellbooks have combat spells
+                val spellbook = params[SPELL_SPELLBOOK_KEY] as Int
+                val name = params[SPELL_NAME_KEY] as String
+                val lvl = params[SPELL_LVL_REQ_KEY] as Int
+                val componentHash = params[SPELL_COMPONENT_HASH_KEY] as Int
+                val spellId = params[SPELL_ID_KEY] as Int
+                val combat = (params[SPELL_TYPE_KEY] as Int) == 0 && spellbook in 0..1 // Only standard and ancient spellbooks have combat spells
 
-            val parent = componentHash shr 16
-            val child = componentHash and 0xFFFF
-            val runes = arrayListOf<Item>()
+                val parent = componentHash shr 16
+                val child = componentHash and 0xFFFF
+                val runes = arrayListOf<Item>()
 
-            if (data.containsKey(SPELL_RUNE1_ID_KEY)) {
-                runes.add(Item(data[SPELL_RUNE1_ID_KEY] as Int, data[SPELL_RUNE1_AMT_KEY] as Int))
+                if (params.containsKey(SPELL_RUNE1_ID_KEY)) {
+                    runes.add(Item(params[SPELL_RUNE1_ID_KEY] as Int, params[SPELL_RUNE1_AMT_KEY] as Int))
+                }
+                if (params.containsKey(SPELL_RUNE2_ID_KEY)) {
+                    runes.add(Item(params[SPELL_RUNE2_ID_KEY] as Int, params[SPELL_RUNE2_AMT_KEY] as Int))
+                }
+                if (params.containsKey(SPELL_RUNE3_ID_KEY)) {
+                    runes.add(Item(params[SPELL_RUNE3_ID_KEY] as Int, params[SPELL_RUNE3_AMT_KEY] as Int))
+                }
+
+                val spell = SpellRequirement(parent, child, spellbook, spellId, name, lvl, runes, combat)
+                requirements[spellId] = spell
             }
-            if (data.containsKey(SPELL_RUNE2_ID_KEY)) {
-                runes.add(Item(data[SPELL_RUNE2_ID_KEY] as Int, data[SPELL_RUNE2_AMT_KEY] as Int))
-            }
-            if (data.containsKey(SPELL_RUNE3_ID_KEY)) {
-                runes.add(Item(data[SPELL_RUNE3_ID_KEY] as Int, data[SPELL_RUNE3_AMT_KEY] as Int))
-            }
-
-            val spell = SpellRequirement(parent, child, spellbook, spellId, name, lvl, runes, combat)
-            requirements[spellId] = spell
         }
     }
 }

@@ -31,7 +31,7 @@ class ItemDef(override val id: Int) : Definition(id) {
     var placeholderId = 0
     var placeholderTemplateId = 0
 
-    val data = hashMapOf<Int, Any>()
+    val params = hashMapOf<Int, Any>()
 
     fun isStackable(): Boolean = stackable || noteTemplateId > 0
 
@@ -109,7 +109,7 @@ class ItemDef(override val id: Int) : Definition(id) {
             140 -> buf.readUnsignedShort()
             148 -> placeholderId = buf.readUnsignedShort()
             149 -> placeholderTemplateId = buf.readUnsignedShort()
-            249 -> data.putAll(readParams(buf))
+            249 -> params.putAll(readParams(buf))
         }
     }
 }

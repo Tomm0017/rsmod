@@ -4,15 +4,9 @@ import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
 import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 
-val STANDARD_SPELL_DATA_ENUM = 1982
-val ANCIENT_SPELL_DATA_ENUM = 1983
-val LUNAR_SPELL_DATA_ENUM = 1984
-val ARCEUUS_SPELL_DATA_ENUM = 1985
+val SPELLBOOK_POINTER_ENUM = 1981
 
-arrayOf(STANDARD_SPELL_DATA_ENUM, ANCIENT_SPELL_DATA_ENUM, LUNAR_SPELL_DATA_ENUM,
-        ARCEUUS_SPELL_DATA_ENUM).forEach { spellbook ->
-    SpellRequirements.loadSpellRequirements(world, spellbook)
-}
+SpellRequirements.loadSpellRequirements(world, SPELLBOOK_POINTER_ENUM)
 
 SpellRequirements.requirements.filter { it.value.combat }.forEach { entry ->
     val requirement = entry.value

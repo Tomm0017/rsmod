@@ -56,7 +56,7 @@ out-packets:
         type: BYTE
         trans: NEGATE
 
-  - message: gg.rsmod.game.message.impl.InterfaceSwitchMessage
+  - message: gg.rsmod.game.message.impl.ComponentSwitchMessage
     type: FIXED
     opcode: 82
     structure:
@@ -95,16 +95,16 @@ out-packets:
       - name: xteas
         type: BYTES
 
-  - message: gg.rsmod.game.message.impl.SetDisplayInterfaceMessage
+  - message: gg.rsmod.game.message.impl.SetDisplayComponentMessage
     type: FIXED
     opcode: 84
     structure:
-      - name: interfaceId
+      - name: component
         order: LITTLE
         type: SHORT
         trans: ADD
 
-  - message: gg.rsmod.game.message.impl.OpenInterfaceMessage
+  - message: gg.rsmod.game.message.impl.OpenComponentMessage
     type: FIXED
     opcode: 77
     structure:
@@ -114,7 +114,7 @@ out-packets:
       - name: overlay
         order: MIDDLE
         type: INT
-      - name: interfaceId
+      - name: component
         order: LITTLE
         type: SHORT
         trans: ADD
@@ -274,7 +274,7 @@ out-packets:
       - name: level
         type: BYTE
 
-  - message: gg.rsmod.game.message.impl.SetInterfaceTextMessage
+  - message: gg.rsmod.game.message.impl.SetComponentTextMessage
     type: VARIABLE_SHORT
     opcode: 19
     structure:
@@ -290,14 +290,14 @@ out-packets:
       - name: energy
         type: BYTE
 
-  - message: gg.rsmod.game.message.impl.CloseInterfaceMessage
+  - message: gg.rsmod.game.message.impl.CloseComponentMessage
     type: FIXED
     opcode: 9
     structure:
       - name: hash
         type: INT
 
-  - message: gg.rsmod.game.message.impl.SetInterfaceSettingMessage
+  - message: gg.rsmod.game.message.impl.SetComponentSettingMessage
     type: FIXED
     opcode: 48
     structure:
@@ -313,7 +313,7 @@ out-packets:
       - name: from
         type: SHORT
 
-  - message: gg.rsmod.game.message.impl.SetInterfaceHiddenMessage
+  - message: gg.rsmod.game.message.impl.SetComponentHiddenMessage
     type: FIXED
     opcode: 21
     structure:
@@ -322,7 +322,7 @@ out-packets:
       - name: hidden
         type: BYTE
 
-  - message: gg.rsmod.game.message.impl.SetInterfaceItemMessage
+  - message: gg.rsmod.game.message.impl.SetComponentItemMessage
     type: FIXED
     opcode: 20
     structure:
@@ -334,7 +334,7 @@ out-packets:
         type: INT
         order: INVERSED_MIDDLE
 
-  - message: gg.rsmod.game.message.impl.SetInterfaceNpcMessage
+  - message: gg.rsmod.game.message.impl.SetComponentNpcMessage
     type: FIXED
     opcode: 35
     structure:
@@ -346,7 +346,7 @@ out-packets:
         type: INT
         order: INVERSED_MIDDLE
 
-  - message: gg.rsmod.game.message.impl.SetInterfaceAnimationMessage
+  - message: gg.rsmod.game.message.impl.SetComponentAnimationMessage
     type: FIXED
     opcode: 61
     structure:
@@ -369,11 +369,11 @@ out-packets:
     type: VARIABLE_SHORT
     opcode: 70
     structure:
-      - name: interfaceHash
+      - name: component_hash
         type: INT
-      - name: containerKey
+      - name: container_key
         type: SHORT
-      - name: itemCount
+      - name: item_count
         type: SHORT
       - name: items
         type: BYTES
@@ -410,10 +410,10 @@ in-packets:
       - name: movement_type
         type: BYTE
         trans: NEGATE
-      - name: interface_hash
+      - name: component_hash
         order: LITTLE
         type: INT
-      - name: interface_slot
+      - name: component_slot
         type: SHORT
         trans: ADD
 
@@ -597,7 +597,7 @@ in-packets:
         sign: UNSIGNED
         order: LITTLE
         type: SHORT
-      - name: interfaceHash
+      - name: component_hash
         type: INT
         order: MIDDLE
       - name: slot
@@ -613,7 +613,7 @@ in-packets:
         sign: UNSIGNED
         type: SHORT
         trans: ADD
-      - name: interfaceHash
+      - name: component_hash
         type: INT
         order: INVERSED_MIDDLE
       - name: slot
@@ -622,7 +622,7 @@ in-packets:
         type: SHORT
         trans: ADD
 
-  - message: gg.rsmod.game.message.impl.CloseMainInterfaceMessage
+  - message: gg.rsmod.game.message.impl.CloseMainComponentMessage
     type: FIXED
     opcode: 20
     length: 0

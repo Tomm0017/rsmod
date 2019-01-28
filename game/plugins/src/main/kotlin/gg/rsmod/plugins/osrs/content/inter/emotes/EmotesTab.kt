@@ -10,7 +10,7 @@ import gg.rsmod.plugins.osrs.api.helper.setVarbit
  */
 object EmotesTab {
 
-    const val INTERFACE_ID = 216
+    const val COMPONENT_ID = 216
 
     const val GOBLIN_EMOTES_VARBIT = 532
     const val GLASS_BOX_EMOTE_VARBIT = 1368

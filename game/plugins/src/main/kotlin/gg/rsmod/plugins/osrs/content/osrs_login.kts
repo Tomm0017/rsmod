@@ -1,7 +1,7 @@
 
 import gg.rsmod.game.model.NEW_ACCOUNT_ATTR
 import gg.rsmod.plugins.osrs.api.ChatMessageType
-import gg.rsmod.plugins.osrs.api.InterfacePane
+import gg.rsmod.plugins.osrs.api.ComponentPane
 import gg.rsmod.plugins.osrs.api.OSRSGameframe
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.helper.*
@@ -24,20 +24,20 @@ onLogin {
         p.getSkills().setBaseLevel(Skills.HITPOINTS, 10)
     }
     p.calculateAndSetCombatLevel()
-    p.sendWeaponInterfaceInformation()
+    p.sendWeaponComponentInformation()
     p.sendCombatLevelText()
 
     /**
      * Interface-related logic.
      */
-    p.sendDisplayInterface(p.interfaces.displayMode)
-    InterfacePane.values().filter { pane -> pane.interfaceId != -1 }.forEach { pane ->
-        if (pane == InterfacePane.XP_COUNTER && p.getVarbit(OSRSGameframe.XP_DROPS_VISIBLE_VARBIT) == 0) {
+    p.sendDisplayComponent(p.components.displayMode)
+    ComponentPane.values().filter { pane -> pane.component != -1 }.forEach { pane ->
+        if (pane == ComponentPane.XP_COUNTER && p.getVarbit(OSRSGameframe.XP_DROPS_VISIBLE_VARBIT) == 0) {
             return@forEach
-        } else if (pane == InterfacePane.MINI_MAP && p.getVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT) == 1) {
+        } else if (pane == ComponentPane.MINI_MAP && p.getVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT) == 1) {
             return@forEach
         }
-        p.openInterface(pane.interfaceId, pane)
+        p.openComponent(pane.component, pane)
     }
 
     /**

@@ -42,148 +42,148 @@ fun Player.focusTab(tab: GameframeTab) {
     invokeScript(915, tab.id)
 }
 
-fun Player.setMainInterfaceBackground(color: Int, transparency: Int) {
+fun Player.setComponentUnderlay(color: Int, transparency: Int) {
     invokeScript(2524, color, transparency)
 }
 
-fun Player.setInterfaceText(parent: Int, child: Int, text: String) {
-    write(SetInterfaceTextMessage(parent, child, text))
+fun Player.setComponentText(parent: Int, child: Int, text: String) {
+    write(SetComponentTextMessage(parent, child, text))
 }
 
-fun Player.setInterfaceSetting(parent: Int, child: Int, from: Int, to: Int, setting: Int) {
-    write(SetInterfaceSettingMessage(hash = ((parent shl 16) or child), fromChild = from, toChild = to, setting = setting))
+fun Player.setComponentSetting(parent: Int, child: Int, from: Int, to: Int, setting: Int) {
+    write(SetComponentSettingMessage(hash = ((parent shl 16) or child), fromChild = from, toChild = to, setting = setting))
 }
 
-fun Player.setInterfaceSetting(parent: Int, child: Int, range: IntRange, setting: Int) {
-    write(SetInterfaceSettingMessage(hash = ((parent shl 16) or child), fromChild = range.start, toChild = range.endInclusive, setting = setting))
+fun Player.setComponentSetting(parent: Int, child: Int, range: IntRange, setting: Int) {
+    write(SetComponentSettingMessage(hash = ((parent shl 16) or child), fromChild = range.start, toChild = range.endInclusive, setting = setting))
 }
 
-fun Player.setInterfaceHidden(parent: Int, child: Int, hidden: Boolean) {
-    write(SetInterfaceHiddenMessage(hash = ((parent shl 16) or child), hidden = hidden))
+fun Player.setComponentHidden(parent: Int, child: Int, hidden: Boolean) {
+    write(SetComponentHiddenMessage(hash = ((parent shl 16) or child), hidden = hidden))
 }
 
-fun Player.setInterfaceItem(parent: Int, child: Int, item: Int, amountOrZoom: Int) {
-    write(SetInterfaceItemMessage(hash = ((parent shl 16) or child), item = item, amount = amountOrZoom))
+fun Player.setComponentItem(parent: Int, child: Int, item: Int, amountOrZoom: Int) {
+    write(SetComponentItemMessage(hash = ((parent shl 16) or child), item = item, amount = amountOrZoom))
 }
 
-fun Player.setInterfaceNpc(parent: Int, child: Int, npc: Int) {
-    write(SetInterfaceNpcMessage(hash = ((parent shl 16) or child), npc = npc))
+fun Player.setComponentNpc(parent: Int, child: Int, npc: Int) {
+    write(SetComponentNpcMessage(hash = ((parent shl 16) or child), npc = npc))
 }
 
-fun Player.setInterfaceAnim(parent: Int, child: Int, anim: Int) {
-    write(SetInterfaceAnimationMessage(hash = ((parent shl 16) or child), anim = anim))
+fun Player.setComponentAnim(parent: Int, child: Int, anim: Int) {
+    write(SetComponentAnimationMessage(hash = ((parent shl 16) or child), anim = anim))
 }
 
 /**
- * Use this method to open an interface id on top of an [InterfacePane]. This
+ * Use this method to open an interface id on top of an [ComponentPane]. This
  * method should always be preferred over
  *
  * ```
- * openInterface(parent: Int, child: Int, interfaceId: Int, type: Int, mainInterface: Boolean)
+ * openComponent(parent: Int, child: Int, component: Int, type: Int, isMainComponent: Boolean)
  * ```
  *
- * as it holds logic that must be handled for certain [InterfacePane]s.
+ * as it holds logic that must be handled for certain [ComponentPane]s.
  */
-fun Player.openInterface(interfaceId: Int, pane: InterfacePane, fullscreen: Boolean = false) {
-    val displayMode = if (!fullscreen || pane.fullscreenChildId == -1) interfaces.displayMode else DisplayMode.FULLSCREEN
+fun Player.openComponent(component: Int, pane: ComponentPane, fullscreen: Boolean = false) {
+    val displayMode = if (!fullscreen || pane.fullscreenChildId == -1) components.displayMode else DisplayMode.FULLSCREEN
     val child = getChildId(pane, displayMode)
-    val parent = getDisplayInterfaceId(displayMode)
+    val parent = getDisplayComponentId(displayMode)
     if (displayMode == DisplayMode.FULLSCREEN) {
-        sendDisplayInterface(displayMode)
+        sendDisplayComponent(displayMode)
     }
-    openInterface(parent, child, interfaceId, if (pane.clickThrough) 1 else 0, mainInterface = pane == InterfacePane.MAIN_SCREEN)
+    openComponent(parent, child, component, if (pane.clickThrough) 1 else 0, isMainComponent = pane == ComponentPane.MAIN_SCREEN)
 }
 
 /**
- * Use this method to "re-open" an [InterfacePane]. This method should always
+ * Use this method to "re-open" an [ComponentPane]. This method should always
  * be preferred over
  *
  * ```
- * openInterface(parent: Int, child: Int, interfaceId: Int, type: Int, mainInterface: Boolean)
+ * openComponent(parent: Int, child: Int, interfaceId: Int, type: Int, mainInterface: Boolean)
  * ````
  *
- * as it holds logic that must be handled for certain [InterfacePane]s.
+ * as it holds logic that must be handled for certain [ComponentPane]s.
  */
-fun Player.openInterface(pane: InterfacePane, fullscreen: Boolean = false) {
-    val displayMode = if (!fullscreen || pane.fullscreenChildId == -1) interfaces.displayMode else DisplayMode.FULLSCREEN
+fun Player.openComponent(pane: ComponentPane, fullscreen: Boolean = false) {
+    val displayMode = if (!fullscreen || pane.fullscreenChildId == -1) components.displayMode else DisplayMode.FULLSCREEN
     val child = getChildId(pane, displayMode)
-    val parent = getDisplayInterfaceId(displayMode)
+    val parent = getDisplayComponentId(displayMode)
     if (displayMode == DisplayMode.FULLSCREEN) {
-        sendDisplayInterface(displayMode)
+        sendDisplayComponent(displayMode)
     }
-    openInterface(parent, child, pane.interfaceId, if (pane.clickThrough) 1 else 0, mainInterface = pane == InterfacePane.MAIN_SCREEN)
+    openComponent(parent, child, pane.component, if (pane.clickThrough) 1 else 0, isMainComponent = pane == ComponentPane.MAIN_SCREEN)
 }
 
-fun Player.openInterface(parent: Int, child: Int, interfaceId: Int, type: Int = 0, mainInterface: Boolean = false) {
-    if (mainInterface) {
-        interfaces.openMain(parent, child, interfaceId)
+fun Player.openComponent(parent: Int, child: Int, component: Int, type: Int = 0, isMainComponent: Boolean = false) {
+    if (isMainComponent) {
+        components.openMain(parent, child, component)
     } else {
-        interfaces.open(parent, child, interfaceId)
+        components.open(parent, child, component)
     }
-    write(OpenInterfaceMessage(parent, child, interfaceId, type))
+    write(OpenComponentMessage(parent, child, component, type))
 }
 
-fun Player.closeInterface(interfaceId: Int) {
-    val hash = interfaces.close(interfaceId)
+fun Player.closeComponent(component: Int) {
+    val hash = components.close(component)
     if (hash != -1) {
-        write(CloseInterfaceMessage(hash))
+        write(CloseComponentMessage(hash))
     }
 }
 
-fun Player.closeInterface(parent: Int, child: Int) {
-    interfaces.close(parent, child)
-    write(CloseInterfaceMessage((parent shl 16) or child))
+fun Player.closeComponent(parent: Int, child: Int) {
+    components.close(parent, child)
+    write(CloseComponentMessage((parent shl 16) or child))
 }
 
-fun Player.isInterfaceVisible(interfaceId: Int): Boolean = interfaces.isVisible(interfaceId)
+fun Player.isComponentVisible(component: Int): Boolean = components.isVisible(component)
 
-fun Player.toggleDisplayInterface(newMode: DisplayMode) {
-    if (interfaces.displayMode != newMode) {
-        val oldMode = interfaces.displayMode
-        interfaces.displayMode = newMode
+fun Player.toggleDisplayComponent(newMode: DisplayMode) {
+    if (components.displayMode != newMode) {
+        val oldMode = components.displayMode
+        components.displayMode = newMode
 
-        sendDisplayInterface(newMode)
+        sendDisplayComponent(newMode)
 
-        InterfacePane.values().filter { it.isSwitchable() }.forEach { pane ->
-            val fromParent = getDisplayInterfaceId(oldMode)
+        ComponentPane.values().filter { it.isSwitchable() }.forEach { pane ->
+            val fromParent = getDisplayComponentId(oldMode)
             val fromChild = getChildId(pane, oldMode)
-            val toParent = getDisplayInterfaceId(newMode)
+            val toParent = getDisplayComponentId(newMode)
             val toChild = getChildId(pane, newMode)
 
             /**
              * Remove the interfaces from the old display mode's chilren and add
              * them to the new display mode's children.
              */
-            if (interfaces.isOccupied(parent = fromParent, child = fromChild)) {
-                val oldInterface = interfaces.close(parent = fromParent, child = fromChild)
-                if (oldInterface != -1) {
-                    if (pane != InterfacePane.MAIN_SCREEN) {
-                        interfaces.open(parent = toParent, child = toChild, interfaceId = oldInterface)
+            if (components.isOccupied(parent = fromParent, child = fromChild)) {
+                val oldComponent = components.close(parent = fromParent, child = fromChild)
+                if (oldComponent != -1) {
+                    if (pane != ComponentPane.MAIN_SCREEN) {
+                        components.open(parent = toParent, child = toChild, component = oldComponent)
                     } else {
-                        interfaces.openMain(parent = toParent, child = toChild, interfaceId = oldInterface)
+                        components.openMain(parent = toParent, child = toChild, component = oldComponent)
                     }
                 }
             }
 
-            write(InterfaceSwitchMessage(from = (fromParent shl 16) or fromChild, to = (toParent shl 16) or toChild))
+            write(ComponentSwitchMessage(from = (fromParent shl 16) or fromChild, to = (toParent shl 16) or toChild))
         }
 
         if (newMode.isResizable()) {
-            setMainInterfaceBackground(color = -1, transparency = -1)
+            setComponentUnderlay(color = -1, transparency = -1)
         }
         if (oldMode.isResizable()) {
-            openInterface(parent = getDisplayInterfaceId(newMode), child = getChildId(InterfacePane.MAIN_SCREEN, newMode), interfaceId = 60, type = 0)
+            openComponent(parent = getDisplayComponentId(newMode), child = getChildId(ComponentPane.MAIN_SCREEN, newMode), component = 60, type = 0)
         }
     }
 }
 
-fun Player.sendDisplayInterface(displayMode: DisplayMode) {
-    if (displayMode != interfaces.displayMode) {
-        interfaces.setVisible(parent = getDisplayInterfaceId(interfaces.displayMode), child = getChildId(InterfacePane.MAIN_SCREEN, interfaces.displayMode), visible = false)
+fun Player.sendDisplayComponent(displayMode: DisplayMode) {
+    if (displayMode != components.displayMode) {
+        components.setVisible(parent = getDisplayComponentId(components.displayMode), child = getChildId(ComponentPane.MAIN_SCREEN, components.displayMode), visible = false)
     }
-    val interfaceId = getDisplayInterfaceId(displayMode)
-    interfaces.setVisible(parent = getDisplayInterfaceId(displayMode), child = 0, visible = true)
-    write(SetDisplayInterfaceMessage(interfaceId))
+    val component = getDisplayComponentId(displayMode)
+    components.setVisible(parent = getDisplayComponentId(displayMode), child = 0, visible = true)
+    write(SetDisplayComponentMessage(component))
 }
 
 fun Player.sendContainer(key: Int, container: ItemContainer) {
@@ -274,17 +274,17 @@ fun Player.hasPrayerIcon(icon: PrayerIcon): Boolean = prayerIcon == icon.id
 
 fun Player.hasSkullIcon(icon: SkullIcon): Boolean = skullIcon == icon.id
 
-fun Player.isClientResizable(): Boolean = interfaces.displayMode == DisplayMode.RESIZABLE_NORMAL || interfaces.displayMode == DisplayMode.RESIZABLE_LIST
+fun Player.isClientResizable(): Boolean = components.displayMode == DisplayMode.RESIZABLE_NORMAL || components.displayMode == DisplayMode.RESIZABLE_LIST
 
 fun Player.sendWorldMapTile() {
     invokeScript(1749, tile.to30BitInteger())
 }
 
 fun Player.sendCombatLevelText() {
-    setInterfaceText(593, 2, "Combat Lvl: ${getSkills().combatLevel}")
+    setComponentText(593, 2, "Combat Lvl: ${getSkills().combatLevel}")
 }
 
-fun Player.sendWeaponInterfaceInformation() {
+fun Player.sendWeaponComponentInformation() {
     val weapon = getEquipment(EquipmentType.WEAPON)
 
     val name: String
@@ -301,7 +301,7 @@ fun Player.sendWeaponInterfaceInformation() {
         panel = 0
     }
 
-    setInterfaceText(593, 1, name)
+    setComponentText(593, 1, name)
     setVarp(843, panel)
 }
 

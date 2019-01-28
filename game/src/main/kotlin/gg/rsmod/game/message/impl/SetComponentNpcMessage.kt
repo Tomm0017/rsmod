@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class OpenInterfaceMessage(val parent: Int, val child: Int, val interfaceId: Int, val type: Int) : Message
+data class SetComponentNpcMessage(val hash: Int, val npc: Int) : Message

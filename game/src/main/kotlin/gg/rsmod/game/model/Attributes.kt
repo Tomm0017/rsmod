@@ -88,9 +88,9 @@ val INTERACTING_ITEM = AttributeKey<Item>()
 /**
  * Interacting interface parent id.
  */
-val INTERACTING_INTERFACE_PARENT = AttributeKey<Int>()
+val INTERACTING_COMPONENT_PARENT = AttributeKey<Int>()
 
 /**
  * Interacting interface child id.
  */
-val INTERACTING_INTERFACE_CHILD = AttributeKey<Int>()
+val INTERACTING_COMPONENT_CHILD = AttributeKey<Int>()

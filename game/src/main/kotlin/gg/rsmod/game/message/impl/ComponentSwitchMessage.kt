@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class SetInterfaceItemMessage(val hash: Int, val item: Int, val amount: Int) : Message
+data class ComponentSwitchMessage(val from: Int, val to: Int) : Message

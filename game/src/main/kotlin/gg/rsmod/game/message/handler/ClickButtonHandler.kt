@@ -23,8 +23,8 @@ class ClickButtonHandler : MessageHandler<ClickButtonMessage> {
 
         log(client, "Click button: parent=%d, child=%d, option=%d, slot=%d, item=%d", parent, child, message.option, message.slot, message.item)
 
-        if (!client.interfaces.isVisible(parent)) {
-            logger.warn("Player '{}' tried to click button {} on a non-visible interface {}.", client.username, child, parent)
+        if (!client.components.isVisible(parent)) {
+            logger.warn("Player '{}' tried to click button {} on a non-visible component {}.", client.username, child, parent)
             return
         }
 

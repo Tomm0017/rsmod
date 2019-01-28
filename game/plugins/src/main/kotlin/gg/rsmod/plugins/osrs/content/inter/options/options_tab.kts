@@ -2,13 +2,13 @@
 import gg.rsmod.game.model.DISPLAY_MODE_CHANGE_ATTR
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.api.InterfacePane
+import gg.rsmod.plugins.osrs.api.ComponentPane
 import gg.rsmod.plugins.osrs.api.OSRSGameframe
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
 
 fun bindSetting(child: Int, plugin: Function1<Plugin, Unit>) {
-    onButton(parent = OptionsTab.INTERFACE_ID, child = child) {
+    onButton(parent = OptionsTab.COMPONENT_ID, child = child) {
         plugin.invoke(it)
     }
 }
@@ -16,14 +16,14 @@ fun bindSetting(child: Int, plugin: Function1<Plugin, Unit>) {
 onLogin {
     val p = it.player()
 
-    p.setInterfaceSetting(parent = OptionsTab.INTERFACE_ID, child = 106, range = 1..4, setting = 2) // Player option priority
-    p.setInterfaceSetting(parent = OptionsTab.INTERFACE_ID, child = 107, range = 1..4, setting = 2) // Npc option priority
+    p.setComponentSetting(parent = OptionsTab.COMPONENT_ID, child = 106, range = 1..4, setting = 2) // Player option priority
+    p.setComponentSetting(parent = OptionsTab.COMPONENT_ID, child = 107, range = 1..4, setting = 2) // Npc option priority
 }
 
 /**
  * Toggle mouse scroll wheel zoom.
  */
-onButton(parent = OptionsTab.INTERFACE_ID, child = 5) {
+onButton(parent = OptionsTab.COMPONENT_ID, child = 5) {
     // TODO(Tom): figure out why this varbit isn't causing the cross to be drawn.
     // It technically works since it won't allow zooming with mouse wheel, but it
     // doesn't visually show on the interface.
@@ -52,7 +52,7 @@ onDisplayModeChange {
         2 -> if (p.getVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT) == 1) DisplayMode.RESIZABLE_LIST else DisplayMode.RESIZABLE_NORMAL
         else -> DisplayMode.FIXED
     }
-    p.toggleDisplayInterface(mode)
+    p.toggleDisplayComponent(mode)
 }
 
 /**
@@ -60,11 +60,11 @@ onDisplayModeChange {
  */
 bindSetting(child = 35) {
     val p = it.player()
-    if (!p.lock.canInterfaceInteract()) {
+    if (!p.lock.canComponentInteract()) {
         return@bindSetting
     }
-    p.setMainInterfaceBackground(color = -1, transparency = -1)
-    p.openInterface(interfaceId = OptionsTab.ADVANCED_INTERFACE_ID, pane = InterfacePane.MAIN_SCREEN)
+    p.setComponentUnderlay(color = -1, transparency = -1)
+    p.openComponent(component = OptionsTab.ADVANCED_COMPONENT_ID, pane = ComponentPane.MAIN_SCREEN)
 }
 
 /**
@@ -161,12 +161,12 @@ bindSetting(child = 81) {
  */
 bindSetting(child = 83) {
     val p = it.player()
-    if (!p.lock.canInterfaceInteract()) {
+    if (!p.lock.canComponentInteract()) {
         return@bindSetting
     }
-    p.setMainInterfaceBackground(color = -1, transparency = -1)
-    p.setInterfaceSetting(parent = 121, child = 111, range = 0..13, setting = 2)
-    p.openInterface(interfaceId = 121, pane = InterfacePane.MAIN_SCREEN)
+    p.setComponentUnderlay(color = -1, transparency = -1)
+    p.setComponentSetting(parent = 121, child = 111, range = 0..13, setting = 2)
+    p.openComponent(component = 121, pane = ComponentPane.MAIN_SCREEN)
 }
 
 /**

@@ -14,9 +14,9 @@ class ItemActionOneHandler : MessageHandler<ItemActionOneMessage> {
 
     override fun handle(client: Client, message: ItemActionOneMessage) {
         @Suppress("unused")
-        val interfaceParent = message.interfaceHash shr 16
+        val componentParent = message.componentHash shr 16
         @Suppress("unused")
-        val interfaceChild = message.interfaceHash and 0xFFFF
+        val componentChild = message.componentHash and 0xFFFF
 
         if (message.slot < 0 || message.slot >= client.inventory.capacity) {
             return
@@ -29,13 +29,13 @@ class ItemActionOneHandler : MessageHandler<ItemActionOneMessage> {
         val item = client.inventory[message.slot] ?: return
 
         if (item.id != message.item) {
-            logVerificationFail(client, "Item action 1: id=%d, slot=%d, interface=(%d, %d), inventory=(%d, %d)",
-                    message.item, message.slot, interfaceParent, interfaceChild, item.id, item.amount)
+            logVerificationFail(client, "Item action 1: id=%d, slot=%d, component=(%d, %d), inventory=(%d, %d)",
+                    message.item, message.slot, componentParent, componentChild, item.id, item.amount)
             return
         }
 
-        log(client, "Item action 1: id=%d, slot=%d, interface=(%d, %d), inventory=(%d, %d)",
-                message.item, message.slot, interfaceParent, interfaceChild, item.id, item.amount)
+        log(client, "Item action 1: id=%d, slot=%d, component=(%d, %d), inventory=(%d, %d)",
+                message.item, message.slot, componentParent, componentChild, item.id, item.amount)
 
         client.attr[INTERACTING_ITEM_SLOT] = message.slot
         client.attr[INTERACTING_ITEM_ID] = item.id

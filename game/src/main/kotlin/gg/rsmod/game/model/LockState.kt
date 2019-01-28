@@ -54,7 +54,7 @@ enum class LockState {
         else -> false
     }
 
-    fun canInterfaceInteract(): Boolean = when (this) {
+    fun canComponentInteract(): Boolean = when (this) {
         NONE -> true
         else -> false
     }

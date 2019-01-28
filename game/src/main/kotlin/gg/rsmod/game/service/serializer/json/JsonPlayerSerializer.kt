@@ -68,7 +68,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.tile = Tile(data.x, data.z, data.height)
             client.privilege = client.world.privileges.get(data.privilege) ?: Privilege.DEFAULT
             client.runEnergy = data.runEnergy
-            client.interfaces.displayMode = DisplayMode.values().firstOrNull { it.id == data.displayMode } ?: DisplayMode.FIXED
+            client.components.displayMode = DisplayMode.values().firstOrNull { it.id == data.displayMode } ?: DisplayMode.FIXED
             data.skills.forEach { skill ->
                 client.getSkills().setXp(skill.skill, skill.xp)
                 client.getSkills().setCurrentLevel(skill.skill, skill.lvl)
@@ -104,7 +104,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     override fun saveClientData(client: Client): Boolean {
         val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername,
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
-                privilege = client.privilege.id, runEnergy = client.runEnergy, displayMode = client.interfaces.displayMode.id,
+                privilege = client.privilege.id, runEnergy = client.runEnergy, displayMode = client.components.displayMode.id,
                 skills = getSkills(client), inventory = client.inventory.toMap(), equipment = client.equipment.toMap(),
                 bank = client.bank.toMap(), attributes = client.attr.toPersistentMap(),
                 timers = client.timers.toPersistentTimers(), varps = client.varps.getAll().filter { it.state != 0 })

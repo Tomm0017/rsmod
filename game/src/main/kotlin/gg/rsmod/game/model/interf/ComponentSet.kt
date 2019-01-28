@@ -10,8 +10,6 @@ import org.apache.logging.log4j.LogManager
  */
 class ComponentSet(val player: Player) {
 
-    // TODO(Tom): continue renaming from interface -> component
-
     companion object {
         private val logger = LogManager.getLogger(ComponentSet::class.java)
     }
@@ -27,7 +25,7 @@ class ComponentSet(val player: Player) {
     /**
      * The main screen is allowed to have one 'main' interface opened (not including
      * overlays). When a client closes a main interface, they will send a message
-     * ([gg.rsmod.game.message.impl.CloseMainInterfaceMessage]) and we have to make
+     * ([gg.rsmod.game.message.impl.CloseMainComponentMessage]) and we have to make
      * sure the interface is removed from our [visible] map.
      */
     private var currentMainScreenComponent = -1
@@ -38,16 +36,16 @@ class ComponentSet(val player: Player) {
     var displayMode = DisplayMode.FIXED
 
     /**
-     * Registers the [interfaceId] as being opened on the pane correspondent to
+     * Registers the [component] as being opened on the pane correspondent to
      * the [parent] and [child] id.
      *
      * @param parent
-     * The interface id of where [interfaceId] will be drawn.
+     * The interface id of where [component] will be drawn.
      *
      * @param child
-     * The child of the [parent] interface, where [interfaceId] will be drawn.
+     * The child of the [parent] interface, where [component] will be drawn.
      *
-     * @param interfaceId
+     * @param component
      * The interface that will be drawn on the [child] interface inside the [parent] interface.
      *
      * @note
@@ -56,13 +54,13 @@ class ComponentSet(val player: Player) {
      * method and also send a [gg.rsmod.game.message.Message] to signal the client
      * to draw the interface.
      */
-    fun open(parent: Int, child: Int, interfaceId: Int) {
+    fun open(parent: Int, child: Int, component: Int) {
         val paneHash = (parent shl 16) or child
 
         if (visible.containsKey(paneHash)) {
             closeByHash(paneHash)
         }
-        visible[paneHash] = interfaceId
+        visible[paneHash] = component
     }
 
     /**
@@ -82,7 +80,7 @@ class ComponentSet(val player: Player) {
             closeByHash(found)
             return found
         }
-        logger.warn("Interface {} is not visible and cannot be closed.", parent)
+        logger.warn("Component {} is not visible and cannot be closed.", parent)
         return -1
     }
 
@@ -119,20 +117,20 @@ class ComponentSet(val player: Player) {
     private fun closeByHash(hash: Int): Int {
         val found = visible.remove(hash)
         if (found != null) {
-            player.world.plugins.executeInterfaceClose(player, found)
+            player.world.plugins.executeComponentClose(player, found)
             return found
         }
-        logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
+        logger.warn("No component visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
         return -1
     }
 
     /**
      * Calls the [open] method, but also sets the [currentMainScreenComponent]
-     * to [interfaceId].
+     * to [component].
      */
-    fun openMain(parent: Int, child: Int, interfaceId: Int) {
-        open(parent, child, interfaceId)
-        currentMainScreenComponent = interfaceId
+    fun openMain(parent: Int, child: Int, component: Int) {
+        open(parent, child, component)
+        currentMainScreenComponent = component
     }
 
     /**
@@ -151,9 +149,9 @@ class ComponentSet(val player: Player) {
     fun isOccupied(parent: Int, child: Int): Boolean = visible.containsKey((parent shl 16) or child)
 
     /**
-     * Checks if the [componentId] is currently visible on any interface.
+     * Checks if the [component] is currently visible on any interface.
      */
-    fun isVisible(componentId: Int): Boolean = visible.values.contains(componentId)
+    fun isVisible(component: Int): Boolean = visible.values.contains(component)
 
     /**
      * Set an interface as being visible. This should be reserved for settings

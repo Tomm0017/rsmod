@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class SetDisplayInterfaceMessage(val interfaceId: Int) : Message
+data class SetDisplayComponentMessage(val component: Int) : Message

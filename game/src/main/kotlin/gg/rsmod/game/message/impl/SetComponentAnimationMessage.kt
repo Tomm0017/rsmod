@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class SetInterfaceAnimationMessage(val hash: Int, val anim: Int) : Message
+data class SetComponentAnimationMessage(val hash: Int, val anim: Int) : Message

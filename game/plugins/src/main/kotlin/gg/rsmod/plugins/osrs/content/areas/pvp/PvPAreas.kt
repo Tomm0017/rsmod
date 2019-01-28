@@ -5,5 +5,4 @@ package gg.rsmod.plugins.osrs.content.areas.pvp
  */
 object PvPAreas {
 
-    private const val PVP_SKULL_INTERFACE_ID = 90
 }

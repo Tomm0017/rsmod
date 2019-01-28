@@ -9,7 +9,7 @@ import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.plugins.osrs.api.InterfacePane
+import gg.rsmod.plugins.osrs.api.ComponentPane
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.helper.*
@@ -219,9 +219,9 @@ onCommand("interface", Privilege.ADMIN_POWER) {
 
     val args = it.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::interface 214</col>") { values ->
-        val interfaceId = values[0].toInt()
-        p.openInterface(interfaceId, InterfacePane.MAIN_SCREEN)
-        p.message("Opening interface <col=801700>$interfaceId</col>")
+        val component = values[0].toInt()
+        p.openComponent(component, ComponentPane.MAIN_SCREEN)
+        p.message("Opening interface <col=801700>$component</col>")
     }
 }
 

@@ -7,7 +7,7 @@ import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.api.InterfacePane
+import gg.rsmod.plugins.osrs.api.ComponentPane
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.service.item.ItemValueService
 import java.text.DecimalFormat
@@ -17,8 +17,8 @@ import java.text.DecimalFormat
  */
 object PriceGuide {
 
-    const val INTERFACE_ID = 464
-    const val TAB_INTERFACE_ID = 238
+    const val COMPONENT_ID = 464
+    const val TAB_COMPONENT_ID = 238
 
     private val GUIDE_CONTAINER = AttributeKey<ItemContainer>()
     private val FAKE_INV_CONTAINER = AttributeKey<ItemContainer>()
@@ -27,19 +27,19 @@ object PriceGuide {
         p.attr.put(GUIDE_CONTAINER, ItemContainer(p.world.definitions, p.inventory.capacity, ContainerStackType.STACK))
         p.attr.put(FAKE_INV_CONTAINER, ItemContainer(p.inventory))
 
-        p.setMainInterfaceBackground(color = -1, transparency = -1)
-        p.openInterface(interfaceId = INTERFACE_ID, pane = InterfacePane.MAIN_SCREEN)
-        p.openInterface(interfaceId = TAB_INTERFACE_ID, pane = InterfacePane.TAB_AREA)
+        p.setComponentUnderlay(color = -1, transparency = -1)
+        p.openComponent(component = COMPONENT_ID, pane = ComponentPane.MAIN_SCREEN)
+        p.openComponent(component = TAB_COMPONENT_ID, pane = ComponentPane.TAB_AREA)
 
         update(p)
 
-        p.setInterfaceSetting(parent = INTERFACE_ID, child = 2, range = 0..27, setting = 1086)
+        p.setComponentSetting(parent = COMPONENT_ID, child = 2, range = 0..27, setting = 1086)
         p.invokeScript(149, 15597568, 93, 4, 7, 0, -1, "Add<col=ff9040>", "Add-5<col=ff9040>", "Add-10<col=ff9040>", "Add-All<col=ff9040>", "Add-X<col=ff9040>")
-        p.setInterfaceSetting(parent = TAB_INTERFACE_ID, child = 0, range = 0..27, setting = 1086)
+        p.setComponentSetting(parent = TAB_COMPONENT_ID, child = 0, range = 0..27, setting = 1086)
     }
 
     fun close(p: Player) {
-        p.closeInterface(PriceGuide.TAB_INTERFACE_ID)
+        p.closeComponent(PriceGuide.TAB_COMPONENT_ID)
         p.attr.remove(GUIDE_CONTAINER)
         p.attr.remove(FAKE_INV_CONTAINER)
     }
@@ -185,9 +185,9 @@ object PriceGuide {
         val valueService = p.world.getService(ItemValueService::class.java).orElse(null)
         val cost = valueService?.get(item) ?: def.cost
 
-        p.setInterfaceItem(parent = INTERFACE_ID, child = 8, item = item, amountOrZoom = 1)
+        p.setComponentItem(parent = COMPONENT_ID, child = 8, item = item, amountOrZoom = 1)
         p.invokeScript(600, 0, 1, 15, 30408716)
-        p.setInterfaceText(parent = INTERFACE_ID, child = 12, text = "${def.name}:<br><col=ffffff>${DecimalFormat().format(cost)}</col>")
+        p.setComponentText(parent = COMPONENT_ID, child = 12, text = "${def.name}:<br><col=ffffff>${DecimalFormat().format(cost)}</col>")
     }
 
     fun update(p: Player) {
@@ -197,7 +197,7 @@ object PriceGuide {
         p.sendContainer(key = 90, container = guideContainer)
         p.sendContainer(key = 93, container = invContainer)
 
-        p.setInterfaceItem(parent = INTERFACE_ID, child = 8, item = -1, amountOrZoom = 1)
+        p.setComponentItem(parent = COMPONENT_ID, child = 8, item = -1, amountOrZoom = 1)
 
         val valueService = p.world.getService(ItemValueService::class.java).orElse(null)
         val costs = Array(size = guideContainer.capacity) { 0 }
@@ -211,6 +211,6 @@ object PriceGuide {
         p.invokeScript(785, *costs)
         p.invokeScript(600, 1, 1, 15, 30408716)
 
-        p.setInterfaceText(parent = INTERFACE_ID, child = 12, text = "Total guide price:<br><col=ffffff>${DecimalFormat().format(guideContainer.networth(p.world))}</col>")
+        p.setComponentText(parent = COMPONENT_ID, child = 12, text = "Total guide price:<br><col=ffffff>${DecimalFormat().format(guideContainer.networth(p.world))}</col>")
     }
 }

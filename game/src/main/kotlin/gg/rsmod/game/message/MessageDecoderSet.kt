@@ -36,7 +36,7 @@ class MessageDecoderSet {
         put(ContinueDialogMessage::class.java, ContinueDialogDecoder(), ContinueDialogHandler(), structures)
         put(ExamineObjectMessage::class.java, ExamineObjectDecoder(), ExamineObjectHandler(), structures)
         put(ItemActionOneMessage::class.java, ItemActionOneDecoder(), ItemActionOneHandler(), structures)
-        put(CloseMainInterfaceMessage::class.java, CloseMainInterfaceDecoder(), CloseMainInterfaceHandler(), structures)
+        put(CloseMainComponentMessage::class.java, CloseMainComponentDecoder(), CloseMainComponentHandler(), structures)
         put(ConfirmDisplayNameMessage::class.java, ConfirmDisplayNameDecoder(), ConfirmDisplayNameHandler(), structures)
         put(ItemActionTwoMessage::class.java, ItemActionTwoDecoder(), ItemActionTwoHandler(), structures)
         put(IntegerInputMessage::class.java, IntegerInputDecoder(), IntegerInputHandler(), structures)

@@ -10,9 +10,9 @@ class SpellOnNpcDecoder : MessageDecoder<SpellOnNpcMessage>() {
 
     override fun decode(opcode: Int, opcodeIndex: Int, values: HashMap<String, Number>, stringValues: HashMap<String, String>): SpellOnNpcMessage {
         val npcIndex = values["npc_index"]!!.toInt()
-        val interfaceHash = values["interface_hash"]!!.toInt()
-        val interfaceSlot = values["interface_slot"]!!.toInt()
+        val componentHash = values["component_hash"]!!.toInt()
+        val componentSlot = values["component_slot"]!!.toInt()
         val movementType = values["movement_type"]!!.toInt()
-        return SpellOnNpcMessage(npcIndex, interfaceHash, interfaceSlot, movementType)
+        return SpellOnNpcMessage(npcIndex, componentHash, componentSlot, movementType)
     }
 }

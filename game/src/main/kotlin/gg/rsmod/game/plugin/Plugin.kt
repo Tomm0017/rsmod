@@ -127,10 +127,10 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
     }
 
     /**
-     * Wait for our [ctx] as [Player] to close the interface [interfaceId].
+     * Wait for our [ctx] as [Player] to close the [component].
      */
-    suspend fun waitInterfaceClose(interfaceId: Int): Unit = suspendCoroutine {
-        nextStep = SuspendableStep(PredicateCondition { !(ctx as Player).interfaces.isVisible(interfaceId) }, it)
+    suspend fun waitComponentClose(component: Int): Unit = suspendCoroutine {
+        nextStep = SuspendableStep(PredicateCondition { !(ctx as Player).components.isVisible(component) }, it)
     }
 
     /**

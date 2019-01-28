@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class ItemActionTwoMessage(val item: Int, val slot: Int, val interfaceHash: Int) : Message
+data class ItemActionTwoMessage(val item: Int, val slot: Int, val componentHash: Int) : Message

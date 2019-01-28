@@ -3,13 +3,13 @@ import gg.rsmod.plugins.osrs.content.inter.kod.KeptOnDeath
 
 onButton(parent = 387, child = 21) {
     val p = it.player()
-    if (!p.lock.canInterfaceInteract()) {
+    if (!p.lock.canComponentInteract()) {
         return@onButton
     }
     KeptOnDeath.open(it.player())
 }
 
-onInterfaceClose(interfaceId = KeptOnDeath.INTERFACE_ID) {
+onComponentClose(component = KeptOnDeath.COMPONENT_ID) {
     /**
      * Have to resend inventory when this interface is closed as it sent a 'fake'
      * inventory container to the tab area, which can mess up other tab area

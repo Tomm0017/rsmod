@@ -9,7 +9,7 @@ import gg.rsmod.game.message.impl.ItemActionOneMessage
 class ItemActionOneDecoder : MessageDecoder<ItemActionOneMessage>() {
 
     override fun decode(opcode: Int, opcodeIndex: Int, values: HashMap<String, Number>, stringValues: HashMap<String, String>): ItemActionOneMessage {
-        val hash = values["interfaceHash"]!!.toInt()
+        val hash = values["component_hash"]!!.toInt()
         val item = values["item"]!!.toInt()
         val slot = values["slot"]!!.toInt()
 

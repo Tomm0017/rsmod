@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class CloseMainInterfaceMessage : Message
+class CloseComponentMessage(val hash: Int) : Message

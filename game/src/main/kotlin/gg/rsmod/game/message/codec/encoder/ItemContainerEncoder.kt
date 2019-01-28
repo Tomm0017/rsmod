@@ -12,9 +12,9 @@ import gg.rsmod.net.packet.GamePacketBuilder
 class ItemContainerEncoder : MessageEncoder<SetItemContainerMessage>() {
 
     override fun extract(message: SetItemContainerMessage, key: String): Number = when (key) {
-        "interfaceHash" -> message.interfaceHash
-        "containerKey" -> message.containerKey
-        "itemCount" -> message.items.size
+        "component_hash" -> message.componentHash
+        "container_key" -> message.containerKey
+        "item_count" -> message.items.size
         else -> throw Exception("Unhandled value key.")
     }
 

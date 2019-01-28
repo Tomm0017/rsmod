@@ -2,7 +2,7 @@ package gg.rsmod.plugins.osrs.content.inter.bank
 
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.plugins.osrs.api.InterfacePane
+import gg.rsmod.plugins.osrs.api.ComponentPane
 import gg.rsmod.plugins.osrs.api.helper.*
 
 /**
@@ -10,9 +10,9 @@ import gg.rsmod.plugins.osrs.api.helper.*
  */
 object Bank {
 
-    const val BANK_INTERFACE_ID = 12
-    const val INV_INTERFACE_ID = 15
-    const val INV_INTERFACE_CHILD = 3
+    const val BANK_COMPONENT_ID = 12
+    const val INV_COMPONENT_ID = 15
+    const val INV_COMPONENT_CHILD = 3
 
     const val WITHDRAW_AS_VARBIT = 3958
     const val REARRANGE_MODE_VARBIT = 3959
@@ -92,20 +92,20 @@ object Bank {
     }
 
     fun open(p: Player) {
-        p.setMainInterfaceBackground(-1, -2)
-        p.openInterface(BANK_INTERFACE_ID, InterfacePane.MAIN_SCREEN)
-        p.openInterface(INV_INTERFACE_ID, InterfacePane.TAB_AREA)
+        p.setComponentUnderlay(-1, -2)
+        p.openComponent(BANK_COMPONENT_ID, ComponentPane.MAIN_SCREEN)
+        p.openComponent(INV_COMPONENT_ID, ComponentPane.TAB_AREA)
 
-        p.setInterfaceText(parent = BANK_INTERFACE_ID, child = 8, text = p.bank.capacity.toString())
+        p.setComponentText(parent = BANK_COMPONENT_ID, child = 8, text = p.bank.capacity.toString())
 
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 13, range = 0..815, setting = 1312766)
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 13, range = 825..833, setting = 2)
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 13, range = 834..843, setting = 1048576)
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 11, range = 10..10, setting = 1048578)
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 11, range = 11..19, setting = 1179714)
-        p.setInterfaceSetting(parent = INV_INTERFACE_ID, child = 3, range = 0..27, setting = 1181694)
-        p.setInterfaceSetting(parent = INV_INTERFACE_ID, child = 10, range = 0..27, setting = 1054)
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 47, range = 1..816, setting = 2)
-        p.setInterfaceSetting(parent = BANK_INTERFACE_ID, child = 50, range = 0..3, setting = 2)
+        p.setComponentSetting(parent = BANK_COMPONENT_ID, child = 13, range = 0..815, setting = 1312766)
+        p.setComponentSetting(parent = BANK_COMPONENT_ID, child = 13, range = 825..833, setting = 2)
+        p.setComponentSetting(parent = BANK_COMPONENT_ID, child = 13, range = 834..843, setting = 1048576)
+        p.setComponentSetting(parent = BANK_COMPONENT_ID, child = 11, range = 10..10, setting = 1048578)
+        p.setComponentSetting(parent = BANK_COMPONENT_ID, child = 11, range = 11..19, setting = 1179714)
+        p.setComponentSetting(parent = INV_COMPONENT_ID, child = 3, range = 0..27, setting = 1181694)
+        p.setComponentSetting(parent = INV_COMPONENT_ID, child = 10, range = 0..27, setting = 1054)
+        p.setComponentSetting(parent = BANK_COMPONENT_ID, child = 47, range = 1..816, setting = 2)
+        p.setComponentSetting(parent = BANK_COMPONENT_ID, child = 50, range = 0..3, setting = 2)
     }
 }

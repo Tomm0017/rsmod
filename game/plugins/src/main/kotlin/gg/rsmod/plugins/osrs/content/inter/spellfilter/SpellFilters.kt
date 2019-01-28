@@ -5,7 +5,7 @@ package gg.rsmod.plugins.osrs.content.inter.spellfilter
  */
 object SpellFilters {
 
-    const val INTERFACE_ID = 218
+    const val COMPONENT_ID = 218
 
     const val DISABLE_FILTERS_VARBIT = 6718
 

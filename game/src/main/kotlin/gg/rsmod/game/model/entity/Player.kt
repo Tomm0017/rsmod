@@ -93,7 +93,7 @@ open class Player(override val world: World) : Pawn(world) {
 
     val bank by lazy { ItemContainer(world.definitions, 800, ContainerStackType.STACK) }
 
-    val interfaces by lazy { ComponentSet(this) }
+    val components by lazy { ComponentSet(this) }
 
     val varps  by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
 
@@ -129,12 +129,12 @@ open class Player(override val world: World) : Pawn(world) {
      * [ComponentSet.currentMainScreenInterface] from our [ComponentSet.visible] map
      * near the end of the next available game cycle.
      *
-     * It can't be removed immediately due to the [CloseMainInterfaceMessage]
+     * It can't be removed immediately due to the [CloseMainComponentMessage]
      * being received before [ClickButtonMessage], which leads to the server
      * thinking that the player is trying to click a button on an interface
      * that's not in their [ComponentSet.visible] map.
      */
-    var closeMainInterface = false
+    var closeMainComponent = false
 
     /**
      * Persistent attributes which must be saved from our system and loaded
@@ -297,9 +297,9 @@ open class Player(override val world: World) : Pawn(world) {
         /**
          * Close the main interface if it's pending.
          */
-        if (closeMainInterface) {
-            interfaces.closeMain()
-            closeMainInterface = false
+        if (closeMainComponent) {
+            components.closeMain()
+            closeMainComponent = false
         }
 
         /**

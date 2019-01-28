@@ -3,7 +3,7 @@ import gg.rsmod.game.action.EquipAction
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.helper.playSound
 import gg.rsmod.plugins.osrs.api.helper.player
-import gg.rsmod.plugins.osrs.api.helper.sendWeaponInterfaceInformation
+import gg.rsmod.plugins.osrs.api.helper.sendWeaponComponentInformation
 
 val EQUIP_ITEM_SOUND = 2238
 
@@ -13,7 +13,7 @@ for (equipment in EquipmentType.values()) {
 
         p.playSound(EQUIP_ITEM_SOUND)
         if (equipment == EquipmentType.WEAPON) {
-            p.sendWeaponInterfaceInformation()
+            p.sendWeaponComponentInformation()
         }
     }
 }
@@ -36,7 +36,7 @@ fun bindUnequip(equipment: EquipmentType, child: Int) {
 
         val result = EquipAction.unequip(p, equipment.id)
         if (equipment == EquipmentType.WEAPON && result == EquipAction.Result.SUCCESS) {
-            p.sendWeaponInterfaceInformation()
+            p.sendWeaponComponentInformation()
         }
     }
 }

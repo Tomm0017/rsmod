@@ -23,7 +23,7 @@ object SpellRequirements {
     private const val SPELL_RUNE2_AMT_KEY = 368
     private const val SPELL_RUNE3_ID_KEY = 369
     private const val SPELL_RUNE3_AMT_KEY = 370
-    private const val SPELL_INTERFACE_HASH_KEY = 596
+    private const val SPELL_COMPONENT_HASH_KEY = 596
     private const val SPELL_ID_KEY = 599
     private const val SPELL_NAME_KEY = 601
     private const val SPELL_DESC_KEY = 602
@@ -74,12 +74,12 @@ object SpellRequirements {
             val spellbook = data[SPELL_SPELLBOOK_KEY] as Int
             val name = data[SPELL_NAME_KEY] as String
             val lvl = data[SPELL_LVL_REQ_KEY] as Int
-            val interfaceHash = data[SPELL_INTERFACE_HASH_KEY] as Int
+            val componentHash = data[SPELL_COMPONENT_HASH_KEY] as Int
             val spellId = data[SPELL_ID_KEY] as Int
             val combat = (data[SPELL_TYPE_KEY] as Int) == 0 && spellbook in 0..1 // Only standard and ancient spellbooks have combat spells
 
-            val parent = interfaceHash shr 16
-            val child = interfaceHash and 0xFFFF
+            val parent = componentHash shr 16
+            val child = componentHash and 0xFFFF
             val runes = arrayListOf<Item>()
 
             if (data.containsKey(SPELL_RUNE1_ID_KEY)) {

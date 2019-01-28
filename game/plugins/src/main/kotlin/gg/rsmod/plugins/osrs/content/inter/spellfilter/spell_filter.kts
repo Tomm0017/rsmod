@@ -1,11 +1,11 @@
 
 import gg.rsmod.game.model.interf.DisplayMode
-import gg.rsmod.plugins.osrs.api.getDisplayInterfaceId
+import gg.rsmod.plugins.osrs.api.getDisplayComponentId
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.spellfilter.SpellFilters
 
 onLogin {
-    it.player().setInterfaceSetting(parent = SpellFilters.INTERFACE_ID, child = 184, range = 0..4, setting = 2)
+    it.player().setComponentSetting(parent = SpellFilters.COMPONENT_ID, child = 184, range = 0..4, setting = 2)
 }
 
 DisplayMode.values().forEach { mode ->
@@ -15,7 +15,7 @@ DisplayMode.values().forEach { mode ->
         DisplayMode.FIXED -> 54
         else -> return@forEach
     }
-    onButton(parent = getDisplayInterfaceId(mode), child = child) {
+    onButton(parent = getDisplayComponentId(mode), child = child) {
         val opt = it.getInteractingOption()
         if (opt == 1) {
             it.player().toggleVarbit(SpellFilters.DISABLE_FILTERS_VARBIT)
@@ -23,7 +23,7 @@ DisplayMode.values().forEach { mode ->
     }
 }
 
-onButton(parent = SpellFilters.INTERFACE_ID, child = 184) {
+onButton(parent = SpellFilters.COMPONENT_ID, child = 184) {
     val slot = it.getInteractingSlot()
     val varbit = when (slot) {
         0 -> SpellFilters.FILTER_COMBAT_VARBIT

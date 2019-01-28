@@ -95,7 +95,7 @@ class PluginRepository(val world: World) {
      * A map that contains plugins that should be executed when an interface
      * is closed.
      */
-    private val interfaceClose = hashMapOf<Int, Function1<Plugin, Unit>>()
+    private val componentClosePlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
 
     /**
      * A map that contains command plugins. The pair has the privilege power
@@ -211,7 +211,7 @@ class PluginRepository(val world: World) {
         npcCombatPlugins.clear()
         spellOnNpcPlugins.clear()
         timerPlugins.clear()
-        interfaceClose.clear()
+        componentClosePlugins.clear()
         commandPlugins.clear()
         buttonPlugins.clear()
         equipSlotPlugins.clear()
@@ -324,8 +324,8 @@ class PluginRepository(val world: World) {
         pluginCount++
     }
 
-    fun executeSpellOnNpc(p: Player, interfaceId: Int, child: Int): Boolean {
-        val hash = (interfaceId shl 16) or child
+    fun executeSpellOnNpc(p: Player, parent: Int, child: Int): Boolean {
+        val hash = (parent shl 16) or child
         val plugin = spellOnNpcPlugins[hash] ?: return false
         p.world.pluginExecutor.execute(p, plugin)
         return true
@@ -403,17 +403,17 @@ class PluginRepository(val world: World) {
     }
 
     @Throws(IllegalStateException::class)
-    fun bindInterfaceClose(interfaceId: Int, plugin: Function1<Plugin, Unit>) {
-        if (interfaceClose.containsKey(interfaceId)) {
-            logger.error("Interface id is already bound to a plugin: $interfaceId")
-            throw IllegalStateException("Interface id is already bound to a plugin: $interfaceId")
+    fun bindComponentClose(component: Int, plugin: Function1<Plugin, Unit>) {
+        if (componentClosePlugins.containsKey(component)) {
+            logger.error("Component id is already bound to a plugin: $component")
+            throw IllegalStateException("Component id is already bound to a plugin: $component")
         }
-        interfaceClose[interfaceId] = plugin
+        componentClosePlugins[component] = plugin
         pluginCount++
     }
 
-    fun executeInterfaceClose(p: Player, parent: Int): Boolean {
-        val plugin = interfaceClose[parent]
+    fun executeComponentClose(p: Player, parent: Int): Boolean {
+        val plugin = componentClosePlugins[parent]
         if (plugin != null) {
             p.world.pluginExecutor.execute(p, plugin)
             return true
@@ -808,10 +808,10 @@ class PluginRepository(val world: World) {
             times.clear()
 
             stopwatch.reset().start()
-            repository.interfaceClose.forEach { hash, _ ->
-                repository.executeInterfaceClose(dummy, hash shr 16)
+            repository.componentClosePlugins.forEach { hash, _ ->
+                repository.executeComponentClose(dummy, hash shr 16)
             }
-            times.add(TimedPlugin(name = "Close Interface", note = "", time = stopwatch.elapsed(measurement)))
+            times.add(TimedPlugin(name = "Close Component", note = "", time = stopwatch.elapsed(measurement)))
             if (!warmup) {
                 times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
             }

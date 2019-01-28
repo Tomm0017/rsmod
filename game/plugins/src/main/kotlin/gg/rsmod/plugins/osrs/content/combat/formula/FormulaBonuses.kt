@@ -19,6 +19,8 @@ package gg.rsmod.plugins.osrs.content.combat.formula
  * @param staffOfDeadMultiplier
  * Reserved for staff of the dead special attack effect multiplier.
  *
+ * TODO(Tom): maybe use builder for this and make constructor private
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 data class FormulaBonuses(val prayerMultiplier: Double, val equipmentMultiplier: Double,

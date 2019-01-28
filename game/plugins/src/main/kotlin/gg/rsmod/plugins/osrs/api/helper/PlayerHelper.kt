@@ -266,6 +266,8 @@ fun Player.hasWeaponType(type: WeaponType, vararg others: WeaponType): Boolean =
 
 fun Player.hasEquipped(slot: EquipmentType, item: Int, vararg others: Int): Boolean = equipment.hasAt(slot.id, item) || others.isNotEmpty() && others.any { equipment.hasAt(slot.id, it) }
 
+fun Player.hasEquipped(items: IntArray) = items.all { equipment.hasItem(it) }
+
 fun Player.getEquipment(slot: EquipmentType): Item? = equipment[slot.id]
 
 fun Player.hasSkullIcon(icon: SkullIcon): Boolean = skullIcon == icon.id

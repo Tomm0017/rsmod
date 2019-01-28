@@ -7,6 +7,11 @@ import gg.rsmod.plugins.osrs.api.helper.player
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayer
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
 
+// TODO: add support for onLogout plugins and set active prayer varp to 0 on logout
+/*onLogout {
+    Prayers.deactivateAll()
+}*/
+
 /**
  * Activate prayers.
  */

@@ -25,6 +25,10 @@ object MeleeCombatFormula : CombatFormula {
             Items.BLACK_MASK_5, Items.BLACK_MASK_6, Items.BLACK_MASK_7, Items.BLACK_MASK_8,
             Items.BLACK_MASK_9, Items.BLACK_MASK_10)
 
+    private val MELEE_VOID = intArrayOf(Items.VOID_MELEE_HELM, Items.VOID_KNIGHT_TOP, Items.VOID_KNIGHT_ROBE, Items.VOID_KNIGHT_GLOVES)
+
+    private val MELEE_ELITE_VOID = intArrayOf(Items.VOID_MELEE_HELM, Items.ELITE_VOID_TOP, Items.ELITE_VOID_ROBE, Items.VOID_KNIGHT_GLOVES)
+
     override fun landHit(pawn: Pawn, target: Pawn, multiplier: Double): Boolean {
         return true
     }
@@ -88,7 +92,10 @@ object MeleeCombatFormula : CombatFormula {
 
         effectiveLevel += 8
 
-        // TODO: apply void bonus
+        if (player.hasEquipped(MELEE_VOID) || player.hasEquipped(MELEE_ELITE_VOID)) {
+            effectiveLevel *= 1.10
+            effectiveLevel = Math.floor(effectiveLevel)
+        }
 
         return Math.floor(effectiveLevel)
     }

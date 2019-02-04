@@ -38,7 +38,8 @@ class PluginPacker {
     private fun compileKotlin(compilerPath: String, gameJar: String, pluginJar: String, plugin: Path, paths: List<Path>): Boolean {
         val splitPaths = paths.filter { it.fileName.toString().endsWith(".kt") || it.fileName.toString().endsWith(".kts") }.joinToString(" ") { "\"$it\"" }
 
-        val process = ProcessBuilder("$compilerPath/kotlinc.bat", "$splitPaths -classpath \"$gameJar\";$pluginJar -d \"$plugin\"").inheritIO()
+        // TODO: command args must include /bin/bash and -c for linux systems
+        val process = ProcessBuilder(compilerPath, "$splitPaths -classpath \"$gameJar\";$pluginJar -d \"$plugin\"").inheritIO()
         val status = process.start()
         status.waitFor(30, TimeUnit.SECONDS)
         status.destroyForcibly()

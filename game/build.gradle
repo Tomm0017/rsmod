@@ -20,6 +20,7 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
     compile group: 'io.github.classgraph', name: 'classgraph', version: classGraphVersion
+    compile group: 'it.unimi.dsi', name: 'fastutil', version: fastUtilVersion
 
     implementation group: 'com.lambdaworks', name: 'scrypt', version: scryptVersion
     implementation group: 'io.netty', name: 'netty-all', version: nettyVersion

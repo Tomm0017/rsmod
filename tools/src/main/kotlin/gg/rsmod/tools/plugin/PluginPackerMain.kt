@@ -78,12 +78,12 @@ object PluginPackerMain {
                     val gameJarPath = commands.getOptionValue('g')
                     val pluginJarPath = commands.getOptionValue('p')
 
-                    val compiler = Paths.get(compilerPath).resolve("kotlinc")
+                    val compiler = Paths.get(compilerPath)
                     val gameJar = Paths.get(gameJarPath)
                     val pluginJar = Paths.get(pluginJarPath)
 
-                    if (!Files.exists(compiler)) {
-                        error("Kotlin compiler could not be found in: $compiler")
+                    if (!Files.exists(compiler) || Files.isDirectory(compiler)) {
+                        error("Kotlinc file could not be found in: $compiler")
                     } else if (!Files.exists(gameJar)) {
                         error("Game distribution jar could not be found in: $gameJar")
                     } else if (!Files.exists(pluginJar)) {

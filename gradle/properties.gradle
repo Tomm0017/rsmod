@@ -16,4 +16,5 @@ ext {
     cliVersion = '1.4'
     log4jVersion = '2.8.2'
     classGraphVersion = '4.6.12'
+    fastUtilVersion = '7.0.7'
 }

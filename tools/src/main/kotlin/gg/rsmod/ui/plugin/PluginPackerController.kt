@@ -57,31 +57,19 @@ class PluginPackerController : Initializable {
          * Pack settings.
          */
         compilerButton.setOnAction {
-            var oldDirectory: File? = null
-            while (true) {
-                val chooser = DirectoryChooser()
-                chooser.title = "Select path to your Kotlin's kotlinc bin folder"
+            val chooser = FileChooser()
+            chooser.title = "Select Kotlin Compiler (kotlinc) file"
 
-                if (compilerPath.text.isNotBlank()) {
-                    val oldPath = Paths.get(compilerPath.text)
-                    chooser.initialDirectory = if (Files.exists(oldPath)) oldPath.toFile() else null
-                } else if (oldDirectory != null) {
-                    chooser.initialDirectory = oldDirectory
-                }
+            if (compilerPath.text.isNotBlank()) {
+                val oldPath = Paths.get(compilerPath.text)
+                chooser.initialDirectory = if (Files.exists(oldPath)) oldPath.parent.toFile() else null
+            } else {
+                chooser.initialDirectory = Paths.get(".").toFile()
+            }
 
-                val folder = chooser.showDialog(primaryStage)
-                if (folder != null) {
-                    if (Files.exists(Paths.get(folder.absolutePath).resolve("kotlinc")) && Files.exists(Paths.get(folder.absolutePath).resolve("kotlinc.bat"))) {
-                        setText(compilerPath, folder.absolutePath)
-                        break
-                    } else {
-                        oldDirectory = folder
-                        alertDialog(Alert.AlertType.ERROR, "Error", "That directory is not valid!",
-                                "Directory must contain kotlinc & kotlinc.bat files.", primaryStage, icons)
-                    }
-                } else {
-                    break
-                }
+            val file = chooser.showOpenDialog(primaryStage)
+            if (file != null) {
+                setText(compilerPath, file.absolutePath)
             }
         }
 
@@ -241,9 +229,9 @@ class PluginPackerController : Initializable {
             val plugin = pluginName.text
 
             if (jarPlugin.isSelected) {
-                if (compilerPath.text.isBlank() || !Files.exists(compiler) || !Files.isDirectory(compiler)) {
-                    alertDialog(Alert.AlertType.ERROR, "Error", "The Kotlin compiler folder does not exist!",
-                            "Directory: ${compilerPath.text}", primaryStage, icons)
+                if (compilerPath.text.isBlank() || !Files.exists(compiler) || Files.isDirectory(compiler)) {
+                    alertDialog(Alert.AlertType.ERROR, "Error", "The Kotlin compiler file does not exist!",
+                            "File: ${compilerPath.text}", primaryStage, icons)
                     return@setOnAction
                 }
 

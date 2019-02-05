@@ -4,6 +4,7 @@ import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.CombatStyle
 import gg.rsmod.game.model.combat.NpcCombatDef
@@ -37,6 +38,8 @@ class Npc private constructor(val id: Int, override val world: World, val spawnT
     lateinit var combatDef: NpcCombatDef
 
     var combatClass = CombatClass.MELEE
+
+    var attackStyle = AttackStyle.NONE
 
     var combatStyle = CombatStyle.NONE
 

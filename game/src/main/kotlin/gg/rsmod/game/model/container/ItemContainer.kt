@@ -306,14 +306,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
     }
 
     /**
-     * Adds an [Item] to our container. We also use the item to see if the
-     * transaction should use the "no-stack" flag, which means that even if
-     * the container has a type of [ContainerStackType.STACK] or if the item
-     * metadata specifies it's stackable, it will will not stack with any other
-     * item with the same id on the container.
-     *
-     * Any [Item] that has any [gg.rsmod.game.model.item.ItemAttribute] will not
-     * stack with other items of the same id.
+     * Adds an [Item] to our container.
      *
      * Keep in mind, that just because you're using an [Item] object, does not
      * mean that the same [Item] instance will be added to the container. The

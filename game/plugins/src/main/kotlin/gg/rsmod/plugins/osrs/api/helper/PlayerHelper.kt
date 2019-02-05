@@ -258,7 +258,7 @@ fun Player.hasSpellbook(book: Spellbook): Boolean = getVarbit(4070) == book.id
 
 fun Player.getSpellbook(): Spellbook = Spellbook.values().first { getVarbit(4070) == it.id }
 
-fun Player.getWeaponType(): Int = getVarp(843)
+fun Player.getWeaponType(): Int = getVarbit(357)
 
 fun Player.getAttackStyle(): Int = getVarp(43)
 
@@ -300,7 +300,7 @@ fun Player.sendWeaponComponentInformation() {
     }
 
     setComponentText(593, 1, name)
-    setVarp(843, panel)
+    setVarbit(357, panel)
 }
 
 fun Player.addXp(skill: Int, xp: Double) {

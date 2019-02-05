@@ -23,8 +23,10 @@ onCommand("max") {
         specialAttackMultiplier = 1.1
         specialPassiveMultiplier = 1.25
     }
+    val accuracy = MeleeCombatFormula.getAccuracy(player, player)
+    val landHit = accuracy >= player.world.randomDouble()
     val max = MeleeCombatFormula.getMaxHit(player, player, specialAttackMultiplier, specialPassiveMultiplier)
-    player.message("Max hit: $max")
+    player.message("Max hit=$max - accuracy=$accuracy - land=$landHit")
 }
 
 onCombat {

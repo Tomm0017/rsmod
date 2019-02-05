@@ -83,8 +83,8 @@ class MovementQueue(val pawn: Pawn) {
         var dz = next.z - current.z
         val delta = Math.max(Math.abs(dx), Math.abs(dz))
 
-        val regions = pawn.world.chunks
-        var region = regions.getForTile(current)
+        val chunks = pawn.world.chunks
+        var chunk = chunks.getForTile(current)
 
         for (i in 0 until delta) {
             if (dx < 0) {
@@ -100,8 +100,8 @@ class MovementQueue(val pawn: Pawn) {
             }
 
             val step = next.transform(-dx, -dz)
-            if (!region.contains(step)) {
-                region = regions.getForTile(step)
+            if (!chunk.contains(step)) {
+                chunk = chunks.getForTile(step)
             }
 
             steps.add(Step(step, type))

@@ -50,10 +50,10 @@ onCommand("infpray", Privilege.ADMIN_POWER) {
     p.message("Infinite prayer: ${if (p.getVarbit(Prayers.INF_PRAY_VARBIT) == 0) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
 }
 
-onCommand("elerunes", Privilege.ADMIN_POWER) {
+onCommand("infrunes", Privilege.ADMIN_POWER) {
     val p = it.player()
-    p.toggleVarbit(SpellRequirements.INF_ELEMENTAL_RUNES_VARBIT)
-    p.message("Infinite elemental runes: ${if (p.getVarbit(SpellRequirements.INF_ELEMENTAL_RUNES_VARBIT) != 1) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
+    p.toggleVarbit(SpellRequirements.INF_RUNES_VARBIT)
+    p.message("Infinite runes: ${if (p.getVarbit(SpellRequirements.INF_RUNES_VARBIT) != 1) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
 }
 
 onCommand("npc", Privilege.ADMIN_POWER) {

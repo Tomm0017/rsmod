@@ -7,7 +7,6 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import org.apache.logging.log4j.LogManager
 import java.nio.file.Files
 import java.nio.file.Path
@@ -22,7 +21,7 @@ class NpcStatsService : Service() {
         private val logger = LogManager.getLogger(NpcStatsService::class.java)
     }
 
-    private val definitions = Int2ObjectOpenHashMap<NpcCombatDef>()
+    private val definitions = hashMapOf<Int, NpcCombatDef>()
 
     private lateinit var path: Path
 

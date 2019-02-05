@@ -7,7 +7,6 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.item.ItemStats
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import org.apache.logging.log4j.LogManager
 import java.io.FileNotFoundException
 import java.nio.file.Files
@@ -23,7 +22,7 @@ class ItemStatsService : Service() {
         private val logger = LogManager.getLogger(ItemStatsService::class.java)
     }
 
-    private val items = Int2ObjectOpenHashMap<ItemStats>()
+    private val items = hashMapOf<Int, ItemStats>()
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         val path = Paths.get(serviceProperties.getOrDefault("path", "./data/cfg/item-stats.json"))

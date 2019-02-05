@@ -39,8 +39,9 @@ object MeleeCombatStrategy : CombatStrategy {
         val animation = CombatConfigs.getAttackAnimation(pawn)
         pawn.animate(animation)
 
-        val landHit = MeleeCombatFormula.getAccuracy(pawn, target) != 0.0 // TODO: real impl
+        val accuracy = MeleeCombatFormula.getAccuracy(pawn, target)
         val maxHit = MeleeCombatFormula.getMaxHit(pawn, target)
+        val landHit = accuracy >= world.randomDouble()
 
         val damage = if (landHit) world.random(maxHit) else 0
         target.hit(damage = damage, delay = getHitDelay(pawn.calculateCentreTile(), target.calculateCentreTile()))

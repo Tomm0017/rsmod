@@ -57,7 +57,7 @@ class CollisionManager(val world: World) {
         var chunk: Chunk? = null
 
         val type = update.type
-        val map = update.flags.asMap()
+        val map = update.flags
 
         for (entry in map.entries) {
             val tile = entry.key

@@ -77,10 +77,8 @@ class SkillSet(val maxSkills: Int) {
     /**
      * Reset the [dirty] flag on all skills.
      */
-    fun clean() {
-        for (i in 0 until dirty.size) {
-            dirty[i] = false
-        }
+    fun clean(skill: Int) {
+        dirty[skill] = false
     }
 
     fun getCurrentXp(skill: Int): Double = skills[skill].xp

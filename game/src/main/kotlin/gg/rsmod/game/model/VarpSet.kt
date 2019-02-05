@@ -16,11 +16,11 @@ class VarpSet(val maxVarps: Int) {
     }
 
     /**
-     * A set of dirty varps which will be sent to the client on the next cycle.
+     * A collection of dirty varps which will be sent to the client on the next cycle.
      * This collection should be used only if the revision you are trying to
      * support uses them on the client.
      */
-    private val dirty = hashSetOf<Int>()
+    private val dirty = BooleanArray(maxVarps)
 
     operator fun get(id: Int): Varp = varps[id]
 
@@ -28,7 +28,7 @@ class VarpSet(val maxVarps: Int) {
 
     fun setState(id: Int, state: Int): VarpSet {
         varps[id].state = state
-        dirty.add(id)
+        dirty[id] = true
         return this
     }
 
@@ -70,11 +70,11 @@ class VarpSet(val maxVarps: Int) {
     }
 
     fun isDirty(id: Int): Boolean {
-        return dirty.contains(id)
+        return dirty[id]
     }
 
-    fun clean() {
-        dirty.clear()
+    fun clean(id: Int) {
+        dirty[id] = false
     }
 
     fun getAll(): List<Varp> = varps

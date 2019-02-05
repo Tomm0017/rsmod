@@ -10,6 +10,7 @@ import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.interf.ComponentSet
 import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.game.sync.block.UpdateBlockType
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import java.util.*
 
 /**
@@ -95,7 +96,7 @@ open class Player(override val world: World) : Pawn(world) {
 
     val components by lazy { ComponentSet(this) }
 
-    val varps  by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
+    val varps by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
 
     /**
      * Some areas have a 'large' viewport. Which means the player's client is
@@ -107,13 +108,15 @@ open class Player(override val world: World) : Pawn(world) {
      * The players in our viewport, including ourselves. This list should not
      * be used outside of our synchronization task.
      */
-    val localPlayers = arrayListOf<Player>()
+    val localPlayers = arrayOfNulls<Player>(2048)
 
-    /**
-     * The npcs in our viewport. This list should not be used outside of our
-     * synchronization task.
-     */
-    val localNpcs = arrayListOf<Npc>()
+    val localPlayerIndices = IntArray(2048)
+
+    var localPlayerCount = 0
+
+    val externalPlayerIndices = IntArray(2048)
+
+    var externalPlayerCount = 0
 
     val otherPlayerSkipFlags = IntArray(2048)
 
@@ -123,6 +126,12 @@ open class Player(override val world: World) : Pawn(world) {
      * on log-in, this array will be filled with [0]s for this [Player].
      */
     val otherPlayerTiles = IntArray(2048)
+
+    /**
+     * The npcs in our viewport. This list should not be used outside of our
+     * synchronization task.
+     */
+    val localNpcs = ObjectArrayList<Npc>()
 
     /**
      * A flag that represents whether or not we want to remove our
@@ -135,17 +144,6 @@ open class Player(override val world: World) : Pawn(world) {
      * that's not in their [ComponentSet.visible] map.
      */
     var closeMainComponent = false
-
-    /**
-     * Persistent attributes which must be saved from our system and loaded
-     * when needed. This map does not support storing [Double]s as we convert
-     * every double into an [Int] when loading. This is done because some
-     * parsers can interpret [Number]s differently, so we want to force every
-     * [Number] to an [Int], explicitly. If you wish to store a [Double], you
-     * can multiply your value by [100] and then divide it on login as a work-
-     * around.
-     */
-    private val persistentAttr: MutableMap<String, Any> = hashMapOf()
 
     val looks = intArrayOf(9, 14, 109, 26, 33, 36, 42)
 
@@ -274,16 +272,16 @@ open class Player(override val world: World) : Pawn(world) {
                     else -> SetBigVarpMessage(varp.id, varp.state)
                 }
                 write(message)
+                varps.clean(i)
             }
         }
-        varps.clean()
 
         for (i in 0 until getSkills().maxSkills) {
             if (getSkills().isDirty(i)) {
                 write(SendSkillMessage(skill = i, level = getSkills().getCurrentLevel(i), xp = getSkills().getCurrentXp(i).toInt()))
+                getSkills().clean(i)
             }
         }
-        getSkills().clean()
     }
 
     /**
@@ -343,7 +341,16 @@ open class Player(override val world: World) : Pawn(world) {
      */
     fun login() {
         if (getType().isHumanControlled()) {
-            localPlayers.add(this)
+            localPlayers[index] = this
+            localPlayerIndices[localPlayerCount++] = index
+
+            for (i in 1 until 2048) {
+                if (i == index) {
+                    continue
+                }
+                externalPlayerIndices[externalPlayerCount++] = i
+            }
+
             write(LoginRegionMessage(index, tile, world.xteaKeyService))
         }
 

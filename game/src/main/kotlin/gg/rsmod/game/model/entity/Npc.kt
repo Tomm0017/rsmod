@@ -39,9 +39,9 @@ class Npc private constructor(val id: Int, override val world: World, val spawnT
 
     var combatClass = CombatClass.MELEE
 
-    var attackStyle = AttackStyle.NONE
+    var attackStyle = AttackStyle.CONTROLLED
 
-    var combatStyle = CombatStyle.NONE
+    var combatStyle = CombatStyle.STAB
 
     var aggroCheck: ((Npc, Player) -> Boolean)? = null
 

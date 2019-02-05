@@ -16,7 +16,7 @@ class SequentialSynchronizationTask : GameTask {
     override fun execute(world: World, service: GameService) {
         val worldPlayers = world.players
         val worldNpcs = world.npcs
-        val rawNpcs = world.npcs.toRawList()
+        val rawNpcs = world.npcs.getRaw()
 
         worldPlayers.forEach { p ->
             PlayerPreSynchronizationTask(p).run()

@@ -2,6 +2,8 @@ package gg.rsmod.game.model.region
 
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -12,9 +14,9 @@ class ChunkSet(val world: World) {
         const val DEFAULT_TOTAL_HEIGHTS = 4
     }
 
-    private val chunks = hashMapOf<ChunkCoords, Chunk>()
+    private val chunks = Object2ObjectOpenHashMap<ChunkCoords, Chunk>()
 
-    private val activeRegions = hashSetOf<Int>()
+    private val activeRegions = IntOpenHashSet()
 
     fun getActiveChunks(): Int = chunks.size
 

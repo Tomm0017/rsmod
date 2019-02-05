@@ -1,15 +1,15 @@
 package gg.rsmod.game.model.collision
 
-import com.google.common.collect.Multimap
-import com.google.common.collect.MultimapBuilder
-import com.google.common.collect.Multimaps
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.GameObject
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
+import it.unimi.dsi.fastutil.objects.ObjectList
 
-class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Tile, DirectionFlag>) {
+class CollisionUpdate private constructor(val type: Type, val flags: Object2ObjectOpenHashMap<Tile, ObjectList<DirectionFlag>>) {
 
     enum class Type {
         ADD,
@@ -18,13 +18,13 @@ class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Ti
 
     class Builder {
 
-        private val flags: Multimap<Tile, DirectionFlag> = MultimapBuilder.hashKeys().hashSetValues().build()
+        private val flags = Object2ObjectOpenHashMap<Tile, ObjectList<DirectionFlag>>()
 
         private var type: Type? = null
 
         fun build(): CollisionUpdate {
             check(type != null) { "Type has not been set." }
-            return CollisionUpdate(type!!, Multimaps.unmodifiableMultimap(flags))
+            return CollisionUpdate(type!!, flags)
         }
 
         fun setType(type: Type) {
@@ -34,7 +34,9 @@ class CollisionUpdate private constructor(val type: Type, val flags: Multimap<Ti
 
         fun putTile(tile: Tile, impenetrable: Boolean, vararg directions: Direction) {
             check(directions.isNotEmpty()) { "Directions must not be empty." }
-            directions.forEach { dir -> flags.put(tile, DirectionFlag(dir, impenetrable)) }
+            val flags = flags[tile] ?: ObjectArrayList()
+            directions.forEach { dir -> flags.add(DirectionFlag(dir, impenetrable)) }
+            this.flags[tile] = flags
         }
 
         fun putWall(tile: Tile, impenetrable: Boolean, orientation: Direction) {

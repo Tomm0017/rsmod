@@ -12,7 +12,7 @@ import gg.rsmod.net.packet.PacketType
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class NpcSynchronizationTask(private val player: Player, private val worldNpcs: List<Npc?>) : SynchronizationTask {
+class NpcSynchronizationTask(private val player: Player, private val worldNpcs: Array<Npc?>) : SynchronizationTask {
 
     companion object {
         private const val MAX_LOCAL_NPCS = 255

@@ -35,9 +35,9 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         private val logger = LogManager.getLogger(World::class.java)
     }
 
-    val players = PawnList<Player>(gameContext.playerLimit)
+    val players = PawnList(arrayOfNulls<Player>(gameContext.playerLimit))
 
-    val npcs = PawnList<Npc>(Short.MAX_VALUE.toInt())
+    val npcs = PawnList(arrayOfNulls<Npc>(Short.MAX_VALUE.toInt()))
 
     val collision = CollisionManager(this)
 

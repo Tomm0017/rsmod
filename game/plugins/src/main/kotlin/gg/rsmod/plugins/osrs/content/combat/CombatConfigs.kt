@@ -96,7 +96,7 @@ object CombatConfigs {
                 pawn.hasWeaponType(WeaponType.THROWN) -> if (pawn.hasEquipped(EquipmentType.WEAPON, Items.TOKTZXILUL)) 7558 else 929
                 pawn.hasWeaponType(WeaponType.WHIP) -> 1658
                 pawn.hasWeaponType(WeaponType.SPEAR) || pawn.hasWeaponType(WeaponType.HALBERD) -> if (style == 1) 440 else if (style == 2) 429 else 428
-                pawn.hasWeaponType(WeaponType.CLAWS) -> 493
+                pawn.hasWeaponType(WeaponType.CLAWS) -> 393
                 else -> if (style == 1) 423 else 422
             }
         }

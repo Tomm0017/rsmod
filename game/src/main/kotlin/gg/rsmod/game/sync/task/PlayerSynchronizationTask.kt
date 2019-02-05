@@ -19,23 +19,26 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 40
     }
 
-    private val nonLocalIndices = arrayListOf<Int>().apply { addAll(1..2047) }
-
-    private val prioritizedPlayers = getPrioritizedWorldPlayers()
-
     override fun run() {
         val buf = GamePacketBuilder(player.world.playerUpdateBlocks.updateOpcode, PacketType.VARIABLE_SHORT)
         val maskBuf = GamePacketBuilder()
 
         val segments = getSegments()
-        segments.forEach { segment ->
+        for (segment in segments) {
             segment.encode(if (segment is PlayerUpdateBlockSegment) maskBuf else buf)
         }
 
         buf.putBytes(maskBuf.getBuffer())
         player.write(buf.toGamePacket())
 
+        player.localPlayerCount = 0
+        player.externalPlayerCount = 0
         for (i in 1 until 2048) {
+            if (player.localPlayers[i] != null) {
+                player.localPlayerIndices[player.localPlayerCount++] = i
+            } else {
+                player.externalPlayerIndices[player.externalPlayerCount++] = i
+            }
             player.otherPlayerSkipFlags[i] = player.otherPlayerSkipFlags[i] shr 1
         }
     }
@@ -66,18 +69,12 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
     private fun getSegments(): List<SynchronizationSegment> {
         val segments = arrayListOf<SynchronizationSegment>()
 
-        val localsToRemove = arrayListOf<Player>()
-        val nonLocalsToRemove = arrayListOf<Int>()
-
         var skipCount = 0
-        val locals = player.localPlayers
 
         segments.add(SetBitAccessSegment())
-        for (i in 0 until locals.size) {
-            val local = locals[i]
-            val index = local.lastIndex
-
-            nonLocalIndices.remove(index)
+        for (i in 0 until player.localPlayerCount) {
+            val index = player.localPlayerIndices[i]
+            val local = player.localPlayers[index]!!
 
             if ((player.otherPlayerSkipFlags[index] and 0x1) != 0) {
                 continue
@@ -90,8 +87,8 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             }
 
             if (local != player && shouldRemove(local)) {
+                player.localPlayers[index] = null
                 player.otherPlayerTiles[index] = 0
-                localsToRemove.add(local)
                 segments.add(RemoveLocalPlayerSegment())
                 continue
             }
@@ -128,9 +125,9 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             } else if (requiresBlockUpdate) {
                 segments.add(SignalPlayerUpdateBlockSegment())
             } else {
-                for (j in i + 1 until locals.size) {
-                    val next = locals[j]
-                    val nextIndex = next.lastIndex
+                for (j in i + 1 until player.localPlayerCount) {
+                    val nextIndex = player.localPlayerIndices[j]
+                    val next = player.localPlayers[nextIndex]!!
                     if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) != 0) {
                         continue
                     }
@@ -145,16 +142,14 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         }
         segments.add(SetByteAccessSegment())
 
-        locals.removeAll(localsToRemove)
-
         if (skipCount > 0) {
             throw RuntimeException()
         }
 
         segments.add(SetBitAccessSegment())
-        for (i in 0 until locals.size) {
-            val local = locals[i]
-            val index = local.lastIndex
+        for (i in 0 until player.localPlayerCount) {
+            val index = player.localPlayerIndices[i]
+            val local = player.localPlayers[index]!!
 
             if ((player.otherPlayerSkipFlags[index] and 0x1) == 0) {
                 continue
@@ -167,8 +162,8 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             }
 
             if (local != player && shouldRemove(local)) {
+                player.localPlayers[index] = null
                 player.otherPlayerTiles[index] = 0
-                localsToRemove.add(local)
                 segments.add(RemoveLocalPlayerSegment())
                 continue
             }
@@ -205,9 +200,9 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             } else if (requiresBlockUpdate) {
                 segments.add(SignalPlayerUpdateBlockSegment())
             } else {
-                for (j in i + 1 until locals.size) {
-                    val next = locals[j]
-                    val nextIndex = next.lastIndex
+                for (j in i + 1 until player.localPlayerCount) {
+                    val nextIndex = player.localPlayerIndices[j]
+                    val next = player.localPlayers[nextIndex]!!
                     if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) == 0) {
                         continue
                     }
@@ -222,8 +217,6 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         }
         segments.add(SetByteAccessSegment())
 
-        locals.removeAll(localsToRemove)
-
         if (skipCount > 0) {
             throw RuntimeException()
         }
@@ -231,8 +224,8 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         segments.add(SetBitAccessSegment())
 
         var added = 0
-        for (i in 0 until nonLocalIndices.size) {
-            val index = nonLocalIndices[i]
+        for (i in 0 until player.externalPlayerCount) {
+            val index = player.externalPlayerIndices[i]
 
             if ((player.otherPlayerSkipFlags[index] and 0x1) == 0) {
                 continue
@@ -244,7 +237,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 continue
             }
 
-            val nonLocal = if (index < player.world.players.capacity) prioritizedPlayers.firstOrNull { it.index == index } else null
+            val nonLocal = if (index < player.world.players.capacity) player.world.players.get(index) else null
 
             if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE
                     && player.localPlayers.size < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
@@ -254,20 +247,18 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
                 player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
                 player.otherPlayerTiles[index] = tileHash
+                player.localPlayers[index] = nonLocal
 
-                player.localPlayers.add(nonLocal)
-                player.localPlayers.sortBy { it.index }
                 added++
-                nonLocalsToRemove.add(index)
                 continue
             }
 
-            for (j in i + 1 until nonLocalIndices.size) {
-                val nextIndex = nonLocalIndices[j]
+            for (j in i + 1 until player.externalPlayerCount) {
+                val nextIndex = player.externalPlayerIndices[j]
                 if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) == 0) {
                     continue
                 }
-                val next = if (nextIndex < player.world.players.capacity) prioritizedPlayers.firstOrNull { it.index == nextIndex } else null
+                val next = if (nextIndex < player.world.players.capacity) player.world.players.get(nextIndex) else null
                 if (next != null && shouldAdd(next)) {
                     break
                 }
@@ -284,9 +275,8 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
         segments.add(SetBitAccessSegment())
 
-        nonLocalIndices.removeAll(nonLocalsToRemove)
-        for (i in 0 until nonLocalIndices.size) {
-            val index = nonLocalIndices[i]
+        for (i in 0 until player.externalPlayerCount) {
+            val index = player.externalPlayerIndices[i]
 
             if ((player.otherPlayerSkipFlags[index] and 0x1) != 0) {
                 continue
@@ -298,7 +288,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 continue
             }
 
-            val nonLocal = if (index < player.world.players.capacity) prioritizedPlayers.firstOrNull { it.index == index } else null
+            val nonLocal = if (index < player.world.players.capacity) player.world.players.get(index) else null
 
             if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE
                     && player.localPlayers.size < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
@@ -308,19 +298,18 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
                 player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
                 player.otherPlayerTiles[index] = tileHash
+                player.localPlayers[index] = nonLocal
 
-                player.localPlayers.add(nonLocal)
-                player.localPlayers.sortBy { it.index }
                 added++
                 continue
             }
 
-            for (j in i + 1 until nonLocalIndices.size) {
-                val nextIndex = nonLocalIndices[j]
+            for (j in i + 1 until player.externalPlayerCount) {
+                val nextIndex = player.externalPlayerIndices[j]
                 if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) != 0) {
                     continue
                 }
-                val next = if (nextIndex < player.world.players.capacity) prioritizedPlayers.firstOrNull { it.index == nextIndex } else null
+                val next = if (nextIndex < player.world.players.capacity) player.world.players.get(nextIndex) else null
                 if (next != null && shouldAdd(next)) {
                     break
                 }
@@ -338,7 +327,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         return segments
     }
 
-    private fun shouldAdd(other: Player): Boolean = !other.invisible && other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) && !player.localPlayers.contains(other) && other != player && prioritizedPlayers.contains(other)
+    private fun shouldAdd(other: Player): Boolean = !other.invisible && other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) && !player.localPlayers.contains(other) && other != player
 
-    private fun shouldRemove(other: Player): Boolean = !other.isOnline() || other.invisible || !other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) || !prioritizedPlayers.contains(other)
+    private fun shouldRemove(other: Player): Boolean = !other.isOnline() || other.invisible || !other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE)
 }

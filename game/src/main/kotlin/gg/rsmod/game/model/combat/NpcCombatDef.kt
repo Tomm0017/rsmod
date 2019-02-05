@@ -79,6 +79,8 @@ package gg.rsmod.game.model.combat
  * @param bonuses
  * The bonuses.
  *
+ * TODO: make a 'param' map for things like species
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: Int, val strengthLvl: Int,
@@ -94,6 +96,14 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
             other.attackSpeed, other.aggressiveRadius, other.findTargetDelay, other.meleeAnimation, other.magicAnimation,
             other.rangedAnimation, other.deathAnimation, other.deathDelay, other.respawnDelay, other.poisonChance,
             other.poisonImmunity, other.venomImmunity, other.slayerReq, other.slayerXp, other.bonuses.copyOf())
+
+    fun isDemon(): Boolean = false
+
+    fun isShade(): Boolean = false
+
+    fun isKalphite(): Boolean = false
+
+    fun isScarab(): Boolean = false
 
     companion object {
         val DEFAULT = NpcCombatDef(hitpoints = 10, combatLvl = 1, attackLvl = 1, strengthLvl = 1, defenceLvl = 1,

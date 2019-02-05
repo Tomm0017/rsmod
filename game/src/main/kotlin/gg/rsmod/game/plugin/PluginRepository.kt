@@ -55,6 +55,11 @@ class PluginRepository(val world: World) {
     private val loginPlugins = arrayListOf<Function1<Plugin, Unit>>()
 
     /**
+     * A list of plugins that will be executed upon logout.
+     */
+    private val logoutPlugins = arrayListOf<Function1<Plugin, Unit>>()
+
+    /**
      * A list of plugins that will be executed upon an [gg.rsmod.game.model.entity.Npc]
      * being spawned into the world. Use sparingly.
      */
@@ -206,6 +211,7 @@ class PluginRepository(val world: World) {
         displayModePlugin = null
         combatPlugin = null
         loginPlugins.clear()
+        logoutPlugins.clear()
         globalNpcSpawnPlugins.clear()
         npcSpawnPlugins.clear()
         npcCombatPlugins.clear()
@@ -352,6 +358,15 @@ class PluginRepository(val world: World) {
 
     fun executeLogin(p: Player) {
         loginPlugins.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+    }
+
+    fun bindLogout(plugin: Function1<Plugin, Unit>) {
+        logoutPlugins.add(plugin)
+        pluginCount++
+    }
+
+    fun executeLogout(p: Player) {
+        logoutPlugins.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
     }
 
     fun bindGlobalNpcSpawn(plugin: Function1<Plugin, Unit>) {
@@ -783,6 +798,16 @@ class PluginRepository(val world: World) {
             stopwatch.reset().start()
             repository.executeLogin(dummy)
             times.add(TimedPlugin(name = "Login", note = "", time = stopwatch.elapsed(measurement)))
+
+            if (!warmup) {
+                times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }
+            }
+            times.clear()
+
+
+            stopwatch.reset().start()
+            repository.executeLogout(dummy)
+            times.add(TimedPlugin(name = "Logout", note = "", time = stopwatch.elapsed(measurement)))
 
             if (!warmup) {
                 times.forEach { time -> System.out.format("\t%-25s%-15s%-15s\n", time.name, time.time.toString() + " " + measurementName, time.note) }

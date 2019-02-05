@@ -47,6 +47,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
     fun onLogin(plugin: Function1<Plugin, Unit>) = r.bindLogin(plugin)
 
+    fun onLogout(plugin: Function1<Plugin, Unit>) = r.bindLogout(plugin)
+
     fun onCombat(plugin: Function1<Plugin, Unit>) = r.bindCombat(plugin)
 
     fun onNpcCombat(npc: Int, plugin: Function1<Plugin, Unit>) = r.bindNpcCombat(npc, plugin)

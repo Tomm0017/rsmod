@@ -1,6 +1,7 @@
 package gg.rsmod.game.model.interf
 
 import gg.rsmod.game.model.entity.Player
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import org.apache.logging.log4j.LogManager
 
 /**
@@ -20,7 +21,7 @@ class ComponentSet(val player: Player) {
      * Key: bit-shifted value of the parent and child id.
      * Value: Sub-child interface id that will be drawn on the child.
      */
-    private val visible = hashMapOf<Int, Int>()
+    private val visible = Int2IntOpenHashMap()
 
     /**
      * The main screen is allowed to have one 'main' interface opened (not including

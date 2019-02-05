@@ -318,6 +318,7 @@ open class Player(override val world: World) : Pawn(world) {
      */
     protected open fun handleLogout() {
         interruptPlugins()
+        world.plugins.executeLogout(this)
         world.unregister(this)
     }
 

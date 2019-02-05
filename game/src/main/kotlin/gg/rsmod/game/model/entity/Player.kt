@@ -272,9 +272,9 @@ open class Player(override val world: World) : Pawn(world) {
                     else -> SetBigVarpMessage(varp.id, varp.state)
                 }
                 write(message)
-                varps.clean(i)
             }
         }
+        varps.clean()
 
         for (i in 0 until getSkills().maxSkills) {
             if (getSkills().isDirty(i)) {

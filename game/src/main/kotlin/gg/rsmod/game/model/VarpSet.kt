@@ -1,6 +1,7 @@
 package gg.rsmod.game.model
 
 import gg.rsmod.util.BitManipulation
+import it.unimi.dsi.fastutil.shorts.ShortOpenHashSet
 
 /**
  * Holds all [Varp]s for a player.
@@ -20,7 +21,7 @@ class VarpSet(val maxVarps: Int) {
      * This collection should be used only if the revision you are trying to
      * support uses them on the client.
      */
-    private val dirty = BooleanArray(maxVarps)
+    private val dirty = ShortOpenHashSet(maxVarps)
 
     operator fun get(id: Int): Varp = varps[id]
 
@@ -28,7 +29,7 @@ class VarpSet(val maxVarps: Int) {
 
     fun setState(id: Int, state: Int): VarpSet {
         varps[id].state = state
-        dirty[id] = true
+        dirty.add(id.toShort())
         return this
     }
 
@@ -70,11 +71,11 @@ class VarpSet(val maxVarps: Int) {
     }
 
     fun isDirty(id: Int): Boolean {
-        return dirty[id]
+        return dirty.contains(id.toShort())
     }
 
-    fun clean(id: Int) {
-        dirty[id] = false
+    fun clean() {
+        dirty.clear()
     }
 
     fun getAll(): List<Varp> = varps

@@ -12,7 +12,7 @@ import java.util.*
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class SimplePathFindingStrategy(override val world: World) : PathFindingStrategy(world) {
+class SimplePathFindingStrategy(world: World) : PathFindingStrategy(world) {
 
     // TODO(Tom): redo this whole strategy (used for npcs). Fucking hate how
     // it is atm (jan 27 2019).

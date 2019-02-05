@@ -7,7 +7,7 @@ import gg.rsmod.game.model.World
  *
  * @author Tom <rspsmods@gmail.com>
  */
-abstract class PathFindingStrategy(open val world: World) {
+abstract class PathFindingStrategy(val world: World) {
 
     companion object {
         /**

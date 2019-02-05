@@ -6,6 +6,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.path.PathFindingStrategy
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.Route
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import java.util.*
 
 /**
@@ -14,7 +15,7 @@ import java.util.*
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class BFSPathFindingStrategy(override val world: World) : PathFindingStrategy(world) {
+class BFSPathFindingStrategy(world: World) : PathFindingStrategy(world) {
 
     override fun calculateRoute(request: PathRequest): Route {
         val start = request.start
@@ -22,16 +23,48 @@ class BFSPathFindingStrategy(override val world: World) : PathFindingStrategy(wo
 
         val sourceWidth = request.sourceWidth
         val sourceLength = request.sourceLength
+        val targetWidth = request.targetWidth
+        val targetLength = request.targetLength
+        val touchRadius = request.touchRadius
         val projectilePath = request.projectilePath
-        val targetTiles = getTargetTiles(request)
+
+        val targetTiles = ObjectOpenHashSet<Tile>()
+
+        if (targetWidth > 0 || targetLength > 0) {
+            for (x in -1..targetWidth) {
+                for (z in -1..targetLength) {
+                    val tile = end.transform(x, z)
+                    if (!request.validateBorder.invoke(tile)) {
+                        continue
+                    }
+                    targetTiles.add(tile)
+                }
+            }
+        } else {
+            targetTiles.add(end)
+        }
+
+        if (touchRadius > 1) {
+            for (x in -touchRadius..touchRadius) {
+                for (z in -touchRadius..touchRadius) {
+                    if (x in 0 until targetWidth && z in 0 until targetLength) {
+                        continue
+                    }
+                    val tile = end.transform(x, z)
+                    targetTiles.add(tile)
+                }
+            }
+        }
 
         val nodes = ArrayDeque<Node>()
-        val closed = hashSetOf<Node>()
+        val closed = ObjectOpenHashSet<Node>()
         var tail: Node? = null
         var searchLimit = 256 * 10
         var success = false
 
         nodes.add(Node(tile = start, parent = null))
+
+        val order = Arrays.copyOf(Direction.RS_ORDER, Direction.RS_ORDER.size)
 
         while (nodes.isNotEmpty()) {
             if (searchLimit-- == 0) {
@@ -46,7 +79,11 @@ class BFSPathFindingStrategy(override val world: World) : PathFindingStrategy(wo
                 break
             }
 
-            val order = Direction.RS_ORDER.sortedBy { head.tile.step(it).getDelta(end) + head.tile.step(it).getDelta(head.tile) }
+            order.sortBy {
+                val step = head.tile.step(it)
+                step.getDelta(end) + step.getDelta(head.tile)
+            }
+
             for (direction in order) {
                 val tile = head.tile.step(direction)
                 val node = Node(tile = tile, parent = head)
@@ -86,42 +123,6 @@ class BFSPathFindingStrategy(override val world: World) : PathFindingStrategy(wo
             }
         }
         return true
-    }
-
-    private fun getTargetTiles(request: PathRequest): Set<Tile> {
-        val end = request.end
-        val targetWidth = request.targetWidth
-        val targetLength = request.targetLength
-        val touchRadius = request.touchRadius
-        val targetTiles = hashSetOf<Tile>()
-
-        if (targetWidth > 0 || targetLength > 0) {
-            for (x in -1..targetWidth) {
-                for (z in -1..targetLength) {
-                    val tile = end.transform(x, z)
-                    if (!request.validateBorder.invoke(tile)) {
-                        continue
-                    }
-                    targetTiles.add(tile)
-                }
-            }
-        } else {
-            targetTiles.add(end)
-        }
-
-        if (touchRadius > 1) {
-            for (x in -touchRadius..touchRadius) {
-                for (z in -touchRadius..touchRadius) {
-                    if (x in 0 until targetWidth && z in 0 until targetLength) {
-                        continue
-                    }
-                    val tile = end.transform(x, z)
-                    targetTiles.add(tile)
-                }
-            }
-        }
-
-        return targetTiles
     }
 
     /**

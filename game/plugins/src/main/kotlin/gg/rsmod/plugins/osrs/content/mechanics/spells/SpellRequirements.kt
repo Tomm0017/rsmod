@@ -7,14 +7,15 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.helper.getSpellbook
-import gg.rsmod.plugins.osrs.api.helper.getVarp
+import gg.rsmod.plugins.osrs.api.helper.getVarbit
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 object SpellRequirements {
 
-    const val INF_RUNES_VARP = 375
+    const val INF_ELEMENTAL_RUNES_VARBIT = 4145
 
     private const val SPELL_SPELLBOOK_KEY = 336
     private const val SPELL_RUNE1_ID_KEY = 365
@@ -30,7 +31,7 @@ object SpellRequirements {
     private const val SPELL_LVL_REQ_KEY = 604
     private const val SPELL_TYPE_KEY = 605
 
-    val requirements = hashMapOf<Int, SpellRequirement>()
+    val requirements = Int2ObjectOpenHashMap<SpellRequirement>()
 
     fun getRequirements(spellId: Int): SpellRequirement? = requirements[spellId]
 
@@ -43,7 +44,7 @@ object SpellRequirements {
             p.message("Your Magic level is not high enough for this spell.")
             return false
         }
-        if ((p.getVarp(INF_RUNES_VARP) shr 1) != 1) {
+        if (p.getVarbit(INF_ELEMENTAL_RUNES_VARBIT) == 0) {
             for (item in items) {
                 if (p.inventory.getItemCount(item.id) < item.amount && p.equipment.getItemCount(item.id) < item.amount) {
                     p.message("You do not have enough ${item.getDef(p.world.definitions).name}s to cast this spell.")
@@ -55,7 +56,7 @@ object SpellRequirements {
     }
 
     fun removeRunes(p: Player, items: List<Item>) {
-        if ((p.getVarp(INF_RUNES_VARP) shr 1) != 1) {
+        if (p.getVarbit(INF_ELEMENTAL_RUNES_VARBIT) == 0) {
             // TODO: don't remove non-rune items
             for (item in items) {
                 p.inventory.remove(item)

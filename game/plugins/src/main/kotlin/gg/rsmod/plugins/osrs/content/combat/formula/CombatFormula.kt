@@ -7,9 +7,7 @@ import gg.rsmod.game.model.entity.Pawn
  */
 interface CombatFormula {
 
-    fun landHit(pawn: Pawn, target: Pawn, multiplier: Double): Boolean
+    fun landHit(pawn: Pawn, target: Pawn, multiplier: Double = 1.0): Boolean
 
-    fun getMaxHit(pawn: Pawn, target: Pawn, bonuses: FormulaBonuses): Int
-
-    fun getDefaultBonuses(pawn: Pawn): FormulaBonuses
+    fun getMaxHit(pawn: Pawn, target: Pawn, specialAttackMultiplier: Double = 1.0, specialPassiveMultiplier: Double = 1.0): Int
 }

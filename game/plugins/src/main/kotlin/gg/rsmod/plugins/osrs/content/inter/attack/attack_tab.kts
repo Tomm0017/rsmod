@@ -50,3 +50,10 @@ onButton(parent = 593, child = 35) {
 onEquipSlot(EquipmentType.WEAPON.id) {
     it.player().setVarp(AttackTab.SPECIAL_ATTACK_VARP, 0)
 }
+
+/**
+ * Disable special attack on log-out.
+ */
+onLogout {
+    it.player().setVarp(AttackTab.SPECIAL_ATTACK_VARP, 0)
+}

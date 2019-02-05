@@ -27,27 +27,25 @@ object MeleeCombatStrategy : CombatStrategy {
     }
 
     override fun attack(pawn: Pawn, target: Pawn) {
+        val world = pawn.world
+
         /**
          * A list of actions that will be executed upon this hit dealing damage
          * to the [target].
          */
         val hitActions = arrayListOf<Function0<Unit>>()
-        hitActions.add { RangedCombatStrategy.postDamage(pawn, target) }
+        hitActions.add { postDamage(pawn, target) }
 
         val animation = CombatConfigs.getAttackAnimation(pawn)
         pawn.animate(animation)
 
-        val damage = if (landHit(pawn, target)) getMaxHit(pawn, target) else 0
+        val landHit = MeleeCombatFormula.landHit(pawn, target)
+        val maxHit = MeleeCombatFormula.getMaxHit(pawn, target)
+
+        val damage = if (landHit) world.random(maxHit) else 0
         target.hit(damage = damage, delay = getHitDelay(pawn.calculateCentreTile(), target.calculateCentreTile()))
                 .addActions(hitActions)
     }
 
     override fun getHitDelay(start: Tile, target: Tile): Int = 1
-
-    private fun getMaxHit(pawn: Pawn, target: Pawn): Int {
-        val bonuses = MeleeCombatFormula.getDefaultBonuses(pawn)
-        return MeleeCombatFormula.getMaxHit(pawn, target, bonuses)
-    }
-
-    private fun landHit(pawn: Pawn, target: Pawn): Boolean = false
 }

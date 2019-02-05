@@ -34,7 +34,7 @@ object MagicCombatStrategy : CombatStrategy {
          * to the [target].
          */
         val hitActions = arrayListOf<Function0<Unit>>()
-        hitActions.add { RangedCombatStrategy.postDamage(pawn, target) }
+        hitActions.add { postDamage(pawn, target) }
 
         val spell = pawn.attr[Combat.CASTING_SPELL]!!
         val projectile = Combat.createProjectile(pawn, target, gfx = spell.projectile, type = ProjectileType.MAGIC, endHeight = spell.projectilEndHeight)
@@ -65,5 +65,5 @@ object MagicCombatStrategy : CombatStrategy {
 
     private fun getMaxHit(pawn: Pawn, target: Pawn): Int = pawn.world.random(10)
 
-    private fun landHit(pawn: Pawn, target: Pawn): Boolean = pawn.world.chance(2, 1)
+    private fun landHit(pawn: Pawn, target: Pawn): Boolean = pawn.world.chance(1, 2)
 }

@@ -6,19 +6,24 @@ import gg.rsmod.game.model.FROZEN_TIMER
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.api.helper.getVarbit
-import gg.rsmod.plugins.osrs.api.helper.pawn
-import gg.rsmod.plugins.osrs.api.helper.player
-import gg.rsmod.plugins.osrs.api.helper.setVarp
+import gg.rsmod.plugins.osrs.api.EquipmentType
+import gg.rsmod.plugins.osrs.api.cfg.Items
+import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
 import gg.rsmod.plugins.osrs.content.combat.formula.MeleeCombatFormula
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
+import gg.rsmod.plugins.osrs.content.inter.attack.AttackTab
 
 onCommand("max") {
     val player = it.player()
-    val bonuses = MeleeCombatFormula.getDefaultBonuses(player)
-    val max = MeleeCombatFormula.getMaxHit(player, player, bonuses)
+    var specialAttackMultiplier = 1.0
+    var specialPassiveMultiplier = 1.0
+    if (player.hasEquipped(EquipmentType.WEAPON, Items.ARMADYL_GODSWORD, Items.ARMADYL_GODSWORD_OR) && AttackTab.isSpecialEnabled(player)) {
+        specialAttackMultiplier = 1.1
+        specialPassiveMultiplier = 1.25
+    }
+    val max = MeleeCombatFormula.getMaxHit(player, player, specialAttackMultiplier, specialPassiveMultiplier)
     player.message("Max hit: $max")
 }
 

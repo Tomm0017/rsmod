@@ -28,6 +28,8 @@ object Combat {
     val ATTACK_DELAY = TimerKey()
 
     val CASTING_SPELL = AttributeKey<CombatSpell>()
+    val DAMAGE_DEAL_MULTIPLIER = AttributeKey<Double>()
+    val DAMAGE_TAKE_MULTIPLIER = AttributeKey<Double>()
 
     const val PRIORITY_PID_VARP = 1075
 

@@ -240,7 +240,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             val nonLocal = if (index < player.world.players.capacity) player.world.players.get(index) else null
 
             if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE
-                    && player.localPlayers.size < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
+                    && player.localPlayerCount + added < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
                 val tileHash = nonLocal.tile.to30BitInteger()
                 segments.add(AddLocalPlayerSegment(player = player, other = nonLocal, index = index, tileHash = tileHash))
                 segments.add(PlayerUpdateBlockSegment(other = nonLocal, newPlayer = true))
@@ -291,7 +291,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             val nonLocal = if (index < player.world.players.capacity) player.world.players.get(index) else null
 
             if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE
-                    && player.localPlayers.size < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
+                    && player.localPlayerCount + added < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
                 val tileHash = nonLocal.tile.to30BitInteger()
                 segments.add(AddLocalPlayerSegment(player = player, other = nonLocal, index = index, tileHash = tileHash))
                 segments.add(PlayerUpdateBlockSegment(other = nonLocal, newPlayer = true))
@@ -327,7 +327,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         return segments
     }
 
-    private fun shouldAdd(other: Player): Boolean = !other.invisible && other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) && !player.localPlayers.contains(other) && other != player
+    private fun shouldAdd(other: Player): Boolean = !other.invisible && other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) && other != player
 
     private fun shouldRemove(other: Player): Boolean = !other.isOnline() || other.invisible || !other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE)
 }

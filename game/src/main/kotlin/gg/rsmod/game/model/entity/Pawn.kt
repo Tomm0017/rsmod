@@ -283,7 +283,6 @@ abstract class Pawn(open val world: World) : Entity() {
      * The last tile in the path. `null` if no path could be made.
      */
     fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? {
-
         val request = PathRequest.Builder()
                 .setPoints(tile, Tile(x, z, tile.height))
                 .setSourceSize(getSize(), getSize())

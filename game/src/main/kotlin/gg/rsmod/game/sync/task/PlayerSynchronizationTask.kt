@@ -74,7 +74,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         segments.add(SetBitAccessSegment())
         for (i in 0 until player.localPlayerCount) {
             val index = player.localPlayerIndices[i]
-            val local = player.localPlayers[index]!!
+            val local = player.localPlayers[index]
 
             if ((player.otherPlayerSkipFlags[index] and 0x1) != 0) {
                 continue
@@ -86,7 +86,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 continue
             }
 
-            if (local != player && shouldRemove(local)) {
+            if (local != player && (local == null || shouldRemove(local))) {
                 player.localPlayers[index] = null
                 player.otherPlayerTiles[index] = 0
                 segments.add(RemoveLocalPlayerSegment())
@@ -127,11 +127,11 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             } else {
                 for (j in i + 1 until player.localPlayerCount) {
                     val nextIndex = player.localPlayerIndices[j]
-                    val next = player.localPlayers[nextIndex]!!
+                    val next = player.localPlayers[nextIndex]
                     if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) != 0) {
                         continue
                     }
-                    if (next.blockBuffer.isDirty() || next.teleport || next.steps != null || next != player && shouldRemove(next)) {
+                    if (next == null || next.blockBuffer.isDirty() || next.teleport || next.steps != null || next != player && shouldRemove(next)) {
                         break
                     }
                     skipCount++
@@ -149,7 +149,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         segments.add(SetBitAccessSegment())
         for (i in 0 until player.localPlayerCount) {
             val index = player.localPlayerIndices[i]
-            val local = player.localPlayers[index]!!
+            val local = player.localPlayers[index]
 
             if ((player.otherPlayerSkipFlags[index] and 0x1) == 0) {
                 continue
@@ -161,7 +161,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 continue
             }
 
-            if (local != player && shouldRemove(local)) {
+            if (local != player && (local == null || shouldRemove(local))) {
                 player.localPlayers[index] = null
                 player.otherPlayerTiles[index] = 0
                 segments.add(RemoveLocalPlayerSegment())
@@ -202,11 +202,11 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             } else {
                 for (j in i + 1 until player.localPlayerCount) {
                     val nextIndex = player.localPlayerIndices[j]
-                    val next = player.localPlayers[nextIndex]!!
+                    val next = player.localPlayers[nextIndex]
                     if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) == 0) {
                         continue
                     }
-                    if (next.blockBuffer.isDirty() || next.teleport || next.steps != null || next != player && shouldRemove(next)) {
+                    if (next == null || next.blockBuffer.isDirty() || next.teleport || next.steps != null || next != player && shouldRemove(next)) {
                         break
                     }
                     skipCount++

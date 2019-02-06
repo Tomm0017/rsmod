@@ -22,7 +22,7 @@ import io.netty.channel.Channel
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class Client(val channel: Channel, override val world: World) : Player(world) {
+class Client(val channel: Channel, world: World) : Player(world) {
 
     companion object {
 

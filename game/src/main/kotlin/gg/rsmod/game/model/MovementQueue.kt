@@ -11,15 +11,12 @@ class MovementQueue(val pawn: Pawn) {
 
     private val steps: Deque<Step> = ArrayDeque()
 
-    private val lastSteps: Deque<Step> = ArrayDeque()
-
     fun hasDestination(): Boolean = steps.isNotEmpty()
 
     fun peekLast(): Tile? = if (steps.isNotEmpty()) steps.peekLast().tile else null
 
     fun clear() {
         steps.clear()
-        lastSteps.clear()
     }
 
     fun addStep(step: Tile, type: StepType) {
@@ -39,7 +36,6 @@ class MovementQueue(val pawn: Pawn) {
             walkDirection = Direction.between(tile, next.tile)
 
             if (collision.canTraverse(tile, walkDirection, projectile = false)) {
-                lastSteps.add(next)
                 tile = Tile(next.tile)
                 pawn.lastFacingDirection = walkDirection
 
@@ -54,7 +50,6 @@ class MovementQueue(val pawn: Pawn) {
                         runDirection = Direction.between(tile, next.tile)
 
                         if (collision.canTraverse(tile, runDirection, projectile = false)) {
-                            lastSteps.add(next)
                             tile = Tile(next.tile)
                             pawn.lastFacingDirection = runDirection
                         } else {

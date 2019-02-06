@@ -20,7 +20,7 @@ import java.util.*
  *
  * @author Tom <rspsmods@gmail.com>
  */
-abstract class Pawn(open val world: World) : Entity() {
+abstract class Pawn(val world: World) : Entity() {
 
     /**
      * The index assigned when this [Pawn] is successfully added to a [PawnList].

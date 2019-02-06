@@ -18,7 +18,7 @@ import java.util.*
  *
  * @author Tom <rspsmods@gmail.com>
  */
-open class Player(override val world: World) : Pawn(world) {
+open class Player(world: World) : Pawn(world) {
 
     companion object {
         /**

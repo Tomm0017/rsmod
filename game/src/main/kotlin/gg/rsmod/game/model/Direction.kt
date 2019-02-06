@@ -102,27 +102,25 @@ enum class Direction(val value: Int) {
             return fromDeltas(deltaX, deltaZ)
         }
 
-        fun fromDeltas(deltaX: Int, deltaY: Int): Direction {
-            if (deltaY == 1) {
-                when (deltaX) {
+        fun fromDeltas(deltaX: Int, deltaZ: Int): Direction {
+            when (deltaZ) {
+                1 -> when (deltaX) {
                     1 -> return NORTH_EAST
                     0 -> return NORTH
                     -1 -> return NORTH_WEST
                 }
-            } else if (deltaY == -1) {
-                when (deltaX) {
+                -1 -> when (deltaX) {
                     1 -> return SOUTH_EAST
                     0 -> return SOUTH
                     -1 -> return SOUTH_WEST
                 }
-            } else if (deltaY == 0) {
-                when (deltaX) {
+                0 -> when (deltaX) {
                     1 -> return EAST
                     0 -> return NONE
                     -1 -> return WEST
                 }
             }
-            throw IllegalArgumentException("Unhandled delta difference.")
+            throw IllegalArgumentException("Unhandled delta difference. [$deltaX, $deltaZ]")
         }
     }
 }

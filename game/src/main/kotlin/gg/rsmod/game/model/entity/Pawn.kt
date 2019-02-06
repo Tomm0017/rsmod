@@ -145,6 +145,8 @@ abstract class Pawn(val world: World) : Entity() {
     /**
      * Calculates the middle tile that this pawn occupies.
      */
+    // TODO: remove this and create a getFacingTile method instead, that will be used
+    // for projectiles being shot from the facing tile for npcs
     fun calculateCentreTile(): Tile {
         val size = getSize()
         if (size > 1) {

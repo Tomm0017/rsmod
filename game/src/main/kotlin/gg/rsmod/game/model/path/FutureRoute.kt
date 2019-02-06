@@ -12,6 +12,7 @@ class FutureRoute private constructor() {
     companion object {
 
         private val logger = LogManager.getLogger(FutureRoute::class.java)
+
         private val executor = Executors.newSingleThreadExecutor(ThreadFactoryBuilder().setNameFormat("pathfinding-thread").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
 
         fun of(strategy: PathFindingStrategy, request: PathRequest): FutureRoute {

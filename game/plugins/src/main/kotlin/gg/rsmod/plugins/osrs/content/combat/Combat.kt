@@ -97,6 +97,7 @@ object Combat {
 
     private fun getProjectileLifespan(source: Pawn, target: Tile, type: ProjectileType): Int = when (type) {
         ProjectileType.MAGIC -> {
+            // TODO: pls think of the perf hit!
             val path = source.createPathingStrategy().calculateRoute(PathRequest.Builder().setPoints(source.tile, target)
                     .setSourceSize(source.getSize(), source.getSize()).setTargetSize(1, 1).findProjectilePath().build()).path
             5 + ((path.size - 1) * 10)

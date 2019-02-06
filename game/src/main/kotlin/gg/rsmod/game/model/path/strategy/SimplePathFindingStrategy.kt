@@ -2,7 +2,6 @@ package gg.rsmod.game.model.path.strategy
 
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.World
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.path.PathFindingStrategy
 import gg.rsmod.game.model.path.PathRequest
@@ -12,7 +11,7 @@ import java.util.*
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class SimplePathFindingStrategy(world: World) : PathFindingStrategy(world) {
+class SimplePathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(collision) {
 
     // TODO(Tom): redo this whole strategy (used for npcs). Fucking hate how
     // it is atm (jan 27 2019).
@@ -34,7 +33,7 @@ class SimplePathFindingStrategy(world: World) : PathFindingStrategy(world) {
         while (searchLimit-- > 0) {
             var tail = if (path.isNotEmpty()) path.peekLast() else start
             if (areBordering(tail, sourceWidth - 1, end, targetWidth - 1) && !areDiagonal(tail, sourceWidth - 1, end, targetWidth - 1)
-                    && world.collision.raycast(tail, end, projectile)) {
+                    && collision.raycast(tail, end, projectile)) {
                 success = true
                 break
             }
@@ -51,14 +50,14 @@ class SimplePathFindingStrategy(world: World) : PathFindingStrategy(world) {
 
             while ((!areCoordinatesInRange(tail.z, sourceLength - 1, end.z, targetLength - 1) || areDiagonal(tail, sourceLength - 1, end, targetLength - 1) || overlap(tail, sourceLength - 1, end, targetLength - 1))
                     && (overlapped || !overlap(tail.step(northOrSouth), sourceLength - 1, end, targetLength - 1))
-                    && canTraverse(world.collision, tail, sourceWidth, sourceLength, northOrSouth, projectile)) {
+                    && canTraverse(collision, tail, sourceWidth, sourceLength, northOrSouth, projectile)) {
                 tail = tail.step(northOrSouth)
                 path.add(tail)
             }
 
             while ((!areCoordinatesInRange(tail.x, sourceWidth - 1, end.x, targetWidth - 1) || areDiagonal(tail, sourceWidth - 1, end, targetWidth - 1) || overlap(tail, sourceWidth - 1, end, targetWidth - 1))
                     && (overlapped || !overlap(tail.step(eastOrWest), sourceWidth - 1, end, targetWidth - 1))
-                    && canTraverse(world.collision, tail, sourceWidth, sourceLength, eastOrWest, projectile)) {
+                    && canTraverse(collision, tail, sourceWidth, sourceLength, eastOrWest, projectile)) {
                 tail = tail.step(eastOrWest)
                 path.add(tail)
             }

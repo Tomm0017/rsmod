@@ -46,7 +46,6 @@ object PawnPathAction {
     }
 
     suspend fun walkTo(it: Plugin, pawn: Pawn, target: Pawn, interactionRange: Int): Boolean {
-        val world = pawn.world
         val sourceSize = pawn.getSize()
         val targetSize = target.getSize()
         val projectile = interactionRange > 2
@@ -63,8 +62,7 @@ object PawnPathAction {
                 .setTargetSize(targetSize, targetSize)
                 .setProjectilePath(projectile)
                 .setTouchRadius(interactionRange)
-                .clipBorderTiles(world.collision)
-                .clipPathNodes(world.collision, tile = true, face = true)
+                .clipPathNodes(node = true, link = true)
                 .clipDiagonalTiles()
                 .clipOverlapTiles()
                 .build()

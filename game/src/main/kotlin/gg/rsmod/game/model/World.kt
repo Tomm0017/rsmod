@@ -105,6 +105,44 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      */
     var currentCycle = 0
 
+    /**
+     * Multi-threaded path-finding should be reserved for when the average cycle
+     * time is 1-2ms+. This is due to the nature of how the system and game cycles
+     * work.
+     *
+     * Explanation:
+     * The path-finder thread tries to calculate the path when the [Pawn.walkTo]
+     * method is called, this happens on the following tasks:
+     *
+     * Plugin handler: a piece of content needs the player to walk somewhere
+     * Message handler: the player's client is requesting to move
+     *
+     * The [gg.rsmod.game.model.path.FutureRoute.completed] flag is checked on
+     * the player pre-synchronization task, right before [MovementQueue.pulse]
+     * is called. If the future route is complete, the path is added to the
+     * player's movement queue.
+     *
+     * Due to this design, it is likely that the [gg.rsmod.game.model.path.FutureRoute]
+     * will not finish calculating the path if the time in between the [Pawn.walkTo] being
+     * called and player pre-synchronization task being executed is fast enough
+     *
+     * From anecdotal experience, once the average cycle time reaches about 1-2ms+,
+     * the multi-threaded path-finding becomes more responsive. However, if the
+     * average cycle time is <= 0ms, the path-finder can take one cycle (usually)
+     * to complete; this is not because the code is unoptimized - it is because
+     * the future route has a window of "total cycle time taken" per cycle
+     * to complete.
+     *
+     * Say a cycle took 250,000 nanoseconds to complete. This means the player
+     * pre-synchronization task has already been executed within that time frame.
+     * This being the case, the server already checked to see if the future route
+     * has completed in those 250,000 nanoseconds. Though the path-finder isn't
+     * slow, it's certainly not that fast. So now, the server has to wait until
+     * next tick to check if the future route was successful (usually the case,
+     * since a whole 600ms have now gone by).
+     */
+    var multiThreadPathFinding = true
+
     fun register(p: Player): Boolean {
         val registered = players.add(p)
         if (registered) {

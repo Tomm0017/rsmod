@@ -1,13 +1,13 @@
 package gg.rsmod.game.model.path
 
-import gg.rsmod.game.model.World
+import gg.rsmod.game.model.collision.CollisionManager
 
 /**
  * Represents an strategy that can be used to find a valid path to a target.
  *
  * @author Tom <rspsmods@gmail.com>
  */
-abstract class PathFindingStrategy(val world: World) {
+abstract class PathFindingStrategy(val collision: CollisionManager) {
 
     companion object {
         /**

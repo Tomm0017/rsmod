@@ -8,6 +8,7 @@ import gg.rsmod.game.model.combat.DamageMap
 import gg.rsmod.game.model.path.FutureRoute
 import gg.rsmod.game.model.path.PathFindingStrategy
 import gg.rsmod.game.model.path.PathRequest
+import gg.rsmod.game.model.path.Route
 import gg.rsmod.game.model.path.strategy.BFSPathFindingStrategy
 import gg.rsmod.game.model.path.strategy.SimplePathFindingStrategy
 import gg.rsmod.game.plugin.Plugin
@@ -237,9 +238,9 @@ abstract class Pawn(val world: World) : Entity() {
 
     fun routeCycle() {
         if (futureRoute?.completed == true) {
-            val route = futureRoute!!.route
-            walkPath(route.path, futureRouteStepType!!)
-            futureRoute = null
+            val futureRoute = futureRoute!!
+            walkPath(futureRoute.route.path, futureRoute.stepType)
+            this.futureRoute = null
         }
     }
 
@@ -286,31 +287,46 @@ abstract class Pawn(val world: World) : Entity() {
 
     private var futureRoute: FutureRoute? = null
 
-    private var futureRouteStepType: MovementQueue.StepType? = null
+    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false) = walkTo(tile.x, tile.z, stepType, projectilePath)
 
-    private var futureRoutePathFinder: PathFindingStrategy? = null
-
-    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? {
-        val request = PathRequest.Builder()
-                .setPoints(tile, Tile(x, z, tile.height))
-                .setSourceSize(getSize(), getSize())
-                .setTargetSize(width = 0, length = 0)
-                .setProjectilePath(projectilePath)
-                .clipPathNodes(world.collision, tile = true, face = true)
-                .build()
+    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false) {
+        val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
+        val strategy = createPathingStrategy()
 
         if (futureRoute != null) {
-            futureRoutePathFinder!!.cancel = true
+            futureRoute!!.strategy.cancel = true
         }
 
-        val strategy = createPathingStrategy()
-        futureRoutePathFinder = strategy
-        futureRoute = FutureRoute.of(strategy, request)
-        futureRouteStepType = stepType
-        return null
+        if (world.multiThreadPathFinding) {
+            futureRoute = FutureRoute.of(strategy, request, stepType)
+        } else {
+            val route = strategy.calculateRoute(request)
+            walkPath(route.path, stepType)
+        }
     }
 
-    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? = walkTo(tile.x, tile.z, stepType, projectilePath)
+    suspend fun walkTo(it: Plugin, tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false) = walkTo(it, tile.x, tile.z, stepType, projectilePath)
+
+    suspend fun walkTo(it: Plugin, x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Route {
+        val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
+        val strategy = createPathingStrategy()
+
+        if (futureRoute != null) {
+            futureRoute!!.strategy.cancel = true
+        }
+
+        if (world.multiThreadPathFinding) {
+            futureRoute = FutureRoute.of(strategy, request, stepType)
+            while (!futureRoute!!.completed) {
+                it.wait(1)
+            }
+            return futureRoute!!.route
+        }
+
+        val route = strategy.calculateRoute(request)
+        walkPath(route.path, stepType)
+        return route
+    }
 
     fun teleport(x: Int, z: Int, height: Int = 0) {
         teleport = true

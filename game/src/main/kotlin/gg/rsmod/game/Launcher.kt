@@ -35,11 +35,11 @@ class Launcher {
 
                 gameService?.submitGameThreadJob {
                     player.register()
-                    player.world.pluginExecutor.execute(player) {
+                    /*player.world.pluginExecutor.execute(player) {
                         it.suspendable {
                             walkPlugin(it)
                         }
-                    }
+                    }*/
                 }
             }
         }

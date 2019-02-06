@@ -2,17 +2,61 @@ package gg.rsmod.game.model.path
 
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.collision.CollisionManager
+import gg.rsmod.game.model.entity.Pawn
+import java.util.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val sourceLength: Int, val end: Tile,
                                       val targetWidth: Int, val targetLength: Int, val touchRadius: Int, val projectilePath: Boolean,
-                                      private val borderValidation: List<(Tile) -> (Boolean)>, val validWalk: (Tile, Tile) -> (Boolean)) {
+                                      val clipFlags: EnumSet<ClipFlag>, val blockedDirections: Array<out Direction>) {
 
-    val validateBorder: (Tile) -> (Boolean)
-        get() = { node -> borderValidation.none { !it.invoke(node) } }
+    companion object {
+
+        fun buildWalkRequest(pawn: Pawn, x: Int, z: Int, projectile: Boolean): PathRequest = Builder()
+                .setPoints(pawn.tile, Tile(x, z, pawn.tile.height))
+                .setSourceSize(pawn.getSize(), pawn.getSize())
+                .setTargetSize(width = 0, length = 0)
+                .setProjectilePath(projectile)
+                .clipPathNodes(node = true, link = true)
+                .build()
+    }
+
+    enum class ClipFlag {
+        /**
+         * Clip diagonal tiles.
+         */
+        DIAGONAL,
+
+        /**
+         * Clip certain directions. The directions are specified elsewhere.
+         * This is used for things such as walking to objects that have directions
+         * which you can't interact from.
+         */
+        DIRECTIONS,
+
+        /**
+         * Clip overlapping tiles in respect to the target. For example for an
+         * npc that has a size of 3x3, it will clip the tiles within the 3x3
+         * area that the npc occupies.
+         */
+        OVERLAP,
+
+        /**
+         * Clip the nodes.
+         * Nodes are the 'current' tile the path-finder is iterating over to
+         * determine if it's a "valid" tile.
+         */
+        NODE,
+
+        /**
+         * Clip the linked nodes.
+         * Linked nodes are the tiles in front of the [NODE] tile in every
+         * direction.
+         */
+        LINKED_NODE,
+    }
 
     class Builder {
 
@@ -32,9 +76,9 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
 
         private var projectilePath = false
 
-        private var borderValidations = arrayListOf<(Tile) -> (Boolean)>()
+        private val clipFlags = EnumSet.noneOf(ClipFlag::class.java)
 
-        private var walkValidation: ((Tile, Tile) -> (Boolean))? = null
+        private val blockedDirections = hashSetOf<Direction>()
 
         fun build(): PathRequest {
             check(start != null && end != null) { "Points must be set." }
@@ -47,7 +91,7 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
             }
 
             return PathRequest(start!!, sourceWidth, sourceLength, end!!, targetWidth, targetLength, touchRadius, projectilePath,
-                    borderValidations.toList(), walkValidation ?: { _, _ -> true })
+                    clipFlags, blockedDirections.toTypedArray())
         }
 
         fun setPoints(start: Tile, end: Tile): Builder {
@@ -89,91 +133,32 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
         }
 
         fun clipDiagonalTiles(): Builder {
-            check(start != null && end != null) { "Points must be set before tile validations." }
-            check(sourceWidth != -1 && sourceLength != -1) { "Source size must be set before tile validations." }
-            check(targetWidth != -1 && targetLength != -1) { "Target size must be set before tile validations." }
-            check(targetWidth > 0 || targetLength > 0) { "Target size must be > 0 to disable diagonal tiles." }
-
-            borderValidations.add { tile ->
-
-                val x = tile.x
-                val z = tile.z
-
-                val width = targetWidth
-                val length = targetLength
-                val end = this.end!!
-
-                val southWest = x == (end.x - 1) && z == (end.z - 1)
-                val southEast = x == (end.x + width) && z == (end.z - 1)
-                val northWest = x == (end.x - 1) && z == (end.z + length)
-                val northEast = x == (end.x + width) && z == (end.z + length)
-                !southWest && !southEast && !northWest && !northEast
-            }
-
+            check(!clipFlags.contains(ClipFlag.DIAGONAL)) { "Diagonal tiles have already been flagged for clipping." }
+            clipFlags.add(ClipFlag.DIAGONAL)
             return this
         }
 
-        fun clipBorderTiles(collision: CollisionManager, vararg blockedDirection: Direction): Builder {
-            check(start != null && end != null) { "Points must be set before tile validations." }
-            check(sourceWidth != -1 && sourceLength != -1) { "Source size must be set before tile validations." }
-            check(targetWidth != -1 && targetLength != -1) { "Target size must be set before tile validations." }
-            check(targetWidth > 0 || targetLength > 0) { "Target size must be > 0 to disable diagonal tiles." }
-
-            borderValidations.add { tile ->
-                val x = tile.x
-                val z = tile.z
-
-                val end = this.end!!
-                val width = targetWidth
-                val length = targetLength
-
-                val dx = x - end.x
-                val dz = z - end.z
-
-                val face = when {
-                    (dx == -1) -> Direction.EAST
-                    (dx == width) -> Direction.WEST
-                    (dz == -1) -> Direction.NORTH
-                    (dz == length) -> Direction.SOUTH
-                    else -> Direction.NONE
-                }
-                face == Direction.NONE || !blockedDirection.contains(face.getOpposite()) && !collision.isBlocked(tile, face, projectile = projectilePath)
-            }
-
+        fun clipDirections(vararg blockedDirection: Direction): Builder {
+            check(!clipFlags.contains(ClipFlag.DIRECTIONS)) { "A set of directions have already been flagged for clipping." }
+            clipFlags.add(ClipFlag.DIRECTIONS)
+            blockedDirections.addAll(blockedDirection)
             return this
         }
 
         fun clipOverlapTiles(): Builder {
-            check(start != null && end != null) { "Points must be set before tile validations." }
-            check(sourceWidth != -1 && sourceLength != -1) { "Source size must be set before tile validations." }
-            check(targetWidth != -1 && targetLength != -1) { "Target size must be set before tile validations." }
-
-            check(targetWidth != 0 && targetLength != 0) { "Target size must be > 0 to disable overlapping tiles." }
-
-            borderValidations.add { tile ->
-                val x = tile.x
-                val z = tile.z
-
-                val width = targetWidth
-                val length = targetLength
-                val end = this.end!!
-
-                val overlap = (x >= end.x && x < end.x + width && z >= end.z && z < end.z + length)
-                !overlap
-            }
-
+            check(!clipFlags.contains(ClipFlag.OVERLAP)) { "Overlapped tiles have already been flagged for clipping." }
+            clipFlags.add(ClipFlag.OVERLAP)
             return this
         }
 
-        fun clipPathNodes(collision: CollisionManager, tile: Boolean, face: Boolean): Builder {
-            check(walkValidation == null) { "Node validation has already been set." }
-
-            walkValidation = { node, facing ->
-                val nodeWalkable = !tile || collision.canTraverse(node, Direction.between(node, facing), projectile = false)
-                val faceWalkable = !face || collision.canTraverse(facing, Direction.between(facing, node), projectile = false)
-                nodeWalkable && faceWalkable
+        fun clipPathNodes(node: Boolean, link: Boolean): Builder {
+            check(!clipFlags.contains(ClipFlag.NODE) && !clipFlags.contains(ClipFlag.LINKED_NODE)) { "Path nodes have already been flagged for clipping." }
+            if (node) {
+                clipFlags.add(ClipFlag.NODE)
             }
-
+            if (link) {
+                clipFlags.add(ClipFlag.LINKED_NODE)
+            }
             return this
         }
     }

@@ -84,8 +84,8 @@ object ObjectPathAction {
                 .setPoints(pawn.tile, tile)
                 .setSourceSize(pawn.getSize(), pawn.getSize())
                 .setTargetSize(width, length)
-                .clipPathNodes(pawn.world.collision, tile = true, face = true)
-                .clipBorderTiles(pawn.world.collision, *blockDirections.toTypedArray())
+                .clipPathNodes(node = true, link = true)
+                .clipDirections(*blockDirections.toTypedArray())
 
         // TODO(Tom): work on doors & wall objects (such as rooftop agility start or varrock museum wall displays)
         if (group != ObjectGroup.WALL) {

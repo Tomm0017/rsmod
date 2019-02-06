@@ -5,8 +5,10 @@ import gg.rsmod.game.action.PlayerDeathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.combat.DamageMap
+import gg.rsmod.game.model.path.FutureRoute
 import gg.rsmod.game.model.path.PathFindingStrategy
 import gg.rsmod.game.model.path.PathRequest
+import gg.rsmod.game.model.path.Route
 import gg.rsmod.game.model.path.strategy.BFSPathFindingStrategy
 import gg.rsmod.game.model.path.strategy.SimplePathFindingStrategy
 import gg.rsmod.game.plugin.Plugin
@@ -234,7 +236,17 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
+    fun routeCycle() {
+        if (futureRoute?.completed == true) {
+            val futureRoute = futureRoute!!
+            walkPath(futureRoute.route.path, futureRoute.stepType)
+            this.futureRoute = null
+        }
+    }
+
     fun walkPath(path: ArrayDeque<Tile>, stepType: MovementQueue.StepType): Tile? {
+        futureRoute = null
+
         if (path.isEmpty()) {
             if (this is Player) {
                 write(SetMinimapMarkerMessage(255, 255))
@@ -273,31 +285,48 @@ abstract class Pawn(val world: World) : Entity() {
         return tail
     }
 
-    /**
-     * Handles the walking to the specified [x] and [z] coordinates. The height
-     * level used is the one this pawn is currently on.
-     *
-     * @param stepType
-     * The [MovementQueue.StepType] that the movement to the coordinates will
-     * use.
-     *
-     * @return
-     * The last tile in the path. `null` if no path could be made.
-     */
-    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? {
-        val request = PathRequest.Builder()
-                .setPoints(tile, Tile(x, z, tile.height))
-                .setSourceSize(getSize(), getSize())
-                .setTargetSize(width = 0, length = 0)
-                .setProjectilePath(projectilePath)
-                .clipPathNodes(world.collision, tile = true, face = true)
-                .build()
+    private var futureRoute: FutureRoute? = null
 
-        val route = createPathingStrategy().calculateRoute(request)
-        return walkPath(route.path, stepType)
+    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false) = walkTo(tile.x, tile.z, stepType, projectilePath)
+
+    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false) {
+        val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
+        val strategy = createPathingStrategy()
+
+        if (futureRoute != null) {
+            futureRoute!!.strategy.cancel = true
+        }
+
+        if (world.multiThreadPathFinding) {
+            futureRoute = FutureRoute.of(strategy, request, stepType)
+        } else {
+            val route = strategy.calculateRoute(request)
+            walkPath(route.path, stepType)
+        }
     }
 
-    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? = walkTo(tile.x, tile.z, stepType, projectilePath)
+    suspend fun walkTo(it: Plugin, tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false) = walkTo(it, tile.x, tile.z, stepType, projectilePath)
+
+    suspend fun walkTo(it: Plugin, x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Route {
+        val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
+        val strategy = createPathingStrategy()
+
+        if (futureRoute != null) {
+            futureRoute!!.strategy.cancel = true
+        }
+
+        if (world.multiThreadPathFinding) {
+            futureRoute = FutureRoute.of(strategy, request, stepType)
+            while (!futureRoute!!.completed) {
+                it.wait(1)
+            }
+            return futureRoute!!.route
+        }
+
+        val route = strategy.calculateRoute(request)
+        walkPath(route.path, stepType)
+        return route
+    }
 
     fun teleport(x: Int, z: Int, height: Int = 0) {
         teleport = true

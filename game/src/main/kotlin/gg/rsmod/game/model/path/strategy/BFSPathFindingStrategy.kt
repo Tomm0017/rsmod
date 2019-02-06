@@ -67,6 +67,9 @@ class BFSPathFindingStrategy(world: World) : PathFindingStrategy(world) {
         val order = Arrays.copyOf(Direction.RS_ORDER, Direction.RS_ORDER.size)
 
         while (nodes.isNotEmpty()) {
+            if (cancel) {
+                return Route(path = ArrayDeque(0), success = false, tail = start)
+            }
             if (searchLimit-- == 0) {
                 break
             }

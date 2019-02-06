@@ -16,5 +16,7 @@ abstract class PathFindingStrategy(val world: World) {
         const val MAX_DISTANCE = 20
     }
 
+    @Volatile var cancel = false
+
     abstract fun calculateRoute(request: PathRequest): Route
 }

@@ -5,6 +5,7 @@ import gg.rsmod.game.action.PlayerDeathAction
 import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.combat.DamageMap
+import gg.rsmod.game.model.path.FutureRoute
 import gg.rsmod.game.model.path.PathFindingStrategy
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.strategy.BFSPathFindingStrategy
@@ -234,7 +235,17 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
+    fun routeCycle() {
+        if (futureRoute?.completed == true) {
+            val route = futureRoute!!.route
+            walkPath(route.path, futureRouteStepType!!)
+            futureRoute = null
+        }
+    }
+
     fun walkPath(path: ArrayDeque<Tile>, stepType: MovementQueue.StepType): Tile? {
+        futureRoute = null
+
         if (path.isEmpty()) {
             if (this is Player) {
                 write(SetMinimapMarkerMessage(255, 255))
@@ -273,17 +284,12 @@ abstract class Pawn(val world: World) : Entity() {
         return tail
     }
 
-    /**
-     * Handles the walking to the specified [x] and [z] coordinates. The height
-     * level used is the one this pawn is currently on.
-     *
-     * @param stepType
-     * The [MovementQueue.StepType] that the movement to the coordinates will
-     * use.
-     *
-     * @return
-     * The last tile in the path. `null` if no path could be made.
-     */
+    private var futureRoute: FutureRoute? = null
+
+    private var futureRouteStepType: MovementQueue.StepType? = null
+
+    private var futureRoutePathFinder: PathFindingStrategy? = null
+
     fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? {
         val request = PathRequest.Builder()
                 .setPoints(tile, Tile(x, z, tile.height))
@@ -293,8 +299,15 @@ abstract class Pawn(val world: World) : Entity() {
                 .clipPathNodes(world.collision, tile = true, face = true)
                 .build()
 
-        val route = createPathingStrategy().calculateRoute(request)
-        return walkPath(route.path, stepType)
+        if (futureRoute != null) {
+            futureRoutePathFinder!!.cancel = true
+        }
+
+        val strategy = createPathingStrategy()
+        futureRoutePathFinder = strategy
+        futureRoute = FutureRoute.of(strategy, request)
+        futureRouteStepType = stepType
+        return null
     }
 
     fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Tile? = walkTo(tile.x, tile.z, stepType, projectilePath)

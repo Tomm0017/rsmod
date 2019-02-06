@@ -12,7 +12,7 @@ import gg.rsmod.game.sync.SynchronizationTask
 class PlayerPreSynchronizationTask(val player: Player) : SynchronizationTask {
 
     override fun run() {
-        player.routeCycle()
+        player.handleFutureRoute()
         player.movementQueue.pulse()
 
         if (player.lastKnownRegionBase == null) {

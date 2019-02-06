@@ -236,7 +236,7 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
-    fun routeCycle() {
+    fun handleFutureRoute() {
         if (futureRoute?.completed == true) {
             val futureRoute = futureRoute!!
             walkPath(futureRoute.route.path, futureRoute.stepType)
@@ -291,7 +291,7 @@ abstract class Pawn(val world: World) : Entity() {
 
     fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false) {
         val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
-        val strategy = createPathingStrategy()
+        val strategy = createPathFindingStrategy()
 
         if (futureRoute != null) {
             futureRoute!!.strategy.cancel = true
@@ -309,7 +309,7 @@ abstract class Pawn(val world: World) : Entity() {
 
     suspend fun walkTo(it: Plugin, x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Route {
         val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
-        val strategy = createPathingStrategy()
+        val strategy = createPathFindingStrategy()
 
         if (futureRoute != null) {
             futureRoute!!.strategy.cancel = true
@@ -411,5 +411,5 @@ abstract class Pawn(val world: World) : Entity() {
         world.pluginExecutor.interruptPluginsWithContext(this)
     }
 
-    fun createPathingStrategy(): PathFindingStrategy = if (getType().isPlayer()) BFSPathFindingStrategy(world) else SimplePathFindingStrategy(world)
+    fun createPathFindingStrategy(): PathFindingStrategy = if (getType().isPlayer()) BFSPathFindingStrategy(world.collision) else SimplePathFindingStrategy(world.collision)
 }

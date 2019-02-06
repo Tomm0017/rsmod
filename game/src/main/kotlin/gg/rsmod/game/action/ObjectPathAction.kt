@@ -92,7 +92,7 @@ object ObjectPathAction {
             builder.clipOverlapTiles().clipDiagonalTiles()
         }
 
-        val route = pawn.createPathingStrategy().calculateRoute(builder.build())
+        val route = pawn.createPathFindingStrategy().calculateRoute(builder.build())
 
         pawn.walkPath(route.path, MovementQueue.StepType.NORMAL)
 

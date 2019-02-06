@@ -67,7 +67,7 @@ object PawnPathAction {
                 .clipOverlapTiles()
                 .build()
 
-        val route = pawn.createPathingStrategy().calculateRoute(request)
+        val route = pawn.createPathFindingStrategy().calculateRoute(request)
         pawn.walkPath(route.path, MovementQueue.StepType.NORMAL)
 
         while (!pawn.tile.sameAs(route.tail)) {

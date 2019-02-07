@@ -1,10 +1,10 @@
 package gg.rsmod.plugins.osrs.content.mechanics.run
 
-import gg.rsmod.game.message.impl.SetRunEnergyMessage
 import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.Skills
+import gg.rsmod.plugins.osrs.api.helper.sendRunEnergy
 import gg.rsmod.plugins.osrs.api.helper.setVarp
 import gg.rsmod.plugins.osrs.api.helper.toggleVarp
 
@@ -42,14 +42,14 @@ object RunEnergy {
             if (p.runEnergy <= 0) {
                 p.varps.setState(RUN_ENABLED_VARP, 0)
             }
-            p.write(SetRunEnergyMessage(p.runEnergy.toInt()))
+            p.sendRunEnergy(p.runEnergy.toInt())
         } else if (p.runEnergy < 100.0 && p.lock.canRestoreRunEnergy()) {
             var recovery = (8.0 + (p.getSkills().getCurrentLevel(Skills.AGILITY) / 6.0)) / 100.0
             if (RunEnergy.isWearingFullGrace(p)) {
                 recovery *= 1.3
             }
             p.runEnergy = Math.min(100.0, (p.runEnergy + recovery))
-            p.write(SetRunEnergyMessage(p.runEnergy.toInt()))
+            p.sendRunEnergy(p.runEnergy.toInt())
         }
     }
 

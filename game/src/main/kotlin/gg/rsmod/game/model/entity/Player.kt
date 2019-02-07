@@ -138,12 +138,12 @@ open class Player(world: World) : Pawn(world) {
      * [InterfaceSet.currentMainScreenInterface] from our [InterfaceSet.visible] map
      * near the end of the next available game cycle.
      *
-     * It can't be removed immediately due to the [CloseMainComponentMessage]
-     * being received before [ClickButtonMessage], which leads to the server
+     * It can't be removed immediately due to the [CloseModalMessage]
+     * being received before [IfButtonMessage], which leads to the server
      * thinking that the player is trying to click a button on an interface
      * that's not in their [InterfaceSet.visible] map.
      */
-    var closeMainComponent = false
+    var closeModal = false
 
     val looks = intArrayOf(9, 14, 109, 26, 33, 36, 42)
 
@@ -237,13 +237,13 @@ open class Player(world: World) : Pawn(world) {
         }
 
         if (inventory.dirty) {
-            write(SetItemContainerMessage(parent = 149, child = 0, containerKey = 93, items = inventory.getBackingArray()))
+            write(UpdateInvFullMessage(parent = 149, child = 0, containerKey = 93, items = inventory.getBackingArray()))
             inventory.dirty = false
             calculateWeight = true
         }
 
         if (equipment.dirty) {
-            write(SetItemContainerMessage(containerKey = 94, items = equipment.getBackingArray()))
+            write(UpdateInvFullMessage(containerKey = 94, items = equipment.getBackingArray()))
             equipment.dirty = false
             calculateWeight = true
             calculateBonuses = true
@@ -252,7 +252,7 @@ open class Player(world: World) : Pawn(world) {
         }
 
         if (bank.dirty) {
-            write(SetItemContainerMessage(containerKey = 95, items = bank.getBackingArray()))
+            write(UpdateInvFullMessage(containerKey = 95, items = bank.getBackingArray()))
             bank.dirty = false
         }
 
@@ -268,8 +268,8 @@ open class Player(world: World) : Pawn(world) {
             if (varps.isDirty(i)) {
                 val varp = varps[i]
                 val message = when {
-                    varp.state >= -Byte.MAX_VALUE && varp.state <= Byte.MAX_VALUE -> SetSmallVarpMessage(varp.id, varp.state)
-                    else -> SetBigVarpMessage(varp.id, varp.state)
+                    varp.state >= -Byte.MAX_VALUE && varp.state <= Byte.MAX_VALUE -> VarpSmallMessage(varp.id, varp.state)
+                    else -> VarpLargeMessage(varp.id, varp.state)
                 }
                 write(message)
             }
@@ -278,7 +278,7 @@ open class Player(world: World) : Pawn(world) {
 
         for (i in 0 until getSkills().maxSkills) {
             if (getSkills().isDirty(i)) {
-                write(SendSkillMessage(skill = i, level = getSkills().getCurrentLevel(i), xp = getSkills().getCurrentXp(i).toInt()))
+                write(UpdateStatMessage(skill = i, level = getSkills().getCurrentLevel(i), xp = getSkills().getCurrentXp(i).toInt()))
                 getSkills().clean(i)
             }
         }
@@ -295,9 +295,9 @@ open class Player(world: World) : Pawn(world) {
         /**
          * Close the main interface if it's pending.
          */
-        if (closeMainComponent) {
+        if (closeModal) {
             components.closeMain()
-            closeMainComponent = false
+            closeModal = false
         }
 
         /**
@@ -351,7 +351,7 @@ open class Player(world: World) : Pawn(world) {
                 externalPlayerIndices[externalPlayerCount++] = i
             }
 
-            write(LoginRegionMessage(index, tile, world.xteaKeyService))
+            write(RebuildLoginMessage(index, tile, world.xteaKeyService))
         }
 
         initiated = true
@@ -365,7 +365,7 @@ open class Player(world: World) : Pawn(world) {
                 val inventoryWeight = inventory.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
                 val equipmentWeight = equipment.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
                 this.weight = inventoryWeight + equipmentWeight
-                write(WeightMessage(this.weight.toInt()))
+                write(UpdateRunWeightMessage(this.weight.toInt()))
             }
 
             if (bonuses) {
@@ -432,7 +432,7 @@ open class Player(world: World) : Pawn(world) {
     }
 
     fun message(message: String) {
-        write(SendChatboxTextMessage(type = 0, message = message, username = null))
+        write(MessageGameMessage(type = 0, message = message, username = null))
     }
 
     fun getSkills(): SkillSet = skillSet

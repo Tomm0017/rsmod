@@ -1,6 +1,6 @@
 package gg.rsmod.game.sync.task
 
-import gg.rsmod.game.message.impl.ChangeStaticRegionMessage
+import gg.rsmod.game.message.impl.RebuildNormalMessage
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.region.Chunk
@@ -29,7 +29,7 @@ class PlayerPreSynchronizationTask(val player: Player) : SynchronizationTask {
             val regionZ = ((current.z shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
 
             player.lastKnownRegionBase = Tile(regionX, regionZ, current.height)
-            player.write(ChangeStaticRegionMessage(current.x, current.z, player.world.xteaKeyService))
+            player.write(RebuildNormalMessage(current.x, current.z, player.world.xteaKeyService))
         }
     }
 

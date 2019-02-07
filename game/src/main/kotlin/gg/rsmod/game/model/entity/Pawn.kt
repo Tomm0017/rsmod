@@ -2,7 +2,7 @@ package gg.rsmod.game.model.entity
 
 import gg.rsmod.game.action.NpcDeathAction
 import gg.rsmod.game.action.PlayerDeathAction
-import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
+import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.combat.DamageMap
 import gg.rsmod.game.model.path.FutureRoute
@@ -249,7 +249,7 @@ abstract class Pawn(val world: World) : Entity() {
 
         if (path.isEmpty()) {
             if (this is Player) {
-                write(SetMinimapMarkerMessage(255, 255))
+                write(SetMapFlagMessage(255, 255))
             }
             return null
         }
@@ -273,14 +273,14 @@ abstract class Pawn(val world: World) : Entity() {
          */
         if (tail == null || tail.sameAs(tile)) {
             if (this is Player) {
-                write(SetMinimapMarkerMessage(255, 255))
+                write(SetMapFlagMessage(255, 255))
             }
             movementQueue.clear()
             return tail
         }
 
         if (this is Player && lastKnownRegionBase != null) {
-            write(SetMinimapMarkerMessage(tail.x - lastKnownRegionBase!!.x, tail.z - lastKnownRegionBase!!.z))
+            write(SetMapFlagMessage(tail.x - lastKnownRegionBase!!.x, tail.z - lastKnownRegionBase!!.z))
         }
         return tail
     }

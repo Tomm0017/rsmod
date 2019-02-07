@@ -1,7 +1,7 @@
 package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
-import gg.rsmod.game.message.impl.ClickMinimapMessage
+import gg.rsmod.game.message.impl.MoveMinimapClickMessage
 import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.model.entity.Client
@@ -9,9 +9,9 @@ import gg.rsmod.game.model.entity.Client
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ClickMinimapHandler : MessageHandler<ClickMinimapMessage> {
+class ClickMinimapHandler : MessageHandler<MoveMinimapClickMessage> {
 
-    override fun handle(client: Client, message: ClickMinimapMessage) {
+    override fun handle(client: Client, message: MoveMinimapClickMessage) {
         log(client, "Click minimap: x=%d, z=%d, type=%d", message.x, message.z, message.movementType)
 
         client.interruptPlugins()

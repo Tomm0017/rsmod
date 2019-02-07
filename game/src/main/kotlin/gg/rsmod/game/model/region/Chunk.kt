@@ -2,9 +2,9 @@ package gg.rsmod.game.model.region
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
-import gg.rsmod.game.message.impl.EntityGroupMessage
-import gg.rsmod.game.message.impl.SetChunkToRegionOffset
-import gg.rsmod.game.message.impl.SpawnEntityGroupsMessage
+import gg.rsmod.game.model.region.update.EntityGroupMessage
+import gg.rsmod.game.message.impl.UpdateZonePartialFollowsMessage
+import gg.rsmod.game.message.impl.UpdateZonePartialEnclosedMessage
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
@@ -155,7 +155,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
 
     fun updateGroundItem(world: World, item: GroundItem, oldAmount: Int, newAmount: Int) {
         if (item.getType().isGroundItem()) {
-            val update = GroundItemRefreshUpdate(EntityUpdateType.UPDATE_GROUND_ITEM, item, oldAmount, newAmount)
+            val update = ObjCountUpdate(EntityUpdateType.UPDATE_GROUND_ITEM, item, oldAmount, newAmount)
             sendUpdate(world, update)
 
             if (updates.removeIf { it.entity == item }) {
@@ -187,7 +187,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
                     continue
                 }
                 val local = client.lastKnownRegionBase!!.toLocal(update.entity.tile)
-                client.write(SetChunkToRegionOffset(local.x, local.z))
+                client.write(UpdateZonePartialFollowsMessage(local.x, local.z))
                 client.write(update.toMessage())
             }
         }
@@ -203,7 +203,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
 
         if (messages.isNotEmpty()) {
             val local = p.lastKnownRegionBase!!.toLocal(coords.toTile())
-            p.write(SpawnEntityGroupsMessage(local.x, local.z, gameService.messageEncoders, gameService.messageStructures, *messages.toTypedArray()))
+            p.write(UpdateZonePartialEnclosedMessage(local.x, local.z, gameService.messageEncoders, gameService.messageStructures, *messages.toTypedArray()))
         }
     }
 
@@ -218,19 +218,19 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
     private fun <T: Entity> createUpdateFor(entity: T, spawn: Boolean): EntityUpdate<*>? = when (entity.getType()) {
 
         EntityType.DYNAMIC_OBJECT, EntityType.STATIC_OBJECT ->
-            if (spawn) ObjectSpawnUpdate(EntityUpdateType.SPAWN_OBJECT, entity as GameObject)
-            else ObjectRemoveUpdate(EntityUpdateType.REMOVE_OBJECT, entity as GameObject)
+            if (spawn) LocAddChangeUpdate(EntityUpdateType.SPAWN_OBJECT, entity as GameObject)
+            else LocDelUpdate(EntityUpdateType.REMOVE_OBJECT, entity as GameObject)
 
         EntityType.GROUND_ITEM ->
-            if (spawn) GroundItemSpawnUpdate(EntityUpdateType.SPAWN_GROUND_ITEM, entity as GroundItem)
-            else GroundItemRemoveUpdate(EntityUpdateType.REMOVE_GROUND_ITEM, entity as GroundItem)
+            if (spawn) ObjAddUpdate(EntityUpdateType.SPAWN_GROUND_ITEM, entity as GroundItem)
+            else ObjDelUpdate(EntityUpdateType.REMOVE_GROUND_ITEM, entity as GroundItem)
 
         EntityType.PROJECTILE ->
-            if (spawn) ProjectileSpawnUpdate(EntityUpdateType.SPAWN_PROJECTILE, entity as Projectile)
+            if (spawn) MapProjAnimUpdate(EntityUpdateType.SPAWN_PROJECTILE, entity as Projectile)
             else throw RuntimeException("${entity.getType()} can only be spawned, not removed!")
 
         EntityType.AREA_SOUND ->
-            if (spawn) PlayAreaSoundUpdate(EntityUpdateType.PLAY_TILE_SOUND, entity as AreaSound)
+            if (spawn) SoundAreaUpdate(EntityUpdateType.PLAY_TILE_SOUND, entity as AreaSound)
             else throw RuntimeException("${entity.getType()} can only be spawned, not removed!")
 
         else -> null

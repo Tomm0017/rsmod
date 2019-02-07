@@ -1,7 +1,7 @@
 package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
-import gg.rsmod.game.message.impl.ClickMapMessage
+import gg.rsmod.game.message.impl.MoveGameClickMessage
 import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.model.entity.Client
@@ -9,9 +9,9 @@ import gg.rsmod.game.model.entity.Client
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ClickMapHandler : MessageHandler<ClickMapMessage> {
+class ClickMapHandler : MessageHandler<MoveGameClickMessage> {
 
-    override fun handle(client: Client, message: ClickMapMessage) {
+    override fun handle(client: Client, message: MoveGameClickMessage) {
         log(client, "Click map: x=%d, z=%d, type=%d", message.x, message.z, message.movementType)
 
         client.interruptPlugins()

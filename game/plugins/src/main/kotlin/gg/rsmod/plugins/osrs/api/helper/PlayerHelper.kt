@@ -27,11 +27,11 @@ import gg.rsmod.util.BitManipulation
  */
 
 fun Player.message(message: String, type: ChatMessageType = ChatMessageType.GAME) {
-    write(SendChatboxTextMessage(type = type.id, message = message, username = null))
+    write(MessageGameMessage(type = type.id, message = message, username = null))
 }
 
 fun Player.filterableMessage(message: String) {
-    write(SendChatboxTextMessage(type = ChatMessageType.FILTERED.id, message = message, username = null))
+    write(MessageGameMessage(type = ChatMessageType.FILTERED.id, message = message, username = null))
 }
 
 fun Player.runClientScript(id: Int, vararg args: Any) {
@@ -120,19 +120,19 @@ fun Player.openInterface(parent: Int, child: Int, component: Int, type: Int = 0,
     } else {
         components.open(parent, child, component)
     }
-    write(OpenComponentMessage(parent, child, component, type))
+    write(IfOpenSubMessage(parent, child, component, type))
 }
 
 fun Player.closeInterface(interfaceId: Int) {
     val hash = components.close(interfaceId)
     if (hash != -1) {
-        write(CloseComponentMessage(hash))
+        write(IfCloseSubMessage(hash))
     }
 }
 
 fun Player.closeComponent(parent: Int, child: Int) {
     components.close(parent, child)
-    write(CloseComponentMessage((parent shl 16) or child))
+    write(IfCloseSubMessage((parent shl 16) or child))
 }
 
 fun Player.isInterfaceVisible(interfaceId: Int): Boolean = components.isVisible(interfaceId)
@@ -165,7 +165,7 @@ fun Player.toggleDisplayInterface(newMode: DisplayMode) {
                 }
             }
 
-            write(ComponentSwitchMessage(from = (fromParent shl 16) or fromChild, to = (toParent shl 16) or toChild))
+            write(IfMoveSubMessage(from = (fromParent shl 16) or fromChild, to = (toParent shl 16) or toChild))
         }
 
         if (newMode.isResizable()) {
@@ -183,23 +183,23 @@ fun Player.openOverlayInterface(displayMode: DisplayMode) {
     }
     val component = getDisplayComponentId(displayMode)
     components.setVisible(parent = getDisplayComponentId(displayMode), child = 0, visible = true)
-    write(SetDisplayComponentMessage(component))
+    write(IfOpenTopMessage(component))
 }
 
 fun Player.sendItemContainer(key: Int, container: ItemContainer) {
-    write(SetItemContainerMessage(containerKey = key, items = container.getBackingArray()))
+    write(UpdateInvFullMessage(containerKey = key, items = container.getBackingArray()))
 }
 
 fun Player.sendItemContainer(parent: Int, child: Int, container: ItemContainer) {
-    write(SetItemContainerMessage(parent = parent, child = child, items = container.getBackingArray()))
+    write(UpdateInvFullMessage(parent = parent, child = child, items = container.getBackingArray()))
 }
 
-fun Player.sendRunEnergy() {
-    write(SetRunEnergyMessage(runEnergy.toInt()))
+fun Player.sendRunEnergy(energy: Int) {
+    write(UpdateRunEnergyMessage(energy))
 }
 
 fun Player.playSound(id: Int, volume: Int = 1, delay: Int = 0) {
-    write(PlaySoundMessage(sound = id, volume = volume, delay = delay))
+    write(SynthSoundMessage(sound = id, volume = volume, delay = delay))
 }
 
 fun Player.getVarp(id: Int): Int = varps.getState(id)
@@ -231,10 +231,18 @@ fun Player.toggleVarbit(id: Int) {
     varps.setBit(def.varp, def.startBit, def.endBit, getVarbit(id) xor 1)
 }
 
+fun Player.setMapFlag(x: Int, z: Int) {
+    write(SetMapFlagMessage(x, z))
+}
+
+fun Player.clearMapFlag() {
+    setMapFlag(255, 255)
+}
+
 fun Player.sendVisualVarbit(id: Int, value: Int) {
     val def = world.definitions[VarbitDef::class.java][id]
     val state = BitManipulation.setBit(varps.getState(def.varp), def.startBit, def.endBit, value)
-    val message = if (state < Byte.MAX_VALUE) SetSmallVarpMessage(def.varp, state) else SetBigVarpMessage(def.varp, state)
+    val message = if (state < Byte.MAX_VALUE) VarpSmallMessage(def.varp, state) else VarpLargeMessage(def.varp, state)
     write(message)
 }
 

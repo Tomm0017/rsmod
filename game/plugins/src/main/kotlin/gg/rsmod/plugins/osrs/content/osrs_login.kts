@@ -53,6 +53,6 @@ onLogin {
     /**
      * Game-related logic.
      */
-    p.sendRunEnergy()
+    p.sendRunEnergy(p.runEnergy.toInt())
     p.message("Welcome to ${p.world.gameContext.name}.", ChatMessageType.SERVER)
 }

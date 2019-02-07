@@ -1,6 +1,5 @@
 
 import gg.rsmod.game.action.PawnPathAction
-import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
 import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.FROZEN_TIMER
 import gg.rsmod.game.model.entity.Entity
@@ -86,7 +85,7 @@ suspend fun cycle(it: Plugin): Boolean {
             if (!pawn.timers.has(FROZEN_TIMER)) {
                 pawn.message(Entity.YOU_CANT_REACH_THAT)
             }
-            pawn.write(SetMinimapMarkerMessage(255, 255))
+            pawn.clearMapFlag()
         }
         pawn.facePawn(null)
         Combat.reset(pawn)

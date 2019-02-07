@@ -2,7 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.action.EquipAction
 import gg.rsmod.game.message.MessageHandler
-import gg.rsmod.game.message.impl.ItemActionTwoMessage
+import gg.rsmod.game.message.impl.OpHeld2Message
 import gg.rsmod.game.model.INTERACTING_ITEM
 import gg.rsmod.game.model.INTERACTING_ITEM_ID
 import gg.rsmod.game.model.INTERACTING_ITEM_SLOT
@@ -11,9 +11,9 @@ import gg.rsmod.game.model.entity.Client
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ItemActionTwoHandler : MessageHandler<ItemActionTwoMessage> {
+class ItemActionTwoHandler : MessageHandler<OpHeld2Message> {
 
-    override fun handle(client: Client, message: ItemActionTwoMessage) {
+    override fun handle(client: Client, message: OpHeld2Message) {
         @Suppress("unused")
         val componentParent = message.componentHash shr 16
         @Suppress("unused")

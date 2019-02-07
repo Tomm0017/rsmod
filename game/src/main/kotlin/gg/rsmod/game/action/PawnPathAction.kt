@@ -1,6 +1,6 @@
 package gg.rsmod.game.action
 
-import gg.rsmod.game.message.impl.SetMinimapMarkerMessage
+import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Pawn
@@ -30,7 +30,7 @@ object PawnPathAction {
                     if (!pawn.timers.has(FROZEN_TIMER)) {
                         pawn.message(Entity.YOU_CANT_REACH_THAT)
                     }
-                    pawn.write(SetMinimapMarkerMessage(255, 255))
+                    pawn.write(SetMapFlagMessage(255, 255))
                 }
                 pawn.facePawn(null)
                 return@suspendable

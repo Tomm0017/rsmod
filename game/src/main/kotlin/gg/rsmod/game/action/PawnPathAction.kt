@@ -49,13 +49,21 @@ object PawnPathAction {
     suspend fun walkTo(it: Plugin, pawn: Pawn, target: Pawn, interactionRange: Int): Boolean {
         val sourceSize = pawn.getSize()
         val targetSize = target.getSize()
-        val projectile = interactionRange > 2
+        val sourceTile = pawn.tile
         val targetTile = target.tile
+        val projectile = interactionRange > 2
+
         val frozen = pawn.timers.has(FROZEN_TIMER)
 
-        // TODO: isWithinRadius should be replaced with AabbUtil.areOverlapping
-        if (frozen && (!pawn.tile.isWithinRadius(target.getFrontFacingTile(), interactionRange) || overlap(pawn.tile, sourceSize, target.tile, targetSize))) {
-            return false
+        if (frozen) {
+            if (overlap(sourceTile, sourceSize, targetTile, targetSize)) {
+                return false
+            }
+            val sourceCentre = sourceTile.transform(sourceSize / 2, sourceSize / 2)
+            val targetCentre = targetTile.transform(targetSize / 2, targetSize / 2)
+            if (!sourceCentre.isWithinRadius(targetCentre, interactionRange)) {
+                return false
+            }
         }
 
         val request = PathRequest.Builder()

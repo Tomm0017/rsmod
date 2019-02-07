@@ -10,13 +10,13 @@ import java.util.*
  */
 class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val sourceLength: Int, val end: Tile,
                                       val targetWidth: Int, val targetLength: Int, val touchRadius: Int, val projectilePath: Boolean,
-                                      val clipFlags: EnumSet<ClipFlag>, val blockedDirections: Array<out Direction>) {
+                                      val clipFlags: EnumSet<ClipFlag>, val blockedDirections: Array<Direction>) {
 
     companion object {
 
         fun buildWalkRequest(pawn: Pawn, x: Int, z: Int, projectile: Boolean): PathRequest = Builder()
-                .setPoints(pawn.tile, Tile(x, z, pawn.tile.height))
-                .setSourceSize(pawn.getSize(), pawn.getSize())
+                .setPoints(start = pawn.tile, end = Tile(x, z, pawn.tile.height))
+                .setSourceSize(width = pawn.getSize(), length =  pawn.getSize())
                 .setTargetSize(width = 0, length = 0)
                 .setProjectilePath(projectile)
                 .clipPathNodes(node = true, link = true)

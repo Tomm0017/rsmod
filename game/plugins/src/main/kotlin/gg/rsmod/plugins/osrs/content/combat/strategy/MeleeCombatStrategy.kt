@@ -1,6 +1,5 @@
 package gg.rsmod.plugins.osrs.content.combat.strategy
 
-import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.WeaponType
@@ -44,9 +43,6 @@ object MeleeCombatStrategy : CombatStrategy {
         val landHit = accuracy >= world.randomDouble()
 
         val damage = if (landHit) world.random(maxHit) else 0
-        target.hit(damage = damage, delay = getHitDelay(pawn.calculateCentreTile(), target.calculateCentreTile()))
-                .addActions(hitActions)
-    }
-
-    override fun getHitDelay(start: Tile, target: Tile): Int = 1
+        target.hit(damage = damage, delay = 1).addActions(hitActions)
+}
 }

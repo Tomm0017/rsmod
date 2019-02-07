@@ -35,13 +35,12 @@ onTimer(AGGRO_CHECK_TIMER) {
 
 fun checkRadius(npc: Npc) {
     val world = npc.world
-    val centre = npc.calculateCentreTile()
     val radius = npc.combatDef.aggressiveRadius
 
     mainLoop@
     for (x in -radius .. radius) {
         for (z in -radius .. radius) {
-            val tile = centre.transform(x, z)
+            val tile = npc.tile.transform(x, z)
             val chunk = world.chunks.getOrCreate(tile.toChunkCoords(), create = false) ?: continue
 
             val players = chunk.getEntities<Player>(EntityType.PLAYER, EntityType.CLIENT)

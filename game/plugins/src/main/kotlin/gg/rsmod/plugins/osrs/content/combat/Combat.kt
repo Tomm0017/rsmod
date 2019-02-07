@@ -58,16 +58,16 @@ object Combat {
 
     fun raycast(pawn: Pawn, target: Pawn, distance: Int, projectile: Boolean): Boolean {
         val world = pawn.world
-        val start = pawn.calculateCentreTile()
-        val end = target.calculateCentreTile()
+        val start = pawn.tile
+        val end = target.tile
 
         return start.isWithinRadius(end, distance) && world.collision.raycast(start, end, projectile = projectile)
     }
 
     suspend fun moveToAttackRange(it: Plugin, pawn: Pawn, target: Pawn, distance: Int, projectile: Boolean): Boolean {
         val world = pawn.world
-        val start = pawn.calculateCentreTile()
-        val end = target.calculateCentreTile()
+        val start = pawn.tile
+        val end = target.tile
 
         val withinRange = start.isWithinRadius(end, distance) && world.collision.raycast(start, end, projectile = projectile)
         return withinRange || PawnPathAction.walkTo(it, pawn, target, interactionRange = distance)

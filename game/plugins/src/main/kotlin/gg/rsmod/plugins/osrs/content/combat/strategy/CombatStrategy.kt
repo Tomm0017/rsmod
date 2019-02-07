@@ -1,7 +1,6 @@
 package gg.rsmod.plugins.osrs.content.combat.strategy
 
 import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
-import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.helper.getVarp
@@ -17,8 +16,6 @@ interface CombatStrategy {
     fun canAttack(pawn: Pawn, target: Pawn): Boolean
 
     fun attack(pawn: Pawn, target: Pawn)
-
-    fun getHitDelay(start: Tile, target: Tile): Int
 
     fun postDamage(pawn: Pawn, target: Pawn) {
         if (target.isDead()) {

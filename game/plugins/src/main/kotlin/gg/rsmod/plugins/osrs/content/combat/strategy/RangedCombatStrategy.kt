@@ -134,11 +134,11 @@ object RangedCombatStrategy : CombatStrategy {
         pawn.animate(animation)
 
         val damage = if (landHit(pawn, target)) getMaxHit(pawn, target) else 0
-        target.hit(damage = damage, delay = getHitDelay(pawn.calculateCentreTile(), target.calculateCentreTile()))
+        target.hit(damage = damage, delay = getHitDelay(pawn.getFrontFacingTile(), target.tile.transform(target.getSize() / 2, target.getSize()  / 2)))
                 .addActions(hitActions)
     }
 
-    override fun getHitDelay(start: Tile, target: Tile): Int {
+    private fun getHitDelay(start: Tile, target: Tile): Int {
         val distance = start.getDistance(target)
         return 2 + (Math.floor((3.0 + distance) / 6.0)).toInt()
     }

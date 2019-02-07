@@ -53,7 +53,8 @@ object PawnPathAction {
         val targetTile = target.tile
         val frozen = pawn.timers.has(FROZEN_TIMER)
 
-        if (frozen && (!pawn.tile.isWithinRadius(target.calculateCentreTile(), interactionRange) || overlap(pawn.tile, sourceSize, target.tile, targetSize))) {
+        // TODO: isWithinRadius should be replaced with AabbUtil.areOverlapping
+        if (frozen && (!pawn.tile.isWithinRadius(target.getFrontFacingTile(), interactionRange) || overlap(pawn.tile, sourceSize, target.tile, targetSize))) {
             return false
         }
 

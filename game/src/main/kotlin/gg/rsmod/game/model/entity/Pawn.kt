@@ -62,7 +62,7 @@ abstract class Pawn(val world: World) : Entity() {
     /**
      * The last [Direction] this pawn was facing.
      */
-    var lastFacingDirection: Direction = Direction.NONE
+    var lastFacingDirection: Direction = Direction.SOUTH
 
     /**
      * The current [LockState] which filters what actions this pawn can perform.
@@ -145,16 +145,75 @@ abstract class Pawn(val world: World) : Entity() {
     }
 
     /**
-     * Calculates the middle tile that this pawn occupies.
+     * Gets the most south-west 'front-facing' tile.
+     *
+     * For example: 3x3 sized pawn is facing:
+     *
+     * East
+     * ```
+     *  _____
+     * |_|_|2|
+     * |_|_|1|
+     * |_|_|0|
+     *
+     * ```
+     *
+     * West
+     * ```
+     *  _____
+     * |2|_|_|
+     * |1|_|_|
+     * |0|_|_|
+     *
+     * ```
+     *
+     * North
+     * ```
+     *  _____
+     * |0|1|2|
+     * |_|_|_|
+     * |_|_|_|
+     *
+     * ```
+     *
+     * South
+     * ```
+     *  _____
+     * |_|_|_|
+     * |_|_|_|
+     * |0|1|2|
+     *
+     * ```
+     *
+     * Legend:
+     * ```
+     * 0 = returned when [offset] is set to 0
+     * 1 = returned when [offset] is set to 1
+     * 2 = returned when [offset] is set to 2
+     * ... etc
+     * ```
      */
-    // TODO: remove this and create a getFacingTile method instead, that will be used
-    // for projectiles being shot from the facing tile for npcs
-    fun calculateCentreTile(): Tile {
-        val size = getSize()
-        if (size > 1) {
-            return tile.transform(size / 2, size / 2)
+    fun getFrontFacingTile(offset: Int = 0): Tile {
+        val sizeExcluded = getSize() - 1
+        if (sizeExcluded == 0) {
+            return Tile(tile)
         }
-        return Tile(tile)
+
+        check(offset < sizeExcluded) { "Offset should not be bigger than pawn's tile size. [size=${getSize()}, offset=$offset]" }
+
+        return when (lastFacingDirection) {
+            Direction.SOUTH -> tile.transform(offset, 0)
+            Direction.NORTH -> tile.transform(offset, sizeExcluded)
+            Direction.WEST -> tile.transform(0, offset)
+            Direction.EAST -> tile.transform(sizeExcluded, offset)
+
+            Direction.SOUTH_WEST -> tile.transform(0, 0)
+            Direction.SOUTH_EAST -> tile.transform(sizeExcluded, 0)
+            Direction.NORTH_WEST -> tile.transform(0, sizeExcluded)
+            Direction.NORTH_EAST -> tile.transform(sizeExcluded, sizeExcluded)
+
+            Direction.NONE -> throw IllegalStateException("Pawn should not be allowed to face this direction.")
+        }
     }
 
     fun attack(target: Pawn) {

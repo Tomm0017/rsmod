@@ -1,6 +1,6 @@
 
 import gg.rsmod.game.model.interf.DisplayMode
-import gg.rsmod.plugins.osrs.api.ComponentPane
+import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.OSRSGameframe
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
@@ -33,9 +33,9 @@ onButton(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 16) {
      * Close or open the XP drop interface.
      */
     if (p.getVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT) == 0) {
-        p.openComponent(component = 160, pane = ComponentPane.MINI_MAP)
+        p.openInterface(component = 160, pane = InterfaceDestination.MINI_MAP)
     } else {
-        p.closeComponent(component = 160)
+        p.closeInterface(interfaceId = 160)
     }
 }
 
@@ -54,7 +54,7 @@ onButton(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 21) {
 
     if (p.isClientResizable()) {
         val mode = if (it.player().getVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT) == 0) DisplayMode.RESIZABLE_NORMAL else DisplayMode.RESIZABLE_LIST
-        p.toggleDisplayComponent(mode)
+        p.toggleDisplayInterface(mode)
     }
 }
 

@@ -1,13 +1,13 @@
 
 import gg.rsmod.game.action.EquipAction
 import gg.rsmod.game.model.ExamineEntityType
-import gg.rsmod.plugins.osrs.api.ComponentPane
+import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.equipstats.EquipmentStats
 
 fun bindUnequip(equipment: EquipmentType, child: Int) {
-    onButton(parent = EquipmentStats.COMPONENT_ID, child = child) {
+    onButton(parent = EquipmentStats.INTERFACE_ID, child = child) {
         val p = it.player()
         val opt = it.getInteractingOption()
 
@@ -30,7 +30,7 @@ fun bindUnequip(equipment: EquipmentType, child: Int) {
     }
 }
 
-onButton(parent = EquipmentStats.TAB_COMPONENT_ID, child = 0) {
+onButton(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0) {
     val p = it.player()
 
     val slot = it.getInteractingSlot()
@@ -57,17 +57,17 @@ onButton(parent = 387, child = 17) {
         return@onButton
     }
 
-    p.setComponentUnderlay(-1, -1)
-    p.openComponent(component = EquipmentStats.COMPONENT_ID, pane = ComponentPane.MAIN_SCREEN)
-    p.openComponent(component = EquipmentStats.TAB_COMPONENT_ID, pane = ComponentPane.TAB_AREA)
-    p.invokeScript(149, 5570560, 93, 4, 7, 1, -1, "Equip", "", "", "", "")
-    p.setComponentSetting(parent = EquipmentStats.TAB_COMPONENT_ID, child = 0, range = 0..27, setting = 1180674)
+    p.setInterfaceUnderlay(-1, -1)
+    p.openInterface(component = EquipmentStats.INTERFACE_ID, pane = InterfaceDestination.MAIN_SCREEN)
+    p.openInterface(component = EquipmentStats.TAB_INTERFACE_ID, pane = InterfaceDestination.TAB_AREA)
+    p.runClientScript(149, 5570560, 93, 4, 7, 1, -1, "Equip", "", "", "", "")
+    p.setInterfaceEvents(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0, range = 0..27, setting = 1180674)
 
     EquipmentStats.sendBonuses(p)
 }
 
-onComponentClose(component = EquipmentStats.COMPONENT_ID) {
-    it.player().closeComponent(component = EquipmentStats.TAB_COMPONENT_ID)
+onComponentClose(component = EquipmentStats.INTERFACE_ID) {
+    it.player().closeInterface(interfaceId = EquipmentStats.TAB_INTERFACE_ID)
 }
 
 bindUnequip(EquipmentType.HEAD, child = 11)

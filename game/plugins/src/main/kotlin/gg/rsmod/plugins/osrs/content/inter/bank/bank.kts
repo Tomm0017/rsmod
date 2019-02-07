@@ -3,34 +3,34 @@ import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.bank.Bank
 
-onComponentClose(Bank.BANK_COMPONENT_ID) {
-    it.player().closeComponent(Bank.INV_COMPONENT_ID)
+onComponentClose(Bank.BANK_INTERFACE_ID) {
+    it.player().closeInterface(Bank.INV_INTERFACE_ID)
 }
 
 intArrayOf(17, 19).forEachIndexed { index, button ->
-    onButton(parent = Bank.BANK_COMPONENT_ID, child = button) {
+    onButton(parent = Bank.BANK_INTERFACE_ID, child = button) {
         it.player().setVarbit(Bank.REARRANGE_MODE_VARBIT, index)
     }
 }
 
 intArrayOf(22, 24).forEachIndexed { index, button ->
-    onButton(parent = Bank.BANK_COMPONENT_ID, child = button) {
+    onButton(parent = Bank.BANK_INTERFACE_ID, child = button) {
         it.player().setVarbit(Bank.WITHDRAW_AS_VARBIT, index)
     }
 }
 
-onButton(parent = Bank.BANK_COMPONENT_ID, child = 38) {
+onButton(parent = Bank.BANK_INTERFACE_ID, child = 38) {
     it.player().toggleVarbit(Bank.ALWAYS_PLACEHOLD_VARBIT)
 }
 
 intArrayOf(28, 30, 32, 34, 36).forEach { quantity ->
-    onButton(parent = Bank.BANK_COMPONENT_ID, child = quantity) {
+    onButton(parent = Bank.BANK_INTERFACE_ID, child = quantity) {
         val state = (quantity - 28) / 2
         it.player().setVarbit(Bank.QUANTITY_VARBIT, state)
     }
 }
 
-onButton(parent = Bank.BANK_COMPONENT_ID, child = 42) {
+onButton(parent = Bank.BANK_INTERFACE_ID, child = 42) {
     val p = it.player()
     val from = p.inventory
     val to = p.bank
@@ -54,7 +54,7 @@ onButton(parent = Bank.BANK_COMPONENT_ID, child = 42) {
     }
 }
 
-onButton(parent = Bank.BANK_COMPONENT_ID, child = 44) {
+onButton(parent = Bank.BANK_INTERFACE_ID, child = 44) {
     val p = it.player()
     val from = p.equipment
     val to = p.bank
@@ -78,7 +78,7 @@ onButton(parent = Bank.BANK_COMPONENT_ID, child = 44) {
     }
 }
 
-onButton(parent = Bank.INV_COMPONENT_ID, child = Bank.INV_COMPONENT_CHILD) p@ {
+onButton(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) p@ {
     val p = it.player()
 
     val opt = it.getInteractingOption()
@@ -137,7 +137,7 @@ onButton(parent = Bank.INV_COMPONENT_ID, child = Bank.INV_COMPONENT_CHILD) p@ {
     Bank.deposit(p, item.id, amount)
 }
 
-onButton(parent = Bank.BANK_COMPONENT_ID, child = 13) p@ {
+onButton(parent = Bank.BANK_INTERFACE_ID, child = 13) p@ {
     val p = it.player()
 
     val opt = it.getInteractingOption()

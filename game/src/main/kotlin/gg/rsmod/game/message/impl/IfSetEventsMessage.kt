@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class SetComponentItemMessage(val hash: Int, val item: Int, val amount: Int) : Message
+data class IfSetEventsMessage(val hash: Int, val fromChild: Int, val toChild: Int, val setting: Int) : Message

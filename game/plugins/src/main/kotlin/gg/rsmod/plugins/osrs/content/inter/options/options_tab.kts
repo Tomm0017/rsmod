@@ -2,7 +2,7 @@
 import gg.rsmod.game.model.DISPLAY_MODE_CHANGE_ATTR
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.api.ComponentPane
+import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.OSRSGameframe
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
@@ -16,8 +16,8 @@ fun bindSetting(child: Int, plugin: Function1<Plugin, Unit>) {
 onLogin {
     val p = it.player()
 
-    p.setComponentSetting(parent = OptionsTab.COMPONENT_ID, child = 106, range = 1..4, setting = 2) // Player option priority
-    p.setComponentSetting(parent = OptionsTab.COMPONENT_ID, child = 107, range = 1..4, setting = 2) // Npc option priority
+    p.setInterfaceEvents(parent = OptionsTab.COMPONENT_ID, child = 106, range = 1..4, setting = 2) // Player option priority
+    p.setInterfaceEvents(parent = OptionsTab.COMPONENT_ID, child = 107, range = 1..4, setting = 2) // Npc option priority
 }
 
 /**
@@ -52,7 +52,7 @@ onDisplayModeChange {
         2 -> if (p.getVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT) == 1) DisplayMode.RESIZABLE_LIST else DisplayMode.RESIZABLE_NORMAL
         else -> DisplayMode.FIXED
     }
-    p.toggleDisplayComponent(mode)
+    p.toggleDisplayInterface(mode)
 }
 
 /**
@@ -63,8 +63,8 @@ bindSetting(child = 35) {
     if (!p.lock.canComponentInteract()) {
         return@bindSetting
     }
-    p.setComponentUnderlay(color = -1, transparency = -1)
-    p.openComponent(component = OptionsTab.ADVANCED_COMPONENT_ID, pane = ComponentPane.MAIN_SCREEN)
+    p.setInterfaceUnderlay(color = -1, transparency = -1)
+    p.openInterface(component = OptionsTab.ADVANCED_COMPONENT_ID, pane = InterfaceDestination.MAIN_SCREEN)
 }
 
 /**
@@ -106,7 +106,7 @@ bindSetting(child = 63) {
 bindSetting(child = 65) {
     val p = it.player()
     p.toggleVarp(OSRSGameframe.SPLIT_PRIVATE_VARP)
-    p.invokeScript(83)
+    p.runClientScript(83)
 }
 
 /**
@@ -164,9 +164,9 @@ bindSetting(child = 83) {
     if (!p.lock.canComponentInteract()) {
         return@bindSetting
     }
-    p.setComponentUnderlay(color = -1, transparency = -1)
-    p.setComponentSetting(parent = 121, child = 111, range = 0..13, setting = 2)
-    p.openComponent(component = 121, pane = ComponentPane.MAIN_SCREEN)
+    p.setInterfaceUnderlay(color = -1, transparency = -1)
+    p.setInterfaceEvents(parent = 121, child = 111, range = 0..13, setting = 2)
+    p.openInterface(component = 121, pane = InterfaceDestination.MAIN_SCREEN)
 }
 
 /**

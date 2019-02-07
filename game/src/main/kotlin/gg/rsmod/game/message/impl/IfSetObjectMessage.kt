@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class SetComponentNpcMessage(val hash: Int, val npc: Int) : Message
+data class IfSetObjectMessage(val hash: Int, val item: Int, val amount: Int) : Message

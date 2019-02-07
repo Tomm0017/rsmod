@@ -1,8 +1,8 @@
 
-import gg.rsmod.plugins.osrs.api.ComponentPane
+import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.helper.getInteractingOption
 import gg.rsmod.plugins.osrs.api.helper.getInteractingSlot
-import gg.rsmod.plugins.osrs.api.helper.openComponent
+import gg.rsmod.plugins.osrs.api.helper.openInterface
 import gg.rsmod.plugins.osrs.api.helper.player
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayer
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
@@ -59,5 +59,5 @@ onButton(parent = 77, child = 4) {
  */
 onButton(parent = 77, child = 5) {
     val p = it.player()
-    p.openComponent(ComponentPane.PRAYER)
+    p.openInterface(InterfaceDestination.PRAYER)
 }

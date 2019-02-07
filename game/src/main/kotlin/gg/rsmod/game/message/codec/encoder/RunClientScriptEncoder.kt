@@ -1,25 +1,24 @@
 package gg.rsmod.game.message.codec.encoder
 
-import gg.rsmod.game.message.MessageStructure
 import gg.rsmod.game.message.codec.MessageEncoder
-import gg.rsmod.game.message.impl.InvokeScriptMessage
+import gg.rsmod.game.message.impl.RunClientScriptMessage
 import org.apache.logging.log4j.LogManager
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class InvokeScriptEncoder : MessageEncoder<InvokeScriptMessage>() {
+class RunClientScriptEncoder : MessageEncoder<RunClientScriptMessage>() {
 
     companion object {
-        private val logger = LogManager.getLogger(InvokeScriptEncoder::class.java)
+        private val logger = LogManager.getLogger(RunClientScriptEncoder::class.java)
     }
 
-    override fun extract(message: InvokeScriptMessage, key: String): Number = when (key) {
+    override fun extract(message: RunClientScriptMessage, key: String): Number = when (key) {
         "id" -> message.id
         else -> throw Exception("Unhandled value key.")
     }
 
-    override fun extractBytes(message: InvokeScriptMessage, key: String): ByteArray = when (key) {
+    override fun extractBytes(message: RunClientScriptMessage, key: String): ByteArray = when (key) {
         "types" -> {
             val types = CharArray(message.args.size + 1)
             for (i in 0 until message.args.size) {

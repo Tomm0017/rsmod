@@ -1,8 +1,8 @@
-import gg.rsmod.plugins.osrs.api.ComponentPane
-import gg.rsmod.plugins.osrs.api.helper.invokeScript
-import gg.rsmod.plugins.osrs.api.helper.openComponent
+import gg.rsmod.plugins.osrs.api.InterfaceDestination
+import gg.rsmod.plugins.osrs.api.helper.runClientScript
+import gg.rsmod.plugins.osrs.api.helper.openInterface
 import gg.rsmod.plugins.osrs.api.helper.player
-import gg.rsmod.plugins.osrs.api.helper.setComponentUnderlay
+import gg.rsmod.plugins.osrs.api.helper.setInterfaceUnderlay
 import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
 
 onButton(parent = OptionsTab.COMPONENT_ID, child = 100) {
@@ -20,8 +20,8 @@ onButton(parent = OptionsTab.COMPONENT_ID, child = 100) {
     if (!p.lock.canComponentInteract()) {
         return@onButton
     }
-    p.setComponentUnderlay(color = -1, transparency = -1)
-    p.openComponent(component = 65, pane = ComponentPane.MAIN_SCREEN)
-    p.invokeScript(2276, 2)
-    p.invokeScript(733, 0, 0, 0, 0, 0, 0, 0, 0)
+    p.setInterfaceUnderlay(color = -1, transparency = -1)
+    p.openInterface(component = 65, pane = InterfaceDestination.MAIN_SCREEN)
+    p.runClientScript(2276, 2)
+    p.runClientScript(733, 0, 0, 0, 0, 0, 0, 0, 0)
 }

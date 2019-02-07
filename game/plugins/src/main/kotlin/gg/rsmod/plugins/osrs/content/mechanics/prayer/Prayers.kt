@@ -180,8 +180,8 @@ object Prayers {
                 Prayers.setOverhead(p)
             }
         } else if (opt == 1) {
-            p.setComponentSetting(parent = 77, child = 4, from = 0, to = 29, setting = 2)
-            p.openComponent(component = 77, pane = ComponentPane.PRAYER)
+            p.setInterfaceEvents(parent = 77, child = 4, from = 0, to = 29, setting = 2)
+            p.openInterface(component = 77, pane = InterfaceDestination.PRAYER)
             p.focusTab(GameframeTab.PRAYER)
         }
     }

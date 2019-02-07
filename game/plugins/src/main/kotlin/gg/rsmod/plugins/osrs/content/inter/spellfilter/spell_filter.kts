@@ -5,7 +5,7 @@ import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.spellfilter.SpellFilters
 
 onLogin {
-    it.player().setComponentSetting(parent = SpellFilters.COMPONENT_ID, child = 184, range = 0..4, setting = 2)
+    it.player().setInterfaceEvents(parent = SpellFilters.INTERFACE_ID, child = 184, range = 0..4, setting = 2)
 }
 
 DisplayMode.values().forEach { mode ->
@@ -23,7 +23,7 @@ DisplayMode.values().forEach { mode ->
     }
 }
 
-onButton(parent = SpellFilters.COMPONENT_ID, child = 184) {
+onButton(parent = SpellFilters.INTERFACE_ID, child = 184) {
     val slot = it.getInteractingSlot()
     val varbit = when (slot) {
         0 -> SpellFilters.FILTER_COMBAT_VARBIT

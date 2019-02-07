@@ -1,7 +1,7 @@
 
 import gg.rsmod.game.model.NEW_ACCOUNT_ATTR
 import gg.rsmod.plugins.osrs.api.ChatMessageType
-import gg.rsmod.plugins.osrs.api.ComponentPane
+import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.OSRSGameframe
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.helper.*
@@ -30,22 +30,22 @@ onLogin {
     /**
      * Interface-related logic.
      */
-    p.sendDisplayComponent(p.components.displayMode)
-    ComponentPane.values().filter { pane -> pane.component != -1 }.forEach { pane ->
-        if (pane == ComponentPane.XP_COUNTER && p.getVarbit(OSRSGameframe.XP_DROPS_VISIBLE_VARBIT) == 0) {
+    p.openOverlayInterface(p.components.displayMode)
+    InterfaceDestination.values().filter { pane -> pane.interfaceId != -1 }.forEach { pane ->
+        if (pane == InterfaceDestination.XP_COUNTER && p.getVarbit(OSRSGameframe.XP_DROPS_VISIBLE_VARBIT) == 0) {
             return@forEach
-        } else if (pane == ComponentPane.MINI_MAP && p.getVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT) == 1) {
+        } else if (pane == InterfaceDestination.MINI_MAP && p.getVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT) == 1) {
             return@forEach
         }
-        p.openComponent(pane.component, pane)
+        p.openInterface(pane.interfaceId, pane)
     }
 
     /**
      * Inform the client whether or not we have a display name.
      */
     val displayName = p.username.isNotEmpty()
-    p.invokeScript(1105, if (displayName) 1 else 0) // Has display name
-    p.invokeScript(423, p.username)
+    p.runClientScript(1105, if (displayName) 1 else 0) // Has display name
+    p.runClientScript(423, p.username)
     if (p.getVarp(1055) == 0 && displayName) {
         p.syncVarp(1055)
     }

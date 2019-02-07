@@ -5,14 +5,14 @@ import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import org.apache.logging.log4j.LogManager
 
 /**
- * Stores components that are visible.
+ * Stores interfaces that are visible.
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class ComponentSet(val player: Player) {
+class InterfaceSet(val player: Player) {
 
     companion object {
-        private val logger = LogManager.getLogger(ComponentSet::class.java)
+        private val logger = LogManager.getLogger(InterfaceSet::class.java)
     }
 
     /**
@@ -29,7 +29,7 @@ class ComponentSet(val player: Player) {
      * ([gg.rsmod.game.message.impl.CloseMainComponentMessage]) and we have to make
      * sure the interface is removed from our [visible] map.
      */
-    private var currentMainScreenComponent = -1
+    private var currentMainScreenInterface = -1
 
     /**
      * The current [DisplayMode] being used by the client.
@@ -37,16 +37,16 @@ class ComponentSet(val player: Player) {
     var displayMode = DisplayMode.FIXED
 
     /**
-     * Registers the [component] as being opened on the pane correspondent to
+     * Registers the [interfaceId] as being opened on the pane correspondent to
      * the [parent] and [child] id.
      *
      * @param parent
-     * The interface id of where [component] will be drawn.
+     * The interface id of where [interfaceId] will be drawn.
      *
      * @param child
-     * The child of the [parent] interface, where [component] will be drawn.
+     * The child of the [parent] interface, where [interfaceId] will be drawn.
      *
-     * @param component
+     * @param interfaceId
      * The interface that will be drawn on the [child] interface inside the [parent] interface.
      *
      * @note
@@ -55,13 +55,12 @@ class ComponentSet(val player: Player) {
      * method and also send a [gg.rsmod.game.message.Message] to signal the client
      * to draw the interface.
      */
-    fun open(parent: Int, child: Int, component: Int) {
-        val paneHash = (parent shl 16) or child
-
-        if (visible.containsKey(paneHash)) {
-            closeByHash(paneHash)
+    fun open(parent: Int, child: Int, interfaceId: Int) {
+        val hash = (parent shl 16) or child
+        if (visible.containsKey(hash)) {
+            closeByHash(hash)
         }
-        visible[paneHash] = component
+        visible[hash] = interfaceId
     }
 
     /**
@@ -81,7 +80,7 @@ class ComponentSet(val player: Player) {
             closeByHash(found)
             return found
         }
-        logger.warn("Component {} is not visible and cannot be closed.", parent)
+        logger.warn("Interface {} is not visible and cannot be closed.", parent)
         return -1
     }
 
@@ -117,30 +116,30 @@ class ComponentSet(val player: Player) {
      */
     private fun closeByHash(hash: Int): Int {
         val found = visible.remove(hash)
-        if (found != null) {
+        if (found != visible.defaultReturnValue()) {
             player.world.plugins.executeComponentClose(player, found)
             return found
         }
-        logger.warn("No component visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
+        logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
         return -1
     }
 
     /**
-     * Calls the [open] method, but also sets the [currentMainScreenComponent]
+     * Calls the [open] method, but also sets the [currentMainScreenInterface]
      * to [component].
      */
     fun openMain(parent: Int, child: Int, component: Int) {
         open(parent, child, component)
-        currentMainScreenComponent = component
+        currentMainScreenInterface = component
     }
 
     /**
-     * Calls the [close] method for [currentMainScreenComponent].
+     * Calls the [close] method for [currentMainScreenInterface].
      */
     fun closeMain() {
-        if (currentMainScreenComponent != -1) {
-            close(currentMainScreenComponent)
-            currentMainScreenComponent = -1
+        if (currentMainScreenInterface != -1) {
+            close(currentMainScreenInterface)
+            currentMainScreenInterface = -1
         }
     }
 

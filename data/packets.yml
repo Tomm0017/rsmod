@@ -233,7 +233,7 @@ out-packets:
       - name: value
         type: INT
 
-  - message: gg.rsmod.game.message.impl.InvokeScriptMessage
+  - message: gg.rsmod.game.message.impl.RunClientScriptMessage
     type: VARIABLE_SHORT
     opcode: 62
     structure:
@@ -274,7 +274,7 @@ out-packets:
       - name: level
         type: BYTE
 
-  - message: gg.rsmod.game.message.impl.SetComponentTextMessage
+  - message: gg.rsmod.game.message.impl.IfSetTextMessage
     type: VARIABLE_SHORT
     opcode: 19
     structure:
@@ -297,7 +297,7 @@ out-packets:
       - name: hash
         type: INT
 
-  - message: gg.rsmod.game.message.impl.SetComponentSettingMessage
+  - message: gg.rsmod.game.message.impl.IfSetEventsMessage
     type: FIXED
     opcode: 48
     structure:
@@ -313,7 +313,7 @@ out-packets:
       - name: from
         type: SHORT
 
-  - message: gg.rsmod.game.message.impl.SetComponentHiddenMessage
+  - message: gg.rsmod.game.message.impl.IfSetHideMessage
     type: FIXED
     opcode: 21
     structure:
@@ -322,7 +322,7 @@ out-packets:
       - name: hidden
         type: BYTE
 
-  - message: gg.rsmod.game.message.impl.SetComponentItemMessage
+  - message: gg.rsmod.game.message.impl.IfSetObjectMessage
     type: FIXED
     opcode: 20
     structure:
@@ -334,7 +334,7 @@ out-packets:
         type: INT
         order: INVERSED_MIDDLE
 
-  - message: gg.rsmod.game.message.impl.SetComponentNpcMessage
+  - message: gg.rsmod.game.message.impl.IfSetNpcHeadMessage
     type: FIXED
     opcode: 35
     structure:
@@ -346,7 +346,7 @@ out-packets:
         type: INT
         order: INVERSED_MIDDLE
 
-  - message: gg.rsmod.game.message.impl.SetComponentAnimationMessage
+  - message: gg.rsmod.game.message.impl.IfSetAnimMessage
     type: FIXED
     opcode: 61
     structure:

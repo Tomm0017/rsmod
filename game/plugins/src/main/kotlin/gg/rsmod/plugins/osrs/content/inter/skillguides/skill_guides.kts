@@ -1,5 +1,5 @@
 
-import gg.rsmod.plugins.osrs.api.ComponentPane
+import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.inter.skillguides.SkillGuide
 
@@ -16,9 +16,9 @@ SkillGuide.values().forEach { guide ->
 
         p.setVarbit(subsectionVarbit, 0)
         p.setVarbit(skillIdVarbit, guide.bit)
-        p.setComponentSetting(parent = 214, child = 25, from = -1, to = -1, setting = 0)
-        p.setComponentUnderlay(color = -1, transparency = -1)
-        p.openComponent(component = 214, pane = ComponentPane.MAIN_SCREEN)
+        p.setInterfaceEvents(parent = 214, child = 25, from = -1, to = -1, setting = 0)
+        p.setInterfaceUnderlay(color = -1, transparency = -1)
+        p.openInterface(component = 214, pane = InterfaceDestination.MAIN_SCREEN)
     }
 }
 

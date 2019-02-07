@@ -1,19 +1,19 @@
 package gg.rsmod.game.message.codec.encoder
 
 import gg.rsmod.game.message.codec.MessageEncoder
-import gg.rsmod.game.message.impl.SetComponentTextMessage
+import gg.rsmod.game.message.impl.IfSetTextMessage
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ComponentTextEncoder : MessageEncoder<SetComponentTextMessage>() {
+class IfSetTextEncoder : MessageEncoder<IfSetTextMessage>() {
 
-    override fun extract(message: SetComponentTextMessage, key: String): Number = when (key) {
+    override fun extract(message: IfSetTextMessage, key: String): Number = when (key) {
         "hash" -> (message.parent shl 16) or message.child
         else -> throw Exception("Unhandled value key.")
     }
 
-    override fun extractBytes(message: SetComponentTextMessage, key: String): ByteArray = when (key) {
+    override fun extractBytes(message: IfSetTextMessage, key: String): ByteArray = when (key) {
         "text" -> {
             val data = ByteArray(message.text.length + 1)
             System.arraycopy(message.text.toByteArray(), 0, data, 0, data.size - 1)

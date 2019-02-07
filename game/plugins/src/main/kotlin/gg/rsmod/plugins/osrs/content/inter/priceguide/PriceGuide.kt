@@ -7,7 +7,7 @@ import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.api.ComponentPane
+import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.service.item.ItemValueService
 import java.text.DecimalFormat
@@ -27,19 +27,19 @@ object PriceGuide {
         p.attr.put(GUIDE_CONTAINER, ItemContainer(p.world.definitions, p.inventory.capacity, ContainerStackType.STACK))
         p.attr.put(FAKE_INV_CONTAINER, ItemContainer(p.inventory))
 
-        p.setComponentUnderlay(color = -1, transparency = -1)
-        p.openComponent(component = COMPONENT_ID, pane = ComponentPane.MAIN_SCREEN)
-        p.openComponent(component = TAB_COMPONENT_ID, pane = ComponentPane.TAB_AREA)
+        p.setInterfaceUnderlay(color = -1, transparency = -1)
+        p.openInterface(component = COMPONENT_ID, pane = InterfaceDestination.MAIN_SCREEN)
+        p.openInterface(component = TAB_COMPONENT_ID, pane = InterfaceDestination.TAB_AREA)
 
         update(p)
 
-        p.setComponentSetting(parent = COMPONENT_ID, child = 2, range = 0..27, setting = 1086)
-        p.invokeScript(149, 15597568, 93, 4, 7, 0, -1, "Add<col=ff9040>", "Add-5<col=ff9040>", "Add-10<col=ff9040>", "Add-All<col=ff9040>", "Add-X<col=ff9040>")
-        p.setComponentSetting(parent = TAB_COMPONENT_ID, child = 0, range = 0..27, setting = 1086)
+        p.setInterfaceEvents(parent = COMPONENT_ID, child = 2, range = 0..27, setting = 1086)
+        p.runClientScript(149, 15597568, 93, 4, 7, 0, -1, "Add<col=ff9040>", "Add-5<col=ff9040>", "Add-10<col=ff9040>", "Add-All<col=ff9040>", "Add-X<col=ff9040>")
+        p.setInterfaceEvents(parent = TAB_COMPONENT_ID, child = 0, range = 0..27, setting = 1086)
     }
 
     fun close(p: Player) {
-        p.closeComponent(PriceGuide.TAB_COMPONENT_ID)
+        p.closeInterface(PriceGuide.TAB_COMPONENT_ID)
         p.attr.remove(GUIDE_CONTAINER)
         p.attr.remove(FAKE_INV_CONTAINER)
     }
@@ -186,7 +186,7 @@ object PriceGuide {
         val cost = valueService?.get(item) ?: def.cost
 
         p.setComponentItem(parent = COMPONENT_ID, child = 8, item = item, amountOrZoom = 1)
-        p.invokeScript(600, 0, 1, 15, 30408716)
+        p.runClientScript(600, 0, 1, 15, 30408716)
         p.setComponentText(parent = COMPONENT_ID, child = 12, text = "${def.name}:<br><col=ffffff>${DecimalFormat().format(cost)}</col>")
     }
 
@@ -194,8 +194,8 @@ object PriceGuide {
         val guideContainer = p.attr[GUIDE_CONTAINER]!!
         val invContainer = p.attr[FAKE_INV_CONTAINER]!!
 
-        p.sendContainer(key = 90, container = guideContainer)
-        p.sendContainer(key = 93, container = invContainer)
+        p.sendItemContainer(key = 90, container = guideContainer)
+        p.sendItemContainer(key = 93, container = invContainer)
 
         p.setComponentItem(parent = COMPONENT_ID, child = 8, item = -1, amountOrZoom = 1)
 
@@ -208,8 +208,8 @@ object PriceGuide {
             }
         }
 
-        p.invokeScript(785, *costs)
-        p.invokeScript(600, 1, 1, 15, 30408716)
+        p.runClientScript(785, *costs)
+        p.runClientScript(600, 1, 1, 15, 30408716)
 
         p.setComponentText(parent = COMPONENT_ID, child = 12, text = "Total guide price:<br><col=ffffff>${DecimalFormat().format(guideContainer.networth(p.world))}</col>")
     }

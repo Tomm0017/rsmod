@@ -41,7 +41,7 @@ fun checkRadius(npc: Npc) {
     for (x in -radius .. radius) {
         for (z in -radius .. radius) {
             val tile = npc.tile.transform(x, z)
-            val chunk = world.chunks.getOrCreate(tile.toChunkCoords(), create = false) ?: continue
+            val chunk = world.chunks.get(tile.toChunkCoords(), create = false) ?: continue
 
             val players = chunk.getEntities<Player>(EntityType.PLAYER, EntityType.CLIENT)
             if (players.isEmpty()) {

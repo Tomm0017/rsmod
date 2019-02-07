@@ -22,9 +22,11 @@ class ChunkSet(val world: World) {
 
     fun getActiveRegions(): Int = activeRegions.size
 
-    fun getForTile(tile: Tile): Chunk = getOrCreate(ChunkCoords.fromTile(tile), true)!!
+    fun getOrCreate(tile: Tile): Chunk = get(tile.toChunkCoords(), create = true)!!
 
-    fun getOrCreate(coords: ChunkCoords, create: Boolean = false): Chunk? {
+    fun get(tile: Tile, create: Boolean = false): Chunk? = get(tile.toChunkCoords(), create)
+
+    fun get(coords: ChunkCoords, create: Boolean = false): Chunk? {
         val chunk = chunks[coords]
         if (chunk != null) {
             return chunk

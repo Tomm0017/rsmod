@@ -35,11 +35,11 @@ class Launcher {
 
                 gameService?.submitGameThreadJob {
                     player.register()
-                    /*player.world.pluginExecutor.execute(player) {
+                    player.world.pluginExecutor.execute(player) {
                         it.suspendable {
                             walkPlugin(it)
                         }
-                    }*/
+                    }
                 }
             }
         }
@@ -49,7 +49,7 @@ class Launcher {
 
             val start = Tile(p.tile)
             while (true) {
-                it.wait(p.world.random(3..5))
+                it.wait(p.world.random(10..25))
 
                 var randomX = p.tile.x + (-6 + p.world.random(0..12))
                 var randomZ = p.tile.z + (-6 + p.world.random(0..12))

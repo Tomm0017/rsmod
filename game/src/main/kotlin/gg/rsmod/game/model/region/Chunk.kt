@@ -2,9 +2,8 @@ package gg.rsmod.game.model.region
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
-import gg.rsmod.game.model.region.update.EntityGroupMessage
-import gg.rsmod.game.message.impl.UpdateZonePartialFollowsMessage
 import gg.rsmod.game.message.impl.UpdateZonePartialEnclosedMessage
+import gg.rsmod.game.message.impl.UpdateZonePartialFollowsMessage
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
@@ -180,7 +179,7 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
         val surrounding = getSurroundingCoords()
 
         for (coords in surrounding) {
-            val chunk = world.chunks.getOrCreate(coords, create = false) ?: continue
+            val chunk = world.chunks.get(coords, create = false) ?: continue
             val clients = chunk.getEntities<Client>(EntityType.CLIENT)
             for (client in clients) {
                 if (!canBeViewed(client, update.entity)) {

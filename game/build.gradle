@@ -13,7 +13,8 @@ dependencies {
 
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-scripting-common', version: kotlinVersion
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0'
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-script-runtime', version: kotlinVersion
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0'
 
     compile group: 'org.reflections', name: 'reflections', version: reflectionsVersion
     compile group: 'commons-io', name: 'commons-io', version: commonsIoVersion
@@ -34,7 +35,6 @@ dependencies {
 
 sourceSets {
     main.kotlin.srcDirs = ['src/main/kotlin']
-    main.java.srcDirs = ['src/main/kotlin']
     main.resources.srcDirs = ['src/main/resources']
 }
 

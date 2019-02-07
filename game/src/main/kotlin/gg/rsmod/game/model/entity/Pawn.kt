@@ -470,5 +470,8 @@ abstract class Pawn(val world: World) : Entity() {
         world.pluginExecutor.interruptPluginsWithContext(this)
     }
 
-    fun createPathFindingStrategy(): PathFindingStrategy = if (getType().isPlayer()) BFSPathFindingStrategy(world.collision) else SimplePathFindingStrategy(world.collision)
+    fun createPathFindingStrategy(): PathFindingStrategy {
+        val collision = world.collision
+        return if (getType().isPlayer()) BFSPathFindingStrategy(collision) else SimplePathFindingStrategy(collision)
+    }
 }

@@ -214,9 +214,8 @@ class DefinitionSet {
                 if (bridges.contains(tile.transform(1))) {
                     return@forEach
                 }
-                val obj = StaticObject(loc.id, loc.type, loc.orientation,
-                        if (bridges.contains(tile)) tile.transform(-1) else tile)
-                world.chunks.getForTile(tile).addEntity(world, obj, obj.tile)
+                val obj = StaticObject(loc.id, loc.type, loc.orientation, if (bridges.contains(tile)) tile.transform(-1) else tile)
+                world.chunks.getOrCreate(tile).addEntity(world, obj, obj.tile)
             }
             return true
         } catch (e: IOException) {

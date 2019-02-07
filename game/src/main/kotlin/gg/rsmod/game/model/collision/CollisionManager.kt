@@ -1,13 +1,16 @@
 package gg.rsmod.game.model.collision
 
+import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.region.Chunk
+import gg.rsmod.game.model.region.ChunkSet
 
-
-class CollisionManager(val world: World) {
+/**
+ * @author Tom <rspsmods@gmail.com>
+ */
+class CollisionManager(val chunks: ChunkSet, val definitions: DefinitionSet, val createChunksIfNeeded: Boolean) {
 
     companion object {
         const val BLOCKED_TILE = 0x1
@@ -17,16 +20,16 @@ class CollisionManager(val world: World) {
     fun applyCollision(obj: GameObject, updateType: CollisionUpdate.Type) {
         val builder = CollisionUpdate.Builder()
         builder.setType(updateType)
-        builder.putObject(world.definitions, obj)
+        builder.putObject(definitions, obj)
         applyUpdate(builder.build())
     }
 
-    fun isClipped(tile: Tile): Boolean = world.chunks.getForTile(tile).isClipped(tile)
+    fun isClipped(tile: Tile): Boolean = chunks.get(tile, createChunksIfNeeded)!!.isClipped(tile)
 
-    fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = world.chunks.getForTile(tile).isBlocked(tile, direction, projectile)
+    fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = chunks.get(tile, createChunksIfNeeded)!!.isBlocked(tile, direction, projectile)
 
     fun canTraverse(tile: Tile, direction: Direction, projectile: Boolean): Boolean {
-        val chunk = world.chunks.getForTile(tile)
+        val chunk = chunks.get(tile, createChunksIfNeeded)!!
 
         if (chunk.isBlocked(tile, direction, projectile)) {
             return false
@@ -35,7 +38,7 @@ class CollisionManager(val world: World) {
         if (direction.isDiagonal()) {
             direction.getDiagonalComponents().forEach { other ->
                 val next = tile.step(other)
-                val otherChunk = world.chunks.getForTile(next)
+                val otherChunk = chunks.get(next, createChunksIfNeeded)!!
                 if (otherChunk.isBlocked(next, other.getOpposite(), projectile)) {
                     return false
                 }
@@ -63,7 +66,7 @@ class CollisionManager(val world: World) {
             val tile = entry.key
 
             if (chunk == null || !chunk.contains(tile)) {
-                chunk = world.chunks.getForTile(tile)
+                chunk = chunks.get(tile, createChunksIfNeeded)!!
             }
 
             val localX = tile.x % Chunk.CHUNK_SIZE

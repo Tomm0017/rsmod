@@ -82,7 +82,7 @@ onCommand("obj", Privilege.ADMIN_POWER) {
 onCommand("removeobj", Privilege.ADMIN_POWER) {
     val p = it.player()
 
-    val chunk = p.world.chunks.getForTile(p.tile)
+    val chunk = p.world.chunks.getOrCreate(p.tile)
     val obj = chunk.getEntities<GameObject>(p.tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull()
     if (obj != null) {
         p.world.remove(obj)
@@ -237,7 +237,7 @@ onCommand("dialogs", Privilege.ADMIN_POWER) {
 
 onCommand("clip", Privilege.ADMIN_POWER) {
     val player = it.player()
-    val chunk = player.world.chunks.getForTile(player.tile)
+    val chunk = player.world.chunks.getOrCreate(player.tile)
     val matrix = chunk.getMatrix(player.tile.height)
     val lx = player.tile.x % 8
     val lz = player.tile.z % 8

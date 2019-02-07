@@ -32,7 +32,7 @@ class OpObj3Handler : MessageHandler<OpObj3Message> {
         /**
          * Get the region chunk that the object would belong to.
          */
-        val chunk = client.world.chunks.getForTile(tile)
+        val chunk = client.world.chunks.getOrCreate(tile)
         val item = chunk.getEntities<GroundItem>(tile, EntityType.GROUND_ITEM).firstOrNull { it.item == message.item && it.canBeViewedBy(client) }
 
         /**

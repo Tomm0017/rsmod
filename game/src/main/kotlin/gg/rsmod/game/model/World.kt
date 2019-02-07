@@ -35,13 +35,23 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         private val logger = LogManager.getLogger(World::class.java)
     }
 
+    /**
+     * The [Store] is responsible for handling the data in our cache.
+     */
+    lateinit var filestore: Store
+
+    /**
+     * The [DefinitionSet] that holds general filestore data.
+     */
+    val definitions = DefinitionSet()
+
     val players = PawnList(arrayOfNulls<Player>(gameContext.playerLimit))
 
     val npcs = PawnList(arrayOfNulls<Npc>(Short.MAX_VALUE.toInt()))
 
-    val collision = CollisionManager(this)
-
     val chunks = ChunkSet(this)
+
+    val collision = CollisionManager(chunks, definitions, createChunksIfNeeded = true)
 
     /**
      * A collection of our [Service]s specified in our game [ServerProperties]
@@ -54,16 +64,6 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * the game.
      */
     val pluginExecutor = PluginExecutor()
-
-    /**
-     * The [Store] is responsible for handling the data in our cache.
-     */
-    lateinit var filestore: Store
-
-    /**
-     * The [DefinitionSet] that holds general filestore data.
-     */
-    val definitions = DefinitionSet()
 
     /**
      * The plugin repository that's responsible for storing all the plugins found.
@@ -181,7 +181,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     fun spawn(obj: GameObject) {
         val tile = obj.tile
-        val chunk = chunks.getForTile(tile)
+        val chunk = chunks.getOrCreate(tile)
 
         val oldObj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.type == obj.type }
         if (oldObj != null) {
@@ -193,14 +193,14 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     fun remove(obj: GameObject) {
         val tile = obj.tile
-        val chunk = chunks.getForTile(tile)
+        val chunk = chunks.getOrCreate(tile)
 
         chunk.removeEntity(this, obj, tile)
     }
 
     fun spawn(item: GroundItem) {
         val tile = item.tile
-        val chunk = chunks.getForTile(tile)
+        val chunk = chunks.getOrCreate(tile)
 
         val def = definitions.get(ItemDef::class.java, item.item)
 
@@ -220,28 +220,28 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     fun remove(item: GroundItem) {
         val tile = item.tile
-        val chunk = chunks.getForTile(tile)
+        val chunk = chunks.getOrCreate(tile)
 
         chunk.removeEntity(this, item, tile)
     }
 
     fun spawn(projectile: Projectile) {
         val tile = projectile.tile
-        val chunk = chunks.getForTile(tile)
+        val chunk = chunks.getOrCreate(tile)
 
         chunk.addEntity(this, projectile, tile)
     }
 
     fun spawn(sound: AreaSound) {
         val tile = sound.tile
-        val chunk = chunks.getForTile(tile)
+        val chunk = chunks.getOrCreate(tile)
 
         chunk.addEntity(this, sound, tile)
     }
 
-    fun isSpawned(obj: GameObject): Boolean = chunks.getForTile(obj.tile).getEntities<GameObject>(obj.tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).contains(obj)
+    fun isSpawned(obj: GameObject): Boolean = chunks.getOrCreate(obj.tile).getEntities<GameObject>(obj.tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).contains(obj)
 
-    fun isSpawned(item: GroundItem): Boolean = chunks.getForTile(item.tile).getEntities<GroundItem>(item.tile, EntityType.GROUND_ITEM).contains(item)
+    fun isSpawned(item: GroundItem): Boolean = chunks.getOrCreate(item.tile).getEntities<GroundItem>(item.tile, EntityType.GROUND_ITEM).contains(item)
 
     fun getPlayerForName(username: String): Optional<Player> {
         for (i in 0 until players.capacity) {

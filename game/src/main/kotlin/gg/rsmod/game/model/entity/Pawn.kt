@@ -4,6 +4,7 @@ import gg.rsmod.game.action.NpcDeathAction
 import gg.rsmod.game.action.PlayerDeathAction
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.combat.DamageMap
 import gg.rsmod.game.model.path.FutureRoute
 import gg.rsmod.game.model.path.PathFindingStrategy
@@ -11,6 +12,7 @@ import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.Route
 import gg.rsmod.game.model.path.strategy.BFSPathFindingStrategy
 import gg.rsmod.game.model.path.strategy.SimplePathFindingStrategy
+import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.block.UpdateBlockBuffer
 import gg.rsmod.game.sync.block.UpdateBlockType
@@ -143,6 +145,8 @@ abstract class Pawn(val world: World) : Entity() {
         this.transmogId = transmogId
         addBlock(UpdateBlockType.APPEARANCE)
     }
+
+    fun hasMoveDestination(): Boolean = futureRoute != null
 
     /**
      * Gets the most south-west 'front-facing' tile.
@@ -305,7 +309,6 @@ abstract class Pawn(val world: World) : Entity() {
 
     fun walkPath(path: ArrayDeque<Tile>, stepType: MovementQueue.StepType): Tile? {
         futureRoute = null
-
         if (path.isEmpty()) {
             if (this is Player) {
                 write(SetMapFlagMessage(255, 255))
@@ -349,14 +352,15 @@ abstract class Pawn(val world: World) : Entity() {
     fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false) = walkTo(tile.x, tile.z, stepType, projectilePath)
 
     fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false) {
+        val multiThread = world.multiThreadPathFinding
         val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
-        val strategy = createPathFindingStrategy()
+        val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
         if (futureRoute != null) {
             futureRoute!!.strategy.cancel = true
         }
 
-        if (world.multiThreadPathFinding) {
+        if (multiThread) {
             futureRoute = FutureRoute.of(strategy, request, stepType)
         } else {
             val route = strategy.calculateRoute(request)
@@ -367,14 +371,15 @@ abstract class Pawn(val world: World) : Entity() {
     suspend fun walkTo(it: Plugin, tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false) = walkTo(it, tile.x, tile.z, stepType, projectilePath)
 
     suspend fun walkTo(it: Plugin, x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Route {
+        val multiThread = world.multiThreadPathFinding
         val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
-        val strategy = createPathFindingStrategy()
+        val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
         if (futureRoute != null) {
             futureRoute!!.strategy.cancel = true
         }
 
-        if (world.multiThreadPathFinding) {
+        if (multiThread) {
             futureRoute = FutureRoute.of(strategy, request, stepType)
             while (!futureRoute!!.completed) {
                 it.wait(1)
@@ -470,8 +475,13 @@ abstract class Pawn(val world: World) : Entity() {
         world.pluginExecutor.interruptPluginsWithContext(this)
     }
 
-    fun createPathFindingStrategy(): PathFindingStrategy {
-        val collision = world.collision
+    fun createPathFindingStrategy(copyChunks: Boolean = false): PathFindingStrategy {
+        val collision: CollisionManager = if (copyChunks) {
+            val chunks = world.chunks.copyChunksWithinRadius(tile.toChunkCoords(), tile.height, radius = Chunk.CHUNK_VIEW_RADIUS)
+            CollisionManager(chunks, world.definitions, createChunksIfNeeded = false)
+        } else {
+            world.collision
+        }
         return if (getType().isPlayer()) BFSPathFindingStrategy(collision) else SimplePathFindingStrategy(collision)
     }
 }

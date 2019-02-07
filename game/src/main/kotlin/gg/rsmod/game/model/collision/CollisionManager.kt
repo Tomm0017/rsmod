@@ -17,13 +17,6 @@ class CollisionManager(val chunks: ChunkSet, val definitions: DefinitionSet, val
         const val BRIDGE_TILE = 0x2
     }
 
-    fun applyCollision(obj: GameObject, updateType: CollisionUpdate.Type) {
-        val builder = CollisionUpdate.Builder()
-        builder.setType(updateType)
-        builder.putObject(definitions, obj)
-        applyUpdate(builder.build())
-    }
-
     fun isClipped(tile: Tile): Boolean = chunks.get(tile, createChunksIfNeeded)!!.isClipped(tile)
 
     fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = chunks.get(tile, createChunksIfNeeded)!!.isBlocked(tile, direction, projectile)
@@ -46,50 +39,6 @@ class CollisionManager(val chunks: ChunkSet, val definitions: DefinitionSet, val
         }
 
         return true
-    }
-
-    private fun flag(type: CollisionUpdate.Type, matrix: CollisionMatrix, localX: Int, localY: Int, flag: CollisionFlag) {
-        if (type === CollisionUpdate.Type.ADD) {
-            matrix.addFlag(localX, localY, flag)
-        } else {
-            matrix.removeFlag(localX, localY, flag)
-        }
-    }
-
-    fun applyUpdate(update: CollisionUpdate) {
-        var chunk: Chunk? = null
-
-        val type = update.type
-        val map = update.flags
-
-        for (entry in map.entries) {
-            val tile = entry.key
-
-            if (chunk == null || !chunk.contains(tile)) {
-                chunk = chunks.get(tile, createChunksIfNeeded)!!
-            }
-
-            val localX = tile.x % Chunk.CHUNK_SIZE
-            val localZ = tile.z % Chunk.CHUNK_SIZE
-
-            val matrix = chunk.getMatrix(tile.height)
-            val pawns = CollisionFlag.pawnFlags()
-            val projectiles = CollisionFlag.projectileFlags()
-
-            for (flag in entry.value) {
-                val direction = flag.direction
-                if (direction === Direction.NONE) {
-                    continue
-                }
-
-                val orientation = direction.value
-                if (flag.impenetrable) {
-                    flag(type, matrix, localX, localZ, projectiles[orientation])
-                }
-
-                flag(type, matrix, localX, localZ, pawns[orientation])
-            }
-        }
     }
 
     /**
@@ -142,5 +91,56 @@ class CollisionManager(val chunks: ChunkSet, val definitions: DefinitionSet, val
         }
 
         return true
+    }
+
+    private fun flag(type: CollisionUpdate.Type, matrix: CollisionMatrix, localX: Int, localY: Int, flag: CollisionFlag) {
+        if (type === CollisionUpdate.Type.ADD) {
+            matrix.addFlag(localX, localY, flag)
+        } else {
+            matrix.removeFlag(localX, localY, flag)
+        }
+    }
+
+    fun applyCollision(obj: GameObject, updateType: CollisionUpdate.Type) {
+        val builder = CollisionUpdate.Builder()
+        builder.setType(updateType)
+        builder.putObject(definitions, obj)
+        applyUpdate(builder.build())
+    }
+
+    fun applyUpdate(update: CollisionUpdate) {
+        var chunk: Chunk? = null
+
+        val type = update.type
+        val map = update.flags
+
+        for (entry in map.entries) {
+            val tile = entry.key
+
+            if (chunk == null || !chunk.contains(tile)) {
+                chunk = chunks.get(tile, createChunksIfNeeded)!!
+            }
+
+            val localX = tile.x % Chunk.CHUNK_SIZE
+            val localZ = tile.z % Chunk.CHUNK_SIZE
+
+            val matrix = chunk.getMatrix(tile.height)
+            val pawns = CollisionFlag.pawnFlags()
+            val projectiles = CollisionFlag.projectileFlags()
+
+            for (flag in entry.value) {
+                val direction = flag.direction
+                if (direction === Direction.NONE) {
+                    continue
+                }
+
+                val orientation = direction.value
+                if (flag.impenetrable) {
+                    flag(type, matrix, localX, localZ, projectiles[orientation])
+                }
+
+                flag(type, matrix, localX, localZ, pawns[orientation])
+            }
+        }
     }
 }

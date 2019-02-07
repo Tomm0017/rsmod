@@ -141,7 +141,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * next tick to check if the future route was successful (usually the case,
      * since a whole 600ms have now gone by).
      */
-    var multiThreadPathFinding = false
+    var multiThreadPathFinding = true
 
     fun register(p: Player): Boolean {
         val registered = players.add(p)

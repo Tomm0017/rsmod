@@ -19,11 +19,11 @@ class ChunkCreationTask : GameTask {
 
                 if (p.lastChunkTile != null) {
                     val tile = p.lastChunkTile!!
-                    val oldChunk = world.chunks.get(tile.toChunkCoords(), create = false)
+                    val oldChunk = world.chunks.get(tile.toChunkCoords(), createIfNeeded = false)
                     oldChunk?.removeEntity(world, p, tile)
                 }
 
-                val newChunk = world.chunks.get(p.tile.toChunkCoords(), create = true)!!
+                val newChunk = world.chunks.get(p.tile.toChunkCoords(), createIfNeeded = true)!!
                 newChunk.addEntity(world, p, p.tile)
 
                 p.lastChunkTile = Tile(p.tile)

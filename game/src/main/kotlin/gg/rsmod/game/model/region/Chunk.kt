@@ -19,7 +19,7 @@ import gg.rsmod.game.service.GameService
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class Chunk(private val coords: ChunkCoords, private val heights: Int) {
+class Chunk(val coords: ChunkCoords, val heights: Int) {
 
     companion object {
         /**
@@ -58,6 +58,10 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
     private val updates = arrayListOf<EntityUpdate<*>>()
 
     fun getMatrix(height: Int): CollisionMatrix = matrices[height]
+
+    fun setMatrix(height: Int, matrix: CollisionMatrix) {
+        matrices[height] = matrix
+    }
 
     fun contains(tile: Tile): Boolean = coords == tile.toChunkCoords()
 
@@ -163,23 +167,11 @@ class Chunk(private val coords: ChunkCoords, private val heights: Int) {
         }
     }
 
-    fun getSurroundingCoords(chunkRadius: Int = CHUNK_VIEW_RADIUS): MutableSet<ChunkCoords> {
-        val surrounding = hashSetOf<ChunkCoords>()
-
-        val radius = chunkRadius - 1
-        for (x in -radius .. radius) {
-            for (z in -radius .. radius) {
-                surrounding.add(ChunkCoords(coords.x + x, coords.z + z))
-            }
-        }
-        return surrounding
-    }
-
     private fun sendUpdate(world: World, update: EntityUpdate<*>) {
-        val surrounding = getSurroundingCoords()
+        val surrounding = coords.getSurroundingCoords()
 
         for (coords in surrounding) {
-            val chunk = world.chunks.get(coords, create = false) ?: continue
+            val chunk = world.chunks.get(coords, createIfNeeded = false) ?: continue
             val clients = chunk.getEntities<Client>(EntityType.CLIENT)
             for (client in clients) {
                 if (!canBeViewed(client, update.entity)) {

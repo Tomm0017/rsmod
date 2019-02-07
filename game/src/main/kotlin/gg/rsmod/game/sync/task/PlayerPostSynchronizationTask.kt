@@ -18,16 +18,16 @@ class PlayerPostSynchronizationTask(val player: Player) : SynchronizationTask {
         player.steps = null
         player.blockBuffer.clean()
 
-        val oldChunk = if (oldTile != null) player.world.chunks.get(oldTile.toChunkCoords(), create = false)!! else null
-        val newChunk = player.world.chunks.get(player.tile.toChunkCoords(), create = false)
+        val oldChunk = if (oldTile != null) player.world.chunks.get(oldTile.toChunkCoords(), createIfNeeded = false)!! else null
+        val newChunk = player.world.chunks.get(player.tile.toChunkCoords(), createIfNeeded = false)
         if (oldChunk != newChunk && newChunk != null) {
             player.world.getService(GameService::class.java).ifPresent { service ->
-                val oldSurroundings = oldChunk?.getSurroundingCoords() ?: hashSetOf()
-                val newSurroundings = newChunk.getSurroundingCoords()
+                val oldSurroundings = oldChunk?.coords?.getSurroundingCoords() ?: hashSetOf()
+                val newSurroundings = newChunk.coords.getSurroundingCoords()
                 newSurroundings.removeAll(oldSurroundings)
 
                 newSurroundings.forEach { coords ->
-                    val chunk = player.world.chunks.get(coords, create = false) ?: return@forEach
+                    val chunk = player.world.chunks.get(coords, createIfNeeded = false) ?: return@forEach
                     chunk.sendUpdates(player, service)
                 }
             }

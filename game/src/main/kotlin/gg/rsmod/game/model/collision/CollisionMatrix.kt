@@ -6,7 +6,7 @@ import java.util.*
 import kotlin.experimental.inv
 import kotlin.experimental.or
 
-class CollisionMatrix private constructor(val length: Int, val width: Int, val matrix: ShortArray) {
+class CollisionMatrix private constructor(val length: Int, val width: Int, private val matrix: ShortArray) {
 
     companion object {
 
@@ -21,6 +21,8 @@ class CollisionMatrix private constructor(val length: Int, val width: Int, val m
     }
 
     constructor(width: Int, length: Int) : this(length, width, ShortArray(width * length))
+
+    constructor(other: CollisionMatrix) : this(other.length, other.width, other.matrix.copyOf(other.matrix.size))
 
     fun block(x: Int, y: Int, impenetrable: Boolean = true) {
         set(x, y, if (impenetrable) FULL_COLLISION else ALLOW_PROJECTILE_COLLISION)

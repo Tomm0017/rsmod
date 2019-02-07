@@ -28,14 +28,14 @@ class Launcher {
 
             val gameService = world.getService(GameService::class.java, false).orElse(null)
 
-            for (i in 0 until 500) {
+            for (i in 0 until 1998) {
                 val player = Player(world)
                 player.username = "Test $i"
                 player.tile = Tile(world.gameContext.home).transform(world.random(-0..0), world.random(-0..0))
 
                 gameService?.submitGameThreadJob {
                     player.register()
-                    player.world.pluginExecutor.execute(player) {
+                    player.executePlugin {
                         it.suspendable {
                             walkPlugin(it)
                         }
@@ -49,7 +49,10 @@ class Launcher {
 
             val start = Tile(p.tile)
             while (true) {
-                it.wait(p.world.random(10..25))
+                it.wait(1)
+                /*if (p.hasMoveDestination()) {
+                    continue
+                }*/
 
                 var randomX = p.tile.x + (-6 + p.world.random(0..12))
                 var randomZ = p.tile.z + (-6 + p.world.random(0..12))

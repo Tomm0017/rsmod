@@ -11,6 +11,17 @@ class ChunkCoords(val x: Int, val z: Int) {
 
     fun toTile(): Tile = Tile((x + 6) shl 3, (z + 6) shl 3)
 
+    fun getSurroundingCoords(chunkRadius: Int = Chunk.CHUNK_VIEW_RADIUS): MutableSet<ChunkCoords> {
+        val surrounding = hashSetOf<ChunkCoords>()
+
+        for (x in -chunkRadius..chunkRadius) {
+            for (z in -chunkRadius..chunkRadius) {
+                surrounding.add(ChunkCoords(this.x + x, this.z + z))
+            }
+        }
+        return surrounding
+    }
+
     override fun toString(): String = MoreObjects.toStringHelper(this).add("x", x).add("z", z).toString()
 
     override fun equals(other: Any?): Boolean {

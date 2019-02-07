@@ -18,8 +18,8 @@ import java.util.*
 class BFSPathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(collision) {
 
     override fun calculateRoute(request: PathRequest): Route {
-        val start = request.start
-        val end = request.end
+        val start = Tile(request.start)
+        val end = Tile(request.end)
 
         val sourceWidth = request.sourceWidth
         val sourceLength = request.sourceLength
@@ -64,7 +64,7 @@ class BFSPathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(
             for (direction in order) {
                 val tile = head.tile.step(direction)
                 val node = Node(tile = tile, parent = head)
-                if (!closed.contains(node) && head.tile.isWithinRadius(tile, MAX_DISTANCE)
+                if (!closed.contains(node) && start.isWithinRadius(tile, MAX_DISTANCE)
                         && !isStepBlocked(head.tile, tile, sourceWidth, sourceLength, clipNode, clipLink)) {
                     node.cost = head.cost + 1
                     nodes.add(node)

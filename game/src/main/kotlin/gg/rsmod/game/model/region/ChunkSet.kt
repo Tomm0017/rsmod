@@ -2,6 +2,7 @@ package gg.rsmod.game.model.region
 
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.collision.CollisionMatrix
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 
@@ -14,6 +15,19 @@ class ChunkSet(val world: World) {
         const val DEFAULT_TOTAL_HEIGHTS = 4
     }
 
+    fun copyChunksWithinRadius(chunkCoords: ChunkCoords, height: Int, radius: Int): ChunkSet {
+        val newSet = ChunkSet(world)
+        val surrounding = chunkCoords.getSurroundingCoords(radius)
+
+        surrounding.forEach { coords ->
+            val chunk = get(coords, createIfNeeded = true)!!
+            val copy = Chunk(coords, chunk.heights)
+            copy.setMatrix(height, CollisionMatrix(chunk.getMatrix(height)))
+            newSet.chunks[coords] = copy
+        }
+        return newSet
+    }
+
     private val chunks = Object2ObjectOpenHashMap<ChunkCoords, Chunk>()
 
     private val activeRegions = IntOpenHashSet()
@@ -22,15 +36,15 @@ class ChunkSet(val world: World) {
 
     fun getActiveRegions(): Int = activeRegions.size
 
-    fun getOrCreate(tile: Tile): Chunk = get(tile.toChunkCoords(), create = true)!!
+    fun getOrCreate(tile: Tile): Chunk = get(tile.toChunkCoords(), createIfNeeded = true)!!
 
     fun get(tile: Tile, create: Boolean = false): Chunk? = get(tile.toChunkCoords(), create)
 
-    fun get(coords: ChunkCoords, create: Boolean = false): Chunk? {
+    fun get(coords: ChunkCoords, createIfNeeded: Boolean = false): Chunk? {
         val chunk = chunks[coords]
         if (chunk != null) {
             return chunk
-        } else if (!create) {
+        } else if (!createIfNeeded) {
             return null
         }
         val newChunk = Chunk(coords, DEFAULT_TOTAL_HEIGHTS)

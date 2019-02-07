@@ -6,6 +6,7 @@ import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.path.PathFindingStrategy
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.Route
+import gg.rsmod.util.AabbUtil
 import java.util.*
 
 /**
@@ -42,21 +43,25 @@ class SimplePathFindingStrategy(collision: CollisionManager) : PathFindingStrate
             var northOrSouth = if (tail.z < end.z) Direction.NORTH else Direction.SOUTH
             var overlapped = false
 
-            if (overlap(tail, sourceWidth - 1, end, targetWidth - 1)) {
+            if (areOverlapping(tail, sourceWidth - 1, end, targetWidth - 1)) {
                 eastOrWest = eastOrWest.getOpposite()
                 northOrSouth = northOrSouth.getOpposite()
                 overlapped = true
             }
 
-            while ((!areCoordinatesInRange(tail.z, sourceLength - 1, end.z, targetLength - 1) || areDiagonal(tail, sourceLength - 1, end, targetLength - 1) || overlap(tail, sourceLength - 1, end, targetLength - 1))
-                    && (overlapped || !overlap(tail.step(northOrSouth), sourceLength - 1, end, targetLength - 1))
+            while ((!areCoordinatesInRange(tail.z, sourceLength - 1, end.z, targetLength - 1)
+                            || areDiagonal(tail, sourceLength - 1, end, targetLength - 1)
+                            || areOverlapping(tail, sourceLength - 1, end, targetLength - 1))
+                    && (overlapped || !areOverlapping(tail.step(northOrSouth), sourceLength - 1, end, targetLength - 1))
                     && canTraverse(collision, tail, sourceWidth, sourceLength, northOrSouth, projectile)) {
                 tail = tail.step(northOrSouth)
                 path.add(tail)
             }
 
-            while ((!areCoordinatesInRange(tail.x, sourceWidth - 1, end.x, targetWidth - 1) || areDiagonal(tail, sourceWidth - 1, end, targetWidth - 1) || overlap(tail, sourceWidth - 1, end, targetWidth - 1))
-                    && (overlapped || !overlap(tail.step(eastOrWest), sourceWidth - 1, end, targetWidth - 1))
+            while ((!areCoordinatesInRange(tail.x, sourceWidth - 1, end.x, targetWidth - 1)
+                            || areDiagonal(tail, sourceWidth - 1, end, targetWidth - 1)
+                            || areOverlapping(tail, sourceWidth - 1, end, targetWidth - 1))
+                    && (overlapped || !areOverlapping(tail.step(eastOrWest), sourceWidth - 1, end, targetWidth - 1))
                     && canTraverse(collision, tail, sourceWidth, sourceLength, eastOrWest, projectile)) {
                 tail = tail.step(eastOrWest)
                 path.add(tail)
@@ -78,72 +83,11 @@ class SimplePathFindingStrategy(collision: CollisionManager) : PathFindingStrate
         return true
     }
 
+    private fun areBordering(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areBordering(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
 
-    /**
-     * Checks to see if two AABB (axis-aligned bounding box) are bordering,
-     * but not overlapping.
-     */
-    private fun areBordering(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean {
-        val a = Pair(tile1, tile1.transform(size1, size1))
-        val b = Pair(tile2, tile2.transform(size2, size2))
+    private fun areDiagonal(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areDiagonal(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
 
-        if (b.first.x in a.first.x .. a.second.x && b.first.z in a.first.z .. a.second.z
-                || b.second.x in a.first.x .. a.second.x && b.second.z in a.first.z .. a.second.z) {
-            return false
-        }
-
-        if (b.first.x > a.second.x + 1) {
-            return false
-        }
-
-        if (b.second.x < a.first.x - 1) {
-            return false
-        }
-
-        if (b.first.z > a.second.z + 1) {
-            return false
-        }
-
-        if (b.second.z < a.first.z - 1) {
-            return false
-        }
-        return true
-    }
-
-    private fun areDiagonal(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean {
-        val a = Pair(tile1, tile1.transform(size1, size1))
-        val b = Pair(tile2, tile2.transform(size2, size2))
-
-        /**
-         * South-west diagonal tile.
-         */
-        if (a.first.x - 1 == b.second.x && a.first.z - 1 == b.second.z) {
-            return true
-        }
-
-        /**
-         * South-east diagonal tile.
-         */
-        if (a.second.x + 1 == b.second.x && a.first.z - 1 == b.second.z) {
-            return true
-        }
-
-        /**
-         * North-west diagonal tile.
-         */
-        if (a.first.x - 1 == b.second.x && a.second.z + 1 == b.second.z) {
-            return true
-        }
-
-        /**
-         * North-east diagonal tile.
-         */
-        if (a.second.x + 1 == b.second.x && a.second.z + 1 == b.second.z) {
-            return true
-        }
-
-        return false
-    }
+    private fun areOverlapping(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areOverlapping(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
 
     private fun areCoordinatesInRange(coord1: Int, size1: Int, coord2: Int, size2: Int): Boolean {
         val a = Pair(coord1, coord1 + size1)
@@ -154,24 +98,6 @@ class SimplePathFindingStrategy(collision: CollisionManager) : PathFindingStrate
         }
 
         if (a.first > b.second) {
-            return false
-        }
-
-        return true
-    }
-
-    /**
-     * Checks to see if two AABB (axis-aligned bounding box) overlap.
-     */
-    private fun overlap(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean {
-        val a = Pair(tile1, tile1.transform(size1, size1))
-        val b = Pair(tile2, tile2.transform(size2, size2))
-
-        if (a.first.x > b.second.x || b.first.x > a.second.x) {
-            return false
-        }
-
-        if (a.first.z > b.second.z || b.first.z > a.second.z) {
             return false
         }
 

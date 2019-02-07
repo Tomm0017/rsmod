@@ -7,6 +7,7 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.util.AabbUtil
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -80,21 +81,5 @@ object PawnPathAction {
         return route.success
     }
 
-    /**
-     * Checks to see if two AABB (axis-aligned bounding box) overlap.
-     */
-    private fun overlap(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean {
-        val a = Pair(tile1, tile1.transform(size1, size1))
-        val b = Pair(tile2, tile2.transform(size2, size2))
-
-        if (a.first.x > b.second.x || b.first.x > a.second.x) {
-            return false
-        }
-
-        if (a.first.z > b.second.z || b.first.z > a.second.z) {
-            return false
-        }
-
-        return true
-    }
+    private fun overlap(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areOverlapping(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
 }

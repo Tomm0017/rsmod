@@ -47,8 +47,11 @@ class ChunkSet(val world: World) {
         } else if (!createIfNeeded) {
             return null
         }
-        val newChunk = Chunk(coords, DEFAULT_TOTAL_HEIGHTS)
         val regionId = coords.toTile().toRegionId()
+        val newChunk = Chunk(coords, DEFAULT_TOTAL_HEIGHTS)
+        newChunk.createMatrices()
+        newChunk.createCollections()
+
         chunks[coords] = newChunk
         if (activeRegions.add(regionId)) {
             world.definitions.createRegion(world, regionId)

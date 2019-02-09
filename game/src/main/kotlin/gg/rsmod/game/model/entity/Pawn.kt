@@ -174,78 +174,6 @@ abstract class Pawn(val world: World) : Entity() {
 
     fun getFrontFacingTile(target: Pawn, offset: Int = 0): Tile = getFrontFacingTile(target.getCentreTile(), offset)
 
-    /**
-     * Gets the most south-west 'front-facing' tile.
-     *
-     * For example: 3x3 sized pawn with [dir]:
-     *
-     * East
-     * ```
-     *  _____
-     * |_|_|2|
-     * |_|_|1|
-     * |_|_|0|
-     *
-     * ```
-     *
-     * West
-     * ```
-     *  _____
-     * |2|_|_|
-     * |1|_|_|
-     * |0|_|_|
-     *
-     * ```
-     *
-     * North
-     * ```
-     *  _____
-     * |0|1|2|
-     * |_|_|_|
-     * |_|_|_|
-     *
-     * ```
-     *
-     * South
-     * ```
-     *  _____
-     * |_|_|_|
-     * |_|_|_|
-     * |0|1|2|
-     *
-     * ```
-     *
-     * Legend:
-     * ```
-     * 0 = returned when [offset] is set to 0
-     * 1 = returned when [offset] is set to 1
-     * 2 = returned when [offset] is set to 2
-     * ... etc
-     * ```
-     */
-    fun getFrontFacingTile(dir: Direction, offset: Int = 0): Tile {
-        val sizeExcluded = getSize() - 1
-        if (sizeExcluded == 0) {
-            return Tile(tile)
-        }
-
-        check(offset < sizeExcluded) { "Offset should not be bigger than pawn's tile size. [size=${getSize()}, offset=$offset]" }
-
-        return when (dir) {
-            Direction.SOUTH -> tile.transform(offset, 0)
-            Direction.NORTH -> tile.transform(offset, sizeExcluded)
-            Direction.WEST -> tile.transform(0, offset)
-            Direction.EAST -> tile.transform(sizeExcluded, offset)
-
-            Direction.SOUTH_WEST -> tile.transform(0, 0)
-            Direction.SOUTH_EAST -> tile.transform(sizeExcluded, 0)
-            Direction.NORTH_WEST -> tile.transform(0, sizeExcluded)
-            Direction.NORTH_EAST -> tile.transform(sizeExcluded, sizeExcluded)
-
-            Direction.NONE -> throw IllegalStateException("Pawn should not be allowed to face this direction.")
-        }
-    }
-
     fun attack(target: Pawn) {
         resetInteractions()
         interruptPlugins()
@@ -504,6 +432,10 @@ abstract class Pawn(val world: World) : Entity() {
         world.pluginExecutor.interruptPluginsWithContext(this)
     }
 
+    // TODO(Tom): copy a whole collision manager every cycle (if parallel path finding is on)
+    // and use that instead, as copying chunks every pathfinding strategy brings too much
+    // workload due to allocation costs. Maybe move the copy to a separate thread and just
+    // replace the one being used on game-thread when a new one comes in
     fun createPathFindingStrategy(copyChunks: Boolean = false): PathFindingStrategy {
         val collision: CollisionManager = if (copyChunks) {
             val chunks = world.chunks.copyChunksWithinRadius(tile.toChunkCoords(), tile.height, radius = Chunk.CHUNK_VIEW_RADIUS)

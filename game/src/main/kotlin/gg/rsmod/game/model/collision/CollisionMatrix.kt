@@ -15,9 +15,6 @@ class CollisionMatrix private constructor(val length: Int, val width: Int, priva
         private const val FULL_COLLISION: Short = 65535.toShort()
 
         private const val ALLOW_PROJECTILE_COLLISION: Short = 65280.toShort()
-
-        fun createMatrices(count: Int, width: Int, length: Int): Array<CollisionMatrix>
-                = Array(count) { CollisionMatrix(width, length) }
     }
 
     constructor(width: Int, length: Int) : this(length, width, ShortArray(width * length))

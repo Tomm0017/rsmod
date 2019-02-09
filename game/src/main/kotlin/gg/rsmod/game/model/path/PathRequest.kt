@@ -15,7 +15,7 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
     companion object {
 
         fun buildWalkRequest(pawn: Pawn, x: Int, z: Int, projectile: Boolean): PathRequest = Builder()
-                .setPoints(start = pawn.tile, end = Tile(x, z, pawn.tile.height))
+                .setPoints(start = Tile(pawn.tile), end = Tile(x, z, pawn.tile.height))
                 .setSourceSize(width = pawn.getSize(), length =  pawn.getSize())
                 .setTargetSize(width = 0, length = 0)
                 .setProjectilePath(projectile)
@@ -52,7 +52,7 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
 
         /**
          * Clip the linked nodes.
-         * Linked nodes are the tiles in front of the [NODE] tile in every
+         * Linked nodes are the tiles in front of the [NODE] tile in a specific
          * direction.
          */
         LINKED_NODE,
@@ -85,7 +85,6 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
             check(sourceWidth != -1 && sourceLength != -1) { "Source size must be set." }
             check(targetWidth != -1 && targetLength != -1) { "Target size must be set." }
 
-            var touchRadius = this.touchRadius
             if (touchRadius == -1) {
                 touchRadius = 0
             }

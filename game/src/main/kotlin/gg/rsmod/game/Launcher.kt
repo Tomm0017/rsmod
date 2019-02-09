@@ -50,9 +50,9 @@ class Launcher {
             val start = Tile(p.tile)
             while (true) {
                 it.wait(1)
-                /*if (p.hasMoveDestination()) {
-                    continue
-                }*/
+                if (p.hasMoveDestination()) {
+                    it.wait(1)
+                }
 
                 var randomX = p.tile.x + (-6 + p.world.random(0..12))
                 var randomZ = p.tile.z + (-6 + p.world.random(0..12))

@@ -134,7 +134,7 @@ object RangedCombatStrategy : CombatStrategy {
         pawn.animate(animation)
 
         val damage = if (landHit(pawn, target)) getMaxHit(pawn, target) else 0
-        target.hit(damage = damage, delay = getHitDelay(pawn.getFrontFacingTile(), target.tile.transform(target.getSize() / 2, target.getSize()  / 2)))
+        target.hit(damage = damage, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize()  / 2)))
                 .addActions(hitActions)
     }
 

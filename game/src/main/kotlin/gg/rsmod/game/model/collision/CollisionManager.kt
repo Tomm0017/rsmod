@@ -10,7 +10,7 @@ import gg.rsmod.game.model.region.ChunkSet
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class CollisionManager(val chunks: ChunkSet, val definitions: DefinitionSet, val createChunksIfNeeded: Boolean) {
+class CollisionManager(val chunks: ChunkSet, val createChunksIfNeeded: Boolean) {
 
     companion object {
         const val BLOCKED_TILE = 0x1
@@ -30,9 +30,9 @@ class CollisionManager(val chunks: ChunkSet, val definitions: DefinitionSet, val
 
         if (direction.isDiagonal()) {
             direction.getDiagonalComponents().forEach { other ->
-                val next = tile.step(other)
-                val otherChunk = chunks.get(next, createChunksIfNeeded)!!
-                if (otherChunk.isBlocked(next, other.getOpposite(), projectile)) {
+                val diagonalTile = tile.step(other)
+                val diagonalChunk = chunks.get(diagonalTile, createChunksIfNeeded)!!
+                if (diagonalChunk.isBlocked(diagonalTile, other.getOpposite(), projectile)) {
                     return false
                 }
             }
@@ -57,6 +57,7 @@ class CollisionManager(val chunks: ChunkSet, val definitions: DefinitionSet, val
         var y0 = start.z
         val x1 = target.x
         val y1 = target.z
+        val height = start.height
 
         val dx = Math.abs(x1 - x0)
         val dy = Math.abs(y1 - y0)
@@ -67,7 +68,7 @@ class CollisionManager(val chunks: ChunkSet, val definitions: DefinitionSet, val
         var err = dx - dy
         var err2: Int
 
-        var old = Tile(x0, y0, start.height)
+        var prev = Tile(x0, y0, height)
 
         while (x0 != x1 || y0 != y1) {
             err2 = err shl 1
@@ -82,26 +83,26 @@ class CollisionManager(val chunks: ChunkSet, val definitions: DefinitionSet, val
                 y0 += sy
             }
 
-            val tile = Tile(x0, y0, old.height)
-            val dir = Direction.between(old, tile)
-            if (!canTraverse(old, dir, projectile) || !canTraverse(tile, dir.getOpposite(), projectile)) {
+            val next = Tile(x0, y0, height)
+            val dir = Direction.between(prev, next)
+            if (!canTraverse(prev, dir, projectile) || !canTraverse(next, dir.getOpposite(), projectile)) {
                 return false
             }
-            old = tile
+            prev = next
         }
 
         return true
     }
 
     private fun flag(type: CollisionUpdate.Type, matrix: CollisionMatrix, localX: Int, localY: Int, flag: CollisionFlag) {
-        if (type === CollisionUpdate.Type.ADD) {
+        if (type == CollisionUpdate.Type.ADD) {
             matrix.addFlag(localX, localY, flag)
         } else {
             matrix.removeFlag(localX, localY, flag)
         }
     }
 
-    fun applyCollision(obj: GameObject, updateType: CollisionUpdate.Type) {
+    fun applyCollision(definitions: DefinitionSet, obj: GameObject, updateType: CollisionUpdate.Type) {
         val builder = CollisionUpdate.Builder()
         builder.setType(updateType)
         builder.putObject(definitions, obj)
@@ -130,7 +131,7 @@ class CollisionManager(val chunks: ChunkSet, val definitions: DefinitionSet, val
 
             for (flag in entry.value) {
                 val direction = flag.direction
-                if (direction === Direction.NONE) {
+                if (direction == Direction.NONE) {
                     continue
                 }
 

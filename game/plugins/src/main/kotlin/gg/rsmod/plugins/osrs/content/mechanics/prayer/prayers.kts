@@ -1,4 +1,3 @@
-
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.helper.getInteractingOption
 import gg.rsmod.plugins.osrs.api.helper.getInteractingSlot
@@ -7,6 +6,9 @@ import gg.rsmod.plugins.osrs.api.helper.player
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayer
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
 
+/**
+ * Deactivate all prayers on log out.
+ */
 onLogout {
     Prayers.deactivateAll(it.player())
 }

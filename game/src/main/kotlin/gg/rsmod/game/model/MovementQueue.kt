@@ -20,7 +20,8 @@ class MovementQueue(val pawn: Pawn) {
     }
 
     fun addStep(step: Tile, type: StepType) {
-        addStep(steps.peekLast()?.tile ?: pawn.tile, step, type)
+        val current = if (steps.isNotEmpty()) steps.peekLast().tile else pawn.tile
+        addStep(current, step, type)
     }
 
     fun pulse() {
@@ -78,9 +79,6 @@ class MovementQueue(val pawn: Pawn) {
         var dz = next.z - current.z
         val delta = Math.max(Math.abs(dx), Math.abs(dz))
 
-        val chunks = pawn.world.chunks
-        var chunk = chunks.getOrCreate(current)
-
         for (i in 0 until delta) {
             if (dx < 0) {
                 dx++
@@ -95,10 +93,6 @@ class MovementQueue(val pawn: Pawn) {
             }
 
             val step = next.transform(-dx, -dz)
-            if (!chunk.contains(step)) {
-                chunk = chunks.getOrCreate(step)
-            }
-
             steps.add(Step(step, type))
         }
     }

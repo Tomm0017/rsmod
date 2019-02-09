@@ -116,6 +116,8 @@ abstract class Pawn(val world: World) : Entity() {
      */
     var invisible = false
 
+    private var futureRoute: FutureRoute? = null
+
     /**
      * Handles logic before any synchronization tasks are executed.
      */
@@ -146,12 +148,36 @@ abstract class Pawn(val world: World) : Entity() {
         addBlock(UpdateBlockType.APPEARANCE)
     }
 
-    fun hasMoveDestination(): Boolean = futureRoute != null
+    fun hasMoveDestination(): Boolean = futureRoute != null || movementQueue.hasDestination()
+
+    fun getCentreTile(): Tile = tile.transform(getSize() shr 1, getSize() shr 1)
+
+    // Credits: Kris#1337
+    fun getFrontFacingTile(target: Tile, offset: Int = 0): Tile {
+        val size = (getSize() shr 1)
+        val centre = getCentreTile()
+
+        val granularity = 2048
+        val lutFactor = (granularity / (Math.PI * 2)) // Lookup table factor
+
+        val theta = Math.atan2((target.z - centre.z).toDouble(), (target.x - centre.x).toDouble())
+        var angle = Math.toDegrees((((theta * lutFactor).toInt() + offset) and (granularity - 1)) / lutFactor)
+        if (angle < 0) {
+            angle += 360
+        }
+        angle = Math.toRadians(angle)
+
+        val tx = Math.round(centre.x + (size * Math.cos(angle))).toInt()
+        val tz = Math.round(centre.z + (size * Math.sin(angle))).toInt()
+        return Tile(tx, tz, tile.height)
+    }
+
+    fun getFrontFacingTile(target: Pawn, offset: Int = 0): Tile = getFrontFacingTile(target.getCentreTile(), offset)
 
     /**
      * Gets the most south-west 'front-facing' tile.
      *
-     * For example: 3x3 sized pawn is facing:
+     * For example: 3x3 sized pawn with [dir]:
      *
      * East
      * ```
@@ -197,7 +223,7 @@ abstract class Pawn(val world: World) : Entity() {
      * ... etc
      * ```
      */
-    fun getFrontFacingTile(offset: Int = 0): Tile {
+    fun getFrontFacingTile(dir: Direction, offset: Int = 0): Tile {
         val sizeExcluded = getSize() - 1
         if (sizeExcluded == 0) {
             return Tile(tile)
@@ -205,7 +231,7 @@ abstract class Pawn(val world: World) : Entity() {
 
         check(offset < sizeExcluded) { "Offset should not be bigger than pawn's tile size. [size=${getSize()}, offset=$offset]" }
 
-        return when (lastFacingDirection) {
+        return when (dir) {
             Direction.SOUTH -> tile.transform(offset, 0)
             Direction.NORTH -> tile.transform(offset, sizeExcluded)
             Direction.WEST -> tile.transform(0, offset)
@@ -300,23 +326,20 @@ abstract class Pawn(val world: World) : Entity() {
     }
 
     fun handleFutureRoute() {
-        if (futureRoute?.completed == true) {
+        if (futureRoute?.completed == true && futureRoute?.strategy?.cancel == false) {
             val futureRoute = futureRoute!!
             walkPath(futureRoute.route.path, futureRoute.stepType)
             this.futureRoute = null
         }
     }
 
-    fun walkPath(path: ArrayDeque<Tile>, stepType: MovementQueue.StepType): Tile? {
-        futureRoute = null
+    fun walkPath(path: ArrayDeque<Tile>, stepType: MovementQueue.StepType) {
         if (path.isEmpty()) {
             if (this is Player) {
                 write(SetMapFlagMessage(255, 255))
             }
-            return null
+            return
         }
-
-        movementQueue.clear()
 
         var tail: Tile? = null
         var next = path.poll()
@@ -338,16 +361,13 @@ abstract class Pawn(val world: World) : Entity() {
                 write(SetMapFlagMessage(255, 255))
             }
             movementQueue.clear()
-            return tail
+            return
         }
 
         if (this is Player && lastKnownRegionBase != null) {
             write(SetMapFlagMessage(tail.x - lastKnownRegionBase!!.x, tail.z - lastKnownRegionBase!!.z))
         }
-        return tail
     }
-
-    private var futureRoute: FutureRoute? = null
 
     fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false) = walkTo(tile.x, tile.z, stepType, projectilePath)
 
@@ -356,9 +376,16 @@ abstract class Pawn(val world: World) : Entity() {
         val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
-        if (futureRoute != null) {
-            futureRoute!!.strategy.cancel = true
+        /**
+         * When using multi-thread path-finding, the [PathRequest.buildWalkRequest]
+         * must have the [tile] in sync with the game-thread, so we need to make sure
+         * that in this cycle, the pawn's [tile] does not change. The easiest way to
+         * do this is by clearing their movement queue. Though it can cause weird
+         */
+        if (multiThread) {
+            movementQueue.clear()
         }
+        futureRoute?.strategy?.cancel = true
 
         if (multiThread) {
             futureRoute = FutureRoute.of(strategy, request, stepType)
@@ -375,9 +402,11 @@ abstract class Pawn(val world: World) : Entity() {
         val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
-        if (futureRoute != null) {
-            futureRoute!!.strategy.cancel = true
+        if (multiThread) {
+            movementQueue.clear()
         }
+        movementQueue.clear()
+        futureRoute?.strategy?.cancel = true
 
         if (multiThread) {
             futureRoute = FutureRoute.of(strategy, request, stepType)
@@ -478,7 +507,7 @@ abstract class Pawn(val world: World) : Entity() {
     fun createPathFindingStrategy(copyChunks: Boolean = false): PathFindingStrategy {
         val collision: CollisionManager = if (copyChunks) {
             val chunks = world.chunks.copyChunksWithinRadius(tile.toChunkCoords(), tile.height, radius = Chunk.CHUNK_VIEW_RADIUS)
-            CollisionManager(chunks, world.definitions, createChunksIfNeeded = false)
+            CollisionManager(chunks, createChunksIfNeeded = false)
         } else {
             world.collision
         }

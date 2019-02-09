@@ -51,7 +51,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     val chunks = ChunkSet(this)
 
-    val collision = CollisionManager(chunks, definitions, createChunksIfNeeded = true)
+    val collision = CollisionManager(chunks, createChunksIfNeeded = true)
 
     /**
      * A collection of our [Service]s specified in our game [ServerProperties]
@@ -120,11 +120,12 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * The [gg.rsmod.game.model.path.FutureRoute.completed] flag is checked on
      * the player pre-synchronization task, right before [MovementQueue.pulse]
      * is called. If the future route is complete, the path is added to the
-     * player's movement queue.
+     * player's movement queue and data is then sent to clients on the player
+     * synchronization task.
      *
      * Due to this design, it is likely that the [gg.rsmod.game.model.path.FutureRoute]
-     * will not finish calculating the path if the time in between the [Pawn.walkTo] being
-     * called and player pre-synchronization task being executed is fast enough
+     * will not finish calculating the path if the time in between the [Pawn.walkTo]
+     * being called and player pre-synchronization task being executed is fast enough
      *
      * From anecdotal experience, once the average cycle time reaches about 1-2ms+,
      * the multi-threaded path-finding becomes more responsive. However, if the

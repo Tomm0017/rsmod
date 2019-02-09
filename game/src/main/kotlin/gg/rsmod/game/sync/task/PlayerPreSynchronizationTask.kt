@@ -24,7 +24,7 @@ class PlayerPreSynchronizationTask(val player: Player) : SynchronizationTask {
         val last = player.lastKnownRegionBase!!
         val current = player.tile
 
-        if (shouldUpdateRegion(last, current)) {
+        if (shouldRebuildRegion(last, current)) {
             val regionX = ((current.x shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
             val regionZ = ((current.z shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
 
@@ -33,7 +33,7 @@ class PlayerPreSynchronizationTask(val player: Player) : SynchronizationTask {
         }
     }
 
-    private fun shouldUpdateRegion(old: Tile, new: Tile): Boolean {
+    private fun shouldRebuildRegion(old: Tile, new: Tile): Boolean {
         val dx = new.x - old.x
         val dz = new.z - old.z
 

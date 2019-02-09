@@ -38,7 +38,7 @@ class MessageDecoderSet {
         put(OpHeld1Message::class.java, OpHeld1Decoder(), OpHeld1Handler(), structures)
         put(CloseModalMessage::class.java, CloseModalDecoder(), CloseMainComponentHandler(), structures)
         put(ClanJoinChatLeaveChatMessage::class.java, ClanJoinChatLeaveChatDecoder(), ClanJoinChatLeaveHandler(), structures)
-        put(OpHeld2Message::class.java, ItemActionTwoDecoder(), ItemActionTwoHandler(), structures)
+        put(OpHeld2Message::class.java, ItemActionTwoDecoder(), OpHeld2Handler(), structures)
         put(ResumePCountDialogMessage::class.java, ResumePCountDialogDecoder(), ResumePCountDialogHandler(), structures)
         put(ResumePObjDialogMessage::class.java, ResumePObjDialogDecoder(), ResumePObjDialogHandler(), structures)
         put(OpHeld5Message::class.java, OpHeld5Decoder(), OpHeld5Handler(), structures)

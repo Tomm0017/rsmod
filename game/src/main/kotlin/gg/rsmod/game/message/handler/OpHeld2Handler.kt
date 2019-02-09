@@ -11,7 +11,7 @@ import gg.rsmod.game.model.entity.Client
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ItemActionTwoHandler : MessageHandler<OpHeld2Message> {
+class OpHeld2Handler : MessageHandler<OpHeld2Message> {
 
     override fun handle(client: Client, message: OpHeld2Message) {
         @Suppress("unused")

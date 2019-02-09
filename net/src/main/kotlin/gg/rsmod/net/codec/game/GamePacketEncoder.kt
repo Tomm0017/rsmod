@@ -18,7 +18,6 @@ class GamePacketEncoder(private val random: IsaacRandom, private val rsaEncrypti
         private val logger = LogManager.getLogger(GamePacketEncoder::class.java)
     }
 
-    @Throws(Exception::class)
     override fun encode(ctx: ChannelHandlerContext, msg: GamePacket, out: ByteBuf) {
         if (msg.type == PacketType.VARIABLE_BYTE && msg.length >= 256) {
             logger.error("Message length {} too long for 'variable-byte' packet on channel {}.", DecimalFormat().format(msg.length), ctx.channel())
@@ -31,7 +30,6 @@ class GamePacketEncoder(private val random: IsaacRandom, private val rsaEncrypti
         when (msg.type) {
             PacketType.VARIABLE_BYTE -> out.writeByte(msg.length)
             PacketType.VARIABLE_SHORT -> out.writeShort(msg.length)
-            else -> { }
         }
         out.writeBytes(msg.payload)
         msg.payload.release()

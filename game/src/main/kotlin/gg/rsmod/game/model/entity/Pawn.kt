@@ -432,13 +432,9 @@ abstract class Pawn(val world: World) : Entity() {
         world.pluginExecutor.interruptPluginsWithContext(this)
     }
 
-    // TODO(Tom): copy a whole collision manager every cycle (if parallel path finding is on)
-    // and use that instead, as copying chunks every pathfinding strategy brings too much
-    // workload due to allocation costs. Maybe move the copy to a separate thread and just
-    // replace the one being used on game-thread when a new one comes in
     fun createPathFindingStrategy(copyChunks: Boolean = false): PathFindingStrategy {
         val collision: CollisionManager = if (copyChunks) {
-            val chunks = world.chunks.copyChunksWithinRadius(tile.toChunkCoords(), tile.height, radius = Chunk.CHUNK_VIEW_RADIUS)
+            val chunks = world.chunks.copyChunksWithinRadius(tile.toChunkCoords(), radius = Chunk.CHUNK_VIEW_RADIUS)
             CollisionManager(chunks, createChunksIfNeeded = false)
         } else {
             world.collision

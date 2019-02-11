@@ -40,6 +40,17 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         const val CHUNK_VIEW_RADIUS = 3
     }
 
+    constructor(other: Chunk) : this(other.coords, other.heights) {
+        createMatrices()
+        other.matrices.forEachIndexed { index, matrix ->
+            if (matrix != null) {
+                matrices[index] = CollisionMatrix(matrix)
+            }
+        }
+        // Only copy entities and updates if for some reason we need access to
+        // that data for copies of [Chunk].
+    }
+
     /**
      * The array of matrices of 8x8 tiles. Each index representing a height.
      */

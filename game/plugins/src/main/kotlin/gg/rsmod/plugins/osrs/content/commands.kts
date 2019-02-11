@@ -1,14 +1,13 @@
 
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
-import gg.rsmod.game.model.Direction
-import gg.rsmod.game.model.EntityType
-import gg.rsmod.game.model.Privilege
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
+import gg.rsmod.game.model.path.PathFindingStrategy
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.cfg.Items
@@ -18,6 +17,28 @@ import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
 import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
+
+onCommand("run") {
+    val p = it.player()
+    val start = Tile(p.tile)
+
+    it.suspendable {
+        while (true) {
+            it.wait(1)
+            if (p.hasMoveDestination()) {
+                continue
+            }
+
+            var randomX = p.tile.x + (-6 + p.world.random(0..12))
+            var randomZ = p.tile.z + (-6 + p.world.random(0..12))
+            if (!start.isWithinRadius(Tile(randomX, randomZ), PathFindingStrategy.MAX_DISTANCE - 1)) {
+                randomX = start.x
+                randomZ = start.z
+            }
+            p.walkTo(randomX, randomZ, MovementQueue.StepType.NORMAL)
+        }
+    }
+}
 
 onCommand("empty") {
     it.player().inventory.removeAll()

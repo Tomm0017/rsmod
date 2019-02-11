@@ -8,6 +8,8 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.*
+import gg.rsmod.game.model.region.Chunk
+import gg.rsmod.game.model.region.ChunkCoords
 import gg.rsmod.game.model.region.ChunkSet
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.plugin.PluginExecutor
@@ -18,6 +20,7 @@ import gg.rsmod.game.service.game.NpcStatsService
 import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.game.sync.block.UpdateBlockSet
 import gg.rsmod.util.ServerProperties
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import net.runelite.cache.fs.Store
 import org.apache.logging.log4j.LogManager
 import java.io.File
@@ -143,6 +146,30 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * since a whole 600ms have now gone by).
      */
     var multiThreadPathFinding = true
+
+    private val copiedChunks = Object2ObjectOpenHashMap<ChunkCoords, Chunk>()
+
+    fun getChunkCopy(coords: ChunkCoords): Chunk {
+        check(multiThreadPathFinding) { "This method should not be used when the [multiThreadPathFinding] flag is not set." }
+
+        val old = copiedChunks[coords]
+        if (old != null) {
+            return old
+        }
+        val chunk = Chunk(collision.chunks.get(coords, createIfNeeded = true)!!)
+        copiedChunks[coords] = chunk
+        return chunk
+    }
+
+    fun cycle() {
+        if (currentCycle++ >= Int.MAX_VALUE - 1) {
+            currentCycle = 0
+            logger.info("World cycle has been reset.")
+        }
+        if (multiThreadPathFinding) {
+            copiedChunks.clear()
+        }
+    }
 
     fun register(p: Player): Boolean {
         val registered = players.add(p)

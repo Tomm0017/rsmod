@@ -4,6 +4,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.sync.SynchronizationTask
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -22,7 +23,7 @@ class PlayerPostSynchronizationTask(val player: Player) : SynchronizationTask {
         val newChunk = player.world.chunks.get(player.tile.toChunkCoords(), createIfNeeded = false)
         if (oldChunk != newChunk && newChunk != null) {
             player.world.getService(GameService::class.java).ifPresent { service ->
-                val oldSurroundings = oldChunk?.coords?.getSurroundingCoords() ?: hashSetOf()
+                val oldSurroundings = oldChunk?.coords?.getSurroundingCoords() ?: ObjectOpenHashSet()
                 val newSurroundings = newChunk.coords.getSurroundingCoords()
                 newSurroundings.removeAll(oldSurroundings)
 

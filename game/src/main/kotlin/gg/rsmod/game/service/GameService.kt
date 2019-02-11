@@ -205,13 +205,7 @@ class GameService : Service() {
             taskTimes[task.javaClass] = System.currentTimeMillis() - taskStart
         }
 
-        /**
-         * Increment the world cycle count.
-         */
-        if (world.currentCycle++ >= Int.MAX_VALUE - 1) {
-            world.currentCycle = 0
-            logger.info("World cycle has been reset.")
-        }
+        world.cycle()
 
         /**
          * Calculate the time, in milliseconds, it took for this cycle to complete

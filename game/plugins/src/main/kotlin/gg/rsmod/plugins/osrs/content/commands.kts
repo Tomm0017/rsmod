@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content
 
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef

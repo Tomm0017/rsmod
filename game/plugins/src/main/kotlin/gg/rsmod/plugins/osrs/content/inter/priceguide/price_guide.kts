@@ -1,9 +1,9 @@
+package gg.rsmod.plugins.osrs.content.inter.priceguide
 
 import gg.rsmod.plugins.osrs.api.ext.getInteractingOption
 import gg.rsmod.plugins.osrs.api.ext.getInteractingSlot
 import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.api.ext.searchItemDialog
-import gg.rsmod.plugins.osrs.content.inter.priceguide.PriceGuide
 
 onButton(parent = 387, child = 19) {
     val p = it.player()

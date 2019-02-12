@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content.skills.woodcutting
 
 import gg.rsmod.plugins.osrs.api.ext.getInteractingGameObj
 import gg.rsmod.plugins.osrs.content.skills.woodcutting.TreeType

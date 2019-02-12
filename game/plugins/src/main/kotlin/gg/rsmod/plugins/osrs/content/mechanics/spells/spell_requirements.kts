@@ -1,8 +1,9 @@
+package gg.rsmod.plugins.osrs.content.mechanics.spells
+
 import gg.rsmod.plugins.osrs.api.ext.getInteractingNpc
 import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
-import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 
 val SPELLBOOK_POINTER_ENUM = 1981
 

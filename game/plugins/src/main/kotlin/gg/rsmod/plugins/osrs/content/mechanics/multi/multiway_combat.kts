@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content.mechanics.multi
 
 import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.api.ext.setVarbit

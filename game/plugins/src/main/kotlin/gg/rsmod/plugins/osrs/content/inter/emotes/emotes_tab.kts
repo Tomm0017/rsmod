@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content.inter.emotes
 
 import gg.rsmod.plugins.osrs.api.ext.getInteractingSlot
 import gg.rsmod.plugins.osrs.api.ext.player

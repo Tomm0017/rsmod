@@ -1,9 +1,9 @@
+package gg.rsmod.plugins.osrs.content.inter.options
+
 import gg.rsmod.plugins.osrs.api.ext.hasStorageBit
 import gg.rsmod.plugins.osrs.api.ext.options
 import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.api.ext.toggleStorageBit
-import gg.rsmod.plugins.osrs.content.inter.options.GameNotificationType
-import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
 
 onButton(parent = OptionsTab.COMPONENT_ID, child = 71) {
     it.suspendable {

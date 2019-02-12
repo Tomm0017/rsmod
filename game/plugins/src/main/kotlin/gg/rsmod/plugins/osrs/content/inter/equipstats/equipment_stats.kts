@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content.inter.equipstats
 
 import gg.rsmod.game.action.EquipAction
 import gg.rsmod.game.model.ExamineEntityType

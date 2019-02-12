@@ -1,3 +1,5 @@
+package gg.rsmod.plugins.osrs.content.inter.kod
+
 import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.content.inter.kod.KeptOnDeath
 

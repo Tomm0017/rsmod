@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content.inter.options
 
 import gg.rsmod.game.model.DISPLAY_MODE_CHANGE_ATTR
 import gg.rsmod.game.model.interf.DisplayMode

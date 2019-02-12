@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content.mechanics.aggro
 
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.TimerKey

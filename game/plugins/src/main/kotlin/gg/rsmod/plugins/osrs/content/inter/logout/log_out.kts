@@ -1,3 +1,5 @@
+package gg.rsmod.plugins.osrs.content.inter.logout
+
 import gg.rsmod.game.message.impl.LogoutFullMessage
 import gg.rsmod.game.model.ACTIVE_COMBAT_TIMER
 import gg.rsmod.plugins.osrs.api.ext.player

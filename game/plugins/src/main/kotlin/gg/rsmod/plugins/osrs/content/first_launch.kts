@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content
 
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.plugin.Plugin

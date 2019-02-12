@@ -1,6 +1,7 @@
+package gg.rsmod.plugins.osrs.content.inter.worldmap
+
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.ext.*
-import gg.rsmod.plugins.osrs.content.inter.worldmap.WorldMap
 
 onButton(parent = 160, child = 42) {
     val p = it.player()

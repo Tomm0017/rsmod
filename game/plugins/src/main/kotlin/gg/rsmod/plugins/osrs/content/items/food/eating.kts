@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content.items.food
 
 import gg.rsmod.plugins.osrs.api.ext.getInteractingItemSlot
 import gg.rsmod.plugins.osrs.api.ext.player

@@ -1,3 +1,5 @@
+package gg.rsmod.plugins.osrs.content.areas.edgeville
+
 import gg.rsmod.game.model.Direction
 import gg.rsmod.plugins.osrs.api.cfg.Npcs
 

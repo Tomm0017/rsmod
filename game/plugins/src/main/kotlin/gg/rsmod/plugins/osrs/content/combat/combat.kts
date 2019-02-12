@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content.combat
 
 import gg.rsmod.game.action.PawnPathAction
 import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR

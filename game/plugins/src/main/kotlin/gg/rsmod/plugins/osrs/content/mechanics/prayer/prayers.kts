@@ -1,10 +1,10 @@
+package gg.rsmod.plugins.osrs.content.mechanics.prayer
+
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.ext.getInteractingOption
 import gg.rsmod.plugins.osrs.api.ext.getInteractingSlot
 import gg.rsmod.plugins.osrs.api.ext.openInterface
 import gg.rsmod.plugins.osrs.api.ext.player
-import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayer
-import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
 
 /**
  * Deactivate all prayers on log out.

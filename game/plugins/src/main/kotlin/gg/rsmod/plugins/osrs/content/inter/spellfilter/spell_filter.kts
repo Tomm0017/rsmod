@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content.inter.spellfilter
 
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.plugins.osrs.api.getDisplayComponentId

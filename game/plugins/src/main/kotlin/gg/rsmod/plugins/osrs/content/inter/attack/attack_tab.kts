@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content.inter.attack
 
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.ext.player

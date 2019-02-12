@@ -1,3 +1,4 @@
+package gg.rsmod.plugins.osrs.content
 
 import gg.rsmod.game.model.NEW_ACCOUNT_ATTR
 import gg.rsmod.plugins.osrs.api.ChatMessageType

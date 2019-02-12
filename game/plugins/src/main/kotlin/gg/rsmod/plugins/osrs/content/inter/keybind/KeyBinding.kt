@@ -1,8 +1,8 @@
 package gg.rsmod.plugins.osrs.content.inter.keybind
 
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.osrs.api.helper.getVarbit
-import gg.rsmod.plugins.osrs.api.helper.setVarbit
+import gg.rsmod.plugins.osrs.api.ext.getVarbit
+import gg.rsmod.plugins.osrs.api.ext.setVarbit
 
 /**
  * @author Tom <rspsmods@gmail.com>

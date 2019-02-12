@@ -3,7 +3,7 @@ import gg.rsmod.game.action.EquipAction
 import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.EquipmentType
-import gg.rsmod.plugins.osrs.api.helper.*
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.inter.equipstats.EquipmentStats
 
 fun bindUnequip(equipment: EquipmentType, child: Int) {

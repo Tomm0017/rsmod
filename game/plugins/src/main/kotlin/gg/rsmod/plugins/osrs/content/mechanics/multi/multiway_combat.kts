@@ -1,6 +1,6 @@
 
-import gg.rsmod.plugins.osrs.api.helper.player
-import gg.rsmod.plugins.osrs.api.helper.setVarbit
+import gg.rsmod.plugins.osrs.api.ext.player
+import gg.rsmod.plugins.osrs.api.ext.setVarbit
 import gg.rsmod.plugins.osrs.content.mechanics.multi.MultiwayCombat
 
 MultiwayCombat.MULTI_REGIONS.forEach { region ->

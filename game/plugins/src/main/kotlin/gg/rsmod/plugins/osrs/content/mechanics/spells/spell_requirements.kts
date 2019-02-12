@@ -1,5 +1,5 @@
-import gg.rsmod.plugins.osrs.api.helper.getInteractingNpc
-import gg.rsmod.plugins.osrs.api.helper.player
+import gg.rsmod.plugins.osrs.api.ext.getInteractingNpc
+import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
 import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements

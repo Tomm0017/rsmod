@@ -4,7 +4,7 @@ import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.OSRSGameframe
-import gg.rsmod.plugins.osrs.api.helper.*
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
 
 fun bindSetting(child: Int, plugin: Function1<Plugin, Unit>) {

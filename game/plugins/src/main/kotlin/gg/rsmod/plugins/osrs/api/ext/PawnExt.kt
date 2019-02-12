@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.api.helper
+package gg.rsmod.plugins.osrs.api.ext
 
 import gg.rsmod.game.model.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR

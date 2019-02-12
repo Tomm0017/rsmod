@@ -4,7 +4,7 @@ import gg.rsmod.plugins.osrs.api.ChatMessageType
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.OSRSGameframe
 import gg.rsmod.plugins.osrs.api.Skills
-import gg.rsmod.plugins.osrs.api.helper.*
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.inter.attack.AttackTab
 
 onLogin {

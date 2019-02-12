@@ -5,9 +5,9 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.ProjectileType
-import gg.rsmod.plugins.osrs.api.helper.createProjectile
-import gg.rsmod.plugins.osrs.api.helper.hit
-import gg.rsmod.plugins.osrs.api.helper.playSound
+import gg.rsmod.plugins.osrs.api.ext.createProjectile
+import gg.rsmod.plugins.osrs.api.ext.hit
+import gg.rsmod.plugins.osrs.api.ext.playSound
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 

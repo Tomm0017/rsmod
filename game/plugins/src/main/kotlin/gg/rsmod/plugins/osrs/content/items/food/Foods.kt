@@ -5,9 +5,9 @@ import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.Skills
-import gg.rsmod.plugins.osrs.api.helper.hasEquipped
-import gg.rsmod.plugins.osrs.api.helper.heal
-import gg.rsmod.plugins.osrs.api.helper.playSound
+import gg.rsmod.plugins.osrs.api.ext.hasEquipped
+import gg.rsmod.plugins.osrs.api.ext.heal
+import gg.rsmod.plugins.osrs.api.ext.playSound
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.items.potion.Potions
 

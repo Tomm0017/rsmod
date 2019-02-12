@@ -10,9 +10,9 @@ import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.PrayerIcon
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.cfg.Items
-import gg.rsmod.plugins.osrs.api.helper.getBonus
-import gg.rsmod.plugins.osrs.api.helper.hasEquipped
-import gg.rsmod.plugins.osrs.api.helper.hasPrayerIcon
+import gg.rsmod.plugins.osrs.api.ext.getBonus
+import gg.rsmod.plugins.osrs.api.ext.hasEquipped
+import gg.rsmod.plugins.osrs.api.ext.hasPrayerIcon
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayer

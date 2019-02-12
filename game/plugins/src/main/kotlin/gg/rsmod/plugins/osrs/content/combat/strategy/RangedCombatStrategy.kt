@@ -8,7 +8,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.WeaponType
 import gg.rsmod.plugins.osrs.api.cfg.Items
-import gg.rsmod.plugins.osrs.api.helper.*
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.RangedProjectile
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.ammo.Darts

@@ -1,6 +1,6 @@
 
 import gg.rsmod.game.model.ExamineEntityType
-import gg.rsmod.plugins.osrs.api.helper.*
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.inter.bank.Bank
 
 onComponentClose(Bank.BANK_INTERFACE_ID) {

@@ -1,7 +1,7 @@
 
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.plugins.osrs.api.getDisplayComponentId
-import gg.rsmod.plugins.osrs.api.helper.*
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.inter.spellfilter.SpellFilters
 
 onLogin {

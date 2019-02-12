@@ -2,7 +2,7 @@ package gg.rsmod.plugins.osrs.content.inter.kod
 
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
-import gg.rsmod.plugins.osrs.api.helper.*
+import gg.rsmod.plugins.osrs.api.ext.*
 import java.text.DecimalFormat
 
 /**

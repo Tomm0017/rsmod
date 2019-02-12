@@ -10,9 +10,9 @@ import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.api.ProjectileType
 import gg.rsmod.plugins.osrs.api.WeaponType
-import gg.rsmod.plugins.osrs.api.helper.getAttackStyle
-import gg.rsmod.plugins.osrs.api.helper.getVarbit
-import gg.rsmod.plugins.osrs.api.helper.hasWeaponType
+import gg.rsmod.plugins.osrs.api.ext.getAttackStyle
+import gg.rsmod.plugins.osrs.api.ext.getVarbit
+import gg.rsmod.plugins.osrs.api.ext.hasWeaponType
 import gg.rsmod.plugins.osrs.content.combat.strategy.CombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MeleeCombatStrategy

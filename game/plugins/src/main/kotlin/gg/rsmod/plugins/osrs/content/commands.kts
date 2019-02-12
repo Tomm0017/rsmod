@@ -11,7 +11,7 @@ import gg.rsmod.game.model.path.PathFindingStrategy
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.cfg.Items
-import gg.rsmod.plugins.osrs.api.helper.*
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.inter.bank.Bank
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
 import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements

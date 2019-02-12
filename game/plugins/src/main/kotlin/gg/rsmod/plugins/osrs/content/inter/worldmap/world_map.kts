@@ -1,5 +1,5 @@
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
-import gg.rsmod.plugins.osrs.api.helper.*
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.inter.worldmap.WorldMap
 
 onButton(parent = 160, child = 42) {

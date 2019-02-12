@@ -5,11 +5,11 @@ import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.api.helper.addXp
-import gg.rsmod.plugins.osrs.api.helper.filterableMessage
+import gg.rsmod.plugins.osrs.api.ext.addXp
+import gg.rsmod.plugins.osrs.api.ext.filterableMessage
 import gg.rsmod.plugins.osrs.api.Skills
-import gg.rsmod.plugins.osrs.api.helper.playSound
-import gg.rsmod.plugins.osrs.api.helper.player
+import gg.rsmod.plugins.osrs.api.ext.playSound
+import gg.rsmod.plugins.osrs.api.ext.player
 
 /**
  * @author Tom <rspsmods@gmail.com>

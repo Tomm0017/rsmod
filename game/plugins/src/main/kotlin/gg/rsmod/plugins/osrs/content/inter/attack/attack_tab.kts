@@ -1,8 +1,8 @@
 
 import gg.rsmod.plugins.osrs.api.EquipmentType
-import gg.rsmod.plugins.osrs.api.helper.player
-import gg.rsmod.plugins.osrs.api.helper.setVarp
-import gg.rsmod.plugins.osrs.api.helper.toggleVarp
+import gg.rsmod.plugins.osrs.api.ext.player
+import gg.rsmod.plugins.osrs.api.ext.setVarp
+import gg.rsmod.plugins.osrs.api.ext.toggleVarp
 import gg.rsmod.plugins.osrs.content.inter.attack.AttackTab
 
 /**

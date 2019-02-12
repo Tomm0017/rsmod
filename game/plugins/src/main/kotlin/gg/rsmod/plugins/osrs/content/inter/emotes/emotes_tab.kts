@@ -1,7 +1,7 @@
 
-import gg.rsmod.plugins.osrs.api.helper.getInteractingSlot
-import gg.rsmod.plugins.osrs.api.helper.player
-import gg.rsmod.plugins.osrs.api.helper.setInterfaceEvents
+import gg.rsmod.plugins.osrs.api.ext.getInteractingSlot
+import gg.rsmod.plugins.osrs.api.ext.player
+import gg.rsmod.plugins.osrs.api.ext.setInterfaceEvents
 import gg.rsmod.plugins.osrs.content.inter.emotes.Emote
 import gg.rsmod.plugins.osrs.content.inter.emotes.EmotesTab
 

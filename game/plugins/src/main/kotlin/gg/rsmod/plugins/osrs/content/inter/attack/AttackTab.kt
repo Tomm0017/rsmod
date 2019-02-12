@@ -1,8 +1,8 @@
 package gg.rsmod.plugins.osrs.content.inter.attack
 
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.osrs.api.helper.getVarp
-import gg.rsmod.plugins.osrs.api.helper.setVarp
+import gg.rsmod.plugins.osrs.api.ext.getVarp
+import gg.rsmod.plugins.osrs.api.ext.setVarp
 
 /**
  * @author Tom <rspsmods@gmail.com>

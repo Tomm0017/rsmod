@@ -1,4 +1,4 @@
-import gg.rsmod.plugins.osrs.api.helper.player
+import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.content.inter.kod.KeptOnDeath
 
 onButton(parent = 387, child = 21) {

@@ -1,8 +1,8 @@
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
-import gg.rsmod.plugins.osrs.api.helper.runClientScript
-import gg.rsmod.plugins.osrs.api.helper.openInterface
-import gg.rsmod.plugins.osrs.api.helper.player
-import gg.rsmod.plugins.osrs.api.helper.setInterfaceUnderlay
+import gg.rsmod.plugins.osrs.api.ext.runClientScript
+import gg.rsmod.plugins.osrs.api.ext.openInterface
+import gg.rsmod.plugins.osrs.api.ext.player
+import gg.rsmod.plugins.osrs.api.ext.setInterfaceUnderlay
 import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
 
 onButton(parent = OptionsTab.COMPONENT_ID, child = 100) {

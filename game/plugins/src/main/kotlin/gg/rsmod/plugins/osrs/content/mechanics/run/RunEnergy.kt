@@ -4,9 +4,9 @@ import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.Skills
-import gg.rsmod.plugins.osrs.api.helper.sendRunEnergy
-import gg.rsmod.plugins.osrs.api.helper.setVarp
-import gg.rsmod.plugins.osrs.api.helper.toggleVarp
+import gg.rsmod.plugins.osrs.api.ext.sendRunEnergy
+import gg.rsmod.plugins.osrs.api.ext.setVarp
+import gg.rsmod.plugins.osrs.api.ext.toggleVarp
 
 /**
  * @author Tom <rspsmods@gmail.com>

@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.api.helper
+package gg.rsmod.plugins.osrs.api.ext
 
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.*

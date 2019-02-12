@@ -1,7 +1,7 @@
-import gg.rsmod.plugins.osrs.api.helper.hasStorageBit
-import gg.rsmod.plugins.osrs.api.helper.options
-import gg.rsmod.plugins.osrs.api.helper.player
-import gg.rsmod.plugins.osrs.api.helper.toggleStorageBit
+import gg.rsmod.plugins.osrs.api.ext.hasStorageBit
+import gg.rsmod.plugins.osrs.api.ext.options
+import gg.rsmod.plugins.osrs.api.ext.player
+import gg.rsmod.plugins.osrs.api.ext.toggleStorageBit
 import gg.rsmod.plugins.osrs.content.inter.options.GameNotificationType
 import gg.rsmod.plugins.osrs.content.inter.options.OptionsTab
 

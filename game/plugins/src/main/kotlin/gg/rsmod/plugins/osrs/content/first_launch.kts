@@ -1,9 +1,9 @@
 
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.api.helper.doubleItemDialog
-import gg.rsmod.plugins.osrs.api.helper.itemDialog
-import gg.rsmod.plugins.osrs.api.helper.player
+import gg.rsmod.plugins.osrs.api.ext.doubleItemDialog
+import gg.rsmod.plugins.osrs.api.ext.itemDialog
+import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.content.inter.emotes.EmotesTab
 
 onLogin {

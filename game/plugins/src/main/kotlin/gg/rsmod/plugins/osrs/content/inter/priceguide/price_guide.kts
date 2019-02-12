@@ -1,8 +1,8 @@
 
-import gg.rsmod.plugins.osrs.api.helper.getInteractingOption
-import gg.rsmod.plugins.osrs.api.helper.getInteractingSlot
-import gg.rsmod.plugins.osrs.api.helper.player
-import gg.rsmod.plugins.osrs.api.helper.searchItemDialog
+import gg.rsmod.plugins.osrs.api.ext.getInteractingOption
+import gg.rsmod.plugins.osrs.api.ext.getInteractingSlot
+import gg.rsmod.plugins.osrs.api.ext.player
+import gg.rsmod.plugins.osrs.api.ext.searchItemDialog
 import gg.rsmod.plugins.osrs.content.inter.priceguide.PriceGuide
 
 onButton(parent = 387, child = 19) {

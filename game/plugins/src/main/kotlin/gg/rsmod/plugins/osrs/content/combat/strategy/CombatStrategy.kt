@@ -3,7 +3,7 @@ package gg.rsmod.plugins.osrs.content.combat.strategy
 import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.osrs.api.helper.getVarp
+import gg.rsmod.plugins.osrs.api.ext.getVarp
 import gg.rsmod.plugins.osrs.content.inter.attack.AttackTab
 
 /**

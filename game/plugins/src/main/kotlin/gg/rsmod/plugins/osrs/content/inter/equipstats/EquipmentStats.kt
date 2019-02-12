@@ -2,8 +2,8 @@ package gg.rsmod.plugins.osrs.content.inter.equipstats
 
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.BonusSlot
-import gg.rsmod.plugins.osrs.api.helper.getBonus
-import gg.rsmod.plugins.osrs.api.helper.setComponentText
+import gg.rsmod.plugins.osrs.api.ext.getBonus
+import gg.rsmod.plugins.osrs.api.ext.setComponentText
 
 /**
  * @author Tom <rspsmods@gmail.com>

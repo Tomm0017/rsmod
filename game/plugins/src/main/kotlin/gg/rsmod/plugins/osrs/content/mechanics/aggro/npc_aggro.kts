@@ -3,8 +3,8 @@ import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.osrs.api.helper.isAttacking
-import gg.rsmod.plugins.osrs.api.helper.npc
+import gg.rsmod.plugins.osrs.api.ext.isAttacking
+import gg.rsmod.plugins.osrs.api.ext.npc
 
 val AGGRO_CHECK_TIMER = TimerKey()
 

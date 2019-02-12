@@ -1,6 +1,6 @@
 
-import gg.rsmod.plugins.osrs.api.helper.getInteractingItemSlot
-import gg.rsmod.plugins.osrs.api.helper.player
+import gg.rsmod.plugins.osrs.api.ext.getInteractingItemSlot
+import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.content.items.food.Food
 import gg.rsmod.plugins.osrs.content.items.food.Foods
 

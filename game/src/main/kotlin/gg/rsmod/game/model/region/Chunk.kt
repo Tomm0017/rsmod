@@ -13,7 +13,6 @@ import gg.rsmod.game.model.collision.CollisionUpdate
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.region.update.*
 import gg.rsmod.game.service.GameService
-import java.util.*
 
 /**
  * Represents an 8x8 tile in the game map.
@@ -41,11 +40,8 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
     }
 
     constructor(other: Chunk) : this(other.coords, other.heights) {
-        createMatrices()
         other.matrices.forEachIndexed { index, matrix ->
-            if (matrix != null) {
-                matrices[index] = CollisionMatrix(matrix)
-            }
+            matrices[index] = CollisionMatrix(matrix)
         }
         // Only copy entities and updates if for some reason we need access to
         // that data for copies of [Chunk].
@@ -54,31 +50,22 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
     /**
      * The array of matrices of 8x8 tiles. Each index representing a height.
      */
-    private val matrices: Array<CollisionMatrix?> = arrayOfNulls(heights)
+    private val matrices: Array<CollisionMatrix> = CollisionMatrix.createMatrices(ChunkSet.DEFAULT_TOTAL_HEIGHTS, CHUNK_SIZE, CHUNK_SIZE)
 
     /**
      * The [Entity]s that are currently registered to the [Tile] key. This is
      * not used for [gg.rsmod.game.model.entity.Pawn], but rather [Entity]s
      * that do not regularly change [Tile]s.
      */
-    private lateinit var entities: Multimap<Tile, Entity>
+    private var entities: Multimap<Tile, Entity> = HashMultimap.create()
 
     /**
      * A list of [EntityUpdate]s that will be sent to players who have just entered
      * a region that has this chunk as viewable.
      */
-    private lateinit var updates: MutableList<EntityUpdate<*>>
+    private var updates: MutableList<EntityUpdate<*>> = arrayListOf()
 
-    fun createMatrices() {
-        Arrays.fill(matrices, CollisionMatrix(width = CHUNK_SIZE, length = CHUNK_SIZE))
-    }
-
-    fun createCollections() {
-        entities = HashMultimap.create()
-        updates = arrayListOf()
-    }
-
-    fun getMatrix(height: Int): CollisionMatrix = matrices[height]!!
+    fun getMatrix(height: Int): CollisionMatrix = matrices[height]
 
     fun setMatrix(height: Int, matrix: CollisionMatrix) {
         matrices[height] = matrix
@@ -86,9 +73,9 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
 
     fun contains(tile: Tile): Boolean = coords == tile.toChunkCoords()
 
-    fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = matrices[tile.height]!!.isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
+    fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = matrices[tile.height].isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
 
-    fun isClipped(tile: Tile): Boolean = matrices[tile.height]!!.isClipped(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE)
+    fun isClipped(tile: Tile): Boolean = matrices[tile.height].isClipped(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE)
 
     fun addEntity(world: World, entity: Entity, tile: Tile) {
         /**

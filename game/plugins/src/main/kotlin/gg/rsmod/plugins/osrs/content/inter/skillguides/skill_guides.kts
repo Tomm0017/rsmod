@@ -1,6 +1,6 @@
 
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
-import gg.rsmod.plugins.osrs.api.helper.*
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.inter.skillguides.SkillGuide
 
 val skillIdVarbit = 4371

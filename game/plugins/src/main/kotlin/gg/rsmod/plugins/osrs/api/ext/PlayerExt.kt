@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.api.helper
+package gg.rsmod.plugins.osrs.api.ext
 
 import com.google.common.primitives.Ints
 import gg.rsmod.game.fs.def.ItemDef

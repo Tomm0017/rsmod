@@ -3,8 +3,8 @@ package gg.rsmod.plugins.osrs.content.combat.strategy
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.WeaponType
-import gg.rsmod.plugins.osrs.api.helper.hasWeaponType
-import gg.rsmod.plugins.osrs.api.helper.hit
+import gg.rsmod.plugins.osrs.api.ext.hasWeaponType
+import gg.rsmod.plugins.osrs.api.ext.hit
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
 import gg.rsmod.plugins.osrs.content.combat.formula.MeleeCombatFormula
 

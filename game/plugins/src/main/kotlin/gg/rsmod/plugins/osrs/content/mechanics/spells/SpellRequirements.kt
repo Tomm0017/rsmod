@@ -6,8 +6,8 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.osrs.api.Skills
-import gg.rsmod.plugins.osrs.api.helper.getSpellbook
-import gg.rsmod.plugins.osrs.api.helper.getVarbit
+import gg.rsmod.plugins.osrs.api.ext.getSpellbook
+import gg.rsmod.plugins.osrs.api.ext.getVarbit
 
 /**
  * @author Tom <rspsmods@gmail.com>

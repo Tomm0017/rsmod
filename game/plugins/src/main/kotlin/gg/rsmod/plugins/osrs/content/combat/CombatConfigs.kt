@@ -11,10 +11,10 @@ import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.WeaponType
 import gg.rsmod.plugins.osrs.api.cfg.Items
-import gg.rsmod.plugins.osrs.api.helper.getAttackStyle
-import gg.rsmod.plugins.osrs.api.helper.getEquipment
-import gg.rsmod.plugins.osrs.api.helper.hasEquipped
-import gg.rsmod.plugins.osrs.api.helper.hasWeaponType
+import gg.rsmod.plugins.osrs.api.ext.getAttackStyle
+import gg.rsmod.plugins.osrs.api.ext.getEquipment
+import gg.rsmod.plugins.osrs.api.ext.hasEquipped
+import gg.rsmod.plugins.osrs.api.ext.hasWeaponType
 import gg.rsmod.plugins.osrs.content.combat.strategy.CombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MeleeCombatStrategy

@@ -1,9 +1,9 @@
 
 import gg.rsmod.game.action.EquipAction
 import gg.rsmod.plugins.osrs.api.EquipmentType
-import gg.rsmod.plugins.osrs.api.helper.playSound
-import gg.rsmod.plugins.osrs.api.helper.player
-import gg.rsmod.plugins.osrs.api.helper.sendWeaponComponentInformation
+import gg.rsmod.plugins.osrs.api.ext.playSound
+import gg.rsmod.plugins.osrs.api.ext.player
+import gg.rsmod.plugins.osrs.api.ext.sendWeaponComponentInformation
 
 val EQUIP_ITEM_SOUND = 2238
 

@@ -24,7 +24,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
     private val itemSpawns = arrayListOf<GroundItem>()
 
-    fun handleSpawns() {
+    internal fun handleSpawns() {
         npcSpawns.forEach { npc -> world.spawn(npc) }
         npcSpawns.clear()
 
@@ -47,7 +47,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         objSpawns.add(o)
     }
 
-    fun spawnGround(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = 50) {
+    fun spawnItem(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = 50) {
         val ground = GroundItem(item, amount, Tile(x, z, height))
         ground.respawnCycles = respawnCycles
         itemSpawns.add(ground)

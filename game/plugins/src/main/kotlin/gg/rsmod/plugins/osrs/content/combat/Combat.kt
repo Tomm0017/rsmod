@@ -29,6 +29,7 @@ object Combat {
     val CASTING_SPELL = AttributeKey<CombatSpell>()
     val DAMAGE_DEAL_MULTIPLIER = AttributeKey<Double>()
     val DAMAGE_TAKE_MULTIPLIER = AttributeKey<Double>()
+    val BOLT_ENCHANTMENT_EFFECT = AttributeKey<Boolean>()
 
     const val PRIORITY_PID_VARP = 1075
 
@@ -48,6 +49,7 @@ object Combat {
     fun postAttack(pawn: Pawn, target: Pawn) {
         pawn.timers[ATTACK_DELAY] = CombatConfigs.getAttackDelay(pawn)
         target.timers[ACTIVE_COMBAT_TIMER] = 17 // 10,2 seconds
+        pawn.attr[BOLT_ENCHANTMENT_EFFECT] = false
 
         if (pawn.attr.has(CASTING_SPELL) && pawn is Player && pawn.getVarbit(SELECTED_AUTOCAST_VARBIT) == 0) {
             pawn.attr.remove(CASTING_SPELL)

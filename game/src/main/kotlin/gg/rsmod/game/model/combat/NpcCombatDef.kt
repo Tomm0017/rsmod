@@ -105,6 +105,10 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
 
     fun isScarab(): Boolean = false
 
+    fun isDragon(): Boolean = false
+
+    fun isFiery(): Boolean = false
+
     companion object {
         val DEFAULT = NpcCombatDef(hitpoints = 10, combatLvl = 1, attackLvl = 1, strengthLvl = 1, defenceLvl = 1,
                 magicLvl = 1, rangedLvl = 1, meleeMaxHit = 1, magicMaxHit = 1, rangedMaxHit = 1, attackSpeed = 4,

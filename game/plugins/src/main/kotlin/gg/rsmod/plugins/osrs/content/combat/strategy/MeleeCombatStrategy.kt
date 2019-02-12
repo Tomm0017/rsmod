@@ -43,6 +43,7 @@ object MeleeCombatStrategy : CombatStrategy {
         val landHit = accuracy >= world.randomDouble()
 
         val damage = if (landHit) world.random(maxHit) else 0
+
         target.hit(damage = damage, delay = 1).addActions(hitActions)
 }
 }

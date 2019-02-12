@@ -9,6 +9,7 @@ import gg.rsmod.plugins.osrs.api.ext.createProjectile
 import gg.rsmod.plugins.osrs.api.ext.hit
 import gg.rsmod.plugins.osrs.api.ext.playSound
 import gg.rsmod.plugins.osrs.content.combat.Combat
+import gg.rsmod.plugins.osrs.content.combat.formula.RangedCombatFormula
 import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 
 /**
@@ -30,6 +31,8 @@ object MagicCombatStrategy : CombatStrategy {
     }
 
     override fun attack(pawn: Pawn, target: Pawn) {
+        val world = pawn.world
+
         /**
          * A list of actions that will be executed upon this hit dealing damage
          * to the [target].
@@ -44,7 +47,7 @@ object MagicCombatStrategy : CombatStrategy {
         spell.castGfx?.let { gfx -> pawn.graphic(gfx) }
         spell.impactGfx?.let { gfx -> target.graphic(Graphic(gfx.id, gfx.height, projectile.lifespan)) }
         if (spell.projectile > 0) {
-            pawn.world.spawn(projectile)
+            world.spawn(projectile)
         }
 
         if (pawn is Player) {
@@ -54,7 +57,12 @@ object MagicCombatStrategy : CombatStrategy {
             SpellRequirements.getRequirements(spell.id)?.let { requirement -> SpellRequirements.removeRunes(pawn, requirement.items) }
         }
 
-        val damage = if (landHit(pawn, target)) getMaxHit(pawn, target) else 0
+        val accuracy = RangedCombatFormula.getAccuracy(pawn, target)
+        val maxHit = RangedCombatFormula.getMaxHit(pawn, target)
+        val landHit = accuracy >= world.randomDouble()
+
+        val damage = if (landHit) world.random(maxHit) else 0
+
         target.hit(damage = damage, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize()  / 2)))
                 .addActions(hitActions)
     }
@@ -63,8 +71,4 @@ object MagicCombatStrategy : CombatStrategy {
         val distance = start.getDistance(target)
         return 2 + Math.floor((1.0 + distance) / 3.0).toInt()
     }
-
-    private fun getMaxHit(pawn: Pawn, target: Pawn): Int = pawn.world.random(10)
-
-    private fun landHit(pawn: Pawn, target: Pawn): Boolean = pawn.world.chance(1, 2)
 }

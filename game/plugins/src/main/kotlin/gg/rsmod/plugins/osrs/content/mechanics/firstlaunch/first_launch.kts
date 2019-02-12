@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.content
+package gg.rsmod.plugins.osrs.content.mechanics.firstlaunch
 
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.plugin.Plugin

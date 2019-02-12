@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.content
+package gg.rsmod.plugins.osrs.content.mechanics.equipment
 
 import gg.rsmod.game.action.EquipAction
 import gg.rsmod.plugins.osrs.api.EquipmentType

@@ -6,26 +6,16 @@ import gg.rsmod.game.model.FROZEN_TIMER
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.api.EquipmentType
-import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.ext.*
-import gg.rsmod.plugins.osrs.content.combat.Combat
-import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
-import gg.rsmod.plugins.osrs.content.combat.formula.MeleeCombatFormula
+import gg.rsmod.plugins.osrs.content.combat.formula.MagicCombatFormula
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
-import gg.rsmod.plugins.osrs.content.inter.attack.AttackTab
 
 onCommand("max") {
     val player = it.player()
-    var specialAttackMultiplier = 1.0
-    var specialPassiveMultiplier = 1.0
-    if (player.hasEquipped(EquipmentType.WEAPON, Items.ARMADYL_GODSWORD, Items.ARMADYL_GODSWORD_OR) && AttackTab.isSpecialEnabled(player)) {
-        specialAttackMultiplier = 1.1
-        specialPassiveMultiplier = 1.25
-    }
-    val accuracy = MeleeCombatFormula.getAccuracy(player, player)
+    player.attr[Combat.CASTING_SPELL] = CombatSpell.WIND_SURGE
+    val accuracy = MagicCombatFormula.getAccuracy(player, player)
     val landHit = accuracy >= player.world.randomDouble()
-    val max = MeleeCombatFormula.getMaxHit(player, player, specialAttackMultiplier, specialPassiveMultiplier)
+    val max = MagicCombatFormula.getMaxHit(player, player)
     player.message("Max hit=$max - accuracy=$accuracy - land=$landHit")
 }
 

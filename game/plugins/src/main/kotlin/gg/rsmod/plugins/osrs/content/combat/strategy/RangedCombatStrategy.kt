@@ -10,6 +10,7 @@ import gg.rsmod.plugins.osrs.api.WeaponType
 import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
+import gg.rsmod.plugins.osrs.content.combat.formula.RangedCombatFormula
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.RangedProjectile
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.ammo.Darts
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.ammo.Knives
@@ -74,6 +75,8 @@ object RangedCombatStrategy : CombatStrategy {
     }
 
     override fun attack(pawn: Pawn, target: Pawn) {
+        val world = pawn.world
+
         val animation = CombatConfigs.getAttackAnimation(pawn)
 
         /**
@@ -103,14 +106,14 @@ object RangedCombatStrategy : CombatStrategy {
                 val projectile = pawn.createProjectile(target, ammoProjectile.gfx, ammoProjectile.type)
                 ammoProjectile.drawback?.let { drawback -> pawn.graphic(drawback) }
                 ammoProjectile.impact?.let { impact -> target.graphic(impact.id, impact.height, projectile.lifespan) }
-                pawn.world.spawn(projectile)
+                world.spawn(projectile)
             }
 
             /**
              * Remove or drop ammo if applicable.
              */
             if (ammo != null && (ammoProjectile == null || !ammoProjectile.breakOnImpact())) {
-                val chance = pawn.world.random(99)
+                val chance = world.random(99)
                 val breakAmmo = chance in 0..19
                 val dropAmmo = when {
                     pawn.hasEquipped(EquipmentType.CAPE, Items.AVAS_ACCUMULATOR) -> chance in 20..27
@@ -123,13 +126,18 @@ object RangedCombatStrategy : CombatStrategy {
                     pawn.equipment.remove(ammo.id, amount)
                 }
                 if (dropAmmo) {
-                    hitActions.add { pawn.world.spawn(GroundItem(ammo.id, amount, target.tile, pawn.uid)) }
+                    hitActions.add { world.spawn(GroundItem(ammo.id, amount, target.tile, pawn.uid)) }
                 }
             }
         }
         pawn.animate(animation)
 
-        val damage = if (landHit(pawn, target)) getMaxHit(pawn, target) else 0
+        val accuracy = RangedCombatFormula.getAccuracy(pawn, target)
+        val maxHit = RangedCombatFormula.getMaxHit(pawn, target)
+        val landHit = accuracy >= world.randomDouble()
+
+        val damage = if (landHit) world.random(maxHit) else 0
+
         target.hit(damage = damage, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize()  / 2)))
                 .addActions(hitActions)
     }
@@ -138,8 +146,4 @@ object RangedCombatStrategy : CombatStrategy {
         val distance = start.getDistance(target)
         return 2 + (Math.floor((3.0 + distance) / 6.0)).toInt()
     }
-
-    private fun getMaxHit(pawn: Pawn, target: Pawn): Int = 0
-
-    private fun landHit(pawn: Pawn, target: Pawn): Boolean = false
 }

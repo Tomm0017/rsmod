@@ -3,8 +3,13 @@ package gg.rsmod.game.plugin
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.fs.def.ObjectDef
+import gg.rsmod.game.model.Direction
+import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.entity.DynamicObject
+import gg.rsmod.game.model.entity.GroundItem
+import gg.rsmod.game.model.entity.Npc
 import kotlin.script.experimental.annotations.KotlinScript
 
 /**
@@ -12,6 +17,41 @@ import kotlin.script.experimental.annotations.KotlinScript
  */
 @KotlinScript(displayName = "Kotlin Plugin", fileExtension = "kts")
 abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
+
+    private val npcSpawns = arrayListOf<Npc>()
+
+    private val objSpawns = arrayListOf<DynamicObject>()
+
+    private val itemSpawns = arrayListOf<GroundItem>()
+
+    fun handleSpawns() {
+        npcSpawns.forEach { npc -> world.spawn(npc) }
+        npcSpawns.clear()
+
+        objSpawns.forEach { obj -> world.spawn(obj) }
+        objSpawns.clear()
+
+        itemSpawns.forEach { item -> world.spawn(item) }
+        itemSpawns.clear()
+    }
+
+    fun spawnNpc(npc: Int, x: Int, z: Int, height: Int = 0, walkRadius: Int = 0, direction: Direction = Direction.SOUTH) {
+        val n = Npc(npc, Tile(x, z, height), world)
+        n.walkRadius = walkRadius
+        n.lastFacingDirection = direction
+        npcSpawns.add(n)
+    }
+
+    fun spawnObj(obj: Int, x: Int, z: Int, height: Int = 0, type: Int = 10, rot: Int = 0) {
+        val o = DynamicObject(obj, type, rot, Tile(x, z, height))
+        objSpawns.add(o)
+    }
+
+    fun spawnGround(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = 50) {
+        val ground = GroundItem(item, amount, Tile(x, z, height))
+        ground.respawnCycles = respawnCycles
+        itemSpawns.add(ground)
+    }
 
     fun onItemOption(item: Int, option: String, plugin: Function1<Plugin, Unit>) {
         val opt = option.toLowerCase()
@@ -42,6 +82,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
         r.bindNpc(npc, slot, plugin)
     }
+
+    fun onWorldInit(plugin: (Plugin) -> Unit) = r.bindWorldInit(plugin)
 
     fun onDisplayModeChange(plugin: Function1<Plugin, Unit>) = r.bindDisplayModeChange(plugin)
 

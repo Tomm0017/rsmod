@@ -48,6 +48,12 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
     }
 
     /**
+     * TODO(Tom): when copying [Chunk]s, we should not initialize [entities], [updates] or [matrices].
+     * [matrices] should only be set to nulls and have a way to set a specific index to a [CollisionMatrix].
+     * When the [Chunk] is a normal chunk meant to be on the game-thread, then we should initialize everything.
+     */
+
+    /**
      * The array of matrices of 8x8 tiles. Each index representing a height.
      */
     private val matrices: Array<CollisionMatrix> = CollisionMatrix.createMatrices(ChunkSet.DEFAULT_TOTAL_HEIGHTS, CHUNK_SIZE, CHUNK_SIZE)

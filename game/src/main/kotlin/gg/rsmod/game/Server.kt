@@ -163,6 +163,11 @@ class Server {
         logger.info("Loaded {} plugins in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**
+         * Post load world.
+         */
+        world.postLoad()
+
+        /**
          * Inform the time it took to load up all non-network logic.
          */
         logger.info("${gameProperties.get<String>("name")!!} loaded up in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms.")

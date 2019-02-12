@@ -33,6 +33,8 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
      */
     var respawns = false
 
+    var walkRadius = 0
+
     private var hitpoints = 10
 
     lateinit var combatDef: NpcCombatDef

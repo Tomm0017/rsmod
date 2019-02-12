@@ -144,6 +144,10 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      */
     var multiThreadPathFinding = true
 
+    fun postLoad() {
+        plugins.executeWorldInit(this)
+    }
+
     fun cycle() {
         if (currentCycle++ >= Int.MAX_VALUE - 1) {
             currentCycle = 0

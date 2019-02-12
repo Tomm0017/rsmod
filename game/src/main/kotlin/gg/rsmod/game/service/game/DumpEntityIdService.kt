@@ -2,6 +2,7 @@ package gg.rsmod.game.service.game
 
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.def.ItemDef
+import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
@@ -47,19 +48,30 @@ class DumpEntityIdService : Service() {
             return
         }
         val definitions = world.definitions
+        val namer = Namer()
 
-        val itemNamer = Namer()
         val itemCount = definitions.getCount(ItemDef::class.java)
-
         val items = generateWriter("Items.kt")
         for (i in 0 until itemCount) {
             val item = definitions.getNullable(ItemDef::class.java, i) ?: continue
             if (item.name.isNotBlank()) {
-                val name = itemNamer.name(item.name, i)
+                val name = namer.name(item.name, i)
                 write(items, "const val $name = $i")
             }
         }
         endWriter(items)
+
+        val npcCount = definitions.getCount(NpcDef::class.java)
+        val npcs = generateWriter("Npcs.kt")
+        for (i in 0 until npcCount) {
+            val npc = definitions.getNullable(NpcDef::class.java, i) ?: continue
+            val rawName = npc.name.replace("?", "")
+            if (rawName.isNotEmpty() && rawName.isNotBlank()) {
+                val name = namer.name(npc.name, i)
+                write(npcs, "const val $name = $i")
+            }
+        }
+        endWriter(npcs)
     }
 
     private fun generateWriter(file: String): PrintWriter {
@@ -67,7 +79,7 @@ class DumpEntityIdService : Service() {
         writer.println("/* Auto-generated file using ${this::class.java} */")
         writer.println("package gg.rsmod.plugins.osrs.api.cfg")
         writer.println("")
-        writer.println("object Items {")
+        writer.println("object ${file.removeSuffix(".kt")} {")
         writer.println("")
         return writer
     }

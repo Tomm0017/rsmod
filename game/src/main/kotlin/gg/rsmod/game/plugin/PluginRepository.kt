@@ -45,6 +45,11 @@ class PluginRepository(val world: World) {
     private var pluginCount = 0
 
     /**
+     * Plugins that get executed when the world is initialised.
+     */
+    private val worldInitPlugins = arrayListOf<Function1<Plugin, Unit>>()
+
+    /**
      * The plugin that will execute when changing display modes.
      */
     private var displayModePlugin: Function1<Plugin, Unit>? = null
@@ -210,6 +215,7 @@ class PluginRepository(val world: World) {
 
         displayModePlugin = null
         combatPlugin = null
+        worldInitPlugins.clear()
         loginPlugins.clear()
         logoutPlugins.clear()
         globalNpcSpawnPlugins.clear()
@@ -242,7 +248,9 @@ class PluginRepository(val world: World) {
                 val pluginClass = p.loadClass(KotlinPlugin::class.java)
                 val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java)
                 analyzer?.setClass(pluginClass)
-                constructor.newInstance(this, world)
+
+                val plugin = constructor.newInstance(this, world)
+                plugin.handleSpawns()
             }
         }
 
@@ -279,7 +287,9 @@ class PluginRepository(val world: World) {
                     val pluginClass = p.loadClass(KotlinPlugin::class.java)
                     val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java)
                     analyzer?.setClass(clazz)
-                    constructor.newInstance(this, world)
+
+                    val plugin = constructor.newInstance(this, world)
+                    plugin.handleSpawns()
                 }
             }
         }
@@ -290,6 +300,14 @@ class PluginRepository(val world: World) {
      * Get the total amount of plugins loaded from the plugins path.
      */
     fun getPluginCount(): Int = pluginCount
+
+    fun bindWorldInit(plugin: (Plugin) -> Unit) {
+        worldInitPlugins.add(plugin)
+    }
+
+    fun executeWorldInit(world: World) {
+        worldInitPlugins.forEach { logic -> world.pluginExecutor.execute(world, logic) }
+    }
 
     fun bindCombat(plugin: Function1<Plugin, Unit>) {
         if (combatPlugin != null) {

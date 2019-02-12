@@ -8,11 +8,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.WeaponType
 import gg.rsmod.plugins.osrs.api.cfg.Items
-import gg.rsmod.plugins.osrs.api.helper.getEquipment
-import gg.rsmod.plugins.osrs.api.helper.hasEquipped
-import gg.rsmod.plugins.osrs.api.helper.hasWeaponType
-import gg.rsmod.plugins.osrs.api.helper.hit
-import gg.rsmod.plugins.osrs.content.combat.Combat
+import gg.rsmod.plugins.osrs.api.helper.*
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.RangedProjectile
 import gg.rsmod.plugins.osrs.content.combat.strategy.ranged.ammo.Darts
@@ -104,7 +100,7 @@ object RangedCombatStrategy : CombatStrategy {
              */
             val ammoProjectile = if (ammo != null) RangedProjectile.values().firstOrNull { ammo.id in it.items } else null
             if (ammoProjectile != null) {
-                val projectile = Combat.createProjectile(pawn, target, ammoProjectile.gfx, ammoProjectile.type)
+                val projectile = pawn.createProjectile(target, ammoProjectile.gfx, ammoProjectile.type)
                 ammoProjectile.drawback?.let { drawback -> pawn.graphic(drawback) }
                 ammoProjectile.impact?.let { impact -> target.graphic(impact.id, impact.height, projectile.lifespan) }
                 pawn.world.spawn(projectile)

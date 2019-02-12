@@ -5,6 +5,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.ProjectileType
+import gg.rsmod.plugins.osrs.api.helper.createProjectile
 import gg.rsmod.plugins.osrs.api.helper.hit
 import gg.rsmod.plugins.osrs.api.helper.playSound
 import gg.rsmod.plugins.osrs.content.combat.Combat
@@ -37,7 +38,7 @@ object MagicCombatStrategy : CombatStrategy {
         hitActions.add { postDamage(pawn, target) }
 
         val spell = pawn.attr[Combat.CASTING_SPELL]!!
-        val projectile = Combat.createProjectile(pawn, target, gfx = spell.projectile, type = ProjectileType.MAGIC, endHeight = spell.projectilEndHeight)
+        val projectile = pawn.createProjectile(target, gfx = spell.projectile, type = ProjectileType.MAGIC, endHeight = spell.projectilEndHeight)
 
         pawn.animate(spell.castAnimation)
         spell.castGfx?.let { gfx -> pawn.graphic(gfx) }

@@ -6,7 +6,6 @@ import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.entity.Projectile
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.api.ProjectileType
@@ -73,29 +72,7 @@ object Combat {
         return withinRange || PawnPathAction.walkTo(it, pawn, target, interactionRange = distance)
     }
 
-    fun createProjectile(source: Pawn, target: Tile, gfx: Int, type: ProjectileType, endHeight: Int = -1): Projectile {
-        val builder = Projectile.Builder()
-                .setTiles(start = source.tile, target = target)
-                .setGfx(gfx = gfx)
-                .setHeights(startHeight = type.startHeight, endHeight = if (endHeight != -1) endHeight else type.endHeight)
-                .setSlope(angle = type.angle, steepness = type.steepness)
-                .setTimes(delay = type.delay, lifespan = type.delay + getProjectileLifespan(source, target, type))
-
-        return builder.build()
-    }
-
-    fun createProjectile(source: Pawn, target: Pawn, gfx: Int, type: ProjectileType, endHeight: Int = -1): Projectile {
-        val builder = Projectile.Builder()
-                .setTiles(start = source.tile, target = target)
-                .setGfx(gfx = gfx)
-                .setHeights(startHeight = type.startHeight, endHeight = if (endHeight != -1) endHeight else type.endHeight)
-                .setSlope(angle = type.angle, steepness = type.steepness)
-                .setTimes(delay = type.delay, lifespan = type.delay + getProjectileLifespan(source, target.tile, type))
-
-        return builder.build()
-    }
-
-    private fun getProjectileLifespan(source: Pawn, target: Tile, type: ProjectileType): Int = when (type) {
+    fun getProjectileLifespan(source: Pawn, target: Tile, type: ProjectileType): Int = when (type) {
         ProjectileType.MAGIC -> {
             // TODO: pls think of the perf hit!
             val path = source.createPathFindingStrategy().calculateRoute(PathRequest.Builder().setPoints(source.tile, target)

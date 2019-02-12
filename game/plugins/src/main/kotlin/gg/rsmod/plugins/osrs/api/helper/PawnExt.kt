@@ -3,15 +3,37 @@ package gg.rsmod.plugins.osrs.api.helper
 import gg.rsmod.game.model.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.Hit
+import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
-import gg.rsmod.plugins.osrs.api.BonusSlot
-import gg.rsmod.plugins.osrs.api.HitType
-import gg.rsmod.plugins.osrs.api.HitbarType
-import gg.rsmod.plugins.osrs.api.PrayerIcon
+import gg.rsmod.game.model.entity.Projectile
+import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.content.combat.Combat
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
+
+fun Pawn.createProjectile(target: Tile, gfx: Int, type: ProjectileType, endHeight: Int = -1): Projectile {
+    val builder = Projectile.Builder()
+            .setTiles(start = tile, target = target)
+            .setGfx(gfx = gfx)
+            .setHeights(startHeight = type.startHeight, endHeight = if (endHeight != -1) endHeight else type.endHeight)
+            .setSlope(angle = type.angle, steepness = type.steepness)
+            .setTimes(delay = type.delay, lifespan = type.delay + Combat.getProjectileLifespan(this, target, type))
+
+    return builder.build()
+}
+
+fun Pawn.createProjectile(target: Pawn, gfx: Int, type: ProjectileType, endHeight: Int = -1): Projectile {
+    val builder = Projectile.Builder()
+            .setTiles(start = tile, target = target)
+            .setGfx(gfx = gfx)
+            .setHeights(startHeight = type.startHeight, endHeight = if (endHeight != -1) endHeight else type.endHeight)
+            .setSlope(angle = type.angle, steepness = type.steepness)
+            .setTimes(delay = type.delay, lifespan = type.delay + Combat.getProjectileLifespan(this, target.tile, type))
+
+    return builder.build()
+}
 
 fun Pawn.hasPrayerIcon(icon: PrayerIcon): Boolean = prayerIcon == icon.id
 

@@ -9,14 +9,6 @@ import gg.rsmod.plugins.osrs.service.item.ItemValueService
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-
-fun String.plural(amount: Int): String {
-    if (endsWith('s')) {
-        return this
-    }
-    return if (amount != 1) this + "s" else this
-}
-
 fun ItemContainer.networth(world: World): Long {
     val service = world.getService(ItemValueService::class.java).orElse(null)
     var networth = 0L

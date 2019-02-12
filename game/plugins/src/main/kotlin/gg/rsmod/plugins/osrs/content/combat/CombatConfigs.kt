@@ -4,6 +4,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.CombatStyle
+import gg.rsmod.game.model.combat.XpMode
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
@@ -11,19 +12,19 @@ import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.WeaponType
 import gg.rsmod.plugins.osrs.api.cfg.Items
-import gg.rsmod.plugins.osrs.api.ext.getAttackStyle
-import gg.rsmod.plugins.osrs.api.ext.getEquipment
-import gg.rsmod.plugins.osrs.api.ext.hasEquipped
-import gg.rsmod.plugins.osrs.api.ext.hasWeaponType
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.combat.strategy.CombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MeleeCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.RangedCombatStrategy
+import mu.KotlinLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 object CombatConfigs {
+
+    private val logger = KotlinLogging.logger {  }
 
     private var cachedItemStats: ItemStatsService? = null
 
@@ -291,6 +292,111 @@ object CombatConfigs {
         }
 
         throw IllegalArgumentException("Invalid pawn type.")
+    }
+
+    fun getXpMode(player: Player): XpMode {
+        val style = player.getAttackStyle()
+
+        return when {
+
+            player.hasWeaponType(WeaponType.NONE) -> {
+                when (style) {
+                    1 -> XpMode.STRENGTH
+                    3 -> XpMode.DEFENCE
+                    else -> XpMode.ATTACK
+                }
+            }
+
+            player.hasWeaponType(WeaponType.AXE, WeaponType.HAMMER, WeaponType.TWO_HANDED,
+                    WeaponType.PICKAXE, WeaponType.DAGGER, WeaponType.STAFF, WeaponType.MAGIC_STAFF) -> {
+                when (style) {
+                    1 -> XpMode.STRENGTH
+                    2 -> XpMode.STRENGTH
+                    3 -> XpMode.DEFENCE
+                    else -> XpMode.ATTACK
+                }
+            }
+
+            player.hasWeaponType(WeaponType.LONG_SWORD, WeaponType.MACE, WeaponType.CLAWS) -> {
+                when (style) {
+                    1 -> XpMode.STRENGTH
+                    2 -> XpMode.SHARED
+                    3 -> XpMode.DEFENCE
+                    else -> XpMode.ATTACK
+                }
+            }
+
+            player.hasWeaponType(WeaponType.WHIP) -> {
+                when (style) {
+                    1 -> XpMode.SHARED
+                    3 -> XpMode.DEFENCE
+                    else -> XpMode.ATTACK
+                }
+            }
+
+            player.hasWeaponType(WeaponType.SPEAR) -> {
+                when (style) {
+                    3 -> XpMode.DEFENCE
+                    else -> XpMode.SHARED
+                }
+            }
+
+            player.hasWeaponType(WeaponType.TRIDENT) -> {
+                when (style) {
+                    3 -> XpMode.SHARED
+                    else -> XpMode.MAGIC
+                }
+            }
+
+            player.hasWeaponType(WeaponType.SCYTHE) -> {
+                when (style) {
+                    0 -> XpMode.ATTACK
+                    1 -> XpMode.STRENGTH
+                    2 -> XpMode.STRENGTH
+                    else -> XpMode.DEFENCE
+                }
+            }
+
+            player.hasWeaponType(WeaponType.HALBERD) -> {
+                when (style) {
+                    0 -> XpMode.SHARED
+                    1 -> XpMode.STRENGTH
+                    else -> XpMode.DEFENCE
+                }
+            }
+
+            player.hasWeaponType(WeaponType.STAFF_HALBERD) -> {
+                when (style) {
+                    0 -> XpMode.ATTACK
+                    1 -> XpMode.STRENGTH
+                    else -> XpMode.DEFENCE
+                }
+            }
+
+            player.hasWeaponType(WeaponType.BLUDGEON) -> XpMode.STRENGTH
+
+            player.hasWeaponType(WeaponType.BULWARK) -> XpMode.ATTACK
+
+            player.hasWeaponType(WeaponType.BOW, WeaponType.CROSSBOW, WeaponType.THROWN, WeaponType.CHINCHOMPA) -> {
+                when (style) {
+                    3 -> XpMode.SHARED
+                    else -> XpMode.RANGED
+                }
+            }
+
+            player.hasWeaponType(WeaponType.SALAMANDER) -> {
+                when (style) {
+                    0 -> XpMode.STRENGTH
+                    1 -> XpMode.RANGED
+                    else -> XpMode.MAGIC
+                }
+            }
+
+            else -> {
+                logger.warn { "Unhandled XP Mode for weapon: ${player.getWeaponType()}" }
+                XpMode.ATTACK
+            }
+        }
     }
 
     private fun getItemStats(world: World): ItemStatsService? {

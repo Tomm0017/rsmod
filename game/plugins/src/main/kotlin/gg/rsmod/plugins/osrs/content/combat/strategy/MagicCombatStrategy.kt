@@ -2,14 +2,15 @@ package gg.rsmod.plugins.osrs.content.combat.strategy
 
 import gg.rsmod.game.model.Graphic
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.combat.XpMode
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.ProjectileType
-import gg.rsmod.plugins.osrs.api.ext.createProjectile
-import gg.rsmod.plugins.osrs.api.ext.hit
-import gg.rsmod.plugins.osrs.api.ext.playSound
+import gg.rsmod.plugins.osrs.api.Skills
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.combat.Combat
-import gg.rsmod.plugins.osrs.content.combat.formula.RangedCombatFormula
+import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
+import gg.rsmod.plugins.osrs.content.combat.formula.MagicCombatFormula
 import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 
 /**
@@ -57,11 +58,15 @@ object MagicCombatStrategy : CombatStrategy {
             SpellRequirements.getRequirements(spell.id)?.let { requirement -> SpellRequirements.removeRunes(pawn, requirement.items) }
         }
 
-        val accuracy = RangedCombatFormula.getAccuracy(pawn, target)
-        val maxHit = RangedCombatFormula.getMaxHit(pawn, target)
+        val accuracy = MagicCombatFormula.getAccuracy(pawn, target)
+        val maxHit = MagicCombatFormula.getMaxHit(pawn, target)
         val landHit = accuracy >= world.randomDouble()
 
         val damage = if (landHit) world.random(maxHit) else 0
+
+        if (damage > 0 && pawn.getType().isPlayer()) {
+            addCombatXp(pawn as Player, damage)
+        }
 
         target.hit(damage = damage, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize()  / 2)))
                 .addActions(hitActions)
@@ -70,5 +75,25 @@ object MagicCombatStrategy : CombatStrategy {
     private fun getHitDelay(start: Tile, target: Tile): Int {
         val distance = start.getDistance(target)
         return 2 + Math.floor((1.0 + distance) / 3.0).toInt()
+    }
+
+    private fun addCombatXp(player: Player, damage: Int) {
+        val mode = CombatConfigs.getXpMode(player)
+
+        if (mode == XpMode.MAGIC) {
+            val defensive = player.getVarbit(Combat.SELECTED_AUTOCAST_VARBIT) != 0 && player.getVarbit(Combat.DEFENSIVE_MAGIC_CAST_VARBIT) != 0
+            if (!defensive) {
+                player.addXp(Skills.MAGIC, damage * 2.0)
+                player.addXp(Skills.HITPOINTS, damage * 1.33)
+            } else {
+                player.addXp(Skills.MAGIC, damage * 1.33)
+                player.addXp(Skills.DEFENCE, damage.toDouble())
+                player.addXp(Skills.HITPOINTS, damage * 1.33)
+            }
+        } else if (mode == XpMode.SHARED) {
+            player.addXp(Skills.MAGIC, damage * 1.33)
+            player.addXp(Skills.DEFENCE, damage.toDouble())
+            player.addXp(Skills.HITPOINTS, damage * 1.33)
+        }
     }
 }

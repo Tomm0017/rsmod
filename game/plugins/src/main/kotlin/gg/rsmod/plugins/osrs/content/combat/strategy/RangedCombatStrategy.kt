@@ -2,10 +2,12 @@ package gg.rsmod.plugins.osrs.content.combat.strategy
 
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.combat.AttackStyle
+import gg.rsmod.game.model.combat.XpMode
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.EquipmentType
+import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.WeaponType
 import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.ext.*
@@ -138,6 +140,10 @@ object RangedCombatStrategy : CombatStrategy {
 
         val damage = if (landHit) world.random(maxHit) else 0
 
+        if (damage > 0 && pawn.getType().isPlayer()) {
+            addCombatXp(pawn as Player, damage)
+        }
+
         target.hit(damage = damage, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize()  / 2)))
                 .addActions(hitActions)
     }
@@ -145,5 +151,18 @@ object RangedCombatStrategy : CombatStrategy {
     private fun getHitDelay(start: Tile, target: Tile): Int {
         val distance = start.getDistance(target)
         return 2 + (Math.floor((3.0 + distance) / 6.0)).toInt()
+    }
+
+    private fun addCombatXp(player: Player, damage: Int) {
+        val mode = CombatConfigs.getXpMode(player)
+
+        if (mode == XpMode.RANGED) {
+            player.addXp(Skills.RANGED, damage * 4.0)
+            player.addXp(Skills.HITPOINTS, damage * 1.33)
+        } else if (mode == XpMode.SHARED) {
+            player.addXp(Skills.RANGED, damage * 2.0)
+            player.addXp(Skills.DEFENCE, damage * 2.0)
+            player.addXp(Skills.HITPOINTS, damage * 1.33)
+        }
     }
 }

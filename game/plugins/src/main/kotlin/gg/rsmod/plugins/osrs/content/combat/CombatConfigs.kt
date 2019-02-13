@@ -54,7 +54,7 @@ object CombatConfigs {
 
     fun getAttackDelay(pawn: Pawn): Int {
         if (pawn is Npc) {
-            return pawn.combatDef.attackSpeed
+            return pawn.combatDef.attackSpeed + 1
         }
 
         if (pawn is Player) {

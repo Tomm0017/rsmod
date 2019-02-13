@@ -1,8 +1,6 @@
 package gg.rsmod.plugins.osrs.content.inter.keybind
 
 import gg.rsmod.plugins.osrs.api.ext.*
-import gg.rsmod.plugins.osrs.content.inter.keybind.Hotkey
-import gg.rsmod.plugins.osrs.content.inter.keybind.KeyBinding
 
 /**
  * Set 'focused' hotkey.

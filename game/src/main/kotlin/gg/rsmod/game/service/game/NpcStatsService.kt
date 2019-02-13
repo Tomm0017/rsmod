@@ -42,6 +42,10 @@ class NpcStatsService : Service() {
 
     fun get(npc: Int): NpcCombatDef? = definitions[npc]
 
+    fun set(npc: Int, def: NpcCombatDef) {
+        definitions[npc] = def
+    }
+
     private fun load() {
         Files.newBufferedReader(path).use { reader ->
             val parsed = Gson().fromJson<Map<Int, NpcCombatDef>>(reader, object : TypeToken<Map<Int, NpcCombatDef>>() {}.type)

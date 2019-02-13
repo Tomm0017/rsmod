@@ -16,6 +16,5 @@ object PlayerDeathAction {
     }
 
     private suspend fun death(it: Plugin, player: Player) {
-
     }
 }

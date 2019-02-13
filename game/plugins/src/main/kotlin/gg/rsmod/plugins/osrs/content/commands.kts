@@ -51,7 +51,7 @@ onCommand("obank", Privilege.ADMIN_POWER) {
 
 onCommand("mypos", Privilege.ADMIN_POWER) {
     val p = it.player()
-    p.message(p.tile.toString())
+    p.message(p.tile.toString() + ", region=${p.tile.toRegionId()}")
 }
 
 onCommand("tele", Privilege.ADMIN_POWER) {

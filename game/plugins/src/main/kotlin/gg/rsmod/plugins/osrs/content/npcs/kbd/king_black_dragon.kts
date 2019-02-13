@@ -3,6 +3,7 @@ package gg.rsmod.plugins.osrs.content.npcs.kbd
 import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.CombatStyle
+import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
@@ -14,8 +15,6 @@ import gg.rsmod.plugins.osrs.content.combat.formula.DragonfireFormula
 import gg.rsmod.plugins.osrs.content.combat.formula.MeleeCombatFormula
 import gg.rsmod.plugins.osrs.content.combat.strategy.RangedCombatStrategy
 
-val MELEE_MAX_HIT = 26
-
 spawnNpc(npc = Npcs.KING_BLACK_DRAGON, x = 2274, z = 4698, walkRadius = 5)
 
 onNpcCombat(Npcs.KING_BLACK_DRAGON) {
@@ -23,6 +22,12 @@ onNpcCombat(Npcs.KING_BLACK_DRAGON) {
         combat(it)
     }
 }
+
+setCombatDef(Npcs.KING_BLACK_DRAGON, NpcCombatDef(hitpoints = 240, attackLvl = 240, strengthLvl = 240, defenceLvl = 240, magicLvl = 240,
+        rangedLvl = 1, meleeMaxHit = 25, magicMaxHit = 65, rangedMaxHit = 1, attackSpeed = 3, aggressiveRadius = 16,
+        findTargetDelay = 1, meleeAnimation = -1, magicAnimation = -1, rangedAnimation = -1, deathAnimation = -1,
+        deathDelay = 3, respawnDelay = 30, poisonChance = 0.0, poisonImmunity = false, venomImmunity = false, slayerReq = 1, slayerXp = 258.0,
+        bonuses = arrayOf(0, 0, 0, 0, 0, 70, 90, 90, 80, 70, 0, 0, 0, 0)))
 
 suspend fun combat(it: Plugin) {
     val npc = it.npc()
@@ -62,7 +67,7 @@ fun meleeAttack(npc: Npc, target: Pawn) {
     }
     val formula = MeleeCombatFormula
     if (formula.getAccuracy(npc, target) >= world.randomDouble()) {
-        target.hit(npc.world.random(MELEE_MAX_HIT), delay = 1)
+        target.hit(npc.world.random(26), delay = 1)
     } else {
         target.hit(damage = 0, delay = 1)
     }

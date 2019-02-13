@@ -6,9 +6,6 @@ package gg.rsmod.game.model.combat
  * @param hitpoints
  * The maximum amount of hitpoints.
  *
- * @param combatLvl
- * The combat level.
- *
  * @param attackLvl
  * The combat attack level.
  *
@@ -83,7 +80,7 @@ package gg.rsmod.game.model.combat
  *
  * @author Tom <rspsmods@gmail.com>
  */
-data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: Int, val strengthLvl: Int,
+data class NpcCombatDef(val hitpoints: Int, val attackLvl: Int, val strengthLvl: Int,
                         val defenceLvl: Int, val magicLvl: Int, val rangedLvl: Int, val meleeMaxHit: Int,
                         val magicMaxHit: Int, val rangedMaxHit: Int, val attackSpeed: Int, val aggressiveRadius: Int,
                         val findTargetDelay: Int, val meleeAnimation: Int, val magicAnimation: Int, val rangedAnimation: Int,
@@ -91,7 +88,7 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
                         val poisonImmunity: Boolean, val venomImmunity: Boolean, val slayerReq: Int, val slayerXp: Double,
                         val bonuses: Array<Int>) {
 
-    constructor(other: NpcCombatDef) : this(other.hitpoints, other.combatLvl, other.attackLvl, other.strengthLvl,
+    constructor(other: NpcCombatDef) : this(other.hitpoints, other.attackLvl, other.strengthLvl,
             other.defenceLvl, other.magicLvl, other.rangedLvl, other.meleeMaxHit, other.magicMaxHit, other.rangedMaxHit,
             other.attackSpeed, other.aggressiveRadius, other.findTargetDelay, other.meleeAnimation, other.magicAnimation,
             other.rangedAnimation, other.deathAnimation, other.deathDelay, other.respawnDelay, other.poisonChance,
@@ -114,7 +111,7 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
     fun isFiery(): Boolean = false
 
     companion object {
-        val DEFAULT = NpcCombatDef(hitpoints = 10, combatLvl = 1, attackLvl = 1, strengthLvl = 1, defenceLvl = 1,
+        val DEFAULT = NpcCombatDef(hitpoints = 10, attackLvl = 1, strengthLvl = 1, defenceLvl = 1,
                 magicLvl = 1, rangedLvl = 1, meleeMaxHit = 1, magicMaxHit = 1, rangedMaxHit = 1, attackSpeed = 4,
                 aggressiveRadius = 0, findTargetDelay = 0, meleeAnimation = 422, rangedAnimation = -1, magicAnimation = -1,
                 deathAnimation = 836, deathDelay = 4, respawnDelay = 25, poisonChance = 0.0, poisonImmunity = false, venomImmunity = false,
@@ -128,7 +125,6 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
         other as NpcCombatDef
 
         if (hitpoints != other.hitpoints) return false
-        if (combatLvl != other.combatLvl) return false
         if (attackLvl != other.attackLvl) return false
         if (strengthLvl != other.strengthLvl) return false
         if (defenceLvl != other.defenceLvl) return false
@@ -158,7 +154,6 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
 
     override fun hashCode(): Int {
         var result = hitpoints
-        result = 31 * result + combatLvl
         result = 31 * result + attackLvl
         result = 31 * result + strengthLvl
         result = 31 * result + defenceLvl

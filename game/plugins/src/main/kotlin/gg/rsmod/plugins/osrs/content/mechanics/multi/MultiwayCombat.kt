@@ -9,7 +9,9 @@ object MultiwayCombat {
 
     const val MULTIWAY_VARBIT = 4605
 
+    // TODO: have multiway combat regions be defined by plugins instead of this array
     val MULTI_REGIONS = intArrayOf(
+            9033,
             9360, 9616, 9872, 9358, 9614, 9870, 9359, 9615, 9871 // Kruk's dungeon
     )
 

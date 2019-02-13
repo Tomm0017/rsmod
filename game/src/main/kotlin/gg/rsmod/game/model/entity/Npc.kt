@@ -83,4 +83,6 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     fun isActive(): Boolean = active
 
     fun isSpawned(): Boolean = index > 0
+
+    fun getDef(): NpcDef = world.definitions.get(NpcDef::class.java, id)
 }

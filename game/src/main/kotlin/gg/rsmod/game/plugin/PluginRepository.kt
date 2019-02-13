@@ -12,7 +12,6 @@ import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.GameService
 import io.github.classgraph.ClassGraph
 import mu.KotlinLogging
-import org.apache.logging.log4j.LogManager
 import java.lang.ref.WeakReference
 import java.net.URLClassLoader
 import java.nio.file.Files
@@ -252,6 +251,7 @@ class PluginRepository(val world: World) {
                 analyzer?.setClass(pluginClass)
 
                 val plugin = constructor.newInstance(this, world)
+                plugin.handleNpcCombatDefs()
                 plugin.handleSpawns()
             }
         }
@@ -291,6 +291,7 @@ class PluginRepository(val world: World) {
                     analyzer?.setClass(clazz)
 
                     val plugin = constructor.newInstance(this, world)
+                    plugin.handleNpcCombatDefs()
                     plugin.handleSpawns()
                 }
             }

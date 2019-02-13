@@ -7,9 +7,13 @@ import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
+import gg.rsmod.game.service.game.NpcStatsService
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import kotlin.script.experimental.annotations.KotlinScript
 
 /**
@@ -18,11 +22,13 @@ import kotlin.script.experimental.annotations.KotlinScript
 @KotlinScript(displayName = "Kotlin Plugin", fileExtension = "kts")
 abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
-    private val npcSpawns = arrayListOf<Npc>()
+    private val npcSpawns = ObjectArrayList<Npc>()
 
-    private val objSpawns = arrayListOf<DynamicObject>()
+    private val objSpawns = ObjectArrayList<DynamicObject>()
 
-    private val itemSpawns = arrayListOf<GroundItem>()
+    private val itemSpawns = ObjectArrayList<GroundItem>()
+
+    private val npcCombatDefs = Int2ObjectOpenHashMap<NpcCombatDef>()
 
     internal fun handleSpawns() {
         npcSpawns.forEach { npc -> world.spawn(npc) }
@@ -33,6 +39,14 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
         itemSpawns.forEach { item -> world.spawn(item) }
         itemSpawns.clear()
+    }
+
+    internal fun handleNpcCombatDefs() {
+        if (npcCombatDefs.isNotEmpty()) {
+            world.getService(NpcStatsService::class.java).ifPresent { s ->
+                npcCombatDefs.forEach { npc, def -> s.set(npc, def) }
+            }
+        }
     }
 
     fun spawnNpc(npc: Int, x: Int, z: Int, height: Int = 0, walkRadius: Int = 0, direction: Direction = Direction.SOUTH) {
@@ -51,6 +65,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         val ground = GroundItem(item, amount, Tile(x, z, height))
         ground.respawnCycles = respawnCycles
         itemSpawns.add(ground)
+    }
+
+    fun setCombatDef(npc: Int, def: NpcCombatDef) {
+        check(!npcCombatDefs.containsKey(npc)) { "Npc combat definition has been previously set: $npc" }
+        npcCombatDefs[npc] = def
     }
 
     fun onItemOption(item: Int, option: String, plugin: Function1<Plugin, Unit>) {

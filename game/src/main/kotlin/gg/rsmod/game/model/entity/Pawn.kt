@@ -221,6 +221,9 @@ abstract class Pawn(val world: World) : Entity() {
     fun hitsCycle() {
         val hitIterator = pendingHits.iterator()
         iterator@ while (hitIterator.hasNext()) {
+            if (isDead()) {
+                break
+            }
             val hit = hitIterator.next()
 
             if (lock.delaysDamage()) {
@@ -239,7 +242,7 @@ abstract class Pawn(val world: World) : Entity() {
                         hitmark.damage = hp
                     }
                     setCurrentHp(hp - hitmark.damage)
-                    if (getCurrentHp() == 0) {
+                    if (getCurrentHp() <= 0) {
                         hit.actions.forEach { it.invoke() }
                         interruptPlugins()
                         if (getType().isPlayer()) {
@@ -255,6 +258,9 @@ abstract class Pawn(val world: World) : Entity() {
                 hit.actions.forEach { it.invoke() }
                 hitIterator.remove()
             }
+        }
+        if (isDead()) {
+            pendingHits.clear()
         }
     }
 

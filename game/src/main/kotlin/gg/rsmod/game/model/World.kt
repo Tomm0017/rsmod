@@ -178,6 +178,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             }
 
             npc.combatDef = combatDef ?: NpcCombatDef.DEFAULT
+            npc.setCurrentHp(npc.combatDef.hitpoints)
 
             /**
              * Execute npc spawn plugins.

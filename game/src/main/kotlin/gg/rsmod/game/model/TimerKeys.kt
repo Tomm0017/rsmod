@@ -25,3 +25,28 @@ val FORCE_DISCONNECTION_TIMER = TimerKey()
  * Timer key set when frozen.
  */
 val FROZEN_TIMER = TimerKey()
+
+/**
+ * Timer key for dragonfire protection ticking down.
+ */
+val ANTIFIRE_TIMER = TimerKey()
+
+/**
+ * Timer key for the delay in between a pawn's attack.
+ */
+val ATTACK_DELAY = TimerKey()
+
+/**
+ * Timer key for delay in between drinking potions.
+ */
+val POTION_DELAY = TimerKey()
+
+/**
+ * Timer key for delay in between eating food.
+ */
+val FOOD_DELAY = TimerKey()
+
+/**
+ * Timer key for delay in between eating "combo" food.
+ */
+val COMBO_FOOD_DELAY = TimerKey()

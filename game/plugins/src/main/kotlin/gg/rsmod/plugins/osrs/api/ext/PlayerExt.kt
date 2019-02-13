@@ -272,7 +272,10 @@ fun Player.getAttackStyle(): Int = getVarp(43)
 
 fun Player.hasWeaponType(type: WeaponType, vararg others: WeaponType): Boolean = getWeaponType() == type.id || others.isNotEmpty() && getWeaponType() in others.map { it.id }
 
-fun Player.hasEquipped(slot: EquipmentType, item: Int, vararg others: Int): Boolean = equipment.hasAt(slot.id, item) || others.isNotEmpty() && others.any { equipment.hasAt(slot.id, it) }
+fun Player.hasEquipped(slot: EquipmentType, vararg items: Int): Boolean {
+    check(items.isNotEmpty()) { "Items shouldn't be empty." }
+    return items.any { equipment.hasAt(slot.id, it) }
+}
 
 fun Player.hasEquipped(items: IntArray) = items.all { equipment.hasItem(it) }
 

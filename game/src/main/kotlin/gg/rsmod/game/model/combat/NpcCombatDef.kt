@@ -107,6 +107,10 @@ data class NpcCombatDef(val hitpoints: Int, val combatLvl: Int, val attackLvl: I
 
     fun isDragon(): Boolean = false
 
+    fun isBasicDragon(): Boolean = false
+
+    fun isBrutalDragon(): Boolean = false
+
     fun isFiery(): Boolean = false
 
     companion object {

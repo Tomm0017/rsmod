@@ -22,12 +22,12 @@ import java.util.*
  */
 object MagicCombatFormula : CombatFormula {
 
-    private val CHARGED_BLACK_MASKS = intArrayOf(
+    private val BLACK_MASKS = intArrayOf(Items.BLACK_MASK,
             Items.BLACK_MASK_1, Items.BLACK_MASK_2, Items.BLACK_MASK_3, Items.BLACK_MASK_4,
             Items.BLACK_MASK_5, Items.BLACK_MASK_6, Items.BLACK_MASK_7, Items.BLACK_MASK_8,
             Items.BLACK_MASK_9, Items.BLACK_MASK_10)
 
-    private val CHARGED_BLACK_MASKS_I = intArrayOf(
+    private val BLACK_MASKS_I = intArrayOf(Items.BLACK_MASK_I,
             Items.BLACK_MASK_1_I, Items.BLACK_MASK_2_I, Items.BLACK_MASK_3_I, Items.BLACK_MASK_4_I,
             Items.BLACK_MASK_5_I, Items.BLACK_MASK_6_I, Items.BLACK_MASK_7_I, Items.BLACK_MASK_8_I,
             Items.BLACK_MASK_9_I, Items.BLACK_MASK_10_I)
@@ -127,7 +127,7 @@ object MagicCombatFormula : CombatFormula {
                 hit = Math.floor(hit)
             }
 
-            if (pawn.hasEquipped(EquipmentType.HEAD, Items.BLACK_MASK, *CHARGED_BLACK_MASKS)) {
+            if (pawn.hasEquipped(EquipmentType.HEAD, Items.BLACK_MASK, *BLACK_MASKS)) {
                 // TODO: check if on slayer task and target is slayer task
                 hit *= 1.15
                 hit = Math.floor(hit)
@@ -255,8 +255,8 @@ object MagicCombatFormula : CombatFormula {
         player.hasEquipped(EquipmentType.AMULET, Items.SALVE_AMULETI) -> 1.15
         player.hasEquipped(EquipmentType.AMULET, Items.SALVE_AMULETEI) -> 1.2
         // TODO: this should only apply when target is slayer task?
-        player.hasEquipped(EquipmentType.HEAD, Items.BLACK_MASK, *CHARGED_BLACK_MASKS) -> 7.0 / 6.0
-        player.hasEquipped(EquipmentType.HEAD, Items.BLACK_MASK_I, *CHARGED_BLACK_MASKS_I) -> 1.15
+        player.hasEquipped(EquipmentType.HEAD, *BLACK_MASKS) -> 7.0 / 6.0
+        player.hasEquipped(EquipmentType.HEAD, *BLACK_MASKS_I) -> 1.15
         else -> 1.0
     }
 

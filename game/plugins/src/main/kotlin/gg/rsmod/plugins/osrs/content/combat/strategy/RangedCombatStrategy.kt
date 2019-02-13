@@ -144,7 +144,7 @@ object RangedCombatStrategy : CombatStrategy {
                 .addActions(hitActions)
     }
 
-    private fun getHitDelay(start: Tile, target: Tile): Int {
+    fun getHitDelay(start: Tile, target: Tile): Int {
         val distance = start.getDistance(target)
         return 2 + (Math.floor((3.0 + distance) / 6.0)).toInt()
     }

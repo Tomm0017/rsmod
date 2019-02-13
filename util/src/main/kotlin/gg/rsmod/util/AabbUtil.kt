@@ -23,8 +23,8 @@ object AabbUtil {
      */
     fun areBordering(x1: Int, z1: Int, width1: Int, length1: Int,
                      x2: Int, z2: Int, width2: Int, length2: Int): Boolean {
-        val a = Box(x1, z1, width1, length1)
-        val b = Box(x2, z2, width2, length2)
+        val a = Box(x1, z1, width1 - 1, length1 - 1)
+        val b = Box(x2, z2, width2 - 1, length2 - 1)
 
         if (b.x1 in a.x1 .. a.x2 && b.z1 in a.z1 .. a.z2 || b.x2 in a.x1 .. a.x2 && b.z2 in a.z1 .. a.z2) {
             return false
@@ -50,8 +50,8 @@ object AabbUtil {
 
     fun areDiagonal(x1: Int, z1: Int, width1: Int, length1: Int,
                     x2: Int, z2: Int, width2: Int, length2: Int): Boolean {
-        val a = Box(x1, z1, width1, length1)
-        val b = Box(x2, z2, width2, length2)
+        val a = Box(x1, z1, width1 - 1, length1 - 1)
+        val b = Box(x2, z2, width2 - 1, length2 - 1)
 
         /**
          * South-west diagonal tile.
@@ -86,8 +86,8 @@ object AabbUtil {
 
     fun areOverlapping(x1: Int, z1: Int, width1: Int, length1: Int,
                        x2: Int, z2: Int, width2: Int, length2: Int): Boolean {
-        val a = Box(x1, z1, width1, length1)
-        val b = Box(x2, z2, width2, length2)
+        val a = Box(x1, z1, width1 - 1, length1 - 1)
+        val b = Box(x2, z2, width2 - 1, length2 - 1)
 
         if (a.x1 > b.x2 || b.x1 > a.x2) {
             return false

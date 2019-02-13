@@ -44,6 +44,16 @@ val LAST_HIT_ATTR = AttributeKey<WeakReference<Pawn>>()
 val LAST_HIT_BY_ATTR = AttributeKey<WeakReference<Pawn>>()
 
 /**
+ * The amount of antifire potion charges left.
+ */
+val ANTIFIRE_POTION_CHARGES = AttributeKey<Int>()
+
+/**
+ * If full dragonfire immunity is enabled.
+ */
+val DRAGONFIRE_IMMUNITY = AttributeKey<Boolean>()
+
+/**
  * The command that the player has submitted to the server using the '::' prefix.
  */
 val COMMAND_ATTR = AttributeKey<String>()

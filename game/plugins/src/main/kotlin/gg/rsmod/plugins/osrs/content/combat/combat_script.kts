@@ -65,7 +65,7 @@ suspend fun cycle(it: Plugin): Boolean {
 
     val pathFound = PawnPathAction.walkTo(it, pawn, target, attackRange)
     if (!pathFound) {
-        pawn.movementQueue.clear()
+        pawn.stopMovement()
         if (pawn.getType().isNpc()) {
             /**
              * Npcs will keep trying to find a path to engage in combat.
@@ -83,7 +83,7 @@ suspend fun cycle(it: Plugin): Boolean {
         return false
     }
 
-    pawn.movementQueue.clear()
+    pawn.stopMovement()
 
     if (Combat.isAttackDelayReady(pawn)) {
         if (Combat.canAttack(pawn, target, strategy)) {

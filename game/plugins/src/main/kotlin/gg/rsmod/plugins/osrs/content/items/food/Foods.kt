@@ -1,23 +1,22 @@
 package gg.rsmod.plugins.osrs.content.items.food
 
 import gg.rsmod.game.fs.def.ItemDef
-import gg.rsmod.game.model.TimerKey
+import gg.rsmod.game.model.ATTACK_DELAY
+import gg.rsmod.game.model.COMBO_FOOD_DELAY
+import gg.rsmod.game.model.FOOD_DELAY
+import gg.rsmod.game.model.POTION_DELAY
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.EquipmentType
 import gg.rsmod.plugins.osrs.api.Skills
+import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.ext.hasEquipped
 import gg.rsmod.plugins.osrs.api.ext.heal
 import gg.rsmod.plugins.osrs.api.ext.playSound
-import gg.rsmod.plugins.osrs.content.combat.Combat
-import gg.rsmod.plugins.osrs.content.items.potion.Potions
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 object Foods {
-
-    private val FOOD_DELAY = TimerKey()
-    private val COMBO_FOOD_DELAY = TimerKey()
 
     private const val EAT_FOOD_ANIM = 829
     private const val EAT_FOOD_ON_SLED_ANIM = 1469
@@ -27,7 +26,7 @@ object Foods {
 
     fun eat(p: Player, food: Food) {
         val delay = if (food.comboFood) COMBO_FOOD_DELAY else FOOD_DELAY
-        val anim = if (p.hasEquipped(slot = EquipmentType.WEAPON, item = 1469)) EAT_FOOD_ON_SLED_ANIM else EAT_FOOD_ANIM
+        val anim = if (p.hasEquipped(EquipmentType.WEAPON, Items.SLED)) EAT_FOOD_ON_SLED_ANIM else EAT_FOOD_ANIM
 
         val heal = when (food) {
             Food.ANGLERFISH -> {
@@ -53,11 +52,11 @@ object Foods {
         }
 
         p.timers[delay] = food.tickDelay
-        p.timers[Combat.ATTACK_DELAY] = 5
+        p.timers[ATTACK_DELAY] = 5
 
         if (food == Food.KARAMBWAN) {
             // Eating Karambwans also blocks drinking potions.
-            p.timers[Potions.POTION_DELAY] = 3
+            p.timers[POTION_DELAY] = 3
         }
 
         when (food) {

@@ -1,9 +1,6 @@
 package gg.rsmod.plugins.osrs.api.ext
 
-import gg.rsmod.game.model.ACTIVE_COMBAT_TIMER
-import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
-import gg.rsmod.game.model.Hit
-import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Projectile
@@ -31,8 +28,9 @@ fun Pawn.isAttackDelayReady(): Boolean = Combat.isAttackDelayReady(this)
 
 fun Pawn.combatRaycast(target: Pawn, distance: Int, projectile: Boolean): Boolean = Combat.raycast(this, target, distance, projectile)
 
-suspend fun Pawn.canAttackMelee(it: Plugin, target: Pawn, moveIfNeeded: Boolean): Boolean = AabbUtil.areBordering(tile.x, tile.z, getSize(), getSize(), target.tile.x, target.tile.z, target.getSize(), target.getSize())
-        || moveIfNeeded && moveToAttackRange(it, target, distance = 1, projectile = false)
+suspend fun Pawn.canAttackMelee(it: Plugin, target: Pawn, moveIfNeeded: Boolean): Boolean =
+        AabbUtil.areBordering(tile.x, tile.z, getSize(), getSize(), target.tile.x, target.tile.z, target.getSize(), target.getSize())
+            || moveIfNeeded && moveToAttackRange(it, target, distance = 0, projectile = false)
 
 suspend fun Pawn.moveToAttackRange(it: Plugin, target: Pawn, distance: Int, projectile: Boolean): Boolean = Combat.moveToAttackRange(it, this, target, distance, projectile)
 
@@ -46,6 +44,15 @@ fun Pawn.getRandomDamage(target: Pawn, formula: CombatFormula): Int {
     val landHit = accuracy >= world.randomDouble()
 
     return if (landHit) world.random(maxHit) else 0
+}
+
+fun Pawn.freeze(cycles: Int, onFreeze: () -> Unit) {
+    if (timers.has(FROZEN_TIMER)) {
+        return
+    }
+    stopMovement()
+    timers[FROZEN_TIMER] = cycles
+    onFreeze.invoke()
 }
 
 fun Pawn.createProjectile(target: Tile, gfx: Int, type: ProjectileType, endHeight: Int = -1): Projectile {

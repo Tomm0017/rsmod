@@ -32,7 +32,7 @@ object RunEnergy {
     }
 
     fun drain(p: Player) {
-        if (p.isRunning() && p.movementQueue.hasDestination()) {
+        if (p.isRunning() && p.hasMoveDestination()) {
             val weight = Math.max(0.0, p.weight)
             var decrement = (Math.min(weight, 64.0) / 100.0) + 0.64
             if (p.timers.has(RunEnergy.STAMINA_BOOST)) {

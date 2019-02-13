@@ -271,11 +271,14 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     fun randomDouble(): Double = random.nextDouble()
 
-    fun chance(chance: Int, probability: Int): Boolean = random.nextInt(probability) <= chance
+    fun chance(chance: Int, probability: Int): Boolean {
+        check(chance in 1..probability) { "Chance must be within range of (0 - probability]" }
+        return random.nextInt(probability) <= chance - 1
+    }
 
-    fun percentChance(probability: Double): Boolean {
-        check(probability in 0.0 .. 100.0) { "Chance must be within range of [0.0 - 100.0]" }
-        return random.nextDouble() <= (probability / 100.0)
+    fun percentChance(chance: Double): Boolean {
+        check(chance in 0.0 .. 100.0) { "Chance must be within range of [0.0 - 100.0]" }
+        return random.nextDouble() <= (chance / 100.0)
     }
 
     fun findRandomTileAround(centre: Tile, radius: Int, centreWidth: Int = 0, centreLength: Int = 0): Tile? {

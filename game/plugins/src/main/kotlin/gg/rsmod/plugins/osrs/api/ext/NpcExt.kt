@@ -17,13 +17,15 @@ fun Npc.prepareAtttack(combatClass: CombatClass, combatStyle: CombatStyle, attac
     this.attackStyle = attackStyle
 }
 
-fun Npc.createProjectile(target: Pawn, gfx: Int, startHeight: Int, endHeight: Int, delay: Int, angle: Int, lifespan: Int): Projectile {
+fun Npc.createProjectile(target: Pawn, gfx: Int, startHeight: Int, endHeight: Int, delay: Int, angle: Int,
+                         lifespan: Int = -1, steepness: Int = -1): Projectile {
+    val start = getFrontFacingTile(target)
     val builder = Projectile.Builder()
-            .setTiles(start = getFrontFacingTile(target), target = target)
+            .setTiles(start = start, target = target)
             .setGfx(gfx = gfx)
             .setHeights(startHeight = startHeight, endHeight = if (endHeight != -1) endHeight else endHeight)
-            .setSlope(angle = angle, steepness = Math.min(255, ((getSize() shr 1) + 1) * 32))
-            .setTimes(delay = delay, lifespan = lifespan)
+            .setSlope(angle = angle, steepness = if (steepness == -1) Math.min(255, ((getSize() shr 1) + 1) * 32) else steepness)
+            .setTimes(delay = delay, lifespan = if (lifespan == -1) (delay + (world.collision.raycastTiles(start, target.getCentreTile()) * 5)) else lifespan)
 
     return builder.build()
 }

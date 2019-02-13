@@ -17,14 +17,13 @@ import gg.rsmod.plugins.osrs.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MeleeCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.RangedCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
+import gg.rsmod.util.AabbUtil
 import java.lang.ref.WeakReference
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 object Combat {
-
-    val ATTACK_DELAY = TimerKey()
 
     val CASTING_SPELL = AttributeKey<CombatSpell>()
     val DAMAGE_DEAL_MULTIPLIER = AttributeKey<Double>()
@@ -44,7 +43,7 @@ object Combat {
 
     fun canAttack(pawn: Pawn, target: Pawn, strategy: CombatStrategy): Boolean = canEngage(pawn, target) && strategy.canAttack(pawn, target)
 
-    fun isAttackDelayReady(pawn: Pawn): Boolean = !pawn.timers.has(Combat.ATTACK_DELAY)
+    fun isAttackDelayReady(pawn: Pawn): Boolean = !pawn.timers.has(ATTACK_DELAY)
 
     fun postAttack(pawn: Pawn, target: Pawn) {
         pawn.timers[ATTACK_DELAY] = CombatConfigs.getAttackDelay(pawn)
@@ -73,7 +72,12 @@ object Combat {
         val start = pawn.tile
         val end = target.tile
 
-        val withinRange = start.isWithinRadius(end, distance) && world.collision.raycast(start, end, projectile = projectile)
+        val srcSize = pawn.getSize()
+        val dstSize = Math.max(distance, target.getSize())
+
+        val touching = if (distance > 1) AabbUtil.areOverlapping(start.x, start.z, srcSize, srcSize, end.x, end.z, dstSize, dstSize)
+                        else AabbUtil.areBordering(start.x, start.z, srcSize, srcSize, end.x, end.z, dstSize, dstSize)
+        val withinRange = touching && world.collision.raycast(start, end, projectile = projectile)
         return withinRange || PawnPathAction.walkTo(it, pawn, target, interactionRange = distance)
     }
 

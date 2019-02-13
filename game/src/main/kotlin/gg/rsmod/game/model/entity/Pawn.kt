@@ -55,7 +55,7 @@ abstract class Pawn(val world: World) : Entity() {
     /**
      * @see [MovementQueue]
      */
-    val movementQueue by lazy { MovementQueue(this) }
+    internal val movementQueue by lazy { MovementQueue(this) }
 
     /**
      * The current directions that this pawn is moving.
@@ -150,6 +150,10 @@ abstract class Pawn(val world: World) : Entity() {
     }
 
     fun hasMoveDestination(): Boolean = futureRoute != null || movementQueue.hasDestination()
+
+    fun stopMovement() {
+        movementQueue.clear()
+    }
 
     fun getCentreTile(): Tile = tile.transform(getSize() shr 1, getSize() shr 1)
 

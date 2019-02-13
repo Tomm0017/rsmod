@@ -33,7 +33,7 @@ class SimplePathFindingStrategy(collision: CollisionManager) : PathFindingStrate
         var searchLimit = 2
         while (searchLimit-- > 0) {
             var tail = if (path.isNotEmpty()) path.peekLast() else start
-            if (areBordering(tail, sourceWidth - 1, end, targetWidth - 1) && !areDiagonal(tail, sourceWidth - 1, end, targetWidth - 1)
+            if (areBordering(tail, sourceWidth, end, targetWidth) && !areDiagonal(tail, sourceWidth, end, targetWidth)
                     && collision.raycast(tail, end, projectile)) {
                 success = true
                 break
@@ -43,25 +43,25 @@ class SimplePathFindingStrategy(collision: CollisionManager) : PathFindingStrate
             var northOrSouth = if (tail.z < end.z) Direction.NORTH else Direction.SOUTH
             var overlapped = false
 
-            if (areOverlapping(tail, sourceWidth - 1, end, targetWidth - 1)) {
+            if (areOverlapping(tail, sourceWidth, end, targetWidth)) {
                 eastOrWest = eastOrWest.getOpposite()
                 northOrSouth = northOrSouth.getOpposite()
                 overlapped = true
             }
 
-            while ((!areCoordinatesInRange(tail.z, sourceLength - 1, end.z, targetLength - 1)
-                            || areDiagonal(tail, sourceLength - 1, end, targetLength - 1)
-                            || areOverlapping(tail, sourceLength - 1, end, targetLength - 1))
-                    && (overlapped || !areOverlapping(tail.step(northOrSouth), sourceLength - 1, end, targetLength - 1))
+            while ((!areCoordinatesInRange(tail.z, sourceLength, end.z, targetLength)
+                            || areDiagonal(tail, sourceLength, end, targetLength)
+                            || areOverlapping(tail, sourceLength, end, targetLength))
+                    && (overlapped || !areOverlapping(tail.step(northOrSouth), sourceLength, end, targetLength))
                     && canTraverse(collision, tail, sourceWidth, sourceLength, northOrSouth, projectile)) {
                 tail = tail.step(northOrSouth)
                 path.add(tail)
             }
 
-            while ((!areCoordinatesInRange(tail.x, sourceWidth - 1, end.x, targetWidth - 1)
-                            || areDiagonal(tail, sourceWidth - 1, end, targetWidth - 1)
-                            || areOverlapping(tail, sourceWidth - 1, end, targetWidth - 1))
-                    && (overlapped || !areOverlapping(tail.step(eastOrWest), sourceWidth - 1, end, targetWidth - 1))
+            while ((!areCoordinatesInRange(tail.x, sourceWidth, end.x, targetWidth)
+                            || areDiagonal(tail, sourceWidth, end, targetWidth)
+                            || areOverlapping(tail, sourceWidth, end, targetWidth))
+                    && (overlapped || !areOverlapping(tail.step(eastOrWest), sourceWidth, end, targetWidth))
                     && canTraverse(collision, tail, sourceWidth, sourceLength, eastOrWest, projectile)) {
                 tail = tail.step(eastOrWest)
                 path.add(tail)

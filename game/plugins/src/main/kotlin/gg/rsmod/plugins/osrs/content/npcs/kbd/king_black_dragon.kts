@@ -82,7 +82,13 @@ fun poisonAttack(npc: Npc, target: Pawn) {
     npc.animate(82)
     npc.world.spawn(projectile)
     target.hit(damage = npc.getRandomDamage(target, DragonfireFormula), delay = RangedCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile())).addAction {
-        // TODO: chance of poisoning for 8 dmg
+        if (target.world.chance(1, 6)) {
+            target.poison(initialDamage = 8) {
+                if (target is Player) {
+                    target.message("You have been poisoned.")
+                }
+            }
+        }
     }
 }
 

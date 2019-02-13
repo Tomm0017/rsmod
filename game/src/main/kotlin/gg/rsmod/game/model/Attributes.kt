@@ -44,14 +44,19 @@ val LAST_HIT_ATTR = AttributeKey<WeakReference<Pawn>>()
 val LAST_HIT_BY_ATTR = AttributeKey<WeakReference<Pawn>>()
 
 /**
+ * The amount of "poison ticks" left before the poison wears off.
+ */
+val POISON_TICKS_LEFT = AttributeKey<Int>(persistenceKey = "poison_ticks_left")
+
+/**
  * The amount of antifire potion charges left.
  */
-val ANTIFIRE_POTION_CHARGES = AttributeKey<Int>()
+val ANTIFIRE_POTION_CHARGES = AttributeKey<Int>(persistenceKey = "antifire_potion_charges")
 
 /**
  * If full dragonfire immunity is enabled.
  */
-val DRAGONFIRE_IMMUNITY = AttributeKey<Boolean>()
+val DRAGONFIRE_IMMUNITY = AttributeKey<Boolean>(persistenceKey = "dragonfire_immunity")
 
 /**
  * The command that the player has submitted to the server using the '::' prefix.

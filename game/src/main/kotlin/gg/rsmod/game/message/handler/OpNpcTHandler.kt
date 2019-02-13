@@ -8,6 +8,7 @@ import gg.rsmod.game.model.INTERACTING_NPC_ATTR
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.Entity
+import java.lang.ref.WeakReference
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -28,7 +29,7 @@ class OpNpcTHandler : MessageHandler<OpNpcTMessage> {
             client.teleport(client.world.findRandomTileAround(npc.tile, 1) ?: npc.tile)
         }
 
-        client.attr[INTERACTING_NPC_ATTR] = npc
+        client.attr[INTERACTING_NPC_ATTR] = WeakReference(npc)
         client.attr[INTERACTING_COMPONENT_PARENT] = parent
         client.attr[INTERACTING_COMPONENT_CHILD] = child
 

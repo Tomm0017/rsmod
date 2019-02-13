@@ -7,6 +7,7 @@ import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
+import java.lang.ref.WeakReference
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -54,7 +55,7 @@ class OpLoc1Handler : MessageHandler<OpLoc1Message> {
         }
 
         client.attr.put(INTERACTING_OPT_ATTR, 1)
-        client.attr.put(INTERACTING_OBJ_ATTR, obj)
+        client.attr.put(INTERACTING_OBJ_ATTR, WeakReference(obj))
         if (!client.world.plugins.executeCustomObjectPath(client, obj.id)) {
             client.executePlugin(ObjectPathAction.walkPlugin)
         }

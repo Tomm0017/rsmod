@@ -52,7 +52,7 @@ fun Plugin.getCommandArgs(): Array<String> = pawn().attr[COMMAND_ARGS_ATTR]!!
 
 fun Plugin.getInteractingSlot(): Int = pawn().attr[INTERACTING_SLOT_ATTR]!!
 
-fun Plugin.getInteractingItem(): Item = pawn().attr[INTERACTING_ITEM]!!
+fun Plugin.getInteractingItem(): Item = pawn().attr[INTERACTING_ITEM]!!.get()!!
 
 fun Plugin.getInteractingItemId(): Int = pawn().attr[INTERACTING_ITEM_ID]!!
 
@@ -60,9 +60,9 @@ fun Plugin.getInteractingItemSlot(): Int = pawn().attr[INTERACTING_ITEM_SLOT]!!
 
 fun Plugin.getInteractingOption(): Int = pawn().attr[INTERACTING_OPT_ATTR]!!
 
-fun Plugin.getInteractingGameObj(): GameObject = pawn().attr[INTERACTING_OBJ_ATTR]!!
+fun Plugin.getInteractingGameObj(): GameObject = pawn().attr[INTERACTING_OBJ_ATTR]!!.get()!!
 
-fun Plugin.getInteractingNpc(): Npc = pawn().attr[INTERACTING_NPC_ATTR]!!
+fun Plugin.getInteractingNpc(): Npc = pawn().attr[INTERACTING_NPC_ATTR]!!.get()!!
 
 /**
  * Prompts the player with options.

@@ -2,6 +2,7 @@ package gg.rsmod.game.model.combat
 
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.entity.Pawn
+import java.util.*
 
 /**
  * Represents a map of hits from different [Pawn]s and their information.
@@ -10,7 +11,7 @@ import gg.rsmod.game.model.entity.Pawn
  */
 class DamageMap {
 
-    private val map = hashMapOf<Pawn, DamageStack>()
+    private val map = WeakHashMap<Pawn, DamageStack>()
 
     operator fun get(pawn: Pawn): DamageStack? = map[pawn]
 

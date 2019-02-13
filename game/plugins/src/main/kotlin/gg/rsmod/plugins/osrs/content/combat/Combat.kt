@@ -18,6 +18,7 @@ import gg.rsmod.plugins.osrs.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.MeleeCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.RangedCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
+import java.lang.ref.WeakReference
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -50,6 +51,9 @@ object Combat {
         pawn.timers[ATTACK_DELAY] = CombatConfigs.getAttackDelay(pawn)
         target.timers[ACTIVE_COMBAT_TIMER] = 17 // 10,2 seconds
         pawn.attr[BOLT_ENCHANTMENT_EFFECT] = false
+
+        pawn.attr[LAST_HIT_ATTR] = WeakReference(target)
+        target.attr[LAST_HIT_BY_ATTR] = WeakReference(pawn)
 
         if (pawn.attr.has(CASTING_SPELL) && pawn is Player && pawn.getVarbit(SELECTED_AUTOCAST_VARBIT) == 0) {
             pawn.attr.remove(CASTING_SPELL)

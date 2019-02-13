@@ -6,6 +6,7 @@ import gg.rsmod.game.model.INTERACTING_ITEM
 import gg.rsmod.game.model.INTERACTING_ITEM_ID
 import gg.rsmod.game.model.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.entity.Client
+import java.lang.ref.WeakReference
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -39,7 +40,7 @@ class OpHeld1Handler : MessageHandler<OpHeld1Message> {
 
         client.attr[INTERACTING_ITEM_SLOT] = message.slot
         client.attr[INTERACTING_ITEM_ID] = item.id
-        client.attr[INTERACTING_ITEM] = item
+        client.attr[INTERACTING_ITEM] = WeakReference(item)
 
         if (!client.world.plugins.executeItem(client, item.id, 1)) {
             client.message("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=1]")

@@ -7,6 +7,7 @@ import gg.rsmod.game.model.INTERACTING_ITEM
 import gg.rsmod.game.model.INTERACTING_ITEM_ID
 import gg.rsmod.game.model.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.entity.Client
+import java.lang.ref.WeakReference
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -40,7 +41,7 @@ class OpHeld2Handler : MessageHandler<OpHeld2Message> {
 
         client.attr[INTERACTING_ITEM_SLOT] = message.slot
         client.attr[INTERACTING_ITEM_ID] = item.id
-        client.attr[INTERACTING_ITEM] = item
+        client.attr[INTERACTING_ITEM] = WeakReference(item)
 
         val result = EquipAction.equip(client, item, message.slot)
         if (result == EquipAction.Result.UNHANDLED) {

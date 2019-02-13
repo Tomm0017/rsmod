@@ -67,6 +67,6 @@ fun Pawn.showHitbar(percentage: Int, type: HitbarType) {
     pendingHits.add(Hit.Builder().onlyShowHitbar().setHitbarType(type.id).setHitbarPercentage(percentage).setHitbarMaxPercentage(type.pixelsWide).build())
 }
 
-fun Pawn.isAttacking(): Boolean = attr.has(COMBAT_TARGET_FOCUS_ATTR)
+fun Pawn.isAttacking(): Boolean = attr[COMBAT_TARGET_FOCUS_ATTR]?.get() != null
 
 fun Pawn.isBeingAttacked(): Boolean = timers.has(ACTIVE_COMBAT_TIMER)

@@ -26,7 +26,7 @@ object ObjectPathAction {
 
     val walkPlugin: (Plugin) -> Unit = {
         val player = it.ctx as Player
-        val obj = player.attr[INTERACTING_OBJ_ATTR]!!
+        val obj = player.attr[INTERACTING_OBJ_ATTR]!!.get()!!
         val opt = player.attr[INTERACTING_OPT_ATTR]!!
 
         it.suspendable {

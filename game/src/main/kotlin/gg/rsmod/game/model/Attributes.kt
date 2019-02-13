@@ -5,6 +5,7 @@ import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.item.Item
+import java.lang.ref.WeakReference
 
 /**
  * A decoupled file that holds AttributeKeys that require read-access from our
@@ -30,7 +31,17 @@ val DISPLAY_MODE_CHANGE_ATTR = AttributeKey<Int>()
  * The [Pawn] which another pawn wants to initiate combat with, whether they meet
  * the criteria to attack or not (including being in attack range).
  */
-val COMBAT_TARGET_FOCUS_ATTR = AttributeKey<Pawn>()
+val COMBAT_TARGET_FOCUS_ATTR = AttributeKey<WeakReference<Pawn>>()
+
+/**
+ * The last [Pawn] that the owner of this attribute has hit.
+ */
+val LAST_HIT_ATTR = AttributeKey<WeakReference<Pawn>>()
+
+/**
+ * The last [Pawn] who has hit the owner of this attribute.
+ */
+val LAST_HIT_BY_ATTR = AttributeKey<WeakReference<Pawn>>()
 
 /**
  * The command that the player has submitted to the server using the '::' prefix.
@@ -58,17 +69,17 @@ val INTERACTING_SLOT_ATTR = AttributeKey<Int>()
 /**
  * The [GroundItem] that was last clicked on.
  */
-val INTERACTING_GROUNDITEM_ATTR = AttributeKey<GroundItem>()
+val INTERACTING_GROUNDITEM_ATTR = AttributeKey<WeakReference<GroundItem>>()
 
 /**
  * The [GameObject] that was last clicked on.
  */
-val INTERACTING_OBJ_ATTR = AttributeKey<GameObject>()
+val INTERACTING_OBJ_ATTR = AttributeKey<WeakReference<out GameObject>>()
 
 /**
  * The [Npc] that was last clicked on.
  */
-val INTERACTING_NPC_ATTR = AttributeKey<Npc>()
+val INTERACTING_NPC_ATTR = AttributeKey<WeakReference<Npc>>()
 
 /**
  * The slot of the interacting item in its item container.
@@ -83,7 +94,7 @@ val INTERACTING_ITEM_ID = AttributeKey<Int>()
 /**
  * The item pointer of the interacting item.
  */
-val INTERACTING_ITEM = AttributeKey<Item>()
+val INTERACTING_ITEM = AttributeKey<WeakReference<Item>>()
 
 /**
  * Interacting interface parent id.

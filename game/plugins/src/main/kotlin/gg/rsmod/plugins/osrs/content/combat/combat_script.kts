@@ -32,7 +32,7 @@ onCombat {
 
 suspend fun cycle(it: Plugin): Boolean {
     val pawn = it.pawn()
-    val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR]
+    val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR]?.get()
 
     if (target == null) {
         pawn.facePawn(null)

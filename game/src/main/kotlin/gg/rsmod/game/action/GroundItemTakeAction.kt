@@ -17,7 +17,7 @@ object GroundItemTakeAction {
 
     val walkPlugin: (Plugin) -> Unit = {
         val p = it.ctx as Player
-        val item = p.attr[INTERACTING_GROUNDITEM_ATTR]!!
+        val item = p.attr[INTERACTING_GROUNDITEM_ATTR]!!.get()!!
         if (p.tile.sameAs(item.tile)) {
             handleAction(p, item)
         } else {

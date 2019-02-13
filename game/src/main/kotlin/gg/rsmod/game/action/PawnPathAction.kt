@@ -17,7 +17,7 @@ object PawnPathAction {
     val walkPlugin: (Plugin) -> Unit = {
         val pawn = it.ctx as Pawn
         val world = pawn.world
-        val npc = pawn.attr[INTERACTING_NPC_ATTR]!!
+        val npc = pawn.attr[INTERACTING_NPC_ATTR]!!.get()!!
         val opt = pawn.attr[INTERACTING_OPT_ATTR]!!
 
         it.suspendable {

@@ -23,7 +23,7 @@ interface CombatStrategy {
         }
 
         if (target.getType().isNpc()) {
-            if (target.attr[COMBAT_TARGET_FOCUS_ATTR] != pawn) {
+            if (!target.attr.has(COMBAT_TARGET_FOCUS_ATTR) || target.attr[COMBAT_TARGET_FOCUS_ATTR]!!.get() != pawn) {
                 target.attack(pawn)
             }
         } else if (target is Player) {

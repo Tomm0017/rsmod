@@ -12,6 +12,7 @@ import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.GameService
 import io.github.classgraph.ClassGraph
 import org.apache.logging.log4j.LogManager
+import java.lang.ref.WeakReference
 import java.net.URLClassLoader
 import java.nio.file.Files
 import java.nio.file.Path
@@ -959,7 +960,7 @@ class PluginRepository(val world: World) {
                     individualStopwatch.reset().start()
                     dummy.attr[INTERACTING_ITEM_SLOT] = opt
                     dummy.attr[INTERACTING_ITEM_ID] = item
-                    dummy.attr[INTERACTING_ITEM] = Item(item)
+                    dummy.attr[INTERACTING_ITEM] = WeakReference(Item(item))
                     repository.executeItem(dummy, item, opt)
                     individualTimes.add(TimedPlugin(name = "Item Action", note = "id=$item, opt=$opt", time = individualStopwatch.elapsed(measurement)))
                 }
@@ -979,7 +980,7 @@ class PluginRepository(val world: World) {
             repository.objectPlugins.forEach { obj, map ->
                 map.keys.forEach { opt ->
                     individualStopwatch.reset().start()
-                    dummy.attr[INTERACTING_OBJ_ATTR] = DynamicObject(obj, 10, 0, Tile(0, 0))
+                    dummy.attr[INTERACTING_OBJ_ATTR] = WeakReference(DynamicObject(obj, 10, 0, Tile(0, 0)))
                     dummy.attr[INTERACTING_OPT_ATTR] = 0
                     repository.executeObject(dummy, obj, opt)
                     individualTimes.add(TimedPlugin(name = "Object Action", note = "id=$obj, opt=$opt", time = individualStopwatch.elapsed(measurement)))

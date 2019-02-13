@@ -7,6 +7,7 @@ import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Player
+import java.lang.ref.WeakReference
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -51,7 +52,7 @@ class OpObj3Handler : MessageHandler<OpObj3Message> {
         }
 
         client.attr.put(INTERACTING_OPT_ATTR, 3)
-        client.attr.put(INTERACTING_GROUNDITEM_ATTR, item)
+        client.attr.put(INTERACTING_GROUNDITEM_ATTR, WeakReference(item))
         client.world.pluginExecutor.execute(client, GroundItemTakeAction.walkPlugin)
     }
 }

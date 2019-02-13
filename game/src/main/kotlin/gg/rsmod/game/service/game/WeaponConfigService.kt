@@ -7,7 +7,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.combat.WeaponConfig
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 import java.io.FileNotFoundException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -19,7 +19,7 @@ import java.nio.file.Paths
 class WeaponConfigService : Service() {
 
     companion object {
-        private val logger = LogManager.getLogger(WeaponConfigService::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     private val items = hashMapOf<Int, WeaponConfig>()

@@ -11,8 +11,8 @@ import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelInboundHandlerAdapter
 import io.netty.handler.timeout.ReadTimeoutException
 import io.netty.util.AttributeKey
+import mu.KotlinLogging
 import net.runelite.cache.fs.Store
-import org.apache.logging.log4j.LogManager
 
 /**
  * A [ChannelInboundHandlerAdapter] implementation that is responsible for intercepting
@@ -24,7 +24,7 @@ import org.apache.logging.log4j.LogManager
 class GameHandler(private val filestore: Store, private val world: World) : ChannelInboundHandlerAdapter() {
 
     companion object {
-        private val logger = LogManager.getLogger(GameHandler::class.java)
+        private val logger = KotlinLogging.logger {  }
 
         /**
          * A mutable [AttributeKey] that stores the current [ServerSystem] that

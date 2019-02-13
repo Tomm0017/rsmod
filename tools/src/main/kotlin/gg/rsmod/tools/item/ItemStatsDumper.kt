@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.item.ItemStats
+import mu.KotlinLogging
 import net.runelite.cache.fs.Store
 import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry
 import org.apache.commons.compress.archivers.sevenz.SevenZFile
@@ -25,7 +26,7 @@ class ItemStatsDumper {
     // TODO: redo and use new wiki page. Doesn't have db dumps but we can just
     // make our system only fetch items we need and not just all items
 
-    private val log = LogManager.getLogger(ItemStatsDumper::class.java)
+    private val log = KotlinLogging.logger {  }
 
     private val downloadPageURL = "http://oldschoolrunescape.wikia.com/wiki/Special:Statistics"
 

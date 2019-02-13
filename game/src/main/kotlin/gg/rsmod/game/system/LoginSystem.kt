@@ -5,7 +5,6 @@ import gg.rsmod.game.service.login.LoginService
 import gg.rsmod.net.codec.login.LoginRequest
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext
-import org.apache.logging.log4j.LogManager
 
 /**
  * A [ServerSystem] responsible for submitting the [LoginRequest] to be handled.
@@ -16,8 +15,6 @@ class LoginSystem(override val channel: Channel, private val world: World)
     : ServerSystem(channel) {
 
     companion object {
-        private val logger = LogManager.getLogger(LoginSystem::class.java)
-
         private var loginService: LoginService? = null
     }
 

@@ -9,6 +9,7 @@ import gg.rsmod.game.model.collision.CollisionUpdate
 import gg.rsmod.game.model.entity.StaticObject
 import gg.rsmod.game.service.xtea.XteaKeyService
 import io.netty.buffer.Unpooled
+import mu.KotlinLogging
 import net.runelite.cache.ConfigType
 import net.runelite.cache.IndexType
 import net.runelite.cache.definitions.loaders.LocationsLoader
@@ -27,7 +28,7 @@ import java.io.IOException
 class DefinitionSet {
 
     companion object {
-        private val logger = LogManager.getLogger(DefinitionSet::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     /**

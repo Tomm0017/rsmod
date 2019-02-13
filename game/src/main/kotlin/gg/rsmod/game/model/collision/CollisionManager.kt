@@ -94,6 +94,47 @@ class CollisionManager(val chunks: ChunkSet, val createChunksIfNeeded: Boolean) 
         return true
     }
 
+    /**
+     * Gets the shortest path using Bresenham's Line Algorithm from [start] to [target],
+     * in tiles.
+     */
+    fun raycastTiles(start: Tile, target: Tile): Int {
+        check(start.height == target.height) { "Tiles must be on the same height level." }
+
+        var x0 = start.x
+        var y0 = start.z
+        val x1 = target.x
+        val y1 = target.z
+
+        val dx = Math.abs(x1 - x0)
+        val dy = Math.abs(y1 - y0)
+
+        val sx = if (x0 < x1) 1 else -1
+        val sy = if (y0 < y1) 1 else -1
+
+        var err = dx - dy
+        var err2: Int
+
+        var tiles = 0
+
+        while (x0 != x1 || y0 != y1) {
+            err2 = err shl 1
+
+            if (err2 > -dy) {
+                err -= dy
+                x0 += sx
+            }
+
+            if (err2 < dx) {
+                err += dx
+                y0 += sy
+            }
+            tiles++
+        }
+
+        return tiles
+    }
+
     private fun flag(type: CollisionUpdate.Type, matrix: CollisionMatrix, localX: Int, localY: Int, flag: CollisionFlag) {
         if (type == CollisionUpdate.Type.ADD) {
             matrix.addFlag(localX, localY, flag)

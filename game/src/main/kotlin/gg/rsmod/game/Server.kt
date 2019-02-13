@@ -12,6 +12,7 @@ import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
+import mu.KotlinLogging
 import net.runelite.cache.fs.Store
 import org.apache.logging.log4j.LogManager
 import java.net.InetSocketAddress
@@ -30,7 +31,7 @@ import java.util.concurrent.TimeUnit
 class Server {
 
     companion object {
-        private val logger = LogManager.getLogger(Server::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     /**

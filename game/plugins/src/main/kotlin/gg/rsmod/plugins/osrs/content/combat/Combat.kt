@@ -6,7 +6,6 @@ import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.api.ProjectileType
 import gg.rsmod.plugins.osrs.api.WeaponType
@@ -80,10 +79,8 @@ object Combat {
 
     fun getProjectileLifespan(source: Pawn, target: Tile, type: ProjectileType): Int = when (type) {
         ProjectileType.MAGIC -> {
-            // TODO: pls think of the perf hit!
-            val path = source.createPathFindingStrategy().calculateRoute(PathRequest.Builder().setPoints(source.tile, target)
-                    .setSourceSize(source.getSize(), source.getSize()).setTargetSize(1, 1).findProjectilePath().build()).path
-            5 + ((path.size - 1) * 10)
+            val fastPath = source.world.collision.raycastTiles(source.tile, target)
+            5 + (fastPath * 10)
         }
         else -> {
             val distance = source.tile.getDistance(target)

@@ -8,7 +8,7 @@ import gg.rsmod.util.io.IsaacRandom
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelHandlerContext
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -17,7 +17,7 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
                         private val packetMetadata: IPacketMetadataHelper) : StatefulFrameDecoder<GameDecoderState>(GameDecoderState.OPCODE) {
 
     companion object {
-        private val logger = LogManager.getLogger(GamePacketDecoder::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     private var opcode = 0

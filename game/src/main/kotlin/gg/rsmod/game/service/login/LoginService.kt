@@ -17,7 +17,6 @@ import gg.rsmod.net.codec.login.LoginRequest
 import gg.rsmod.util.ServerProperties
 import gg.rsmod.util.concurrency.NamedThreadFactory
 import gg.rsmod.util.io.IsaacRandom
-import org.apache.logging.log4j.LogManager
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -27,10 +26,6 @@ import java.util.concurrent.LinkedBlockingQueue
  * @author Tom <rspsmods@gmail.com>
  */
 class LoginService : Service() {
-
-    companion object {
-        private val logger = LogManager.getLogger(LoginService::class.java)
-    }
 
     /**
      * The [PlayerSerializerService] implementation that will be used to decode

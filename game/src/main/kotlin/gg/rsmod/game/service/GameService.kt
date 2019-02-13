@@ -1,5 +1,6 @@
 package gg.rsmod.game.service
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder
 import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.message.MessageDecoderSet
@@ -12,10 +13,9 @@ import gg.rsmod.game.task.PluginHandlerTask
 import gg.rsmod.game.task.parallel.*
 import gg.rsmod.game.task.sequential.*
 import gg.rsmod.util.ServerProperties
-import gg.rsmod.util.concurrency.NamedThreadFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit
 class GameService : Service() {
 
     companion object {
-        private val logger = LogManager.getLogger(GameService::class.java)!!
+        private val logger = KotlinLogging.logger {  }
 
         /**
          * The amount of ticks that must go by for debug info to be logged.
@@ -51,7 +51,7 @@ class GameService : Service() {
     /**
      * The scheduler for our game cycle logic as well as coroutine dispatcher.
      */
-    private val executor: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(NamedThreadFactory().setName("game-context").build())
+    private val executor: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(ThreadFactoryBuilder().setNameFormat("game-context").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
 
     /**
      * A list of jobs that will be executed on the next cycle after being
@@ -141,7 +141,7 @@ class GameService : Service() {
             ))
             logger.info("Sequential tasks preference enabled. {} tasks will be handled per cycle.", tasks.size)
         } else {
-            val executor = Executors.newFixedThreadPool(processors, NamedThreadFactory().setName("game-tasks-thread").build())
+            val executor = Executors.newFixedThreadPool(processors, ThreadFactoryBuilder().setNameFormat("game-tasks-thread").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
             tasks.addAll(arrayOf(
                     ParallelMessageHandlerTask(executor),
                     PluginHandlerTask(),
@@ -261,9 +261,9 @@ class GameService : Service() {
              * as well as how long each [gg.rsmod.game.model.entity.Player] took
              * to process this cycle.
              */
-            logger.fatal("Cycle took longer than expected: ${(-freeTime) + world.gameContext.cycleTime}ms / ${world.gameContext.cycleTime}ms!")
-            logger.fatal(taskTimes.toList().sortedByDescending { (_, value) -> value }.toMap())
-            logger.fatal(playerTimes.toList().sortedByDescending { (_, value) -> value }.toMap())
+            logger.error { "Cycle took longer than expected: ${(-freeTime) + world.gameContext.cycleTime}ms / ${world.gameContext.cycleTime}ms!" }
+            logger.error { taskTimes.toList().sortedByDescending { (_, value) -> value }.toMap() }
+            logger.error { playerTimes.toList().sortedByDescending { (_, value) -> value }.toMap() }
         }
     }
 }

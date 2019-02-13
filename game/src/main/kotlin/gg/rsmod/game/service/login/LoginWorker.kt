@@ -7,6 +7,7 @@ import gg.rsmod.net.codec.login.LoginResponse
 import gg.rsmod.net.codec.login.LoginResultType
 import gg.rsmod.util.io.IsaacRandom
 import io.netty.channel.ChannelFutureListener
+import mu.KotlinLogging
 import org.apache.logging.log4j.LogManager
 
 /**
@@ -18,7 +19,7 @@ import org.apache.logging.log4j.LogManager
 class LoginWorker(private val boss: LoginService) : Runnable {
 
     companion object {
-        private val logger = LogManager.getLogger(LoginWorker::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     override fun run() {

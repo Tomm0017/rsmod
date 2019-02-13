@@ -6,7 +6,7 @@ import gg.rsmod.game.model.INTERACTING_ITEM_ID
 import gg.rsmod.game.model.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.INTERACTING_SLOT_ATTR
 import gg.rsmod.game.model.entity.Client
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager
 class IfButton1Handler : MessageHandler<IfButtonMessage> {
 
     companion object {
-        private val logger = LogManager.getLogger(IfButton1Handler::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     override fun handle(client: Client, message: IfButtonMessage) {

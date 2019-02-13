@@ -5,11 +5,11 @@ import gg.rsmod.net.codec.filestore.FilestoreRequest
 import gg.rsmod.net.codec.filestore.FilestoreResponse
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext
+import mu.KotlinLogging
 import net.runelite.cache.fs.Container
 import net.runelite.cache.fs.Store
 import net.runelite.cache.fs.jagex.CompressionType
 import net.runelite.cache.fs.jagex.DiskStorage
-import org.apache.logging.log4j.LogManager
 import java.util.*
 
 /**
@@ -28,7 +28,7 @@ class FilestoreSystem(override val channel: Channel, private val filestore: Stor
      */
 
     companion object {
-        private val logger = LogManager.getLogger(FilestoreSystem::class.java)
+        private val logger = KotlinLogging.logger {  }
 
         private var cachedIndexData: ByteArray? = null
     }

@@ -2,7 +2,7 @@ package gg.rsmod.game.model.interf
 
 import gg.rsmod.game.model.entity.Player
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 
 /**
  * Stores interfaces that are visible.
@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager
 class InterfaceSet(val player: Player) {
 
     companion object {
-        private val logger = LogManager.getLogger(InterfaceSet::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     /**

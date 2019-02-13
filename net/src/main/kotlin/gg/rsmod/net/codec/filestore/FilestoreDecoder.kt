@@ -5,7 +5,7 @@ import gg.rsmod.net.codec.login.LoginResultType
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager
 class FilestoreDecoder(private val serverRevision: Int) : StatefulFrameDecoder<FilestoreDecoderState>(FilestoreDecoderState.REVISION_REQUEST) {
 
     companion object {
-        private val logger = LogManager.getLogger(FilestoreDecoder::class.java)
+        private val logger = KotlinLogging.logger {  }
 
         private const val ARCHIVE_REQUEST_URGENT = 0
         private const val ARCHIVE_REQUEST_NEUTRAL = 1
@@ -64,7 +64,7 @@ class FilestoreDecoder(private val serverRevision: Int) : StatefulFrameDecoder<F
                 }
             }
             else -> {
-                logger.fatal("Unhandled opcode: $opcode")
+                logger.error("Unhandled opcode: $opcode")
             }
         }
     }

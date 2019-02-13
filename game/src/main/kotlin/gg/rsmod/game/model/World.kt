@@ -18,6 +18,7 @@ import gg.rsmod.game.service.game.NpcStatsService
 import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.game.sync.block.UpdateBlockSet
 import gg.rsmod.util.ServerProperties
+import mu.KotlinLogging
 import net.runelite.cache.fs.Store
 import org.apache.logging.log4j.LogManager
 import java.io.File
@@ -32,7 +33,7 @@ import java.util.*
 class World(val server: Server, val gameContext: GameContext, val devContext: DevContext) {
 
     companion object {
-        private val logger = LogManager.getLogger(World::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     /**

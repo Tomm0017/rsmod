@@ -6,7 +6,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.coroutine.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 import kotlin.coroutines.*
 
 /**
@@ -23,7 +23,7 @@ import kotlin.coroutines.*
 data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continuation<Unit> {
 
     companion object {
-        private val logger = LogManager.getLogger(Plugin::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     /**

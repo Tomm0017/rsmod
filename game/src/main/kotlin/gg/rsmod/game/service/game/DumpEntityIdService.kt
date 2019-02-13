@@ -6,8 +6,8 @@ import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
+import mu.KotlinLogging
 import net.runelite.cache.util.Namer
-import org.apache.logging.log4j.LogManager
 import java.io.PrintWriter
 import java.nio.file.Files
 import java.nio.file.Path
@@ -19,7 +19,7 @@ import java.nio.file.Paths
 class DumpEntityIdService : Service() {
 
     companion object {
-        private val logger = LogManager.getLogger(DumpEntityIdService::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     private var dump = false

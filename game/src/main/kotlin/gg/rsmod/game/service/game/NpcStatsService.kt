@@ -7,7 +7,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -18,7 +18,7 @@ import java.nio.file.Paths
 class NpcStatsService : Service() {
 
     companion object {
-        private val logger = LogManager.getLogger(NpcStatsService::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     private val definitions = hashMapOf<Int, NpcCombatDef>()

@@ -6,7 +6,7 @@ import gg.rsmod.game.message.MessageStructureSet
 import gg.rsmod.net.packet.GamePacketBuilder
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToMessageEncoder
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 
 /**
  * An implementation of [MessageToMessageEncoder] which is responsible for taking
@@ -22,7 +22,7 @@ import org.apache.logging.log4j.LogManager
 class GameMessageEncoder(private val encoders: MessageEncoderSet, private val structures: MessageStructureSet) : MessageToMessageEncoder<Message>() {
 
     companion object {
-        private val logger = LogManager.getLogger(GameMessageEncoder::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     override fun encode(ctx: ChannelHandlerContext, msg: Message, out: MutableList<Any>) {

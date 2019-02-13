@@ -3,7 +3,7 @@ package gg.rsmod.game.protocol
 import gg.rsmod.game.message.MessageStructureSet
 import gg.rsmod.net.packet.IPacketMetadataHelper
 import gg.rsmod.net.packet.PacketType
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 
 /**
  * A [IPacketMetadataHelper] implementation that is responsible for exposing
@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager
 class PacketMetadataHelper(private val structures: MessageStructureSet) : IPacketMetadataHelper {
 
     companion object {
-        private val logger = LogManager.getLogger(PacketMetadataHelper::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     override fun getType(opcode: Int): PacketType? {

@@ -1,12 +1,12 @@
 package gg.rsmod.util.concurrency
 
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 import java.util.concurrent.Phaser
 
 class PhasedTask(private val phaser: Phaser, private val task: Runnable) : Runnable {
 
     companion object {
-        private val logger = LogManager.getLogger(PhasedTask::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     override fun run() {

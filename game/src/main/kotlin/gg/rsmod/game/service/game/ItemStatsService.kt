@@ -7,7 +7,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.item.ItemStats
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 import java.io.FileNotFoundException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -19,7 +19,7 @@ import java.nio.file.Paths
 class ItemStatsService : Service() {
 
     companion object {
-        private val logger = LogManager.getLogger(ItemStatsService::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     private val items = hashMapOf<Int, ItemStats>()

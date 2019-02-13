@@ -6,7 +6,7 @@ import gg.rsmod.util.io.IsaacRandom
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToByteEncoder
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 import java.text.DecimalFormat
 
 /**
@@ -15,7 +15,7 @@ import java.text.DecimalFormat
 class GamePacketEncoder(private val random: IsaacRandom, private val rsaEncryption: Boolean) : MessageToByteEncoder<GamePacket>() {
 
     companion object {
-        private val logger = LogManager.getLogger(GamePacketEncoder::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     override fun encode(ctx: ChannelHandlerContext, msg: GamePacket, out: ByteBuf) {

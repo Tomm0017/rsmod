@@ -11,6 +11,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.GameService
 import io.github.classgraph.ClassGraph
+import mu.KotlinLogging
 import org.apache.logging.log4j.LogManager
 import java.lang.ref.WeakReference
 import java.net.URLClassLoader
@@ -31,7 +32,7 @@ import java.util.jar.JarFile
 class PluginRepository(val world: World) {
 
     companion object {
-        private val logger = LogManager.getLogger(PluginRepository::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     /**

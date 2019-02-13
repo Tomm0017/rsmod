@@ -5,6 +5,7 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
+import mu.KotlinLogging
 import net.runelite.cache.IndexType
 import org.apache.commons.io.FilenameUtils
 import org.apache.logging.log4j.LogManager
@@ -20,7 +21,7 @@ import java.nio.file.Paths
 class XteaKeyService : Service() {
 
     companion object {
-        private val logger = LogManager.getLogger(XteaKeyService::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     private val keys = hashMapOf<Int, IntArray>()

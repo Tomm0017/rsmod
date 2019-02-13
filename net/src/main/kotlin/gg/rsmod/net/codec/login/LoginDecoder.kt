@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
+import mu.KotlinLogging
 import org.apache.logging.log4j.LogManager
 import java.math.BigInteger
 
@@ -16,7 +17,7 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
                    private val rsaModulus: BigInteger?, private val serverSeed: Long) : StatefulFrameDecoder<LoginDecoderState>(LoginDecoderState.HANDSHAKE) {
 
     companion object {
-        private val logger = LogManager.getLogger(LoginDecoder::class.java)
+        private val logger = KotlinLogging.logger {  }
 
         private const val LOGIN_OPCODE = 16
         private const val RECONNECT_OPCODE = 18

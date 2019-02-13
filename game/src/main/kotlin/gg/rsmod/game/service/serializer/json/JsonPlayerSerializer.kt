@@ -5,11 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.lambdaworks.crypto.SCryptUtil
 import gg.rsmod.game.Server
-import gg.rsmod.game.model.Privilege
-import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.TimerKey
-import gg.rsmod.game.model.World
-import gg.rsmod.game.model.AttributeKey
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.service.serializer.PlayerLoadResult
@@ -17,7 +13,7 @@ import gg.rsmod.game.service.serializer.PlayerSaveData
 import gg.rsmod.game.service.serializer.PlayerSerializerService
 import gg.rsmod.net.codec.login.LoginRequest
 import gg.rsmod.util.ServerProperties
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -31,7 +27,7 @@ import java.nio.file.Paths
 class JsonPlayerSerializer : PlayerSerializerService() {
 
     companion object {
-        private val logger = LogManager.getLogger(JsonPlayerSerializer::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     private lateinit var path: Path
@@ -96,7 +92,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
 
             return PlayerLoadResult.LOAD_ACCOUNT
         } catch (e: Exception) {
-            logger.error(e)
+            logger.error("Error when loading player: ${request.username}", e)
             return PlayerLoadResult.MALFORMED
         }
     }

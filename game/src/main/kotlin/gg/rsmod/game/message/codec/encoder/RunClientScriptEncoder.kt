@@ -2,7 +2,7 @@ package gg.rsmod.game.message.codec.encoder
 
 import gg.rsmod.game.message.codec.MessageEncoder
 import gg.rsmod.game.message.impl.RunClientScriptMessage
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager
 class RunClientScriptEncoder : MessageEncoder<RunClientScriptMessage>() {
 
     companion object {
-        private val logger = LogManager.getLogger(RunClientScriptEncoder::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     override fun extract(message: RunClientScriptMessage, key: String): Number = when (key) {
@@ -42,7 +42,7 @@ class RunClientScriptEncoder : MessageEncoder<RunClientScriptMessage>() {
                         args.add((value.toInt() shr 8).toByte())
                         args.add(value.toByte())
                     }
-                    else -> logger.fatal("Invalid argument type {} for script {}.", value::class.java, message.id)
+                    else -> logger.error("Invalid argument type {} for script {}.", value::class.java, message.id)
                 }
             }
             args.toByteArray()

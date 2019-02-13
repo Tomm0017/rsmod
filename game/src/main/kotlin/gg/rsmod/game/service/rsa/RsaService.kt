@@ -4,7 +4,7 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.io.pem.PemObject
 import org.bouncycastle.util.io.pem.PemReader
@@ -27,7 +27,7 @@ import java.security.spec.PKCS8EncodedKeySpec
 class RsaService : Service() {
 
     companion object {
-        private val logger = LogManager.getLogger(RsaService::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     private lateinit var keyPath: Path

@@ -1,7 +1,7 @@
 package gg.rsmod.game.message
 
 import gg.rsmod.game.model.entity.Client
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 
 /**
  * A [MessageHandler] is responsible for executing [Message] logic on the
@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager
 interface MessageHandler<T: Message> {
 
     companion object {
-        private val logger = LogManager.getLogger(MessageHandler::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     /**

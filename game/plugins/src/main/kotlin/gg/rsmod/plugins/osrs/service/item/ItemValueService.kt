@@ -5,7 +5,7 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -13,7 +13,7 @@ import org.apache.logging.log4j.LogManager
 class ItemValueService : Service() {
 
     companion object {
-        private val logger = LogManager.getLogger(ItemValueService::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     private val values = hashMapOf<Int, Int>()

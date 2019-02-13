@@ -8,7 +8,7 @@ import gg.rsmod.net.packet.GamePacket
 import gg.rsmod.net.packet.GamePacketReader
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.BlockingQueue
 
@@ -22,7 +22,7 @@ class GameSystem(override val channel: Channel, val client: Client,
                  val service: GameService) : ServerSystem(channel) {
 
     companion object {
-        private val logger = LogManager.getLogger(ServerSystem::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     private val messages: BlockingQueue<MessageHandle> = ArrayBlockingQueue<MessageHandle>(service.maxMessagesPerCycle)

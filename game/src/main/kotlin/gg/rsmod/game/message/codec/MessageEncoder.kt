@@ -5,7 +5,6 @@ import gg.rsmod.game.message.MessageStructure
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacket
 import gg.rsmod.net.packet.GamePacketBuilder
-import org.apache.logging.log4j.LogManager
 
 /**
  * Responsible for encoding [Message]s into [GamePacket]s that can be sent to
@@ -17,10 +16,6 @@ import org.apache.logging.log4j.LogManager
  * @author Tom <rspsmods@gmail.com>
  */
 abstract class MessageEncoder<T: Message> {
-
-    companion object {
-        private val logger = LogManager.getLogger(MessageEncoder::class.java)
-    }
 
     /**
      * Writes data from the [message] into [builder] based on the [structure].

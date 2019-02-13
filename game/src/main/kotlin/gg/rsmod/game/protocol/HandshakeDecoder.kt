@@ -9,6 +9,7 @@ import gg.rsmod.net.codec.login.LoginEncoder
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
+import mu.KotlinLogging
 import org.apache.logging.log4j.LogManager
 import java.math.BigInteger
 
@@ -23,7 +24,7 @@ class HandshakeDecoder(private val revision: Int, private val rsaExponent: BigIn
                        private val rsaModulus: BigInteger?) : ByteToMessageDecoder() {
 
     companion object {
-        private val logger = LogManager.getLogger(HandshakeDecoder::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {

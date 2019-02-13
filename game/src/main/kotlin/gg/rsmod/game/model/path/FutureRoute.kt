@@ -2,7 +2,7 @@ package gg.rsmod.game.model.path
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
 import gg.rsmod.game.model.MovementQueue
-import org.apache.logging.log4j.LogManager
+import mu.KotlinLogging
 import java.util.concurrent.Executors
 
 /**
@@ -12,7 +12,7 @@ class FutureRoute private constructor(val strategy: PathFindingStrategy, val ste
 
     companion object {
 
-        private val logger = LogManager.getLogger(FutureRoute::class.java)
+        private val logger = KotlinLogging.logger {  }
 
         private val executor = Executors.newSingleThreadExecutor(ThreadFactoryBuilder().setNameFormat("pathfinding-thread").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
 

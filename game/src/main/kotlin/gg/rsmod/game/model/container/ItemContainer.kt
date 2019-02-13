@@ -4,6 +4,7 @@ import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.item.SlotItem
+import mu.KotlinLogging
 import org.apache.logging.log4j.LogManager
 
 /**
@@ -21,7 +22,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
     }
 
     companion object {
-        private val logger = LogManager.getLogger(ItemContainer::class.java)
+        private val logger = KotlinLogging.logger {  }
     }
 
     private val items = Array<Item?>(capacity) { null }

@@ -93,7 +93,10 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
     fun onCombat(plugin: Function1<Plugin, Unit>) = r.bindCombat(plugin)
 
-    fun onNpcCombat(npc: Int, plugin: Function1<Plugin, Unit>) = r.bindNpcCombat(npc, plugin)
+    fun onNpcCombat(npc: Int, vararg others: Int, plugin: Function1<Plugin, Unit>) {
+        r.bindNpcCombat(npc, plugin)
+        others.forEach { other -> r.bindNpcCombat(other, plugin) }
+    }
 
     fun onSpellOnNpc(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) = r.bindSpellOnNpc(parent, child, plugin)
 

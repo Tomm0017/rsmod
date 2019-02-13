@@ -30,6 +30,7 @@ class GamePacketEncoder(private val random: IsaacRandom, private val rsaEncrypti
         when (msg.type) {
             PacketType.VARIABLE_BYTE -> out.writeByte(msg.length)
             PacketType.VARIABLE_SHORT -> out.writeShort(msg.length)
+            else -> {}
         }
         out.writeBytes(msg.payload)
         msg.payload.release()

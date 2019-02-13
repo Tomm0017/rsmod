@@ -16,6 +16,7 @@ import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.block.UpdateBlockBuffer
 import gg.rsmod.game.sync.block.UpdateBlockType
+import java.lang.ref.WeakReference
 import java.util.*
 
 /**
@@ -178,7 +179,7 @@ abstract class Pawn(val world: World) : Entity() {
         resetInteractions()
         interruptPlugins()
 
-        attr[COMBAT_TARGET_FOCUS_ATTR] = target
+        attr[COMBAT_TARGET_FOCUS_ATTR] = WeakReference(target)
 
         /**
          * Players always have the default combat, and npcs will use default

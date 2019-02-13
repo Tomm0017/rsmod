@@ -58,11 +58,7 @@ object MagicCombatStrategy : CombatStrategy {
             SpellRequirements.getRequirements(spell.id)?.let { requirement -> SpellRequirements.removeRunes(pawn, requirement.items) }
         }
 
-        val accuracy = MagicCombatFormula.getAccuracy(pawn, target)
-        val maxHit = MagicCombatFormula.getMaxHit(pawn, target)
-        val landHit = accuracy >= world.randomDouble()
-
-        val damage = if (landHit) world.random(maxHit) else 0
+        val damage = pawn.getRandomDamage(target, MagicCombatFormula)
 
         if (damage > 0 && pawn.getType().isPlayer()) {
             addCombatXp(pawn as Player, damage)

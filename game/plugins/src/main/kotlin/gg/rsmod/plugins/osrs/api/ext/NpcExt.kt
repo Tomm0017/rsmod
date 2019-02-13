@@ -19,7 +19,7 @@ fun Npc.prepareAtttack(combatClass: CombatClass, combatStyle: CombatStyle, attac
 
 fun Npc.createProjectile(target: Pawn, gfx: Int, startHeight: Int, endHeight: Int, delay: Int, angle: Int, lifespan: Int): Projectile {
     val builder = Projectile.Builder()
-            .setTiles(start = tile, target = target)
+            .setTiles(start = getFrontFacingTile(target), target = target)
             .setGfx(gfx = gfx)
             .setHeights(startHeight = startHeight, endHeight = if (endHeight != -1) endHeight else endHeight)
             .setSlope(angle = angle, steepness = Math.min(255, ((getSize() shr 1) + 1) * 32))
@@ -30,7 +30,7 @@ fun Npc.createProjectile(target: Pawn, gfx: Int, startHeight: Int, endHeight: In
 
 fun Npc.createProjectile(target: Tile, gfx: Int, startHeight: Int, endHeight: Int, delay: Int, angle: Int, lifespan: Int): Projectile {
     val builder = Projectile.Builder()
-            .setTiles(start = tile, target = target)
+            .setTiles(start = getFrontFacingTile(target), target = target)
             .setGfx(gfx = gfx)
             .setHeights(startHeight = startHeight, endHeight = if (endHeight != -1) endHeight else endHeight)
             .setSlope(angle = angle, steepness = Math.min(255, ((getSize() shr 1) + 1) * 32))

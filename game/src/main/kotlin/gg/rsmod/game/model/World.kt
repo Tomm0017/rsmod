@@ -20,7 +20,6 @@ import gg.rsmod.game.sync.block.UpdateBlockSet
 import gg.rsmod.util.ServerProperties
 import mu.KotlinLogging
 import net.runelite.cache.fs.Store
-import org.apache.logging.log4j.LogManager
 import java.io.File
 import java.util.*
 
@@ -272,7 +271,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     fun randomDouble(): Double = random.nextDouble()
 
-    fun chance(chance: Int, probability: Int): Boolean = random.nextInt(chance + 1) <= probability
+    fun chance(chance: Int, probability: Int): Boolean = random.nextInt(probability) <= chance
 
     fun percentChance(probability: Double): Boolean {
         check(probability in 0.0 .. 100.0) { "Chance must be within range of [0.0 - 100.0]" }

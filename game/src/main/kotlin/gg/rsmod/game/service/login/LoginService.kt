@@ -1,5 +1,6 @@
 package gg.rsmod.game.service.login
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
@@ -15,8 +16,8 @@ import gg.rsmod.net.codec.game.GamePacketDecoder
 import gg.rsmod.net.codec.game.GamePacketEncoder
 import gg.rsmod.net.codec.login.LoginRequest
 import gg.rsmod.util.ServerProperties
-import gg.rsmod.util.concurrency.NamedThreadFactory
 import gg.rsmod.util.io.IsaacRandom
+import mu.KotlinLogging
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -26,6 +27,10 @@ import java.util.concurrent.LinkedBlockingQueue
  * @author Tom <rspsmods@gmail.com>
  */
 class LoginService : Service() {
+
+    companion object {
+        private val logger = KotlinLogging.logger {  }
+    }
 
     /**
      * The [PlayerSerializerService] implementation that will be used to decode
@@ -43,7 +48,7 @@ class LoginService : Service() {
         serializer = world.getService(PlayerSerializerService::class.java, searchSubclasses = true).get()
 
         val threadCount = serviceProperties.getOrDefault("thread-count", 3)
-        val executorService = Executors.newFixedThreadPool(threadCount, NamedThreadFactory().setName("login-worker").build())
+        val executorService = Executors.newFixedThreadPool(threadCount, ThreadFactoryBuilder().setNameFormat("login-worker").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
         for (i in 0 until threadCount) {
             executorService.execute(LoginWorker(this))
         }

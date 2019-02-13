@@ -88,12 +88,14 @@ object Combat {
         }
     }
 
-    private fun canEngage(pawn: Pawn, target: Pawn): Boolean {
+    fun canEngage(pawn: Pawn, target: Pawn): Boolean {
         if (pawn.isDead() || target.isDead()) {
             return false
         }
 
-        if (!pawn.tile.isWithinRadius(target.tile, 32)) {
+        // TODO: maxDistance should be 32 if in 'large' viewport mode
+        val maxDistance = 16
+        if (!pawn.tile.isWithinRadius(target.tile, maxDistance)) {
             return false
         }
 

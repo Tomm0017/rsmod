@@ -134,11 +134,7 @@ object RangedCombatStrategy : CombatStrategy {
         }
         pawn.animate(animation)
 
-        val accuracy = RangedCombatFormula.getAccuracy(pawn, target)
-        val maxHit = RangedCombatFormula.getMaxHit(pawn, target)
-        val landHit = accuracy >= world.randomDouble()
-
-        val damage = if (landHit) world.random(maxHit) else 0
+        val damage = pawn.getRandomDamage(target, RangedCombatFormula)
 
         if (damage > 0 && pawn.getType().isPlayer()) {
             addCombatXp(pawn as Player, damage)

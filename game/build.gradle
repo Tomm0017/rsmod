@@ -18,11 +18,14 @@ dependencies {
 
     compile group: 'org.reflections', name: 'reflections', version: reflectionsVersion
     compile group: 'commons-io', name: 'commons-io', version: commonsIoVersion
+
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion
+    compile "io.github.microutils:kotlin-logging:$kotlinLoggingVersion"
+
     compile group: 'io.github.classgraph', name: 'classgraph', version: classGraphVersion
     compile group: 'it.unimi.dsi', name: 'fastutil', version: fastUtilVersion
-    compile "io.github.microutils:kotlin-logging:$kotlinLoggingVersion"
 
     implementation group: 'com.lambdaworks', name: 'scrypt', version: scryptVersion
     implementation group: 'io.netty', name: 'netty-all', version: nettyVersion

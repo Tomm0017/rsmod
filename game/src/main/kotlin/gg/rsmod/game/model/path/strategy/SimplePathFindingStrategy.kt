@@ -24,8 +24,8 @@ class SimplePathFindingStrategy(collision: CollisionManager) : PathFindingStrate
         val projectile = request.projectilePath
         val sourceWidth = request.sourceWidth
         val sourceLength = request.sourceLength
-        val targetWidth = request.targetWidth
-        val targetLength = request.targetLength
+        val targetWidth = Math.max(request.touchRadius, request.targetWidth)
+        val targetLength = Math.max(request.touchRadius, request.targetLength)
 
         val path = ArrayDeque<Tile>()
         var success = false

@@ -7,7 +7,6 @@ import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import mu.KotlinLogging
-import org.apache.logging.log4j.LogManager
 import java.math.BigInteger
 
 /**
@@ -116,7 +115,9 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
 
             val clientSettings = buf.readByte().toInt()
             val clientResizable = (clientSettings shr 1) == 1
+            @Suppress("unused")
             val clientWidth = buf.readUnsignedShort()
+            @Suppress("unused")
             val clientHeight = buf.readUnsignedShort()
 
             buf.skipBytes(24) // random.dat data

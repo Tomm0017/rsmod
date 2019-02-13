@@ -4,14 +4,49 @@ import gg.rsmod.game.model.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.Hit
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Projectile
+import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.api.*
 import gg.rsmod.plugins.osrs.content.combat.Combat
+import gg.rsmod.plugins.osrs.content.combat.formula.CombatFormula
+import gg.rsmod.util.AabbUtil
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
+
+fun Pawn.getCombatTarget(): Pawn? = attr[COMBAT_TARGET_FOCUS_ATTR]?.get()
+
+fun Pawn.removeCombatTarget() {
+    attr.remove(COMBAT_TARGET_FOCUS_ATTR)
+}
+
+fun Pawn.canEngageCombat(target: Pawn): Boolean = Combat.canEngage(this, target)
+
+fun Pawn.canAttack(target: Pawn, combatClass: CombatClass): Boolean = Combat.canAttack(this, target, combatClass)
+
+fun Pawn.isAttackDelayReady(): Boolean = Combat.isAttackDelayReady(this)
+
+fun Pawn.combatRaycast(target: Pawn, distance: Int, projectile: Boolean): Boolean = Combat.raycast(this, target, distance, projectile)
+
+suspend fun Pawn.canAttackMelee(it: Plugin, target: Pawn, moveIfNeeded: Boolean): Boolean = AabbUtil.areBordering(tile.x, tile.z, getSize(), getSize(), target.tile.x, target.tile.z, target.getSize(), target.getSize())
+        || moveIfNeeded && moveToAttackRange(it, target, distance = 1, projectile = false)
+
+suspend fun Pawn.moveToAttackRange(it: Plugin, target: Pawn, distance: Int, projectile: Boolean): Boolean = Combat.moveToAttackRange(it, this, target, distance, projectile)
+
+fun Pawn.postAttackLogic(target: Pawn) {
+    Combat.postAttack(this, target)
+}
+
+fun Pawn.getRandomDamage(target: Pawn, formula: CombatFormula): Int {
+    val accuracy = formula.getAccuracy(this, target)
+    val maxHit = formula.getMaxHit(this, target)
+    val landHit = accuracy >= world.randomDouble()
+
+    return if (landHit) world.random(maxHit) else 0
+}
 
 fun Pawn.createProjectile(target: Tile, gfx: Int, type: ProjectileType, endHeight: Int = -1): Projectile {
     val builder = Projectile.Builder()

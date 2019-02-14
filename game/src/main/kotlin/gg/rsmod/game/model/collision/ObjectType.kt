@@ -54,6 +54,10 @@ enum class ObjectType(val value: Int, val group: ObjectGroup) {
     /**
      * A decoration positioned on the floor.
      */
-    FLOOR_DECORATION(22, ObjectGroup.GROUND_DECORATION)
+    FLOOR_DECORATION(22, ObjectGroup.GROUND_DECORATION);
+
+    companion object {
+        val values = enumValues<ObjectType>()
+    }
 
 }

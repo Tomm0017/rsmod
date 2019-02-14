@@ -3,96 +3,15 @@ package gg.rsmod.game.model.combat
 /**
  * Represents the combat definition for an npc.
  *
- * @param hitpoints
- * The maximum amount of hitpoints.
- *
- * @param attackLvl
- * The combat attack level.
- *
- * @param strengthLvl
- * The combat strength level.
- *
- * @param defenceLvl
- * The combat defence level.
- *
- * @param magicLvl
- * The combat magic level.
- *
- * @param rangedLvl
- * The combat ranged level.
- *
- * @param meleeMaxHit
- * The max hit while using melee.
- *
- * @param magicMaxHit
- * The max hit while casting magic.
- *
- * @param rangedMaxHit
- * The max hit while using ranged.
- *
- * @param attackSpeed
- * The attack speed, in game cycles.
- *
- * @param aggressiveRadius
- * The radius in which a target can be found, in tiles.
- *
- * @param findTargetDelay
- * The amount of time in between searching for new targets within the
- * [aggressiveRadius], in game cycles.
- *
- * @param meleeAnimation
- * The animation while using melee.
- *
- * @param magicAnimation
- * The animation while casting magic.
- *
- * @param rangedAnimation
- * The animation while using ranged.
- *
- * @param deathAnimation
- * The animation to perform on death.
- *
- * @param deathDelay
- * The time length of the death animation, in game cycles.
- *
- * @param respawnDelay
- * The delay to respawn after being killed, in game cycles.
- *
- * @param poisonChance
- * The chance of afflicting poison onto targets, can range from [0.0 - 1.0].
- *
- * @param poisonImmunity
- * Cannot be poisoned when true.
- *
- * @param venomImmunity
- * Cannot be venomed when true.
- *
- * @param slayerReq
- * Slayer level required be attacked, if none, set to -1.
- *
- * @param slayerXp
- * Slayer XP given when killed, if none, set to -1.0.
- *
- * @param bonuses
- * The bonuses.
- *
- * TODO: make a 'param' map for things like species
- *
  * @author Tom <rspsmods@gmail.com>
  */
-data class NpcCombatDef(val hitpoints: Int, val attackLvl: Int, val strengthLvl: Int,
-                        val defenceLvl: Int, val magicLvl: Int, val rangedLvl: Int, val meleeMaxHit: Int,
-                        val magicMaxHit: Int, val rangedMaxHit: Int, val attackSpeed: Int, val aggressiveRadius: Int,
-                        val findTargetDelay: Int, val meleeAnimation: Int, val magicAnimation: Int, val rangedAnimation: Int,
-                        val deathAnimation: Int, val deathDelay: Int, val respawnDelay: Int, val poisonChance: Double,
-                        val poisonImmunity: Boolean, val venomImmunity: Boolean, val slayerReq: Int, val slayerXp: Double,
-                        val bonuses: Array<Int>) {
-
-    constructor(other: NpcCombatDef) : this(other.hitpoints, other.attackLvl, other.strengthLvl,
-            other.defenceLvl, other.magicLvl, other.rangedLvl, other.meleeMaxHit, other.magicMaxHit, other.rangedMaxHit,
-            other.attackSpeed, other.aggressiveRadius, other.findTargetDelay, other.meleeAnimation, other.magicAnimation,
-            other.rangedAnimation, other.deathAnimation, other.deathDelay, other.respawnDelay, other.poisonChance,
-            other.poisonImmunity, other.venomImmunity, other.slayerReq, other.slayerXp, other.bonuses.copyOf())
+class NpcCombatDef private constructor(
+        val hitpoints: Int, val attackLvl: Int, val strengthLvl: Int, val defenceLvl: Int,
+        val magicLvl: Int, val rangedLvl: Int, val attackSpeed: Int, val attackAnimation: Int,
+        val blockAnimation: Int, val deathAnimation: Int, val deathDelay: Int, val respawnDelay: Int,
+        val aggressiveRadius: Int, val aggroTargetDelay: Int, val poisonChance: Double,
+        val poisonImmunity: Boolean, val venomImmunity: Boolean, val slayerReq: Int, val slayerXp: Double,
+        val bonuses: Array<Int> = Array(14) { 0 }) {
 
     fun isDemon(): Boolean = false
 
@@ -110,14 +29,6 @@ data class NpcCombatDef(val hitpoints: Int, val attackLvl: Int, val strengthLvl:
 
     fun isFiery(): Boolean = false
 
-    companion object {
-        val DEFAULT = NpcCombatDef(hitpoints = 10, attackLvl = 1, strengthLvl = 1, defenceLvl = 1,
-                magicLvl = 1, rangedLvl = 1, meleeMaxHit = 1, magicMaxHit = 1, rangedMaxHit = 1, attackSpeed = 4,
-                aggressiveRadius = 0, findTargetDelay = 0, meleeAnimation = 422, rangedAnimation = -1, magicAnimation = -1,
-                deathAnimation = 836, deathDelay = 4, respawnDelay = 25, poisonChance = 0.0, poisonImmunity = false, venomImmunity = false,
-                slayerReq = 1, slayerXp = 0.0, bonuses = Array(14) { 0 })
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -130,18 +41,14 @@ data class NpcCombatDef(val hitpoints: Int, val attackLvl: Int, val strengthLvl:
         if (defenceLvl != other.defenceLvl) return false
         if (magicLvl != other.magicLvl) return false
         if (rangedLvl != other.rangedLvl) return false
-        if (meleeMaxHit != other.meleeMaxHit) return false
-        if (magicMaxHit != other.magicMaxHit) return false
-        if (rangedMaxHit != other.rangedMaxHit) return false
         if (attackSpeed != other.attackSpeed) return false
-        if (aggressiveRadius != other.aggressiveRadius) return false
-        if (findTargetDelay != other.findTargetDelay) return false
-        if (meleeAnimation != other.meleeAnimation) return false
-        if (magicAnimation != other.magicAnimation) return false
-        if (rangedAnimation != other.rangedAnimation) return false
+        if (attackAnimation != other.attackAnimation) return false
+        if (blockAnimation != other.blockAnimation) return false
         if (deathAnimation != other.deathAnimation) return false
         if (deathDelay != other.deathDelay) return false
         if (respawnDelay != other.respawnDelay) return false
+        if (aggressiveRadius != other.aggressiveRadius) return false
+        if (aggroTargetDelay != other.aggroTargetDelay) return false
         if (poisonChance != other.poisonChance) return false
         if (poisonImmunity != other.poisonImmunity) return false
         if (venomImmunity != other.venomImmunity) return false
@@ -159,18 +66,14 @@ data class NpcCombatDef(val hitpoints: Int, val attackLvl: Int, val strengthLvl:
         result = 31 * result + defenceLvl
         result = 31 * result + magicLvl
         result = 31 * result + rangedLvl
-        result = 31 * result + meleeMaxHit
-        result = 31 * result + magicMaxHit
-        result = 31 * result + rangedMaxHit
         result = 31 * result + attackSpeed
-        result = 31 * result + aggressiveRadius
-        result = 31 * result + findTargetDelay
-        result = 31 * result + meleeAnimation
-        result = 31 * result + magicAnimation
-        result = 31 * result + rangedAnimation
+        result = 31 * result + attackAnimation
+        result = 31 * result + blockAnimation
         result = 31 * result + deathAnimation
         result = 31 * result + deathDelay
         result = 31 * result + respawnDelay
+        result = 31 * result + aggressiveRadius
+        result = 31 * result + aggroTargetDelay
         result = 31 * result + poisonChance.hashCode()
         result = 31 * result + poisonImmunity.hashCode()
         result = 31 * result + venomImmunity.hashCode()
@@ -180,4 +83,307 @@ data class NpcCombatDef(val hitpoints: Int, val attackLvl: Int, val strengthLvl:
         return result
     }
 
+    companion object {
+        private const val DEFAULT_HITPOINTS = 10
+        private const val DEFAULT_ATTACK_SPEED = 4
+        private const val DEFAULT_DEATH_DELAY = 3
+        private const val DEFAULT_RESPAWN_DELAY = 25
+
+        private const val ATTACK_STAB_BONUS = 0
+        private const val ATTACK_SLASH_BONUS = 1
+        private const val ATTACK_CRUSH_BONUS = 2
+        private const val ATTACK_MAGIC_BONUS = 3
+        private const val ATTACK_RANGED_BONUS = 4
+
+        private const val DEFENCE_STAB_BONUS = 5
+        private const val DEFENCE_SLASH_BONUS = 6
+        private const val DEFENCE_CRUSH_BONUS = 7
+        private const val DEFENCE_MAGIC_BONUS = 8
+        private const val DEFENCE_RANGED_BONUS = 9
+
+        private const val ATTACK_BONUS = 10
+        private const val STRENGTH_BONUS = 11
+        private const val RANGED_BONUS = 12
+        private const val MAGIC_BONUS = 13
+
+        val DEFAULT = NpcCombatDef(hitpoints = DEFAULT_HITPOINTS, attackLvl = 1, strengthLvl = 1, defenceLvl = 1, magicLvl = 1, rangedLvl = 1,
+                attackSpeed = DEFAULT_ATTACK_SPEED, aggressiveRadius = 0, aggroTargetDelay = 0, attackAnimation = 422, blockAnimation = 424, deathAnimation = 836,
+                deathDelay = DEFAULT_DEATH_DELAY, respawnDelay = DEFAULT_RESPAWN_DELAY, poisonChance = 0.0, poisonImmunity = false, venomImmunity = false, slayerReq = 1, slayerXp = 0.0,
+                bonuses = Array(14) { 0 })
+    }
+
+    class Builder {
+
+        private var hitpoints = -1
+
+        private var attackLvl = -1
+
+        private var strengthLvl = -1
+
+        private var defenceLvl = -1
+
+        private var magicLvl = -1
+
+        private var rangedLvl = -1
+
+        private var attackSpeed = -1
+
+        private var attackAnimation = -1
+
+        private var blockAnimation = -1
+
+        private var deathAnimation = -1
+
+        private var deathDelay = -1
+
+        private var respawnDelay = -1
+
+        private var aggressiveRadius = -1
+
+        private var aggroTargetDelay = -1
+
+        private var poisonChance = -1.0
+
+        private var poisonImmunity = false
+
+        private var venomImmunity = false
+
+        private var slayerReq = -1
+
+        private var slayerXp = -1.0
+
+        private val bonuses = Array(14) { 0 }
+
+        fun build(): NpcCombatDef {
+            check(aggressiveRadius == -1 || aggroTargetDelay == -1 || aggressiveRadius != -1 && aggroTargetDelay != -1) {
+                "Can't set aggressive radius without aggressive target delay and vise-versa."
+            }
+
+            if (hitpoints == -1) {
+                hitpoints = DEFAULT_HITPOINTS
+            }
+
+            if (attackLvl == -1) {
+                attackLvl = 1
+            }
+
+            if (strengthLvl == -1) {
+                strengthLvl = 1
+            }
+
+            if (defenceLvl == -1) {
+                defenceLvl = 1
+            }
+
+            if (magicLvl == -1) {
+                magicLvl = 1
+            }
+
+            if (rangedLvl == -1) {
+                rangedLvl = 1
+            }
+
+            if (attackSpeed == -1) {
+                attackSpeed = DEFAULT_ATTACK_SPEED
+            }
+
+            if (deathDelay == -1) {
+                deathDelay = DEFAULT_DEATH_DELAY
+            }
+
+            if (respawnDelay == -1) {
+                respawnDelay = DEFAULT_RESPAWN_DELAY
+            }
+
+            if (aggressiveRadius == -1) {
+                aggressiveRadius = 0
+            }
+
+            if (aggroTargetDelay == -1) {
+                aggroTargetDelay = 0
+            }
+
+            if (poisonChance == -1.0) {
+                poisonChance = 0.0
+            }
+
+            if (slayerReq == -1) {
+                slayerReq = 0
+            }
+
+            if (slayerXp == -1.0) {
+                slayerXp = 0.0
+            }
+
+            return NpcCombatDef(hitpoints = hitpoints, attackLvl = attackLvl, strengthLvl = strengthLvl, defenceLvl = defenceLvl, magicLvl = magicLvl, rangedLvl = rangedLvl,
+                    attackSpeed = attackSpeed, aggressiveRadius = aggressiveRadius, aggroTargetDelay = aggroTargetDelay, attackAnimation = attackAnimation, blockAnimation = blockAnimation,
+                    deathAnimation = deathAnimation, deathDelay = deathDelay, respawnDelay = respawnDelay, poisonChance = poisonChance, poisonImmunity = poisonImmunity, venomImmunity = venomImmunity,
+                    slayerReq = slayerReq, slayerXp = slayerXp, bonuses = bonuses.copyOf())
+        }
+
+        fun setHitpoints(hitpoints: Int): Builder {
+            this.hitpoints = hitpoints
+            return this
+        }
+
+        fun setAttackLvl(attackLvl: Int): Builder {
+            this.attackLvl = attackLvl
+            return this
+        }
+
+        fun setStrengthLvl(strengthLvl: Int): Builder {
+            this.strengthLvl = strengthLvl
+            return this
+        }
+
+        fun setDefenceLvl(defenceLvl: Int): Builder {
+            this.defenceLvl = defenceLvl
+            return this
+        }
+
+        fun setMagicLvl(magicLvl: Int): Builder {
+            this.magicLvl = magicLvl
+            return this
+        }
+
+        fun setRangedLvl(rangedLvl: Int): Builder {
+            this.rangedLvl = rangedLvl
+            return this
+        }
+
+        fun setAttackSpeed(attackSpeed: Int): Builder {
+            this.attackSpeed = attackSpeed
+            return this
+        }
+
+        fun setAttackAnimation(attackAnimation: Int): Builder {
+            this.attackAnimation = attackAnimation
+            return this
+        }
+
+        fun setBlockAnimation(blockAnimation: Int): Builder {
+            this.blockAnimation = blockAnimation
+            return this
+        }
+
+        fun setDeathAnimation(deathAnimation: Int): Builder {
+            this.deathAnimation = deathAnimation
+            return this
+        }
+
+        fun setDeathDelay(deathDelay: Int): Builder {
+            this.deathDelay = deathDelay
+            return this
+        }
+
+        fun setRespawnDelay(respawnDelay: Int): Builder {
+            this.respawnDelay = respawnDelay
+            return this
+        }
+
+        fun setAggressiveRadius(aggressiveRadius: Int): Builder {
+            this.aggressiveRadius = aggressiveRadius
+            return this
+        }
+
+        fun setFindAggroTargetDelay(aggroTargetDelay: Int): Builder {
+            this.aggroTargetDelay = aggroTargetDelay
+            return this
+        }
+
+        fun setPoisonChance(poisonChance: Double): Builder {
+            this.poisonChance = poisonChance
+            return this
+        }
+
+        fun setPoisonImmunity(): Builder {
+            this.poisonImmunity = true
+            return this
+        }
+
+        fun setVenomImmunity(): Builder {
+            this.venomImmunity = true
+            return this
+        }
+
+        fun setSlayerReq(slayerReq: Int): Builder {
+            this.slayerReq = slayerReq
+            return this
+        }
+
+        fun setSlayerXp(slayerXp: Double): Builder {
+            this.slayerXp = slayerXp
+            return this
+        }
+
+        fun setAttackStabBonus(bonus: Int): Builder {
+            bonuses[ATTACK_STAB_BONUS] = bonus
+            return this
+        }
+
+        fun setAttackSlashBonus(bonus: Int): Builder {
+            bonuses[ATTACK_SLASH_BONUS] = bonus
+            return this
+        }
+
+        fun setAttackCrushBonus(bonus: Int): Builder {
+            bonuses[ATTACK_CRUSH_BONUS] = bonus
+            return this
+        }
+
+        fun setAttackMagicBonus(bonus: Int): Builder {
+            bonuses[ATTACK_MAGIC_BONUS] = bonus
+            return this
+        }
+
+        fun setAttackRangedBonus(bonus: Int): Builder {
+            bonuses[ATTACK_RANGED_BONUS] = bonus
+            return this
+        }
+
+        fun setDefenceStabBonus(bonus: Int): Builder {
+            bonuses[DEFENCE_STAB_BONUS] = bonus
+            return this
+        }
+
+        fun setDefenceSlashBonus(bonus: Int): Builder {
+            bonuses[DEFENCE_SLASH_BONUS] = bonus
+            return this
+        }
+
+        fun setDefenceCrushBonus(bonus: Int): Builder {
+            bonuses[DEFENCE_CRUSH_BONUS] = bonus
+            return this
+        }
+
+        fun setDefenceMagicBonus(bonus: Int): Builder {
+            bonuses[DEFENCE_MAGIC_BONUS] = bonus
+            return this
+        }
+
+        fun setDefenceRangedBonus(bonus: Int): Builder {
+            bonuses[DEFENCE_RANGED_BONUS] = bonus
+            return this
+        }
+
+        fun setAttackBonus(bonus: Int): Builder {
+            bonuses[ATTACK_BONUS] = bonus
+            return this
+        }
+
+        fun setStrengthBonus(bonus: Int): Builder {
+            bonuses[STRENGTH_BONUS] = bonus
+            return this
+        }
+
+        fun setRangedBonus(bonus: Int): Builder {
+            bonuses[RANGED_BONUS] = bonus
+            return this
+        }
+
+        fun setMagicBonus(bonus: Int): Builder {
+            bonuses[MAGIC_BONUS] = bonus
+            return this
+        }
+    }
 }

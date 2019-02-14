@@ -34,4 +34,8 @@ enum class DisplayMode(val id: Int) {
     FULLSCREEN(id = 4);
 
     fun isResizable(): Boolean = this == RESIZABLE_NORMAL || this == RESIZABLE_LIST
+
+    companion object {
+        val values = enumValues<DisplayMode>()
+    }
 }

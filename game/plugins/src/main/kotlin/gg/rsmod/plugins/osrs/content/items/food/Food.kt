@@ -35,5 +35,9 @@ enum class Food(val item: Int, val heal: Int = 0, val overheal: Boolean = false,
     /**
      * Pastries.
      */
-    BREAD(item = Items.BREAD, heal = 5),
+    BREAD(item = Items.BREAD, heal = 5);
+
+    companion object {
+        val values = enumValues<Food>()
+    }
 }

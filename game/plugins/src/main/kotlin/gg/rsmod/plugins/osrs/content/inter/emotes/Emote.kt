@@ -53,5 +53,9 @@ enum class Emote(val slot: Int, val anim: Int, val gfx: Int = -1,
     URI_TRANSFORM(slot = 44, anim = -1, gfx = -1, varbit = EmotesTab.URI_TRANSFORM_EMOTE_VARBIT),
     SMOOTH_DANCE(slot = 45, anim = 7533, varbit = EmotesTab.SMOOTH_DANCE_EMOTE_VARBIT),
     CRAZY_DANCE(slot = 46, anim = 7536, varbit = EmotesTab.CRAZY_DANCE_EMOTE_VARBIT),
-    PREMIER_SHIELD(slot = 47, anim = 7751, gfx = 1412, varbit = EmotesTab.PREMIER_SHIELD_EMOTE_VARBIT)
+    PREMIER_SHIELD(slot = 47, anim = 7751, gfx = 1412, varbit = EmotesTab.PREMIER_SHIELD_EMOTE_VARBIT);
+
+    companion object {
+        val values = enumValues<Emote>()
+    }
 }

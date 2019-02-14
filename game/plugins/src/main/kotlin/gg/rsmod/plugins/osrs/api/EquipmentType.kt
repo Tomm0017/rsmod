@@ -17,5 +17,9 @@ enum class EquipmentType(val id: Int) {
     BOOTS(id = 10),
     //BEARD(id = 11),
     RING(id = 12),
-    AMMO(id = 13)
+    AMMO(id = 13);
+
+    companion object {
+        val values = enumValues<EquipmentType>()
+    }
 }

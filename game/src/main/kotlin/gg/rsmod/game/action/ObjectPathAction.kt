@@ -51,7 +51,7 @@ object ObjectPathAction {
         var width = def.width
         var length = def.length
         val clipMask = def.clipMask
-        val group = ObjectType.values().first { it.value == type }.group
+        val group = ObjectType.values.first { it.value == type }.group
         val blockDirections = hashSetOf<Direction>()
 
         if (type == ObjectType.INTERACTABLE.value || type == ObjectType.DIAGONAL_INTERACTABLE.value || type == ObjectType.FLOOR_DECORATION.value) {

@@ -5,9 +5,9 @@ import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.ext.addXp
 import gg.rsmod.plugins.osrs.api.ext.filterableMessage
-import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.ext.playSound
 import gg.rsmod.plugins.osrs.api.ext.player
 
@@ -26,7 +26,7 @@ object Woodcutting {
         }
 
         val logName = p.world.definitions.get(ItemDef::class.java, tree.log).name
-        val axe = AxeType.values().firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && p.inventory.hasItem(it.item) }!!
+        val axe = AxeType.values.firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && p.inventory.hasItem(it.item) }!!
 
         p.filterableMessage("You swing your axe at the tree.")
         while (true) {
@@ -73,7 +73,7 @@ object Woodcutting {
             return false
         }
 
-        val axe = AxeType.values().firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && p.inventory.hasItem(it.item) }
+        val axe = AxeType.values.firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && p.inventory.hasItem(it.item) }
         if (axe == null) {
             p.playSound(2277)
             p.message("You do not have an axe which you have the woodcutting level to use.")

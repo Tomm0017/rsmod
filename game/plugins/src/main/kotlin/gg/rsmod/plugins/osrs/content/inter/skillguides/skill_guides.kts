@@ -3,19 +3,19 @@ package gg.rsmod.plugins.osrs.content.inter.skillguides
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.ext.*
 
-val skillIdVarbit = 4371
-val subsectionVarbit = 4372
+val SKILL_ID_VARBIT = 4371
+val SUB_SECTION_VARBIT = 4372
 
-SkillGuide.values().forEach { guide ->
-    onButton(320, guide.child) {
+SkillGuide.values.forEach { guide ->
+    on_button(320, guide.child) {
         val p = it.player()
 
         if (!p.lock.canComponentInteract()) {
-            return@onButton
+            return@on_button
         }
 
-        p.setVarbit(subsectionVarbit, 0)
-        p.setVarbit(skillIdVarbit, guide.bit)
+        p.setVarbit(SUB_SECTION_VARBIT, 0)
+        p.setVarbit(SKILL_ID_VARBIT, guide.bit)
         p.setInterfaceEvents(parent = 214, child = 25, from = -1, to = -1, setting = 0)
         p.setInterfaceUnderlay(color = -1, transparency = -1)
         p.openInterface(component = 214, pane = InterfaceDestination.MAIN_SCREEN)
@@ -23,7 +23,7 @@ SkillGuide.values().forEach { guide ->
 }
 
 for (section in 11..24) {
-    onButton(214, section) {
-        it.player().setVarbit(subsectionVarbit, section - 11)
+    on_button(214, section) {
+        it.player().setVarbit(SUB_SECTION_VARBIT, section - 11)
     }
 }

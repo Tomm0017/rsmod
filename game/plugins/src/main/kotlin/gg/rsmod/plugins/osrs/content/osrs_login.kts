@@ -8,7 +8,7 @@ import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.inter.attack.AttackTab
 
-onLogin {
+on_login {
     val p = it.player()
 
     /**
@@ -32,7 +32,7 @@ onLogin {
      * Interface-related logic.
      */
     p.openOverlayInterface(p.components.displayMode)
-    InterfaceDestination.values().filter { pane -> pane.interfaceId != -1 }.forEach { pane ->
+    InterfaceDestination.values.filter { pane -> pane.interfaceId != -1 }.forEach { pane ->
         if (pane == InterfaceDestination.XP_COUNTER && p.getVarbit(OSRSGameframe.XP_DROPS_VISIBLE_VARBIT) == 0) {
             return@forEach
         } else if (pane == InterfaceDestination.MINI_MAP && p.getVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT) == 1) {

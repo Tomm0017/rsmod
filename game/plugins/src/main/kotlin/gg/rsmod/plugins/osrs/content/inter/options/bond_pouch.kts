@@ -6,7 +6,7 @@ import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.api.ext.runClientScript
 import gg.rsmod.plugins.osrs.api.ext.setInterfaceUnderlay
 
-onButton(parent = OptionsTab.COMPONENT_ID, child = 100) {
+on_button(parent = OptionsTab.INTERFACE_ID, child = 100) {
     /**
     [Varp (SHORT)]: id=1780, state=6
     [Varp (SHORT)]: id=1781, state=4
@@ -19,7 +19,7 @@ onButton(parent = OptionsTab.COMPONENT_ID, child = 100) {
      */
     val p = it.player()
     if (!p.lock.canComponentInteract()) {
-        return@onButton
+        return@on_button
     }
     p.setInterfaceUnderlay(color = -1, transparency = -1)
     p.openInterface(component = 65, pane = InterfaceDestination.MAIN_SCREEN)

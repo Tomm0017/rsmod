@@ -251,8 +251,8 @@ class PluginRepository(val world: World) {
                 analyzer?.setClass(pluginClass)
 
                 val plugin = constructor.newInstance(this, world)
-                plugin.handleNpcCombatDefs()
-                plugin.handleSpawns()
+                plugin.overrideNpcCombatDefs()
+                plugin.spawnEntities()
             }
         }
 
@@ -291,8 +291,8 @@ class PluginRepository(val world: World) {
                     analyzer?.setClass(clazz)
 
                     val plugin = constructor.newInstance(this, world)
-                    plugin.handleNpcCombatDefs()
-                    plugin.handleSpawns()
+                    plugin.overrideNpcCombatDefs()
+                    plugin.spawnEntities()
                 }
             }
         }
@@ -439,7 +439,7 @@ class PluginRepository(val world: World) {
     }
 
     @Throws(IllegalStateException::class)
-    fun bindComponentClose(component: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindInterfaceClose(component: Int, plugin: Function1<Plugin, Unit>) {
         if (componentClosePlugins.containsKey(component)) {
             logger.error("Component id is already bound to a plugin: $component")
             throw IllegalStateException("Component id is already bound to a plugin: $component")

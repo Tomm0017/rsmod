@@ -30,7 +30,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
     private val npcCombatDefs = Int2ObjectOpenHashMap<NpcCombatDef>()
 
-    internal fun handleSpawns() {
+    internal fun spawnEntities() {
         npcSpawns.forEach { npc -> world.spawn(npc) }
         npcSpawns.clear()
 
@@ -41,38 +41,44 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         itemSpawns.clear()
     }
 
-    internal fun handleNpcCombatDefs() {
-        if (npcCombatDefs.isNotEmpty()) {
-            world.getService(NpcStatsService::class.java).ifPresent { s ->
-                npcCombatDefs.forEach { npc, def -> s.set(npc, def) }
-            }
+    internal fun overrideNpcCombatDefs() {
+        if (npcCombatDefs.isEmpty()) {
+            return
+        }
+        world.getService(NpcStatsService::class.java).ifPresent { s ->
+            npcCombatDefs.forEach { npc, def -> s.set(npc, def) }
         }
     }
 
-    fun spawnNpc(npc: Int, x: Int, z: Int, height: Int = 0, walkRadius: Int = 0, direction: Direction = Direction.SOUTH) {
+    fun combat_def(npc: Int, def: NpcCombatDef) {
+        check(!npcCombatDefs.containsKey(npc)) { "Npc combat definition has been previously set: $npc" }
+        npcCombatDefs[npc] = def
+    }
+
+    fun combat_def(npc: Int, vararg others: Int, def: NpcCombatDef) {
+        combat_def(npc, def)
+        others.forEach { other -> combat_def(other, def) }
+    }
+
+    fun spawn_npc(npc: Int, x: Int, z: Int, height: Int = 0, walkRadius: Int = 0, direction: Direction = Direction.SOUTH) {
         val n = Npc(npc, Tile(x, z, height), world)
         n.walkRadius = walkRadius
         n.lastFacingDirection = direction
         npcSpawns.add(n)
     }
 
-    fun spawnObj(obj: Int, x: Int, z: Int, height: Int = 0, type: Int = 10, rot: Int = 0) {
+    fun spawn_object(obj: Int, x: Int, z: Int, height: Int = 0, type: Int = 10, rot: Int = 0) {
         val o = DynamicObject(obj, type, rot, Tile(x, z, height))
         objSpawns.add(o)
     }
 
-    fun spawnItem(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = 50) {
+    fun spawn_item(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = 50) {
         val ground = GroundItem(item, amount, Tile(x, z, height))
         ground.respawnCycles = respawnCycles
         itemSpawns.add(ground)
     }
 
-    fun setCombatDef(npc: Int, def: NpcCombatDef) {
-        check(!npcCombatDefs.containsKey(npc)) { "Npc combat definition has been previously set: $npc" }
-        npcCombatDefs[npc] = def
-    }
-
-    fun onItemOption(item: Int, option: String, plugin: Function1<Plugin, Unit>) {
+    fun on_item_option(item: Int, option: String, plugin: Function1<Plugin, Unit>) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(ItemDef::class.java, item)
         val slot = def.inventoryMenu.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
@@ -82,7 +88,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         r.bindNpc(item, slot, plugin)
     }
 
-    fun onObjectOption(obj: Int, option: String, plugin: Function1<Plugin, Unit>) {
+    fun on_object_option(obj: Int, option: String, plugin: Function1<Plugin, Unit>) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(ObjectDef::class.java, obj)
         val slot = def.options.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
@@ -92,7 +98,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         r.bindObject(obj, slot, plugin)
     }
 
-    fun onNpcOption(npc: Int, option: String, plugin: Function1<Plugin, Unit>) {
+    fun on_npc_option(npc: Int, option: String, plugin: Function1<Plugin, Unit>) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(NpcDef::class.java, npc)
         val slot = def.options.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
@@ -102,58 +108,58 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         r.bindNpc(npc, slot, plugin)
     }
 
-    fun onWorldInit(plugin: (Plugin) -> Unit) = r.bindWorldInit(plugin)
+    fun on_world_init(plugin: (Plugin) -> Unit) = r.bindWorldInit(plugin)
 
-    fun onDisplayModeChange(plugin: Function1<Plugin, Unit>) = r.bindDisplayModeChange(plugin)
+    fun on_display_change(plugin: Function1<Plugin, Unit>) = r.bindDisplayModeChange(plugin)
 
-    fun onLogin(plugin: Function1<Plugin, Unit>) = r.bindLogin(plugin)
+    fun on_login(plugin: Function1<Plugin, Unit>) = r.bindLogin(plugin)
 
-    fun onLogout(plugin: Function1<Plugin, Unit>) = r.bindLogout(plugin)
+    fun on_logout(plugin: Function1<Plugin, Unit>) = r.bindLogout(plugin)
 
-    fun onCombat(plugin: Function1<Plugin, Unit>) = r.bindCombat(plugin)
+    fun on_combat(plugin: Function1<Plugin, Unit>) = r.bindCombat(plugin)
 
-    fun onNpcCombat(npc: Int, vararg others: Int, plugin: Function1<Plugin, Unit>) {
+    fun on_npc_combat(npc: Int, vararg others: Int, plugin: Function1<Plugin, Unit>) {
         r.bindNpcCombat(npc, plugin)
         others.forEach { other -> r.bindNpcCombat(other, plugin) }
     }
 
-    fun onSpellOnNpc(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) = r.bindSpellOnNpc(parent, child, plugin)
+    fun on_spell_on_npc(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) = r.bindSpellOnNpc(parent, child, plugin)
 
-    fun onComponentClose(component: Int, plugin: Function1<Plugin, Unit>) = r.bindComponentClose(component, plugin)
+    fun on_interface_close(interfaceId: Int, plugin: Function1<Plugin, Unit>) = r.bindInterfaceClose(interfaceId, plugin)
 
-    fun onButton(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) = r.bindButton(parent, child, plugin)
+    fun on_button(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) = r.bindButton(parent, child, plugin)
 
-    fun onTimer(key: TimerKey, plugin: Function1<Plugin, Unit>) = r.bindTimer(key, plugin)
+    fun on_timer(key: TimerKey, plugin: Function1<Plugin, Unit>) = r.bindTimer(key, plugin)
 
-    fun onAnyNpcSpawn(plugin: Function1<Plugin, Unit>) = r.bindGlobalNpcSpawn(plugin)
+    fun on_global_npc_spawn(plugin: Function1<Plugin, Unit>) = r.bindGlobalNpcSpawn(plugin)
 
-    fun onNpcSpawn(npc: Int, plugin: Function1<Plugin, Unit>) = r.bindNpcSpawn(npc, plugin)
+    fun on_npc_spawn(npc: Int, plugin: Function1<Plugin, Unit>) = r.bindNpcSpawn(npc, plugin)
 
-    fun onCommand(command: String, powerRequired: String? = null, plugin: Function1<Plugin, Unit>) = r.bindCommand(command, powerRequired, plugin)
+    fun on_client_cheat(command: String, powerRequired: String? = null, plugin: Function1<Plugin, Unit>) = r.bindCommand(command, powerRequired, plugin)
 
-    fun onEquipSlot(equipSlot: Int, plugin: Function1<Plugin, Unit>) = r.bindEquipSlot(equipSlot, plugin)
+    fun on_equip_to_slot(equipSlot: Int, plugin: Function1<Plugin, Unit>) = r.bindEquipSlot(equipSlot, plugin)
 
-    fun canEquipItem(item: Int, plugin: Function1<Plugin, Boolean>) = r.bindEquipItemRequirement(item, plugin)
+    fun can_equip_item(item: Int, plugin: Function1<Plugin, Boolean>) = r.bindEquipItemRequirement(item, plugin)
 
-    fun onItemEquip(item: Int, plugin: Function1<Plugin, Unit>) = r.bindEquipItem(item, plugin)
+    fun on_item_equip(item: Int, plugin: Function1<Plugin, Unit>) = r.bindEquipItem(item, plugin)
 
-    fun onItemUnequip(item: Int, plugin: Function1<Plugin, Unit>) = r.bindUnequipItem(item, plugin)
+    fun on_item_unequip(item: Int, plugin: Function1<Plugin, Unit>) = r.bindUnequipItem(item, plugin)
 
-    fun onRegionEnter(regionId: Int, plugin: Function1<Plugin, Unit>) = r.bindRegionEnter(regionId, plugin)
+    fun on_enter_region(regionId: Int, plugin: Function1<Plugin, Unit>) = r.bindRegionEnter(regionId, plugin)
 
-    fun onRegionExit(regionId: Int, plugin: Function1<Plugin, Unit>) = r.bindRegionExit(regionId, plugin)
+    fun on_exit_region(regionId: Int, plugin: Function1<Plugin, Unit>) = r.bindRegionExit(regionId, plugin)
 
-    fun onChunkEnter(chunkHash: Int, plugin: Function1<Plugin, Unit>) = r.bindChunkEnter(chunkHash, plugin)
+    fun on_enter_chunk(chunkHash: Int, plugin: Function1<Plugin, Unit>) = r.bindChunkEnter(chunkHash, plugin)
 
-    fun onChunkExit(chunkHash: Int, plugin: Function1<Plugin, Unit>) = r.bindChunkExit(chunkHash, plugin)
+    fun on_exit_chunk(chunkHash: Int, plugin: Function1<Plugin, Unit>) = r.bindChunkExit(chunkHash, plugin)
 
-    fun onItemOption(item: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindItem(item, opt, plugin)
+    fun on_item_option(item: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindItem(item, opt, plugin)
 
-    fun onObjectOption(obj: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindObject(obj, opt, plugin)
+    fun on_object_option(obj: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindObject(obj, opt, plugin)
 
-    fun onNpcOption(npc: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindNpc(npc, opt, plugin)
+    fun on_npc_option(npc: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindNpc(npc, opt, plugin)
 
-    fun setCustomObjectPath(obj: Int, plugin: Function1<Plugin, Unit>) = r.bindCustomObjectPath(obj, plugin)
+    fun set_custom_object_path(obj: Int, plugin: Function1<Plugin, Unit>) = r.bindCustomObjectPath(obj, plugin)
 
-    fun setCustomNpcPath(npc: Int, plugin: Function1<Plugin, Unit>) = r.bindCustomNpcPath(npc, plugin)
+    fun set_custom_npc_path(npc: Int, plugin: Function1<Plugin, Unit>) = r.bindCustomNpcPath(npc, plugin)
 }

@@ -17,5 +17,9 @@ enum class Hotkey(val id: Int, val child: Int, val varbit: Int, val defaultValue
     SETTINGS(id = 10, child = 79, varbit = 4686, defaultValue = 10),
     EMOTES(id = 11, child = 86, varbit = 4687, defaultValue = 11),
     CLAN_CHAT(id = 12, child = 93, varbit = 4683, defaultValue = 7),
-    MUSIC(id = 13, child = 100, varbit = 4688, defaultValue = 12),
+    MUSIC(id = 13, child = 100, varbit = 4688, defaultValue = 12);
+
+    companion object {
+        val values = enumValues<Hotkey>()
+    }
 }

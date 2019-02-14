@@ -2,15 +2,13 @@ package gg.rsmod.plugins.osrs.content.items.food
 
 import gg.rsmod.plugins.osrs.api.ext.getInteractingItemSlot
 import gg.rsmod.plugins.osrs.api.ext.player
-import gg.rsmod.plugins.osrs.content.items.food.Food
-import gg.rsmod.plugins.osrs.content.items.food.Foods
 
-Food.values().forEach { food ->
-    onItemOption(food.item, 1) {
+Food.values.forEach { food ->
+    on_item_option(food.item, 1) {
         val p = it.player()
 
         if (!Foods.canEat(p, food)) {
-            return@onItemOption
+            return@on_item_option
         }
 
         val inventorySlot = it.getInteractingItemSlot()

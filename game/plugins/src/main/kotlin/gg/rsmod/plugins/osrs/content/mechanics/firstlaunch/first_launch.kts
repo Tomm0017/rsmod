@@ -7,7 +7,7 @@ import gg.rsmod.plugins.osrs.api.ext.itemDialog
 import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.content.inter.emotes.EmotesTab
 
-onLogin {
+on_login {
     val p = it.player()
     if (p.world.gameContext.initialLaunch) {
         p.world.gameContext.initialLaunch = false

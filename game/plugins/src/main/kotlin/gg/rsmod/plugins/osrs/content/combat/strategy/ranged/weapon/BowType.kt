@@ -74,5 +74,9 @@ enum class BowType(val item: Int, val ammo: Array<Int>) {
     CRYSTAL_BOW_FULL(item = Items.CRYSTAL_BOW_FULL, ammo = emptyArray()),
     CRYSTAL_BOW_NEW(item = Items.NEW_CRYSTAL_BOW, ammo = emptyArray()),
 
-    TWISTED_BOW(item = Items.TWISTED_BOW, ammo = BRONZE_ARROWS + IRON_ARROWS + STEEL_ARROWS + MITHRIL_ARROWS + ADAMANT_ARROWS + RUNE_ARROWS + AMETHYST_ARROWS + DRAGON_ARROWS)
+    TWISTED_BOW(item = Items.TWISTED_BOW, ammo = BRONZE_ARROWS + IRON_ARROWS + STEEL_ARROWS + MITHRIL_ARROWS + ADAMANT_ARROWS + RUNE_ARROWS + AMETHYST_ARROWS + DRAGON_ARROWS);
+
+    companion object {
+        val values = enumValues<BowType>()
+    }
 }

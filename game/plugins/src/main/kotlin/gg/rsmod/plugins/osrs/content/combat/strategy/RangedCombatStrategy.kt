@@ -59,14 +59,14 @@ object RangedCombatStrategy : CombatStrategy {
             val weapon = pawn.getEquipment(EquipmentType.WEAPON)
             val ammo = pawn.getEquipment(EquipmentType.AMMO)
 
-            val crossbow = CrossbowType.values().firstOrNull { it.item == weapon?.id }
+            val crossbow = CrossbowType.values.firstOrNull { it.item == weapon?.id }
             if (crossbow != null && ammo?.id !in crossbow.ammo) {
                 val message = if (ammo != null) "You can't use that ammo with your crossbow." else "There is no ammo left in your quiver."
                 pawn.message(message)
                 return false
             }
 
-            val bow = BowType.values().firstOrNull { it.item == weapon?.id }
+            val bow = BowType.values.firstOrNull { it.item == weapon?.id }
             if (bow != null && bow.ammo.isNotEmpty() && ammo?.id !in bow.ammo) {
                 val message = if (ammo != null) "You can't use that ammo with your bow." else "There is no ammo left in your quiver."
                 pawn.message(message)
@@ -103,7 +103,7 @@ object RangedCombatStrategy : CombatStrategy {
             /**
              * Create a projectile based on ammo.
              */
-            val ammoProjectile = if (ammo != null) RangedProjectile.values().firstOrNull { ammo.id in it.items } else null
+            val ammoProjectile = if (ammo != null) RangedProjectile.values.firstOrNull { ammo.id in it.items } else null
             if (ammoProjectile != null) {
                 val projectile = pawn.createProjectile(target, ammoProjectile.gfx, ammoProjectile.type)
                 ammoProjectile.drawback?.let { drawback -> pawn.graphic(drawback) }

@@ -68,6 +68,10 @@ enum class InterfaceDestination(val interfaceId: Int, val fixedChildId: Int, val
             USERNAME, MINI_MAP, XP_COUNTER, WORLD_MAP -> true
         else -> false
     }
+
+    companion object {
+        val values = enumValues<InterfaceDestination>()
+    }
 }
 
 fun getDisplayComponentId(displayMode: DisplayMode) = when (displayMode) {

@@ -144,7 +144,7 @@ fun Player.toggleDisplayInterface(newMode: DisplayMode) {
 
         openOverlayInterface(newMode)
 
-        InterfaceDestination.values().filter { it.isSwitchable() }.forEach { pane ->
+        InterfaceDestination.values.filter { it.isSwitchable() }.forEach { pane ->
             val fromParent = getDisplayComponentId(oldMode)
             val fromChild = getChildId(pane, oldMode)
             val toParent = getDisplayComponentId(newMode)
@@ -264,7 +264,7 @@ fun Player.heal(amount: Int, capValue: Int = 0) {
 
 fun Player.hasSpellbook(book: Spellbook): Boolean = getVarbit(4070) == book.id
 
-fun Player.getSpellbook(): Spellbook = Spellbook.values().first { getVarbit(4070) == it.id }
+fun Player.getSpellbook(): Spellbook = Spellbook.values.first { getVarbit(4070) == it.id }
 
 fun Player.getWeaponType(): Int = getVarbit(357)
 

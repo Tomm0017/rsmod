@@ -19,7 +19,7 @@ import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
 
-onCommand("run") {
+on_client_cheat("run") {
     val p = it.player()
     val start = Tile(p.tile)
 
@@ -41,20 +41,20 @@ onCommand("run") {
     }
 }
 
-onCommand("empty") {
+on_client_cheat("empty") {
     it.player().inventory.removeAll()
 }
 
-onCommand("obank", Privilege.ADMIN_POWER) {
+on_client_cheat("obank", Privilege.ADMIN_POWER) {
     Bank.open(it.player())
 }
 
-onCommand("mypos", Privilege.ADMIN_POWER) {
+on_client_cheat("mypos", Privilege.ADMIN_POWER) {
     val p = it.player()
     p.message(p.tile.toString() + ", region=${p.tile.toRegionId()}")
 }
 
-onCommand("tele", Privilege.ADMIN_POWER) {
+on_client_cheat("tele", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -66,19 +66,19 @@ onCommand("tele", Privilege.ADMIN_POWER) {
     }
 }
 
-onCommand("infpray", Privilege.ADMIN_POWER) {
+on_client_cheat("infpray", Privilege.ADMIN_POWER) {
     val p = it.player()
     p.toggleVarbit(Prayers.INF_PRAY_VARBIT)
     p.message("Infinite prayer: ${if (p.getVarbit(Prayers.INF_PRAY_VARBIT) == 0) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
 }
 
-onCommand("infrunes", Privilege.ADMIN_POWER) {
+on_client_cheat("infrunes", Privilege.ADMIN_POWER) {
     val p = it.player()
     p.toggleVarbit(SpellRequirements.INF_RUNES_VARBIT)
     p.message("Infinite runes: ${if (p.getVarbit(SpellRequirements.INF_RUNES_VARBIT) != 1) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
 }
 
-onCommand("npc", Privilege.ADMIN_POWER) {
+on_client_cheat("npc", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -89,7 +89,7 @@ onCommand("npc", Privilege.ADMIN_POWER) {
     }
 }
 
-onCommand("obj", Privilege.ADMIN_POWER) {
+on_client_cheat("obj", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -101,7 +101,7 @@ onCommand("obj", Privilege.ADMIN_POWER) {
     }
 }
 
-onCommand("removeobj", Privilege.ADMIN_POWER) {
+on_client_cheat("removeobj", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val chunk = p.world.chunks.getOrCreate(p.tile)
@@ -113,7 +113,7 @@ onCommand("removeobj", Privilege.ADMIN_POWER) {
     }
 }
 
-onCommand("master", Privilege.ADMIN_POWER) {
+on_client_cheat("master", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     for (i in 0 until p.getSkills().maxSkills) {
@@ -122,7 +122,7 @@ onCommand("master", Privilege.ADMIN_POWER) {
     p.calculateAndSetCombatLevel()
 }
 
-onCommand("reset", Privilege.ADMIN_POWER) {
+on_client_cheat("reset", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     for (i in 0 until p.getSkills().maxSkills) {
@@ -131,7 +131,7 @@ onCommand("reset", Privilege.ADMIN_POWER) {
     p.calculateAndSetCombatLevel()
 }
 
-onCommand("setlvl", Privilege.ADMIN_POWER) {
+on_client_cheat("setlvl", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -165,7 +165,7 @@ onCommand("setlvl", Privilege.ADMIN_POWER) {
     }
 }
 
-onCommand("item", Privilege.ADMIN_POWER) {
+on_client_cheat("item", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -182,13 +182,13 @@ onCommand("item", Privilege.ADMIN_POWER) {
     }
 }
 
-onCommand("food", Privilege.ADMIN_POWER) {
+on_client_cheat("food", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     p.inventory.add(id = Items.MANTA_RAY, amount = p.inventory.getFreeSlotCount())
 }
 
-onCommand("varp", Privilege.ADMIN_POWER) {
+on_client_cheat("varp", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -201,7 +201,7 @@ onCommand("varp", Privilege.ADMIN_POWER) {
     }
 }
 
-onCommand("varbit", Privilege.ADMIN_POWER) {
+on_client_cheat("varbit", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -214,7 +214,7 @@ onCommand("varbit", Privilege.ADMIN_POWER) {
     }
 }
 
-onCommand("getvarbits", Privilege.ADMIN_POWER) {
+on_client_cheat("getvarbits", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -235,7 +235,7 @@ onCommand("getvarbits", Privilege.ADMIN_POWER) {
     }
 }
 
-onCommand("interface", Privilege.ADMIN_POWER) {
+on_client_cheat("interface", Privilege.ADMIN_POWER) {
     val p = it.player()
 
     val args = it.getCommandArgs()
@@ -246,7 +246,7 @@ onCommand("interface", Privilege.ADMIN_POWER) {
     }
 }
 
-onCommand("dialogs", Privilege.ADMIN_POWER) {
+on_client_cheat("dialogs", Privilege.ADMIN_POWER) {
     it.suspendable {
         it.options("test")
         it.inputInteger("test")
@@ -257,7 +257,7 @@ onCommand("dialogs", Privilege.ADMIN_POWER) {
     }
 }
 
-onCommand("clip", Privilege.ADMIN_POWER) {
+on_client_cheat("clip", Privilege.ADMIN_POWER) {
     val player = it.player()
     val chunk = player.world.chunks.getOrCreate(player.tile)
     val matrix = chunk.getMatrix(player.tile.height)

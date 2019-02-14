@@ -13,7 +13,7 @@ object KeyBinding {
     const val ESC_CLOSES_INTERFACES = 4681
 
     fun disableAny(p: Player, hotkeyValue: Int) {
-        Hotkey.values().forEach { hotkey ->
+        Hotkey.values.forEach { hotkey ->
             if (p.getVarbit(hotkey.varbit) == hotkeyValue) {
                 p.setVarbit(hotkey.varbit, 0)
             }

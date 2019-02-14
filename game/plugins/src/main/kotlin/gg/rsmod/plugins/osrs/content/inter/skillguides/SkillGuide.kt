@@ -23,5 +23,9 @@ enum class SkillGuide(val child: Int, val bit: Int) {
     COOKING(child = 20, bit = 16),
     FIREMAKING(child = 21, bit = 17),
     WOODCUTTING(child = 22, bit = 18),
-    FARMING(child = 23, bit = 21)
+    FARMING(child = 23, bit = 21);
+
+    companion object {
+        val values = enumValues<SkillGuide>()
+    }
 }

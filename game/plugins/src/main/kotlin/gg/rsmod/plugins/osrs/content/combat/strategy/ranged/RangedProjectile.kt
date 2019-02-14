@@ -101,4 +101,8 @@ enum class RangedProjectile(val gfx: Int, val drawback: Graphic? = null, val imp
         GREY_CHINCHOMA, RED_CHINCHOMA, BLACK_CHINCHOMA -> true
         else -> false
     }
+
+    companion object {
+        val values = enumValues<RangedProjectile>()
+    }
 }

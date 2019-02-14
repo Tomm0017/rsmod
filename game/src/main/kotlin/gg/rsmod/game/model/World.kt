@@ -300,6 +300,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     }
 
     fun executePlugin(plugin: Function1<Plugin, Unit>) {
+        // TODO: allow multiple suspendable plugins to use the world as a ctx
+        // without being overridden
         pluginExecutor.execute(this, plugin)
     }
 

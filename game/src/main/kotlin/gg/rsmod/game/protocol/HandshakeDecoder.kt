@@ -10,7 +10,6 @@ import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
 import mu.KotlinLogging
-import org.apache.logging.log4j.LogManager
 import java.math.BigInteger
 
 /**
@@ -33,7 +32,7 @@ class HandshakeDecoder(private val revision: Int, private val rsaExponent: BigIn
         }
 
         val opcode = buf.readByte().toInt()
-        val handshake = HandshakeType.values().firstOrNull { it.id == opcode }
+        val handshake = HandshakeType.values.firstOrNull { it.id == opcode }
         when (handshake) {
             HandshakeType.FILESTORE -> {
                 val p = ctx.pipeline()

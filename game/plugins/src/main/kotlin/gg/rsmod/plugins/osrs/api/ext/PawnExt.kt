@@ -86,7 +86,7 @@ fun Pawn.freeze(cycles: Int, onFreeze: () -> Unit) {
     }
     stopMovement()
     timers[FROZEN_TIMER] = cycles
-    onFreeze.invoke()
+    onFreeze()
 }
 
 fun Pawn.poison(initialDamage: Int, onPoison: () -> Unit) {
@@ -94,7 +94,7 @@ fun Pawn.poison(initialDamage: Int, onPoison: () -> Unit) {
         if (this is Player) {
             Poison.setHpOrb(this, Poison.OrbState.POISON)
         }
-        onPoison.invoke()
+        onPoison()
     }
 }
 

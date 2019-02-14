@@ -35,7 +35,7 @@ class PluginExecutor {
      */
     fun getActiveCount(): Int = active.size
 
-    fun <T> execute(ctx: Any, logic: Function1<Plugin, T>): T {
+    fun <T> execute(ctx: Any?, logic: Function1<Plugin, T>): T {
         val plugin = Plugin(ctx, dispatcher)
         val invoke = logic.invoke(plugin)
 

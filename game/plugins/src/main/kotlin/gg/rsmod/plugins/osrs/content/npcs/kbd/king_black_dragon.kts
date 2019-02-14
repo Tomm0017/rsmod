@@ -15,19 +15,29 @@ import gg.rsmod.plugins.osrs.content.combat.formula.DragonfireFormula
 import gg.rsmod.plugins.osrs.content.combat.formula.MeleeCombatFormula
 import gg.rsmod.plugins.osrs.content.combat.strategy.RangedCombatStrategy
 
-spawnNpc(npc = Npcs.KING_BLACK_DRAGON, x = 2274, z = 4698, walkRadius = 5)
+spawn_npc(Npcs.KING_BLACK_DRAGON, x = 2274, z = 4698, walkRadius = 5)
 
-onNpcCombat(Npcs.KING_BLACK_DRAGON) {
+combat_def(Npcs.KING_BLACK_DRAGON, NpcCombatDef.Builder()
+        .setHitpoints(240)
+        .setAttackSpeed(3)
+        .setAggressiveRadius(16)
+        .setFindAggroTargetDelay(1)
+        .setSlayerXp(258.0)
+        .setAttackLvl(240)
+        .setStrengthLvl(240)
+        .setMagicLvl(240)
+        .setDefenceStabBonus(70)
+        .setDefenceSlashBonus(90)
+        .setDefenceCrushBonus(90)
+        .setDefenceMagicBonus(80)
+        .setDefenceRangedBonus(70)
+        .build())
+
+on_npc_combat(Npcs.KING_BLACK_DRAGON) {
     it.suspendable {
         combat(it)
     }
 }
-
-setCombatDef(Npcs.KING_BLACK_DRAGON, NpcCombatDef(hitpoints = 240, attackLvl = 240, strengthLvl = 240, defenceLvl = 240, magicLvl = 240,
-        rangedLvl = 1, meleeMaxHit = 25, magicMaxHit = 65, rangedMaxHit = 1, attackSpeed = 3, aggressiveRadius = 16,
-        findTargetDelay = 1, meleeAnimation = -1, magicAnimation = -1, rangedAnimation = -1, deathAnimation = -1,
-        deathDelay = 3, respawnDelay = 30, poisonChance = 0.0, poisonImmunity = false, venomImmunity = false, slayerReq = 1, slayerXp = 258.0,
-        bonuses = arrayOf(0, 0, 0, 0, 0, 70, 90, 90, 80, 70, 0, 0, 0, 0)))
 
 suspend fun combat(it: Plugin) {
     val npc = it.npc()
@@ -66,7 +76,7 @@ fun meleeAttack(npc: Npc, target: Pawn) {
         npc.animate(80)
     }
     val formula = MeleeCombatFormula
-    if (formula.getAccuracy(npc, target) >= world.randomDouble()) {
+    if (formula.getAccuracy(npc, target) >= npc.world.randomDouble()) {
         target.hit(npc.world.random(26), delay = 1)
     } else {
         target.hit(damage = 0, delay = 1)
@@ -78,7 +88,7 @@ fun fireAttack(npc: Npc, target: Pawn) {
     npc.prepareAtttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
     npc.animate(81)
     npc.world.spawn(projectile)
-    target.hit(damage = npc.getRandomDamage(target, DragonfireFormula), delay = RangedCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile()))
+    target.hit(damage = npc.getRandomDamage(target, DragonfireFormula(maxHit = 65)), delay = RangedCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile()))
 }
 
 fun poisonAttack(npc: Npc, target: Pawn) {
@@ -86,7 +96,7 @@ fun poisonAttack(npc: Npc, target: Pawn) {
     npc.prepareAtttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
     npc.animate(82)
     npc.world.spawn(projectile)
-    target.hit(damage = npc.getRandomDamage(target, DragonfireFormula), delay = RangedCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile())).addAction {
+    target.hit(damage = npc.getRandomDamage(target, DragonfireFormula(maxHit = 65, minHit = 10)), delay = RangedCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile())).addAction {
         if (target.world.chance(1, 6)) {
             target.poison(initialDamage = 8) {
                 if (target is Player) {
@@ -102,7 +112,7 @@ fun freezeAttack(npc: Npc, target: Pawn) {
     npc.prepareAtttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
     npc.animate(83)
     npc.world.spawn(projectile)
-    target.hit(damage = npc.getRandomDamage(target, DragonfireFormula), delay = RangedCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile())).addAction {
+    target.hit(damage = npc.getRandomDamage(target, DragonfireFormula(maxHit = 65, minHit = 10)), delay = RangedCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile())).addAction {
         if (target.world.chance(1, 6)) {
             target.freeze(cycles = 6) {
                 if (target is Player) {
@@ -118,7 +128,7 @@ fun shockAttack(npc: Npc, target: Pawn) {
     npc.prepareAtttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
     npc.animate(84)
     npc.world.spawn(projectile)
-    target.hit(damage = npc.getRandomDamage(target, DragonfireFormula), delay = RangedCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile())).addAction {
+    target.hit(damage = npc.getRandomDamage(target, DragonfireFormula(maxHit = 65, minHit = 12)), delay = RangedCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile())).addAction {
         if (target.world.chance(1, 6)) {
             if (target is Player) {
                 arrayOf(Skills.ATTACK, Skills.STRENGTH, Skills.DEFENCE, Skills.MAGIC, Skills.RANGED).forEach { skill ->

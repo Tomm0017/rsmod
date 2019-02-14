@@ -1,8 +1,6 @@
 package gg.rsmod.plugins.osrs.content.skills.woodcutting
 
 import gg.rsmod.plugins.osrs.api.ext.getInteractingGameObj
-import gg.rsmod.plugins.osrs.content.skills.woodcutting.TreeType
-import gg.rsmod.plugins.osrs.content.skills.woodcutting.Woodcutting
 import gg.rsmod.plugins.osrs.content.skills.woodcutting.Woodcutting.Tree
 
 val trees = arrayListOf(
@@ -19,7 +17,7 @@ val trees = arrayListOf(
 )
 
 trees.forEach { tree ->
-    onObjectOption(tree.obj, 1) {
+    on_object_option(tree.obj, 1) {
         val obj = it.getInteractingGameObj()
         it.suspendable {
             Woodcutting.chopDownTree(it, obj, tree.type, tree.trunk)

@@ -9,7 +9,7 @@ import gg.rsmod.plugins.osrs.api.ext.pawn
 
 val POISON_TICK_DELAY = 25
 
-onTimer(POISON_TIMER) {
+on_timer(POISON_TIMER) {
     val pawn = it.pawn()
     val ticksLeft = pawn.attr[POISON_TICKS_LEFT] ?: 0
 
@@ -17,7 +17,7 @@ onTimer(POISON_TIMER) {
         if (pawn is Player) {
             Poison.setHpOrb(pawn, Poison.OrbState.NONE)
         }
-        return@onTimer
+        return@on_timer
     }
 
     if (ticksLeft > 0) {

@@ -1,13 +1,12 @@
 package gg.rsmod.plugins.osrs.content.mechanics.run
 
 import gg.rsmod.plugins.osrs.api.ext.player
-import gg.rsmod.plugins.osrs.content.mechanics.run.RunEnergy
 
-onLogin {
+on_login {
     it.player().timers[RunEnergy.RUN_DRAIN] = 1
 }
 
-onTimer(RunEnergy.RUN_DRAIN) {
+on_timer(RunEnergy.RUN_DRAIN) {
     val p = it.player()
     p.timers[RunEnergy.RUN_DRAIN] = 1
     RunEnergy.drain(p)
@@ -16,13 +15,13 @@ onTimer(RunEnergy.RUN_DRAIN) {
 /**
  * Button by minimap.
  */
-onButton(parent = 160, child = 22) {
+on_button(parent = 160, child = 22) {
     RunEnergy.toggle(it.player())
 }
 
 /**
  * Settings button.
  */
-onButton(parent = 261, child = 95) {
+on_button(parent = 261, child = 95) {
     RunEnergy.toggle(it.player())
 }

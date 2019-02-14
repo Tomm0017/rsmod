@@ -10,7 +10,7 @@ import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.combat.formula.MagicCombatFormula
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
 
-onCommand("max") {
+on_client_cheat("max") {
     val player = it.player()
     player.attr[Combat.CASTING_SPELL] = CombatSpell.WIND_SURGE
     val accuracy = MagicCombatFormula.getAccuracy(player, player)
@@ -19,7 +19,7 @@ onCommand("max") {
     player.message("Max hit=$max - accuracy=$accuracy - land=$landHit")
 }
 
-onCombat {
+on_combat {
     it.suspendable {
         while (true) {
             if (!cycle(it)) {

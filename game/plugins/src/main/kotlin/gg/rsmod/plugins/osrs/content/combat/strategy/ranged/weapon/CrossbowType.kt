@@ -42,6 +42,10 @@ enum class CrossbowType(val item: Int, val ammo: Array<Int>) {
     KARIL_CROSSBOW_25(item = Items.KARILS_CROSSBOW_25, ammo = BOLT_RACKS),
     KARIL_CROSSBOW_50(item = Items.KARILS_CROSSBOW_50, ammo = BOLT_RACKS),
     KARIL_CROSSBOW_75(item = Items.KARILS_CROSSBOW_75, ammo = BOLT_RACKS),
-    KARIL_CROSSBOW_100(item = Items.KARILS_CROSSBOW_100, ammo = BOLT_RACKS),
+    KARIL_CROSSBOW_100(item = Items.KARILS_CROSSBOW_100, ammo = BOLT_RACKS);
+
+    companion object {
+        val values = enumValues<BowType>()
+    }
 }
 

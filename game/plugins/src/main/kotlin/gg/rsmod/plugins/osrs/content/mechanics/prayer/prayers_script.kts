@@ -9,7 +9,7 @@ import gg.rsmod.plugins.osrs.api.ext.player
 /**
  * Deactivate all prayers on log out.
  */
-onLogout {
+on_logout {
     Prayers.deactivateAll(it.player())
 }
 
@@ -17,7 +17,7 @@ onLogout {
  * Activate prayers.
  */
 Prayer.values.forEach { prayer ->
-    onButton(parent = 541, child = prayer.child) {
+    on_button(parent = 541, child = prayer.child) {
         it.suspendable {
             Prayers.toggle(it, prayer)
         }
@@ -27,11 +27,11 @@ Prayer.values.forEach { prayer ->
 /**
  * Prayer drain.
  */
-onLogin {
+on_login {
     it.player().timers[Prayers.PRAYER_DRAIN] = 1
 }
 
-onTimer(Prayers.PRAYER_DRAIN) {
+on_timer(Prayers.PRAYER_DRAIN) {
     val p = it.player()
     p.timers[Prayers.PRAYER_DRAIN] = 1
     Prayers.drainPrayer(p)
@@ -40,7 +40,7 @@ onTimer(Prayers.PRAYER_DRAIN) {
 /**
  * Toggle quick-prayers.
  */
-onButton(parent = 160, child = 14) {
+on_button(parent = 160, child = 14) {
     val p = it.player()
     val opt = it.getInteractingOption()
     Prayers.toggleQuickPrayers(p, opt)
@@ -49,16 +49,16 @@ onButton(parent = 160, child = 14) {
 /**
  * Select quick-prayer.
  */
-onButton(parent = 77, child = 4) {
+on_button(parent = 77, child = 4) {
     val slot = it.getInteractingSlot()
-    val prayer = Prayer.values.firstOrNull { prayer -> prayer.quickPrayerSlot == slot } ?: return@onButton
+    val prayer = Prayer.values.firstOrNull { prayer -> prayer.quickPrayerSlot == slot } ?: return@on_button
     Prayers.selectQuickPrayer(it, prayer)
 }
 
 /**
  * Accept selected quick-prayer.
  */
-onButton(parent = 77, child = 5) {
+on_button(parent = 77, child = 5) {
     val p = it.player()
     p.openInterface(InterfaceDestination.PRAYER)
 }

@@ -64,7 +64,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.tile = Tile(data.x, data.z, data.height)
             client.privilege = client.world.privileges.get(data.privilege) ?: Privilege.DEFAULT
             client.runEnergy = data.runEnergy
-            client.components.displayMode = DisplayMode.values().firstOrNull { it.id == data.displayMode } ?: DisplayMode.FIXED
+            client.components.displayMode = DisplayMode.values.firstOrNull { it.id == data.displayMode } ?: DisplayMode.FIXED
             data.skills.forEach { skill ->
                 client.getSkills().setXp(skill.skill, skill.xp)
                 client.getSkills().setCurrentLevel(skill.skill, skill.lvl)

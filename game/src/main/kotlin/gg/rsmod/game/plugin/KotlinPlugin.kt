@@ -14,6 +14,7 @@ import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.service.game.NpcStatsService
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
+import mu.KotlinLogging
 import kotlin.script.experimental.annotations.KotlinScript
 
 /**
@@ -22,60 +23,69 @@ import kotlin.script.experimental.annotations.KotlinScript
 @KotlinScript(displayName = "Kotlin Plugin", fileExtension = "kts")
 abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
-    private val npcSpawns = ObjectArrayList<Npc>()
-
-    private val objSpawns = ObjectArrayList<DynamicObject>()
-
-    private val itemSpawns = ObjectArrayList<GroundItem>()
-
-    private val npcCombatDefs = Int2ObjectOpenHashMap<NpcCombatDef>()
-
-    internal fun spawnEntities() {
-        npcSpawns.forEach { npc -> world.spawn(npc) }
-        npcSpawns.clear()
-
-        objSpawns.forEach { obj -> world.spawn(obj) }
-        objSpawns.clear()
-
-        itemSpawns.forEach { item -> world.spawn(item) }
-        itemSpawns.clear()
+    companion object {
+        private val logger = KotlinLogging.logger {  }
     }
 
-    internal fun overrideNpcCombatDefs() {
-        if (npcCombatDefs.isEmpty()) {
+    private val npc_spawns = ObjectArrayList<Npc>()
+
+    private val obj_spawns = ObjectArrayList<DynamicObject>()
+
+    private val item_spawns = ObjectArrayList<GroundItem>()
+
+    private val npc_combat_defs = Int2ObjectOpenHashMap<NpcCombatDef>()
+
+    internal fun spawn_entities() {
+        npc_spawns.forEach { npc -> world.spawn(npc) }
+        npc_spawns.clear()
+
+        obj_spawns.forEach { obj -> world.spawn(obj) }
+        obj_spawns.clear()
+
+        item_spawns.forEach { item -> world.spawn(item) }
+        item_spawns.clear()
+    }
+
+    internal fun set_combat_defs() {
+        if (npc_combat_defs.isEmpty()) {
             return
         }
         world.getService(NpcStatsService::class.java).ifPresent { s ->
-            npcCombatDefs.forEach { npc, def -> s.set(npc, def) }
+            npc_combat_defs.forEach { npc, def ->
+                if (s.get(npc) != null) {
+                    logger.warn { "Npc $npc (${world.definitions.get(NpcDef::class.java, npc).name}) has a set combat definition but has been overwritten by a plugin." }
+                }
+                s.set(npc, def)
+            }
         }
     }
 
-    fun combat_def(npc: Int, def: NpcCombatDef) {
-        check(!npcCombatDefs.containsKey(npc)) { "Npc combat definition has been previously set: $npc" }
-        npcCombatDefs[npc] = def
+    fun set_combat_def(npc: Int, def: NpcCombatDef) {
+        check(!npc_combat_defs.containsKey(npc)) { "Npc combat definition has been previously set: $npc" }
+        npc_combat_defs[npc] = def
     }
 
-    fun combat_def(npc: Int, vararg others: Int, def: NpcCombatDef) {
-        combat_def(npc, def)
-        others.forEach { other -> combat_def(other, def) }
+    fun set_combat_def(npc: Int, vararg others: Int, def: NpcCombatDef) {
+        set_combat_def(npc, def)
+        others.forEach { other -> set_combat_def(other, def) }
     }
 
     fun spawn_npc(npc: Int, x: Int, z: Int, height: Int = 0, walkRadius: Int = 0, direction: Direction = Direction.SOUTH) {
         val n = Npc(npc, Tile(x, z, height), world)
         n.walkRadius = walkRadius
         n.lastFacingDirection = direction
-        npcSpawns.add(n)
+        npc_spawns.add(n)
     }
 
-    fun spawn_object(obj: Int, x: Int, z: Int, height: Int = 0, type: Int = 10, rot: Int = 0) {
+    fun spawn_obj(obj: Int, x: Int, z: Int, height: Int = 0, type: Int = 10, rot: Int = 0) {
         val o = DynamicObject(obj, type, rot, Tile(x, z, height))
-        objSpawns.add(o)
+        obj_spawns.add(o)
     }
 
     fun spawn_item(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = 50) {
         val ground = GroundItem(item, amount, Tile(x, z, height))
         ground.respawnCycles = respawnCycles
-        itemSpawns.add(ground)
+        item_spawns.add(ground)
     }
 
     fun on_item_option(item: Int, option: String, plugin: Function1<Plugin, Unit>) {
@@ -88,7 +98,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         r.bindNpc(item, slot, plugin)
     }
 
-    fun on_object_option(obj: Int, option: String, plugin: Function1<Plugin, Unit>) {
+    fun on_obj_option(obj: Int, option: String, plugin: Function1<Plugin, Unit>) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(ObjectDef::class.java, obj)
         val slot = def.options.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
@@ -110,7 +120,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
     fun on_world_init(plugin: (Plugin) -> Unit) = r.bindWorldInit(plugin)
 
-    fun on_display_change(plugin: Function1<Plugin, Unit>) = r.bindDisplayModeChange(plugin)
+    fun on_window_status(plugin: Function1<Plugin, Unit>) = r.bindWindowStatus(plugin)
 
     fun on_login(plugin: Function1<Plugin, Unit>) = r.bindLogin(plugin)
 
@@ -135,7 +145,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
     fun on_npc_spawn(npc: Int, plugin: Function1<Plugin, Unit>) = r.bindNpcSpawn(npc, plugin)
 
-    fun on_client_cheat(command: String, powerRequired: String? = null, plugin: Function1<Plugin, Unit>) = r.bindCommand(command, powerRequired, plugin)
+    fun on_command(command: String, powerRequired: String? = null, plugin: Function1<Plugin, Unit>) = r.bindCommand(command, powerRequired, plugin)
 
     fun on_equip_to_slot(equipSlot: Int, plugin: Function1<Plugin, Unit>) = r.bindEquipSlot(equipSlot, plugin)
 
@@ -155,7 +165,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
     fun on_item_option(item: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindItem(item, opt, plugin)
 
-    fun on_object_option(obj: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindObject(obj, opt, plugin)
+    fun on_obj_option(obj: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindObject(obj, opt, plugin)
 
     fun on_npc_option(npc: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindNpc(npc, opt, plugin)
 

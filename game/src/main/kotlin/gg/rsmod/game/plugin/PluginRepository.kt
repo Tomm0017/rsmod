@@ -251,8 +251,8 @@ class PluginRepository(val world: World) {
                 analyzer?.setClass(pluginClass)
 
                 val plugin = constructor.newInstance(this, world)
-                plugin.overrideNpcCombatDefs()
-                plugin.spawnEntities()
+                plugin.set_combat_defs()
+                plugin.spawn_entities()
             }
         }
 
@@ -291,8 +291,8 @@ class PluginRepository(val world: World) {
                     analyzer?.setClass(clazz)
 
                     val plugin = constructor.newInstance(this, world)
-                    plugin.overrideNpcCombatDefs()
-                    plugin.spawnEntities()
+                    plugin.set_combat_defs()
+                    plugin.spawn_entities()
                 }
             }
         }
@@ -358,7 +358,7 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    fun bindDisplayModeChange(plugin: Function1<Plugin, Unit>) {
+    fun bindWindowStatus(plugin: Function1<Plugin, Unit>) {
         if (displayModePlugin != null) {
             logger.error("Display mode change is already bound to a plugin")
             throw IllegalStateException("Display mode change is already bound to a plugin")

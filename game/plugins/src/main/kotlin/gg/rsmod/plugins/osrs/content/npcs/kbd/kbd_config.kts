@@ -3,7 +3,7 @@ package gg.rsmod.plugins.osrs.content.npcs.kbd
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.plugins.osrs.api.cfg.Npcs
 
-combat_def(Npcs.KING_BLACK_DRAGON, NpcCombatDef.Builder()
+set_combat_def(Npcs.KING_BLACK_DRAGON, NpcCombatDef.Builder()
         .setHitpoints(240)
         .setAttackSpeed(3)
         .setDeathAnimation(92)

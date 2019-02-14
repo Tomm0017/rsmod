@@ -45,7 +45,7 @@ for (offset in 0..3) {
 /**
  * Changing display modes (fixed, resizable).
  */
-on_display_change {
+on_window_status {
     val p = it.player()
     val change = p.attr[DISPLAY_MODE_CHANGE_ATTR]
     val mode = when (change) {

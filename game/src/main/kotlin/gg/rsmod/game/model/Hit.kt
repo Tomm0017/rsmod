@@ -1,5 +1,9 @@
 package gg.rsmod.game.model
 
+import gg.rsmod.game.model.Hit.Hitbar
+import gg.rsmod.game.model.Hit.Hitmark
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
+
 /**
  * Represents a hit that can be dealt. A hit can deal multiple damage splats
  * ([Hitmark]s).
@@ -28,16 +32,29 @@ class Hit private constructor(val hitmarks: List<Hitmark>, val hitbar: Hitbar?, 
      *
      * There is no guarantee that this action will occur under certain
      * circumstances, such as if the entity dies before this hit deals
-     * damage.
+     * damage or if the hit is cancelled.
      */
-    val actions = arrayListOf<Function0<Unit>>()
+    internal val actions = ObjectArrayList<() -> Unit>()
 
-    fun addAction(action: Function0<Unit>) {
+    /**
+     * Predicate that determines if this hit should be cancelled, such as if the
+     * origin of the hit has died.
+     */
+    internal var cancelCondition: () -> Boolean = { false }
+
+    fun addAction(action: () -> Unit): Hit {
         actions.add(action)
+        return this
     }
 
-    fun addActions(actions: Collection<Function0<Unit>>) {
+    fun addActions(actions: Collection<() -> Unit>): Hit {
         this.actions.addAll(actions)
+        return this
+    }
+
+    fun setCancelIf(condition: () -> Boolean): Hit {
+        cancelCondition = condition
+        return this
     }
 
     data class Hitmark(val type: Int, var damage: Int)

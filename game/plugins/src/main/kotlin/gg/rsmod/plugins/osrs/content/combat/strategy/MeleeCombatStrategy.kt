@@ -46,7 +46,7 @@ object MeleeCombatStrategy : CombatStrategy {
             addCombatXp(pawn as Player, damage)
         }
 
-        target.hit(damage = damage, delay = 1).addActions(hitActions)
+        target.hit(damage = damage, delay = 1).addActions(hitActions).setCancelIf { target.isDead() }
     }
 
     private fun addCombatXp(player: Player, damage: Int) {

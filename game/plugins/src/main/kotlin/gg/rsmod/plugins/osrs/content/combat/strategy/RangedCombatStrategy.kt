@@ -141,7 +141,7 @@ object RangedCombatStrategy : CombatStrategy {
         }
 
         target.hit(damage = damage, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize()  / 2)))
-                .addActions(hitActions)
+                .addActions(hitActions).setCancelIf { target.isDead() }
     }
 
     fun getHitDelay(start: Tile, target: Tile): Int {

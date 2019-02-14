@@ -232,30 +232,30 @@ abstract class Pawn(val world: World) : Entity() {
             }
 
             if (hit.damageDelay-- == 0) {
+                if (!hit.cancelCondition()) {
+                    blockBuffer.hits.add(hit)
+                    addBlock(UpdateBlockType.HITMARK)
 
-                blockBuffer.hits.add(hit)
-                addBlock(UpdateBlockType.HITMARK)
-
-                for (hitmark in hit.hitmarks) {
-                    val hp = getCurrentHp()
-                    if (hitmark.damage > hp) {
-                        hitmark.damage = hp
-                    }
-                    setCurrentHp(hp - hitmark.damage)
-                    if (getCurrentHp() <= 0) {
-                        hit.actions.forEach { it.invoke() }
-                        interruptPlugins()
-                        if (getType().isPlayer()) {
-                            executePlugin(PlayerDeathAction.deathPlugin)
-                        } else {
-                            executePlugin(NpcDeathAction.deathPlugin)
+                    for (hitmark in hit.hitmarks) {
+                        val hp = getCurrentHp()
+                        if (hitmark.damage > hp) {
+                            hitmark.damage = hp
                         }
-                        hitIterator.remove()
-                        break@iterator
+                        setCurrentHp(hp - hitmark.damage)
+                        if (getCurrentHp() <= 0) {
+                            hit.actions.forEach { action -> action() }
+                            interruptPlugins()
+                            if (getType().isPlayer()) {
+                                executePlugin(PlayerDeathAction.deathPlugin)
+                            } else {
+                                executePlugin(NpcDeathAction.deathPlugin)
+                            }
+                            hitIterator.remove()
+                            break@iterator
+                        }
                     }
+                    hit.actions.forEach { action -> action() }
                 }
-
-                hit.actions.forEach { it.invoke() }
                 hitIterator.remove()
             }
         }

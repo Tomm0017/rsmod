@@ -295,7 +295,7 @@ object RangedCombatFormula : CombatFormula {
                 val pearl = player.hasEquipped(EquipmentType.AMMO, Items.PEARL_BOLTS, Items.PEARL_BOLTS_E, Items.PEARL_DRAGON_BOLTS, Items.PEARL_DRAGON_BOLTS_E)
 
                 when {
-                    dragonstone -> return base * Math.floor(player.getSkills().getCurrentLevel(Skills.RANGED) / 5.0)
+                    dragonstone -> return base + Math.floor(player.getSkills().getCurrentLevel(Skills.RANGED) / 5.0)
                     opal -> return base + Math.floor(player.getSkills().getCurrentLevel(Skills.RANGED) / 10.0)
                     pearl -> return base + Math.floor(player.getSkills().getCurrentLevel(Skills.RANGED) / (if (isFiery(target)) 15.0 else 20.0))
                 }

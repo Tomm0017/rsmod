@@ -142,7 +142,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * next tick to check if the future route was successful (usually the case,
      * since a whole 600ms have now gone by).
      */
-    var multiThreadPathFinding = true
+    var multiThreadPathFinding = false
 
     fun postLoad() {
         plugins.executeWorldInit(this)
@@ -178,6 +178,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             }
 
             npc.combatDef = combatDef ?: NpcCombatDef.DEFAULT
+            npc.respawns = npc.combatDef.respawnDelay > 0
             npc.setCurrentHp(npc.combatDef.hitpoints)
 
             /**

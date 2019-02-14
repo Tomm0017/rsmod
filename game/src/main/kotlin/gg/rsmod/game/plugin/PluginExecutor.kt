@@ -35,7 +35,7 @@ class PluginExecutor {
      */
     fun getActiveCount(): Int = active.size
 
-    fun <T> execute(ctx: Any?, logic: Function1<Plugin, T>): T {
+    fun <T> execute(ctx: Any, logic: Function1<Plugin, T>): T {
         val plugin = Plugin(ctx, dispatcher)
         val invoke = logic.invoke(plugin)
 
@@ -51,6 +51,7 @@ class PluginExecutor {
          * and would no longer pulse).
          */
         if (!plugin.canKill()) {
+            interruptPluginsWithContext(ctx) // Interrupt any previous suspended plugins
             activeQueue.add(plugin)
         }
 
@@ -81,12 +82,21 @@ class PluginExecutor {
      * Terminates any plugins that have [ctx] as their context.
      */
     fun interruptPluginsWithContext(ctx: Any) {
-        val iterator = active.iterator()
-        while (iterator.hasNext()) {
-            val plugin = iterator.next()
+        val activeIterator = active.iterator()
+        while (activeIterator.hasNext()) {
+            val plugin = activeIterator.next()
             if (plugin.ctx == ctx) {
                 plugin.terminate()
-                iterator.remove()
+                activeIterator.remove()
+            }
+        }
+
+        val queueIterator = activeQueue.iterator()
+        while (queueIterator.hasNext()) {
+            val plugin = queueIterator.next()
+            if (plugin.ctx == ctx) {
+                plugin.terminate()
+                queueIterator.remove()
             }
         }
     }

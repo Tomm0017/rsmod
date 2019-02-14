@@ -54,7 +54,7 @@ object CombatConfigs {
 
     fun getAttackDelay(pawn: Pawn): Int {
         if (pawn is Npc) {
-            return pawn.combatDef.attackSpeed + 1
+            return pawn.combatDef.attackSpeed
         }
 
         if (pawn is Player) {
@@ -70,11 +70,7 @@ object CombatConfigs {
 
     fun getAttackAnimation(pawn: Pawn): Int {
         if (pawn is Npc) {
-            return when (pawn.combatClass) {
-                CombatClass.MELEE -> pawn.combatDef.meleeAnimation
-                CombatClass.RANGED -> pawn.combatDef.rangedAnimation
-                CombatClass.MAGIC -> pawn.combatDef.magicAnimation
-            }
+            return pawn.combatDef.attackAnimation
         }
 
         if (pawn is Player) {

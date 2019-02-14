@@ -20,7 +20,7 @@ import kotlin.coroutines.*
  *
  * @author Tom <rspsmods@gmail.com>
  */
-data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continuation<Unit> {
+data class Plugin(var ctx: Any?, val dispatcher: CoroutineDispatcher) : Continuation<Unit> {
 
     companion object {
         private val logger = KotlinLogging.logger {  }
@@ -84,6 +84,10 @@ data class Plugin(val ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
             next.continuation.resume(Unit)
             requestReturnValue = null
         }
+    }
+
+    fun removeContext() {
+        ctx = null
     }
 
     /**

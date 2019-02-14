@@ -20,9 +20,9 @@ val defaultAggressiveness: (Npc, Player) -> Boolean = boolean@ { n, p ->
 on_global_npc_spawn {
     val npc = it.npc()
 
-    if (npc.combatDef.aggressiveRadius > 0 && npc.combatDef.findTargetDelay > 0) {
+    if (npc.combatDef.aggressiveRadius > 0 && npc.combatDef.aggroTargetDelay > 0) {
         npc.aggroCheck = defaultAggressiveness
-        npc.timers[AGGRO_CHECK_TIMER] = npc.combatDef.findTargetDelay
+        npc.timers[AGGRO_CHECK_TIMER] = npc.combatDef.aggroTargetDelay
     }
 }
 
@@ -32,7 +32,7 @@ on_timer(AGGRO_CHECK_TIMER) {
     if ((!npc.isAttacking() || MultiwayCombat.isInMulti(npc.tile)) && npc.lock.canAttack() && npc.isActive()) {
         checkRadius(npc)
     }
-    npc.timers[AGGRO_CHECK_TIMER] = npc.combatDef.findTargetDelay
+    npc.timers[AGGRO_CHECK_TIMER] = npc.combatDef.aggroTargetDelay
 }
 
 fun checkRadius(npc: Npc) {

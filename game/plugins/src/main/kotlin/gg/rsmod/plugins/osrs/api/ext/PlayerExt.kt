@@ -325,7 +325,14 @@ fun Player.addXp(skill: Int, xp: Double) {
      */
     val increment = SkillSet.getLevelForXp(totalXp) - SkillSet.getLevelForXp(currentXp)
 
-    getSkills().setBaseXp(skill, totalXp)
+    /**
+     * Only increment the 'current' level if it's set at its capped level.
+     */
+    if (getSkills().getCurrentLevel(skill) == getSkills().getMaxLevel(skill)) {
+        getSkills().setBaseXp(skill, totalXp)
+    } else {
+        getSkills().setXp(skill, totalXp)
+    }
 
     if (increment > 0) {
         /**

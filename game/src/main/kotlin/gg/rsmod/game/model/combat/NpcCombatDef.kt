@@ -108,7 +108,7 @@ class NpcCombatDef private constructor(
 
         val DEFAULT = NpcCombatDef(hitpoints = DEFAULT_HITPOINTS, attackLvl = 1, strengthLvl = 1, defenceLvl = 1, magicLvl = 1, rangedLvl = 1,
                 attackSpeed = DEFAULT_ATTACK_SPEED, aggressiveRadius = 0, aggroTargetDelay = 0, attackAnimation = 422, blockAnimation = 424, deathAnimation = 836,
-                deathDelay = DEFAULT_DEATH_DELAY, respawnDelay = DEFAULT_RESPAWN_DELAY, poisonChance = 0.0, poisonImmunity = false, venomImmunity = false, slayerReq = 1, slayerXp = 0.0,
+                deathDelay = DEFAULT_DEATH_DELAY, respawnDelay = -1, poisonChance = 0.0, poisonImmunity = false, venomImmunity = false, slayerReq = 1, slayerXp = 0.0,
                 bonuses = Array(14) { 0 })
     }
 

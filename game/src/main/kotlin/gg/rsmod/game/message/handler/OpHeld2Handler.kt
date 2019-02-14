@@ -16,9 +16,9 @@ class OpHeld2Handler : MessageHandler<OpHeld2Message> {
 
     override fun handle(client: Client, message: OpHeld2Message) {
         @Suppress("unused")
-        val componentParent = message.componentHash shr 16
+        val interfaceId = message.componentHash shr 16
         @Suppress("unused")
-        val componentChild = message.componentHash and 0xFFFF
+        val component = message.componentHash and 0xFFFF
 
         if (message.slot < 0 || message.slot >= client.inventory.capacity) {
             return
@@ -32,12 +32,12 @@ class OpHeld2Handler : MessageHandler<OpHeld2Message> {
 
         if (item.id != message.item) {
             logVerificationFail(client, "Item action 2: id=%d, slot=%d, component=(%d, %d), inventory=(%d, %d)",
-                    message.item, message.slot, componentParent, componentChild, item.id, item.amount)
+                    message.item, message.slot, interfaceId, component, item.id, item.amount)
             return
         }
 
         log(client, "Item action 2: id=%d, slot=%d, component=(%d, %d), inventory=(%d, %d)",
-                message.item, message.slot, componentParent, componentChild, item.id, item.amount)
+                message.item, message.slot, interfaceId, component, item.id, item.amount)
 
         client.attr[INTERACTING_ITEM_SLOT] = message.slot
         client.attr[INTERACTING_ITEM_ID] = item.id

@@ -1,6 +1,5 @@
 package gg.rsmod.plugins.osrs.content.combat
 
-import com.google.common.base.Stopwatch
 import gg.rsmod.game.action.PawnPathAction
 import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.FROZEN_TIMER
@@ -10,9 +9,6 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.combat.formula.MagicCombatFormula
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
-import java.util.concurrent.TimeUnit
-
-val stopwatch = Stopwatch.createStarted()
 
 on_client_cheat("max") {
     val player = it.player()
@@ -91,8 +87,6 @@ suspend fun cycle(it: Plugin): Boolean {
 
     if (Combat.isAttackDelayReady(pawn)) {
         if (Combat.canAttack(pawn, target, strategy)) {
-            println("time since last att: ${stopwatch.elapsed(TimeUnit.MILLISECONDS)} ms")
-            stopwatch.reset().start()
             strategy.attack(pawn, target)
             Combat.postAttack(pawn, target)
         } else {

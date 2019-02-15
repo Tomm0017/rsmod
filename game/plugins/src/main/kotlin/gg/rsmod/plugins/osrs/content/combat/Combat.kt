@@ -78,7 +78,7 @@ object Combat {
         val touching = if (distance > 1) AabbUtil.areOverlapping(start.x, start.z, srcSize, srcSize, end.x, end.z, dstSize, dstSize)
                         else AabbUtil.areBordering(start.x, start.z, srcSize, srcSize, end.x, end.z, dstSize, dstSize)
         val withinRange = touching && world.collision.raycast(start, end, projectile = projectile)
-        return withinRange || PawnPathAction.walkTo(it, pawn, target, interactionRange = distance)
+        return withinRange || PawnPathAction.walkTo(it, pawn, target, interactionRange = distance, lineOfSight = false)
     }
 
     fun getProjectileLifespan(source: Pawn, target: Tile, type: ProjectileType): Int = when (type) {

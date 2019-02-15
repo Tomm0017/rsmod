@@ -10,4 +10,4 @@ fun PawnHit.landed(): Boolean = landed
 
 fun PawnHit.blocked(): Boolean = !landed
 
-fun PawnHit.getClientHitDelay(): Int = hit.damageDelay * 30
+fun PawnHit.getClientHitDelay(): Int = hit.damageDelay * 50

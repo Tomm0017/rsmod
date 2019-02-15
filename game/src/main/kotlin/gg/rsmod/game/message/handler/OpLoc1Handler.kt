@@ -54,8 +54,8 @@ class OpLoc1Handler : MessageHandler<OpLoc1Message> {
             client.teleport(client.world.findRandomTileAround(obj.tile, radius = 1, centreWidth = def.width, centreLength = def.length) ?: obj.tile)
         }
 
-        client.attr.put(INTERACTING_OPT_ATTR, 1)
-        client.attr.put(INTERACTING_OBJ_ATTR, WeakReference(obj))
+        client.attr[INTERACTING_OPT_ATTR] = 1
+        client.attr[INTERACTING_OBJ_ATTR] = WeakReference(obj)
         if (!client.world.plugins.executeCustomObjectPath(client, obj.id)) {
             client.executePlugin(ObjectPathAction.walkPlugin)
         }

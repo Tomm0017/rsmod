@@ -6,8 +6,10 @@ import gg.rsmod.game.model.FROZEN_TIMER
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.api.ext.*
-import gg.rsmod.plugins.osrs.content.combat.formula.MagicCombatFormula
+import gg.rsmod.plugins.osrs.api.ext.clearMapFlag
+import gg.rsmod.plugins.osrs.api.ext.getVarbit
+import gg.rsmod.plugins.osrs.api.ext.pawn
+import gg.rsmod.plugins.osrs.api.ext.setVarp
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
 
 set_combat_logic {
@@ -54,7 +56,7 @@ suspend fun cycle(it: Plugin): Boolean {
     val strategy = CombatConfigs.getCombatStrategy(pawn)
     val attackRange = strategy.getAttackRange(pawn)
 
-    val pathFound = PawnPathAction.walkTo(it, pawn, target, attackRange)
+    val pathFound = PawnPathAction.walkTo(it, pawn, target, interactionRange = attackRange, lineOfSight = false)
     if (!pathFound) {
         pawn.stopMovement()
         if (pawn.getType().isNpc()) {

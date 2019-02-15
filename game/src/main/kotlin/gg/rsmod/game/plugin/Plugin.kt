@@ -20,7 +20,7 @@ import kotlin.coroutines.*
  *
  * @author Tom <rspsmods@gmail.com>
  */
-data class Plugin(var ctx: Any?, val dispatcher: CoroutineDispatcher) : Continuation<Unit> {
+class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Continuation<Unit> {
 
     companion object {
         private val logger = KotlinLogging.logger {  }
@@ -100,10 +100,9 @@ data class Plugin(var ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
     }
 
     /**
-     * If the [PluginExecutor] is allowed to remove the plugin from its active
-     * plugin collection.
+     * If the plugin has been suspended.
      */
-    fun canKill(): Boolean = nextStep == null
+    fun suspended(): Boolean = nextStep != null
 
     /**
      * Wait for the specified amount of game cycles [cycles] before
@@ -131,10 +130,10 @@ data class Plugin(var ctx: Any?, val dispatcher: CoroutineDispatcher) : Continua
     }
 
     /**
-     * Wait for our [ctx] as [Player] to close the [component].
+     * Wait for our [ctx] as [Player] to close the [interfaceId].
      */
-    suspend fun waitComponentClose(component: Int): Unit = suspendCoroutine {
-        nextStep = SuspendableStep(PredicateCondition { !(ctx as Player).components.isVisible(component) }, it)
+    suspend fun waitInterfaceClose(interfaceId: Int): Unit = suspendCoroutine {
+        nextStep = SuspendableStep(PredicateCondition { !(ctx as Player).components.isVisible(interfaceId) }, it)
     }
 
     /**

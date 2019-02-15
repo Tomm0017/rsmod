@@ -43,12 +43,14 @@ class MessageDecoderSet {
         put(ResumePObjDialogMessage::class.java, ResumePObjDialogDecoder(), ResumePObjDialogHandler(), structures)
         put(OpHeld5Message::class.java, OpHeld5Decoder(), OpHeld5Handler(), structures)
         put(OpObj3Message::class.java, OpObj3Decoder(), OpObj3Handler(), structures)
+        put(OpNpc1Message::class.java, OpNpc1Decoder(), OpNpc1Handler(), structures)
         put(OpNpc2Message::class.java, OpNpc2Decoder(), OpNpc2Handler(), structures)
+        put(OpNpc3Message::class.java, OpNpc3Decoder(), OpNpc3Handler(), structures)
         put(OpNpcTMessage::class.java, OpNpcTDecoder(), OpNpcTHandler(), structures)
     }
 
     private fun <T: Message> put(messageType: Class<T>, decoderType: MessageDecoder<T>, handlerType: MessageHandler<T>, structures: MessageStructureSet) {
-        val structure = structures.get(messageType)!!
+        val structure = structures.get(messageType) ?: throw RuntimeException("Message structure has not been set in packets file. [message=$messageType]")
         structure.opcodes.forEach { opcode ->
             decoders[opcode] = decoderType
             handlers[opcode] = handlerType

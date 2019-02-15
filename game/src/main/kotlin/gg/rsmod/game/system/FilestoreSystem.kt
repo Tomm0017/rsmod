@@ -10,7 +10,6 @@ import net.runelite.cache.fs.Container
 import net.runelite.cache.fs.Store
 import net.runelite.cache.fs.jagex.CompressionType
 import net.runelite.cache.fs.jagex.DiskStorage
-import java.util.*
 
 /**
  * A [ServerSystem] responsible for sending decoded [filestore] data to the
@@ -52,13 +51,14 @@ class FilestoreSystem(override val channel: Channel, private val filestore: Stor
         if (req.archive == 255) {
             if (cachedIndexData == null) {
                 val buf = ctx.alloc().heapBuffer(filestore.indexes.size * 8)
+
                 filestore.indexes.forEach { index ->
                     buf.writeInt(index.crc)
                     buf.writeInt(index.revision)
                 }
 
                 val container = Container(CompressionType.NONE, -1)
-                container.compress(Arrays.copyOf(buf.array(), buf.readableBytes()), null)
+                container.compress(buf.array().copyOf(buf.readableBytes()), null)
                 cachedIndexData = container.data
                 buf.release()
             }
@@ -82,7 +82,7 @@ class FilestoreSystem(override val channel: Channel, private val filestore: Stor
             val length = Ints.fromBytes(data[1], data[2], data[3], data[4])
             val expectedLength = length + (if (compression.toInt() != CompressionType.NONE) 9 else 5)
             if (expectedLength != length && data.size - expectedLength == 2) {
-                data = Arrays.copyOf(data, data.size - 2)
+                data = data.copyOf(data.size - 2)
             }
 
             val response = FilestoreResponse(index = req.index, archive = req.archive, data = data)

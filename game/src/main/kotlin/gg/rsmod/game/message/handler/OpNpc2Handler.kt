@@ -17,7 +17,7 @@ class OpNpc2Handler : MessageHandler<OpNpc2Message> {
             return
         }
 
-        log(client, "Npc attack: index=%d, movement=%d", message.index, message.movementType)
+        log(client, "Npc option 2: index=%d, movement=%d, npc=%s", message.index, message.movementType, npc)
 
         if (message.movementType == 1 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
             client.teleport(client.world.findRandomTileAround(npc.tile, 1) ?: npc.tile)

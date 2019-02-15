@@ -191,6 +191,13 @@ class PluginRepository(val world: World) {
     private val npcPlugins = hashMapOf<Int, HashMap<Int, Function1<Plugin, Unit>>>()
 
     /**
+     * A map that contains npc ids as the key and their interaction distance as
+     * the value. If map does not contain an npc, it will have the default interaction
+     *
+     */
+    private val npcInteractionDistancePlugins = hashMapOf<Int, Int>()
+
+    /**
      * A map of objects that have custom path finding. This means that the plugin
      * is responsible for walking to the object if necessary.
      */
@@ -210,7 +217,6 @@ class PluginRepository(val world: World) {
         scanForPlugins(packedPath, gameService.world, analyzeMode)
     }
 
-    @Throws(Exception::class)
     fun scanForPlugins(packedPath: String, world: World, analyzeMode: Boolean) {
         analyzer = if (analyzeMode) PluginAnalyzer(this) else null
 
@@ -238,6 +244,7 @@ class PluginRepository(val world: World) {
         itemPlugins.clear()
         objectPlugins.clear()
         npcPlugins.clear()
+        npcInteractionDistancePlugins.clear()
         customObjectPaths.clear()
         customNpcPaths.clear()
 
@@ -419,7 +426,6 @@ class PluginRepository(val world: World) {
         }
     }
 
-    @Throws(IllegalStateException::class)
     fun bindTimer(key: TimerKey, plugin: Function1<Plugin, Unit>) {
         if (timerPlugins.containsKey(key)) {
             logger.error("Timer key is already bound to a plugin: $key")
@@ -438,7 +444,6 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    @Throws(IllegalStateException::class)
     fun bindInterfaceClose(component: Int, plugin: Function1<Plugin, Unit>) {
         if (componentClosePlugins.containsKey(component)) {
             logger.error("Component id is already bound to a plugin: $component")
@@ -457,7 +462,6 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    @Throws(IllegalStateException::class)
     fun bindCommand(command: String, powerRequired: String? = null, plugin: Function1<Plugin, Unit>) {
         val cmd = command.toLowerCase()
         if (commandPlugins.containsKey(cmd)) {
@@ -490,7 +494,6 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    @Throws(IllegalStateException::class)
     fun bindButton(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) {
         val hash = (parent shl 16) or child
         if (buttonPlugins.containsKey(hash)) {
@@ -511,7 +514,6 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    @Throws(IllegalStateException::class)
     fun bindEquipSlot(equipSlot: Int, plugin: Function1<Plugin, Unit>) {
         equipSlotPlugins.put(equipSlot, plugin)
         pluginCount++
@@ -526,7 +528,6 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    @Throws(IllegalStateException::class)
     fun bindEquipItemRequirement(item: Int, plugin: Function1<Plugin, Boolean>) {
         if (equipItemRequirementPlugins.containsKey(item)) {
             logger.error("Equip item requirement already bound to a plugin: [item=$item]")
@@ -543,7 +544,7 @@ class PluginRepository(val world: World) {
              * Plugin returns true if the item can be equipped, false if it
              * should block the item from being equipped.
              */
-            return p.world.pluginExecutor.execute(p, plugin)
+            return p.world.pluginExecutor.execute(p, plugin) == true
         }
         /**
          * Should always be able to wear items by default.
@@ -551,7 +552,6 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    @Throws(IllegalStateException::class)
     fun bindEquipItem(item: Int, plugin: Function1<Plugin, Unit>) {
         if (equipItemPlugins.containsKey(item)) {
             logger.error("Equip item already bound to a plugin: [item=$item]")
@@ -570,7 +570,6 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    @Throws(IllegalStateException::class)
     fun bindUnequipItem(item: Int, plugin: Function1<Plugin, Unit>) {
         if (unequipItemPlugins.containsKey(item)) {
             logger.error("Unequip item already bound to a plugin: [item=$item]")
@@ -645,7 +644,6 @@ class PluginRepository(val world: World) {
         exitChunkPlugins[chunkHash]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
     }
 
-    @Throws(IllegalStateException::class)
     fun bindItem(id: Int, opt: Int, plugin: Function1<Plugin, Unit>) {
         val optMap = itemPlugins[id] ?: HashMap()
         if (optMap.containsKey(opt)) {
@@ -664,7 +662,6 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    @Throws(IllegalStateException::class)
     fun bindObject(id: Int, opt: Int, plugin: Function1<Plugin, Unit>) {
         val optMap = objectPlugins[id] ?: HashMap()
         if (optMap.containsKey(opt)) {
@@ -676,25 +673,6 @@ class PluginRepository(val world: World) {
         pluginCount++
     }
 
-    fun executeNpc(p: Player, id: Int, opt: Int): Boolean {
-        val optMap = npcPlugins[id] ?: return false
-        val logic = optMap[opt] ?: return false
-        p.world.pluginExecutor.execute(p, logic)
-        return true
-    }
-
-    @Throws(IllegalStateException::class)
-    fun bindNpc(id: Int, opt: Int, plugin: Function1<Plugin, Unit>) {
-        val optMap = npcPlugins[id] ?: HashMap()
-        if (optMap.containsKey(opt)) {
-            logger.error("Npc is already bound to a plugin: $id [opt=$opt]")
-            throw IllegalStateException("Npc is already bound to a plugin: $id [opt=$opt]")
-        }
-        optMap[opt] = plugin
-        npcPlugins[id] = optMap
-        pluginCount++
-    }
-
     fun executeObject(p: Player, id: Int, opt: Int): Boolean {
         val optMap = objectPlugins[id] ?: return false
         val logic = optMap[opt] ?: return false
@@ -702,7 +680,31 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    @Throws(IllegalStateException::class)
+    fun bindNpc(npc: Int, opt: Int, lineOfSightDistance: Int = -1, plugin: Function1<Plugin, Unit>) {
+        val optMap = npcPlugins[npc] ?: HashMap()
+        if (optMap.containsKey(opt)) {
+            logger.error("Npc is already bound to a plugin: $npc [opt=$opt]")
+            throw IllegalStateException("Npc is already bound to a plugin: $npc [opt=$opt]")
+        }
+
+        if (lineOfSightDistance != -1) {
+            npcInteractionDistancePlugins[npc] = lineOfSightDistance
+        }
+
+        optMap[opt] = plugin
+        npcPlugins[npc] = optMap
+        pluginCount++
+    }
+
+    fun executeNpc(p: Player, id: Int, opt: Int): Boolean {
+        val optMap = npcPlugins[id] ?: return false
+        val logic = optMap[opt] ?: return false
+        p.world.pluginExecutor.execute(p, logic)
+        return true
+    }
+
+    fun getNpcInteractionDistance(npc: Int): Int? = npcInteractionDistancePlugins[npc]
+
     fun bindCustomObjectPath(id: Int, plugin: Function1<Plugin, Unit>) {
         if (customObjectPaths.containsKey(id)) {
             logger.error("Object is already bound to a custom path-finder plugin: $id")
@@ -718,7 +720,6 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    @Throws(IllegalStateException::class)
     fun bindCustomNpcPath(id: Int, plugin: Function1<Plugin, Unit>) {
         if (customNpcPaths.containsKey(id)) {
             logger.error("Npc is already bound to a custom path-finder plugin: $id")

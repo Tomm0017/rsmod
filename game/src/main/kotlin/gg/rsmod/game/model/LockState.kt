@@ -49,6 +49,11 @@ enum class LockState {
         else -> false
     }
 
+    fun canNpcInteract(): Boolean = when (this) {
+        NONE -> true
+        else -> false
+    }
+
     fun canItemInteract(): Boolean = when (this) {
         NONE -> true
         else -> false

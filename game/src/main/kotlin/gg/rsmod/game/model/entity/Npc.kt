@@ -1,5 +1,6 @@
 package gg.rsmod.game.model.entity
 
+import com.google.common.base.MoreObjects
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
@@ -85,4 +86,6 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     fun isSpawned(): Boolean = index > 0
 
     fun getDef(): NpcDef = world.definitions.get(NpcDef::class.java, id)
+
+    override fun toString(): String = MoreObjects.toStringHelper(this).add("id", id).add("name", getDef().name).add("index", index).add("active", active).toString()
 }

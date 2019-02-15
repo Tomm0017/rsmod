@@ -417,12 +417,36 @@ in-packets:
         type: SHORT
         trans: ADD
 
+  - message: gg.rsmod.game.message.impl.OpNpc1Message
+    type: FIXED
+    opcode: 71
+    length: 3
+    structure:
+      - name: movement_type
+        type: BYTE
+        trans: NEGATE
+      - name: index
+        order: LITTLE
+        type: SHORT
+
   - message: gg.rsmod.game.message.impl.OpNpc2Message
     type: FIXED
     opcode: 1
     length: 3
     structure:
       - name: index
+        type: SHORT
+        trans: ADD
+      - name: movement_type
+        type: BYTE
+
+  - message: gg.rsmod.game.message.impl.OpNpc3Message
+    type: FIXED
+    opcode: 33
+    length: 3
+    structure:
+      - name: index
+        order: LITTLE
         type: SHORT
         trans: ADD
       - name: movement_type

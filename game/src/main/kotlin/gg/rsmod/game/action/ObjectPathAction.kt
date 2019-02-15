@@ -17,8 +17,8 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.DataConstants
 
 /**
- * Responsible for calculating distances and valid interaction tiles for
- * [GameObject] pathing.
+ * This class is eesponsible for calculating distances and valid interaction
+ * tiles for [GameObject] path-finding.
  *
  * @author Tom <rspsmods@gmail.com>
  */

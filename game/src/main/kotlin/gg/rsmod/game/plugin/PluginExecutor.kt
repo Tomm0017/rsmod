@@ -20,12 +20,6 @@ class PluginExecutor {
      */
     private val active = hashSetOf<Plugin>()
 
-    /**
-     * A collection of plugins that will be executed on the next possible
-     * cycle.
-     */
-    private val activeQueue = hashSetOf<Plugin>()
-
     fun init(gameService: GameService) {
         dispatcher = gameService.dispatcher
     }
@@ -35,7 +29,7 @@ class PluginExecutor {
      */
     fun getActiveCount(): Int = active.size
 
-    fun <T> execute(ctx: Any, logic: Function1<Plugin, T>): T {
+    fun <T> execute(ctx: Any, logic: (Plugin) -> T): T? {
         val plugin = Plugin(ctx, dispatcher)
         val invoke = logic.invoke(plugin)
 
@@ -50,11 +44,9 @@ class PluginExecutor {
          * to continue the dialog as it has been removed from 'active' plugins
          * and would no longer pulse).
          */
-        if (!plugin.canKill()) {
-            interruptPluginsWithContext(ctx) // Interrupt any previous suspended plugins
-            activeQueue.add(plugin)
+        if (plugin.suspended()) {
+            active.add(plugin)
         }
-
         return invoke
     }
 
@@ -82,54 +74,32 @@ class PluginExecutor {
      * Terminates any plugins that have [ctx] as their context.
      */
     fun interruptPluginsWithContext(ctx: Any) {
-        val activeIterator = active.iterator()
-        while (activeIterator.hasNext()) {
-            val plugin = activeIterator.next()
+        val iterator = active.iterator()
+        while (iterator.hasNext()) {
+            val plugin = iterator.next()
             if (plugin.ctx == ctx) {
                 plugin.terminate()
-                activeIterator.remove()
-            }
-        }
-
-        val queueIterator = activeQueue.iterator()
-        while (queueIterator.hasNext()) {
-            val plugin = queueIterator.next()
-            if (plugin.ctx == ctx) {
-                plugin.terminate()
-                queueIterator.remove()
+                iterator.remove()
             }
         }
     }
 
     fun pulse() {
-        active.addAll(activeQueue)
-        activeQueue.clear()
+        val plugins = active.toList()
 
-        val iterator = active.iterator()
-        while (iterator.hasNext()) {
-            val plugin = iterator.next()
-            /**
-             * The first pulse must be completely skipped, otherwise the initial
-             * logic executes 1-tick too soon.
-             */
-            if (plugin.started) {
-                plugin.pulse()
-                if (plugin.canKill()) {
-                    iterator.remove()
-                }
-            } else {
-                plugin.started = true
+        plugins.forEach { plugin ->
+            plugin.pulse()
+            if (!plugin.suspended()) {
+                active.remove(plugin)
             }
         }
     }
 
     /**
      * Removes all active and queued plugins.
-     *
-     * This method is reserved for internal use. Avoid using.
+     * This method is reserved for internal usage. Use with caution.
      */
     fun internalKillAll() {
         active.clear()
-        activeQueue.clear()
     }
 }

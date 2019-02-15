@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.content.npcs.kbd
+package gg.rsmod.plugins.osrs.content.npcs.combat.kbd
 
 import gg.rsmod.plugins.osrs.api.cfg.Npcs
 

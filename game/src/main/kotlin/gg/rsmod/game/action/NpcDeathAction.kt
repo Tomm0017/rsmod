@@ -5,6 +5,8 @@ import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.plugin.Plugin
 
 /**
+ * This class is responsible for handling npc death events.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 object NpcDeathAction {

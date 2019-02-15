@@ -114,13 +114,13 @@ fun Player.openInterface(destination: InterfaceDestination, autoClose: Boolean =
     openInterface(parent, child, destination.interfaceId, if (destination.clickThrough) 1 else 0, isMainComponent = destination == InterfaceDestination.MAIN_SCREEN)
 }
 
-fun Player.openInterface(parent: Int, child: Int, component: Int, type: Int = 0, isMainComponent: Boolean = false) {
+fun Player.openInterface(parent: Int, child: Int, interfaceId: Int, type: Int = 0, isMainComponent: Boolean = false) {
     if (isMainComponent) {
-        components.openMain(parent, child, component)
+        components.openMain(parent, child, interfaceId)
     } else {
-        components.open(parent, child, component)
+        components.open(parent, child, interfaceId)
     }
-    write(IfOpenSubMessage(parent, child, component, type))
+    write(IfOpenSubMessage(parent, child, interfaceId, type))
 }
 
 fun Player.closeInterface(interfaceId: Int) {
@@ -172,7 +172,7 @@ fun Player.toggleDisplayInterface(newMode: DisplayMode) {
             setInterfaceUnderlay(color = -1, transparency = -1)
         }
         if (oldMode.isResizable()) {
-            openInterface(parent = getDisplayComponentId(newMode), child = getChildId(InterfaceDestination.MAIN_SCREEN, newMode), component = 60, type = 0)
+            openInterface(parent = getDisplayComponentId(newMode), child = getChildId(InterfaceDestination.MAIN_SCREEN, newMode), interfaceId = 60, type = 0)
         }
     }
 }

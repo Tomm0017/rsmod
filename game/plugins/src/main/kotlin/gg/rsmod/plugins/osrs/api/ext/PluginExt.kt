@@ -71,13 +71,13 @@ fun Plugin.getInteractingNpc(): Npc = pawn().attr[INTERACTING_NPC_ATTR]!!.get()!
  * The id of the option chosen. The id can range from [1] inclusive to [options.size] inclusive.
  */
 suspend fun Plugin.options(vararg options: String, title: String = "Select an Option"): Int {
-    val p = player()
+    val player = player()
 
-    p.setVarbit(5983, 1)
-    p.runClientScript(2379)
-    p.setInterfaceEvents(parent = 219, child = 1, from = 1, to = options.size, setting = 1)
-    p.openInterface(parent = 162, child = CHATBOX_CHILD, component = 219)
-    p.runClientScript(58, title, options.joinToString("|"))
+    player.setVarbit(5983, 1)
+    player.runClientScript(2379)
+    player.setInterfaceEvents(parent = 219, child = 1, from = 1, to = options.size, setting = 1)
+    player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 219)
+    player.runClientScript(58, title, options.joinToString("|"))
 
     interruptAction = closeDialog
     waitReturnValue()
@@ -93,9 +93,9 @@ suspend fun Plugin.options(vararg options: String, title: String = "Select an Op
  * The integer input.
  */
 suspend fun Plugin.inputInteger(description: String = "Enter amount"): Int {
-    val p = player()
+    val player = player()
 
-    p.runClientScript(108, description)
+    player.runClientScript(108, description)
 
     waitReturnValue()
 
@@ -113,13 +113,13 @@ suspend fun Plugin.inputInteger(description: String = "Enter amount"): Int {
  * dialog box.
  */
 suspend fun Plugin.messageDialog(message: String, lineSpacing: Int = 31) {
-    val p = player()
+    val player = player()
 
-    p.setComponentText(parent = 229, child = 1, text = message)
-    p.setComponentText(parent = 229, child = 2, text = "Click here to continue")
-    p.setInterfaceEvents(parent = 229, child = 2, range = -1..-1, setting = 1)
-    p.openInterface(parent = 162, child = CHATBOX_CHILD, component = 229)
-    p.runClientScript(600, 1, 1, lineSpacing, 15007745)
+    player.setComponentText(parent = 229, child = 1, text = message)
+    player.setComponentText(parent = 229, child = 2, text = "Click here to continue")
+    player.setInterfaceEvents(parent = 229, child = 2, range = -1..-1, setting = 1)
+    player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 229)
+    player.runClientScript(600, 1, 1, lineSpacing, 15007745)
 
     interruptAction = closeDialog
     waitReturnValue()
@@ -134,29 +134,36 @@ suspend fun Plugin.messageDialog(message: String, lineSpacing: Int = 31) {
  *
  * @npc
  * The npc id which represents the npc that will be drawn on the dialog box.
+ * If set to -1, the npc id will be set to the player's interacting npc. If the
+ * player is not interacting with an npc, a [RuntimeException] will be thrown.
  *
  * @animation
  * The animation id of the npc's head model.
  *
  * @title
- * The title of the dialog, if left as [null], the npc's name will be used.
+ * The title of the dialog, if left as null, the npc's name will be used.
  */
-suspend fun Plugin.npcDialog(message: String, npc: Int, animation: Int = 588, title: String? = null) {
-    val p = player()
+suspend fun Plugin.npcDialog(message: String, npc: Int = -1, animation: Int = 588, title: String? = null) {
+    val player = player()
+
+    var npcId = npc
+    if (npcId == -1) {
+        npcId = player.attr[INTERACTING_NPC_ATTR]?.get()?.id ?: throw RuntimeException("Npc id must be manually set as the player is not interacting with an npc.")
+    }
 
     var dialogTitle = title
     if (dialogTitle == null) {
-        dialogTitle = p.world.definitions.get(NpcDef::class.java, npc).name
+        dialogTitle = player.world.definitions.get(NpcDef::class.java, npcId).name
     }
 
-    p.setComponentNpcHead(parent = 231, child = 1, npc = npc)
-    p.setComponentText(parent = 231, child = 2, text = dialogTitle)
-    p.setComponentText(parent = 231, child = 3, text = "Click here to continue")
-    p.setComponentText(parent = 231, child = 4, text = message)
-    p.setComponentAnim(parent = 231, child = 1, anim = animation)
-    p.setInterfaceEvents(parent = 231, child = 3, from = -1, to = -1, setting = 1)
-    p.openInterface(parent = 162, child = CHATBOX_CHILD, component = 231)
-    p.runClientScript(600, 1, 1, 16, 15138820)
+    player.setComponentNpcHead(parent = 231, child = 1, npc = npcId)
+    player.setComponentText(parent = 231, child = 2, text = dialogTitle)
+    player.setComponentText(parent = 231, child = 3, text = "Click here to continue")
+    player.setComponentText(parent = 231, child = 4, text = message)
+    player.setComponentAnim(parent = 231, child = 1, anim = animation)
+    player.setInterfaceEvents(parent = 231, child = 3, from = -1, to = -1, setting = 1)
+    player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 231)
+    player.runClientScript(600, 1, 1, 16, 15138820)
 
     interruptAction = closeDialog
     waitReturnValue()
@@ -176,15 +183,15 @@ suspend fun Plugin.npcDialog(message: String, npc: Int, animation: Int = 588, ti
  * The amount of the item to show on the dialog.
  */
 suspend fun Plugin.itemDialog(message: String, item: Int, amount: Int = 1) {
-    val p = player()
+    val player = player()
 
-    p.setComponentItem(parent = 193, child = 1, item = item, amountOrZoom = amount)
-    p.setComponentText(parent = 193, child = 2, text = message)
-    p.setComponentText(parent = 193, child = 3, text = "Click here to continue")
-    p.setInterfaceEvents(parent = 193, child = 3, range = -1..-1, setting = 1)
-    p.setInterfaceEvents(parent = 193, child = 4, range = -1..-1, setting = 0)
-    p.setInterfaceEvents(parent = 193, child = 5, range = -1..-1, setting = 0)
-    p.openInterface(parent = 162, child = CHATBOX_CHILD, component = 193)
+    player.setComponentItem(parent = 193, child = 1, item = item, amountOrZoom = amount)
+    player.setComponentText(parent = 193, child = 2, text = message)
+    player.setComponentText(parent = 193, child = 3, text = "Click here to continue")
+    player.setInterfaceEvents(parent = 193, child = 3, range = -1..-1, setting = 1)
+    player.setInterfaceEvents(parent = 193, child = 4, range = -1..-1, setting = 0)
+    player.setInterfaceEvents(parent = 193, child = 5, range = -1..-1, setting = 0)
+    player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 193)
 
     interruptAction = closeDialog
     waitReturnValue()
@@ -192,14 +199,14 @@ suspend fun Plugin.itemDialog(message: String, item: Int, amount: Int = 1) {
 }
 
 suspend fun Plugin.doubleItemDialog(message: String, item1: Int, item2: Int, amount1: Int = 1, amount2: Int = 1) {
-    val p = player()
+    val player = player()
 
-    p.setComponentItem(parent = 11, child = 1, item = item1, amountOrZoom = amount1)
-    p.setComponentText(parent = 11, child = 2, text = message)
-    p.setComponentItem(parent = 11, child = 3, item = item2, amountOrZoom = amount2)
-    p.setComponentText(parent = 11, child = 4, text = "Click here to continue")
-    p.setInterfaceEvents(parent = 11, child = 4, range = -1..-1, setting = 1)
-    p.openInterface(parent = 162, child = CHATBOX_CHILD, component = 11)
+    player.setComponentItem(parent = 11, child = 1, item = item1, amountOrZoom = amount1)
+    player.setComponentText(parent = 11, child = 2, text = message)
+    player.setComponentItem(parent = 11, child = 3, item = item2, amountOrZoom = amount2)
+    player.setComponentText(parent = 11, child = 4, text = "Click here to continue")
+    player.setInterfaceEvents(parent = 11, child = 4, range = -1..-1, setting = 1)
+    player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 11)
 
     interruptAction = closeDialog
     waitReturnValue()
@@ -207,9 +214,9 @@ suspend fun Plugin.doubleItemDialog(message: String, item1: Int, item2: Int, amo
 }
 
 suspend fun Plugin.searchItemDialog(message: String): Int {
-    val p = player()
+    val player = player()
 
-    p.runClientScript(750, message, 1, -1)
+    player.runClientScript(750, message, 1, -1)
 
     waitReturnValue()
 
@@ -217,7 +224,7 @@ suspend fun Plugin.searchItemDialog(message: String): Int {
 }
 
 suspend fun Plugin.levelUpDialog(skill: Int, levels: Int) {
-    val p = player()
+    val player = player()
 
     if (skill != Skills.HUNTER) {
         val children = mapOf(
@@ -245,34 +252,34 @@ suspend fun Plugin.levelUpDialog(skill: Int, levels: Int) {
                 Skills.WOODCUTTING to 51)
 
         children.forEach { key, value ->
-            p.setComponentHidden(parent = 233, child = value, hidden = skill != key)
+            player.setComponentHidden(parent = 233, child = value, hidden = skill != key)
         }
 
-        val skillName = Skills.getSkillName(p.world, skill)
+        val skillName = Skills.getSkillName(player.world, skill)
         val initialChar = Character.toLowerCase(skillName.toCharArray().first())
         val vowel = initialChar == 'a' || initialChar == 'e' || initialChar == 'i' || initialChar == 'o' || initialChar == 'u'
         val levelFormat = if (levels == 1) (if (vowel) "an" else "a") else "$levels"
 
-        p.setComponentText(parent = 233, child = 1, text = "<col=000080>Congratulations, you just advanced $levelFormat $skillName ${"level".plural(levels)}.")
-        p.setComponentText(parent = 233, child = 2, text = "Your $skillName level is now ${p.getSkills().getMaxLevel(skill)}.")
-        p.setComponentText(parent = 233, child = 3, text = "Click here to continue")
-        p.openInterface(parent = 162, child = CHATBOX_CHILD, component = 233)
+        player.setComponentText(parent = 233, child = 1, text = "<col=000080>Congratulations, you just advanced $levelFormat $skillName ${"level".plural(levels)}.")
+        player.setComponentText(parent = 233, child = 2, text = "Your $skillName level is now ${player.getSkills().getMaxLevel(skill)}.")
+        player.setComponentText(parent = 233, child = 3, text = "Click here to continue")
+        player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 233)
     } else {
         val levelFormat = if (levels == 1) "a" else "$levels"
 
-        p.setInterfaceEvents(parent = 132, child = 3, from = -1, to = -1, setting = 1)
-        p.setInterfaceEvents(parent = 132, child = 4, from = -1, to = -1, setting = 0)
-        p.setInterfaceEvents(parent = 132, child = 5, from = -1, to = -1, setting = 0)
+        player.setInterfaceEvents(parent = 132, child = 3, from = -1, to = -1, setting = 1)
+        player.setInterfaceEvents(parent = 132, child = 4, from = -1, to = -1, setting = 0)
+        player.setInterfaceEvents(parent = 132, child = 5, from = -1, to = -1, setting = 0)
 
-        p.setComponentItem(parent = 193, child = 1, item = 9951, amountOrZoom = 400)
+        player.setComponentItem(parent = 193, child = 1, item = 9951, amountOrZoom = 400)
 
-        p.setComponentText(parent = 193, child = 2, text = "<col=000080>Congratulations, you've just advanced $levelFormat Hunter ${"level".plural(levels)}." +
-                "<col=000000><br><br>Your Hunter level is now ${p.getSkills().getMaxLevel(skill)}.")
-        p.setComponentText(parent = 193, child = 3, text = "Click here to continue")
-        p.setComponentText(parent = 193, child = 4, text = "")
-        p.setComponentText(parent = 193, child = 5, text = "")
+        player.setComponentText(parent = 193, child = 2, text = "<col=000080>Congratulations, you've just advanced $levelFormat Hunter ${"level".plural(levels)}." +
+                "<col=000000><br><br>Your Hunter level is now ${player.getSkills().getMaxLevel(skill)}.")
+        player.setComponentText(parent = 193, child = 3, text = "Click here to continue")
+        player.setComponentText(parent = 193, child = 4, text = "")
+        player.setComponentText(parent = 193, child = 5, text = "")
 
-        p.openInterface(parent = 162, child = CHATBOX_CHILD, component = 193)
+        player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 193)
     }
 
     interruptAction = closeDialog

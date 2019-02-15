@@ -196,19 +196,13 @@ abstract class Pawn(val world: World) : Entity() {
     }
 
     fun timerCycle() {
-        val timerIterator = timers.getTimers().entries.iterator()
-        while (timerIterator.hasNext()) {
-            val timer = timerIterator.next()
+        val timersCopy = timers.getTimers().toMutableMap()
 
-            if (timer.value <= 0) {
-                // NOTE(Tom): if any timer may modify another [Pawn], we will
-                // need to iterate timers on a sequential task and execute
-                // any of them which have a value (time) of [0], instead of
-                // handling it here. This would only apply if we are using
-                // a parallel task to call [cycle].
-                world.plugins.executeTimer(this, timer.key)
-                if (!timers.has(timer.key)) {
-                    timerIterator.remove()
+        timersCopy.forEach { key, time ->
+            if (time <= 0) {
+                world.plugins.executeTimer(this, key)
+                if (!timers.has(key)) {
+                    timers.remove(key)
                 }
             }
         }
@@ -281,6 +275,8 @@ abstract class Pawn(val world: World) : Entity() {
             }
             return
         }
+
+        movementQueue.clear()
 
         var tail: Tile? = null
         var next = path.poll()

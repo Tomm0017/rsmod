@@ -19,11 +19,12 @@ object PawnPathAction {
         val world = pawn.world
         val npc = pawn.attr[INTERACTING_NPC_ATTR]!!.get()!!
         val opt = pawn.attr[INTERACTING_OPT_ATTR]!!
+        val lineOfSightRange = world.plugins.getNpcInteractionDistance(npc.id)
 
         it.suspendable {
             pawn.facePawn(npc)
 
-            val pathFound = walkTo(it, pawn, npc, interactionRange = 1)
+            val pathFound = walkTo(it, pawn, npc, interactionRange = lineOfSightRange ?: 1, lineOfSight = lineOfSightRange != null)
 
             if (!pathFound) {
                 pawn.movementQueue.clear()
@@ -46,12 +47,11 @@ object PawnPathAction {
         }
     }
 
-    suspend fun walkTo(it: Plugin, pawn: Pawn, target: Pawn, interactionRange: Int): Boolean {
+    suspend fun walkTo(it: Plugin, pawn: Pawn, target: Pawn, interactionRange: Int, lineOfSight: Boolean): Boolean {
         val sourceSize = pawn.getSize()
         val targetSize = target.getSize()
         val sourceTile = pawn.tile
         val targetTile = target.tile
-        val projectile = interactionRange > 2
 
         val frozen = pawn.timers.has(FROZEN_TIMER)
 
@@ -59,30 +59,33 @@ object PawnPathAction {
             if (overlap(sourceTile, sourceSize, targetTile, targetSize)) {
                 return false
             }
-            val sourceCentre = sourceTile.transform(sourceSize / 2, sourceSize / 2)
-            val targetCentre = targetTile.transform(targetSize / 2, targetSize / 2)
-            if (!sourceCentre.isWithinRadius(targetCentre, interactionRange)) {
-                return false
+
+            return if (!lineOfSight) {
+                bordering(sourceTile, sourceSize, targetTile, interactionRange)
+            } else {
+                overlap(sourceTile, sourceSize, targetTile, interactionRange) && (interactionRange == 0 || !sourceTile.sameAs(targetTile))
+                        && pawn.world.collision.raycast(sourceTile, targetTile, lineOfSight)
             }
         }
 
-        val request = PathRequest.Builder()
+        val builder = PathRequest.Builder()
                 .setPoints(pawn.tile, target.tile)
                 .setSourceSize(sourceSize, sourceSize)
                 .setTargetSize(targetSize, targetSize)
-                .setProjectilePath(projectile)
+                .setProjectilePath(lineOfSight)
                 .setTouchRadius(interactionRange)
                 .clipPathNodes(node = true, link = true)
-                .clipDiagonalTiles()
-                .clipOverlapTiles()
-                .build()
 
-        val route = pawn.createPathFindingStrategy().calculateRoute(request)
+        if (!lineOfSight) {
+            builder.clipOverlapTiles().clipDiagonalTiles()
+        }
+
+        val route = pawn.createPathFindingStrategy().calculateRoute(builder.build())
         pawn.walkPath(route.path, MovementQueue.StepType.NORMAL)
 
         while (!pawn.tile.sameAs(route.tail)) {
             if (!targetTile.sameAs(target.tile)) {
-                return walkTo(it, pawn, target, interactionRange)
+                return walkTo(it, pawn, target, interactionRange, lineOfSight)
             }
             it.wait(1)
         }
@@ -91,4 +94,6 @@ object PawnPathAction {
     }
 
     private fun overlap(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areOverlapping(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
+
+    private fun bordering(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areBordering(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
 }

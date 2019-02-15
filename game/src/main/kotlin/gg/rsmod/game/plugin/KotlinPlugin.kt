@@ -95,7 +95,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
         check(slot != -1) { "Option \"$option\" not found for npc $item [options=${def.inventoryMenu.filterNotNull().filter { it.isNotBlank() }}]" }
 
-        r.bindNpc(item, slot, plugin)
+        r.bindItem(item, slot + 1, plugin)
     }
 
     fun on_obj_option(obj: Int, option: String, plugin: Function1<Plugin, Unit>) {
@@ -105,17 +105,17 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
         check(slot != -1) { "Option \"$option\" not found for object $obj [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
 
-        r.bindObject(obj, slot, plugin)
+        r.bindObject(obj, slot + 1, plugin)
     }
 
-    fun on_npc_option(npc: Int, option: String, plugin: Function1<Plugin, Unit>) {
+    fun on_npc_option(npc: Int, option: String, lineOfSightDistance: Int = -1, plugin: Function1<Plugin, Unit>) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(NpcDef::class.java, npc)
         val slot = def.options.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
 
         check(slot != -1) { "Option \"$option\" not found for npc $npc [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
 
-        r.bindNpc(npc, slot, plugin)
+        r.bindNpc(npc, slot + 1, lineOfSightDistance, plugin)
     }
 
     fun on_world_init(plugin: (Plugin) -> Unit) = r.bindWorldInit(plugin)
@@ -165,9 +165,9 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
     fun on_item_option(item: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindItem(item, opt, plugin)
 
-    fun on_obj_option(obj: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindObject(obj, opt, plugin)
+    fun on_obj_option(obj: Int, option: Int, plugin: Function1<Plugin, Unit>) = r.bindObject(obj, option, plugin)
 
-    fun on_npc_option(npc: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindNpc(npc, opt, plugin)
+    fun on_npc_option(npc: Int, opt: Int, lineOfSightDistance: Int = -1, plugin: Function1<Plugin, Unit>) = r.bindNpc(npc, opt, lineOfSightDistance, plugin)
 
     fun set_custom_object_path(obj: Int, plugin: Function1<Plugin, Unit>) = r.bindCustomObjectPath(obj, plugin)
 

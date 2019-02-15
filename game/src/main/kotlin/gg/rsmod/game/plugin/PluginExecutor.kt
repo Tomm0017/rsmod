@@ -85,6 +85,10 @@ class PluginExecutor {
     }
 
     fun pulse() {
+        /**
+         * Copy the active list to avoid concurrent modifications if one plugin
+         * executes another.
+         */
         val plugins = active.toList()
 
         plugins.forEach { plugin ->

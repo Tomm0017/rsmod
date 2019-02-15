@@ -44,15 +44,15 @@ class OpObj3Handler : MessageHandler<OpObj3Message> {
             return
         }
 
-        client.interruptPlugins()
-        client.resetInteractions()
-
         if (message.movementType == 1 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
             client.teleport(item.tile)
         }
 
-        client.attr.put(INTERACTING_OPT_ATTR, 3)
-        client.attr.put(INTERACTING_GROUNDITEM_ATTR, WeakReference(item))
+        client.attr[INTERACTING_OPT_ATTR] = 3
+        client.attr[INTERACTING_GROUNDITEM_ATTR] = WeakReference(item)
+
+        client.interruptPlugins()
+        client.resetInteractions()
         client.world.pluginExecutor.execute(client, GroundItemTakeAction.walkPlugin)
     }
 }

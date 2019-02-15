@@ -29,6 +29,7 @@ class OpNpc1Handler : MessageHandler<OpNpc1Message> {
 
         client.attr[INTERACTING_OPT_ATTR] = 1
         client.attr[INTERACTING_NPC_ATTR] = WeakReference(npc)
+        client.interruptPlugins()
         client.executePlugin(PawnPathAction.walkPlugin)
     }
 }

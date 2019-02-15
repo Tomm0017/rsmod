@@ -32,7 +32,8 @@ class OpNpcTHandler : MessageHandler<OpNpcTMessage> {
         client.attr[INTERACTING_NPC_ATTR] = WeakReference(npc)
         client.attr[INTERACTING_COMPONENT_PARENT] = parent
         client.attr[INTERACTING_COMPONENT_CHILD] = child
-
+        
+        client.interruptPlugins()
         if (!client.world.plugins.executeSpellOnNpc(client, parent, child)) {
             client.message(Entity.NOTHING_INTERESTING_HAPPENS)
             if (client.world.devContext.debugMagicSpells) {

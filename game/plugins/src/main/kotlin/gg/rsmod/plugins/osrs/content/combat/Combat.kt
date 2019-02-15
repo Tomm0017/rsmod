@@ -57,6 +57,8 @@ object Combat {
             pawn.attr.remove(CASTING_SPELL)
             reset(pawn)
         }
+
+        target.interruptPlugins()
     }
 
     fun raycast(pawn: Pawn, target: Pawn, distance: Int, projectile: Boolean): Boolean {

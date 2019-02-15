@@ -23,6 +23,7 @@ class OpNpc2Handler : MessageHandler<OpNpc2Message> {
             client.teleport(client.world.findRandomTileAround(npc.tile, 1) ?: npc.tile)
         }
 
+        client.interruptPlugins()
         client.attack(npc)
     }
 }

@@ -2,6 +2,7 @@ package gg.rsmod.plugins.osrs.api.ext
 
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.combat.CombatClass
+import gg.rsmod.game.model.combat.PawnHit
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.entity.Projectile
@@ -42,6 +43,22 @@ fun Pawn.doubleHit(damage1: Int, damage2: Int, delay: Int = 0, type1: HitType = 
 
     pendingHits.add(hit)
     return hit
+}
+
+fun Pawn.dealHit(target: Pawn, formula: CombatFormula, delay: Int, onHit: (PawnHit) -> Unit = {}): PawnHit {
+    val accuracy = formula.getAccuracy(this, target)
+    val maxHit = formula.getMaxHit(this, target)
+    val landHit = accuracy >= world.randomDouble()
+
+    val hit = if (landHit) {
+        target.hit(damage = world.random(maxHit), delay = delay)
+    } else {
+        target.hit(damage = 0, delay = delay)
+    }
+
+    val pawnHit = PawnHit(hit, landHit)
+    hit.addAction { onHit(pawnHit) }.setCancelIf { this.isDead() }
+    return pawnHit
 }
 
 fun Pawn.showHitbar(percentage: Int, type: HitbarType) {
@@ -111,11 +128,3 @@ suspend fun Pawn.canAttackMelee(it: Plugin, target: Pawn, moveIfNeeded: Boolean)
 suspend fun Pawn.moveToAttackRange(it: Plugin, target: Pawn, distance: Int, projectile: Boolean): Boolean = Combat.moveToAttackRange(it, this, target, distance, projectile)
 
 fun Pawn.postAttackLogic(target: Pawn) = Combat.postAttack(this, target)
-
-fun Pawn.getRandomDamage(target: Pawn, formula: CombatFormula): Int {
-    val accuracy = formula.getAccuracy(this, target)
-    val maxHit = formula.getMaxHit(this, target)
-    val landHit = accuracy >= world.randomDouble()
-
-    return if (landHit) world.random(maxHit) else 0
-}

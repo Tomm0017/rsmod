@@ -5,6 +5,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.combat.XpMode
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.plugins.osrs.api.HitType
 import gg.rsmod.plugins.osrs.api.ProjectileType
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.ext.*
@@ -58,14 +59,18 @@ object MagicCombatStrategy : CombatStrategy {
             SpellRequirements.getRequirements(spell.id)?.let { requirement -> SpellRequirements.removeRunes(pawn, requirement.items) }
         }
 
-        val damage = pawn.getRandomDamage(target, MagicCombatFormula)
+        val formula = MagicCombatFormula
+        val accuracy = formula.getAccuracy(pawn, target)
+        val maxHit = formula.getMaxHit(pawn, target)
+        val landHit = accuracy >= world.randomDouble()
+        val damage = if (landHit) world.random(maxHit) else 0
 
         if (damage > 0 && pawn.getType().isPlayer()) {
             addCombatXp(pawn as Player, damage)
         }
 
-        target.hit(damage = damage, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize()  / 2)))
-                .addActions(hitActions).setCancelIf { target.isDead() }
+        target.hit(damage = damage, type = if (landHit) HitType.HIT else HitType.BLOCK, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize()  / 2)))
+                .addActions(hitActions).setCancelIf { pawn.isDead() }
     }
 
     fun getHitDelay(start: Tile, target: Tile): Int {

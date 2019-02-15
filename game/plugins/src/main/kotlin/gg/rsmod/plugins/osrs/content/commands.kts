@@ -14,7 +14,6 @@ import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.inter.bank.Bank
-import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
 import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
@@ -66,16 +65,28 @@ on_command("tele", Privilege.ADMIN_POWER) {
     }
 }
 
+on_command("infrun", Privilege.ADMIN_POWER) {
+    val player = it.player()
+    player.toggleStorageBit(INFINITE_VARS_STORAGE, InfiniteVarsType.RUN)
+    player.message("Infinite run: ${if (!player.hasStorageBit(INFINITE_VARS_STORAGE, InfiniteVarsType.RUN)) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
+}
+
 on_command("infpray", Privilege.ADMIN_POWER) {
-    val p = it.player()
-    p.toggleVarbit(Prayers.INF_PRAY_VARBIT)
-    p.message("Infinite prayer: ${if (p.getVarbit(Prayers.INF_PRAY_VARBIT) == 0) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
+    val player = it.player()
+    player.toggleStorageBit(INFINITE_VARS_STORAGE, InfiniteVarsType.PRAY)
+    player.message("Infinite prayer: ${if (!player.hasStorageBit(INFINITE_VARS_STORAGE, InfiniteVarsType.PRAY)) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
+}
+
+on_command("infhp", Privilege.ADMIN_POWER) {
+    val player = it.player()
+    player.toggleStorageBit(INFINITE_VARS_STORAGE, InfiniteVarsType.HP)
+    player.message("Infinite hp: ${if (!player.hasStorageBit(INFINITE_VARS_STORAGE, InfiniteVarsType.HP)) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
 }
 
 on_command("infrunes", Privilege.ADMIN_POWER) {
-    val p = it.player()
-    p.toggleVarbit(SpellRequirements.INF_RUNES_VARBIT)
-    p.message("Infinite runes: ${if (p.getVarbit(SpellRequirements.INF_RUNES_VARBIT) != 1) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
+    val player = it.player()
+    player.toggleVarbit(SpellRequirements.INF_RUNES_VARBIT)
+    player.message("Infinite runes: ${if (player.getVarbit(SpellRequirements.INF_RUNES_VARBIT) != 1) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
 }
 
 on_command("npc", Privilege.ADMIN_POWER) {

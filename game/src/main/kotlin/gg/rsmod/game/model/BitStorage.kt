@@ -1,6 +1,6 @@
 package gg.rsmod.game.model
 
-import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.util.BitManipulation
 
 /**
@@ -27,19 +27,19 @@ class BitStorage(val key: AttributeKey<Int>) {
      * Get the unpacked value of the bits in range of [StorageBits.startBit]
      * to [StorageBits.endBit].
      */
-    fun get(p: Player, bits: StorageBits): Int = BitManipulation.getBit(packed = get(p), startBit = bits.startBit, endBit = bits.endBit)
+    fun get(p: Pawn, bits: StorageBits): Int = BitManipulation.getBit(packed = getPackedBits(p), startBit = bits.startBit, endBit = bits.endBit)
 
     /**
      * Sets the unpacked value of the bits in range of [StorageBits.startBit]
      * to [StorageBits.endBit], to [value].
      */
-    fun set(p: Player, bits: StorageBits, value: Int) {
-        set(p, BitManipulation.setBit(packed = get(p), startBit = bits.startBit, endBit = bits.endBit, value = value))
+    fun set(p: Pawn, bits: StorageBits, value: Int) {
+        set(p, BitManipulation.setBit(packed = getPackedBits(p), startBit = bits.startBit, endBit = bits.endBit, value = value))
     }
 
-    private fun get(p: Player): Int = p.attr[key] ?: 0
+    private fun getPackedBits(p: Pawn): Int = p.attr[key] ?: 0
 
-    private fun set(p: Player, packed: Int) {
-        p.attr.put(key, packed)
+    private fun set(p: Pawn, packed: Int) {
+        p.attr[key] = packed
     }
 }

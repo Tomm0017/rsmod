@@ -18,7 +18,7 @@ object BitManipulation {
      * [startBit] and [endBit].
      */
     fun setBit(packed: Int, startBit: Int, endBit: Int, value: Int): Int {
-        val position = DataConstants.BIT_SIZES[endBit - startBit] shl startBit
-        return (packed and position.inv()) or (position and (value shl startBit))
+        val maxValue = DataConstants.BIT_SIZES[endBit - startBit] shl startBit
+        return (packed and maxValue.inv()) or ((value shl startBit) and maxValue)
     }
 }

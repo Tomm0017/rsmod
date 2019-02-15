@@ -231,7 +231,7 @@ abstract class Pawn(val world: World) : Entity() {
                 continue
             }
 
-            if (hit.damageDelay-- == 0) {
+            if (--hit.damageDelay <= 0) {
                 if (!hit.cancelCondition()) {
                     blockBuffer.hits.add(hit)
                     addBlock(UpdateBlockType.HITMARK)
@@ -241,7 +241,9 @@ abstract class Pawn(val world: World) : Entity() {
                         if (hitmark.damage > hp) {
                             hitmark.damage = hp
                         }
-                        setCurrentHp(hp - hitmark.damage)
+                        if (INFINITE_VARS_STORAGE.get(this, InfiniteVarsType.HP) == 0) {
+                            setCurrentHp(hp - hitmark.damage)
+                        }
                         if (getCurrentHp() <= 0) {
                             hit.actions.forEach { action -> action() }
                             interruptPlugins()

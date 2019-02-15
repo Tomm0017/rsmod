@@ -1,7 +1,7 @@
 package gg.rsmod.plugins.osrs.content.combat.formula
 
-import gg.rsmod.game.model.ANTIFIRE_POTION_CHARGES
-import gg.rsmod.game.model.DRAGONFIRE_IMMUNITY
+import gg.rsmod.game.model.ANTIFIRE_POTION_CHARGES_ATTR
+import gg.rsmod.game.model.DRAGONFIRE_IMMUNITY_ATTR
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
@@ -32,8 +32,8 @@ class DragonfireFormula(val maxHit: Int, val minHit: Int = 0) : CombatFormula {
 
         if (target is Player) {
             val magicProtection = target.hasPrayerIcon(PrayerIcon.PROTECT_FROM_MAGIC)
-            val antiFirePotion = (target.attr[ANTIFIRE_POTION_CHARGES] ?: 0) > 0
-            val dragonFireImmunity = target.attr[DRAGONFIRE_IMMUNITY] ?: false
+            val antiFirePotion = (target.attr[ANTIFIRE_POTION_CHARGES_ATTR] ?: 0) > 0
+            val dragonFireImmunity = target.attr[DRAGONFIRE_IMMUNITY_ATTR] ?: false
             val antiFireShield = target.hasEquipped(EquipmentType.SHIELD, *ANTI_DRAGON_SHIELDS)
             val dragonfireShield = target.hasEquipped(EquipmentType.SHIELD, *DRAGONFIRE_SHIELDS)
             val wyvernShield = target.hasEquipped(EquipmentType.SHIELD, *WYVERN_SHIELDS)

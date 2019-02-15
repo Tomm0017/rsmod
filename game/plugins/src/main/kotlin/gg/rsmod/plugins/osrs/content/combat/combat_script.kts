@@ -19,7 +19,7 @@ on_command("max") {
     player.message("Max hit=$max - accuracy=$accuracy - land=$landHit")
 }
 
-on_combat {
+set_combat {
     it.suspendable {
         while (true) {
             if (!cycle(it)) {

@@ -7,12 +7,12 @@ import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.plugins.osrs.api.HitType
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.cfg.Npcs
 import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.combat.formula.DragonfireFormula
 import gg.rsmod.plugins.osrs.content.combat.formula.MeleeCombatFormula
-import gg.rsmod.plugins.osrs.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.osrs.content.combat.strategy.RangedCombatStrategy
 
 on_npc_combat(Npcs.KING_BLACK_DRAGON) {
@@ -58,9 +58,9 @@ fun melee_attack(npc: Npc, target: Pawn) {
         npc.animate(80)
     }
     if (MeleeCombatFormula.getAccuracy(npc, target) >= npc.world.randomDouble()) {
-        target.hit(npc.world.random(26), delay = 1)
+        target.hit(npc.world.random(26), type = HitType.HIT, delay = 1)
     } else {
-        target.hit(damage = 0, delay = 1)
+        target.hit(damage = 0, type = HitType.BLOCK, delay = 1)
     }
 }
 
@@ -69,7 +69,7 @@ fun fire_attack(npc: Npc, target: Pawn) {
     npc.prepareAtttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
     npc.animate(81)
     npc.world.spawn(projectile)
-    target.hit(damage = npc.getRandomDamage(target, DragonfireFormula(maxHit = 65)), delay = MagicCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile()))
+    npc.dealHit(target = target, formula = DragonfireFormula(maxHit = 65), delay = RangedCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile()))
 }
 
 fun poison_attack(npc: Npc, target: Pawn) {
@@ -77,14 +77,17 @@ fun poison_attack(npc: Npc, target: Pawn) {
     npc.prepareAtttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
     npc.animate(82)
     npc.world.spawn(projectile)
-    target.hit(damage = npc.getRandomDamage(target, DragonfireFormula(maxHit = 65, minHit = 10)), delay = MagicCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile())).addAction {
-        if (target.world.chance(1, 6)) {
+    val hit = npc.dealHit(target = target, formula = DragonfireFormula(maxHit = 65, minHit = 10), delay = RangedCombatStrategy.getHitDelay(npc.getFrontFacingTile(target), target.getCentreTile())) {
+        if (it.landed() && target.world.chance(1, 6)) {
             target.poison(initialDamage = 8) {
                 if (target is Player) {
                     target.message("You have been poisoned.")
                 }
             }
         }
+    }
+    if (hit.blocked()) {
+        target.graphic(id = 85, height = 124, delay = hit.getClientHitDelay())
     }
 }
 
@@ -93,14 +96,17 @@ fun freeze_attack(npc: Npc, target: Pawn) {
     npc.prepareAtttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
     npc.animate(83)
     npc.world.spawn(projectile)
-    target.hit(damage = npc.getRandomDamage(target, DragonfireFormula(maxHit = 65, minHit = 10)), delay = MagicCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile())).addAction {
-        if (target.world.chance(1, 6)) {
+    val hit = npc.dealHit(target = target, formula = DragonfireFormula(maxHit = 65, minHit = 10), delay = RangedCombatStrategy.getHitDelay(npc.getFrontFacingTile(target), target.getCentreTile())) {
+        if (it.landed() && target.world.chance(1, 6)) {
             target.freeze(cycles = 6) {
                 if (target is Player) {
                     target.message("You have been frozen.")
                 }
             }
         }
+    }
+    if (hit.blocked()) {
+        target.graphic(id = 85, height = 124, delay = hit.getClientHitDelay())
     }
 }
 
@@ -109,8 +115,8 @@ fun shock_attack(npc: Npc, target: Pawn) {
     npc.prepareAtttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
     npc.animate(84)
     npc.world.spawn(projectile)
-    target.hit(damage = npc.getRandomDamage(target, DragonfireFormula(maxHit = 65, minHit = 12)), delay = RangedCombatStrategy.getHitDelay(npc.getCentreTile(), target.getCentreTile())).addAction {
-        if (target.world.chance(1, 6)) {
+    val hit = npc.dealHit(target = target, formula = DragonfireFormula(maxHit = 65, minHit = 12), delay = RangedCombatStrategy.getHitDelay(npc.getFrontFacingTile(target), target.getCentreTile())) {
+        if (it.landed() && target.world.chance(1, 6)) {
             if (target is Player) {
                 arrayOf(Skills.ATTACK, Skills.STRENGTH, Skills.DEFENCE, Skills.MAGIC, Skills.RANGED).forEach { skill ->
                     target.getSkills().alterCurrentLevel(skill, -2)
@@ -118,5 +124,8 @@ fun shock_attack(npc: Npc, target: Pawn) {
                 target.message("You're shocked and weakened!")
             }
         }
+    }
+    if (hit.blocked()) {
+        target.graphic(id = 85, height = 124, delay = hit.getClientHitDelay())
     }
 }

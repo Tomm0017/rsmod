@@ -1,6 +1,8 @@
 package gg.rsmod.plugins.osrs.content.mechanics.prayer
 
 import gg.rsmod.game.model.AttributeKey
+import gg.rsmod.game.model.INFINITE_VARS_STORAGE
+import gg.rsmod.game.model.InfiniteVarsType
 import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
@@ -20,7 +22,7 @@ object Prayers {
     private const val ACTIVE_PRAYERS_VARP = 83
     private const val SELECTED_QUICK_PRAYERS_VARP = 84
 
-    const val INF_PRAY_VARBIT = 5314
+    //const val INF_PRAY_VARBIT = 5314
     private const val QUICK_PRAYERS_ACTIVE_VARBIT = 4103
     private const val KING_RANSOMS_QUEST_VARBIT = 3909 // Used for chivalry/piety prayer.
     private const val RIGOUR_UNLOCK_VARBIT = 5451
@@ -98,7 +100,7 @@ object Prayers {
     }
 
     fun drainPrayer(p: Player) {
-        if (p.isDead() || p.getVarp(Prayers.ACTIVE_PRAYERS_VARP) == 0 || p.getVarbit(Prayers.INF_PRAY_VARBIT) == 1) {
+        if (p.isDead() || p.getVarp(Prayers.ACTIVE_PRAYERS_VARP) == 0 || p.hasStorageBit(INFINITE_VARS_STORAGE, InfiniteVarsType.PRAY)) {
             p.attr.remove(Prayers.PRAYER_DRAIN_COUNTER)
             return
         }
@@ -190,10 +192,6 @@ object Prayers {
 
     private suspend fun checkRequirements(it: Plugin, prayer: Prayer): Boolean {
         val p = it.player()
-
-        if (p.getVarbit(INF_PRAY_VARBIT) == 1) {
-            return true
-        }
 
         if (p.getSkills().getMaxLevel(Skills.PRAYER) < prayer.level) {
             p.syncVarp(ACTIVE_PRAYERS_VARP)

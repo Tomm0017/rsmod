@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.osrs.content.mechanics.poison
 
-import gg.rsmod.game.model.POISON_TICKS_LEFT
+import gg.rsmod.game.model.POISON_TICKS_LEFT_ATTR
 import gg.rsmod.game.model.POISON_TIMER
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
@@ -27,13 +27,13 @@ object Poison {
 
     fun poison(pawn: Pawn, initialDamage: Int): Boolean {
         val ticks = (initialDamage * 5) - 4
-        val oldDamage = getDamageForTicks(pawn.attr[POISON_TICKS_LEFT] ?: 0)
+        val oldDamage = getDamageForTicks(pawn.attr[POISON_TICKS_LEFT_ATTR] ?: 0)
         val newDamage = getDamageForTicks(ticks)
         if (oldDamage > newDamage) {
             return false
         }
         pawn.timers[POISON_TIMER] = 1
-        pawn.attr[POISON_TICKS_LEFT] = ticks
+        pawn.attr[POISON_TICKS_LEFT_ATTR] = ticks
         return true
     }
 

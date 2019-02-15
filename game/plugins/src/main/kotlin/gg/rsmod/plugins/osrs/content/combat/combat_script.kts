@@ -10,16 +10,7 @@ import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.combat.formula.MagicCombatFormula
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
 
-on_command("max") {
-    val player = it.player()
-    player.attr[Combat.CASTING_SPELL] = CombatSpell.WIND_SURGE
-    val accuracy = MagicCombatFormula.getAccuracy(player, player)
-    val landHit = accuracy >= player.world.randomDouble()
-    val max = MagicCombatFormula.getMaxHit(player, player)
-    player.message("Max hit=$max - accuracy=$accuracy - land=$landHit")
-}
-
-set_combat {
+set_combat_logic {
     it.suspendable {
         while (true) {
             if (!cycle(it)) {
@@ -45,7 +36,7 @@ suspend fun cycle(it: Plugin): Boolean {
 
     pawn.facePawn(target)
 
-    if (target.isDead()) {
+    if (!Combat.canEngage(pawn, target)) {
         return false
     }
 
@@ -91,6 +82,7 @@ suspend fun cycle(it: Plugin): Boolean {
             Combat.postAttack(pawn, target)
         } else {
             Combat.reset(pawn)
+            return false
         }
     }
     return true

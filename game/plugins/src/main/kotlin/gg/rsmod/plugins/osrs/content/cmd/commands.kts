@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.content
+package gg.rsmod.plugins.osrs.content.cmd
 
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
@@ -8,36 +8,25 @@ import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.game.model.path.PathFindingStrategy
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.ext.*
+import gg.rsmod.plugins.osrs.content.combat.Combat
+import gg.rsmod.plugins.osrs.content.combat.formula.MagicCombatFormula
+import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
 import gg.rsmod.plugins.osrs.content.inter.bank.Bank
 import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
 
-on_command("run") {
-    val p = it.player()
-    val start = Tile(p.tile)
-
-    it.suspendable {
-        while (true) {
-            it.wait(1)
-            if (p.hasMoveDestination()) {
-                continue
-            }
-
-            var randomX = p.tile.x + (-6 + p.world.random(0..12))
-            var randomZ = p.tile.z + (-6 + p.world.random(0..12))
-            if (!start.isWithinRadius(Tile(randomX, randomZ), PathFindingStrategy.MAX_DISTANCE - 1)) {
-                randomX = start.x
-                randomZ = start.z
-            }
-            p.walkTo(randomX, randomZ, MovementQueue.StepType.NORMAL)
-        }
-    }
+on_command("max") {
+    val player = it.player()
+    player.attr[Combat.CASTING_SPELL] = CombatSpell.WIND_SURGE
+    val accuracy = MagicCombatFormula.getAccuracy(player, player)
+    val landHit = accuracy >= player.world.randomDouble()
+    val max = MagicCombatFormula.getMaxHit(player, player)
+    player.message("Max hit=$max - accuracy=$accuracy - land=$landHit")
 }
 
 on_command("empty") {
@@ -87,6 +76,12 @@ on_command("infrunes", Privilege.ADMIN_POWER) {
     val player = it.player()
     player.toggleVarbit(SpellRequirements.INF_RUNES_VARBIT)
     player.message("Infinite runes: ${if (player.getVarbit(SpellRequirements.INF_RUNES_VARBIT) != 1) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
+}
+
+on_command("invisible", Privilege.ADMIN_POWER) {
+    val player = it.player()
+    player.invisible = !player.invisible
+    player.message("Invisible: ${if (!player.invisible) "<col=801700>false</col>" else "<col=178000>true</col>"}")
 }
 
 on_command("npc", Privilege.ADMIN_POWER) {

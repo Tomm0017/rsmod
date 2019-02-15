@@ -44,6 +44,7 @@ suspend fun combat(it: Plugin) {
         target = npc.getCombatTarget() ?: break
     }
 
+    npc.facePawn(null)
     npc.removeCombatTarget()
 }
 

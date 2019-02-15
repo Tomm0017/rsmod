@@ -135,7 +135,7 @@ object Combat {
                 return false
             }
         } else if (target is Player) {
-            if (!target.isOnline()) {
+            if (!target.isOnline() || target.invisible) {
                 return false
             }
         }

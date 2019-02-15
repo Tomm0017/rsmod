@@ -231,7 +231,7 @@ abstract class Pawn(val world: World) : Entity() {
                 continue
             }
 
-            if (--hit.damageDelay <= 0) {
+            if (hit.damageDelay-- == 0) {
                 if (!hit.cancelCondition()) {
                     blockBuffer.hits.add(hit)
                     addBlock(UpdateBlockType.HITMARK)

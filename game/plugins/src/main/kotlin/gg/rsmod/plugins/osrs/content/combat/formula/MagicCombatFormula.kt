@@ -4,15 +4,9 @@ import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.osrs.api.BonusSlot
-import gg.rsmod.plugins.osrs.api.EquipmentType
-import gg.rsmod.plugins.osrs.api.Skills
-import gg.rsmod.plugins.osrs.api.WeaponType
+import gg.rsmod.plugins.osrs.api.*
 import gg.rsmod.plugins.osrs.api.cfg.Items
-import gg.rsmod.plugins.osrs.api.ext.getBonus
-import gg.rsmod.plugins.osrs.api.ext.getMagicDamageBonus
-import gg.rsmod.plugins.osrs.api.ext.hasEquipped
-import gg.rsmod.plugins.osrs.api.ext.hasWeaponType
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
@@ -35,11 +29,16 @@ object MagicCombatFormula : CombatFormula {
             Items.BLACK_MASK_5_I, Items.BLACK_MASK_6_I, Items.BLACK_MASK_7_I, Items.BLACK_MASK_8_I,
             Items.BLACK_MASK_9_I, Items.BLACK_MASK_10_I)
 
-    private val MAGE_VOID = intArrayOf(Items.VOID_RANGER_HELM, Items.VOID_KNIGHT_TOP, Items.VOID_KNIGHT_ROBE, Items.VOID_KNIGHT_GLOVES)
+    private val SLAYER_HELM_I = intArrayOf(Items.SLAYER_HELMET_I, Items.BLACK_SLAYER_HELMET_I, Items.GREEN_SLAYER_HELMET_I,
+            Items.PURPLE_SLAYER_HELMET_I, Items.RED_SLAYER_HELMET_I, Items.TURQUOISE_SLAYER_HELMET_I)
 
-    private val MAGE_ELITE_VOID = intArrayOf(Items.VOID_RANGER_HELM, Items.ELITE_VOID_TOP, Items.ELITE_VOID_ROBE, Items.VOID_KNIGHT_GLOVES)
+    private val MAGE_VOID = intArrayOf(Items.VOID_MAGE_HELM, Items.VOID_KNIGHT_TOP, Items.VOID_KNIGHT_ROBE, Items.VOID_KNIGHT_GLOVES)
+
+    private val MAGE_ELITE_VOID = intArrayOf(Items.VOID_MAGE_HELM, Items.ELITE_VOID_TOP, Items.ELITE_VOID_ROBE, Items.VOID_KNIGHT_GLOVES)
 
     private val BOLT_SPELLS = EnumSet.of(CombatSpell.WIND_BOLT, CombatSpell.WATER_BOLT, CombatSpell.EARTH_BOLT, CombatSpell.FIRE_BOLT)
+
+    private val FIRE_SPELLS = EnumSet.of(CombatSpell.FIRE_STRIKE, CombatSpell.FIRE_BOLT, CombatSpell.FIRE_BLAST, CombatSpell.FIRE_WAVE, CombatSpell.FIRE_SURGE)
 
     override fun getAccuracy(pawn: Pawn, target: Pawn, specialAttackMultiplier: Double): Double {
         val attack = getAttackRoll(pawn)
@@ -60,10 +59,8 @@ object MagicCombatFormula : CombatFormula {
         if (pawn is Player) {
             val magic = pawn.getSkills().getCurrentLevel(Skills.MAGIC)
             if (pawn.hasEquipped(EquipmentType.WEAPON, Items.TRIDENT_OF_THE_SEAS, Items.TRIDENT_OF_THE_SEAS_E, Items.TRIDENT_OF_THE_SEAS_FULL)) {
-                // TODO: check trident has charges
                 hit = (Math.floor(magic / 3.0) - 5.0)
             } else if (pawn.hasEquipped(EquipmentType.WEAPON, Items.TRIDENT_OF_THE_SWAMP, Items.TRIDENT_OF_THE_SWAMP_E)) {
-                // TODO: check trident has charges
                 hit = (Math.floor(magic / 3.0) - 2.0)
             }
 
@@ -71,20 +68,39 @@ object MagicCombatFormula : CombatFormula {
                 hit += 3
             }
 
-            val multiplier = 1.0 + (pawn.getMagicDamageBonus() / 100.0)
+            var multiplier = 1.0 + (pawn.getMagicDamageBonus() / 100.0)
+
+            if (pawn.hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_THE_DAMNED_FULL) && pawn.hasEquipped(EquipmentType.WEAPON, Items.AHRIMS_STAFF, Items.AHRIMS_STAFF_25, Items.AHRIMS_STAFF_50, Items.AHRIMS_STAFF_75, Items.AHRIMS_STAFF_100)
+                    && pawn.world.chance(1, 4)) {
+                multiplier += 0.3
+            }
+
+            if (pawn.hasEquipped(EquipmentType.WEAPON, Items.MYSTIC_SMOKE_STAFF) && pawn.hasSpellbook(Spellbook.STANDARD)) {
+                multiplier += 0.1
+            }
+
+            if (pawn.hasEquipped(MAGE_ELITE_VOID)) {
+                multiplier += 0.025
+            }
+
             hit *= multiplier
             hit = Math.floor(hit)
 
-            if (pawn.hasEquipped(EquipmentType.SHIELD, Items.TOME_OF_FIRE)) {
+            if (pawn.hasEquipped(EquipmentType.SHIELD, Items.TOME_OF_FIRE) && spell in FIRE_SPELLS) {
                 // TODO: check tome of fire has charges
                 hit *= 1.5
                 hit = Math.floor(hit)
             }
 
-            if (pawn.hasEquipped(EquipmentType.HEAD, Items.BLACK_MASK, *BLACK_MASKS)) {
-                // TODO: check if on slayer task and target is slayer task
-                hit *= 1.15
-                hit = Math.floor(hit)
+            if (target is Npc) {
+                if (pawn.hasEquipped(EquipmentType.HEAD, *BLACK_MASKS_I) || pawn.hasEquipped(EquipmentType.HEAD, *SLAYER_HELM_I)) {
+                    // TODO: check if on slayer task and target is slayer task
+                    hit *= 1.15
+                    hit = Math.floor(hit)
+                } else if (pawn.hasEquipped(EquipmentType.AMULET, Items.SALVE_AMULETEI) && target.combatDef.isUndead()) {
+                    hit *= 1.20
+                    hit = Math.floor(hit)
+                }
             }
         } else if (pawn is Npc) {
             val multiplier = 1.0 + (pawn.getMagicDamageBonus() / 100.0)

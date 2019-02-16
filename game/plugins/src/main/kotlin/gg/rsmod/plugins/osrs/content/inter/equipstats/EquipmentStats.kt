@@ -2,6 +2,7 @@ package gg.rsmod.plugins.osrs.content.inter.equipstats
 
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.BonusSlot
+import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.ext.*
 
 /**
@@ -12,14 +13,26 @@ object EquipmentStats {
     const val INTERFACE_ID = 84
     const val TAB_INTERFACE_ID = 85
 
+    private val MAGE_ELITE_VOID = intArrayOf(Items.VOID_MAGE_HELM, Items.ELITE_VOID_TOP, Items.ELITE_VOID_ROBE, Items.VOID_KNIGHT_GLOVES)
+
     private fun formatBonus(p: Player, slot: BonusSlot): String = formatBonus(p.getBonus(slot))
 
     private fun formatBonus(bonus: Int): String = if (bonus < 0) bonus.toString() else "+$bonus"
+
+    private fun formatBonus(bonus: Double): String {
+        val format = String.format("%.1f", bonus)
+        return if (bonus < 0) format else "+$format"
+    }
 
     fun sendBonuses(p: Player) {
         // TODO: these two bonuses
         var undeadBonus = 0.0
         var slayerBonus = 0.0
+        var magicDamageBonus = p.getMagicDamageBonus().toDouble()
+
+        if (p.hasEquipped(MAGE_ELITE_VOID)) {
+            magicDamageBonus += 2.5
+        }
 
         var index: Int
 
@@ -40,7 +53,7 @@ object EquipmentStats {
         index = 35
         p.setComponentText(interfaceId = INTERFACE_ID, component = index++, text = "Melee strength: ${formatBonus(p.getStrengthBonus())}")
         p.setComponentText(interfaceId = INTERFACE_ID, component = index++, text = "Ranged strength: ${formatBonus(p.getRangedStrengthBonus())}")
-        p.setComponentText(interfaceId = INTERFACE_ID, component = index, text = "Magic damage: ${formatBonus(p.getMagicDamageBonus())}%")
+        p.setComponentText(interfaceId = INTERFACE_ID, component = index, text = "Magic damage: ${formatBonus(magicDamageBonus)}%")
 
         val undead = if (undeadBonus == 0.0) "0" else String.format("%.2f", undeadBonus)
         val slayer = if (slayerBonus == 0.0) "0" else String.format("%.2f", slayerBonus)

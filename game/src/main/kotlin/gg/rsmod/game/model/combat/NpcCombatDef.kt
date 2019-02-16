@@ -29,6 +29,8 @@ class NpcCombatDef private constructor(
 
     fun isFiery(): Boolean = false
 
+    fun isUndead(): Boolean = false
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

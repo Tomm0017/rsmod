@@ -1,7 +1,6 @@
 package gg.rsmod.game.message
 
-import gg.rsmod.game.message.codec.MessageEncoder
-import gg.rsmod.game.message.codec.encoder.*
+import gg.rsmod.game.message.encoder.*
 import gg.rsmod.game.message.impl.*
 
 /**

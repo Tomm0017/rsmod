@@ -575,6 +575,47 @@ in-packets:
         type: SHORT
         trans: ADD
 
+  - message: gg.rsmod.game.message.impl.OpLoc2Message
+    type: FIXED
+    opcode: 79
+    length: 7
+    structure:
+      - name: movement_type
+        type: BYTE
+        trans: ADD
+      - name: id
+        sign: UNSIGNED
+        type: SHORT
+      - name: z
+        sign: UNSIGNED
+        type: SHORT
+      - name: x
+        sign: UNSIGNED
+        type: SHORT
+
+  - message: gg.rsmod.game.message.impl.OpLoc3Message
+    type: FIXED
+    opcode: 89
+    length: 7
+    structure:
+      - name: x
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: id
+        sign: UNSIGNED
+        type: SHORT
+        trans: ADD
+      - name: z
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: movement_type
+        type: BYTE
+        trans: ADD
+
   - message: gg.rsmod.game.message.impl.IfButtonMessage
     type: FIXED
     opcodes: 68,21,48,19,40,66,85,14,84,0

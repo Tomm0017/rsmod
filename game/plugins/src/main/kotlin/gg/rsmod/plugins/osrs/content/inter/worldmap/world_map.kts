@@ -16,7 +16,7 @@ on_button(parent = 160, child = 42) {
         if (opt == 1) {
             p.openInterface(interfaceId = WorldMap.FULLSCREEN_INTERFACE_ID, dest = InterfaceDestination.WORLD_MAP_FULL, fullscreen = true)
         }
-        p.setInterfaceEvents(parent = WorldMap.INTERFACE_ID, child = 20, range = 0..4, setting = 2)
+        p.setInterfaceEvents(interfaceId = WorldMap.INTERFACE_ID, component = 20, range = 0..4, setting = 2)
         p.timers[WorldMap.UPDATE_TIMER] = 1
     } else {
         p.closeInterface(WorldMap.INTERFACE_ID)

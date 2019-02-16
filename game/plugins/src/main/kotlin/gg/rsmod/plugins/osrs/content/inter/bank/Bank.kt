@@ -96,16 +96,16 @@ object Bank {
         p.openInterface(BANK_INTERFACE_ID, InterfaceDestination.MAIN_SCREEN)
         p.openInterface(INV_INTERFACE_ID, InterfaceDestination.TAB_AREA)
 
-        p.setComponentText(parent = BANK_INTERFACE_ID, child = 8, text = p.bank.capacity.toString())
+        p.setComponentText(interfaceId = BANK_INTERFACE_ID, component = 8, text = p.bank.capacity.toString())
 
-        p.setInterfaceEvents(parent = BANK_INTERFACE_ID, child = 13, range = 0..815, setting = 1312766)
-        p.setInterfaceEvents(parent = BANK_INTERFACE_ID, child = 13, range = 825..833, setting = 2)
-        p.setInterfaceEvents(parent = BANK_INTERFACE_ID, child = 13, range = 834..843, setting = 1048576)
-        p.setInterfaceEvents(parent = BANK_INTERFACE_ID, child = 11, range = 10..10, setting = 1048578)
-        p.setInterfaceEvents(parent = BANK_INTERFACE_ID, child = 11, range = 11..19, setting = 1179714)
-        p.setInterfaceEvents(parent = INV_INTERFACE_ID, child = 3, range = 0..27, setting = 1181694)
-        p.setInterfaceEvents(parent = INV_INTERFACE_ID, child = 10, range = 0..27, setting = 1054)
-        p.setInterfaceEvents(parent = BANK_INTERFACE_ID, child = 47, range = 1..816, setting = 2)
-        p.setInterfaceEvents(parent = BANK_INTERFACE_ID, child = 50, range = 0..3, setting = 2)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 13, range = 0..815, setting = 1312766)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 13, range = 825..833, setting = 2)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 13, range = 834..843, setting = 1048576)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 11, range = 10..10, setting = 1048578)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 11, range = 11..19, setting = 1179714)
+        p.setInterfaceEvents(interfaceId = INV_INTERFACE_ID, component = 3, range = 0..27, setting = 1181694)
+        p.setInterfaceEvents(interfaceId = INV_INTERFACE_ID, component = 10, range = 0..27, setting = 1054)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 47, range = 1..816, setting = 2)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 50, range = 0..3, setting = 2)
     }
 }

@@ -15,7 +15,7 @@ on_button(parent = OptionsTab.INTERFACE_ID, child = 98) {
         return@on_button
     }
     p.openInterface(interfaceId = 370, dest = InterfaceDestination.TAB_AREA)
-    p.setComponentText(parent = 370, child = 20, text = "Number of rooms: 9")
+    p.setComponentText(interfaceId = 370, component = 20, text = "Number of rooms: 9")
 }
 
 on_button(parent = 370, child = 21) {

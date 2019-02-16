@@ -51,36 +51,36 @@ fun Player.setInterfaceUnderlay(color: Int, transparency: Int) {
     runClientScript(2524, color, transparency)
 }
 
-fun Player.setInterfaceEvents(parent: Int, child: Int, from: Int, to: Int, setting: Int) {
-    write(IfSetEventsMessage(hash = ((parent shl 16) or child), fromChild = from, toChild = to, setting = setting))
+fun Player.setInterfaceEvents(interfaceId: Int, component: Int, from: Int, to: Int, setting: Int) {
+    write(IfSetEventsMessage(hash = ((interfaceId shl 16) or component), fromChild = from, toChild = to, setting = setting))
 }
 
-fun Player.setInterfaceEvents(parent: Int, child: Int, range: IntRange, setting: Int) {
-    write(IfSetEventsMessage(hash = ((parent shl 16) or child), fromChild = range.start, toChild = range.endInclusive, setting = setting))
+fun Player.setInterfaceEvents(interfaceId: Int, component: Int, range: IntRange, setting: Int) {
+    write(IfSetEventsMessage(hash = ((interfaceId shl 16) or component), fromChild = range.start, toChild = range.endInclusive, setting = setting))
 }
 
-fun Player.setComponentText(parent: Int, child: Int, text: String) {
-    write(IfSetTextMessage(parent, child, text))
+fun Player.setComponentText(interfaceId: Int, component: Int, text: String) {
+    write(IfSetTextMessage(interfaceId, component, text))
 }
 
-fun Player.setComponentHidden(parent: Int, child: Int, hidden: Boolean) {
-    write(IfSetHideMessage(hash = ((parent shl 16) or child), hidden = hidden))
+fun Player.setComponentHidden(interfaceId: Int, component: Int, hidden: Boolean) {
+    write(IfSetHideMessage(hash = ((interfaceId shl 16) or component), hidden = hidden))
 }
 
-fun Player.setComponentItem(parent: Int, child: Int, item: Int, amountOrZoom: Int) {
-    write(IfSetObjectMessage(hash = ((parent shl 16) or child), item = item, amount = amountOrZoom))
+fun Player.setComponentItem(interfaceId: Int, component: Int, item: Int, amountOrZoom: Int) {
+    write(IfSetObjectMessage(hash = ((interfaceId shl 16) or component), item = item, amount = amountOrZoom))
 }
 
-fun Player.setComponentNpcHead(parent: Int, child: Int, npc: Int) {
-    write(IfSetNpcHeadMessage(hash = ((parent shl 16) or child), npc = npc))
+fun Player.setComponentNpcHead(interfaceId: Int, component: Int, npc: Int) {
+    write(IfSetNpcHeadMessage(hash = ((interfaceId shl 16) or component), npc = npc))
 }
 
-fun Player.setComponentPlayerHead(parent: Int, child: Int) {
-    write(IfSetPlayerHeadMessage(hash = ((parent shl 16) or child)))
+fun Player.setComponentPlayerHead(interfaceId: Int, component: Int) {
+    write(IfSetPlayerHeadMessage(hash = ((interfaceId shl 16) or component)))
 }
 
-fun Player.setComponentAnim(parent: Int, child: Int, anim: Int) {
-    write(IfSetAnimMessage(hash = ((parent shl 16) or child), anim = anim))
+fun Player.setComponentAnim(interfaceId: Int, component: Int, anim: Int) {
+    write(IfSetAnimMessage(hash = ((interfaceId shl 16) or component), anim = anim))
 }
 
 /**
@@ -226,17 +226,17 @@ fun Player.syncVarp(id: Int) {
 }
 
 fun Player.getVarbit(id: Int): Int {
-    val def = world.definitions[VarbitDef::class.java][id]
+    val def = world.definitions.get(VarbitDef::class.java, id)
     return varps.getBit(def.varp, def.startBit, def.endBit)
 }
 
 fun Player.setVarbit(id: Int, value: Int) {
-    val def = world.definitions[VarbitDef::class.java][id]
+    val def = world.definitions.get(VarbitDef::class.java, id)
     varps.setBit(def.varp, def.startBit, def.endBit, value)
 }
 
 fun Player.toggleVarbit(id: Int) {
-    val def = world.definitions[VarbitDef::class.java][id]
+    val def = world.definitions.get(VarbitDef::class.java, id)
     varps.setBit(def.varp, def.startBit, def.endBit, getVarbit(id) xor 1)
 }
 
@@ -249,7 +249,7 @@ fun Player.clearMapFlag() {
 }
 
 fun Player.sendVisualVarbit(id: Int, value: Int) {
-    val def = world.definitions[VarbitDef::class.java][id]
+    val def = world.definitions.get(VarbitDef::class.java, id)
     val state = BitManipulation.setBit(varps.getState(def.varp), def.startBit, def.endBit, value)
     val message = if (state < Byte.MAX_VALUE) VarpSmallMessage(def.varp, state) else VarpLargeMessage(def.varp, state)
     write(message)

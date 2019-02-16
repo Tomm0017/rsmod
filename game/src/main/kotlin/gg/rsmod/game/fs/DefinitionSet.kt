@@ -16,7 +16,6 @@ import net.runelite.cache.definitions.loaders.LocationsLoader
 import net.runelite.cache.definitions.loaders.MapLoader
 import net.runelite.cache.fs.FSFile
 import net.runelite.cache.fs.Store
-import org.apache.logging.log4j.LogManager
 import java.io.IOException
 
 /**
@@ -34,7 +33,7 @@ class DefinitionSet {
     /**
      * A [Map] holding all definitions with their [Class] as key.
      */
-    private val defs = hashMapOf<Class<out Definition>, Array<*>>()
+    private val defs = hashMapOf<Class<out Definition>, Map<Int, *>>()
 
     private var xteaService: XteaKeyService? = null
 
@@ -96,7 +95,7 @@ class DefinitionSet {
     }
 
     private inline fun <reified T: Definition> loadDefinitions(type: Class<T>, files: MutableList<FSFile>) {
-        val definitions = Array<T?>(files.size + 1) { null }
+        val definitions = HashMap<Int, T?>(files.size + 1)
         for (i in 0 until files.size) {
             val def = createDefinition(type, files[i].fileId, files[i].contents)
             definitions[files[i].fileId] = def
@@ -105,11 +104,6 @@ class DefinitionSet {
     }
 
     fun getCount(type: Class<*>) = defs[type]!!.size
-
-    @Suppress("UNCHECKED_CAST")
-    operator fun <T: Definition> get(type: Class<out T>): Array<T> {
-        return defs[type]!! as Array<T>
-    }
 
     @Suppress("UNCHECKED_CAST")
     fun <T: Definition> get(type: Class<out T>, id: Int): T {

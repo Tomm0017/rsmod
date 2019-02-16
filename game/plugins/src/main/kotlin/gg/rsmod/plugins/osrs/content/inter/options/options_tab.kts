@@ -16,8 +16,8 @@ fun bind_setting(child: Int, plugin: Function1<Plugin, Unit>) {
 on_login {
     val p = it.player()
 
-    p.setInterfaceEvents(parent = OptionsTab.INTERFACE_ID, child = 106, range = 1..4, setting = 2) // Player option priority
-    p.setInterfaceEvents(parent = OptionsTab.INTERFACE_ID, child = 107, range = 1..4, setting = 2) // Npc option priority
+    p.setInterfaceEvents(interfaceId = OptionsTab.INTERFACE_ID, component = 106, range = 1..4, setting = 2) // Player option priority
+    p.setInterfaceEvents(interfaceId = OptionsTab.INTERFACE_ID, component = 107, range = 1..4, setting = 2) // Npc option priority
 }
 
 /**
@@ -165,7 +165,7 @@ bind_setting(child = 83) {
         return@bind_setting
     }
     p.setInterfaceUnderlay(color = -1, transparency = -1)
-    p.setInterfaceEvents(parent = 121, child = 111, range = 0..13, setting = 2)
+    p.setInterfaceEvents(interfaceId = 121, component = 111, range = 0..13, setting = 2)
     p.openInterface(interfaceId = 121, dest = InterfaceDestination.MAIN_SCREEN)
 }
 

@@ -33,9 +33,9 @@ object PriceGuide {
 
         update(p)
 
-        p.setInterfaceEvents(parent = COMPONENT_ID, child = 2, range = 0..27, setting = 1086)
+        p.setInterfaceEvents(interfaceId = COMPONENT_ID, component = 2, range = 0..27, setting = 1086)
         p.runClientScript(149, 15597568, 93, 4, 7, 0, -1, "Add<col=ff9040>", "Add-5<col=ff9040>", "Add-10<col=ff9040>", "Add-All<col=ff9040>", "Add-X<col=ff9040>")
-        p.setInterfaceEvents(parent = TAB_COMPONENT_ID, child = 0, range = 0..27, setting = 1086)
+        p.setInterfaceEvents(interfaceId = TAB_COMPONENT_ID, component = 0, range = 0..27, setting = 1086)
     }
 
     fun close(p: Player) {
@@ -185,9 +185,9 @@ object PriceGuide {
         val valueService = p.world.getService(ItemValueService::class.java).orElse(null)
         val cost = valueService?.get(item) ?: def.cost
 
-        p.setComponentItem(parent = COMPONENT_ID, child = 8, item = item, amountOrZoom = 1)
+        p.setComponentItem(interfaceId = COMPONENT_ID, component = 8, item = item, amountOrZoom = 1)
         p.runClientScript(600, 0, 1, 15, 30408716)
-        p.setComponentText(parent = COMPONENT_ID, child = 12, text = "${def.name}:<br><col=ffffff>${DecimalFormat().format(cost)}</col>")
+        p.setComponentText(interfaceId = COMPONENT_ID, component = 12, text = "${def.name}:<br><col=ffffff>${DecimalFormat().format(cost)}</col>")
     }
 
     fun update(p: Player) {
@@ -197,7 +197,7 @@ object PriceGuide {
         p.sendItemContainer(key = 90, container = guideContainer)
         p.sendItemContainer(key = 93, container = invContainer)
 
-        p.setComponentItem(parent = COMPONENT_ID, child = 8, item = -1, amountOrZoom = 1)
+        p.setComponentItem(interfaceId = COMPONENT_ID, component = 8, item = -1, amountOrZoom = 1)
 
         val valueService = p.world.getService(ItemValueService::class.java).orElse(null)
         val costs = Array(size = guideContainer.capacity) { 0 }
@@ -211,6 +211,6 @@ object PriceGuide {
         p.runClientScript(785, *costs)
         p.runClientScript(600, 1, 1, 15, 30408716)
 
-        p.setComponentText(parent = COMPONENT_ID, child = 12, text = "Total guide price:<br><col=ffffff>${DecimalFormat().format(guideContainer.networth(p.world))}</col>")
+        p.setComponentText(interfaceId = COMPONENT_ID, component = 12, text = "Total guide price:<br><col=ffffff>${DecimalFormat().format(guideContainer.networth(p.world))}</col>")
     }
 }

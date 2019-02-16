@@ -5,7 +5,7 @@ import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.api.getDisplayComponentId
 
 on_login {
-    it.player().setInterfaceEvents(parent = SpellFilters.INTERFACE_ID, child = 184, range = 0..4, setting = 2)
+    it.player().setInterfaceEvents(interfaceId = SpellFilters.INTERFACE_ID, component = 184, range = 0..4, setting = 2)
 }
 
 DisplayMode.values.forEach { mode ->

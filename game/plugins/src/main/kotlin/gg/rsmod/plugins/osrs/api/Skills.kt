@@ -33,7 +33,7 @@ object Skills {
     const val CONSTRUCTION = 22
 
     fun getSkillName(world: World, skill: Int): String {
-        val enum = world.definitions[EnumDef::class.java].getOrNull(680)!!
+        val enum = world.definitions.get(EnumDef::class.java, 680)
         return enum.getString(skill)
     }
 

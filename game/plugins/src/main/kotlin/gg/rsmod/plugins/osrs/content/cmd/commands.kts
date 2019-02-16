@@ -179,7 +179,7 @@ on_command("item", Privilege.ADMIN_POWER) {
         val item = values[0].toInt()
         val amount = if (values.size > 1) Math.min(Int.MAX_VALUE.toLong(), Misc.parseAmount(values[1])).toInt() else 1
         if (item < p.world.definitions.getCount(ItemDef::class.java)) {
-            val def = p.world.definitions[ItemDef::class.java][Item(item).toUnnoted(p.world.definitions).id]
+            val def = p.world.definitions.get(ItemDef::class.java, Item(item).toUnnoted(p.world.definitions).id)
             val result = p.inventory.add(id = item, amount = amount, assureFullInsertion = false)
             p.message("You have spawned <col=801700>${DecimalFormat().format(result.completed)} x ${def.name}</col></col> ($item).")
         } else {

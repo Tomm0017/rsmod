@@ -54,11 +54,11 @@ object EquipmentStats {
         p.setComponentText(interfaceId = INTERFACE_ID, component = index++, text = "Melee strength: ${formatBonus(p.getStrengthBonus())}")
         p.setComponentText(interfaceId = INTERFACE_ID, component = index++, text = "Ranged strength: ${formatBonus(p.getRangedStrengthBonus())}")
         p.setComponentText(interfaceId = INTERFACE_ID, component = index, text = "Magic damage: ${formatBonus(magicDamageBonus)}%")
-
-        val undead = if (undeadBonus == 0.0) "0" else String.format("%.2f", undeadBonus)
-        val slayer = if (slayerBonus == 0.0) "0" else String.format("%.2f", slayerBonus)
-
         p.setComponentText(interfaceId = INTERFACE_ID, component = 38, text = "Prayer: ${formatBonus(p.getPrayerBonus())}")
+
+        val undead = String.format("%.1f", undeadBonus)
+        val slayer = String.format("%.1f", slayerBonus)
+
         p.setComponentText(interfaceId = INTERFACE_ID, component = 40, text = "Undead: $undead%")
         p.setComponentText(interfaceId = INTERFACE_ID, component = 41, text = "Slayer: $slayer%")
     }

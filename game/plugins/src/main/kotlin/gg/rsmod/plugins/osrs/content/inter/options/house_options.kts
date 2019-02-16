@@ -11,7 +11,7 @@ on_button(parent = OptionsTab.INTERFACE_ID, child = 98) {
      Teleport inside + doors: varp 1047
      */
     val p = it.player()
-    if (!p.lock.canComponentInteract()) {
+    if (!p.lock.canInterfaceInteract()) {
         return@on_button
     }
     p.openInterface(interfaceId = 370, dest = InterfaceDestination.TAB_AREA)

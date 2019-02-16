@@ -10,7 +10,7 @@ SkillGuide.values.forEach { guide ->
     on_button(320, guide.child) {
         val p = it.player()
 
-        if (!p.lock.canComponentInteract()) {
+        if (!p.lock.canInterfaceInteract()) {
             return@on_button
         }
 

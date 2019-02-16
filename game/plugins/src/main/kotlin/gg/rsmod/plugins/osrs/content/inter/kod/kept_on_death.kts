@@ -4,7 +4,7 @@ import gg.rsmod.plugins.osrs.api.ext.player
 
 on_button(parent = 387, child = 21) {
     val p = it.player()
-    if (!p.lock.canComponentInteract()) {
+    if (!p.lock.canInterfaceInteract()) {
         return@on_button
     }
     KeptOnDeath.open(it.player())

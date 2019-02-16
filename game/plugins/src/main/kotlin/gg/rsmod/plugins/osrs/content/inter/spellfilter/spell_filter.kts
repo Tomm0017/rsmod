@@ -17,7 +17,7 @@ DisplayMode.values.forEach { mode ->
     }
     on_button(parent = getDisplayComponentId(mode), child = child) {
         val opt = it.getInteractingOption()
-        if (opt == 1) {
+        if (opt == 2) {
             it.player().toggleVarbit(SpellFilters.DISABLE_FILTERS_VARBIT)
         }
     }

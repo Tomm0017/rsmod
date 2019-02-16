@@ -60,7 +60,7 @@ on_window_status {
  */
 bind_setting(child = 35) {
     val p = it.player()
-    if (!p.lock.canComponentInteract()) {
+    if (!p.lock.canInterfaceInteract()) {
         return@bind_setting
     }
     p.setInterfaceUnderlay(color = -1, transparency = -1)
@@ -161,7 +161,7 @@ bind_setting(child = 81) {
  */
 bind_setting(child = 83) {
     val p = it.player()
-    if (!p.lock.canComponentInteract()) {
+    if (!p.lock.canInterfaceInteract()) {
         return@bind_setting
     }
     p.setInterfaceUnderlay(color = -1, transparency = -1)

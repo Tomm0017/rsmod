@@ -146,12 +146,12 @@ object PriceGuide {
         val item = container[slot] ?: return
 
         val amount = when (opt) {
-            0 -> 1
-            1 -> 5
-            2 -> 10
-            3 -> container.getItemCount(item.id)
-            4 -> it.inputInteger()
-            9 -> {
+            1 -> 1
+            2 -> 5
+            3 -> 10
+            4 -> container.getItemCount(item.id)
+            5 -> it.inputInteger()
+            10 -> {
                 p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
                 return
             }
@@ -166,12 +166,12 @@ object PriceGuide {
         val item = container[slot] ?: return
 
         val amount = when (opt) {
-            0 -> 1
-            1 -> 5
-            2 -> 10
-            3 -> container.getItemCount(item.id)
-            4 -> it.inputInteger()
-            9 -> {
+            1 -> 1
+            2 -> 5
+            3 -> 10
+            4 -> container.getItemCount(item.id)
+            5 -> it.inputInteger()
+            10 -> {
                 p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
                 return
             }

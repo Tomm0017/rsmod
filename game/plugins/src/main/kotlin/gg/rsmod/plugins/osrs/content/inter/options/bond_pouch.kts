@@ -18,7 +18,7 @@ on_button(parent = OptionsTab.INTERFACE_ID, child = 100) {
     [Invoke Script]: [733, 0, 0, 0, 0, 0, 0, 0, 0]
      */
     val p = it.player()
-    if (!p.lock.canComponentInteract()) {
+    if (!p.lock.canInterfaceInteract()) {
         return@on_button
     }
     p.setInterfaceUnderlay(color = -1, transparency = -1)

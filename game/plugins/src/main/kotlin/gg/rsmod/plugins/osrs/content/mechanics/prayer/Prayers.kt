@@ -163,7 +163,7 @@ object Prayers {
             return
         }
 
-        if (opt == 0) {
+        if (opt == 1) {
             val quickPrayers = p.getVarp(Prayers.SELECTED_QUICK_PRAYERS_VARP)
 
             if (quickPrayers == 0) {
@@ -184,7 +184,7 @@ object Prayers {
                 p.setVarbit(Prayers.QUICK_PRAYERS_ACTIVE_VARBIT, 1)
                 Prayers.setOverhead(p)
             }
-        } else if (opt == 1) {
+        } else if (opt == 2) {
             p.setInterfaceEvents(interfaceId = 77, component = 4, from = 0, to = 29, setting = 2)
             p.openInterface(interfaceId = 77, dest = InterfaceDestination.PRAYER)
             p.focusTab(GameframeTab.PRAYER)

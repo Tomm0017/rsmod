@@ -11,11 +11,11 @@ fun bind_unequip(equipment: EquipmentType, child: Int) {
         val p = it.player()
         val opt = it.getInteractingOption()
 
-        if (opt == 0) {
+        if (opt == 1) {
             EquipAction.unequip(p, equipment.id)
             p.calculateWeightAndBonus(weight = false, bonuses = true)
             EquipmentStats.sendBonuses(p)
-        } else if (opt == 9) {
+        } else if (opt == 10) {
             val item = p.equipment[equipment.id] ?: return@on_button
             p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
         } else {
@@ -37,7 +37,7 @@ on_button(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0) {
     val opt = it.getInteractingOption()
     val item = p.inventory[slot] ?: return@on_button
 
-    if (opt == 0) {
+    if (opt == 1) {
         val result = EquipAction.equip(p, item, inventorySlot = slot)
         if (result == EquipAction.Result.SUCCESS) {
             p.calculateWeightAndBonus(weight = false, bonuses = true)
@@ -45,7 +45,7 @@ on_button(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0) {
         } else if (result == EquipAction.Result.UNHANDLED) {
             p.message("You can't equip that.")
         }
-    } else if (opt == 9) {
+    } else if (opt == 10) {
         p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
     }
 }
@@ -53,7 +53,7 @@ on_button(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0) {
 on_button(parent = 387, child = 17) {
     val p = it.player()
 
-    if (!p.lock.canComponentInteract()) {
+    if (!p.lock.canInterfaceInteract()) {
         return@on_button
     }
 

@@ -7,7 +7,7 @@ import gg.rsmod.plugins.osrs.api.ext.searchItemInput
 
 on_button(parent = 387, child = 19) {
     val p = it.player()
-    if (!p.lock.canComponentInteract()) {
+    if (!p.lock.canInterfaceInteract()) {
         return@on_button
     }
     PriceGuide.open(it.player())

@@ -85,7 +85,7 @@ on_button(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) p@ {
     val slot = it.getInteractingSlot()
     val item = p.inventory[slot] ?: return@p
 
-    if (opt == 9) {
+    if (opt == 10) {
         p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
         return@p
     }
@@ -95,15 +95,15 @@ on_button(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) p@ {
 
     when {
         quantityVarbit == 0 -> amount = when (opt) {
-            1 -> 1
-            3 -> 5
-            4 -> 10
-            5 -> p.getVarbit(Bank.LAST_X_INPUT)
-            6 -> -1 // X
-            7 -> 0 // All
+            2 -> 1
+            4 -> 5
+            5 -> 10
+            6 -> p.getVarbit(Bank.LAST_X_INPUT)
+            7 -> -1 // X
+            8 -> 0 // All
             else -> return@p
         }
-        opt == 1 -> amount = when (quantityVarbit) {
+        opt == 2 -> amount = when (quantityVarbit) {
             1 -> 5
             2 -> 10
             3 -> if (p.getVarbit(Bank.LAST_X_INPUT) == 0) -1 else p.getVarbit(Bank.LAST_X_INPUT)
@@ -111,12 +111,12 @@ on_button(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) p@ {
             else -> return@p
         }
         else -> amount = when (opt) {
-            2 -> 1
-            3 -> 5
-            4 -> 10
-            5 -> p.getVarbit(Bank.LAST_X_INPUT)
-            6 -> -1 // X
-            7 -> 0 // All
+            3 -> 1
+            4 -> 5
+            5 -> 10
+            6 -> p.getVarbit(Bank.LAST_X_INPUT)
+            7 -> -1 // X
+            8 -> 0 // All
             else -> return@p
         }
     }
@@ -144,7 +144,7 @@ on_button(parent = Bank.BANK_INTERFACE_ID, child = 13) p@ {
     val slot = it.getInteractingSlot()
     val item = p.bank[slot] ?: return@p
 
-    if (opt == 9) {
+    if (opt == 10) {
         p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
         return@p
     }
@@ -155,20 +155,20 @@ on_button(parent = Bank.BANK_INTERFACE_ID, child = 13) p@ {
     val quantityVarbit = p.getVarbit(Bank.QUANTITY_VARBIT)
     when {
         quantityVarbit == 0 -> amount = when (opt) {
-            0 -> 1
-            2 -> 5
-            3 -> 10
-            4 -> p.getVarbit(Bank.LAST_X_INPUT)
-            5 -> -1 // X
-            6 -> item.amount
-            7 -> item.amount - 1
-            8 -> {
+            1 -> 1
+            3 -> 5
+            4 -> 10
+            5 -> p.getVarbit(Bank.LAST_X_INPUT)
+            6 -> -1 // X
+            7 -> item.amount
+            8 -> item.amount - 1
+            9 -> {
                 placehold = true
                 item.amount
             }
             else -> return@p
         }
-        opt == 0 -> amount = when (quantityVarbit) {
+        opt == 1 -> amount = when (quantityVarbit) {
             0 -> 1
             1 -> 5
             2 -> 10
@@ -181,14 +181,14 @@ on_button(parent = Bank.BANK_INTERFACE_ID, child = 13) p@ {
             else -> return@p
         }
         else -> amount = when (opt) {
-            1 -> 1
-            2 -> 5
-            3 -> 10
-            4 -> p.getVarbit(Bank.LAST_X_INPUT)
-            5 -> -1 // X
-            6 -> item.amount
-            7 -> item.amount - 1
-            8 -> {
+            2 -> 1
+            3 -> 5
+            4 -> 10
+            5 -> p.getVarbit(Bank.LAST_X_INPUT)
+            6 -> -1 // X
+            7 -> item.amount
+            8 -> item.amount - 1
+            9 -> {
                 placehold = true
                 item.amount
             }

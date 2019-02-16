@@ -5,15 +5,15 @@ import gg.rsmod.plugins.osrs.api.ext.*
 
 on_button(parent = 160, child = 42) {
     val p = it.player()
-    if (!p.lock.canComponentInteract()) {
+    if (!p.lock.canInterfaceInteract()) {
         return@on_button
     }
 
     if (!p.isInterfaceVisible(WorldMap.INTERFACE_ID)) {
         val opt = it.getInteractingOption()
         p.sendWorldMapTile()
-        p.openInterface(interfaceId = WorldMap.INTERFACE_ID, dest = InterfaceDestination.WORLD_MAP, fullscreen = opt == 1)
-        if (opt == 1) {
+        p.openInterface(interfaceId = WorldMap.INTERFACE_ID, dest = InterfaceDestination.WORLD_MAP, fullscreen = opt == 2)
+        if (opt == 2) {
             p.openInterface(interfaceId = WorldMap.FULLSCREEN_INTERFACE_ID, dest = InterfaceDestination.WORLD_MAP_FULL, fullscreen = true)
         }
         p.setInterfaceEvents(interfaceId = WorldMap.INTERFACE_ID, component = 20, range = 0..4, setting = 2)

@@ -33,7 +33,7 @@ on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 16) {
      * Close or open the XP drop interface.
      */
     if (p.getVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT) == 0) {
-        p.openInterface(component = 160, pane = InterfaceDestination.MINI_MAP)
+        p.openInterface(interfaceId = 160, dest = InterfaceDestination.MINI_MAP)
     } else {
         p.closeInterface(interfaceId = 160)
     }

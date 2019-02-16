@@ -14,7 +14,7 @@ on_button(parent = OptionsTab.INTERFACE_ID, child = 98) {
     if (!p.lock.canComponentInteract()) {
         return@on_button
     }
-    p.openInterface(component = 370, pane = InterfaceDestination.TAB_AREA)
+    p.openInterface(interfaceId = 370, dest = InterfaceDestination.TAB_AREA)
     p.setComponentText(parent = 370, child = 20, text = "Number of rooms: 9")
 }
 

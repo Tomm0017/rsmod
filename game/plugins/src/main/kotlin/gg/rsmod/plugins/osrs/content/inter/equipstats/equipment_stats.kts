@@ -58,8 +58,8 @@ on_button(parent = 387, child = 17) {
     }
 
     p.setInterfaceUnderlay(-1, -1)
-    p.openInterface(component = EquipmentStats.INTERFACE_ID, pane = InterfaceDestination.MAIN_SCREEN)
-    p.openInterface(component = EquipmentStats.TAB_INTERFACE_ID, pane = InterfaceDestination.TAB_AREA)
+    p.openInterface(interfaceId = EquipmentStats.INTERFACE_ID, dest = InterfaceDestination.MAIN_SCREEN)
+    p.openInterface(interfaceId = EquipmentStats.TAB_INTERFACE_ID, dest = InterfaceDestination.TAB_AREA)
     p.runClientScript(149, 5570560, 93, 4, 7, 1, -1, "Equip", "", "", "", "")
     p.setInterfaceEvents(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0, range = 0..27, setting = 1180674)
 

@@ -28,8 +28,8 @@ object PriceGuide {
         p.attr.put(FAKE_INV_CONTAINER, ItemContainer(p.inventory))
 
         p.setInterfaceUnderlay(color = -1, transparency = -1)
-        p.openInterface(component = COMPONENT_ID, pane = InterfaceDestination.MAIN_SCREEN)
-        p.openInterface(component = TAB_COMPONENT_ID, pane = InterfaceDestination.TAB_AREA)
+        p.openInterface(interfaceId = COMPONENT_ID, dest = InterfaceDestination.MAIN_SCREEN)
+        p.openInterface(interfaceId = TAB_COMPONENT_ID, dest = InterfaceDestination.TAB_AREA)
 
         update(p)
 

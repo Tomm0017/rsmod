@@ -103,6 +103,23 @@ suspend fun Plugin.inputInteger(description: String = "Enter amount"): Int {
 }
 
 /**
+ * Prompts the player with a chatbox interface that allows them to search
+ * for an item.
+ *
+ * @return
+ * The selected item's id.
+ */
+suspend fun Plugin.searchItemInput(message: String): Int {
+    val player = player()
+
+    player.runClientScript(750, message, 1, -1)
+
+    waitReturnValue()
+
+    return requestReturnValue as? Int ?: -1
+}
+
+/**
  * Sends a normal message dialog.
  *
  * @message
@@ -112,7 +129,7 @@ suspend fun Plugin.inputInteger(description: String = "Enter amount"): Int {
  * The spacing, in pixels, in between each line that will be rendered on the
  * dialog box.
  */
-suspend fun Plugin.messageDialog(message: String, lineSpacing: Int = 31) {
+suspend fun Plugin.messageBox(message: String, lineSpacing: Int = 31) {
     val player = player()
 
     player.setComponentText(parent = 229, child = 1, text = message)
@@ -127,7 +144,7 @@ suspend fun Plugin.messageDialog(message: String, lineSpacing: Int = 31) {
 }
 
 /**
- * Send an npc dialog.
+ * Send a dialog with an npc's head model.
  *
  * @param message
  * The message to render on the dialog box.
@@ -143,7 +160,7 @@ suspend fun Plugin.messageDialog(message: String, lineSpacing: Int = 31) {
  * @title
  * The title of the dialog, if left as null, the npc's name will be used.
  */
-suspend fun Plugin.npcDialog(message: String, npc: Int = -1, animation: Int = 588, title: String? = null) {
+suspend fun Plugin.chatNpc(message: String, npc: Int = -1, animation: Int = 588, title: String? = null) {
     val player = player()
 
     var npcId = npc
@@ -151,10 +168,7 @@ suspend fun Plugin.npcDialog(message: String, npc: Int = -1, animation: Int = 58
         npcId = player.attr[INTERACTING_NPC_ATTR]?.get()?.id ?: throw RuntimeException("Npc id must be manually set as the player is not interacting with an npc.")
     }
 
-    var dialogTitle = title
-    if (dialogTitle == null) {
-        dialogTitle = player.world.definitions.get(NpcDef::class.java, npcId).name
-    }
+    val dialogTitle = title ?: player.world.definitions.get(NpcDef::class.java, npcId).name
 
     player.setComponentNpcHead(parent = 231, child = 1, npc = npcId)
     player.setComponentText(parent = 231, child = 2, text = dialogTitle)
@@ -164,6 +178,31 @@ suspend fun Plugin.npcDialog(message: String, npc: Int = -1, animation: Int = 58
     player.setInterfaceEvents(parent = 231, child = 3, from = -1, to = -1, setting = 1)
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 231)
     player.runClientScript(600, 1, 1, 16, 15138820)
+
+    interruptAction = closeDialog
+    waitReturnValue()
+    interruptAction?.invoke(this)
+}
+
+/**
+ * Send a dialog with your player's head model.
+ *
+ * @param message
+ * The message to render on the dialog box.
+ */
+suspend fun Plugin.chatPlayer(message: String, animation: Int = 588, title: String? = null) {
+    val player = player()
+
+    val dialogTitle = title ?: player.username
+
+    player.setComponentPlayerHead(parent = 217, child = 1)
+    player.setComponentText(parent = 217, child = 2, text = dialogTitle)
+    player.setComponentText(parent = 217, child = 3, text = "Click here to continue")
+    player.setComponentText(parent = 217, child = 4, text = message)
+    player.setComponentAnim(parent = 217, child = 1, anim = animation)
+    player.setInterfaceEvents(parent = 217, child = 3, from = -1, to = -1, setting = 1)
+    player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 217)
+    player.runClientScript(600, 1, 1, 16, 14221316)
 
     interruptAction = closeDialog
     waitReturnValue()
@@ -182,7 +221,7 @@ suspend fun Plugin.npcDialog(message: String, npc: Int = -1, animation: Int = 58
  * @param amount
  * The amount of the item to show on the dialog.
  */
-suspend fun Plugin.itemDialog(message: String, item: Int, amount: Int = 1) {
+suspend fun Plugin.itemMessageBox(message: String, item: Int, amount: Int = 1) {
     val player = player()
 
     player.setComponentItem(parent = 193, child = 1, item = item, amountOrZoom = amount)
@@ -198,7 +237,7 @@ suspend fun Plugin.itemDialog(message: String, item: Int, amount: Int = 1) {
     interruptAction?.invoke(this)
 }
 
-suspend fun Plugin.doubleItemDialog(message: String, item1: Int, item2: Int, amount1: Int = 1, amount2: Int = 1) {
+suspend fun Plugin.doubleItemMessageBox(message: String, item1: Int, item2: Int, amount1: Int = 1, amount2: Int = 1) {
     val player = player()
 
     player.setComponentItem(parent = 11, child = 1, item = item1, amountOrZoom = amount1)
@@ -213,17 +252,7 @@ suspend fun Plugin.doubleItemDialog(message: String, item1: Int, item2: Int, amo
     interruptAction?.invoke(this)
 }
 
-suspend fun Plugin.searchItemDialog(message: String): Int {
-    val player = player()
-
-    player.runClientScript(750, message, 1, -1)
-
-    waitReturnValue()
-
-    return requestReturnValue as? Int ?: -1
-}
-
-suspend fun Plugin.levelUpDialog(skill: Int, levels: Int) {
+suspend fun Plugin.levelUpMessageBox(skill: Int, levels: Int) {
     val player = player()
 
     if (skill != Skills.HUNTER) {

@@ -32,6 +32,7 @@ class MessageEncoderSet {
         put(IfSetAnimEncoder(), IfSetAnimMessage::class.java)
         put(IfSetObjectEncoder(), IfSetObjectMessage::class.java)
         put(IfSetNpcHeadEncoder(), IfSetNpcHeadMessage::class.java)
+        put(IfSetPlayerHeadEncoder(), IfSetPlayerHeadMessage::class.java)
         put(IfOpenTopEncoder(), IfOpenTopMessage::class.java)
         put(RunClientScriptEncoder(), RunClientScriptMessage::class.java)
         put(RebuildNormalEncoder(), RebuildNormalMessage::class.java)

@@ -64,7 +64,7 @@ bind_setting(child = 35) {
         return@bind_setting
     }
     p.setInterfaceUnderlay(color = -1, transparency = -1)
-    p.openInterface(component = OptionsTab.ADVANCED_COMPONENT_ID, pane = InterfaceDestination.MAIN_SCREEN)
+    p.openInterface(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, dest = InterfaceDestination.MAIN_SCREEN)
 }
 
 /**
@@ -166,7 +166,7 @@ bind_setting(child = 83) {
     }
     p.setInterfaceUnderlay(color = -1, transparency = -1)
     p.setInterfaceEvents(parent = 121, child = 111, range = 0..13, setting = 2)
-    p.openInterface(component = 121, pane = InterfaceDestination.MAIN_SCREEN)
+    p.openInterface(interfaceId = 121, dest = InterfaceDestination.MAIN_SCREEN)
 }
 
 /**

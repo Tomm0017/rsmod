@@ -2,7 +2,7 @@ package gg.rsmod.plugins.osrs.content.inter.emotes
 
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.ext.getVarbit
-import gg.rsmod.plugins.osrs.api.ext.messageDialog
+import gg.rsmod.plugins.osrs.api.ext.messageBox
 import gg.rsmod.plugins.osrs.api.ext.setVarbit
 
 /**
@@ -62,7 +62,7 @@ object EmotesTab {
             val description = emote.unlockDescription ?: "You have not unlocked this emote yet."
             p.executePlugin {
                 it.suspendable {
-                    it.messageDialog(description)
+                    it.messageBox(description)
                 }
             }
             return

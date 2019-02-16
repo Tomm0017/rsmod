@@ -22,7 +22,7 @@ on_button(parent = OptionsTab.INTERFACE_ID, child = 100) {
         return@on_button
     }
     p.setInterfaceUnderlay(color = -1, transparency = -1)
-    p.openInterface(component = 65, pane = InterfaceDestination.MAIN_SCREEN)
+    p.openInterface(interfaceId = 65, dest = InterfaceDestination.MAIN_SCREEN)
     p.runClientScript(2276, 2)
     p.runClientScript(733, 0, 0, 0, 0, 0, 0, 0, 0)
 }

@@ -48,28 +48,28 @@ class PluginRepository(val world: World) {
     /**
      * Plugins that get executed when the world is initialised.
      */
-    private val worldInitPlugins = arrayListOf<Function1<Plugin, Unit>>()
+    private val worldInitPlugins = arrayListOf<(Plugin) -> Unit>()
 
     /**
      * The plugin that will execute when changing display modes.
      */
-    private var displayModePlugin: Function1<Plugin, Unit>? = null
+    private var displayModePlugin: ((Plugin) -> Unit)? = null
 
     /**
      * A list of plugins that will be executed upon login.
      */
-    private val loginPlugins = arrayListOf<Function1<Plugin, Unit>>()
+    private val loginPlugins = arrayListOf<(Plugin) -> Unit>()
 
     /**
      * A list of plugins that will be executed upon logout.
      */
-    private val logoutPlugins = arrayListOf<Function1<Plugin, Unit>>()
+    private val logoutPlugins = arrayListOf<(Plugin) -> Unit>()
 
     /**
      * A list of plugins that will be executed upon an [gg.rsmod.game.model.entity.Npc]
      * being spawned into the world. Use sparingly.
      */
-    private val globalNpcSpawnPlugins = arrayListOf<Function1<Plugin, Unit>>()
+    private val globalNpcSpawnPlugins = arrayListOf<(Plugin) -> Unit>()
 
     /**
      * A list of plugins that will be executed upon an [gg.rsmod.game.model.entity.Npc]
@@ -78,35 +78,41 @@ class PluginRepository(val world: World) {
      * Note: any npc added to this map will <strong>not</strong> call the
      * [globalNpcSpawnPlugins] plugin.
      */
-    private val npcSpawnPlugins = hashMapOf<Int, MutableList<Function1<Plugin, Unit>>>()
+    private val npcSpawnPlugins = hashMapOf<Int, MutableList<(Plugin) -> Unit>>()
 
     /**
      * The plugin that will handle initiating combat.
      */
-    private var combatPlugin: Function1<Plugin, Unit>? = null
+    private var combatPlugin: ((Plugin) -> Unit)? = null
 
     /**
      * A map of plugins that contain custom combat plugins for specific npcs.
      */
-    private val npcCombatPlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
+    private val npcCombatPlugins = hashMapOf<Int, (Plugin) -> Unit>()
 
     /**
      * A map of plugins that will handle spells on npcs depending on the interface
      * hash of the spell.
      */
-    private val spellOnNpcPlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
+    private val spellOnNpcPlugins = hashMapOf<Int, (Plugin) -> Unit>()
 
     /**
      * A map that contains plugins that should be executed when the [TimerKey]
      * hits a value of [0] time left.
      */
-    private val timerPlugins = hashMapOf<TimerKey, Function1<Plugin, Unit>>()
+    private val timerPlugins = hashMapOf<TimerKey, (Plugin) -> Unit>()
+
+    /**
+     * A map that contains plugins that should be executed when an interface
+     * is opened.
+     */
+    private val interfaceOpenPlugins = hashMapOf<Int, (Plugin) -> Unit>()
 
     /**
      * A map that contains plugins that should be executed when an interface
      * is closed.
      */
-    private val componentClosePlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
+    private val interfaceClosePlugins = hashMapOf<Int, (Plugin) -> Unit>()
 
     /**
      * A map that contains command plugins. The pair has the privilege power
@@ -115,80 +121,80 @@ class PluginRepository(val world: World) {
      * The privilege power left value can be set to null, which means anyone
      * can use the command.
      */
-    private val commandPlugins = hashMapOf<String, Pair<String?, Function1<Plugin, Unit>>>()
+    private val commandPlugins = hashMapOf<String, Pair<String?, (Plugin) -> Unit>>()
 
     /**
      * A map of button click plugins. The key is a shifted value of the parent
      * and child id.
      */
-    private val buttonPlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
+    private val buttonPlugins = hashMapOf<Int, (Plugin) -> Unit>()
 
     /**
      * A map of plugins that contain plugins that should execute when equipping
      * items from a certain equipment slot.
      */
-    private val equipSlotPlugins: Multimap<Int, Function1<Plugin, Unit>> = HashMultimap.create()
+    private val equipSlotPlugins: Multimap<Int, (Plugin) -> Unit> = HashMultimap.create()
 
     /**
      * A map of plugins that can stop an item from being equipped.
      */
-    private val equipItemRequirementPlugins = hashMapOf<Int, Function1<Plugin, Boolean>>()
+    private val equipItemRequirementPlugins = hashMapOf<Int, (Plugin) -> Boolean>()
 
     /**
      * A map of plugins that are executed when a player equips an item.
      */
-    private val equipItemPlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
+    private val equipItemPlugins = hashMapOf<Int, (Plugin) -> Unit>()
 
     /**
      * A map of plugins that are executed when a player un-equips an item.
      */
-    private val unequipItemPlugins = hashMapOf<Int, Function1<Plugin, Unit>>()
+    private val unequipItemPlugins = hashMapOf<Int, (Plugin) -> Unit>()
 
     /**
      * A map that contains any plugin that will be executed upon entering a new
      * region. The key is the region id and the value is a list of plugins
      * that will execute upon entering the region.
      */
-    private val enterRegionPlugins = hashMapOf<Int, MutableList<Function1<Plugin, Unit>>>()
+    private val enterRegionPlugins = hashMapOf<Int, MutableList<(Plugin) -> Unit>>()
 
     /**
      * A map that contains any plugin that will be executed upon leaving a region.
      * The key is the region id and the value is a list of plugins that will execute
      * upon leaving the region.
      */
-    private val exitRegionPlugins = hashMapOf<Int, MutableList<Function1<Plugin, Unit>>>()
+    private val exitRegionPlugins = hashMapOf<Int, MutableList<(Plugin) -> Unit>>()
 
     /**
      * A map that contains any plugin that will be executed upon entering a new
      * [gg.rsmod.game.model.region.Chunk]. The key is the chunk id which can be
      * calculated via [gg.rsmod.game.model.region.ChunkCoords.hashCode].
      */
-    private val enterChunkPlugins = hashMapOf<Int, MutableList<Function1<Plugin, Unit>>>()
+    private val enterChunkPlugins = hashMapOf<Int, MutableList<(Plugin) -> Unit>>()
 
     /**
      * A map that contains any plugin that will be executed when leaving a
      * [gg.rsmod.game.model.region.Chunk]. The key is the chunk id which can be
      * calculated via [gg.rsmod.game.model.region.ChunkCoords.hashCode].
      */
-    private val exitChunkPlugins = hashMapOf<Int, MutableList<Function1<Plugin, Unit>>>()
+    private val exitChunkPlugins = hashMapOf<Int, MutableList<(Plugin) -> Unit>>()
 
     /**
      * A map that contains items and any associated menu-click and its respective
      * plugin executor, if any (would not be in the map if it doesn't have a plugin).
      */
-    private val itemPlugins = hashMapOf<Int, HashMap<Int, Function1<Plugin, Unit>>>()
+    private val itemPlugins = hashMapOf<Int, HashMap<Int, (Plugin) -> Unit>>()
 
     /**
      * A map that contains objects and any associated menu-click and its respective
      * plugin executor, if any (would not be in the map if it doesn't have a plugin).
      */
-    private val objectPlugins = hashMapOf<Int, HashMap<Int, Function1<Plugin, Unit>>>()
+    private val objectPlugins = hashMapOf<Int, HashMap<Int, (Plugin) -> Unit>>()
 
     /**
      * A map that contains npcs and any associated menu-click and its respective
      * plugin executor, if any (would not be in the map if it doesn't have a plugin).
      */
-    private val npcPlugins = hashMapOf<Int, HashMap<Int, Function1<Plugin, Unit>>>()
+    private val npcPlugins = hashMapOf<Int, HashMap<Int, (Plugin) -> Unit>>()
 
     /**
      * A map that contains npc ids as the key and their interaction distance as
@@ -201,13 +207,13 @@ class PluginRepository(val world: World) {
      * A map of objects that have custom path finding. This means that the plugin
      * is responsible for walking to the object if necessary.
      */
-    private val customObjectPaths = hashMapOf<Int, Function1<Plugin, Unit>>()
+    private val customObjectPaths = hashMapOf<Int, (Plugin) -> Unit>()
 
     /**
      * A map of npcs that have custom path finding. This means that the plugin
      * is responsible for walking to the npc if necessary.
      */
-    private val customNpcPaths = hashMapOf<Int, Function1<Plugin, Unit>>()
+    private val customNpcPaths = hashMapOf<Int, (Plugin) -> Unit>()
 
     /**
      * Initiates and populates all our plugins.
@@ -230,7 +236,8 @@ class PluginRepository(val world: World) {
         npcCombatPlugins.clear()
         spellOnNpcPlugins.clear()
         timerPlugins.clear()
-        componentClosePlugins.clear()
+        interfaceOpenPlugins.clear()
+        interfaceClosePlugins.clear()
         commandPlugins.clear()
         buttonPlugins.clear()
         equipSlotPlugins.clear()
@@ -319,7 +326,7 @@ class PluginRepository(val world: World) {
         worldInitPlugins.forEach { logic -> world.pluginExecutor.execute(world, logic) }
     }
 
-    fun bindCombat(plugin: Function1<Plugin, Unit>) {
+    fun bindCombat(plugin: (Plugin) -> Unit) {
         if (combatPlugin != null) {
             logger.error("Combat plugin is already bound")
             throw IllegalStateException("Combat plugin is already bound")
@@ -333,7 +340,7 @@ class PluginRepository(val world: World) {
         }
     }
 
-    fun bindNpcCombat(npc: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindNpcCombat(npc: Int, plugin: (Plugin) -> Unit) {
         if (npcCombatPlugins.containsKey(npc)) {
             logger.error("Npc is already bound to a combat plugin: $npc")
             throw IllegalStateException("Npc is already bound to a combat plugin: $npc")
@@ -348,7 +355,7 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    fun bindSpellOnNpc(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindSpellOnNpc(parent: Int, child: Int, plugin: (Plugin) -> Unit) {
         val hash = (parent shl 16) or child
         if (spellOnNpcPlugins.containsKey(hash)) {
             logger.error("Spell is already bound to a plugin: [$parent, $child]")
@@ -365,7 +372,7 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    fun bindWindowStatus(plugin: Function1<Plugin, Unit>) {
+    fun bindWindowStatus(plugin: (Plugin) -> Unit) {
         if (displayModePlugin != null) {
             logger.error("Display mode change is already bound to a plugin")
             throw IllegalStateException("Display mode change is already bound to a plugin")
@@ -379,7 +386,7 @@ class PluginRepository(val world: World) {
         }
     }
 
-    fun bindLogin(plugin: Function1<Plugin, Unit>) {
+    fun bindLogin(plugin: (Plugin) -> Unit) {
         loginPlugins.add(plugin)
         pluginCount++
     }
@@ -388,7 +395,7 @@ class PluginRepository(val world: World) {
         loginPlugins.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
     }
 
-    fun bindLogout(plugin: Function1<Plugin, Unit>) {
+    fun bindLogout(plugin: (Plugin) -> Unit) {
         logoutPlugins.add(plugin)
         pluginCount++
     }
@@ -397,7 +404,7 @@ class PluginRepository(val world: World) {
         logoutPlugins.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
     }
 
-    fun bindGlobalNpcSpawn(plugin: Function1<Plugin, Unit>) {
+    fun bindGlobalNpcSpawn(plugin: (Plugin) -> Unit) {
         globalNpcSpawnPlugins.add(plugin)
         pluginCount++
     }
@@ -407,7 +414,7 @@ class PluginRepository(val world: World) {
      * does not get invoked when an npc with [npc] id is spawned. This functionality may or may
      * not be kept.
      */
-    fun bindNpcSpawn(npc: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindNpcSpawn(npc: Int, plugin: (Plugin) -> Unit) {
         val plugins = npcSpawnPlugins[npc]
         if (plugins != null) {
             plugins.add(plugin)
@@ -426,7 +433,7 @@ class PluginRepository(val world: World) {
         }
     }
 
-    fun bindTimer(key: TimerKey, plugin: Function1<Plugin, Unit>) {
+    fun bindTimer(key: TimerKey, plugin: (Plugin) -> Unit) {
         if (timerPlugins.containsKey(key)) {
             logger.error("Timer key is already bound to a plugin: $key")
             throw IllegalStateException("Timer key is already bound to a plugin: $key")
@@ -444,17 +451,17 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    fun bindInterfaceClose(component: Int, plugin: Function1<Plugin, Unit>) {
-        if (componentClosePlugins.containsKey(component)) {
-            logger.error("Component id is already bound to a plugin: $component")
-            throw IllegalStateException("Component id is already bound to a plugin: $component")
+    fun bindInterfaceOpen(interfaceId: Int, plugin: (Plugin) -> Unit) {
+        if (interfaceOpenPlugins.containsKey(interfaceId)) {
+            logger.error("Component id is already bound to a plugin: $interfaceId")
+            throw IllegalStateException("Component id is already bound to a plugin: $interfaceId")
         }
-        componentClosePlugins[component] = plugin
+        interfaceOpenPlugins[interfaceId] = plugin
         pluginCount++
     }
 
-    fun executeComponentClose(p: Player, parent: Int): Boolean {
-        val plugin = componentClosePlugins[parent]
+    fun executeInterfaceOpen(p: Player, interfaceId: Int): Boolean {
+        val plugin = interfaceOpenPlugins[interfaceId]
         if (plugin != null) {
             p.world.pluginExecutor.execute(p, plugin)
             return true
@@ -462,7 +469,25 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    fun bindCommand(command: String, powerRequired: String? = null, plugin: Function1<Plugin, Unit>) {
+    fun bindInterfaceClose(interfaceId: Int, plugin: (Plugin) -> Unit) {
+        if (interfaceClosePlugins.containsKey(interfaceId)) {
+            logger.error("Component id is already bound to a plugin: $interfaceId")
+            throw IllegalStateException("Component id is already bound to a plugin: $interfaceId")
+        }
+        interfaceClosePlugins[interfaceId] = plugin
+        pluginCount++
+    }
+
+    fun executeInterfaceClose(p: Player, interfaceId: Int): Boolean {
+        val plugin = interfaceClosePlugins[interfaceId]
+        if (plugin != null) {
+            p.world.pluginExecutor.execute(p, plugin)
+            return true
+        }
+        return false
+    }
+
+    fun bindCommand(command: String, powerRequired: String? = null, plugin: (Plugin) -> Unit) {
         val cmd = command.toLowerCase()
         if (commandPlugins.containsKey(cmd)) {
             logger.error("Command is already bound to a plugin: $cmd")
@@ -494,7 +519,7 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    fun bindButton(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindButton(parent: Int, child: Int, plugin: (Plugin) -> Unit) {
         val hash = (parent shl 16) or child
         if (buttonPlugins.containsKey(hash)) {
             logger.error("Button hash already bound to a plugin: [parent=$parent, child=$child]")
@@ -514,7 +539,7 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    fun bindEquipSlot(equipSlot: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindEquipSlot(equipSlot: Int, plugin: (Plugin) -> Unit) {
         equipSlotPlugins.put(equipSlot, plugin)
         pluginCount++
     }
@@ -528,7 +553,7 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    fun bindEquipItemRequirement(item: Int, plugin: Function1<Plugin, Boolean>) {
+    fun bindEquipItemRequirement(item: Int, plugin: (Plugin) -> Boolean) {
         if (equipItemRequirementPlugins.containsKey(item)) {
             logger.error("Equip item requirement already bound to a plugin: [item=$item]")
             throw IllegalStateException("Equip item requirement already bound to a plugin: [item=$item]")
@@ -552,7 +577,7 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    fun bindEquipItem(item: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindEquipItem(item: Int, plugin: (Plugin) -> Unit) {
         if (equipItemPlugins.containsKey(item)) {
             logger.error("Equip item already bound to a plugin: [item=$item]")
             throw IllegalStateException("Equip item already bound to a plugin: [item=$item]")
@@ -570,7 +595,7 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    fun bindUnequipItem(item: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindUnequipItem(item: Int, plugin: (Plugin) -> Unit) {
         if (unequipItemPlugins.containsKey(item)) {
             logger.error("Unequip item already bound to a plugin: [item=$item]")
             throw IllegalStateException("Unequip item already bound to a plugin: [item=$item]")
@@ -588,7 +613,7 @@ class PluginRepository(val world: World) {
         return false
     }
 
-    fun bindRegionEnter(regionId: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindRegionEnter(regionId: Int, plugin: (Plugin) -> Unit) {
         val plugins = enterRegionPlugins[regionId]
         if (plugins != null) {
             plugins.add(plugin)
@@ -602,7 +627,7 @@ class PluginRepository(val world: World) {
         enterRegionPlugins[regionId]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
     }
 
-    fun bindRegionExit(regionId: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindRegionExit(regionId: Int, plugin: (Plugin) -> Unit) {
         val plugins = exitRegionPlugins[regionId]
         if (plugins != null) {
             plugins.add(plugin)
@@ -616,7 +641,7 @@ class PluginRepository(val world: World) {
         exitRegionPlugins[regionId]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
     }
 
-    fun bindChunkEnter(chunkHash: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindChunkEnter(chunkHash: Int, plugin: (Plugin) -> Unit) {
         val plugins = enterChunkPlugins[chunkHash]
         if (plugins != null) {
             plugins.add(plugin)
@@ -630,7 +655,7 @@ class PluginRepository(val world: World) {
         enterChunkPlugins[chunkHash]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
     }
 
-    fun bindChunkExit(chunkHash: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindChunkExit(chunkHash: Int, plugin: (Plugin) -> Unit) {
         val plugins = exitChunkPlugins[chunkHash]
         if (plugins != null) {
             plugins.add(plugin)
@@ -644,7 +669,7 @@ class PluginRepository(val world: World) {
         exitChunkPlugins[chunkHash]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
     }
 
-    fun bindItem(id: Int, opt: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindItem(id: Int, opt: Int, plugin: (Plugin) -> Unit) {
         val optMap = itemPlugins[id] ?: HashMap()
         if (optMap.containsKey(opt)) {
             logger.error("Item is already bound to a plugin: $id [opt=$opt]")
@@ -662,7 +687,7 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    fun bindObject(id: Int, opt: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindObject(id: Int, opt: Int, plugin: (Plugin) -> Unit) {
         val optMap = objectPlugins[id] ?: HashMap()
         if (optMap.containsKey(opt)) {
             logger.error("Object is already bound to a plugin: $id [opt=$opt]")
@@ -680,7 +705,7 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    fun bindNpc(npc: Int, opt: Int, lineOfSightDistance: Int = -1, plugin: Function1<Plugin, Unit>) {
+    fun bindNpc(npc: Int, opt: Int, lineOfSightDistance: Int = -1, plugin: (Plugin) -> Unit) {
         val optMap = npcPlugins[npc] ?: HashMap()
         if (optMap.containsKey(opt)) {
             logger.error("Npc is already bound to a plugin: $npc [opt=$opt]")
@@ -705,7 +730,7 @@ class PluginRepository(val world: World) {
 
     fun getNpcInteractionDistance(npc: Int): Int? = npcInteractionDistancePlugins[npc]
 
-    fun bindCustomObjectPath(id: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindCustomObjectPath(id: Int, plugin: (Plugin) -> Unit) {
         if (customObjectPaths.containsKey(id)) {
             logger.error("Object is already bound to a custom path-finder plugin: $id")
             throw IllegalStateException("Object is already bound to a custom path-finder plugin: $id")
@@ -720,7 +745,7 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    fun bindCustomNpcPath(id: Int, plugin: Function1<Plugin, Unit>) {
+    fun bindCustomNpcPath(id: Int, plugin: (Plugin) -> Unit) {
         if (customNpcPaths.containsKey(id)) {
             logger.error("Npc is already bound to a custom path-finder plugin: $id")
             throw IllegalStateException("Npc is already bound to a custom path-finder plugin: $id")
@@ -855,8 +880,8 @@ class PluginRepository(val world: World) {
             times.clear()
 
             stopwatch.reset().start()
-            repository.componentClosePlugins.forEach { hash, _ ->
-                repository.executeComponentClose(dummy, hash shr 16)
+            repository.interfaceClosePlugins.forEach { hash, _ ->
+                repository.executeInterfaceClose(dummy, hash shr 16)
             }
             times.add(TimedPlugin(name = "Close Component", note = "", time = stopwatch.elapsed(measurement)))
             if (!warmup) {

@@ -2,8 +2,8 @@ package gg.rsmod.plugins.osrs.content.mechanics.firstlaunch
 
 import gg.rsmod.game.model.Privilege
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.osrs.api.ext.doubleItemDialog
-import gg.rsmod.plugins.osrs.api.ext.itemDialog
+import gg.rsmod.plugins.osrs.api.ext.doubleItemMessageBox
+import gg.rsmod.plugins.osrs.api.ext.itemMessageBox
 import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.content.inter.emotes.EmotesTab
 
@@ -28,8 +28,8 @@ suspend fun dialog(it: Plugin) {
     val site = p.world.server.getApiSite()
 
     p.graphic(id = 1388, height = 124)
-    it.doubleItemDialog("<u=801700><col=801700>Welcome to $api</col></u><br><br>Welcome to your new server, ${p.username}!", item1 = 11863, item2 = 11847)
+    it.doubleItemMessageBox("<u=801700><col=801700>Welcome to $api</col></u><br><br>Welcome to your new server, ${p.username}!", item1 = 11863, item2 = 11847)
     p.graphic(id = 1388, height = 124)
-    it.itemDialog("Be sure to go over the <col=801700>README</col> file on the project root directory for basic information on the programming aspect of <col=801700>$api</col>.", item = 757)
-    it.itemDialog("You can visit the official website at <col=801700>$site</col> to make suggestions, purchase & sell plugins, or report bugs.", item = 13652)
+    it.itemMessageBox("Be sure to go over the <col=801700>README</col> file on the project root directory for basic information on the programming aspect of <col=801700>$api</col>.", item = 757)
+    it.itemMessageBox("You can visit the official website at <col=801700>$site</col> to make suggestions, purchase & sell plugins, or report bugs.", item = 13652)
 }

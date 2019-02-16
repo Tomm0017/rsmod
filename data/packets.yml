@@ -346,6 +346,14 @@ out-packets:
         type: INT
         order: INVERSED_MIDDLE
 
+  - message: gg.rsmod.game.message.impl.IfSetPlayerHeadMessage
+    type: FIXED
+    opcode: 30
+    structure:
+      - name: hash
+        type: INT
+        order: INVERSED_MIDDLE
+
   - message: gg.rsmod.game.message.impl.IfSetAnimMessage
     type: FIXED
     opcode: 61

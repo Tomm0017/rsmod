@@ -18,7 +18,7 @@ SkillGuide.values.forEach { guide ->
         p.setVarbit(SKILL_ID_VARBIT, guide.bit)
         p.setInterfaceEvents(parent = 214, child = 25, from = -1, to = -1, setting = 0)
         p.setInterfaceUnderlay(color = -1, transparency = -1)
-        p.openInterface(component = 214, pane = InterfaceDestination.MAIN_SCREEN)
+        p.openInterface(interfaceId = 214, dest = InterfaceDestination.MAIN_SCREEN)
     }
 }
 

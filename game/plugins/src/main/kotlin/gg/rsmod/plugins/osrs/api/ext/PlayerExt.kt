@@ -14,6 +14,7 @@ import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.content.inter.bank.Bank
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayer
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayers
 import gg.rsmod.plugins.osrs.service.item.ItemValueService
@@ -25,6 +26,10 @@ import gg.rsmod.util.BitManipulation
  *
  * @author Tom <rspsmods@gmail.com>
  */
+
+fun Player.openBank() {
+    Bank.open(this)
+}
 
 fun Player.message(message: String, type: ChatMessageType = ChatMessageType.GAME) {
     write(MessageGameMessage(type = type.id, message = message, username = null))
@@ -70,6 +75,10 @@ fun Player.setComponentNpcHead(parent: Int, child: Int, npc: Int) {
     write(IfSetNpcHeadMessage(hash = ((parent shl 16) or child), npc = npc))
 }
 
+fun Player.setComponentPlayerHead(parent: Int, child: Int) {
+    write(IfSetPlayerHeadMessage(hash = ((parent shl 16) or child)))
+}
+
 fun Player.setComponentAnim(parent: Int, child: Int, anim: Int) {
     write(IfSetAnimMessage(hash = ((parent shl 16) or child), anim = anim))
 }
@@ -84,14 +93,14 @@ fun Player.setComponentAnim(parent: Int, child: Int, anim: Int) {
  *
  * as it holds logic that must be handled for certain [InterfaceDestination]s.
  */
-fun Player.openInterface(component: Int, pane: InterfaceDestination, fullscreen: Boolean = false) {
-    val displayMode = if (!fullscreen || pane.fullscreenChildId == -1) components.displayMode else DisplayMode.FULLSCREEN
-    val child = getChildId(pane, displayMode)
+fun Player.openInterface(interfaceId: Int, dest: InterfaceDestination, fullscreen: Boolean = false) {
+    val displayMode = if (!fullscreen || dest.fullscreenChildId == -1) components.displayMode else DisplayMode.FULLSCREEN
+    val child = getChildId(dest, displayMode)
     val parent = getDisplayComponentId(displayMode)
     if (displayMode == DisplayMode.FULLSCREEN) {
         openOverlayInterface(displayMode)
     }
-    openInterface(parent, child, component, if (pane.clickThrough) 1 else 0, isMainComponent = pane == InterfaceDestination.MAIN_SCREEN)
+    openInterface(parent, child, interfaceId, if (dest.clickThrough) 1 else 0, isMainComponent = dest == InterfaceDestination.MAIN_SCREEN)
 }
 
 /**
@@ -346,7 +355,7 @@ fun Player.addXp(skill: Int, xp: Double) {
          * Show the level-up chatbox interface.
          */
         executePlugin {
-            it.suspendable { it.levelUpDialog(skill, increment) }
+            it.suspendable { it.levelUpMessageBox(skill, increment) }
         }
     }
 }

@@ -3,7 +3,7 @@ package gg.rsmod.plugins.osrs.content.inter.priceguide
 import gg.rsmod.plugins.osrs.api.ext.getInteractingOption
 import gg.rsmod.plugins.osrs.api.ext.getInteractingSlot
 import gg.rsmod.plugins.osrs.api.ext.player
-import gg.rsmod.plugins.osrs.api.ext.searchItemDialog
+import gg.rsmod.plugins.osrs.api.ext.searchItemInput
 
 on_button(parent = 387, child = 19) {
     val p = it.player()
@@ -35,7 +35,7 @@ on_button(parent = PriceGuide.COMPONENT_ID, child = 10) {
 
 on_button(parent = PriceGuide.COMPONENT_ID, child = 5) {
     it.suspendable {
-        val item = it.searchItemDialog("Select an item to ask about its price:")
+        val item = it.searchItemInput("Select an item to ask about its price:")
         PriceGuide.search(it.player(), item)
     }
 

@@ -61,6 +61,8 @@ class InterfaceSet(val player: Player) {
             closeByHash(hash)
         }
         visible[hash] = interfaceId
+        // TODO(Tom): remove player val and start using listeners instead.
+        player.world.plugins.executeInterfaceOpen(player, interfaceId)
     }
 
     /**
@@ -117,7 +119,8 @@ class InterfaceSet(val player: Player) {
     private fun closeByHash(hash: Int): Int {
         val found = visible.remove(hash)
         if (found != visible.defaultReturnValue()) {
-            player.world.plugins.executeComponentClose(player, found)
+            // TODO(Tom): remove player val and start using listeners instead.
+            player.world.plugins.executeInterfaceClose(player, found)
             return found
         }
         logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)

@@ -256,10 +256,10 @@ on_command("dialogs", Privilege.ADMIN_POWER) {
     it.suspendable {
         it.options("test")
         it.inputInteger("test")
-        it.messageDialog("test")
-        it.npcDialog("test", 3080)
-        it.itemDialog("test", 4151)
-        it.doubleItemDialog("test", 4151, 11802)
+        it.messageBox("test")
+        it.chatNpc("test", 3080)
+        it.itemMessageBox("test", 4151)
+        it.doubleItemMessageBox("test", 4151, 11802)
     }
 }
 

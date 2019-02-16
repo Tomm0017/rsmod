@@ -135,6 +135,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
     fun on_spell_on_npc(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) = r.bindSpellOnNpc(parent, child, plugin)
 
+    fun on_interface_open(interfaceId: Int, logic: (Plugin) -> Unit) = r.bindInterfaceOpen(interfaceId, logic)
+
     fun on_interface_close(interfaceId: Int, plugin: Function1<Plugin, Unit>) = r.bindInterfaceClose(interfaceId, plugin)
 
     fun on_button(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) = r.bindButton(parent, child, plugin)

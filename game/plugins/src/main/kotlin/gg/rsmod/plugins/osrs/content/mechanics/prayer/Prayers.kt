@@ -183,7 +183,7 @@ object Prayers {
             }
         } else if (opt == 1) {
             p.setInterfaceEvents(parent = 77, child = 4, from = 0, to = 29, setting = 2)
-            p.openInterface(component = 77, pane = InterfaceDestination.PRAYER)
+            p.openInterface(interfaceId = 77, dest = InterfaceDestination.PRAYER)
             p.focusTab(GameframeTab.PRAYER)
         }
     }
@@ -195,38 +195,38 @@ object Prayers {
 
         if (p.getSkills().getMaxLevel(Skills.PRAYER) < prayer.level) {
             p.syncVarp(ACTIVE_PRAYERS_VARP)
-            it.messageDialog("You need a <col=000080>Prayer</col> level of ${prayer.level} to use <col=000080>${prayer.named}.")
+            it.messageBox("You need a <col=000080>Prayer</col> level of ${prayer.level} to use <col=000080>${prayer.named}.")
             return false
         }
 
         // TODO(Tom): get correct messages for these unlockable
         if (prayer == Prayer.PRESERVE && p.getVarbit(PRESERVE_UNLOCK_VARBIT) == 0) {
             p.syncVarp(ACTIVE_PRAYERS_VARP)
-            it.messageDialog("You have not unlocked this prayer.")
+            it.messageBox("You have not unlocked this prayer.")
             return false
         }
 
         if (prayer == Prayer.CHIVALRY && p.getVarbit(KING_RANSOMS_QUEST_VARBIT) < 8) {
             p.syncVarp(ACTIVE_PRAYERS_VARP)
-            it.messageDialog("You have not unlocked this prayer.")
+            it.messageBox("You have not unlocked this prayer.")
             return false
         }
 
         if (prayer == Prayer.PIETY && p.getVarbit(KING_RANSOMS_QUEST_VARBIT) < 8) {
             p.syncVarp(ACTIVE_PRAYERS_VARP)
-            it.messageDialog("You have not unlocked this prayer.")
+            it.messageBox("You have not unlocked this prayer.")
             return false
         }
 
         if (prayer == Prayer.RIGOUR && p.getVarbit(RIGOUR_UNLOCK_VARBIT) == 0) {
             p.syncVarp(ACTIVE_PRAYERS_VARP)
-            it.messageDialog("You have not unlocked this prayer.")
+            it.messageBox("You have not unlocked this prayer.")
             return false
         }
 
         if (prayer == Prayer.AUGURY && p.getVarbit(AUGURY_UNLOCK_VARBIT) == 0) {
             p.syncVarp(ACTIVE_PRAYERS_VARP)
-            it.messageDialog("You have not unlocked this prayer.")
+            it.messageBox("You have not unlocked this prayer.")
             return false
         }
 

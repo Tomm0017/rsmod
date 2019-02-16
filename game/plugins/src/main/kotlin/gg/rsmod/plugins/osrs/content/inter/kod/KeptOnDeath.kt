@@ -20,7 +20,7 @@ object KeptOnDeath {
         p.sendItemContainer(key = 584, container = keptContainer)
         p.sendItemContainer(key = 468, container = lostContainer)
         p.setInterfaceUnderlay(color = -1, transparency = -1)
-        p.openInterface(component = 4, pane = InterfaceDestination.MAIN_SCREEN)
+        p.openInterface(interfaceId = 4, dest = InterfaceDestination.MAIN_SCREEN)
         p.runClientScript(118, 0, "", keptContainer.getOccupiedSlotCount(), 0, 0, "${DecimalFormat().format(lostContainer.networth(p.world))} gp")
     }
 }

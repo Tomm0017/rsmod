@@ -419,3 +419,11 @@ fun Player.calculateDeathContainers(): DeathContainers {
 }
 
 fun Player.isPrivilegeEligible(to: String): Boolean = world.privileges.isEligible(privilege, to)
+
+fun Player.getStrengthBonus(): Int = equipmentBonuses[10]
+
+fun Player.getRangedStrengthBonus(): Int = equipmentBonuses[11]
+
+fun Player.getMagicDamageBonus(): Int = equipmentBonuses[12]
+
+fun Player.getPrayerBonus(): Int = equipmentBonuses[13]

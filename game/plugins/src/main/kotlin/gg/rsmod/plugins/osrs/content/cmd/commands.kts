@@ -34,7 +34,7 @@ on_command("empty") {
 }
 
 on_command("obank", Privilege.ADMIN_POWER) {
-    Bank.open(it.player())
+    it.player().openBank()
 }
 
 on_command("mypos", Privilege.ADMIN_POWER) {

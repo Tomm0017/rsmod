@@ -11,7 +11,7 @@ class NpcCombatDef private constructor(
         val blockAnimation: Int, val deathAnimation: Int, val deathDelay: Int, val respawnDelay: Int,
         val aggressiveRadius: Int, val aggroTargetDelay: Int, val poisonChance: Double,
         val poisonImmunity: Boolean, val venomImmunity: Boolean, val slayerReq: Int, val slayerXp: Double,
-        val bonuses: Array<Int> = Array(14) { 0 }) {
+        val bonuses: IntArray = IntArray(14) { 0 }) {
 
     fun isDemon(): Boolean = false
 
@@ -109,7 +109,7 @@ class NpcCombatDef private constructor(
         val DEFAULT = NpcCombatDef(hitpoints = DEFAULT_HITPOINTS, attackLvl = 1, strengthLvl = 1, defenceLvl = 1, magicLvl = 1, rangedLvl = 1,
                 attackSpeed = DEFAULT_ATTACK_SPEED, aggressiveRadius = 0, aggroTargetDelay = 0, attackAnimation = 422, blockAnimation = 424, deathAnimation = 836,
                 deathDelay = DEFAULT_DEATH_DELAY, respawnDelay = -1, poisonChance = 0.0, poisonImmunity = false, venomImmunity = false, slayerReq = 1, slayerXp = 0.0,
-                bonuses = Array(14) { 0 })
+                bonuses = IntArray(14) { 0 })
     }
 
     class Builder {
@@ -152,7 +152,7 @@ class NpcCombatDef private constructor(
 
         private var slayerXp = -1.0
 
-        private val bonuses = Array(14) { 0 }
+        private val bonuses = IntArray(14) { 0 }
 
         fun build(): NpcCombatDef {
             check(aggressiveRadius == -1 || aggroTargetDelay == -1 || aggressiveRadius != -1 && aggroTargetDelay != -1) {

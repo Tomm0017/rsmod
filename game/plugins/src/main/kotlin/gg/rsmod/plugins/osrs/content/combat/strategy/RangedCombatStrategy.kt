@@ -4,6 +4,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.combat.XpMode
 import gg.rsmod.game.model.entity.GroundItem
+import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.EquipmentType
@@ -142,7 +143,7 @@ object RangedCombatStrategy : CombatStrategy {
         val damage = if (landHit) world.random(maxHit) else 0
 
         if (damage > 0 && pawn.getType().isPlayer()) {
-            addCombatXp(pawn as Player, damage)
+            addCombatXp(pawn as Player, target, damage)
         }
 
         target.hit(damage = damage, type = if (landHit) HitType.HIT else HitType.BLOCK, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize()  / 2)))
@@ -154,16 +155,17 @@ object RangedCombatStrategy : CombatStrategy {
         return 2 + (Math.floor((3.0 + distance) / 6.0)).toInt()
     }
 
-    private fun addCombatXp(player: Player, damage: Int) {
+    private fun addCombatXp(player: Player, target: Pawn, damage: Int) {
         val mode = CombatConfigs.getXpMode(player)
+        val multiplier = if (target is Npc) MeleeCombatStrategy.getNpcXpMultiplier(target) else 1.0
 
         if (mode == XpMode.RANGED) {
-            player.addXp(Skills.RANGED, damage * 4.0)
-            player.addXp(Skills.HITPOINTS, damage * 1.33)
+            player.addXp(Skills.RANGED, damage * 4.0 * multiplier)
+            player.addXp(Skills.HITPOINTS, damage * 1.33 * multiplier)
         } else if (mode == XpMode.SHARED) {
-            player.addXp(Skills.RANGED, damage * 2.0)
-            player.addXp(Skills.DEFENCE, damage * 2.0)
-            player.addXp(Skills.HITPOINTS, damage * 1.33)
+            player.addXp(Skills.RANGED, damage * 2.0 * multiplier)
+            player.addXp(Skills.DEFENCE, damage * 2.0 * multiplier)
+            player.addXp(Skills.HITPOINTS, damage * 1.33 * multiplier)
         }
     }
 }

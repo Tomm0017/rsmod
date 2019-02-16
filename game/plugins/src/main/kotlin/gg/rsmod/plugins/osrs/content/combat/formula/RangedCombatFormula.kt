@@ -6,10 +6,7 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.*
 import gg.rsmod.plugins.osrs.api.cfg.Items
-import gg.rsmod.plugins.osrs.api.ext.getBonus
-import gg.rsmod.plugins.osrs.api.ext.hasEquipped
-import gg.rsmod.plugins.osrs.api.ext.hasPrayerIcon
-import gg.rsmod.plugins.osrs.api.ext.hasWeaponType
+import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
 import gg.rsmod.plugins.osrs.content.mechanics.prayer.Prayer
@@ -166,7 +163,11 @@ object RangedCombatFormula : CombatFormula {
         return hit
     }
 
-    private fun getEquipmentRangedBonus(pawn: Pawn): Double = pawn.getBonus(BonusSlot.RANGED_STRENGTH).toDouble()
+    private fun getEquipmentRangedBonus(pawn: Pawn): Double = when (pawn) {
+        is Player -> pawn.getRangedStrengthBonus().toDouble()
+        is Npc -> pawn.getRangedStrengthBonus().toDouble()
+        else -> throw IllegalArgumentException("Invalid pawn type. $pawn")
+    }
 
     private fun getEquipmentAttackBonus(pawn: Pawn): Double {
         return pawn.getBonus(BonusSlot.ATTACK_RANGED).toDouble()

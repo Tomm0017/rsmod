@@ -1,8 +1,13 @@
 package gg.rsmod.plugins.osrs.content.combat.strategy
 
 import gg.rsmod.game.model.COMBAT_TARGET_FOCUS_ATTR
+import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.plugins.osrs.api.BonusSlot
+import gg.rsmod.plugins.osrs.api.ext.getAttackBonus
+import gg.rsmod.plugins.osrs.api.ext.getBonus
+import gg.rsmod.plugins.osrs.api.ext.getStrengthBonus
 import gg.rsmod.plugins.osrs.api.ext.getVarp
 import gg.rsmod.plugins.osrs.content.inter.attack.AttackTab
 
@@ -31,5 +36,12 @@ interface CombatStrategy {
                 target.attack(pawn)
             }
         }
+    }
+
+    fun getNpcXpMultiplier(npc: Npc): Double {
+        val def = npc.combatDef
+        val averageLvl = Math.floor((def.attackLvl + def.strengthLvl + def.defenceLvl + def.hitpoints) / 4.0)
+        val averageDefBonus = Math.floor((npc.getBonus(BonusSlot.DEFENCE_STAB) + npc.getBonus(BonusSlot.DEFENCE_SLASH) + npc.getBonus(BonusSlot.DEFENCE_CRUSH)) / 3.0)
+        return 1.0 + Math.floor(averageLvl * (averageDefBonus + npc.getStrengthBonus() + npc.getAttackBonus()) / 5120.0) / 40.0
     }
 }

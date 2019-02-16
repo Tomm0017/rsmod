@@ -11,6 +11,7 @@ import gg.rsmod.plugins.osrs.api.PrayerIcon
 import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.ext.getBonus
+import gg.rsmod.plugins.osrs.api.ext.getStrengthBonus
 import gg.rsmod.plugins.osrs.api.ext.hasEquipped
 import gg.rsmod.plugins.osrs.api.ext.hasPrayerIcon
 import gg.rsmod.plugins.osrs.content.combat.Combat
@@ -137,7 +138,11 @@ object MeleeCombatFormula : CombatFormula {
         return hit
     }
 
-    private fun getEquipmentStrengthBonus(pawn: Pawn): Double = pawn.getBonus(BonusSlot.MELEE_STRENGTH).toDouble()
+    private fun getEquipmentStrengthBonus(pawn: Pawn): Double = when (pawn) {
+        is Player -> pawn.getStrengthBonus().toDouble()
+        is Npc -> pawn.getStrengthBonus().toDouble()
+        else -> throw IllegalArgumentException("Invalid pawn type. $pawn")
+    }
 
     private fun getEquipmentAttackBonus(pawn: Pawn): Double {
         val combatStyle = CombatConfigs.getCombatStyle(pawn)

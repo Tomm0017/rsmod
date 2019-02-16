@@ -1,6 +1,7 @@
 package gg.rsmod.plugins.osrs.content.combat.strategy
 
 import gg.rsmod.game.model.combat.XpMode
+import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.HitType
@@ -48,34 +49,35 @@ object MeleeCombatStrategy : CombatStrategy {
         val damage = if (landHit) world.random(maxHit) else 0
 
         if (damage > 0 && pawn.getType().isPlayer()) {
-            addCombatXp(pawn as Player, damage)
+            addCombatXp(pawn as Player, target, damage)
         }
 
         target.hit(damage = damage, type = if (landHit) HitType.HIT else HitType.BLOCK, delay = 1).addActions(hitActions)
                 .setCancelIf { pawn.isDead() }
     }
 
-    private fun addCombatXp(player: Player, damage: Int) {
+    private fun addCombatXp(player: Player, target: Pawn, damage: Int) {
         val mode = CombatConfigs.getXpMode(player)
+        val multiplier = if (target is Npc) getNpcXpMultiplier(target) else 1.0
 
         when (mode) {
             XpMode.ATTACK -> {
-                player.addXp(Skills.ATTACK, damage * 4.0)
-                player.addXp(Skills.HITPOINTS, damage * 1.33)
+                player.addXp(Skills.ATTACK, damage * 4.0 * multiplier)
+                player.addXp(Skills.HITPOINTS, damage * 1.33 * multiplier)
             }
             XpMode.STRENGTH -> {
-                player.addXp(Skills.STRENGTH, damage * 4.0)
-                player.addXp(Skills.HITPOINTS, damage * 1.33)
+                player.addXp(Skills.STRENGTH, damage * 4.0 * multiplier)
+                player.addXp(Skills.HITPOINTS, damage * 1.33 * multiplier)
             }
             XpMode.DEFENCE -> {
-                player.addXp(Skills.DEFENCE, damage * 4.0)
-                player.addXp(Skills.HITPOINTS, damage * 1.33)
+                player.addXp(Skills.DEFENCE, damage * 4.0 * multiplier)
+                player.addXp(Skills.HITPOINTS, damage * 1.33 * multiplier)
             }
             XpMode.SHARED -> {
-                player.addXp(Skills.ATTACK, damage * 1.33)
-                player.addXp(Skills.STRENGTH, damage * 1.33)
-                player.addXp(Skills.DEFENCE, damage * 1.33)
-                player.addXp(Skills.HITPOINTS, damage * 1.33)
+                player.addXp(Skills.ATTACK, damage * 1.33 * multiplier)
+                player.addXp(Skills.STRENGTH, damage * 1.33 * multiplier)
+                player.addXp(Skills.DEFENCE, damage * 1.33 * multiplier)
+                player.addXp(Skills.HITPOINTS, damage * 1.33 * multiplier)
             }
         }
     }

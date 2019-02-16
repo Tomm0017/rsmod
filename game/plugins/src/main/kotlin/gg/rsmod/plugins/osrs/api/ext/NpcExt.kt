@@ -40,3 +40,11 @@ fun Npc.createProjectile(target: Tile, gfx: Int, startHeight: Int, endHeight: In
 
     return builder.build()
 }
+
+fun Npc.getAttackBonus(): Int = equipmentBonuses[10]
+
+fun Npc.getStrengthBonus(): Int = equipmentBonuses[11]
+
+fun Npc.getRangedStrengthBonus(): Int = equipmentBonuses[12]
+
+fun Npc.getMagicDamageBonus(): Int = equipmentBonuses[13]

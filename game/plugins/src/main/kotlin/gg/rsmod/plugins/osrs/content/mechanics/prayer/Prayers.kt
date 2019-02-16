@@ -7,7 +7,10 @@ import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.block.UpdateBlockType
-import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.api.GameframeTab
+import gg.rsmod.plugins.osrs.api.InterfaceDestination
+import gg.rsmod.plugins.osrs.api.PrayerIcon
+import gg.rsmod.plugins.osrs.api.Skills
 import gg.rsmod.plugins.osrs.api.ext.*
 
 object Prayers {
@@ -108,7 +111,7 @@ object Prayers {
         val drain = Prayers.calculateDrainRate(p)
         if (drain > 0) {
             val counter = p.attr.getOrDefault(Prayers.PRAYER_DRAIN_COUNTER, 0) + drain
-            val resistance = 60 + (p.getBonus(BonusSlot.PRAYER) * 2)
+            val resistance = 60 + (p.getPrayerBonus() * 2)
             if (counter >= resistance) {
                 val points = Math.floor((counter / resistance).toDouble()).toInt()
                 p.getSkills().alterCurrentLevel(Skills.PRAYER, -points)

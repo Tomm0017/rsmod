@@ -4,11 +4,14 @@ import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.osrs.api.*
+import gg.rsmod.plugins.osrs.api.BonusSlot
+import gg.rsmod.plugins.osrs.api.EquipmentType
+import gg.rsmod.plugins.osrs.api.Skills
+import gg.rsmod.plugins.osrs.api.WeaponType
 import gg.rsmod.plugins.osrs.api.cfg.Items
 import gg.rsmod.plugins.osrs.api.ext.getBonus
+import gg.rsmod.plugins.osrs.api.ext.getMagicDamageBonus
 import gg.rsmod.plugins.osrs.api.ext.hasEquipped
-import gg.rsmod.plugins.osrs.api.ext.hasSpellbook
 import gg.rsmod.plugins.osrs.api.ext.hasWeaponType
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.CombatConfigs
@@ -68,56 +71,7 @@ object MagicCombatFormula : CombatFormula {
                 hit += 3
             }
 
-            var multiplier = 1.0
-
-            if (pawn.hasEquipped(EquipmentType.HEAD, Items.ANCESTRAL_HAT)) {
-                multiplier += 0.02
-            }
-
-            if (pawn.hasEquipped(EquipmentType.CHEST, Items.ANCESTRAL_ROBE_TOP)) {
-                multiplier += 0.02
-            }
-
-            if (pawn.hasEquipped(EquipmentType.CHEST, Items.ANCESTRAL_ROBE_BOTTOM)) {
-                multiplier += 0.02
-            }
-
-            if (pawn.hasEquipped(EquipmentType.CAPE, Items.IMBUED_SARADOMIN_CAPE, Items.IMBUED_GUTHIX_CAPE, Items.IMBUED_ZAMORAK_CAPE)) {
-                multiplier += 0.02
-            }
-
-            if (pawn.hasEquipped(EquipmentType.WEAPON, Items.KODAI_WAND)) {
-                multiplier += 0.15
-            }
-
-            if (pawn.hasEquipped(EquipmentType.AMULET, Items.OCCULT_NECKLACE, Items.OCCULT_NECKLACE_OR)) {
-                multiplier += 0.1
-            }
-
-            if (pawn.hasEquipped(EquipmentType.AMULET, Items.SALVE_AMULETI)) {
-                multiplier += 0.15
-            }
-
-            if (pawn.hasEquipped(EquipmentType.AMULET, Items.SALVE_AMULETEI)) {
-                multiplier += 0.2
-            }
-
-            if (pawn.hasEquipped(EquipmentType.WEAPON, Items.MYSTIC_SMOKE_STAFF) && pawn.hasSpellbook(Spellbook.STANDARD)) {
-                multiplier += 0.1
-            }
-
-            if (pawn.hasEquipped(EquipmentType.WEAPON, Items.STAFF_OF_THE_DEAD, Items.TOXIC_STAFF_OF_THE_DEAD)) {
-                multiplier += 0.15
-            }
-
-            if (pawn.hasEquipped(EquipmentType.GLOVES, Items.TORMENTED_BRACELET)) {
-                multiplier += 0.05
-            }
-
-            if (pawn.hasEquipped(MAGE_ELITE_VOID)) {
-                multiplier += 0.025
-            }
-
+            val multiplier = 1.0 + (pawn.getMagicDamageBonus() / 100.0)
             hit *= multiplier
             hit = Math.floor(hit)
 
@@ -132,6 +86,10 @@ object MagicCombatFormula : CombatFormula {
                 hit *= 1.15
                 hit = Math.floor(hit)
             }
+        } else if (pawn is Npc) {
+            val multiplier = 1.0 + (pawn.getMagicDamageBonus() / 100.0)
+            hit *= multiplier
+            hit = Math.floor(hit)
         }
 
         hit *= getDamageDealMultiplier(pawn)

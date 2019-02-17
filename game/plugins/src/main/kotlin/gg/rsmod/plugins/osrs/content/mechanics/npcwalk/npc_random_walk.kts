@@ -28,7 +28,7 @@ on_timer(SEARCH_FOR_PATH_TIMER) {
         val start = npc.spawnTile
         val dest = start.transform(rx, rz)
 
-        npc.walkTo(dest, maxPathSize = npc.walkRadius)
+        npc.walkTo(dest)
     }
 
     npc.timers[SEARCH_FOR_PATH_TIMER] = npc.world.random(SEARCH_FOR_PATH_DELAY)

@@ -1,11 +1,9 @@
 package gg.rsmod.game.action
 
 import gg.rsmod.game.message.impl.SetMapFlagMessage
-import gg.rsmod.game.model.FROZEN_TIMER
-import gg.rsmod.game.model.INTERACTING_NPC_ATTR
-import gg.rsmod.game.model.INTERACTING_OPT_ATTR
-import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.Entity
+import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathRequest
@@ -42,6 +40,15 @@ object PawnPathAction {
             }
 
             if (pawn is Player) {
+
+                /**
+                 * Stop the npc from walking while the player talks to it
+                 * for [Npc.RESET_PAWN_FACE_DELAY] cycles.
+                 */
+                npc.stopMovement()
+                npc.facePawn(pawn)
+                npc.timers[RESET_PAWN_FACING_TIMER] = Npc.RESET_PAWN_FACE_DELAY
+
                 val handled = world.plugins.executeNpc(pawn, npc.id, opt)
                 if (!handled) {
                     pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
@@ -76,7 +83,7 @@ object PawnPathAction {
                 .setPoints(pawn.tile, target.tile)
                 .setSourceSize(sourceSize, sourceSize)
                 .setTargetSize(targetSize, targetSize)
-                .setProjectilePath(projectile)
+                .setProjectilePath(lineOfSight || projectile)
                 .setTouchRadius(interactionRange)
                 .clipPathNodes(node = true, link = true)
 

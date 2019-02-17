@@ -10,6 +10,11 @@ package gg.rsmod.game.model
  */
 
 /**
+ * A timer for npcs to reset their pawn face attribute.
+ */
+internal val RESET_PAWN_FACING_TIMER = TimerKey()
+
+/**
  * Timer key set when a pawn is attacked either in PvP or in PvM.
  */
 val ACTIVE_COMBAT_TIMER = TimerKey()

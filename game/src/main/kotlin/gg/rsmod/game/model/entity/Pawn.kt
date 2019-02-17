@@ -200,7 +200,11 @@ abstract class Pawn(val world: World) : Entity() {
 
         timersCopy.forEach { key, time ->
             if (time <= 0) {
-                world.plugins.executeTimer(this, key)
+                if (key == RESET_PAWN_FACING_TIMER) {
+                    facePawn(null)
+                } else {
+                    world.plugins.executeTimer(this, key)
+                }
                 if (!timers.has(key)) {
                     timers.remove(key)
                 }
@@ -307,12 +311,12 @@ abstract class Pawn(val world: World) : Entity() {
     }
 
     fun walkTo(tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
-               projectilePath: Boolean = false, maxPathSize: Int = -1) = walkTo(tile.x, tile.z, stepType, projectilePath, maxPathSize)
+               projectilePath: Boolean = false) = walkTo(tile.x, tile.z, stepType, projectilePath)
 
     fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
-               projectilePath: Boolean = false, maxPathSize: Int = -1) {
+               projectilePath: Boolean = false) {
         val multiThread = world.multiThreadPathFinding
-        val request = PathRequest.buildWalkRequest(this, x, z, projectilePath, maxPathSize)
+        val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
         /**
@@ -335,12 +339,12 @@ abstract class Pawn(val world: World) : Entity() {
     }
 
     suspend fun walkTo(it: Plugin, tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
-                       projectilePath: Boolean = false, maxPathSize: Int = -1) = walkTo(it, tile.x, tile.z, stepType, projectilePath, maxPathSize)
+                       projectilePath: Boolean = false) = walkTo(it, tile.x, tile.z, stepType, projectilePath)
 
     suspend fun walkTo(it: Plugin, x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
-                       projectilePath: Boolean = false, maxPathSize: Int = -1): Route {
+                       projectilePath: Boolean = false): Route {
         val multiThread = world.multiThreadPathFinding
-        val request = PathRequest.buildWalkRequest(this, x, z, projectilePath, maxPathSize)
+        val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
         if (multiThread) {

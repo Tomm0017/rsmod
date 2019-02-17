@@ -8,7 +8,7 @@ on_login {
     it.player().setInterfaceEvents(interfaceId = EmotesTab.COMPONENT_ID, component = 1, range = 0..47, setting = 2)
 }
 
-on_button(parent = EmotesTab.COMPONENT_ID, child = 1) p@ {
+on_button(interfaceId = EmotesTab.COMPONENT_ID, component = 1) p@ {
     val slot = it.getInteractingSlot()
     val emote = Emote.values.firstOrNull { e -> e.slot == slot } ?: return@p
     EmotesTab.performEmote(it.player(), emote)

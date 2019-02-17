@@ -3,14 +3,17 @@ package gg.rsmod.game.plugin
 import com.google.common.base.Stopwatch
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
+import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.*
-import gg.rsmod.game.model.entity.DynamicObject
-import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.model.entity.Pawn
-import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.combat.NpcCombatDef
+import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.GameService
+import gg.rsmod.game.service.game.NpcStatsService
 import io.github.classgraph.ClassGraph
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import mu.KotlinLogging
 import java.lang.ref.WeakReference
 import java.net.URLClassLoader
@@ -199,21 +202,26 @@ class PluginRepository(val world: World) {
     /**
      * A map that contains npc ids as the key and their interaction distance as
      * the value. If map does not contain an npc, it will have the default interaction
-     *
      */
     private val npcInteractionDistancePlugins = hashMapOf<Int, Int>()
 
     /**
-     * A map of objects that have custom path finding. This means that the plugin
-     * is responsible for walking to the object if necessary.
+     * A map that contains object ids as the key and their interaction distance as
+     * the value. If map does not contain an object, it will have the default interaction
      */
-    private val customObjectPaths = hashMapOf<Int, (Plugin) -> Unit>()
+    private val objInteractionDistancePlugins = hashMapOf<Int, Int>()
 
-    /**
-     * A map of npcs that have custom path finding. This means that the plugin
-     * is responsible for walking to the npc if necessary.
-     */
-    private val customNpcPaths = hashMapOf<Int, (Plugin) -> Unit>()
+    val multiCombatChunks = IntOpenHashSet()
+
+    val multiCombatRegions = IntOpenHashSet()
+
+    internal val npcSpawns = ObjectArrayList<Npc>()
+
+    internal val objSpawns = ObjectArrayList<DynamicObject>()
+
+    internal val itemSpawns = ObjectArrayList<GroundItem>()
+
+    internal val npcCombatDefs = Int2ObjectOpenHashMap<NpcCombatDef>()
 
     /**
      * Initiates and populates all our plugins.
@@ -251,9 +259,12 @@ class PluginRepository(val world: World) {
         itemPlugins.clear()
         objectPlugins.clear()
         npcPlugins.clear()
+
         npcInteractionDistancePlugins.clear()
-        customObjectPaths.clear()
-        customNpcPaths.clear()
+        objInteractionDistancePlugins.clear()
+
+        multiCombatChunks.clear()
+        multiCombatRegions.clear()
 
         pluginCount = 0
 
@@ -263,10 +274,7 @@ class PluginRepository(val world: World) {
                 val pluginClass = p.loadClass(KotlinPlugin::class.java)
                 val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java)
                 analyzer?.setClass(pluginClass)
-
-                val plugin = constructor.newInstance(this, world)
-                plugin.set_combat_defs()
-                plugin.spawn_entities()
+                constructor.newInstance(this, world)
             }
         }
 
@@ -279,6 +287,9 @@ class PluginRepository(val world: World) {
                 scanJarForPlugins(world, path)
             }
         }
+
+        setCombatDefs()
+        spawnEntities()
 
         analyzer?.analyze(world)
         analyzer = null
@@ -303,20 +314,46 @@ class PluginRepository(val world: World) {
                     val pluginClass = p.loadClass(KotlinPlugin::class.java)
                     val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java)
                     analyzer?.setClass(clazz)
-
-                    val plugin = constructor.newInstance(this, world)
-                    plugin.set_combat_defs()
-                    plugin.spawn_entities()
+                    constructor.newInstance(this, world)
                 }
             }
         }
         jar.close()
     }
 
+    private fun setCombatDefs() {
+        if (npcCombatDefs.isEmpty()) {
+            return
+        }
+        world.getService(NpcStatsService::class.java).ifPresent { s ->
+            npcCombatDefs.forEach { npc, def ->
+                if (s.get(npc) != null) {
+                    logger.warn { "Npc $npc (${world.definitions.get(NpcDef::class.java, npc).name}) has a set combat definition but has been overwritten by a plugin." }
+                }
+                s.set(npc, def)
+            }
+        }
+    }
+
+    private fun spawnEntities() {
+        npcSpawns.forEach { npc -> world.spawn(npc) }
+        npcSpawns.clear()
+
+        objSpawns.forEach { obj -> world.spawn(obj) }
+        objSpawns.clear()
+
+        itemSpawns.forEach { item -> world.spawn(item) }
+        itemSpawns.clear()
+    }
+
     /**
      * Get the total amount of plugins loaded from the plugins path.
      */
     fun getPluginCount(): Int = pluginCount
+
+    fun getNpcInteractionDistance(npc: Int): Int? = npcInteractionDistancePlugins[npc]
+
+    fun getObjInteractionDistance(obj: Int): Int? = objInteractionDistancePlugins[obj]
 
     fun bindWorldInit(plugin: (Plugin) -> Unit) {
         worldInitPlugins.add(plugin)
@@ -687,14 +724,19 @@ class PluginRepository(val world: World) {
         return true
     }
 
-    fun bindObject(id: Int, opt: Int, plugin: (Plugin) -> Unit) {
-        val optMap = objectPlugins[id] ?: HashMap()
+    fun bindObject(obj: Int, opt: Int, lineOfSightDistance: Int = -1, plugin: (Plugin) -> Unit) {
+        val optMap = objectPlugins[obj] ?: HashMap()
         if (optMap.containsKey(opt)) {
-            logger.error("Object is already bound to a plugin: $id [opt=$opt]")
-            throw IllegalStateException("Object is already bound to a plugin: $id [opt=$opt]")
+            logger.error("Object is already bound to a plugin: $obj [opt=$opt]")
+            throw IllegalStateException("Object is already bound to a plugin: $obj [opt=$opt]")
         }
+
+        if (lineOfSightDistance != -1) {
+            objInteractionDistancePlugins[obj] = lineOfSightDistance
+        }
+
         optMap[opt] = plugin
-        objectPlugins[id] = optMap
+        objectPlugins[obj] = optMap
         pluginCount++
     }
 
@@ -725,38 +767,6 @@ class PluginRepository(val world: World) {
         val optMap = npcPlugins[id] ?: return false
         val logic = optMap[opt] ?: return false
         p.world.pluginExecutor.execute(p, logic)
-        return true
-    }
-
-    fun getNpcInteractionDistance(npc: Int): Int? = npcInteractionDistancePlugins[npc]
-
-    fun bindCustomObjectPath(id: Int, plugin: (Plugin) -> Unit) {
-        if (customObjectPaths.containsKey(id)) {
-            logger.error("Object is already bound to a custom path-finder plugin: $id")
-            throw IllegalStateException("Object is already bound to a custom path-finder plugin: $id")
-        }
-        customObjectPaths[id] = plugin
-        pluginCount++
-    }
-
-    fun executeCustomObjectPath(pawn: Pawn, id: Int): Boolean {
-        val logic = customObjectPaths[id] ?: return false
-        pawn.world.pluginExecutor.execute(pawn, logic)
-        return true
-    }
-
-    fun bindCustomNpcPath(id: Int, plugin: (Plugin) -> Unit) {
-        if (customNpcPaths.containsKey(id)) {
-            logger.error("Npc is already bound to a custom path-finder plugin: $id")
-            throw IllegalStateException("Npc is already bound to a custom path-finder plugin: $id")
-        }
-        customNpcPaths[id] = plugin
-        pluginCount++
-    }
-
-    fun executeCustomNpcPath(pawn: Pawn, id: Int): Boolean {
-        val logic = customNpcPaths[id] ?: return false
-        pawn.world.pluginExecutor.execute(pawn, logic)
         return true
     }
 
@@ -819,7 +829,7 @@ class PluginRepository(val world: World) {
             println("\t------------------------------------------------------------------------------------------------")
 
             executePlugins(world, warmup = false)
-            world.pluginExecutor.internalKillAll()
+            world.pluginExecutor.killAll()
 
             println()
             println()

@@ -301,10 +301,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         return null
     }
 
-    fun executePlugin(plugin: Function1<Plugin, Unit>) {
-        // TODO: allow multiple suspendable plugins to use the world as a ctx
-        // without being overridden
-        pluginExecutor.execute(this, plugin)
+    fun executePlugin(ctx: Any, plugin: Function1<Plugin, Unit>) {
+        pluginExecutor.execute(ctx, plugin)
     }
 
     fun loadUpdateBlocks(blocksFile: File) {

@@ -3,6 +3,10 @@ package gg.rsmod.plugins.osrs.content.npcs.kbd
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.plugins.osrs.api.cfg.Npcs
 
+set_multi_combat_region(region = 9033)
+
+spawn_npc(Npcs.KING_BLACK_DRAGON, x = 2274, z = 4698, walkRadius = 5)
+
 set_combat_def(Npcs.KING_BLACK_DRAGON, NpcCombatDef.Builder()
         .setHitpoints(240)
         .setAttackSpeed(3)

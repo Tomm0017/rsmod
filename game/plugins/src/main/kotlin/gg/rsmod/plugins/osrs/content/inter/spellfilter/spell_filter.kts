@@ -15,7 +15,7 @@ DisplayMode.values.forEach { mode ->
         DisplayMode.FIXED -> 54
         else -> return@forEach
     }
-    on_button(parent = getDisplayComponentId(mode), child = child) {
+    on_button(interfaceId = getDisplayComponentId(mode), component = child) {
         val opt = it.getInteractingOption()
         if (opt == 2) {
             it.player().toggleVarbit(SpellFilters.DISABLE_FILTERS_VARBIT)
@@ -23,7 +23,7 @@ DisplayMode.values.forEach { mode ->
     }
 }
 
-on_button(parent = SpellFilters.INTERFACE_ID, child = 184) {
+on_button(interfaceId = SpellFilters.INTERFACE_ID, component = 184) {
     val slot = it.getInteractingSlot()
     val varbit = when (slot) {
         0 -> SpellFilters.FILTER_COMBAT_VARBIT

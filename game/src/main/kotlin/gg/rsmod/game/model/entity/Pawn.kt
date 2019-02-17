@@ -306,9 +306,9 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
-    fun walkTo(tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false) = walkTo(tile.x, tile.z, stepType, projectilePath)
+    fun walkTo(tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL, projectilePath: Boolean = false) = walkTo(tile.x, tile.z, stepType, projectilePath)
 
-    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false) {
+    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL, projectilePath: Boolean = false) {
         val multiThread = world.multiThreadPathFinding
         val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
@@ -332,9 +332,9 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
-    suspend fun walkTo(it: Plugin, tile: Tile, stepType: MovementQueue.StepType, projectilePath: Boolean = false) = walkTo(it, tile.x, tile.z, stepType, projectilePath)
+    suspend fun walkTo(it: Plugin, tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL, projectilePath: Boolean = false) = walkTo(it, tile.x, tile.z, stepType, projectilePath)
 
-    suspend fun walkTo(it: Plugin, x: Int, z: Int, stepType: MovementQueue.StepType, projectilePath: Boolean = false): Route {
+    suspend fun walkTo(it: Plugin, x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL, projectilePath: Boolean = false): Route {
         val multiThread = world.multiThreadPathFinding
         val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
@@ -430,7 +430,7 @@ abstract class Pawn(val world: World) : Entity() {
     /**
      * Executes a plugin with this [Pawn] as its context.
      */
-    fun executePlugin(plugin: Function1<Plugin, Unit>) {
+    fun executePlugin(plugin: (Plugin) -> Unit) {
         world.pluginExecutor.execute(this, plugin)
     }
 

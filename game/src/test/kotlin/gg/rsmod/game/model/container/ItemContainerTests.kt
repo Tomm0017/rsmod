@@ -45,7 +45,7 @@ class ItemContainerTests {
     @Test
     fun addNoted() {
         val container = ItemContainer(definitions, CAPACITY, ContainerStackType.NORMAL)
-        val result = container.add(id = 4152, amount = 3, forceNoStack = false, assureFullInsertion = true, beginSlot = 0)
+        val result = container.add(item = 4152, amount = 3, forceNoStack = false, assureFullInsertion = true, beginSlot = 0)
 
         assertTrue(result.hasSucceeded())
         assertEquals(container.getOccupiedSlotCount(), 1)
@@ -57,7 +57,7 @@ class ItemContainerTests {
     @Test
     fun addUnnoted() {
         val container = ItemContainer(definitions, CAPACITY, ContainerStackType.NORMAL)
-        val result = container.add(id = 4151, amount = 3, forceNoStack = false, assureFullInsertion = true, beginSlot = 0)
+        val result = container.add(item = 4151, amount = 3, forceNoStack = false, assureFullInsertion = true, beginSlot = 0)
 
         assertTrue(result.hasSucceeded())
         assertEquals(container.getOccupiedSlotCount(), 3)
@@ -77,7 +77,7 @@ class ItemContainerTests {
     @Test
     fun addNotedNoStack() {
         val container = ItemContainer(definitions, CAPACITY, ContainerStackType.NORMAL)
-        val result = container.add(id = 4152, amount = 3, forceNoStack = true, assureFullInsertion = true, beginSlot = 0)
+        val result = container.add(item = 4152, amount = 3, forceNoStack = true, assureFullInsertion = true, beginSlot = 0)
 
         assertTrue(result.hasSucceeded())
         assertEquals(container.getOccupiedSlotCount(), 3)
@@ -97,7 +97,7 @@ class ItemContainerTests {
     @Test
     fun addOneTooManyStrict() {
         val container = ItemContainer(definitions, CAPACITY, ContainerStackType.NORMAL)
-        val result = container.add(id = 4151, amount = CAPACITY + 1, forceNoStack = false, assureFullInsertion = true, beginSlot = 0)
+        val result = container.add(item = 4151, amount = CAPACITY + 1, forceNoStack = false, assureFullInsertion = true, beginSlot = 0)
         assertFalse(result.hasSucceeded())
         assertEquals(container.getNextFreeSlot(), 0)
     }
@@ -105,7 +105,7 @@ class ItemContainerTests {
     @Test
     fun addOneTooManyLoose() {
         val container = ItemContainer(definitions, CAPACITY, ContainerStackType.NORMAL)
-        val loose = container.add(id = 4151, amount = CAPACITY + 1, forceNoStack = false, assureFullInsertion = false, beginSlot = 0)
+        val loose = container.add(item = 4151, amount = CAPACITY + 1, forceNoStack = false, assureFullInsertion = false, beginSlot = 0)
         assertFalse(loose.hasSucceeded())
         assertEquals(container.getFreeSlotCount(), 0)
     }
@@ -114,10 +114,10 @@ class ItemContainerTests {
     fun addOverflowAmount() {
         val container = ItemContainer(definitions, CAPACITY, ContainerStackType.NORMAL)
 
-        container.add(id = 4152, amount = Int.MAX_VALUE, forceNoStack = false, assureFullInsertion = true, beginSlot = 0)
+        container.add(item = 4152, amount = Int.MAX_VALUE, forceNoStack = false, assureFullInsertion = true, beginSlot = 0)
         assertEquals(container.getItemCount(4152), Int.MAX_VALUE)
 
-        val result = container.add(id = 4152, amount = 1, forceNoStack = false, assureFullInsertion = true, beginSlot = 0)
+        val result = container.add(item = 4152, amount = 1, forceNoStack = false, assureFullInsertion = true, beginSlot = 0)
         assertFalse(result.hasSucceeded())
         assertEquals(result.getLeftOver(), 1)
         assertEquals(container.getItemCount(4152), Int.MAX_VALUE)
@@ -126,7 +126,7 @@ class ItemContainerTests {
     @Test
     fun addToMiddle() {
         val container = ItemContainer(definitions, CAPACITY, ContainerStackType.NORMAL)
-        val result = container.add(id = 4151, amount = 1, forceNoStack = false, assureFullInsertion = false, beginSlot = CAPACITY / 2)
+        val result = container.add(item = 4151, amount = 1, forceNoStack = false, assureFullInsertion = false, beginSlot = CAPACITY / 2)
         assertTrue(result.hasSucceeded())
         assertEquals(container.getFreeSlotCount(), CAPACITY - 1)
         assertEquals(container.getNextFreeSlot(), 0)
@@ -137,7 +137,7 @@ class ItemContainerTests {
     @Test
     fun addToStackContainer() {
         val container = ItemContainer(definitions, CAPACITY, ContainerStackType.STACK)
-        val result = container.add(id = 4151, amount = Int.MAX_VALUE, forceNoStack = false, assureFullInsertion = false, beginSlot = 0)
+        val result = container.add(item = 4151, amount = Int.MAX_VALUE, forceNoStack = false, assureFullInsertion = false, beginSlot = 0)
 
         assertTrue(result.hasSucceeded())
         assertNotNull(container[0])

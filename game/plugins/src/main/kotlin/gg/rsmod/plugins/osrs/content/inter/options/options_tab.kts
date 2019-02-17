@@ -8,7 +8,7 @@ import gg.rsmod.plugins.osrs.api.OSRSGameframe
 import gg.rsmod.plugins.osrs.api.ext.*
 
 fun bind_setting(child: Int, plugin: Function1<Plugin, Unit>) {
-    on_button(parent = OptionsTab.INTERFACE_ID, child = child) {
+    on_button(interfaceId = OptionsTab.INTERFACE_ID, component = child) {
         plugin.invoke(it)
     }
 }
@@ -23,7 +23,7 @@ on_login {
 /**
  * Toggle mouse scroll wheel zoom.
  */
-on_button(parent = OptionsTab.INTERFACE_ID, child = 5) {
+on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 5) {
     // TODO(Tom): figure out why this varbit isn't causing the cross to be drawn.
     // It technically works since it won't allow zooming with mouse wheel, but it
     // doesn't visually show on the interface.

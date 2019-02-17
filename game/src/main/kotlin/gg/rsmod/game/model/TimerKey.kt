@@ -22,7 +22,10 @@ data class TimerKey(val persistenceKey: String? = null, val tickOffline: Boolean
     }
 
     override fun hashCode(): Int {
-        var result = persistenceKey?.hashCode() ?: super.hashCode()
+        if (persistenceKey == null) {
+            return super.hashCode()
+        }
+        var result = persistenceKey.hashCode()
         result = 31 * result + tickOffline.hashCode()
         return result
     }

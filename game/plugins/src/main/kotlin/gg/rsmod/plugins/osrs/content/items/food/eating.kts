@@ -15,7 +15,7 @@ Food.values.forEach { food ->
         if (p.inventory.remove(id = food.item, beginSlot = inventorySlot).hasSucceeded()) {
             Foods.eat(p, food)
             if (food.replacement != -1) {
-                p.inventory.add(id = food.replacement, beginSlot = inventorySlot)
+                p.inventory.add(item = food.replacement, beginSlot = inventorySlot)
             }
         }
     }

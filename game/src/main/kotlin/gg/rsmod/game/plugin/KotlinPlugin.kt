@@ -11,10 +11,6 @@ import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.service.game.NpcStatsService
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
-import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import mu.KotlinLogging
 import kotlin.script.experimental.annotations.KotlinScript
 
 /**
@@ -23,46 +19,17 @@ import kotlin.script.experimental.annotations.KotlinScript
 @KotlinScript(displayName = "Kotlin Plugin", fileExtension = "kts")
 abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
-    companion object {
-        private val logger = KotlinLogging.logger {  }
+    fun set_multi_combat_chunk(chunk: Int) {
+        r.multiCombatChunks.add(chunk)
     }
 
-    private val npc_spawns = ObjectArrayList<Npc>()
-
-    private val obj_spawns = ObjectArrayList<DynamicObject>()
-
-    private val item_spawns = ObjectArrayList<GroundItem>()
-
-    private val npc_combat_defs = Int2ObjectOpenHashMap<NpcCombatDef>()
-
-    internal fun spawn_entities() {
-        npc_spawns.forEach { npc -> world.spawn(npc) }
-        npc_spawns.clear()
-
-        obj_spawns.forEach { obj -> world.spawn(obj) }
-        obj_spawns.clear()
-
-        item_spawns.forEach { item -> world.spawn(item) }
-        item_spawns.clear()
-    }
-
-    internal fun set_combat_defs() {
-        if (npc_combat_defs.isEmpty()) {
-            return
-        }
-        world.getService(NpcStatsService::class.java).ifPresent { s ->
-            npc_combat_defs.forEach { npc, def ->
-                if (s.get(npc) != null) {
-                    logger.warn { "Npc $npc (${world.definitions.get(NpcDef::class.java, npc).name}) has a set combat definition but has been overwritten by a plugin." }
-                }
-                s.set(npc, def)
-            }
-        }
+    fun set_multi_combat_region(region: Int) {
+        r.multiCombatRegions.add(region)
     }
 
     fun set_combat_def(npc: Int, def: NpcCombatDef) {
-        check(!npc_combat_defs.containsKey(npc)) { "Npc combat definition has been previously set: $npc" }
-        npc_combat_defs[npc] = def
+        check(!r.npcCombatDefs.containsKey(npc)) { "Npc combat definition has been previously set: $npc" }
+        r.npcCombatDefs[npc] = def
     }
 
     fun set_combat_def(npc: Int, vararg others: Int, def: NpcCombatDef) {
@@ -74,18 +41,18 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         val n = Npc(npc, Tile(x, z, height), world)
         n.walkRadius = walkRadius
         n.lastFacingDirection = direction
-        npc_spawns.add(n)
+        r.npcSpawns.add(n)
     }
 
     fun spawn_obj(obj: Int, x: Int, z: Int, height: Int = 0, type: Int = 10, rot: Int = 0) {
         val o = DynamicObject(obj, type, rot, Tile(x, z, height))
-        obj_spawns.add(o)
+        r.objSpawns.add(o)
     }
 
     fun spawn_item(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = 50) {
         val ground = GroundItem(item, amount, Tile(x, z, height))
         ground.respawnCycles = respawnCycles
-        item_spawns.add(ground)
+        r.itemSpawns.add(ground)
     }
 
     fun on_item_option(item: Int, option: String, plugin: Function1<Plugin, Unit>) {
@@ -98,14 +65,14 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         r.bindItem(item, slot + 1, plugin)
     }
 
-    fun on_obj_option(obj: Int, option: String, plugin: Function1<Plugin, Unit>) {
+    fun on_obj_option(obj: Int, option: String, lineOfSightDistance: Int = -1, plugin: Function1<Plugin, Unit>) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(ObjectDef::class.java, obj)
         val slot = def.options.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
 
         check(slot != -1) { "Option \"$option\" not found for object $obj [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
 
-        r.bindObject(obj, slot + 1, plugin)
+        r.bindObject(obj, slot + 1, lineOfSightDistance, plugin)
     }
 
     fun on_npc_option(npc: Int, option: String, lineOfSightDistance: Int = -1, plugin: Function1<Plugin, Unit>) {
@@ -139,7 +106,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
     fun on_interface_close(interfaceId: Int, plugin: Function1<Plugin, Unit>) = r.bindInterfaceClose(interfaceId, plugin)
 
-    fun on_button(parent: Int, child: Int, plugin: Function1<Plugin, Unit>) = r.bindButton(parent, child, plugin)
+    fun on_button(interfaceId: Int, component: Int, plugin: Function1<Plugin, Unit>) = r.bindButton(interfaceId, component, plugin)
 
     fun on_timer(key: TimerKey, plugin: Function1<Plugin, Unit>) = r.bindTimer(key, plugin)
 
@@ -167,11 +134,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
     fun on_item_option(item: Int, opt: Int, plugin: Function1<Plugin, Unit>) = r.bindItem(item, opt, plugin)
 
-    fun on_obj_option(obj: Int, option: Int, plugin: Function1<Plugin, Unit>) = r.bindObject(obj, option, plugin)
+    fun on_obj_option(obj: Int, option: Int, lineOfSightDistance: Int = -1, plugin: Function1<Plugin, Unit>) = r.bindObject(obj, option, lineOfSightDistance, plugin)
 
     fun on_npc_option(npc: Int, opt: Int, lineOfSightDistance: Int = -1, plugin: Function1<Plugin, Unit>) = r.bindNpc(npc, opt, lineOfSightDistance, plugin)
-
-    fun set_custom_object_path(obj: Int, plugin: Function1<Plugin, Unit>) = r.bindCustomObjectPath(obj, plugin)
-
-    fun set_custom_npc_path(npc: Int, plugin: Function1<Plugin, Unit>) = r.bindCustomNpcPath(npc, plugin)
 }

@@ -6,7 +6,7 @@ import gg.rsmod.plugins.osrs.api.ext.*
  * Set 'focused' hotkey.
  */
 Hotkey.values.forEach { hotkey ->
-    on_button(parent = 121, child = hotkey.child) {
+    on_button(interfaceId = 121, component = hotkey.child) {
         it.player().setVarbit(KeyBinding.FOCUSED_HOTKEY_VARBIT, hotkey.id)
     }
 }
@@ -14,7 +14,7 @@ Hotkey.values.forEach { hotkey ->
 /**
  * Set hotkey value.
  */
-on_button(parent = 121, child = 111) {
+on_button(interfaceId = 121, component = 111) {
     val p = it.player()
     val focused = p.getVarbit(KeyBinding.FOCUSED_HOTKEY_VARBIT)
     val hotkey = Hotkey.values.firstOrNull { h -> h.id == focused } ?: return@on_button
@@ -26,7 +26,7 @@ on_button(parent = 121, child = 111) {
 /**
  * Restore defaults.
  */
-on_button(parent = 121, child = 104) {
+on_button(interfaceId = 121, component = 104) {
     val p = it.player()
 
     Hotkey.values.forEach { hotkey ->
@@ -34,6 +34,6 @@ on_button(parent = 121, child = 104) {
     }
 }
 
-on_button(parent = 121, child = 103) {
+on_button(interfaceId = 121, component = 103) {
     it.player().toggleVarbit(KeyBinding.ESC_CLOSES_INTERFACES)
 }

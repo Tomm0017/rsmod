@@ -5,8 +5,8 @@ import gg.rsmod.game.model.TimerKey
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.osrs.api.ext.isAttacking
+import gg.rsmod.plugins.osrs.api.ext.isMulti
 import gg.rsmod.plugins.osrs.api.ext.npc
-import gg.rsmod.plugins.osrs.content.mechanics.multi.MultiwayCombat
 
 val AGGRO_CHECK_TIMER = TimerKey()
 
@@ -29,7 +29,7 @@ on_global_npc_spawn {
 on_timer(AGGRO_CHECK_TIMER) {
     val npc = it.npc()
 
-    if ((!npc.isAttacking() || MultiwayCombat.isInMulti(npc.tile)) && npc.lock.canAttack() && npc.isActive()) {
+    if ((!npc.isAttacking() || npc.tile.isMulti(npc.world)) && npc.lock.canAttack() && npc.isActive()) {
         checkRadius(npc)
     }
     npc.timers[AGGRO_CHECK_TIMER] = npc.combatDef.aggroTargetDelay

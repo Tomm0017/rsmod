@@ -13,6 +13,7 @@ import gg.rsmod.game.model.collision.CollisionUpdate
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.region.update.*
 import gg.rsmod.game.service.GameService
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
 /**
  * Represents an 8x8 tile in the game map.
@@ -191,7 +192,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
                 if (!canBeViewed(client, update.entity)) {
                     continue
                 }
-                val local = client.lastKnownRegionBase!!.toLocal(update.entity.tile)
+                val local = client.lastKnownRegionBase!!.toLocal(this.coords.toTile())
                 client.write(UpdateZonePartialFollowsMessage(local.x, local.z))
                 client.write(update.toMessage())
             }
@@ -199,7 +200,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
     }
 
     fun sendUpdates(p: Player, gameService: GameService) {
-        val messages = arrayListOf<EntityGroupMessage>()
+        val messages = ObjectArrayList<EntityGroupMessage>()
 
         updates.forEach { update ->
             val message = EntityGroupMessage(update.type.id, update.toMessage())

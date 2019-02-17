@@ -32,13 +32,6 @@ class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Conti
     var requestReturnValue: Any? = null
 
     /**
-     * This flag indicates whether or not [PluginExecutor.pulse] has iterated
-     * through this plugin at least once, as the [pulse] must be handled one
-     * tick after the plugin logic has executed.
-     */
-    var started = false
-
-    /**
      * Can represent an action that should be executed if, and only if, this plugin
      * was interrupted by another action such as walking or a new script being
      * executed by the same [ctx].

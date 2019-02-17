@@ -6,7 +6,7 @@ import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.api.ext.runClientScript
 import gg.rsmod.plugins.osrs.api.ext.setInterfaceUnderlay
 
-on_button(parent = OptionsTab.INTERFACE_ID, child = 100) {
+on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 100) {
     /**
     [Varp (SHORT)]: id=1780, state=6
     [Varp (SHORT)]: id=1781, state=4

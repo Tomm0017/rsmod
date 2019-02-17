@@ -7,7 +7,7 @@ import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.ext.*
 
 fun bind_unequip(equipment: EquipmentType, child: Int) {
-    on_button(parent = EquipmentStats.INTERFACE_ID, child = child) {
+    on_button(interfaceId = EquipmentStats.INTERFACE_ID, component = child) {
         val p = it.player()
         val opt = it.getInteractingOption()
 
@@ -30,7 +30,7 @@ fun bind_unequip(equipment: EquipmentType, child: Int) {
     }
 }
 
-on_button(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0) {
+on_button(interfaceId = EquipmentStats.TAB_INTERFACE_ID, component = 0) {
     val p = it.player()
 
     val slot = it.getInteractingSlot()
@@ -50,7 +50,7 @@ on_button(parent = EquipmentStats.TAB_INTERFACE_ID, child = 0) {
     }
 }
 
-on_button(parent = 387, child = 17) {
+on_button(interfaceId = 387, component = 17) {
     val p = it.player()
 
     if (!p.lock.canInterfaceInteract()) {

@@ -5,7 +5,6 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.item.SlotItem
 import mu.KotlinLogging
-import org.apache.logging.log4j.LogManager
 
 /**
  * An [ItemContainer] represents a collection of ordered [Item]s.
@@ -14,15 +13,15 @@ import org.apache.logging.log4j.LogManager
  */
 class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private val stackType: ContainerStackType) : Iterable<Item?> {
 
+    companion object {
+        private val logger = KotlinLogging.logger {  }
+    }
+
     constructor(other: ItemContainer) : this(other.definitions, other.capacity, other.stackType) {
         for (i in 0 until capacity) {
             val item = if (other[i] != null) Item(other[i]!!) else null
             set(i, item)
         }
-    }
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
     }
 
     private val items = Array<Item?>(capacity) { null }
@@ -154,18 +153,18 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
     }
 
     /**
-     * Adds an item with id of [id] and quantity of [amount] to this container.
+     * Adds an item with id of [item] and quantity of [amount] to this container.
      *
-     * @param [id]
+     * @param [item]
      * The item id.
      *
      * @param [amount]
      * The quantity of the item.
      *
      * @param assureFullInsertion
-     * If [true], we make sure the container can hold [amount] of [id], taking
+     * If [true], we make sure the container can hold [amount] of [item], taking
      * into account the item's metadata and the container's [ContainerStackType].
-     * If [false], it will try to fill the container with as many [id]s as it
+     * If [false], it will try to fill the container with as many [item]s as it
      * can fit before the container is full.
      *
      * @param forceNoStack
@@ -191,8 +190,8 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
      *
      * @see ItemTransaction
      */
-    fun add(id: Int, amount: Int = 1, assureFullInsertion: Boolean = true, forceNoStack: Boolean = false, beginSlot: Int = -1): ItemTransaction {
-        val def = definitions.get(ItemDef::class.java, id)
+    fun add(item: Int, amount: Int = 1, assureFullInsertion: Boolean = true, forceNoStack: Boolean = false, beginSlot: Int = -1): ItemTransaction {
+        val def = definitions.get(ItemDef::class.java, item)
 
         /**
          * Should the item stack?
@@ -210,7 +209,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
          * We don't need to calculate the previous amount unless the item is going
          * to stack.
          */
-        val previousAmount = if (stack && !placehold) getItemCount(id) else 0
+        val previousAmount = if (stack && !placehold) getItemCount(item) else 0
 
         if (previousAmount == Int.MAX_VALUE) {
             return ItemTransaction(amount, 0, emptyList())
@@ -242,7 +241,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
             /**
              * Even if our caller has stated to not [assureFullInsertion], there's
              * still no reason to have the other logic execute if we know that
-             * not even a single [id] item can be added.
+             * not even a single [item] item can be added.
              */
             if (stack && previousAmount == Int.MAX_VALUE) {
                 return ItemTransaction(amount, 0, emptyList())
@@ -264,7 +263,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
                 if (items[i] != null) {
                     continue
                 }
-                val add = Item(id)
+                val add = Item(item)
                 set(i, add)
                 added.add(SlotItem(i, add))
                 if (++completed >= amount) {
@@ -272,7 +271,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
                 }
             }
         } else {
-            var stackIndex = if (placehold) placeholderSlot else getItemIndex(itemId = id, skipAttrItems = true)
+            var stackIndex = if (placehold) placeholderSlot else getItemIndex(itemId = item, skipAttrItems = true)
             if (stackIndex == -1) {
                 if (beginSlot == -1) {
                     stackIndex = getNextFreeSlot()
@@ -290,7 +289,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
                      * at least one item, whether stackable or not, can fit in
                      * our container.
                      */
-                    logger.error("Unable to find a free slot for a stackable item. [capacity=$capacity, item=$id, quantity=$amount]") // print capacity as only form of distinction
+                    logger.error("Unable to find a free slot for a stackable item. [capacity=$capacity, item=$item, quantity=$amount]") // print capacity as only form of distinction
                     return ItemTransaction(amount, completed, emptyList())
                 }
             }
@@ -298,7 +297,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
             val stackAmount = get(stackIndex)?.amount ?: 0
             val total = Math.min(Int.MAX_VALUE.toLong(), (stackAmount).toLong() + amount.toLong()).toInt()
 
-            val add = Item(id, total)
+            val add = Item(item, total)
             set(stackIndex, add)
             added.add(SlotItem(stackIndex, add))
             completed = total - stackAmount
@@ -316,7 +315,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
      * account.
      */
     fun add(item: Item, assureFullInsertion: Boolean = true, forceNoStack: Boolean = false, beginSlot: Int = -1): ItemTransaction {
-        return add(id = item.id, amount = item.amount, assureFullInsertion = assureFullInsertion,
+        return add(item = item.id, amount = item.amount, assureFullInsertion = assureFullInsertion,
                 forceNoStack = forceNoStack, beginSlot = beginSlot)
     }
 

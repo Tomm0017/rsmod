@@ -235,6 +235,13 @@ fun Player.setVarbit(id: Int, value: Int) {
     varps.setBit(def.varp, def.startBit, def.endBit, value)
 }
 
+fun Player.setTempVarbit(id: Int, value: Int) {
+    val def = world.definitions.get(VarbitDef::class.java, id)
+    val state = BitManipulation.setBit(varps.getState(def.varp), def.startBit, def.endBit, value)
+    val message = if (state in -Byte.MAX_VALUE..Byte.MAX_VALUE) VarpSmallMessage(def.varp, state) else VarpLargeMessage(def.varp, state)
+    write(message)
+}
+
 fun Player.toggleVarbit(id: Int) {
     val def = world.definitions.get(VarbitDef::class.java, id)
     varps.setBit(def.varp, def.startBit, def.endBit, getVarbit(id) xor 1)
@@ -246,13 +253,6 @@ fun Player.setMapFlag(x: Int, z: Int) {
 
 fun Player.clearMapFlag() {
     setMapFlag(255, 255)
-}
-
-fun Player.sendVisualVarbit(id: Int, value: Int) {
-    val def = world.definitions.get(VarbitDef::class.java, id)
-    val state = BitManipulation.setBit(varps.getState(def.varp), def.startBit, def.endBit, value)
-    val message = if (state < Byte.MAX_VALUE) VarpSmallMessage(def.varp, state) else VarpLargeMessage(def.varp, state)
-    write(message)
 }
 
 fun Player.getStorageBit(storage: BitStorage, bits: StorageBits): Int = storage.get(this, bits)

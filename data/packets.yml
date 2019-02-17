@@ -161,10 +161,10 @@ out-packets:
     type: FIXED
     opcode: 13
     structure:
-      - name: tile
-        type: BYTE
-        tran: SUBTRACT
       - name: settings
+        type: BYTE
+        trans: SUBTRACT
+      - name: tile
         type: BYTE
         trans: SUBTRACT
 

@@ -28,10 +28,13 @@ object ObjectPathAction {
         val player = it.ctx as Player
         val obj = player.attr[INTERACTING_OBJ_ATTR]!!.get()!!
         val opt = player.attr[INTERACTING_OPT_ATTR]!!
+        val lineOfSightRange = player.world.plugins.getObjInteractionDistance(obj.id)
 
         it.suspendable {
-            val route = walkTo(it, obj)
-            faceObj(player, obj)
+            val route = walkTo(it, obj, lineOfSightRange)
+            if (lineOfSightRange == null) {
+                faceObj(player, obj)
+            }
             if (route.success) {
                 it.wait(1)
                 handleAction(it, obj, opt)
@@ -41,7 +44,7 @@ object ObjectPathAction {
         }
     }
 
-    private suspend fun walkTo(it: Plugin, obj: GameObject): Route {
+    private suspend fun walkTo(it: Plugin, obj: GameObject, lineOfSightRange: Int?): Route {
         val pawn = it.ctx as Pawn
 
         val def = obj.getDef(pawn.world.definitions)
@@ -59,6 +62,11 @@ object ObjectPathAction {
                 width = def.length
                 length = def.width
             }
+        }
+
+        lineOfSightRange?.let {
+            width = Math.max(width, lineOfSightRange)
+            length = Math.max(length, lineOfSightRange)
         }
 
         val blockBits = 4
@@ -83,12 +91,15 @@ object ObjectPathAction {
         val builder = PathRequest.Builder()
                 .setPoints(pawn.tile, tile)
                 .setSourceSize(pawn.getSize(), pawn.getSize())
+                .setProjectilePath(lineOfSightRange != null)
                 .setTargetSize(width, length)
                 .clipPathNodes(node = true, link = true)
                 .clipDirections(*blockDirections.toTypedArray())
 
+        lineOfSightRange?.let { builder.setTouchRadius(lineOfSightRange) }
+
         // TODO(Tom): work on doors & wall objects (such as rooftop agility start or varrock museum wall displays)
-        if (group != ObjectGroup.WALL) {
+        if (group != ObjectGroup.WALL && lineOfSightRange == null) {
             builder.clipOverlapTiles().clipDiagonalTiles()
         }
 

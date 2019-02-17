@@ -15,13 +15,13 @@ on_timer(RunEnergy.RUN_DRAIN) {
 /**
  * Button by minimap.
  */
-on_button(parent = 160, child = 22) {
+on_button(interfaceId = 160, component = 22) {
     RunEnergy.toggle(it.player())
 }
 
 /**
  * Settings button.
  */
-on_button(parent = 261, child = 95) {
+on_button(interfaceId = 261, component = 95) {
     RunEnergy.toggle(it.player())
 }

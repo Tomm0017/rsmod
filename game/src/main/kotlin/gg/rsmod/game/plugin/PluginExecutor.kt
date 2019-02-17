@@ -29,22 +29,52 @@ class PluginExecutor {
      */
     fun getActiveCount(): Int = active.size
 
-    fun <T> execute(ctx: Any, logic: (Plugin) -> T): T? {
+    internal fun <T> execute(ctx: Any, logic: (Plugin) -> T): T? {
         val plugin = Plugin(ctx, dispatcher)
-        val invoke = logic.invoke(plugin)
+        val invoke = logic(plugin)
 
-        /**
-         * We only categorize the plugin as 'active' if the plugin has been
-         * suspended. This is to avoid non-suspendable plugins from removing
-         * suspendable plugins.
-         *
-         * For example: a simple timer plugin, such as a prayer drain timer,
-         * which isn't suspendable but executed every cycle, would cancel
-         * suspendable plugins such as dialogs. (so you wouldn't be able
-         * to continue the dialog as it has been removed from 'active' plugins
-         * and would no longer pulse).
-         */
         if (plugin.suspended()) {
+            /**
+             * NOTE:
+             *
+             * We may need to redo a core part of the [PluginExecutor] in the future.
+             * This is due to the limitations with the current one:
+             *
+             * Problem:
+             *
+             * The [logic] must be invoked in order to know if the plugin is
+             * suspendable. Any previous suspended plugin should be interrupted
+             * before [logic] is invoked. This cannot be achieved with the current
+             * system.
+             *
+             * In-depth problem:
+             *
+             * In an ideal system, we would be able to know if the plugin will be
+             * suspended ahead-of-time, so that we can interrupt any previous
+             * plugin in our [active] list first, and then execute the [logic]
+             * afterwards. However, the logic must be executed first before the
+             * system knows if the plugin is suspended or not; because of this
+             * we cannot interrupt the previous 'active' plugin, which in some
+             * cases we may want.
+             *
+             * Example of problem:
+             *
+             * If there's an important plugin that <strong>must</strong> invoke
+             * its [Plugin.interruptAction], no matter how it's terminated - with
+             * the current system we can't deliver that promise, as executing
+             * another suspendable plugin will simply remove it from the [active],
+             * but not interrupt it.
+             *
+             * - "Why not just interrupt the previous plugin instead of removing?"
+             *
+             * It is because certain plugins like dialog plugins will remove the
+             * chatbox interface upon interruption. So if we have the initial plugin
+             * show the chatbox interface and then execute another dialog plugin
+             * from somewhere else, the second plugin's logic will be invoked first,
+             * and then the first plugin will be interrupted - this leads to the
+             * chatbox interface not showing up at all for the second plugin.
+             */
+            active.removeIf { it.ctx == ctx }
             active.add(plugin)
         }
         return invoke
@@ -60,7 +90,7 @@ class PluginExecutor {
      * @param value
      * The return value that the plugin has asked for.
      */
-    fun submitReturnType(ctx: Any, value: Any) {
+    internal fun submitReturnType(ctx: Any, value: Any) {
         val iterator = active.iterator()
         while (iterator.hasNext()) {
             val plugin = iterator.next()
@@ -73,7 +103,7 @@ class PluginExecutor {
     /**
      * Terminates any plugins that have [ctx] as their context.
      */
-    fun interruptPluginsWithContext(ctx: Any) {
+    internal fun interruptPluginsWithContext(ctx: Any) {
         val iterator = active.iterator()
         while (iterator.hasNext()) {
             val plugin = iterator.next()
@@ -84,7 +114,7 @@ class PluginExecutor {
         }
     }
 
-    fun pulse() {
+    internal fun pulse() {
         /**
          * Copy the active list to avoid concurrent modifications if one plugin
          * executes another.
@@ -101,9 +131,8 @@ class PluginExecutor {
 
     /**
      * Removes all active and queued plugins.
-     * This method is reserved for internal usage. Use with caution.
      */
-    fun internalKillAll() {
+    internal fun killAll() {
         active.clear()
     }
 }

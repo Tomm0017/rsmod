@@ -5,27 +5,27 @@ import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.OSRSGameframe
 import gg.rsmod.plugins.osrs.api.ext.*
 
-on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 4) {
+on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 4) {
     it.player().toggleVarbit(OSRSGameframe.CHATBOX_SCROLLBAR_VARBIT)
 }
 
-on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 6) {
+on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 6) {
     it.player().toggleVarbit(OSRSGameframe.DISABLE_SIDEPANELS_OPAQUE_VARBIT)
 }
 
-on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 8) {
+on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 8) {
     it.player().toggleVarbit(OSRSGameframe.DISABLE_XP_TILL_LEVEL_VARBIT)
 }
 
-on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 10) {
+on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 10) {
     it.player().toggleVarbit(OSRSGameframe.DISABLE_PRAYER_TOOLTIP_VARBIT)
 }
 
-on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 12) {
+on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 12) {
     it.player().toggleVarbit(OSRSGameframe.DISABLE_SPECIAL_ATTACK_TOOLTIP_VARBIT)
 }
 
-on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 16) {
+on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 16) {
     val p = it.player()
     p.toggleVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT)
 
@@ -39,15 +39,15 @@ on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 16) {
     }
 }
 
-on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 18) {
+on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 18) {
     it.player().toggleVarbit(OSRSGameframe.CHATBOX_TRANSPARENT_VARBIT)
 }
 
-on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 20) {
+on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 20) {
     it.player().toggleVarbit(OSRSGameframe.CHATBOX_SOLID_VARBIT)
 }
 
-on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 21) {
+on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 21) {
     val p = it.player()
 
     p.toggleVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT)
@@ -58,6 +58,6 @@ on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 21) {
     }
 }
 
-on_button(parent = OptionsTab.ADVANCED_COMPONENT_ID, child = 23) {
+on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 23) {
     it.player().toggleVarbit(OSRSGameframe.CLOSE_TABS_WITH_HOTKEY_VARBIT)
 }

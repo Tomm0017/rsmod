@@ -3,7 +3,7 @@ package gg.rsmod.plugins.osrs.content.inter.worldmap
 import gg.rsmod.plugins.osrs.api.InterfaceDestination
 import gg.rsmod.plugins.osrs.api.ext.*
 
-on_button(parent = 160, child = 42) {
+on_button(interfaceId = 160, component = 42) {
     val p = it.player()
     if (!p.lock.canInterfaceInteract()) {
         return@on_button
@@ -23,7 +23,7 @@ on_button(parent = 160, child = 42) {
     }
 }
 
-on_button(parent = WorldMap.INTERFACE_ID, child = 37) {
+on_button(interfaceId = WorldMap.INTERFACE_ID, component = 37) {
     val p = it.player()
     p.closeInterface(WorldMap.INTERFACE_ID)
     p.openOverlayInterface(p.components.displayMode)

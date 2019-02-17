@@ -6,7 +6,7 @@ import gg.rsmod.plugins.osrs.api.ext.openInterface
 import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.api.ext.setComponentText
 
-on_button(parent = OptionsTab.INTERFACE_ID, child = 98) {
+on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 98) {
     /**
      Teleport inside + doors: varp 1047
      */
@@ -18,6 +18,6 @@ on_button(parent = OptionsTab.INTERFACE_ID, child = 98) {
     p.setComponentText(interfaceId = 370, component = 20, text = "Number of rooms: 9")
 }
 
-on_button(parent = 370, child = 21) {
+on_button(interfaceId = 370, component = 21) {
     it.player().closeInterface(interfaceId = 370)
 }

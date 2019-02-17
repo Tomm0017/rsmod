@@ -8,29 +8,29 @@ on_interface_close(Bank.BANK_INTERFACE_ID) {
 }
 
 intArrayOf(17, 19).forEachIndexed { index, button ->
-    on_button(parent = Bank.BANK_INTERFACE_ID, child = button) {
+    on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = button) {
         it.player().setVarbit(Bank.REARRANGE_MODE_VARBIT, index)
     }
 }
 
 intArrayOf(22, 24).forEachIndexed { index, button ->
-    on_button(parent = Bank.BANK_INTERFACE_ID, child = button) {
+    on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = button) {
         it.player().setVarbit(Bank.WITHDRAW_AS_VARBIT, index)
     }
 }
 
-on_button(parent = Bank.BANK_INTERFACE_ID, child = 38) {
+on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 38) {
     it.player().toggleVarbit(Bank.ALWAYS_PLACEHOLD_VARBIT)
 }
 
 intArrayOf(28, 30, 32, 34, 36).forEach { quantity ->
-    on_button(parent = Bank.BANK_INTERFACE_ID, child = quantity) {
+    on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = quantity) {
         val state = (quantity - 28) / 2
         it.player().setVarbit(Bank.QUANTITY_VARBIT, state)
     }
 }
 
-on_button(parent = Bank.BANK_INTERFACE_ID, child = 42) {
+on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 42) {
     val p = it.player()
     val from = p.inventory
     val to = p.bank
@@ -54,7 +54,7 @@ on_button(parent = Bank.BANK_INTERFACE_ID, child = 42) {
     }
 }
 
-on_button(parent = Bank.BANK_INTERFACE_ID, child = 44) {
+on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
     val p = it.player()
     val from = p.equipment
     val to = p.bank
@@ -78,7 +78,7 @@ on_button(parent = Bank.BANK_INTERFACE_ID, child = 44) {
     }
 }
 
-on_button(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) p@ {
+on_button(interfaceId = Bank.INV_INTERFACE_ID, component = Bank.INV_INTERFACE_CHILD) p@ {
     val p = it.player()
 
     val opt = it.getInteractingOption()
@@ -137,7 +137,7 @@ on_button(parent = Bank.INV_INTERFACE_ID, child = Bank.INV_INTERFACE_CHILD) p@ {
     Bank.deposit(p, item.id, amount)
 }
 
-on_button(parent = Bank.BANK_INTERFACE_ID, child = 13) p@ {
+on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
     val p = it.player()
 
     val opt = it.getInteractingOption()

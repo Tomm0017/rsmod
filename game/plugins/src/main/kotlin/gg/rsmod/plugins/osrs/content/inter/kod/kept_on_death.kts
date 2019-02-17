@@ -2,7 +2,7 @@ package gg.rsmod.plugins.osrs.content.inter.kod
 
 import gg.rsmod.plugins.osrs.api.ext.player
 
-on_button(parent = 387, child = 21) {
+on_button(interfaceId = 387, component = 21) {
     val p = it.player()
     if (!p.lock.canInterfaceInteract()) {
         return@on_button

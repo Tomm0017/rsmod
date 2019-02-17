@@ -5,7 +5,7 @@ import gg.rsmod.plugins.osrs.api.ext.options
 import gg.rsmod.plugins.osrs.api.ext.player
 import gg.rsmod.plugins.osrs.api.ext.toggleStorageBit
 
-on_button(parent = OptionsTab.INTERFACE_ID, child = 71) {
+on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 71) {
     it.suspendable {
         val p = it.player()
         while (true) {

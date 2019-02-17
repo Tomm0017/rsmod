@@ -15,7 +15,6 @@ import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.osrs.content.combat.Combat
 import gg.rsmod.plugins.osrs.content.combat.formula.MagicCombatFormula
 import gg.rsmod.plugins.osrs.content.combat.strategy.magic.CombatSpell
-import gg.rsmod.plugins.osrs.content.inter.bank.Bank
 import gg.rsmod.plugins.osrs.content.mechanics.spells.SpellRequirements
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
@@ -180,7 +179,7 @@ on_command("item", Privilege.ADMIN_POWER) {
         val amount = if (values.size > 1) Math.min(Int.MAX_VALUE.toLong(), Misc.parseAmount(values[1])).toInt() else 1
         if (item < p.world.definitions.getCount(ItemDef::class.java)) {
             val def = p.world.definitions.get(ItemDef::class.java, Item(item).toUnnoted(p.world.definitions).id)
-            val result = p.inventory.add(id = item, amount = amount, assureFullInsertion = false)
+            val result = p.inventory.add(item = item, amount = amount, assureFullInsertion = false)
             p.message("You have spawned <col=801700>${DecimalFormat().format(result.completed)} x ${def.name}</col></col> ($item).")
         } else {
             p.message("Item $item does not exist in cache.")
@@ -191,7 +190,7 @@ on_command("item", Privilege.ADMIN_POWER) {
 on_command("food", Privilege.ADMIN_POWER) {
     val p = it.player()
 
-    p.inventory.add(id = Items.MANTA_RAY, amount = p.inventory.getFreeSlotCount())
+    p.inventory.add(item = Items.MANTA_RAY, amount = p.inventory.getFreeSlotCount())
 }
 
 on_command("varp", Privilege.ADMIN_POWER) {

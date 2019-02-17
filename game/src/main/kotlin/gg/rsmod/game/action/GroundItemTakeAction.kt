@@ -56,7 +56,7 @@ object GroundItemTakeAction {
         }
         // NOTE(Tom): we may want to make the assureFullInsertion flag false and
         // allow the world to remove some of the ground item instead of all of it.
-        val add = p.inventory.add(id = item.item, amount = item.amount, assureFullInsertion = true)
+        val add = p.inventory.add(item = item.item, amount = item.amount, assureFullInsertion = true)
         if (add.completed == 0) {
             p.message("You don't have enough inventory space to hold that item.")
             return

@@ -49,7 +49,7 @@ object Woodcutting {
 
                     if (trunkId != -1) {
                         val world = p.world
-                        world.executePlugin {
+                        world.executePlugin(obj) {
                             it.suspendable {
                                 val trunk = DynamicObject(trunkId, obj)
 

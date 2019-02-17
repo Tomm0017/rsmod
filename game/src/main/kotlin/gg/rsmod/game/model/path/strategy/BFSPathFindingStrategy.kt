@@ -49,8 +49,8 @@ class BFSPathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(
             }
             val head = nodes.poll()
 
-            val inRange = head.tile in validEndTiles && (!projectilePath || collision.raycast(head.tile, end, projectilePath))
-            if (inRange) {
+            if (request.maxPathSize != -1 && closed.size >= request.maxPathSize
+                    || head.tile in validEndTiles && (!projectilePath || collision.raycast(head.tile, end, projectilePath))) {
                 tail = head
                 success = true
                 break

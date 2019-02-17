@@ -76,9 +76,9 @@ class PluginRepository(val world: World) {
 
     /**
      * A list of plugins that will be executed upon an [gg.rsmod.game.model.entity.Npc]
-     * with a specific id being spawned into the world. Use sparingly.
+     * with a specific id being spawned into the world. Use sparingly per npc.
      *
-     * Note: any npc added to this map will <strong>not</strong> call the
+     * Note: any npc added to this map <strong>will</strong> still invoke the
      * [globalNpcSpawnPlugins] plugin.
      */
     private val npcSpawnPlugins = hashMapOf<Int, MutableList<(Plugin) -> Unit>>()
@@ -465,9 +465,8 @@ class PluginRepository(val world: World) {
         val customPlugins = npcSpawnPlugins[n.id]
         if (customPlugins != null && customPlugins.isNotEmpty()) {
             customPlugins.forEach { logic -> n.world.pluginExecutor.execute(n, logic) }
-        } else {
-            globalNpcSpawnPlugins.forEach { logic -> n.world.pluginExecutor.execute(n, logic) }
         }
+        globalNpcSpawnPlugins.forEach { logic -> n.world.pluginExecutor.execute(n, logic) }
     }
 
     fun bindTimer(key: TimerKey, plugin: (Plugin) -> Unit) {

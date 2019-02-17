@@ -146,7 +146,7 @@ class DefinitionSet {
         val mapArchive = regionIndex.findArchiveByName("m${x}_$z") ?: return false
         val landArchive = regionIndex.findArchiveByName("l${x}_$z") ?: return false
 
-        val mapData = mapArchive.decompress(world.filestore.storage.loadArchive(mapArchive))
+        val mapData = mapArchive.decompress(world.filestore.storage.loadArchive(mapArchive)) ?: return false
         val mapDefinition = MapLoader().load(x, z, mapData)
 
         val cacheRegion = net.runelite.cache.region.Region(id)

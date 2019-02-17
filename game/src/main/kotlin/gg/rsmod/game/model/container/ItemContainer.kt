@@ -53,6 +53,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
 
     /**
      * Gets the most-left/first index(slot) that is not occupied by an [Item].
+     * Defaults to -1 if none is found.
      */
     fun getNextFreeSlot(): Int = items.indexOfFirst { it == null }
 
@@ -69,6 +70,8 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
     fun isFull(): Boolean = items.all { it != null }
 
     fun isEmpty(): Boolean = items.none { it != null }
+
+    fun hasSpace(): Boolean = getNextFreeSlot() != -1
 
     /**
      * Calculate the total amount of items in this container who's [Item.id]

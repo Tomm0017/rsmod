@@ -1,6 +1,5 @@
-package gg.rsmod.plugins.osrs.content.obj.cabbage
+package gg.rsmod.plugins.osrs.content.objs.cabbage
 
-import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.plugins.osrs.api.cfg.Items
@@ -14,7 +13,7 @@ on_obj_option(obj = 1161, option = "pick", lineOfSightDistance = 0) {
     val obj = it.getInteractingGameObj()
 
     it.suspendable {
-        val route = player.walkTo(it, obj.tile, MovementQueue.StepType.NORMAL)
+        val route = player.walkTo(it, obj.tile)
         if (route.success) {
             if (player.inventory.isFull()) {
                 player.message("You don't have room for this cabbage.")

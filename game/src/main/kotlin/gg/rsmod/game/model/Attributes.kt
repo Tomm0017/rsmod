@@ -28,6 +28,11 @@ val NEW_ACCOUNT_ATTR = AttributeKey<Boolean>()
 val DISPLAY_MODE_CHANGE_ATTR = AttributeKey<Int>()
 
 /**
+ * The [Pawn] which another pawn is facing.
+ */
+val FACING_PAWN_ATTR = AttributeKey<WeakReference<Pawn>>()
+
+/**
  * The [Pawn] which another pawn wants to initiate combat with, whether they meet
  * the criteria to attack or not (including being in attack range).
  */

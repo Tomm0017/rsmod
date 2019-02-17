@@ -85,15 +85,15 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         r.bindNpc(npc, slot + 1, lineOfSightDistance, plugin)
     }
 
-    fun on_world_init(plugin: (Plugin) -> Unit) = r.bindWorldInit(plugin)
+    fun set_window_status_logic(plugin: Function1<Plugin, Unit>) = r.bindWindowStatus(plugin)
 
-    fun on_window_status(plugin: Function1<Plugin, Unit>) = r.bindWindowStatus(plugin)
+    fun set_combat_logic(plugin: Function1<Plugin, Unit>) = r.bindCombat(plugin)
+
+    fun on_world_init(plugin: (Plugin) -> Unit) = r.bindWorldInit(plugin)
 
     fun on_login(plugin: Function1<Plugin, Unit>) = r.bindLogin(plugin)
 
     fun on_logout(plugin: Function1<Plugin, Unit>) = r.bindLogout(plugin)
-
-    fun set_combat_logic(plugin: Function1<Plugin, Unit>) = r.bindCombat(plugin)
 
     fun on_npc_combat(npc: Int, vararg others: Int, plugin: Function1<Plugin, Unit>) {
         r.bindNpcCombat(npc, plugin)

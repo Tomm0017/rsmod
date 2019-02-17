@@ -118,7 +118,7 @@ class BFSPathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(
      * Checks if the direction outwards of the target is blocked.
      */
     private fun isTargetDirectionBlocked(node: Tile, end: Tile, targetWidth: Int, targetLength: Int,
-                                         projectilePath: Boolean, vararg blockedDirection: Direction): Boolean {
+                                         vararg blockedDirection: Direction): Boolean {
         val x = node.x
         val z = node.z
         val dx = x - end.x
@@ -132,7 +132,25 @@ class BFSPathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(
             else -> return false
         }
 
-        return blockedDirection.contains(face.getOpposite()) || collision.isBlocked(node, face, projectile = projectilePath)
+        return blockedDirection.contains(face.getOpposite())
+    }
+
+    private fun isDirectionBlocked(node: Tile, end: Tile, targetWidth: Int, targetLength: Int,
+                                   projectilePath: Boolean): Boolean {
+        val x = node.x
+        val z = node.z
+        val dx = x - end.x
+        val dz = z - end.z
+
+        val face = when {
+            (dx == -1) -> Direction.EAST
+            (dx == targetWidth) -> Direction.WEST
+            (dz == -1) -> Direction.NORTH
+            (dz == targetLength) -> Direction.SOUTH
+            else -> return false
+        }
+
+        return collision.isBlocked(node, face, projectile = projectilePath)
     }
 
     private fun isDiagonalTile(current: Tile, end: Tile, targetWidth: Int, targetLength: Int): Boolean {
@@ -179,12 +197,14 @@ class BFSPathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(
                     val tile = end.transform(x, z)
 
                     if (clipDiagonals && isDiagonalTile(tile, end, targetWidth, targetLength)
-                            || clipDirections && isTargetDirectionBlocked(tile, end, targetWidth, targetLength, projectilePath, *request.blockedDirections)
+                            || clipDirections && isTargetDirectionBlocked(tile, end, targetWidth, targetLength, *request.blockedDirections)
                             || clipOverlapping && isTileOverlapping(tile, end, targetWidth, targetLength)) {
                         continue
                     }
 
-                    validTiles.add(tile)
+                    if (!isDirectionBlocked(tile, end, targetWidth, targetLength, projectilePath)) {
+                        validTiles.add(tile)
+                    }
                 }
             }
         }

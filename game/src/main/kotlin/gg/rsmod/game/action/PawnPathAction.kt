@@ -1,7 +1,10 @@
 package gg.rsmod.game.action
 
 import gg.rsmod.game.message.impl.SetMapFlagMessage
-import gg.rsmod.game.model.*
+import gg.rsmod.game.model.FROZEN_TIMER
+import gg.rsmod.game.model.INTERACTING_NPC_ATTR
+import gg.rsmod.game.model.INTERACTING_OPT_ATTR
+import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
@@ -52,6 +55,7 @@ object PawnPathAction {
         val targetSize = target.getSize()
         val sourceTile = pawn.tile
         val targetTile = target.tile
+        val projectile = interactionRange > 2
 
         val frozen = pawn.timers.has(FROZEN_TIMER)
 
@@ -72,16 +76,16 @@ object PawnPathAction {
                 .setPoints(pawn.tile, target.tile)
                 .setSourceSize(sourceSize, sourceSize)
                 .setTargetSize(targetSize, targetSize)
-                .setProjectilePath(lineOfSight)
+                .setProjectilePath(projectile)
                 .setTouchRadius(interactionRange)
                 .clipPathNodes(node = true, link = true)
 
-        if (!lineOfSight) {
+        if (!lineOfSight && !projectile) {
             builder.clipOverlapTiles().clipDiagonalTiles()
         }
 
         val route = pawn.createPathFindingStrategy().calculateRoute(builder.build())
-        pawn.walkPath(route.path, MovementQueue.StepType.NORMAL)
+        pawn.walkPath(route.path)
 
         while (!pawn.tile.sameAs(route.tail)) {
             if (!targetTile.sameAs(target.tile)) {

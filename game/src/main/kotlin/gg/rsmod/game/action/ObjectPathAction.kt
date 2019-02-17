@@ -99,7 +99,9 @@ object ObjectPathAction {
         lineOfSightRange?.let { builder.setTouchRadius(lineOfSightRange) }
 
         // TODO(Tom): work on doors & wall objects (such as rooftop agility start or varrock museum wall displays)
-        if (group != ObjectGroup.WALL && lineOfSightRange == null) {
+        if (lineOfSightRange != null) {
+            builder.clipDiagonalTiles()
+        } else if (group != ObjectGroup.WALL) {
             builder.clipOverlapTiles().clipDiagonalTiles()
         }
 

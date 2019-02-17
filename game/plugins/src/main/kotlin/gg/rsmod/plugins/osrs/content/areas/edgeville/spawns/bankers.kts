@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.osrs.content.areas.edgeville
+package gg.rsmod.plugins.osrs.content.areas.edgeville.spawns
 
 import gg.rsmod.game.model.Direction
 import gg.rsmod.plugins.osrs.api.cfg.Npcs

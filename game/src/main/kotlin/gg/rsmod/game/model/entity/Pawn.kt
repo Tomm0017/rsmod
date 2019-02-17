@@ -268,7 +268,7 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
-    fun walkPath(path: ArrayDeque<Tile>, stepType: MovementQueue.StepType) {
+    fun walkPath(path: ArrayDeque<Tile>, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL) {
         if (path.isEmpty()) {
             if (this is Player) {
                 write(SetMapFlagMessage(255, 255))

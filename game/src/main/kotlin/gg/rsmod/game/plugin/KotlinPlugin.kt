@@ -5,7 +5,7 @@ import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.TimerKey
+import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.DynamicObject

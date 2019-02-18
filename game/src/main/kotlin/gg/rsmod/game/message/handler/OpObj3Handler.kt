@@ -4,9 +4,12 @@ import gg.rsmod.game.action.GroundItemTakeAction
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpObj3Message
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.attr.INTERACTING_GROUNDITEM_ATTR
+import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.priv.Privilege
 import java.lang.ref.WeakReference
 
 /**

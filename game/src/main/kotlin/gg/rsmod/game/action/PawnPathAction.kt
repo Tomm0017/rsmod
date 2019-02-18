@@ -2,11 +2,15 @@ package gg.rsmod.game.action
 
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
+import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathRequest
+import gg.rsmod.game.model.timer.FROZEN_TIMER
+import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.AabbUtil
 
@@ -40,7 +44,6 @@ object PawnPathAction {
             }
 
             if (pawn is Player) {
-
                 /**
                  * Stop the npc from walking while the player talks to it
                  * for [Npc.RESET_PAWN_FACE_DELAY] cycles.

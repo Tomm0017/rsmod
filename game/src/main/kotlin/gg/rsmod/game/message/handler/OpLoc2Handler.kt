@@ -4,9 +4,12 @@ import gg.rsmod.game.action.ObjectPathAction
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpLoc2Message
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
+import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.priv.Privilege
 import java.lang.ref.WeakReference
 
 /**

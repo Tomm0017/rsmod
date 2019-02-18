@@ -1,6 +1,6 @@
 package gg.rsmod.game.action
 
-import gg.rsmod.game.model.INTERACTING_GROUNDITEM_ATTR
+import gg.rsmod.game.model.attr.INTERACTING_GROUNDITEM_ATTR
 import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GroundItem

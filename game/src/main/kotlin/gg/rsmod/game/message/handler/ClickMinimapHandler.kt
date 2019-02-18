@@ -3,7 +3,7 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.MoveMinimapClickMessage
 import gg.rsmod.game.model.MovementQueue
-import gg.rsmod.game.model.Privilege
+import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.game.model.entity.Client
 
 /**

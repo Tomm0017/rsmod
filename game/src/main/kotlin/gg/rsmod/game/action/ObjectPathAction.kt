@@ -2,8 +2,8 @@ package gg.rsmod.game.action
 
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.Direction
-import gg.rsmod.game.model.INTERACTING_OBJ_ATTR
-import gg.rsmod.game.model.INTERACTING_OPT_ATTR
+import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
+import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.collision.ObjectGroup
 import gg.rsmod.game.model.collision.ObjectType

@@ -2,9 +2,9 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.IfButtonMessage
-import gg.rsmod.game.model.INTERACTING_ITEM_ID
-import gg.rsmod.game.model.INTERACTING_OPT_ATTR
-import gg.rsmod.game.model.INTERACTING_SLOT_ATTR
+import gg.rsmod.game.model.attr.INTERACTING_ITEM_ID
+import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
+import gg.rsmod.game.model.attr.INTERACTING_SLOT_ATTR
 import gg.rsmod.game.model.entity.Client
 import mu.KotlinLogging
 

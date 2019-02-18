@@ -3,9 +3,9 @@ package gg.rsmod.game.model.entity
 import com.google.common.base.MoreObjects
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ObjectDef
-import gg.rsmod.game.model.AttributeSystem
+import gg.rsmod.game.model.attr.AttributeSystem
 import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.TimerSystem
+import gg.rsmod.game.model.timer.TimerSystem
 import gg.rsmod.game.model.World
 
 /**

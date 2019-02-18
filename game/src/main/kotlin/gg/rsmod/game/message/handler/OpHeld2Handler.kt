@@ -3,9 +3,9 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.action.EquipAction
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpHeld2Message
-import gg.rsmod.game.model.INTERACTING_ITEM
-import gg.rsmod.game.model.INTERACTING_ITEM_ID
-import gg.rsmod.game.model.INTERACTING_ITEM_SLOT
+import gg.rsmod.game.model.attr.INTERACTING_ITEM
+import gg.rsmod.game.model.attr.INTERACTING_ITEM_ID
+import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.entity.Client
 import java.lang.ref.WeakReference
 

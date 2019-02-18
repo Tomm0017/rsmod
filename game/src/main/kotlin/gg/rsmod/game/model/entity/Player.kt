@@ -8,6 +8,11 @@ import gg.rsmod.game.model.*
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.interf.InterfaceSet
+import gg.rsmod.game.model.priv.Privilege
+import gg.rsmod.game.model.skill.SkillSet
+import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
+import gg.rsmod.game.model.timer.FORCE_DISCONNECTION_TIMER
+import gg.rsmod.game.model.varp.VarpSet
 import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.game.sync.block.UpdateBlockType
 import it.unimi.dsi.fastutil.objects.ObjectArrayList

@@ -1,7 +1,7 @@
 package gg.rsmod.game.service.serializer
 
-import gg.rsmod.game.model.TimerSystem
-import gg.rsmod.game.model.Varp
+import gg.rsmod.game.model.timer.TimerSystem
+import gg.rsmod.game.model.varp.Varp
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.serializer.json.JsonPlayerSerializer
 

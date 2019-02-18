@@ -1,5 +1,7 @@
 package gg.rsmod.game.model
 
+import gg.rsmod.game.model.timer.TimerKey
+import gg.rsmod.game.model.timer.TimerSystem
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

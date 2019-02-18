@@ -4,6 +4,11 @@ import gg.rsmod.game.action.NpcDeathAction
 import gg.rsmod.game.action.PlayerDeathAction
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.attr.AttributeSystem
+import gg.rsmod.game.model.attr.COMBAT_TARGET_FOCUS_ATTR
+import gg.rsmod.game.model.attr.FACING_PAWN_ATTR
+import gg.rsmod.game.model.bits.INFINITE_VARS_STORAGE
+import gg.rsmod.game.model.bits.InfiniteVarsType
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.combat.DamageMap
 import gg.rsmod.game.model.path.FutureRoute
@@ -13,6 +18,8 @@ import gg.rsmod.game.model.path.Route
 import gg.rsmod.game.model.path.strategy.BFSPathFindingStrategy
 import gg.rsmod.game.model.path.strategy.SimplePathFindingStrategy
 import gg.rsmod.game.model.region.Chunk
+import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
+import gg.rsmod.game.model.timer.TimerSystem
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.block.UpdateBlockBuffer
 import gg.rsmod.game.sync.block.UpdateBlockType

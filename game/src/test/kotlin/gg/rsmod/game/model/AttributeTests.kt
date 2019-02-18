@@ -1,5 +1,7 @@
 package gg.rsmod.game.model
 
+import gg.rsmod.game.model.attr.AttributeKey
+import gg.rsmod.game.model.attr.AttributeSystem
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

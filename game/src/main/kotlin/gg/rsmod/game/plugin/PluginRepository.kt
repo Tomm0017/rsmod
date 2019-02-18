@@ -5,9 +5,11 @@ import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.attr.*
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.item.Item
+import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.game.NpcStatsService
 import io.github.classgraph.ClassGraph

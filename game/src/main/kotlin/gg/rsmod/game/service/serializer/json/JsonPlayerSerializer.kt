@@ -6,8 +6,11 @@ import com.google.gson.GsonBuilder
 import com.lambdaworks.crypto.SCryptUtil
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.interf.DisplayMode
+import gg.rsmod.game.model.priv.Privilege
+import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.service.serializer.PlayerLoadResult
 import gg.rsmod.game.service.serializer.PlayerSaveData
 import gg.rsmod.game.service.serializer.PlayerSerializerService

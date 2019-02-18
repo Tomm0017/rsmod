@@ -2,10 +2,10 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpNpcTMessage
-import gg.rsmod.game.model.INTERACTING_COMPONENT_CHILD
-import gg.rsmod.game.model.INTERACTING_COMPONENT_PARENT
-import gg.rsmod.game.model.INTERACTING_NPC_ATTR
-import gg.rsmod.game.model.Privilege
+import gg.rsmod.game.model.attr.INTERACTING_COMPONENT_CHILD
+import gg.rsmod.game.model.attr.INTERACTING_COMPONENT_PARENT
+import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
+import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.Entity
 import java.lang.ref.WeakReference

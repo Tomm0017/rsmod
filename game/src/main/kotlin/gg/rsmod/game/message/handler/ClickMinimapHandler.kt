@@ -12,6 +12,10 @@ import gg.rsmod.game.model.entity.Client
 class ClickMinimapHandler : MessageHandler<MoveMinimapClickMessage> {
 
     override fun handle(client: Client, message: MoveMinimapClickMessage) {
+        if (!client.lock.canMove()) {
+            return
+        }
+
         log(client, "Click minimap: x=%d, z=%d, type=%d", message.x, message.z, message.movementType)
 
         client.interruptPlugins()

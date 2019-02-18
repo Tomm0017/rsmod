@@ -12,6 +12,10 @@ import gg.rsmod.game.model.entity.Client
 class ClickMapHandler : MessageHandler<MoveGameClickMessage> {
 
     override fun handle(client: Client, message: MoveGameClickMessage) {
+        if (!client.lock.canMove()) {
+            return
+        }
+
         log(client, "Click map: x=%d, z=%d, type=%d", message.x, message.z, message.movementType)
 
         client.interruptPlugins()

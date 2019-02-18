@@ -142,6 +142,14 @@ abstract class Pawn(val world: World) : Entity() {
 
     abstract fun hasBlock(block: UpdateBlockType): Boolean
 
+    fun lock() {
+        lock = LockState.FULL
+    }
+
+    fun unlock() {
+        lock = LockState.NONE
+    }
+
     fun getTransmogId(): Int = transmogId
 
     fun setTransmogId(transmogId: Int) {

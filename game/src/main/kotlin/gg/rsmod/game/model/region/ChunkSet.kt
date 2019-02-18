@@ -4,7 +4,6 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.collision.CollisionMatrix
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -28,7 +27,7 @@ class ChunkSet(val world: World) {
         return newSet
     }
 
-    private val chunks = Object2ObjectOpenHashMap<ChunkCoords, Chunk>()
+    private val chunks = hashMapOf<ChunkCoords, Chunk>()
 
     private val activeRegions = IntOpenHashSet()
 

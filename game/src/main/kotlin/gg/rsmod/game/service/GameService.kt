@@ -132,9 +132,9 @@ class GameService : Service() {
         if (sequentialTasks) {
             tasks.addAll(arrayOf(
                     SequentialMessageHandlerTask(),
+                    PluginHandlerTask(),
                     SequentialPlayerCycleTask(),
                     ChunkCreationTask(),
-                    PluginHandlerTask(),
                     SequentialNpcCycleTask(),
                     SequentialSynchronizationTask(),
                     SequentialPlayerPostCycleTask()
@@ -144,9 +144,9 @@ class GameService : Service() {
             val executor = Executors.newFixedThreadPool(processors, ThreadFactoryBuilder().setNameFormat("game-tasks-thread").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
             tasks.addAll(arrayOf(
                     ParallelMessageHandlerTask(executor),
+                    PluginHandlerTask(),
                     ParallelPlayerCycleTask(executor),
                     ChunkCreationTask(),
-                    PluginHandlerTask(),
                     ParallelNpcCycleTask(executor),
                     ParallelSynchronizationTask(executor),
                     ParallelPlayerPostCycleTask(executor)

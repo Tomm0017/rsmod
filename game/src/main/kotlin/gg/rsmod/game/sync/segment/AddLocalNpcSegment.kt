@@ -31,6 +31,7 @@ class AddLocalNpcSegment(val player: Player, val npc: Npc, private val requiresB
             }
         }
 
+        val id = if (npc.getTransmogId() != -1) npc.getTransmogId() else npc.id
         val facing = if (npc.lastFacingDirection != Direction.NONE) npc.lastFacingDirection else Direction.SOUTH
 
         buf.putBits(15, npc.index)
@@ -39,6 +40,6 @@ class AddLocalNpcSegment(val player: Player, val npc: Npc, private val requiresB
         buf.putBits(3, facing.getNpcWalkIndex())
         buf.putBits(1, if (npc.teleport) 1 else 0)
         buf.putBits(if (largeScene) 8 else 5, dz)
-        buf.putBits(14, npc.id)
+        buf.putBits(14, id)
     }
 }

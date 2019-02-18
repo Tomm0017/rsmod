@@ -15,16 +15,10 @@ class NpcUpdateBlockSegment(private val npc: Npc, private val newAddition: Boole
         var mask = npc.blockBuffer.blockValue()
         val blocks = npc.world.npcUpdateBlocks
 
-        var forceAppearance = false
         var forceFacePawn = false
         var forceFaceTile = false
 
         if (newAddition) {
-
-            if (npc.getTransmogId() != -1) {
-                mask = mask or blocks.updateBlocks[UpdateBlockType.APPEARANCE]!!.bit
-                forceAppearance = true
-            }
 
             if (npc.blockBuffer.faceDegrees != 0) {
                 mask = mask or blocks.updateBlocks[UpdateBlockType.FACE_TILE]!!.bit
@@ -41,7 +35,6 @@ class NpcUpdateBlockSegment(private val npc: Npc, private val newAddition: Boole
             val force = when (blockType) {
                 UpdateBlockType.FACE_TILE -> forceFaceTile
                 UpdateBlockType.FACE_PAWN -> forceFacePawn
-                UpdateBlockType.APPEARANCE -> forceAppearance
                 else -> false
             }
             if (npc.hasBlock(blockType) || force) {

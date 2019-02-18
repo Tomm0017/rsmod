@@ -638,7 +638,6 @@ object Items {
     const val CHARCOAL = 973
     const val MACHETE = 975
     const val COOKING_POT = 977
-    const val NULL_980 = 980
     const val DISK_OF_RETURNING = 981
     const val BRASS_KEY = 983
     const val TOOTH_HALF_OF_KEY = 985
@@ -10640,6 +10639,7 @@ object Items {
     const val DRAGON_HASTAP_22737 = 22737
     const val DRAGON_HASTAP_22740 = 22740
     const val DRAGON_HASTAKP = 22743
+    const val FAKE_DRAGON_HASTAKP = 22744
     const val IKKLE_HYDRA = 22746
     const val IKKLE_HYDRA_22748 = 22748
     const val IKKLE_HYDRA_22750 = 22750
@@ -10770,5 +10770,19 @@ object Items {
     const val MYSTIC_GLOVES_DUSK = 23056
     const val MYSTIC_BOOTS_DUSK = 23059
     const val NEST_BOX_SEEDS_23062 = 23062
+    const val JAR_OF_CHEMICALS = 23064
+    const val TREASURE_SCROLL = 23067
+    const val TREASURE_SCROLL_23068 = 23068
+    const val MYSTERIOUS_ORB_23069 = 23069
+    const val TREASURE_SCROLL_23070 = 23070
+    const val ANCIENT_CASKET = 23071
+    const val ANTIQUE_LAMP_23072 = 23072
+    const val HYDRA_SLAYER_HELMET = 23073
+    const val HYDRA_SLAYER_HELMET_I = 23075
+    const val ALCHEMICAL_HYDRA_HEADS = 23077
+    const val STUFFED_HYDRA_HEADS = 23079
+    const val ALCHEMICAL_HYDRA_HEAD = 23081
+    const val ANTIQUE_LAMP_23082 = 23082
+    const val BRIMSTONE_KEY = 23083
     /* Auto-generated file using class gg.rsmod.game.service.game.DumpEntityIdService */
 }

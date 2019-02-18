@@ -3,6 +3,7 @@ package gg.rsmod.game.service.game
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.NpcDef
+import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
@@ -72,6 +73,18 @@ class DumpEntityIdService : Service() {
             }
         }
         endWriter(npcs)
+
+        val objCount = definitions.getCount(ObjectDef::class.java)
+        val objs = generateWriter("Objs.kt")
+        for (i in 0 until objCount) {
+            val npc = definitions.getNullable(ObjectDef::class.java, i) ?: continue
+            val rawName = npc.name.replace("?", "")
+            if (rawName.isNotEmpty() && rawName.isNotBlank()) {
+                val name = namer.name(npc.name, i)
+                write(objs, "const val $name = $i")
+            }
+        }
+        endWriter(objs)
     }
 
     private fun generateWriter(file: String): PrintWriter {

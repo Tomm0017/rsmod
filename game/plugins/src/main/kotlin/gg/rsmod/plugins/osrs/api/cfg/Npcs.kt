@@ -1033,8 +1033,6 @@ object Npcs {
     const val ANGRY_BEAR = 1060
     const val ANGRY_UNICORN = 1061
     const val ANGRY_GIANT_RAT = 1062
-    const val ANGRY_GIANT_RAT_1063 = 1063
-    const val ANGRY_GIANT_RAT_1064 = 1064
     const val ANGRY_GOBLIN = 1065
     const val FEAR_REAPER = 1066
     const val CONFUSION_BEAST = 1067
@@ -2675,7 +2673,6 @@ object Npcs {
     const val BAT = 2827
     const val DRYAD = 2828
     const val FAIRY_2829 = 2829
-    const val LEPRECHAUN = 2830
     const val LIZARD_MAN = 2831
     const val ORC = 2832
     const val TROLL_2833 = 2833
@@ -6199,7 +6196,6 @@ object Npcs {
     const val SPAWN_6768 = 6768
     const val OSTEN = 6769
     const val ARCIS = 6770
-    const val HOSA = 6771
     const val LOVADA = 6772
     const val DOOMSAYER = 6773
     const val DOOMSAYER_6774 = 6774
@@ -6209,6 +6205,7 @@ object Npcs {
     const val MAZE_GUARDIAN_6779 = 6779
     const val PILIAR = 6780
     const val SHAYDA = 6781
+    const val HOSA = 6785
     const val HELLRAT_BEHEMOTH = 6793
     const val MONKEY_ARCHER_6794 = 6794
     const val NIEVE_6797 = 6797
@@ -6884,8 +6881,8 @@ object Npcs {
     const val TEKTON_ENRAGED = 7543
     const val TEKTON_ENRAGED_7544 = 7544
     const val TEKTON_7545 = 7545
-    const val SCAVENGER_RUNT = 7546
-    const val SCAVENGER_RUNT_7547 = 7547
+    const val BARTENDER_7546 = 7546
+    const val MAN_7547 = 7547
     const val SCAVENGER_BEAST = 7548
     const val SCAVENGER_BEAST_7549 = 7549
     const val GREAT_OLM_RIGHT_CLAW = 7550
@@ -7688,6 +7685,7 @@ object Npcs {
     const val WIZARD_CROMPERTY_8481 = 8481
     const val SMOKE_DEVIL_8482 = 8482
     const val SMOKE_DEVIL_8483 = 8483
+    const val VEOS_8484 = 8484
     const val EEK_8485 = 8485
     const val MAKEOVER_MAGE_8487 = 8487
     const val THE_COLLECTOR = 8491

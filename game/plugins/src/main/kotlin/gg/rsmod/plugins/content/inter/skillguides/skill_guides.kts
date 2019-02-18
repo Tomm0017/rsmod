@@ -2,7 +2,6 @@ package gg.rsmod.plugins.content.inter.skillguides
 
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 
 val SKILL_ID_VARBIT = 4371
 val SUB_SECTION_VARBIT = 4372

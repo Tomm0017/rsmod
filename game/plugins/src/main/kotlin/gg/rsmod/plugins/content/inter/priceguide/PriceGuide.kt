@@ -9,7 +9,6 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.service.item.ItemValueService
 import java.text.DecimalFormat
 

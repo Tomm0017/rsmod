@@ -10,7 +10,6 @@ import gg.rsmod.plugins.api.HitType
 import gg.rsmod.plugins.api.ProjectileType
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
 import gg.rsmod.plugins.content.combat.formula.MagicCombatFormula

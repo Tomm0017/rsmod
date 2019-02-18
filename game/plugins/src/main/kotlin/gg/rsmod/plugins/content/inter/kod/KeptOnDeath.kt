@@ -3,7 +3,6 @@ package gg.rsmod.plugins.content.inter.kod
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 import java.text.DecimalFormat
 
 /**

@@ -4,7 +4,6 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 
 /**
  * @author Tom <rspsmods@gmail.com>

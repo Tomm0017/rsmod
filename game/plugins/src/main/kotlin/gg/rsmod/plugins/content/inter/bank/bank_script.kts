@@ -2,7 +2,6 @@ package gg.rsmod.plugins.content.inter.bank
 
 import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 
 on_interface_close(Bank.BANK_INTERFACE_ID) {
     it.player().closeInterface(Bank.INV_INTERFACE_ID)

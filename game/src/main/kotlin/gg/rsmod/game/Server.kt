@@ -14,7 +14,6 @@ import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import mu.KotlinLogging
 import net.runelite.cache.fs.Store
-import org.apache.logging.log4j.LogManager
 import java.net.InetSocketAddress
 import java.nio.file.Files
 import java.nio.file.Path
@@ -159,7 +158,7 @@ class Server {
          */
         individualStopwatch.reset().start()
         world.plugins.init(gameService = gameService,
-                packedPath = gameProperties.getOrDefault("plugin-packed-path", "./plugins"),
+                jarPluginsDirectory = gameProperties.getOrDefault("plugin-packed-path", "./plugins"),
                 analyzeMode = args.any { it == "-analyze" })
         logger.info("Loaded {} plugins in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 

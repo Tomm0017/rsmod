@@ -4,17 +4,20 @@ import com.google.common.base.Stopwatch
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import gg.rsmod.game.fs.def.NpcDef
-import gg.rsmod.game.model.*
+import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.*
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.item.Item
+import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.game.NpcStatsService
 import io.github.classgraph.ClassGraph
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import mu.KotlinLogging
 import java.lang.ref.WeakReference
@@ -225,51 +228,27 @@ class PluginRepository(val world: World) {
 
     internal val npcCombatDefs = Int2ObjectOpenHashMap<NpcCombatDef>()
 
+    internal val shops = Object2ObjectOpenHashMap<String, Shop>()
+
     /**
      * Initiates and populates all our plugins.
      */
-    fun init(gameService: GameService, packedPath: String, analyzeMode: Boolean) {
+    fun init(gameService: GameService, jarPluginsDirectory: String, analyzeMode: Boolean) {
         gameService.world.pluginExecutor.init(gameService)
-        scanForPlugins(packedPath, gameService.world, analyzeMode)
+        initPlugins(jarPluginsDirectory, analyzeMode)
+        setCombatDefs()
+        spawnEntities()
     }
 
-    fun scanForPlugins(packedPath: String, world: World, analyzeMode: Boolean) {
+    internal fun initPlugins(jarPluginsDirectory: String, analyzeMode: Boolean) {
         analyzer = if (analyzeMode) PluginAnalyzer(this) else null
+        scanPackageForPlugins(world)
+        scanJarDirectoryForPlugins(world, Paths.get(jarPluginsDirectory))
+        analyzer?.analyze(world)
+        analyzer = null
+    }
 
-        displayModePlugin = null
-        combatPlugin = null
-        worldInitPlugins.clear()
-        loginPlugins.clear()
-        logoutPlugins.clear()
-        globalNpcSpawnPlugins.clear()
-        npcSpawnPlugins.clear()
-        npcCombatPlugins.clear()
-        spellOnNpcPlugins.clear()
-        timerPlugins.clear()
-        interfaceOpenPlugins.clear()
-        interfaceClosePlugins.clear()
-        commandPlugins.clear()
-        buttonPlugins.clear()
-        equipSlotPlugins.clear()
-        equipItemRequirementPlugins.clear()
-        equipItemPlugins.clear()
-        unequipItemPlugins.clear()
-        enterRegionPlugins.clear()
-        exitRegionPlugins.clear()
-        enterChunkPlugins.clear()
-        exitChunkPlugins.clear()
-        itemPlugins.clear()
-        objectPlugins.clear()
-        npcPlugins.clear()
-
-        npcInteractionDistancePlugins.clear()
-        objInteractionDistancePlugins.clear()
-
-        multiCombatChunks.clear()
-        multiCombatRegions.clear()
-
-        pluginCount = 0
-
+    fun scanPackageForPlugins(world: World) {
         ClassGraph().enableAllInfo().whitelistModules().scan().use { result ->
             val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
             plugins.forEach { p ->
@@ -279,22 +258,17 @@ class PluginRepository(val world: World) {
                 constructor.newInstance(this, world)
             }
         }
+    }
 
-        val packed = Paths.get(packedPath)
-        if (Files.exists(packed)) {
-            Files.walk(packed).forEach { path ->
+    fun scanJarDirectoryForPlugins(world: World, directory: Path) {
+        if (Files.exists(directory)) {
+            Files.walk(directory).forEach { path ->
                 if (!path.fileName.toString().endsWith(".jar")) {
                     return@forEach
                 }
                 scanJarForPlugins(world, path)
             }
         }
-
-        setCombatDefs()
-        spawnEntities()
-
-        analyzer?.analyze(world)
-        analyzer = null
     }
 
     fun scanJarForPlugins(world: World, path: Path) {
@@ -346,6 +320,13 @@ class PluginRepository(val world: World) {
 
         itemSpawns.forEach { item -> world.spawn(item) }
         itemSpawns.clear()
+    }
+
+    private fun loadShops() {
+        shops.forEach { name, shop ->
+            world.shops[name] = shop
+        }
+        shops.clear()
     }
 
     /**

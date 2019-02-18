@@ -2,7 +2,8 @@ package gg.rsmod.plugins.content.cmd
 
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
-import gg.rsmod.game.model.*
+import gg.rsmod.game.model.Direction
+import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.bits.INFINITE_VARS_STORAGE
 import gg.rsmod.game.model.bits.InfiniteVarsType
 import gg.rsmod.game.model.entity.DynamicObject
@@ -15,13 +16,16 @@ import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.formula.MagicCombatFormula
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 import gg.rsmod.plugins.content.mechanics.spells.SpellRequirements
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
+
+on_command("reload-plugins") {
+    it.player().world.hotswapPlugins = true
+}
 
 on_command("max") {
     val player = it.player()

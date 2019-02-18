@@ -6,7 +6,6 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.OSRSGameframe
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 
 fun bind_setting(child: Int, plugin: Function1<Plugin, Unit>) {
     on_button(interfaceId = OptionsTab.INTERFACE_ID, component = child) {

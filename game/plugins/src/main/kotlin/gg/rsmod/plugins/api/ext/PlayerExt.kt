@@ -14,7 +14,6 @@ import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.plugins.api.*
-import gg.rsmod.plugins.osrs.api.*
 import gg.rsmod.plugins.content.inter.bank.Bank
 import gg.rsmod.plugins.content.mechanics.prayer.Prayer
 import gg.rsmod.plugins.content.mechanics.prayer.Prayers

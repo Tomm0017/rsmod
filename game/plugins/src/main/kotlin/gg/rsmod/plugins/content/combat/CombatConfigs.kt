@@ -13,7 +13,6 @@ import gg.rsmod.plugins.api.EquipmentType
 import gg.rsmod.plugins.api.WeaponType
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.content.combat.strategy.CombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.MeleeCombatStrategy

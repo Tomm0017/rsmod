@@ -12,7 +12,6 @@ import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.PrayerIcon
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 
 object Prayers {
 

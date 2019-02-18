@@ -5,7 +5,6 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Npcs
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 
 on_npc_option(npc = Npcs.ABBOT_LANGLEY, option = "talk-to") {
     it.suspendable { dialog(it) }

@@ -2,7 +2,6 @@ package gg.rsmod.plugins.content.inter.spellfilter
 
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 import gg.rsmod.plugins.api.getDisplayComponentId
 
 on_login {

@@ -10,6 +10,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.task.ChunkCreationTask
 import gg.rsmod.game.task.GameTask
 import gg.rsmod.game.task.PluginHandlerTask
+import gg.rsmod.game.task.PluginHotswapTask
 import gg.rsmod.game.task.parallel.*
 import gg.rsmod.game.task.sequential.*
 import gg.rsmod.util.ServerProperties
@@ -131,6 +132,7 @@ class GameService : Service() {
 
         if (sequentialTasks) {
             tasks.addAll(arrayOf(
+                    PluginHotswapTask(),
                     SequentialMessageHandlerTask(),
                     PluginHandlerTask(),
                     SequentialPlayerCycleTask(),
@@ -143,6 +145,7 @@ class GameService : Service() {
         } else {
             val executor = Executors.newFixedThreadPool(processors, ThreadFactoryBuilder().setNameFormat("game-tasks-thread").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
             tasks.addAll(arrayOf(
+                    PluginHotswapTask(),
                     ParallelMessageHandlerTask(executor),
                     PluginHandlerTask(),
                     ParallelPlayerCycleTask(executor),

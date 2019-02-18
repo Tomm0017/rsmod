@@ -2,7 +2,6 @@ package gg.rsmod.plugins.content.inter.worldmap
 
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 
 on_button(interfaceId = 160, component = 42) {
     val p = it.player()

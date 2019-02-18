@@ -10,6 +10,7 @@ import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.priv.PrivilegeSet
 import gg.rsmod.game.model.region.ChunkSet
+import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.plugin.PluginRepository
@@ -19,6 +20,7 @@ import gg.rsmod.game.service.game.NpcStatsService
 import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.game.sync.block.UpdateBlockSet
 import gg.rsmod.util.ServerProperties
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import mu.KotlinLogging
 import net.runelite.cache.fs.Store
 import java.io.File
@@ -69,7 +71,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     /**
      * The plugin repository that's responsible for storing all the plugins found.
      */
-    val plugins = PluginRepository(this)
+    var plugins = PluginRepository(this)
 
     /**
      * The [PrivilegeSet] that is attached to our game.
@@ -144,6 +146,13 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * since a whole 600ms have now gone by).
      */
     var multiThreadPathFinding = false
+
+    var hotswapPlugins = false
+
+    /**
+     * The available [Shop]s.
+     */
+    val shops = Object2ObjectOpenHashMap<String, Shop>()
 
     fun postLoad() {
         plugins.executeWorldInit(this)

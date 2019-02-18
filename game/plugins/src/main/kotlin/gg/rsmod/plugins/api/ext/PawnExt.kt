@@ -1,6 +1,7 @@
 package gg.rsmod.plugins.api.ext
 
-import gg.rsmod.game.model.*
+import gg.rsmod.game.model.Hit
+import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.attr.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.PawnHit
@@ -11,7 +12,6 @@ import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.*
-import gg.rsmod.plugins.osrs.api.*
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.formula.CombatFormula
 import gg.rsmod.plugins.content.mechanics.poison.Poison

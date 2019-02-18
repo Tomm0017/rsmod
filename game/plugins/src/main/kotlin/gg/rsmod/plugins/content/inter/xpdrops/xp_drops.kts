@@ -3,7 +3,6 @@ package gg.rsmod.plugins.content.inter.xpdrops
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.OSRSGameframe
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.osrs.api.ext.*
 
 val INTERFACE_ID = 122
 val SETUP_INTERFACE_ID = 137

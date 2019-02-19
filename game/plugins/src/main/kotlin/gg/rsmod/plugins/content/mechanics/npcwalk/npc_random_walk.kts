@@ -28,7 +28,12 @@ on_timer(SEARCH_FOR_PATH_TIMER) {
         val start = npc.spawnTile
         val dest = start.transform(rx, rz)
 
-        npc.walkTo(dest)
+        /**
+         * Only walk to destination if the chunk has previously been created.
+         */
+        if (npc.world.collision.chunks.get(dest, create = false) != null) {
+            npc.walkTo(dest)
+        }
     }
 
     npc.timers[SEARCH_FOR_PATH_TIMER] = npc.world.random(SEARCH_FOR_PATH_DELAY)

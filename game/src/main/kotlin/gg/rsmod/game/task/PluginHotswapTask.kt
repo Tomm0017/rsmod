@@ -1,8 +1,10 @@
 package gg.rsmod.game.task
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder
 import gg.rsmod.game.model.World
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.service.GameService
+import mu.KotlinLogging
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
@@ -12,7 +14,11 @@ import java.util.concurrent.Future
  */
 class PluginHotswapTask : GameTask {
 
-    private val executor = Executors.newSingleThreadExecutor()
+    companion object {
+        private val logger = KotlinLogging.logger {  }
+    }
+
+    private val executor = Executors.newSingleThreadExecutor(ThreadFactoryBuilder().setNameFormat("plugin-hotswap-thread").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e)  }.build())
 
     private var pluginRepository: Future<PluginRepository>? = null
 
@@ -21,10 +27,12 @@ class PluginHotswapTask : GameTask {
             val newRepository = pluginRepository!!
             if (newRepository.isDone) {
                 doSwap(world, newRepository.get())
+                logger.info { "Plugins have been hot-swapped." }
             }
         } else if (world.hotswapPlugins) {
             world.hotswapPlugins = false
             initiateSwap(world)
+            logger.info { "Plugin hot-swap has initiated." }
         }
     }
 
@@ -39,6 +47,5 @@ class PluginHotswapTask : GameTask {
     private fun doSwap(world: World, newRepository: PluginRepository) {
         world.plugins = newRepository
         pluginRepository = null
-        println("Swapped plugin repository")
     }
 }

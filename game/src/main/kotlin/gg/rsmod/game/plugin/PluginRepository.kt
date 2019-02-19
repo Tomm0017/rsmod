@@ -238,6 +238,7 @@ class PluginRepository(val world: World) {
         initPlugins(jarPluginsDirectory, analyzeMode)
         setCombatDefs()
         spawnEntities()
+        setShops()
     }
 
     internal fun initPlugins(jarPluginsDirectory: String, analyzeMode: Boolean) {
@@ -322,10 +323,8 @@ class PluginRepository(val world: World) {
         itemSpawns.clear()
     }
 
-    private fun loadShops() {
-        shops.forEach { name, shop ->
-            world.shops[name] = shop
-        }
+    private fun setShops() {
+        shops.forEach { name, shop -> world.shops[name] = shop }
         shops.clear()
     }
 
@@ -481,6 +480,7 @@ class PluginRepository(val world: World) {
 
     fun executeInterfaceOpen(p: Player, interfaceId: Int): Boolean {
         val plugin = interfaceOpenPlugins[interfaceId]
+        println("interface open: $interfaceId")
         if (plugin != null) {
             p.world.pluginExecutor.execute(p, plugin)
             return true

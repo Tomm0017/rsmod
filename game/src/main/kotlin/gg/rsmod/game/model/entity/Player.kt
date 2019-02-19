@@ -5,9 +5,11 @@ import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.interf.InterfaceSet
+import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.game.model.skill.SkillSet
 import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
@@ -102,6 +104,12 @@ open class Player(world: World) : Pawn(world) {
     val components by lazy { InterfaceSet(this) }
 
     val varps by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
+
+    /**
+     * Flag that indicates whether or not to refresh the shop the player currently
+     * has open.
+     */
+    var shopDirty = false
 
     /**
      * Some areas have a 'large' viewport. Which means the player's client is
@@ -259,6 +267,13 @@ open class Player(world: World) : Pawn(world) {
         if (bank.dirty) {
             write(UpdateInvFullMessage(containerKey = 95, items = bank.getBackingArray()))
             bank.dirty = false
+        }
+
+        if (shopDirty) {
+            attr[CURRENT_SHOP_ATTR]?.let { shop ->
+                write(UpdateInvFullMessage(containerKey = 13, items = shop.items.map { if (it != null) Item(it.item, it.currentAmount) else null }.toTypedArray()))
+            }
+            shopDirty = false
         }
 
         if (calculateWeight || calculateBonuses) {

@@ -43,7 +43,7 @@ class PluginExecutor {
              * Problem:
              *
              * The [logic] must be invoked in order to know if the plugin is
-             * suspendable. Any previous suspended plugin should be interrupted
+             * suspended. Any previous suspended plugin should be interrupted
              * before [logic] is invoked. This cannot be achieved with the current
              * system.
              *
@@ -52,7 +52,7 @@ class PluginExecutor {
              * In an ideal system, we would be able to know if the plugin will be
              * suspended ahead-of-time, so that we can interrupt any previous
              * plugin in our [active] list first, and then execute the [logic]
-             * afterwards. However, the logic must be executed first before the
+             * afterwards. Currently, the logic must be executed first before the
              * system knows if the plugin is suspended or not; because of this
              * we cannot interrupt the previous 'active' plugin, which in some
              * cases we may want.

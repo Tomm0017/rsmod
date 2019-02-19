@@ -4,14 +4,16 @@ import com.google.common.primitives.Ints
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.message.impl.*
+import gg.rsmod.game.model.World
+import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
 import gg.rsmod.game.model.bits.BitStorage
-import gg.rsmod.game.model.skill.SkillSet
 import gg.rsmod.game.model.bits.StorageBits
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
+import gg.rsmod.game.model.skill.SkillSet
 import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.plugins.api.*
 import gg.rsmod.plugins.content.inter.bank.Bank
@@ -26,6 +28,22 @@ import gg.rsmod.util.BitManipulation
  *
  * @author Tom <rspsmods@gmail.com>
  */
+
+fun Player.openShop(shop: String) {
+    val s = world.shops[shop]
+    if (s != null) {
+        attr[CURRENT_SHOP_ATTR] = s
+        shopDirty = true
+
+        openInterface(interfaceId = 300, dest = InterfaceDestination.MAIN_SCREEN)
+        openInterface(interfaceId = 301, dest = InterfaceDestination.INVENTORY)
+        setInterfaceEvents(interfaceId = 300, component = 16, range = 0..s.items.size, setting = 1086)
+        setInterfaceEvents(interfaceId = 301, component = 0, range = 0 until inventory.capacity, setting = 1086)
+        runClientScript(1074, 13, s.name)
+    } else {
+        World.logger.warn { "Player \"$username\" is unable to open shop \"$shop\" as it does not exist." }
+    }
+}
 
 fun Player.openBank() {
     Bank.open(this)
@@ -113,14 +131,14 @@ fun Player.openInterface(interfaceId: Int, dest: InterfaceDestination, fullscree
  *
  * as it holds logic that must be handled for certain [InterfaceDestination]s.
  */
-fun Player.openInterface(destination: InterfaceDestination, autoClose: Boolean = false) {
-    val displayMode = if (!autoClose || destination.fullscreenChildId == -1) components.displayMode else DisplayMode.FULLSCREEN
-    val child = getChildId(destination, displayMode)
+fun Player.openInterface(dest: InterfaceDestination, autoClose: Boolean = false) {
+    val displayMode = if (!autoClose || dest.fullscreenChildId == -1) components.displayMode else DisplayMode.FULLSCREEN
+    val child = getChildId(dest, displayMode)
     val parent = getDisplayComponentId(displayMode)
     if (displayMode == DisplayMode.FULLSCREEN) {
         openOverlayInterface(displayMode)
     }
-    openInterface(parent, child, destination.interfaceId, if (destination.clickThrough) 1 else 0, isMainComponent = destination == InterfaceDestination.MAIN_SCREEN)
+    openInterface(parent, child, dest.interfaceId, if (dest.clickThrough) 1 else 0, isMainComponent = dest == InterfaceDestination.MAIN_SCREEN)
 }
 
 fun Player.openInterface(parent: Int, child: Int, interfaceId: Int, type: Int = 0, isMainComponent: Boolean = false) {

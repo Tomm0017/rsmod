@@ -5,6 +5,7 @@ import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.item.Item
+import gg.rsmod.game.model.shop.Shop
 import java.lang.ref.WeakReference
 
 /**
@@ -31,6 +32,11 @@ val DISPLAY_MODE_CHANGE_ATTR = AttributeKey<Int>()
  * The [Pawn] which another pawn is facing.
  */
 val FACING_PAWN_ATTR = AttributeKey<WeakReference<Pawn>>()
+
+/**
+ * The current viewed shop.
+ */
+val CURRENT_SHOP_ATTR = AttributeKey<Shop>()
 
 /**
  * The [Pawn] which another pawn wants to initiate combat with, whether they meet

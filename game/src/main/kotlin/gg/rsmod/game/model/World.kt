@@ -35,7 +35,7 @@ import java.util.*
 class World(val server: Server, val gameContext: GameContext, val devContext: DevContext) {
 
     companion object {
-        private val logger = KotlinLogging.logger {  }
+        val logger = KotlinLogging.logger {  }
     }
 
     /**
@@ -147,6 +147,9 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      */
     var multiThreadPathFinding = false
 
+    /**
+     * If the [plugins] needs to be hot-swapped in the next upcoming cycle.
+     */
     var hotswapPlugins = false
 
     /**

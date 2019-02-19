@@ -23,10 +23,6 @@ import gg.rsmod.plugins.content.mechanics.spells.SpellRequirements
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
 
-on_command("reload-plugins") {
-    it.player().world.hotswapPlugins = true
-}
-
 on_command("max") {
     val player = it.player()
     player.attr[Combat.CASTING_SPELL] = CombatSpell.WIND_SURGE

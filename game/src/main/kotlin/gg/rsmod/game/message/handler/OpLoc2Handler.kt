@@ -3,7 +3,8 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.action.ObjectPathAction
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpLoc2Message
-import gg.rsmod.game.model.*
+import gg.rsmod.game.model.EntityType
+import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Client
@@ -49,6 +50,7 @@ class OpLoc2Handler : MessageHandler<OpLoc2Message> {
 
         log(client, "Object action 2: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
 
+        client.closeInterfaceModal()
         client.interruptPlugins()
         client.resetInteractions()
 

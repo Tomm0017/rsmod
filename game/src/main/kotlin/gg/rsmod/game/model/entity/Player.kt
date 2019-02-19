@@ -101,7 +101,7 @@ open class Player(world: World) : Pawn(world) {
 
     val bank by lazy { ItemContainer(world.definitions, 800, ContainerStackType.STACK) }
 
-    val components by lazy { InterfaceSet(this) }
+    val interfaces by lazy { InterfaceSet(this) }
 
     val varps by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
 
@@ -316,7 +316,10 @@ open class Player(world: World) : Pawn(world) {
          * Close the main interface if it's pending.
          */
         if (closeModal) {
-            components.closeMain()
+            if (interfaces.getModal() != -1) {
+                interfaces.close(interfaces.getModal())
+                interfaces.setModal(-1)
+            }
             closeModal = false
         }
 
@@ -404,6 +407,10 @@ open class Player(world: World) : Pawn(world) {
     }
 
     fun hasLargeViewport(): Boolean = largeViewport
+
+    fun closeInterfaceModal() {
+        world.plugins.executeModalClose(this)
+    }
 
     /**
      * Checks if the player is registered to a [PawnList] as they should be

@@ -112,7 +112,7 @@ fun Player.setComponentAnim(interfaceId: Int, component: Int, anim: Int) {
  * as it holds logic that must be handled for certain [InterfaceDestination]s.
  */
 fun Player.openInterface(interfaceId: Int, dest: InterfaceDestination, fullscreen: Boolean = false) {
-    val displayMode = if (!fullscreen || dest.fullscreenChildId == -1) components.displayMode else DisplayMode.FULLSCREEN
+    val displayMode = if (!fullscreen || dest.fullscreenChildId == -1) interfaces.displayMode else DisplayMode.FULLSCREEN
     val child = getChildId(dest, displayMode)
     val parent = getDisplayComponentId(displayMode)
     if (displayMode == DisplayMode.FULLSCREEN) {
@@ -132,7 +132,7 @@ fun Player.openInterface(interfaceId: Int, dest: InterfaceDestination, fullscree
  * as it holds logic that must be handled for certain [InterfaceDestination]s.
  */
 fun Player.openInterface(dest: InterfaceDestination, autoClose: Boolean = false) {
-    val displayMode = if (!autoClose || dest.fullscreenChildId == -1) components.displayMode else DisplayMode.FULLSCREEN
+    val displayMode = if (!autoClose || dest.fullscreenChildId == -1) interfaces.displayMode else DisplayMode.FULLSCREEN
     val child = getChildId(dest, displayMode)
     val parent = getDisplayComponentId(displayMode)
     if (displayMode == DisplayMode.FULLSCREEN) {
@@ -143,31 +143,31 @@ fun Player.openInterface(dest: InterfaceDestination, autoClose: Boolean = false)
 
 fun Player.openInterface(parent: Int, child: Int, interfaceId: Int, type: Int = 0, isMainComponent: Boolean = false) {
     if (isMainComponent) {
-        components.openMain(parent, child, interfaceId)
+        interfaces.openModal(parent, child, interfaceId)
     } else {
-        components.open(parent, child, interfaceId)
+        interfaces.open(parent, child, interfaceId)
     }
     write(IfOpenSubMessage(parent, child, interfaceId, type))
 }
 
 fun Player.closeInterface(interfaceId: Int) {
-    val hash = components.close(interfaceId)
+    val hash = interfaces.close(interfaceId)
     if (hash != -1) {
         write(IfCloseSubMessage(hash))
     }
 }
 
 fun Player.closeComponent(parent: Int, child: Int) {
-    components.close(parent, child)
+    interfaces.close(parent, child)
     write(IfCloseSubMessage((parent shl 16) or child))
 }
 
-fun Player.isInterfaceVisible(interfaceId: Int): Boolean = components.isVisible(interfaceId)
+fun Player.isInterfaceVisible(interfaceId: Int): Boolean = interfaces.isVisible(interfaceId)
 
 fun Player.toggleDisplayInterface(newMode: DisplayMode) {
-    if (components.displayMode != newMode) {
-        val oldMode = components.displayMode
-        components.displayMode = newMode
+    if (interfaces.displayMode != newMode) {
+        val oldMode = interfaces.displayMode
+        interfaces.displayMode = newMode
 
         openOverlayInterface(newMode)
 
@@ -181,13 +181,13 @@ fun Player.toggleDisplayInterface(newMode: DisplayMode) {
              * Remove the interfaces from the old display mode's chilren and add
              * them to the new display mode's children.
              */
-            if (components.isOccupied(parent = fromParent, child = fromChild)) {
-                val oldComponent = components.close(parent = fromParent, child = fromChild)
+            if (interfaces.isOccupied(parent = fromParent, child = fromChild)) {
+                val oldComponent = interfaces.close(parent = fromParent, child = fromChild)
                 if (oldComponent != -1) {
                     if (pane != InterfaceDestination.MAIN_SCREEN) {
-                        components.open(parent = toParent, child = toChild, interfaceId = oldComponent)
+                        interfaces.open(parent = toParent, child = toChild, interfaceId = oldComponent)
                     } else {
-                        components.openMain(parent = toParent, child = toChild, component = oldComponent)
+                        interfaces.openModal(parent = toParent, child = toChild, interfaceId = oldComponent)
                     }
                 }
             }
@@ -205,11 +205,11 @@ fun Player.toggleDisplayInterface(newMode: DisplayMode) {
 }
 
 fun Player.openOverlayInterface(displayMode: DisplayMode) {
-    if (displayMode != components.displayMode) {
-        components.setVisible(parent = getDisplayComponentId(components.displayMode), child = getChildId(InterfaceDestination.MAIN_SCREEN, components.displayMode), visible = false)
+    if (displayMode != interfaces.displayMode) {
+        interfaces.setVisible(parent = getDisplayComponentId(interfaces.displayMode), child = getChildId(InterfaceDestination.MAIN_SCREEN, interfaces.displayMode), visible = false)
     }
     val component = getDisplayComponentId(displayMode)
-    components.setVisible(parent = getDisplayComponentId(displayMode), child = 0, visible = true)
+    interfaces.setVisible(parent = getDisplayComponentId(displayMode), child = 0, visible = true)
     write(IfOpenTopMessage(component))
 }
 
@@ -310,7 +310,7 @@ fun Player.getEquipment(slot: EquipmentType): Item? = equipment[slot.id]
 
 fun Player.hasSkullIcon(icon: SkullIcon): Boolean = skullIcon == icon.id
 
-fun Player.isClientResizable(): Boolean = components.displayMode == DisplayMode.RESIZABLE_NORMAL || components.displayMode == DisplayMode.RESIZABLE_LIST
+fun Player.isClientResizable(): Boolean = interfaces.displayMode == DisplayMode.RESIZABLE_NORMAL || interfaces.displayMode == DisplayMode.RESIZABLE_LIST
 
 fun Player.sendWorldMapTile() {
     runClientScript(1749, tile.to30BitInteger())

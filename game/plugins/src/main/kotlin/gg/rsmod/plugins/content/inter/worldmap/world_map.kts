@@ -26,7 +26,7 @@ on_button(interfaceId = 160, component = 42) {
 on_button(interfaceId = WorldMap.INTERFACE_ID, component = 37) {
     val p = it.player()
     p.closeInterface(WorldMap.INTERFACE_ID)
-    p.openOverlayInterface(p.components.displayMode)
+    p.openOverlayInterface(p.interfaces.displayMode)
     p.attr.remove(WorldMap.LAST_TILE)
     p.timers.remove(WorldMap.UPDATE_TIMER)
 }

@@ -126,7 +126,7 @@ class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Conti
      * Wait for our [ctx] as [Player] to close the [interfaceId].
      */
     suspend fun waitInterfaceClose(interfaceId: Int): Unit = suspendCoroutine {
-        nextStep = SuspendableStep(PredicateCondition { !(ctx as Player).components.isVisible(interfaceId) }, it)
+        nextStep = SuspendableStep(PredicateCondition { !(ctx as Player).interfaces.isVisible(interfaceId) }, it)
     }
 
     /**

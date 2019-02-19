@@ -2,8 +2,8 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpNpc2Message
-import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.game.model.entity.Client
+import gg.rsmod.game.model.priv.Privilege
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -23,7 +23,10 @@ class OpNpc2Handler : MessageHandler<OpNpc2Message> {
             client.teleport(client.world.findRandomTileAround(npc.tile, 1) ?: npc.tile)
         }
 
+        client.closeInterfaceModal()
         client.interruptPlugins()
+        client.resetInteractions()
+
         client.attack(npc)
     }
 }

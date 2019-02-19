@@ -5,8 +5,8 @@ import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpNpc3Message
 import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
-import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.game.model.entity.Client
+import gg.rsmod.game.model.priv.Privilege
 import java.lang.ref.WeakReference
 
 /**
@@ -27,9 +27,12 @@ class OpNpc3Handler : MessageHandler<OpNpc3Message> {
             client.teleport(client.world.findRandomTileAround(npc.tile, 1) ?: npc.tile)
         }
 
+        client.closeInterfaceModal()
+        client.interruptPlugins()
+        client.resetInteractions()
+
         client.attr[INTERACTING_OPT_ATTR] = 3
         client.attr[INTERACTING_NPC_ATTR] = WeakReference(npc)
-        client.interruptPlugins()
         client.executePlugin(PawnPathAction.walkPlugin)
     }
 }

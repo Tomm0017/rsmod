@@ -3,7 +3,8 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.action.GroundItemTakeAction
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpObj3Message
-import gg.rsmod.game.model.*
+import gg.rsmod.game.model.EntityType
+import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.attr.INTERACTING_GROUNDITEM_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Client
@@ -51,11 +52,12 @@ class OpObj3Handler : MessageHandler<OpObj3Message> {
             client.teleport(item.tile)
         }
 
-        client.attr[INTERACTING_OPT_ATTR] = 3
-        client.attr[INTERACTING_GROUNDITEM_ATTR] = WeakReference(item)
-
+        client.closeInterfaceModal()
         client.interruptPlugins()
         client.resetInteractions()
+
+        client.attr[INTERACTING_OPT_ATTR] = 3
+        client.attr[INTERACTING_GROUNDITEM_ATTR] = WeakReference(item)
         client.world.pluginExecutor.execute(client, GroundItemTakeAction.walkPlugin)
     }
 }

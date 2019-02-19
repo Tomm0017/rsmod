@@ -8,7 +8,6 @@ import gg.rsmod.net.codec.login.LoginResultType
 import gg.rsmod.util.io.IsaacRandom
 import io.netty.channel.ChannelFutureListener
 import mu.KotlinLogging
-import org.apache.logging.log4j.LogManager
 
 /**
  * A worker for the [LoginService] that is responsible for handling the most
@@ -42,7 +41,7 @@ class LoginWorker(private val boss: LoginService) : Runnable {
 
                     service.submitGameThreadJob {
                         val loginResult: LoginResultType = when {
-                            world.getPlayerForName(client.username).isPresent -> LoginResultType.ALREADY_ONLINE
+                            world.getPlayerForName(client.username) != null -> LoginResultType.ALREADY_ONLINE
                             world.players.count() >= world.players.capacity -> LoginResultType.MAX_PLAYERS
                             else -> if (client.register()) LoginResultType.ACCEPTABLE else LoginResultType.COULD_NOT_COMPLETE_LOGIN
                         }

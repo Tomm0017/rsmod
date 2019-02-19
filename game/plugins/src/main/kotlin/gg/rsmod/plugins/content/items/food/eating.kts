@@ -12,7 +12,7 @@ Food.values.forEach { food ->
         }
 
         val inventorySlot = it.getInteractingItemSlot()
-        if (p.inventory.remove(id = food.item, beginSlot = inventorySlot).hasSucceeded()) {
+        if (p.inventory.remove(item = food.item, beginSlot = inventorySlot).hasSucceeded()) {
             Foods.eat(p, food)
             if (food.replacement != -1) {
                 p.inventory.add(item = food.replacement, beginSlot = inventorySlot)

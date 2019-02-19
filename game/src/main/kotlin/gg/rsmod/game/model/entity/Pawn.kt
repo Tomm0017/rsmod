@@ -330,6 +330,13 @@ abstract class Pawn(val world: World) : Entity() {
 
     fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
                projectilePath: Boolean = false) {
+        /**
+         * Already standing on requested destination.
+         */
+        if (tile.x == x && tile.z == z) {
+            return
+        }
+
         val multiThread = world.multiThreadPathFinding
         val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
@@ -358,6 +365,12 @@ abstract class Pawn(val world: World) : Entity() {
 
     suspend fun walkTo(it: Plugin, x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
                        projectilePath: Boolean = false): Route {
+        /**
+         * Already standing on requested destination.
+         */
+        if (tile.x == x && tile.z == z) {
+            return Route(ArrayDeque(), success = true, tail = Tile(tile))
+        }
         val multiThread = world.multiThreadPathFinding
         val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)

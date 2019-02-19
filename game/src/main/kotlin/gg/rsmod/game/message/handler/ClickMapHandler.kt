@@ -3,8 +3,8 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.MoveGameClickMessage
 import gg.rsmod.game.model.MovementQueue
-import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.game.model.entity.Client
+import gg.rsmod.game.model.priv.Privilege
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -18,6 +18,7 @@ class ClickMapHandler : MessageHandler<MoveGameClickMessage> {
 
         log(client, "Click map: x=%d, z=%d, type=%d", message.x, message.z, message.movementType)
 
+        client.closeInterfaceModal()
         client.interruptPlugins()
         client.resetInteractions()
 

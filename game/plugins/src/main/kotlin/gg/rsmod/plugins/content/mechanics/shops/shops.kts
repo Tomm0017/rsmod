@@ -2,22 +2,20 @@ package gg.rsmod.plugins.content.mechanics.shops
 
 import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.item.Item
-import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
-
-val PURCHASE_OPTS = arrayOf(1, 5, 10, 50)
 
 val SHOP_INTERFACE_ID = 300
 val INV_INTERFACE_ID = 301
 
+val BUY_OPTS = arrayOf(1, 5, 10, 50)
+val SELL_OPTS = arrayOf(1, 5, 10, 50)
+
 val OPTION_1 = "Value"
-val OPTION_2 = "Sell ${PURCHASE_OPTS[0]}"
-val OPTION_3 = "Sell ${PURCHASE_OPTS[1]}"
-val OPTION_4 = "Sell ${PURCHASE_OPTS[2]}"
-val OPTION_5 = "Sell ${PURCHASE_OPTS[3]}"
+val OPTION_2 = "Sell ${BUY_OPTS[0]}"
+val OPTION_3 = "Sell ${BUY_OPTS[1]}"
+val OPTION_4 = "Sell ${BUY_OPTS[2]}"
+val OPTION_5 = "Sell ${BUY_OPTS[3]}"
 
 on_interface_open(interfaceId = SHOP_INTERFACE_ID) {
     val player = it.player()
@@ -40,33 +38,46 @@ on_button(interfaceId = SHOP_INTERFACE_ID, component = 16) {
     val player = it.player()
     player.attr[CURRENT_SHOP_ATTR]?.let { shop ->
         val opt = it.getInteractingOption()
-        val slot = it.getInteractingSlot()
+        val slot = it.getInteractingSlot() - 1
         val shopItem = shop.items[slot] ?: return@on_button
 
         if (opt == 1) {
-            val item = Item(shopItem.item)
-            val value = shop.getSellPrice(player.world, item.id)
-            val name = item.getName(player.world)
-            player.message("$name: currently costs ${value.appendToString("coin")}")
+            shop.currency.sendSellValueMessage(player, shopItem.item)
         } else if (opt == 10) {
             player.world.sendExamine(player, shopItem.item, ExamineEntityType.ITEM)
         } else {
             val amount = when (opt) {
-                2 -> PURCHASE_OPTS[0]
-                3 -> PURCHASE_OPTS[1]
-                4 -> PURCHASE_OPTS[2]
-                5 -> PURCHASE_OPTS[3]
+                2 -> BUY_OPTS[0]
+                3 -> BUY_OPTS[1]
+                4 -> BUY_OPTS[2]
+                5 -> BUY_OPTS[3]
                 else -> return@on_button
             }
-            buy_item(player, shop, slot, amount)
+            shop.currency.sellToPlayer(player, shop, slot, amount)
         }
     }
 }
 
-fun buy_item(p: Player, shop: Shop, item: Int, amt: Int) {
-    // You don't have enough inventory space.
-    // The shop has run out of stock.
-    val cost = shop.getSellPrice(p.world, item)
+on_button(interfaceId = INV_INTERFACE_ID, component = 0) {
+    val player = it.player()
+    player.attr[CURRENT_SHOP_ATTR]?.let { shop ->
+        val opt = it.getInteractingOption()
+        val slot = it.getInteractingSlot()
+        val item = player.inventory[slot] ?: return@on_button
 
-
+        if (opt == 1) {
+            shop.currency.sendBuyValueMessage(player, shop, item.id)
+        } else if (opt == 10) {
+            player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+        } else {
+            val amount = when (opt) {
+                2 -> SELL_OPTS[0]
+                3 -> SELL_OPTS[1]
+                4 -> SELL_OPTS[2]
+                5 -> SELL_OPTS[3]
+                else -> return@on_button
+            }
+            shop.currency.buyFromPlayer(player, shop, slot, amount)
+        }
+    }
 }

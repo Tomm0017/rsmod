@@ -12,6 +12,6 @@ class DisplayModeHandler : MessageHandler<WindowStatusMessage> {
 
     override fun handle(client: Client, message: WindowStatusMessage) {
         client.attr[DISPLAY_MODE_CHANGE_ATTR] = message.mode
-        client.world.plugins.executeDisplayModeChange(client)
+        client.world.plugins.executeWindowStatus(client)
     }
 }

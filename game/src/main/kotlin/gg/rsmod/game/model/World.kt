@@ -271,15 +271,17 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     fun isSpawned(item: GroundItem): Boolean = chunks.getOrCreate(item.tile).getEntities<GroundItem>(item.tile, EntityType.GROUND_ITEM).contains(item)
 
-    fun getPlayerForName(username: String): Optional<Player> {
+    fun getPlayerForName(username: String): Player? {
         for (i in 0 until players.capacity) {
             val player = players.get(i) ?: continue
             if (player.username == username) {
-                return Optional.of(player)
+                return player
             }
         }
-        return Optional.empty()
+        return null
     }
+
+    fun getPlayerForUid(uid: Any): Player? = players.firstOrNull { it.uid == uid }
 
     fun random(boundInclusive: Int) = random.nextInt(boundInclusive + 1)
 

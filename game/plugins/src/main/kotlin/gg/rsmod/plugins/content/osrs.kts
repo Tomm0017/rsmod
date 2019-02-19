@@ -8,6 +8,21 @@ import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.ext.*
 import gg.rsmod.plugins.content.inter.attack.AttackTab
 
+/**
+ * Closing main modal for players.
+ */
+set_modal_close_logic {
+    val player = it.player()
+    val modal = player.interfaces.getModal()
+    if (modal != -1) {
+        player.closeInterface(modal)
+        player.interfaces.setModal(-1)
+    }
+}
+
+/**
+ * Execute when a player logs in.
+ */
 on_login {
     val p = it.player()
 
@@ -31,7 +46,7 @@ on_login {
     /**
      * Interface-related logic.
      */
-    p.openOverlayInterface(p.components.displayMode)
+    p.openOverlayInterface(p.interfaces.displayMode)
     InterfaceDestination.values.filter { pane -> pane.interfaceId != -1 }.forEach { pane ->
         if (pane == InterfaceDestination.XP_COUNTER && p.getVarbit(OSRSGameframe.XP_DROPS_VISIBLE_VARBIT) == 0) {
             return@forEach

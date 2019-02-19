@@ -1,13 +1,13 @@
 package gg.rsmod.game.model.shop
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import gg.rsmod.game.model.World
+import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class Shop(@JsonProperty("name") val name: String,
-                @JsonProperty("stock_type") val stockType: StockType,
-                @JsonProperty("stock") val items: Array<ShopItem?>) {
+data class Shop(val name: String, val stockType: StockType, val purchasePolicy: PurchasePolicy,
+                val currency: ShopCurrency, val items: Array<ShopItem?>) {
 
     companion object {
         const val DEFAULT_STOCK_SIZE = 28
@@ -16,6 +16,23 @@ data class Shop(@JsonProperty("name") val name: String,
     }
 
     val viewers = hashSetOf<Any>()
+
+    fun refresh(world: World) {
+        val iterator = viewers.iterator()
+        while (iterator.hasNext()) {
+            val viewer = iterator.next()
+            val player = world.getPlayerForUid(viewer)
+            if (player == null) {
+                iterator.remove()
+                continue
+            }
+            if (player.attr[CURRENT_SHOP_ATTR] == this) {
+                player.shopDirty = true
+            } else {
+                iterator.remove()
+            }
+        }
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

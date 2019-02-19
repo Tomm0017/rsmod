@@ -59,9 +59,17 @@ class PluginRepository(val world: World) {
     private val worldInitPlugins = arrayListOf<(Plugin) -> Unit>()
 
     /**
-     * The plugin that will execute when changing display modes.
+     * The plugin that will executed when changing display modes.
      */
-    private var displayModePlugin: ((Plugin) -> Unit)? = null
+    private var windowStatusPlugin: ((Plugin) -> Unit)? = null
+
+    /**
+     * The plugin that will be executed when the core module wants
+     * close the main modal the player has opened.
+     *
+     * This is used for things such as the [gg.rsmod.game.message.impl.MoveGameClickMessage].
+     */
+    private var closeModalPlugin: ((Plugin) -> Unit)? = null
 
     /**
      * A list of plugins that will be executed upon login.
@@ -392,16 +400,34 @@ class PluginRepository(val world: World) {
     }
 
     fun bindWindowStatus(plugin: (Plugin) -> Unit) {
-        if (displayModePlugin != null) {
-            logger.error("Display mode change is already bound to a plugin")
-            throw IllegalStateException("Display mode change is already bound to a plugin")
+        if (windowStatusPlugin != null) {
+            logger.error("Window status is already bound to a plugin")
+            throw IllegalStateException("Window status is already bound to a plugin")
         }
-        displayModePlugin = plugin
+        windowStatusPlugin = plugin
     }
 
-    fun executeDisplayModeChange(p: Player) {
-        if (displayModePlugin != null) {
-            p.world.pluginExecutor.execute(p, displayModePlugin!!)
+    fun executeWindowStatus(p: Player) {
+        if (windowStatusPlugin != null) {
+            p.world.pluginExecutor.execute(p, windowStatusPlugin!!)
+        } else {
+            logger.warn { "Window status is not bound to a plugin." }
+        }
+    }
+
+    fun bindModalClose(plugin: (Plugin) -> Unit) {
+        if (closeModalPlugin != null) {
+            logger.error("Modal close is already bound to a plugin")
+            throw IllegalStateException("Modal close is already bound to a plugin")
+        }
+        closeModalPlugin = plugin
+    }
+
+    fun executeModalClose(p: Player) {
+        if (closeModalPlugin != null) {
+            p.world.pluginExecutor.execute(p, closeModalPlugin!!)
+        } else {
+            logger.warn { "Modal close is not bound to a plugin." }
         }
     }
 
@@ -480,7 +506,6 @@ class PluginRepository(val world: World) {
 
     fun executeInterfaceOpen(p: Player, interfaceId: Int): Boolean {
         val plugin = interfaceOpenPlugins[interfaceId]
-        println("interface open: $interfaceId")
         if (plugin != null) {
             p.world.pluginExecutor.execute(p, plugin)
             return true

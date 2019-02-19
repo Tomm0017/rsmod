@@ -10,7 +10,9 @@ import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
+import gg.rsmod.game.model.shop.PurchasePolicy
 import gg.rsmod.game.model.shop.Shop
+import gg.rsmod.game.model.shop.ShopCurrency
 import gg.rsmod.game.model.shop.StockType
 import gg.rsmod.game.model.timer.TimerKey
 import kotlin.script.experimental.annotations.KotlinScript
@@ -39,8 +41,10 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         others.forEach { other -> set_combat_def(other, def) }
     }
 
-    fun set_shop(name: String, stockType: StockType = StockType.GLOBAL, stockSize: Int = Shop.DEFAULT_STOCK_SIZE, init: (Shop) -> Unit) {
-        val shop = Shop(name, stockType, arrayOfNulls(stockSize))
+    fun add_shop(name: String, currency: ShopCurrency, stockType: StockType = StockType.GLOBAL,
+                 stockSize: Int = Shop.DEFAULT_STOCK_SIZE, purchasePolicy: PurchasePolicy = PurchasePolicy.BUY_TRADEABLES,
+                 init: Shop.() -> Unit) {
+        val shop = Shop(name, stockType, purchasePolicy, currency, arrayOfNulls(stockSize))
         r.shops[name] = shop
         init(shop)
     }
@@ -94,6 +98,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
     }
 
     fun set_window_status_logic(plugin: (Plugin) -> Unit) = r.bindWindowStatus(plugin)
+
+    fun set_modal_close_logic(plugin: (Plugin) -> Unit) = r.bindModalClose(plugin)
 
     fun set_combat_logic(plugin: (Plugin) -> Unit) = r.bindCombat(plugin)
 

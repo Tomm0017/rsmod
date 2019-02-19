@@ -6,7 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 /**
  * Handles the boiler-plate code needed to execute a plugin.
  *
- * @author Tom <rspsmods@gmail.com>
+ * @author Tom
  */
 class PluginExecutor {
 

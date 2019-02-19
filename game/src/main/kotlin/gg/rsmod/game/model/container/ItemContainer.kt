@@ -224,6 +224,15 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
          */
         val freeSlotCount = getFreeSlotCount() + (if (placehold) 1 else 0)
 
+        /**
+         * If the player has no more free slots and either [stack]
+         * is not set or the container does not have [item] at all,
+         * the transaction will fail.
+         */
+        if (freeSlotCount == 0 && (!stack || stack && previousAmount == 0)) {
+            return ItemTransaction(amount, 0, emptyList())
+        }
+
         if (assureFullInsertion) {
             /**
              * If the item will stack, but the previous item stack can't hold
@@ -292,7 +301,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
                      * at least one item, whether stackable or not, can fit in
                      * our container.
                      */
-                    logger.error("Unable to find a free slot for a stackable item. [capacity=$capacity, item=$item, quantity=$amount]") // print capacity as only form of distinction
+                    logger.error(RuntimeException("Unable to find a free slot for a stackable item. [capacity=$capacity, item=$item, quantity=$amount]")) {  }// print capacity as only form of distinction
                     return ItemTransaction(amount, completed, emptyList())
                 }
             }
@@ -323,28 +332,28 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
     }
 
     /**
-     * Remove [amount] of [id] in the the container.
+     * Remove [amount] of [item] in the the container.
      *
-     * @param id
+     * @param item
      * The item id.
      *
      * @param amount
-     * The amount of [id]s to try and remove. There is no guarantee that this
+     * The amount of [item]s to try and remove. There is no guarantee that this
      * method will be able to remove all the [amount] of items. This is true
-     * when the container doesn't have as many [id]s as [amount].
+     * when the container doesn't have as many [item]s as [amount].
      *
      * To get the amount of items that were removed, see [ItemTransaction.completed].
      * To get the amount of items that couldn't be removed, see [ItemTransaction.getLeftOver].
      *
      * @param assureFullRemoval
      * If [true], we make sure the container has [amount] or more items who's
-     * [Item.id] matches [id], before attempting to remove any.
-     * If [false], it will remove any item with [Item.id] of [id] which it can find
+     * [Item.id] matches [item], before attempting to remove any.
+     * If [false], it will remove any item with [Item.id] of [item] which it can find
      * until [amount] have been removed or until the container has no more.
      *
      * @param beginSlot
-     * The search for [id] in the [items] array will begin from this index and
-     * will sequentially increment until either 1) [amount] of [id]s have been
+     * The search for [item] in the [items] array will begin from this index and
+     * will sequentially increment until either 1) [amount] of [item]s have been
      * removed or 2) we have iterated through every single [Item] in [items].
      *
      * @return
@@ -358,8 +367,8 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
      *
      * @see ItemTransaction
      */
-    fun remove(id: Int, amount: Int = 1, assureFullRemoval: Boolean = false, beginSlot: Int = -1): ItemTransaction {
-        val hasAmount = getItemCount(id)
+    fun remove(item: Int, amount: Int = 1, assureFullRemoval: Boolean = false, beginSlot: Int = -1): ItemTransaction {
+        val hasAmount = getItemCount(item)
 
         if (assureFullRemoval && hasAmount < amount) {
             return ItemTransaction(amount, 0, emptyList())
@@ -374,13 +383,13 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
 
         val index = if (beginSlot != -1) beginSlot else 0
         for (i in index until capacity) {
-            val item = items[i] ?: continue
-            if (item.id == id) {
-                val removeCount = Math.min(item.amount, amount - totalRemoved)
+            val curItem = items[i] ?: continue
+            if (curItem.id == item) {
+                val removeCount = Math.min(curItem.amount, amount - totalRemoved)
                 totalRemoved += removeCount
 
-                item.amount -= removeCount
-                if (item.amount == 0) {
+                curItem.amount -= removeCount
+                if (curItem.amount == 0) {
                     val removedItem = Item(items[i]!!)
                     items[i] = null
                     removed.add(SlotItem(i, removedItem))
@@ -394,7 +403,7 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
 
         /**
          * If we specified a [beginSlot] to begin the search, but we were not able
-         * to remove [amount] of [id] items, then we go over the skipped indices.
+         * to remove [amount] of [item] items, then we go over the skipped indices.
          * This is done to ensure that [assureFullRemoval] will always provide
          * accurate results.
          *
@@ -407,13 +416,13 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
          */
         if (skippedIndices != null && totalRemoved < amount) {
             for (i in skippedIndices) {
-                val item = items[i] ?: continue
-                if (item.id == id) {
-                    val removeCount = Math.min(item.amount, amount - totalRemoved)
+                val curItem = items[i] ?: continue
+                if (curItem.id == item) {
+                    val removeCount = Math.min(curItem.amount, amount - totalRemoved)
                     totalRemoved += removeCount
 
-                    item.amount -= removeCount
-                    if (item.amount == 0) {
+                    curItem.amount -= removeCount
+                    if (curItem.amount == 0) {
                         val removedItem = Item(items[i]!!)
                         items[i] = null
                         removed.add(SlotItem(i, removedItem))

@@ -1,7 +1,8 @@
 package gg.rsmod.game.action
 
 import gg.rsmod.game.message.impl.SetMapFlagMessage
-import gg.rsmod.game.model.*
+import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.attr.FACING_PAWN_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Entity
@@ -49,8 +50,10 @@ object PawnPathAction {
                  * for [Npc.RESET_PAWN_FACE_DELAY] cycles.
                  */
                 npc.stopMovement()
-                npc.facePawn(pawn)
-                npc.timers[RESET_PAWN_FACING_TIMER] = Npc.RESET_PAWN_FACE_DELAY
+                if (npc.attr[FACING_PAWN_ATTR]?.get() != pawn) {
+                    npc.facePawn(pawn)
+                    npc.timers[RESET_PAWN_FACING_TIMER] = Npc.RESET_PAWN_FACE_DELAY
+                }
 
                 val handled = world.plugins.executeNpc(pawn, npc.id, opt)
                 if (!handled) {
@@ -82,8 +85,17 @@ object PawnPathAction {
             }
         }
 
+        if (!lineOfSight && bordering(sourceTile, sourceSize, targetTile, interactionRange)) {
+            return true
+        }
+
+        if (lineOfSight && overlap(sourceTile, sourceSize, targetTile, interactionRange) && (interactionRange == 0 || !sourceTile.sameAs(targetTile))
+                && pawn.world.collision.raycast(sourceTile, targetTile, lineOfSight)) {
+            return true
+        }
+
         val builder = PathRequest.Builder()
-                .setPoints(pawn.tile, target.tile)
+                .setPoints(sourceTile, targetTile)
                 .setSourceSize(sourceSize, sourceSize)
                 .setTargetSize(targetSize, targetSize)
                 .setProjectilePath(lineOfSight || projectile)

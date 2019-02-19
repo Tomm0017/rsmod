@@ -129,21 +129,17 @@ class InterfaceSet(val player: Player) {
 
     /**
      * Calls the [open] method, but also sets the [currentModal]
-     * to [component].
+     * to [interfaceId].
      */
-    fun openMain(parent: Int, child: Int, component: Int) {
-        open(parent, child, component)
-        currentModal = component
+    fun openModal(parent: Int, child: Int, interfaceId: Int) {
+        open(parent, child, interfaceId)
+        currentModal = interfaceId
     }
 
-    /**
-     * Calls the [close] method for [currentModal].
-     */
-    fun closeMain() {
-        if (currentModal != -1) {
-            close(currentModal)
-            currentModal = -1
-        }
+    fun getModal(): Int = currentModal
+
+    fun setModal(currentModal: Int) {
+        this.currentModal = currentModal
     }
 
     /**

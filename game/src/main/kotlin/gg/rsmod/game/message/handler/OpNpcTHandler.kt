@@ -5,9 +5,9 @@ import gg.rsmod.game.message.impl.OpNpcTMessage
 import gg.rsmod.game.model.attr.INTERACTING_COMPONENT_CHILD
 import gg.rsmod.game.model.attr.INTERACTING_COMPONENT_PARENT
 import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
-import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.Entity
+import gg.rsmod.game.model.priv.Privilege
 import java.lang.ref.WeakReference
 
 /**
@@ -29,11 +29,14 @@ class OpNpcTHandler : MessageHandler<OpNpcTMessage> {
             client.teleport(client.world.findRandomTileAround(npc.tile, 1) ?: npc.tile)
         }
 
+        client.closeInterfaceModal()
+        client.interruptPlugins()
+        client.resetInteractions()
+
         client.attr[INTERACTING_NPC_ATTR] = WeakReference(npc)
         client.attr[INTERACTING_COMPONENT_PARENT] = parent
         client.attr[INTERACTING_COMPONENT_CHILD] = child
-        
-        client.interruptPlugins()
+
         if (!client.world.plugins.executeSpellOnNpc(client, parent, child)) {
             client.message(Entity.NOTHING_INTERESTING_HAPPENS)
             if (client.world.devContext.debugMagicSpells) {

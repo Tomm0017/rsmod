@@ -24,7 +24,7 @@ class IfButton1Handler : MessageHandler<IfButtonMessage> {
 
         log(client, "Click button: parent=%d, child=%d, option=%d, slot=%d, item=%d", parent, child, option, message.slot, message.item)
 
-        if (!client.components.isVisible(parent)) {
+        if (!client.interfaces.isVisible(parent)) {
             logger.warn("Player '{}' tried to click button {} on a non-visible component {}.", client.username, child, parent)
             return
         }
@@ -32,6 +32,7 @@ class IfButton1Handler : MessageHandler<IfButtonMessage> {
         client.attr[INTERACTING_OPT_ATTR] = option
         client.attr[INTERACTING_ITEM_ID] = message.item
         client.attr[INTERACTING_SLOT_ATTR] = message.slot
+
         if (client.world.plugins.executeButton(client, parent, child)) {
             return
         }

@@ -15,5 +15,3 @@ fun Item.getMarketValue(world: World): Int {
 }
 
 fun Item.getName(definitions: DefinitionSet): String = getDef(definitions).name
-
-fun Item.getName(world: World): String = getDef(world.definitions).name

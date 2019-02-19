@@ -9,7 +9,6 @@ import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.shop.ShopCurrency
 import gg.rsmod.game.model.shop.ShopItem
 import gg.rsmod.plugins.api.cfg.Items
-import gg.rsmod.plugins.api.ext.appendToString
 import gg.rsmod.plugins.api.ext.getName
 
 /**
@@ -44,8 +43,9 @@ open class ItemCurrency(private val currencyItem: Int, private val singularCurre
     override fun sendSellValueMessage(p: Player, item: Int) {
         val unnoted = Item(item).toUnnoted(p.world.definitions)
         val value = getSellPrice(p.world, unnoted.id)
-        val name = unnoted.getName(p.world)
-        p.message("$name: currently costs ${value.appendToString(singularCurrency)}")
+        val name = unnoted.getName(p.world.definitions)
+        val currency = if (value != 1) pluralCurrency else singularCurrency
+        p.message("$name: currently costs $value $currency}")
     }
 
     override fun sendBuyValueMessage(p: Player, shop: Shop, item: Int) {
@@ -53,8 +53,9 @@ open class ItemCurrency(private val currencyItem: Int, private val singularCurre
         val acceptance = canAcceptItem(shop, p.world, unnoted.id)
         if (acceptance.acceptable) {
             val value = getBuyPrice(p.world, unnoted.id)
-            val name = unnoted.getName(p.world)
-            p.message("$name: shop will buy for ${value.appendToString(singularCurrency)}")
+            val name = unnoted.getName(p.world.definitions)
+            val currency = if (value != 1) pluralCurrency else singularCurrency
+            p.message("$name: shop will buy for $value $currency")
         } else {
             p.message(acceptance.errorMessage)
         }

@@ -2,6 +2,7 @@ package gg.rsmod.plugins.content.areas.edgeville.chat
 
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.SkullIcon
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.cfg.Npcs
@@ -87,7 +88,8 @@ suspend fun rewards(it: Plugin) {
 }
 
 fun open_bounty_store(p: Player) {
-    p.openShop("Bounty Hunter Store")
+    p.setInterfaceUnderlay(color = -1, transparency = -1)
+    p.openInterface(interfaceId = 178, dest = InterfaceDestination.MAIN_SCREEN)
 }
 
 suspend fun pk_skull(it: Plugin) {

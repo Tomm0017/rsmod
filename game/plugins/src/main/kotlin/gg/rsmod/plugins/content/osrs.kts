@@ -1,12 +1,10 @@
 package gg.rsmod.plugins.content
 
-import gg.rsmod.game.model.attr.NEW_ACCOUNT_ATTR
 import gg.rsmod.plugins.api.ChatMessageType
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.OSRSGameframe
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.content.inter.attack.AttackTab
 
 /**
  * Closing main modal for players.
@@ -25,13 +23,6 @@ set_modal_close_logic {
  */
 on_login {
     val p = it.player()
-
-    /**
-     * First log-in logic (when accounts have just been made).
-     */
-    if (p.attr.getOrDefault(NEW_ACCOUNT_ATTR, false)) {
-        AttackTab.setEnergy(p, 100)
-    }
 
     /**
      * Skill-related logic.

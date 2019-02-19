@@ -6,6 +6,7 @@ import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
+import gg.rsmod.game.model.attr.PROTECT_ITEM_ATTR
 import gg.rsmod.game.model.bits.BitStorage
 import gg.rsmod.game.model.bits.StorageBits
 import gg.rsmod.game.model.container.ContainerStackType
@@ -16,9 +17,6 @@ import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.skill.SkillSet
 import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.plugins.api.*
-import gg.rsmod.plugins.content.inter.bank.Bank
-import gg.rsmod.plugins.content.mechanics.prayer.Prayer
-import gg.rsmod.plugins.content.mechanics.prayer.Prayers
 import gg.rsmod.plugins.service.item.ItemValueService
 import gg.rsmod.util.BitManipulation
 
@@ -43,10 +41,6 @@ fun Player.openShop(shop: String) {
     } else {
         World.logger.warn { "Player \"$username\" is unable to open shop \"$shop\" as it does not exist." }
     }
-}
-
-fun Player.openBank() {
-    Bank.open(this)
 }
 
 fun Player.message(message: String, type: ChatMessageType = ChatMessageType.GAME) {
@@ -405,7 +399,7 @@ fun Player.calculateAndSetCombatLevel(): Boolean {
 
 fun Player.calculateDeathContainers(): DeathContainers {
     var keepAmount = if (hasSkullIcon(SkullIcon.WHITE)) 0 else 3
-    if (Prayers.isActive(this, Prayer.PROTECT_ITEM)) {
+    if (attr[PROTECT_ITEM_ATTR] == true) {
         keepAmount++
     }
 

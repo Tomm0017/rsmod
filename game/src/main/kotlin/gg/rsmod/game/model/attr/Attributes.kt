@@ -24,6 +24,12 @@ import java.lang.ref.WeakReference
 val NEW_ACCOUNT_ATTR = AttributeKey<Boolean>()
 
 /**
+ * A flag that indicates whether or not this player has protect-item
+ * prayer active.
+ */
+val PROTECT_ITEM_ATTR = AttributeKey<Boolean>()
+
+/**
  * The display mode that the player has submitted as a message.
  */
 val DISPLAY_MODE_CHANGE_ATTR = AttributeKey<Int>()

@@ -1,10 +1,11 @@
 package gg.rsmod.plugins.content.mechanics.prayer
 
 import gg.rsmod.game.model.attr.AttributeKey
+import gg.rsmod.game.model.attr.PROTECT_ITEM_ATTR
 import gg.rsmod.game.model.bits.INFINITE_VARS_STORAGE
 import gg.rsmod.game.model.bits.InfiniteVarsType
-import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.block.UpdateBlockType
 import gg.rsmod.plugins.api.GameframeTab
@@ -39,6 +40,7 @@ object Prayers {
     fun deactivateAll(p: Player) {
         p.setVarp(ACTIVE_PRAYERS_VARP, 0)
         p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 0)
+        p.attr.remove(PROTECT_ITEM_ATTR)
 
         if (p.prayerIcon != -1) {
             p.prayerIcon = -1
@@ -91,6 +93,10 @@ object Prayers {
             }
 
             setOverhead(p)
+
+            if (prayer == Prayer.PROTECT_ITEM) {
+                p.attr[PROTECT_ITEM_ATTR] = true
+            }
         }
     }
 
@@ -99,6 +105,10 @@ object Prayers {
             p.setVarbit(prayer.varbit, 0)
             p.playSound(DEACTIVATE_PRAYER_SOUND)
             setOverhead(p)
+
+            if (prayer == Prayer.PROTECT_ITEM) {
+                p.attr[PROTECT_ITEM_ATTR] = false
+            }
         }
     }
 

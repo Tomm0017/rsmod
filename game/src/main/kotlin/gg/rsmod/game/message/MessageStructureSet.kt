@@ -47,7 +47,7 @@ class MessageStructureSet {
         packets.forEach { packet ->
             val values = packet as LinkedHashMap<*, *>
             val className = values["message"] as String
-            val packetType = if (values.containsKey("type")) PacketType.valueOf((values["type"] as String).toUpperCase()) else PacketType.IGNORE
+            val packetType = if (values.containsKey("type")) PacketType.valueOf((values["type"] as String).toUpperCase()) else PacketType.FIXED
             val clazz = Class.forName(className)
             val packetLength = if (values.containsKey("length")) values["length"] as Int else 0
 

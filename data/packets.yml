@@ -554,6 +554,25 @@ in-packets:
         type: BYTE
         trans: ADD
 
+  - message: gg.rsmod.game.message.impl.TeleportMessage
+    type: FIXED
+    opcode: 61
+    length: 9
+    structure:
+      - name: unknown
+        type: INT
+        order: MIDDLE
+      - name: z
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+      - name: height
+        type: BYTE
+        trans: NEGATE
+      - name: x
+        sign: UNSIGNED
+        type: SHORT
+
   - message: gg.rsmod.game.message.impl.OpLoc1Message
     type: FIXED
     opcode: 10
@@ -708,81 +727,101 @@ in-packets:
         type: STRING
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 39
     length: 4
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 49
     length: 0
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 34
     length: -1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 2
     length: 14
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 3
     length: 7
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 4
     length: -1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 5
     length: 7
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 7
     length: 8
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 8
     length: -1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 9
     length: 4
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 11
     length: 10
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 12
     length: 13
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Keep alive message
+    type: IGNORE
     opcode: 22
     length: 0
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 29
     length: 7
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 41
     length: 6
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+    type: IGNORE
     opcode: 97
     length: -1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Request new region
+    type: IGNORE
     opcode: 76
     length: 0
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Reconnection
+    type: IGNORE
     opcode: 4
     length: -1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Window focus state change
+    type: IGNORE
     opcode: 73
     length: 1
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Key press message
+    type: IGNORE
     opcode: 67
     length: -2

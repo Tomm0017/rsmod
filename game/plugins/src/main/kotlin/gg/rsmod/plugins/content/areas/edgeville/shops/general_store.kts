@@ -4,7 +4,7 @@ import gg.rsmod.game.model.shop.ShopItem
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.content.mechanics.shops.CoinCurrency
 
-add_shop("Edgeville General Store", CoinCurrency()) {
+create_shop("Edgeville General Store", CoinCurrency()) {
     items[0] = ShopItem(Items.POT, 5)
     items[1] = ShopItem(Items.JUG, 2)
     items[2] = ShopItem(Items.EMPTY_JUG_PACK, 5)

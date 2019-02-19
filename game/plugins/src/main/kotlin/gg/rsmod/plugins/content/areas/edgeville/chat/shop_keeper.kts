@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.content.areas.edgeville.npcs
+package gg.rsmod.plugins.content.areas.edgeville.chat
 
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin

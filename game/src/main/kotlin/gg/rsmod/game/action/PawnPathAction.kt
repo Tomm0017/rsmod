@@ -85,7 +85,7 @@ object PawnPathAction {
             }
         }
 
-        if (!lineOfSight && bordering(sourceTile, sourceSize, targetTile, interactionRange)) {
+        if (!lineOfSight && bordering(sourceTile, sourceSize, targetTile, interactionRange) && !diagonal(sourceTile, sourceSize, targetTile, interactionRange)) {
             return true
         }
 
@@ -122,4 +122,6 @@ object PawnPathAction {
     private fun overlap(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areOverlapping(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
 
     private fun bordering(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areBordering(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
+
+    private fun diagonal(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areDiagonal(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
 }

@@ -2,9 +2,9 @@ package gg.rsmod.game.action
 
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.Direction
+import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
-import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.collision.ObjectGroup
 import gg.rsmod.game.model.collision.ObjectType
 import gg.rsmod.game.model.entity.Entity
@@ -37,7 +37,13 @@ object ObjectPathAction {
             }
             if (route.success) {
                 it.wait(1)
-                handleAction(it, obj, opt)
+
+                if (!player.world.plugins.executeObject(player, obj.getTransform(player), opt)) {
+                    player.message(Entity.NOTHING_INTERESTING_HAPPENS)
+                    if (player.world.devContext.debugObjects) {
+                        player.message("Unhandled object action: [opt=$opt, id=${obj.id}, type=${obj.type}, rot=${obj.rot}, x=${obj.tile.x}, z=${obj.tile.z}]")
+                    }
+                }
             } else {
                 player.message(Entity.YOU_CANT_REACH_THAT)
             }
@@ -114,17 +120,6 @@ object ObjectPathAction {
             it.wait(1)
         }
         return route
-    }
-
-    private fun handleAction(it: Plugin, obj: GameObject, opt: Int) {
-        val p = it.ctx as Player
-
-        if (!p.world.plugins.executeObject(p, obj.id, opt)) {
-            p.message(Entity.NOTHING_INTERESTING_HAPPENS)
-            if (p.world.devContext.debugObjects) {
-                p.message("Unhandled object action: [opt=$opt, id=${obj.id}, type=${obj.type}, rot=${obj.rot}, x=${obj.tile.x}, z=${obj.tile.z}]")
-            }
-        }
     }
 
     private fun faceObj(pawn: Pawn, obj: GameObject) {

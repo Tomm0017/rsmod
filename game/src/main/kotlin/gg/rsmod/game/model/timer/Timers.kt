@@ -15,6 +15,11 @@ package gg.rsmod.game.model.timer
 internal val RESET_PAWN_FACING_TIMER = TimerKey()
 
 /**
+ * A timer for removing a skull icon.
+ */
+val SKULL_ICON_DURATION_TIMER = TimerKey()
+
+/**
  * Timer key set when a pawn is attacked either in PvP or in PvM.
  */
 val ACTIVE_COMBAT_TIMER = TimerKey()

@@ -460,6 +460,28 @@ in-packets:
       - name: movement_type
         type: BYTE
 
+  - message: gg.rsmod.game.message.impl.OpNpc4Message
+    type: FIXED
+    opcode: 59
+    length: 3
+    structure:
+      - name: index
+        type: SHORT
+      - name: movement_type
+        type: BYTE
+        trans: ADD
+
+  - message: gg.rsmod.game.message.impl.OpNpc5Message
+    type: FIXED
+    opcode: 31
+    length: 3
+    structure:
+      - name: movement_type
+        type: BYTE
+      - name: index
+        type: SHORT
+        trans: ADD
+
   - message: gg.rsmod.game.message.impl.OpObj3Message
     type: FIXED
     opcode: 6

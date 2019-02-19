@@ -29,6 +29,7 @@ class NpcDef(override val id: Int) : Definition(id) {
     var interactable = true
     var pet = false
     var options: Array<String?> = Array(5) { "" }
+    var transforms: Array<Int>? = null
 
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {
@@ -93,7 +94,7 @@ class NpcDef(override val id: Int) : Definition(id) {
                     varbit = -1
                 }
                 if (varp == 65535) {
-                    varp = 65535
+                    varp = -1
                 }
 
                 if (opcode == 118) {
@@ -102,8 +103,10 @@ class NpcDef(override val id: Int) : Definition(id) {
 
                 val count = buf.readUnsignedByte()
 
+                transforms = Array(count.toInt() + 1) { 0 }
                 for (i in 0..count) {
-                    buf.readUnsignedShort()
+                    val transform = buf.readUnsignedShort()
+                    transforms!![i] = transform
                 }
             }
             107 -> interactable = false

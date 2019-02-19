@@ -25,7 +25,8 @@ object PawnPathAction {
         val world = pawn.world
         val npc = pawn.attr[INTERACTING_NPC_ATTR]!!.get()!!
         val opt = pawn.attr[INTERACTING_OPT_ATTR]!!
-        val lineOfSightRange = world.plugins.getNpcInteractionDistance(npc.id)
+        val npcId = if (pawn is Player) npc.getTransform(pawn) else npc.id
+        val lineOfSightRange = world.plugins.getNpcInteractionDistance(npcId)
 
         it.suspendable {
             pawn.facePawn(npc)
@@ -54,8 +55,10 @@ object PawnPathAction {
                     npc.facePawn(pawn)
                     npc.timers[RESET_PAWN_FACING_TIMER] = Npc.RESET_PAWN_FACE_DELAY
                 }
+                pawn.facePawn(null)
+                pawn.faceTile(npc.tile)
 
-                val handled = world.plugins.executeNpc(pawn, npc.id, opt)
+                val handled = world.plugins.executeNpc(pawn, npcId, opt)
                 if (!handled) {
                     pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
                 }

@@ -2,10 +2,10 @@ package gg.rsmod.plugins.content.mechanics.bankbooth
 
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.api.InterfaceDestination
-import gg.rsmod.plugins.api.ext.openBank
 import gg.rsmod.plugins.api.ext.openInterface
 import gg.rsmod.plugins.api.ext.player
 import gg.rsmod.plugins.api.ext.setInterfaceUnderlay
+import gg.rsmod.plugins.content.inter.bank.openBank
 
 on_obj_option(obj = 6943, option = "bank") {
     it.player().openBank()

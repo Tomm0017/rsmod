@@ -165,7 +165,7 @@ suspend fun Plugin.chatNpc(message: String, npc: Int = -1, animation: Int = 588,
 
     var npcId = npc
     if (npcId == -1) {
-        npcId = player.attr[INTERACTING_NPC_ATTR]?.get()?.id ?: throw RuntimeException("Npc id must be manually set as the player is not interacting with an npc.")
+        npcId = player.attr[INTERACTING_NPC_ATTR]?.get()?.getTransform(player) ?: throw RuntimeException("Npc id must be manually set as the player is not interacting with an npc.")
     }
 
     val dialogTitle = title ?: player.world.definitions.get(NpcDef::class.java, npcId).name

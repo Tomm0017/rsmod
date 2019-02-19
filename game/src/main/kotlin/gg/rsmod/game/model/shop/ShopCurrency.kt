@@ -4,8 +4,6 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Player
 
 /**
- * TODO: redo the whole concept of [ShopCurrency].
- *
  * @author Tom <rspsmods@gmail.com>
  */
 interface ShopCurrency {

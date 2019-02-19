@@ -15,7 +15,9 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.skill.SkillSet
+import gg.rsmod.game.model.timer.SKULL_ICON_DURATION_TIMER
 import gg.rsmod.game.service.game.WeaponConfigService
+import gg.rsmod.game.sync.block.UpdateBlockType
 import gg.rsmod.plugins.api.*
 import gg.rsmod.plugins.service.item.ItemValueService
 import gg.rsmod.util.BitManipulation
@@ -301,6 +303,17 @@ fun Player.hasEquipped(slot: EquipmentType, vararg items: Int): Boolean {
 fun Player.hasEquipped(items: IntArray) = items.all { equipment.hasItem(it) }
 
 fun Player.getEquipment(slot: EquipmentType): Item? = equipment[slot.id]
+
+fun Player.setSkullIcon(icon: SkullIcon) {
+    skullIcon = icon.id
+    addBlock(UpdateBlockType.APPEARANCE)
+}
+
+fun Player.skull(icon: SkullIcon, durationCycles: Int) {
+    check(icon != SkullIcon.NONE)
+    setSkullIcon(icon)
+    timers[SKULL_ICON_DURATION_TIMER] = durationCycles
+}
 
 fun Player.hasSkullIcon(icon: SkullIcon): Boolean = skullIcon == icon.id
 

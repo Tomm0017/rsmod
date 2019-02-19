@@ -2,6 +2,7 @@ package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
 import gg.rsmod.game.fs.def.NpcDef
+import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
@@ -79,6 +80,28 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     override fun cycle() {
         timerCycle()
         hitsCycle()
+    }
+
+    /**
+     * Npcs can change their appearance for each player depending on their
+     * [NpcDef.transforms] and [NpcDef.varp]/[NpcDef.varbit]. This method will
+     * get the "visually correct" npc id for this npc from [player]'s view point.
+     */
+    fun getTransform(player: Player): Int {
+        val def = getDef()
+
+        if (def.varbit != -1) {
+            val varbitDef = world.definitions.get(VarbitDef::class.java, def.varbit)
+            val state = player.varps.getBit(varbitDef.varp, varbitDef.startBit, varbitDef.endBit)
+            return def.transforms!![state]
+        }
+
+        if (def.varp != -1) {
+            val state = player.varps.getState(def.varp)
+            return def.transforms!![state]
+        }
+
+        return id
     }
 
     fun setActive(active: Boolean) {

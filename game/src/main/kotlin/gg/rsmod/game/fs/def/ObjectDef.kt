@@ -22,6 +22,7 @@ class ObjectDef(override val id: Int) : Definition(id) {
     var animation = -1
     var rotated = false
     val options: Array<String?> = Array(5) { "" }
+    var transforms: Array<Int>? = null
 
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {
@@ -102,8 +103,11 @@ class ObjectDef(override val id: Int) : Definition(id) {
                 }
 
                 val count = buf.readUnsignedByte().toInt()
+
+                transforms = Array(count + 1) { 0 }
                 for (i in 0..count) {
-                    buf.readUnsignedShort() // varp objects
+                    val transform = buf.readUnsignedShort()
+                    transforms!![i] = transform
                 }
             }
             78 -> {

@@ -11,9 +11,11 @@ import gg.rsmod.plugins.api.HitType
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Npcs
 import gg.rsmod.plugins.api.ext.*
+import gg.rsmod.plugins.content.combat.*
 import gg.rsmod.plugins.content.combat.formula.DragonfireFormula
 import gg.rsmod.plugins.content.combat.formula.MeleeCombatFormula
 import gg.rsmod.plugins.content.combat.strategy.RangedCombatStrategy
+import gg.rsmod.plugins.content.mechanics.poison.poison
 
 on_npc_combat(Npcs.KING_BLACK_DRAGON) {
     it.suspendable {

@@ -9,9 +9,13 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.api.HitType
 import gg.rsmod.plugins.api.ProjectileType
 import gg.rsmod.plugins.api.Skills
-import gg.rsmod.plugins.api.ext.*
+import gg.rsmod.plugins.api.ext.addXp
+import gg.rsmod.plugins.api.ext.getVarbit
+import gg.rsmod.plugins.api.ext.hit
+import gg.rsmod.plugins.api.ext.playSound
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
+import gg.rsmod.plugins.content.combat.createProjectile
 import gg.rsmod.plugins.content.combat.formula.MagicCombatFormula
 import gg.rsmod.plugins.content.mechanics.spells.SpellRequirements
 

@@ -75,19 +75,17 @@ object Woodcutting {
 
         val axe = AxeType.values.firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && p.inventory.hasItem(it.item) }
         if (axe == null) {
-            p.playSound(2277)
+            p.message("You need an axe to chop down this tree.")
             p.message("You do not have an axe which you have the woodcutting level to use.")
             return false
         }
 
         if (p.getSkills().getMaxLevel(Skills.WOODCUTTING) < tree.level) {
-            p.playSound(2277)
             p.message("You need a Woodcutting level of ${tree.level} to chop down this tree.")
             return false
         }
 
         if (p.inventory.isFull()) {
-            p.playSound(2277)
             p.message("Your inventory is too full to hold any more logs.")
             return false
         }

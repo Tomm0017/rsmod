@@ -10,7 +10,7 @@ import java.util.*
  */
 class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val sourceLength: Int, val end: Tile,
                                       val targetWidth: Int, val targetLength: Int, val touchRadius: Int, val projectilePath: Boolean,
-                                      val clipFlags: EnumSet<ClipFlag>, val blockedDirections: Array<Direction>) {
+                                      val clipFlags: EnumSet<ClipFlag>, val blockedDirections: EnumSet<Direction>) {
 
     companion object {
 
@@ -78,7 +78,7 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
 
         private val clipFlags = EnumSet.noneOf(ClipFlag::class.java)
 
-        private val blockedDirections = hashSetOf<Direction>()
+        private val blockedDirections = EnumSet.noneOf(Direction::class.java)
 
         fun build(): PathRequest {
             check(start != null && end != null) { "Points must be set." }
@@ -90,7 +90,7 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
             }
 
             return PathRequest(start!!, sourceWidth, sourceLength, end!!, targetWidth, targetLength, touchRadius, projectilePath,
-                    clipFlags, blockedDirections.toTypedArray())
+                    clipFlags, blockedDirections)
         }
 
         fun setPoints(start: Tile, end: Tile): Builder {

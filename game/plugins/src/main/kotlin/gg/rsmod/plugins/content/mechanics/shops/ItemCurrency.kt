@@ -45,7 +45,7 @@ open class ItemCurrency(private val currencyItem: Int, private val singularCurre
         val value = getSellPrice(p.world, unnoted.id)
         val name = unnoted.getName(p.world.definitions)
         val currency = if (value != 1) pluralCurrency else singularCurrency
-        p.message("$name: currently costs $value $currency}")
+        p.message("$name: currently costs $value $currency")
     }
 
     override fun sendBuyValueMessage(p: Player, shop: Shop, item: Int) {

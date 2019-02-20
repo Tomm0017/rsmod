@@ -118,7 +118,7 @@ class BFSPathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(
      * Checks if the direction outwards of the target is blocked.
      */
     private fun isTargetDirectionBlocked(node: Tile, end: Tile, targetWidth: Int, targetLength: Int,
-                                         vararg blockedDirection: Direction): Boolean {
+                                         blockedDirection: Set<Direction>): Boolean {
         val x = node.x
         val z = node.z
         val dx = x - end.x
@@ -197,7 +197,7 @@ class BFSPathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(
                     val tile = end.transform(x, z)
 
                     if (clipDiagonals && isDiagonalTile(tile, end, targetWidth, targetLength)
-                            || clipDirections && isTargetDirectionBlocked(tile, end, targetWidth, targetLength, *request.blockedDirections)
+                            || clipDirections && isTargetDirectionBlocked(tile, end, targetWidth, targetLength, request.blockedDirections)
                             || clipOverlapping && isTileOverlapping(tile, end, targetWidth, targetLength)) {
                         continue
                     }

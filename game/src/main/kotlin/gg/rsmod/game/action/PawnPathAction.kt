@@ -105,15 +105,6 @@ object PawnPathAction {
             }
         }
 
-        if (!lineOfSight && bordering(sourceTile, sourceSize, targetTile, interactionRange) && !diagonal(sourceTile, sourceSize, targetTile, interactionRange)) {
-            return true
-        }
-
-        if (lineOfSight && overlap(sourceTile, sourceSize, targetTile, interactionRange) && (interactionRange == 0 || !sourceTile.sameAs(targetTile))
-                && pawn.world.collision.raycast(sourceTile, targetTile, lineOfSight)) {
-            return true
-        }
-
         val builder = PathRequest.Builder()
                 .setPoints(sourceTile, targetTile)
                 .setSourceSize(sourceSize, sourceSize)

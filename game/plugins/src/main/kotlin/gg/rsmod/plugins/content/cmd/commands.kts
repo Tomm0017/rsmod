@@ -37,6 +37,12 @@ on_command("empty") {
     it.player().inventory.removeAll()
 }
 
+on_command("home", Privilege.ADMIN_POWER) {
+    val player = it.player()
+    val home = player.world.gameContext.home
+    player.teleport(home)
+}
+
 on_command("obank", Privilege.ADMIN_POWER) {
     it.player().openBank()
 }

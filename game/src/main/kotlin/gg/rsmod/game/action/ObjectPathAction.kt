@@ -2,7 +2,6 @@ package gg.rsmod.game.action
 
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.Direction
-import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.collision.ObjectGroup
@@ -15,6 +14,7 @@ import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.Route
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.DataConstants
+import java.util.*
 
 /**
  * This class is eesponsible for calculating distances and valid interaction
@@ -60,17 +60,17 @@ object ObjectPathAction {
         var width = def.width
         var length = def.length
         val clipMask = def.clipMask
-        val group = ObjectType.values.first { it.value == type }.group
-        val blockDirections = hashSetOf<Direction>()
 
-        if (type == ObjectType.INTERACTABLE.value || type == ObjectType.DIAGONAL_INTERACTABLE.value || type == ObjectType.FLOOR_DECORATION.value) {
-            if (rot == 1 || rot == 3) {
-                width = def.length
-                length = def.width
-            }
+        val group = ObjectType.values.first { it.value == type }.group
+        val wall = group == ObjectGroup.WALL_DECORATION || group == ObjectGroup.WALL
+        val blockDirections = EnumSet.noneOf(Direction::class.java)
+
+        if (!wall && (rot == 1 || rot == 3)) {
+            width = def.length
+            length = def.width
         }
 
-        lineOfSightRange?.let {
+        if (lineOfSightRange != null) {
             width = Math.max(width, lineOfSightRange)
             length = Math.max(length, lineOfSightRange)
         }
@@ -94,31 +94,54 @@ object ObjectPathAction {
             blockDirections.add(Direction.WEST)
         }
 
+        val wallUnreachable = when (rot) {
+            0 -> EnumSet.of(Direction.EAST)
+            1 -> EnumSet.of(Direction.SOUTH)
+            2 -> EnumSet.of(Direction.WEST)
+            3 -> EnumSet.of(Direction.NORTH)
+            else -> throw IllegalStateException("Invalid object rotation: $rot")
+        }
+
+        if (wall) {
+            if (pawn.tile.isWithinRadius(tile, 1)) {
+                val dir = Direction.between(tile, pawn.tile)
+                if (dir !in wallUnreachable && !dir.isDiagonal()) {
+                    return Route(ArrayDeque(), success = true, tail = pawn.tile)
+                }
+            }
+
+            blockDirections.addAll(wallUnreachable)
+        }
+
         val builder = PathRequest.Builder()
                 .setPoints(pawn.tile, tile)
                 .setSourceSize(pawn.getSize(), pawn.getSize())
                 .setProjectilePath(lineOfSightRange != null)
                 .setTargetSize(width, length)
+                .clipDiagonalTiles()
                 .clipPathNodes(node = true, link = true)
                 .clipDirections(*blockDirections.toTypedArray())
 
-        lineOfSightRange?.let { builder.setTouchRadius(lineOfSightRange) }
-
-        // TODO(Tom): work on doors & wall objects (such as rooftop agility start or varrock museum wall displays)
         if (lineOfSightRange != null) {
-            builder.clipDiagonalTiles()
-        } else if (group != ObjectGroup.WALL) {
-            builder.clipOverlapTiles().clipDiagonalTiles()
+            builder.setTouchRadius(lineOfSightRange)
+        }
+
+        if (!wall) {
+            builder.clipOverlapTiles()
         }
 
         val route = pawn.createPathFindingStrategy().calculateRoute(builder.build())
-
-        pawn.walkPath(route.path, MovementQueue.StepType.NORMAL)
+        pawn.walkPath(route.path)
 
         val last = pawn.movementQueue.peekLast()
         while (last != null && !pawn.tile.sameAs(last)) {
             it.wait(1)
         }
+
+        if (wall && !route.success && Direction.between(tile, pawn.tile) !in wallUnreachable) {
+            return Route(route.path, success = true, tail = route.tail)
+        }
+
         return route
     }
 
@@ -127,29 +150,19 @@ object ObjectPathAction {
         val rot = obj.rot
         val type = obj.type
 
-        var width = def.width
-        var length = def.length
-
-        if (rot == 1 || rot == 3) {
-            width = def.length
-            length = def.width
-        }
-
         when (type) {
             ObjectType.LENGTHWISE_WALL.value -> {
-                /**
-                 * Specially logic for facing doors and walls, otherwise you
-                 * end up facing the same direction the object is facing.
-                 */
-                val dir = when (rot) {
-                    0 -> obj.tile.transform(if (pawn.tile.x == obj.tile.x) -1 else 0, 0)
-                    1 -> obj.tile.transform(0, 1)
-                    2 -> obj.tile.transform(1, 0)
-                    else -> obj.tile.transform(0, -1)
+                if (!pawn.tile.sameAs(obj.tile)) {
+                    pawn.faceTile(obj.tile)
                 }
-                pawn.faceTile(dir)
             }
             else -> {
+                var width = def.width
+                var length = def.length
+                if (rot == 1 || rot == 3) {
+                    width = def.length
+                    length = def.width
+                }
                 pawn.faceTile(obj.tile.transform(width shr 1, length shr 1), width, length)
             }
         }

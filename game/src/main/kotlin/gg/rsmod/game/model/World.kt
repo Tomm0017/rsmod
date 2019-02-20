@@ -228,7 +228,6 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     fun remove(npc: Npc) {
         npcs.remove(npc)
-        pluginExecutor.interruptPluginsWithContext(npc)
     }
 
     fun spawn(obj: GameObject) {
@@ -248,7 +247,6 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         val chunk = chunks.getOrCreate(tile)
 
         chunk.removeEntity(this, obj, tile)
-        pluginExecutor.interruptPluginsWithContext(obj)
     }
 
     fun spawn(item: GroundItem) {
@@ -276,7 +274,6 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         val chunk = chunks.getOrCreate(tile)
 
         chunk.removeEntity(this, item, tile)
-        pluginExecutor.interruptPluginsWithContext(item)
     }
 
     fun spawn(projectile: Projectile) {

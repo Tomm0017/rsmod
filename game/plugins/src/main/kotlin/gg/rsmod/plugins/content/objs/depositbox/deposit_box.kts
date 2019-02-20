@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.content.mechanics.depositbox
+package gg.rsmod.plugins.content.objs.depositbox
 
 import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.game.model.container.ItemContainer

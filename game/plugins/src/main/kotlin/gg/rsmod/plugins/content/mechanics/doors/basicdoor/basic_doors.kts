@@ -8,7 +8,10 @@ val OPEN_DOOR_SFX = 62
 
 val DOORS = arrayOf(
         Door(closed = Objs.DOOR_1535, opened = Objs.DOOR_1536),
-        Door(closed = Objs.DOOR_1540, opened = Objs.DOOR_1541)
+        Door(closed = Objs.DOOR_1540, opened = Objs.DOOR_1541),
+        Door(closed = Objs.DOOR_24050, opened = Objs.DOOR_24051),
+        Door(closed = Objs.DOOR_24054, opened = Objs.DOOR_24055),
+        Door(closed = Objs.DOOR_24057, opened = Objs.DOOR_24058)
 )
 
 DOORS.forEach { door ->

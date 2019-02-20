@@ -36,8 +36,6 @@ object ObjectPathAction {
                 faceObj(player, obj)
             }
             if (route.success) {
-                it.wait(1)
-
                 if (!player.world.plugins.executeObject(player, obj.getTransform(player), opt)) {
                     player.message(Entity.NOTHING_INTERESTING_HAPPENS)
                     if (player.world.devContext.debugObjects) {

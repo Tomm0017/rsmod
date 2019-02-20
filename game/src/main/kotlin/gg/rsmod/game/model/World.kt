@@ -11,6 +11,7 @@ import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.priv.PrivilegeSet
 import gg.rsmod.game.model.region.ChunkSet
 import gg.rsmod.game.model.shop.Shop
+import gg.rsmod.game.model.timer.TimerSystem
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.plugin.PluginRepository
@@ -157,6 +158,13 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      */
     val shops = Object2ObjectOpenHashMap<String, Shop>()
 
+    /**
+     * World timers.
+     *
+     * @see TimerSystem
+     */
+    val timers = TimerSystem()
+
     fun postLoad() {
         plugins.executeWorldInit(this)
     }
@@ -165,6 +173,21 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         if (currentCycle++ >= Int.MAX_VALUE - 1) {
             currentCycle = 0
             logger.info("World cycle has been reset.")
+        }
+
+        val timersCopy = timers.getTimers().toMutableMap()
+
+        timersCopy.forEach { key, time ->
+            if (time <= 0) {
+                plugins.executeWorldTimer(this, key)
+                if (!timers.has(key)) {
+                    timers.remove(key)
+                }
+            }
+        }
+
+        timers.getTimers().entries.forEach { timer ->
+            timer.setValue(timer.value - 1)
         }
     }
 
@@ -270,6 +293,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     fun isSpawned(obj: GameObject): Boolean = chunks.getOrCreate(obj.tile).getEntities<GameObject>(obj.tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).contains(obj)
 
     fun isSpawned(item: GroundItem): Boolean = chunks.getOrCreate(item.tile).getEntities<GroundItem>(item.tile, EntityType.GROUND_ITEM).contains(item)
+
+    fun getObject(tile: Tile, type: Int): GameObject? = chunks.get(tile, create = true)!!.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.type == type }
 
     fun getPlayerForName(username: String): Player? {
         for (i in 0 until players.capacity) {

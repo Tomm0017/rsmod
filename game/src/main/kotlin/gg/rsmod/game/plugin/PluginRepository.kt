@@ -483,6 +483,15 @@ class PluginRepository(val world: World) {
         return false
     }
 
+    fun executeWorldTimer(world: World, key: TimerKey): Boolean {
+        val plugin = timerPlugins[key]
+        if (plugin != null) {
+            world.pluginExecutor.execute(world, plugin)
+            return true
+        }
+        return false
+    }
+
     fun bindInterfaceOpen(interfaceId: Int, plugin: (Plugin) -> Unit) {
         if (interfaceOpenPlugins.containsKey(interfaceId)) {
             logger.error("Component id is already bound to a plugin: $interfaceId")

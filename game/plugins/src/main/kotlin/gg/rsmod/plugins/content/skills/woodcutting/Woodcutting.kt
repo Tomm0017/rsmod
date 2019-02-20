@@ -51,7 +51,7 @@ object Woodcutting {
                         val world = p.world
                         world.executePlugin(obj) {
                             it.suspendable {
-                                val trunk = DynamicObject(trunkId, obj)
+                                val trunk = DynamicObject(obj, trunkId)
 
                                 world.remove(obj)
                                 world.spawn(trunk)

@@ -40,6 +40,11 @@ val DISPLAY_MODE_CHANGE_ATTR = AttributeKey<Int>()
 val FACING_PAWN_ATTR = AttributeKey<WeakReference<Pawn>>()
 
 /**
+ * An [Npc] that has us as their [FACING_PAWN_ATTR].
+ */
+val NPC_FACING_US_ATTR = AttributeKey<WeakReference<Npc>>()
+
+/**
  * The current viewed shop.
  */
 val CURRENT_SHOP_ATTR = AttributeKey<Shop>()

@@ -5,6 +5,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.attr.FACING_PAWN_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
+import gg.rsmod.game.model.attr.NPC_FACING_US_ATTR
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
@@ -14,6 +15,7 @@ import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.AabbUtil
+import java.lang.ref.WeakReference
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -45,7 +47,22 @@ object PawnPathAction {
                 return@suspendable
             }
 
+            pawn.stopMovement()
+
             if (pawn is Player) {
+                /**
+                 * On 07, only one npc can be facing the player at a time,
+                 * so if the last pawn that faced the player is still facing
+                 * them, then we reset their face target.
+                 */
+                pawn.attr[NPC_FACING_US_ATTR]?.get()?.let { other ->
+                    if (other.attr[FACING_PAWN_ATTR]?.get() == pawn) {
+                        other.facePawn(null)
+                        other.timers.remove(RESET_PAWN_FACING_TIMER)
+                    }
+                }
+                pawn.attr[NPC_FACING_US_ATTR] = WeakReference(npc)
+
                 /**
                  * Stop the npc from walking while the player talks to it
                  * for [Npc.RESET_PAWN_FACE_DELAY] cycles.

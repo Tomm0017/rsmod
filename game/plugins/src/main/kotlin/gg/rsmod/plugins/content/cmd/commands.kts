@@ -106,7 +106,8 @@ on_command("obj", Privilege.ADMIN_POWER) {
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::obj 1</col>") { values ->
         val id = values[0].toInt()
         val type = if (values.size > 1) values[1].toInt() else 10
-        val obj = DynamicObject(id, type, 0, p.tile)
+        val rot = if (values.size > 2) values[2].toInt() else 0
+        val obj = DynamicObject(id, type, rot, p.tile)
         p.world.spawn(obj)
     }
 }

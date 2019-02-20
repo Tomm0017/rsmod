@@ -38,7 +38,7 @@ class AddLocalNpcSegment(val player: Player, val npc: Npc, private val requiresB
         buf.putBits(if (largeScene) 8 else 5, dx)
         buf.putBits(1, if (requiresBlockUpdate) 1 else 0)
         buf.putBits(3, facing.getNpcWalkIndex())
-        buf.putBits(1, if (npc.teleport) 1 else 0)
+        buf.putBits(1, if (requiresBlockUpdate) 1 else 0)
         buf.putBits(if (largeScene) 8 else 5, dz)
         buf.putBits(14, id)
     }

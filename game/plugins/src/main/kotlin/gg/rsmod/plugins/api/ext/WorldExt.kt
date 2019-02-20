@@ -8,7 +8,7 @@ import gg.rsmod.game.model.entity.GameObject
  * @author Tom <rspsmods@gmail.com>
  */
 
-fun World.openDoor(obj: GameObject, opened: Int = obj.id + 1, invertRot: Boolean = false, invertTransform: Boolean = false) {
+fun World.openDoor(obj: GameObject, opened: Int = obj.id + 1, invertRot: Boolean = false, invertTransform: Boolean = false): GameObject {
     val oldRot = obj.rot
     val newRot = Math.abs((oldRot + (if (invertRot) -1 else 1)) and 0x3)
     val newTile = when (oldRot) {
@@ -22,9 +22,10 @@ fun World.openDoor(obj: GameObject, opened: Int = obj.id + 1, invertRot: Boolean
     val newDoor = DynamicObject(id = opened, type = obj.type, rot = newRot, tile = newTile)
     remove(obj)
     spawn(newDoor)
+    return newDoor
 }
 
-fun World.closeDoor(obj: GameObject, closed: Int = obj.id - 1, invertRot: Boolean = false, invertTransform: Boolean = false) {
+fun World.closeDoor(obj: GameObject, closed: Int = obj.id - 1, invertRot: Boolean = false, invertTransform: Boolean = false): GameObject {
     val oldRot = obj.rot
     val newRot = Math.abs((oldRot + (if (invertRot) 1 else -1)) and 0x3)
     val newTile = when (oldRot) {
@@ -38,4 +39,5 @@ fun World.closeDoor(obj: GameObject, closed: Int = obj.id - 1, invertRot: Boolea
     val newDoor = DynamicObject(id = closed, type = obj.type, rot = newRot, tile = newTile)
     remove(obj)
     spawn(newDoor)
+    return newDoor
 }

@@ -217,6 +217,10 @@ fun Player.sendItemContainer(parent: Int, child: Int, container: ItemContainer) 
     write(UpdateInvFullMessage(parent = parent, child = child, items = container.getBackingArray()))
 }
 
+fun Player.sendItemContainer(parent: Int, child: Int, key: Int, container: ItemContainer) {
+    write(UpdateInvFullMessage(parent = parent, child = child, containerKey = key, items = container.getBackingArray()))
+}
+
 fun Player.sendRunEnergy(energy: Int) {
     write(UpdateRunEnergyMessage(energy))
 }

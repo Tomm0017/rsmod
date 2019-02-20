@@ -146,7 +146,7 @@ class PluginPackerController : Initializable {
 
                     val folder = chooser.showDialog(primaryStage)
                     if (folder != null) {
-                        if (Files.walk(folder.toPath()).anyMatch { p -> p.fileName.toString().endsWith(".kt") }) {
+                        if (Files.walk(folder.toPath()).anyMatch { p -> p.fileName.toString().endsWith(".kt") || p.fileName.toString().endsWith(".kts") }) {
                             setText(sourcePath, folder.absolutePath)
                             break
                         } else {

@@ -28,7 +28,6 @@ import java.nio.file.Paths
 import java.text.DecimalFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import java.util.jar.JarFile
 
 /**
  * A repository that is responsible for storing and executing plugins, as well
@@ -284,26 +283,15 @@ class PluginRepository(val world: World) {
         val urls = arrayOf(path.toFile().toURI().toURL())
         val classLoader = URLClassLoader(urls, PluginRepository::class.java.classLoader)
 
-        val jar = JarFile(path.toFile())
-        val entries = jar.entries()
-        while (entries.hasMoreElements()) {
-            val entry = entries.nextElement()
-            if (!entry.name.endsWith(".class") || entry.name.contains("$") || entry.name.endsWith("Package")) {
-                continue
-            }
-            val clazz = classLoader.loadClass(entry.name.replace("/", ".").replace(".class", ""))
-
-            ClassGraph().ignoreParentClassLoaders().addClassLoader(classLoader).enableAllInfo().scan().use { result ->
-                val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
-                plugins.forEach { p ->
-                    val pluginClass = p.loadClass(KotlinPlugin::class.java)
-                    val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java)
-                    analyzer?.setClass(clazz)
-                    constructor.newInstance(this, world)
-                }
+        ClassGraph().ignoreParentClassLoaders().addClassLoader(classLoader).enableAllInfo().scan().use { result ->
+            val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
+            plugins.forEach { p ->
+                val pluginClass = p.loadClass(KotlinPlugin::class.java)
+                val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java)
+                analyzer?.setClass(pluginClass)
+                constructor.newInstance(this, world)
             }
         }
-        jar.close()
     }
 
     private fun setCombatDefs() {

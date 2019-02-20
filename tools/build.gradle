@@ -7,7 +7,7 @@ dependencies {
     compile project(':game')
 
     testImplementation group: 'junit', name: 'junit', version: junitVersion
-
+    
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8'
     compile group: 'org.jsoup', name: 'jsoup', version: jsoupVersion
     compile group: 'org.tukaani', name: 'xz', version: xzVersion

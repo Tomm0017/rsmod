@@ -1,7 +1,7 @@
 package gg.rsmod.plugins.content.combat
 
 import gg.rsmod.game.action.PawnPathAction
-import gg.rsmod.game.model.*
+import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.attr.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.attr.LAST_HIT_ATTR
@@ -23,7 +23,6 @@ import gg.rsmod.plugins.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.MeleeCombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.RangedCombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
-import gg.rsmod.util.AabbUtil
 import java.lang.ref.WeakReference
 
 /**
@@ -83,8 +82,8 @@ object Combat {
         val srcSize = pawn.getSize()
         val dstSize = Math.max(distance, target.getSize())
 
-        val touching = if (distance > 1) AabbUtil.areOverlapping(start.x, start.z, srcSize, srcSize, end.x, end.z, dstSize, dstSize)
-                        else AabbUtil.areBordering(start.x, start.z, srcSize, srcSize, end.x, end.z, dstSize, dstSize)
+        val touching = if (distance > 1) areOverlapping(start.x, start.z, srcSize, srcSize, end.x, end.z, dstSize, dstSize)
+                        else areBordering(start.x, start.z, srcSize, srcSize, end.x, end.z, dstSize, dstSize)
         val withinRange = touching && world.collision.raycast(start, end, projectile = projectile)
         return withinRange || PawnPathAction.walkTo(it, pawn, target, interactionRange = distance, lineOfSight = false)
     }
@@ -159,5 +158,62 @@ object Combat {
         CombatClass.MELEE -> MeleeCombatStrategy
         CombatClass.RANGED -> RangedCombatStrategy
         CombatClass.MAGIC -> MagicCombatStrategy
+    }
+
+    private fun areOverlapping(x1: Int, z1: Int, width1: Int, length1: Int,
+                       x2: Int, z2: Int, width2: Int, length2: Int): Boolean {
+        val a = Box(x1, z1, width1 - 1, length1 - 1)
+        val b = Box(x2, z2, width2 - 1, length2 - 1)
+
+        if (a.x1 > b.x2 || b.x1 > a.x2) {
+            return false
+        }
+
+        if (a.z1 > b.z2 || b.z1 > a.z2) {
+            return false
+        }
+
+        return true
+    }
+
+    /**
+     * Checks to see if two AABB are bordering, but not overlapping.
+     */
+    fun areBordering(x1: Int, z1: Int, width1: Int, length1: Int,
+                     x2: Int, z2: Int, width2: Int, length2: Int): Boolean {
+        val a = Box(x1, z1, width1 - 1, length1 - 1)
+        val b = Box(x2, z2, width2 - 1, length2 - 1)
+
+        if (b.x1 in a.x1 .. a.x2 && b.z1 in a.z1 .. a.z2 || b.x2 in a.x1 .. a.x2 && b.z2 in a.z1 .. a.z2) {
+            return false
+        }
+
+        if (b.x1 > a.x2 + 1) {
+            return false
+        }
+
+        if (b.x2 < a.x1 - 1) {
+            return false
+        }
+
+        if (b.z1 > a.z2 + 1) {
+            return false
+        }
+
+        if (b.z2 < a.z1 - 1) {
+            return false
+        }
+        return true
+    }
+
+    data class Box(val x: Int, val z: Int, val width: Int, val length: Int) {
+
+        val x1: Int get() = x
+
+        val x2: Int get() = x + width
+
+        val z1: Int get() = z
+
+        val z2: Int get() = z + length
     }
 }

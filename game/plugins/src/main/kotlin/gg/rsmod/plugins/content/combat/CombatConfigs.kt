@@ -12,19 +12,19 @@ import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.plugins.api.EquipmentType
 import gg.rsmod.plugins.api.WeaponType
 import gg.rsmod.plugins.api.cfg.Items
-import gg.rsmod.plugins.api.ext.*
+import gg.rsmod.plugins.api.ext.getAttackStyle
+import gg.rsmod.plugins.api.ext.getEquipment
+import gg.rsmod.plugins.api.ext.hasEquipped
+import gg.rsmod.plugins.api.ext.hasWeaponType
 import gg.rsmod.plugins.content.combat.strategy.CombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.MeleeCombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.RangedCombatStrategy
-import mu.KotlinLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 object CombatConfigs {
-
-    private val logger = KotlinLogging.logger {  }
 
     private var cachedItemStats: ItemStatsService? = null
 
@@ -388,10 +388,7 @@ object CombatConfigs {
                 }
             }
 
-            else -> {
-                logger.warn { "Unhandled XP Mode for weapon: ${player.getWeaponType()}" }
-                XpMode.ATTACK
-            }
+            else -> XpMode.ATTACK
         }
     }
 

@@ -11,7 +11,6 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.ProjectileType
 import gg.rsmod.plugins.api.ext.hit
 import gg.rsmod.plugins.content.combat.formula.CombatFormula
-import gg.rsmod.util.AabbUtil
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -34,7 +33,7 @@ fun Pawn.isAttackDelayReady(): Boolean = Combat.isAttackDelayReady(this)
 fun Pawn.combatRaycast(target: Pawn, distance: Int, projectile: Boolean): Boolean = Combat.raycast(this, target, distance, projectile)
 
 suspend fun Pawn.canAttackMelee(it: Plugin, target: Pawn, moveIfNeeded: Boolean): Boolean =
-        AabbUtil.areBordering(tile.x, tile.z, getSize(), getSize(), target.tile.x, target.tile.z, target.getSize(), target.getSize())
+        Combat.areBordering(tile.x, tile.z, getSize(), getSize(), target.tile.x, target.tile.z, target.getSize(), target.getSize())
                 || moveIfNeeded && moveToAttackRange(it, target, distance = 0, projectile = false)
 
 fun Pawn.dealHit(target: Pawn, formula: CombatFormula, delay: Int, onHit: (PawnHit) -> Unit = {}): PawnHit {

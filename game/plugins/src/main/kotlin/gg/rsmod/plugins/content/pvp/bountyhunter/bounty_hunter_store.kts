@@ -117,7 +117,3 @@ fun buy_item(p: Player, item: Int, amt: Int) {
         }
     }
 }
-
-// itemName costs # points.
-// You don't have enough free inventory space to buy that.
-// You need ##,### points to buy the ___.

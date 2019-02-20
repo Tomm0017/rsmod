@@ -20,7 +20,7 @@ class MovementQueue(val pawn: Pawn) {
     }
 
     fun addStep(step: Tile, type: StepType) {
-        val current = if (steps.isNotEmpty()) steps.peekLast().tile else pawn.tile
+        val current = if (steps.any()) steps.peekLast().tile else pawn.tile
         addStep(current, step, type)
     }
 

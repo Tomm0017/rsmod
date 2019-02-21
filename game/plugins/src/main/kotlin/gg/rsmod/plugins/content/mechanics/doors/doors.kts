@@ -2,6 +2,7 @@ package gg.rsmod.plugins.content.mechanics.doors
 
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.AttributeKey
+import gg.rsmod.game.model.collision.ObjectType
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.api.ext.*
@@ -34,7 +35,7 @@ on_world_init { p ->
                 val player = it.player()
                 val obj = it.getInteractingGameObj()
                 if (!is_stuck(player.world, obj)) {
-                    val newDoor = player.world.closeDoor(obj, closed = door.closed)
+                    val newDoor = player.world.closeDoor(obj, closed = door.closed, invertTransform = obj.type == ObjectType.DIAGONAL_WALL.value)
                     copy_stick_vars(obj, newDoor)
                     add_stick_var(player.world, newDoor)
                     player.playSound(CLOSE_DOOR_SFX)
@@ -48,7 +49,7 @@ on_world_init { p ->
                 val player = it.player()
                 val obj = it.getInteractingGameObj()
                 if (!is_stuck(player.world, obj)) {
-                    val newDoor = player.world.openDoor(obj, opened = door.opened)
+                    val newDoor = player.world.openDoor(obj, opened = door.opened, invertTransform = obj.type == ObjectType.DIAGONAL_WALL.value)
                     copy_stick_vars(obj, newDoor)
                     add_stick_var(player.world, newDoor)
                     player.playSound(OPEN_DOOR_SFX)

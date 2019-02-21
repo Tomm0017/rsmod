@@ -60,6 +60,7 @@ object ObjectPathAction {
 
         val group = ObjectType.values.first { it.value == type }.group
         val wall = group == ObjectGroup.WALL_DECORATION || group == ObjectGroup.WALL
+        val diagonal = type == ObjectType.DIAGONAL_WALL.value || type == ObjectType.DIAGONAL_INTERACTABLE.value
         val blockDirections = EnumSet.noneOf(Direction::class.java)
 
         if (!wall && (rot == 1 || rot == 3)) {
@@ -91,23 +92,30 @@ object ObjectPathAction {
             blockDirections.add(Direction.WEST)
         }
 
-        val blockedWallDirection = when (rot) {
-            0 -> Direction.EAST
-            1 -> Direction.SOUTH
-            2 -> Direction.WEST
-            3 -> Direction.NORTH
+        val blockedWallDirections = when (rot) {
+            0 -> if (diagonal) EnumSet.of(Direction.EAST) else EnumSet.of(Direction.EAST)
+            1 -> if (diagonal) EnumSet.of(Direction.SOUTH) else EnumSet.of(Direction.SOUTH)
+            2 -> if (diagonal) EnumSet.of(Direction.WEST) else EnumSet.of(Direction.WEST)
+            3 -> if (diagonal) EnumSet.of(Direction.NORTH) else EnumSet.of(Direction.NORTH)
             else -> throw IllegalStateException("Invalid object rotation: $rot")
+        }
+
+        if (wall && type == ObjectType.DIAGONAL_WALL.value) {
+            when (rot) {
+                0 -> blockedWallDirections.add(Direction.NORTH)
+                2 -> blockedWallDirections.add(Direction.SOUTH)
+            }
         }
 
         if (wall) {
             if (pawn.tile.isWithinRadius(tile, 1)) {
                 val dir = Direction.between(tile, pawn.tile)
-                if (dir != blockedWallDirection && !AabbUtil.areDiagonal(pawn.tile.x, pawn.tile.z, pawn.getSize(), pawn.getSize(), tile.x, tile.z, width, length)) {
+                if (dir !in blockedWallDirections && (diagonal || !AabbUtil.areDiagonal(pawn.tile.x, pawn.tile.z, pawn.getSize(), pawn.getSize(), tile.x, tile.z, width, length))) {
                     return Route(ArrayDeque(), success = true, tail = pawn.tile)
                 }
             }
 
-            blockDirections.add(blockedWallDirection)
+            blockDirections.addAll(blockedWallDirections)
         }
 
         val builder = PathRequest.Builder()
@@ -115,12 +123,15 @@ object ObjectPathAction {
                 .setSourceSize(pawn.getSize(), pawn.getSize())
                 .setProjectilePath(lineOfSightRange != null)
                 .setTargetSize(width, length)
-                .clipDiagonalTiles()
                 .clipPathNodes(node = true, link = true)
                 .clipDirections(*blockDirections.toTypedArray())
 
         if (lineOfSightRange != null) {
             builder.setTouchRadius(lineOfSightRange)
+        }
+
+        if (!diagonal) {
+            builder.clipDiagonalTiles()
         }
 
         if (!wall) {
@@ -135,7 +146,7 @@ object ObjectPathAction {
             it.wait(1)
         }
 
-        if (wall && !route.success && Direction.between(tile, pawn.tile) != blockedWallDirection) {
+        if (wall && !route.success && Direction.between(tile, pawn.tile) !in blockedWallDirections) {
             return Route(route.path, success = true, tail = route.tail)
         }
 

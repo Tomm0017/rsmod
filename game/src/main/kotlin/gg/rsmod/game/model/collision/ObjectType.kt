@@ -39,7 +39,7 @@ enum class ObjectType(val value: Int, val group: ObjectGroup) {
     /**
      * A wall joint that is presented diagonally with respect to the tile.
      */
-    DIAGONAL_WALL(9, ObjectGroup.INTERACTABLE_OBJECT),
+    DIAGONAL_WALL(9, ObjectGroup.WALL),
 
     /**
      * An object that can be interacted with by a player.

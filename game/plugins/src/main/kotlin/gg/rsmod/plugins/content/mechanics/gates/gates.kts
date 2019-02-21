@@ -21,7 +21,7 @@ val STICK_STATE = AttributeKey<DoorStickState>()
 /**
  * The amount of times a door can be opened or closed before it gets "stuck".
  */
-val CHANGES_BEFORE_STICK = 6
+val CHANGES_BEFORE_STICK = 5
 
 /**
  * The amount of cycles that must go by before a door becomes "unstuck".

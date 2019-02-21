@@ -19,7 +19,7 @@ val STICK_STATE = AttributeKey<DoorStickState>()
 /**
  * The amount of times a door can be opened or closed before it gets "stuck".
  */
-val CHANGES_BEFORE_STICK = 6
+val CHANGES_BEFORE_STICK = 5
 
 /**
  * The amount of cycles that must go by before a door becomes "unstuck".
@@ -48,15 +48,10 @@ on_world_init { p ->
             on_obj_option(obj = door.closed, option = "open") {
                 val player = it.player()
                 val obj = it.getInteractingGameObj()
-                if (!is_stuck(player.world, obj)) {
-                    val newDoor = player.world.openDoor(obj, opened = door.opened, invertTransform = obj.type == ObjectType.DIAGONAL_WALL.value)
-                    copy_stick_vars(obj, newDoor)
-                    add_stick_var(player.world, newDoor)
-                    player.playSound(OPEN_DOOR_SFX)
-                } else {
-                    player.message("The door seems to be stuck.")
-                    player.playSound(STUCK_DOOR_SFX)
-                }
+                val newDoor = player.world.openDoor(obj, opened = door.opened, invertTransform = obj.type == ObjectType.DIAGONAL_WALL.value)
+                copy_stick_vars(obj, newDoor)
+                add_stick_var(player.world, newDoor)
+                player.playSound(OPEN_DOOR_SFX)
             }
         }
 
@@ -93,7 +88,7 @@ fun handle_double_doors(p: Player, obj: GameObject, doors: DoubleDoorSet, open: 
     }
     val otherDoor = get_neighbour_door(p.world, obj, otherDoorId) ?: return
 
-    if (is_stuck(world, obj) || is_stuck(world, otherDoor)) {
+    if (!open && (is_stuck(world, obj) || is_stuck(world, otherDoor))) {
         p.message("The door seems to be stuck.")
         p.playSound(STUCK_DOOR_SFX)
         return

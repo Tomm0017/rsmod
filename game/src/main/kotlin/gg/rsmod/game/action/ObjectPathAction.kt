@@ -100,10 +100,12 @@ object ObjectPathAction {
             else -> throw IllegalStateException("Invalid object rotation: $rot")
         }
 
-        if (wall && type == ObjectType.DIAGONAL_WALL.value) {
+        if (wall && diagonal) {
             when (rot) {
                 0 -> blockedWallDirections.add(Direction.NORTH)
+                1 -> blockedWallDirections.add(Direction.EAST)
                 2 -> blockedWallDirections.add(Direction.SOUTH)
+                3 -> blockedWallDirections.add(Direction.WEST)
             }
         }
 
@@ -146,7 +148,7 @@ object ObjectPathAction {
             it.wait(1)
         }
 
-        if (wall && !route.success && Direction.between(tile, pawn.tile) !in blockedWallDirections) {
+        if (wall && !route.success && pawn.tile.isWithinRadius(tile, 1) && Direction.between(tile, pawn.tile) !in blockedWallDirections) {
             return Route(route.path, success = true, tail = route.tail)
         }
 

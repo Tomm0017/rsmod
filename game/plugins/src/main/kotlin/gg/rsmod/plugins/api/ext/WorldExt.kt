@@ -13,6 +13,7 @@ fun World.openDoor(obj: GameObject, opened: Int = obj.id + 1, invertRot: Boolean
     val oldRot = obj.rot
     val newRot = Math.abs((oldRot + (if (invertRot) -1 else 1)) and 0x3)
     val diagonal = obj.type == ObjectType.DIAGONAL_WALL.value
+
     val newTile = when (oldRot) {
         0 -> if (diagonal) obj.tile.transform(0, 1) else obj.tile.transform(if (invertTransform) 1 else -1, 0)
         1 -> if (diagonal) obj.tile.transform(1, 0) else obj.tile.transform(0, if (invertTransform) -1 else 1)
@@ -31,10 +32,11 @@ fun World.closeDoor(obj: GameObject, closed: Int = obj.id - 1, invertRot: Boolea
     val oldRot = obj.rot
     val newRot = Math.abs((oldRot + (if (invertRot) 1 else -1)) and 0x3)
     val diagonal = obj.type == ObjectType.DIAGONAL_WALL.value
+
     val newTile = when (oldRot) {
-        0 -> if (diagonal) obj.tile.transform(0, -1) else obj.tile.transform(0, if (invertTransform) -1 else 1)
-        1 -> if (diagonal) obj.tile.transform(-1, 0) else obj.tile.transform(if (invertTransform) -1 else 1, 0)
-        2 -> if (diagonal) obj.tile.transform(1, 0) else obj.tile.transform(0, if (invertTransform) 1 else -1)
+        0 -> if (diagonal) obj.tile.transform(1, 0) else obj.tile.transform(0, if (invertTransform) -1 else 1)
+        1 -> if (diagonal) obj.tile.transform(0, -1) else obj.tile.transform(if (invertTransform) -1 else 1, 0)
+        2 -> if (diagonal) obj.tile.transform(-1, 0) else obj.tile.transform(0, if (invertTransform) 1 else -1)
         3 -> if (diagonal) obj.tile.transform(0, 1) else obj.tile.transform(if (invertTransform) 1 else -1, 0)
         else -> throw IllegalStateException("Invalid door rotation: [currentRot=$oldRot, replaceRot=$newRot]")
     }

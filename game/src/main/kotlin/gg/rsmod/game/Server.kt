@@ -158,7 +158,7 @@ class Server {
          */
         individualStopwatch.reset().start()
         world.plugins.init(gameService = gameService,
-                jarPluginsDirectory = gameProperties.getOrDefault("plugin-packed-path", "./plugins"),
+                jarPluginsDirectory = gameProperties.getOrDefault("plugin-packed-path", "../plugins"),
                 analyzeMode = args.any { it == "-analyze" })
         logger.info("Loaded {} plugins in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 

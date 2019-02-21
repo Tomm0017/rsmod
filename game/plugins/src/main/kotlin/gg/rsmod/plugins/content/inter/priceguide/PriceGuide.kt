@@ -9,7 +9,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
-import gg.rsmod.plugins.service.item.ItemValueService
+import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
 import java.text.DecimalFormat
 
 /**
@@ -182,7 +182,7 @@ object PriceGuide {
 
     fun search(p: Player, item: Int) {
         val def = p.world.definitions.get(ItemDef::class.java, item)
-        val valueService = p.world.getService(ItemValueService::class.java).orElse(null)
+        val valueService = p.world.getService(ItemMarketValueService::class.java).orElse(null)
         val cost = valueService?.get(item) ?: def.cost
 
         p.setComponentItem(interfaceId = COMPONENT_ID, component = 8, item = item, amountOrZoom = 1)
@@ -199,7 +199,7 @@ object PriceGuide {
 
         p.setComponentItem(interfaceId = COMPONENT_ID, component = 8, item = -1, amountOrZoom = 1)
 
-        val valueService = p.world.getService(ItemValueService::class.java).orElse(null)
+        val valueService = p.world.getService(ItemMarketValueService::class.java).orElse(null)
         val costs = Array(size = guideContainer.capacity) { 0 }
         guideContainer.forEachIndexed { index, item ->
             if (item != null) {

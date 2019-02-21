@@ -13,6 +13,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.Route
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.util.AabbUtil
 import gg.rsmod.util.DataConstants
 import java.util.*
 
@@ -92,23 +93,23 @@ object ObjectPathAction {
             blockDirections.add(Direction.WEST)
         }
 
-        val wallUnreachable = when (rot) {
-            0 -> EnumSet.of(Direction.EAST)
-            1 -> EnumSet.of(Direction.SOUTH)
-            2 -> EnumSet.of(Direction.WEST)
-            3 -> EnumSet.of(Direction.NORTH)
+        val blockedWallDirection = when (rot) {
+            0 -> Direction.EAST
+            1 -> Direction.SOUTH
+            2 -> Direction.WEST
+            3 -> Direction.NORTH
             else -> throw IllegalStateException("Invalid object rotation: $rot")
         }
 
         if (wall) {
             if (pawn.tile.isWithinRadius(tile, 1)) {
                 val dir = Direction.between(tile, pawn.tile)
-                if (dir !in wallUnreachable && !dir.isDiagonal()) {
+                if (dir != blockedWallDirection && !AabbUtil.areDiagonal(pawn.tile.x, pawn.tile.z, pawn.getSize(), pawn.getSize(), tile.x, tile.z, width, length)) {
                     return Route(ArrayDeque(), success = true, tail = pawn.tile)
                 }
             }
 
-            blockDirections.addAll(wallUnreachable)
+            blockDirections.add(blockedWallDirection)
         }
 
         val builder = PathRequest.Builder()
@@ -136,7 +137,7 @@ object ObjectPathAction {
             it.wait(1)
         }
 
-        if (wall && !route.success && Direction.between(tile, pawn.tile) !in wallUnreachable) {
+        if (wall && !route.success && Direction.between(tile, pawn.tile) != blockedWallDirection) {
             return Route(route.path, success = true, tail = route.tail)
         }
 

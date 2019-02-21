@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.service.item
+package gg.rsmod.plugins.service.marketvalue
 
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.def.ItemDef
@@ -10,7 +10,7 @@ import mu.KotlinLogging
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ItemValueService : Service() {
+class ItemMarketValueService : Service() {
 
     companion object {
         private val logger = KotlinLogging.logger {  }

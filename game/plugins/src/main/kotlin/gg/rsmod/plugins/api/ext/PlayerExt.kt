@@ -19,7 +19,7 @@ import gg.rsmod.game.model.timer.SKULL_ICON_DURATION_TIMER
 import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.game.sync.block.UpdateBlockType
 import gg.rsmod.plugins.api.*
-import gg.rsmod.plugins.service.item.ItemValueService
+import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
 import gg.rsmod.util.BitManipulation
 
 /**
@@ -424,7 +424,7 @@ fun Player.calculateDeathContainers(): DeathContainers {
     val lostContainer = ItemContainer(world.definitions, inventory.capacity + equipment.capacity, ContainerStackType.NORMAL)
 
     var totalItems = inventory.getBackingArray().filterNotNull() + equipment.getBackingArray().filterNotNull()
-    val valueService = world.getService(ItemValueService::class.java).orElse(null)
+    val valueService = world.getService(ItemMarketValueService::class.java).orElse(null)
 
     if (valueService != null) {
         totalItems = totalItems.sortedByDescending { valueService.get(it.id) }

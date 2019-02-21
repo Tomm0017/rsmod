@@ -66,6 +66,18 @@ fun open_gate(p: Player, obj: GameObject, gates: GateSet) {
     val newHinge: DynamicObject
     val newExtension: DynamicObject
     when (oldRot) {
+        0 -> {
+            newHinge = DynamicObject(id = gates.opened.hinge, type = obj.type, rot = 3, tile = hingeObj.tile.transform(-1, 0))
+            newExtension = DynamicObject(id = gates.opened.extension, type = obj.type, rot = 3, tile = hingeObj.tile.transform(-2, 0))
+        }
+        1 -> {
+            newHinge = DynamicObject(id = gates.opened.hinge, type = obj.type, rot = 0, tile = hingeObj.tile.transform(0, 1))
+            newExtension = DynamicObject(id = gates.opened.extension, type = obj.type, rot = 0, tile = hingeObj.tile.transform(0, 2))
+        }
+        2 -> {
+            newHinge = DynamicObject(id = gates.opened.hinge, type = obj.type, rot = 1, tile = hingeObj.tile.transform(1, 0))
+            newExtension = DynamicObject(id = gates.opened.extension, type = obj.type, rot = 1, tile = hingeObj.tile.transform(2, 0))
+        }
         3 -> {
             newHinge = DynamicObject(id = gates.opened.hinge, type = obj.type, rot = 2, tile = hingeObj.tile.transform(0, -1))
             newExtension = DynamicObject(id = gates.opened.extension, type = obj.type, rot = 2, tile = hingeObj.tile.transform(0, -2))
@@ -107,9 +119,21 @@ fun close_gate(p: Player, obj: GameObject, gates: GateSet) {
     val newHinge: DynamicObject
     val newExtension: DynamicObject
     when (oldRot) {
+        0 -> {
+            newHinge = DynamicObject(id = gates.closed.hinge, type = obj.type, rot = 1, tile = hingeObj.tile.transform(0, -1))
+            newExtension = DynamicObject(id = gates.closed.extension, type = obj.type, rot = 1, tile = hingeObj.tile.transform(1, -1))
+        }
+        1 -> {
+            newHinge = DynamicObject(id = gates.closed.hinge, type = obj.type, rot = 2, tile = hingeObj.tile.transform(-1, 0))
+            newExtension = DynamicObject(id = gates.closed.extension, type = obj.type, rot = 2, tile = hingeObj.tile.transform(-1, -1))
+        }
         2 -> {
             newHinge = DynamicObject(id = gates.closed.hinge, type = obj.type, rot = 3, tile = hingeObj.tile.transform(0, 1))
             newExtension = DynamicObject(id = gates.closed.extension, type = obj.type, rot = 3, tile = hingeObj.tile.transform(-1, 1))
+        }
+        3 -> {
+            newHinge = DynamicObject(id = gates.closed.hinge, type = obj.type, rot = 0, tile = hingeObj.tile.transform(1, 0))
+            newExtension = DynamicObject(id = gates.closed.extension, type = obj.type, rot = 0, tile = hingeObj.tile.transform(1, 1))
         }
         else -> throw IllegalStateException("Invalid object rotation: $obj")
     }
@@ -153,7 +177,10 @@ fun copy_stick_vars(from: GameObject, to: GameObject) {
 }
 
 fun add_stick_var(world: World, obj: GameObject) {
-    val currentChanges = get_stick_changes(obj)
+    var currentChanges = get_stick_changes(obj)
+    if (obj.attr.has(STICK_STATE) && Math.abs(world.currentCycle - obj.attr[STICK_STATE]!!.lastChangeCycle) >= RESET_STICK_DELAY) {
+        currentChanges = 0
+    }
     obj.attr[STICK_STATE] = DoorStickState(currentChanges + 1, world.currentCycle)
 }
 

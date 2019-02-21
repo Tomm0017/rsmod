@@ -34,7 +34,7 @@ on_world_init { p ->
                 val player = it.player()
                 val obj = it.getInteractingGameObj()
                 if (!is_stuck(player.world, obj)) {
-                    val newDoor = player.world.closeDoor(obj)
+                    val newDoor = player.world.closeDoor(obj, closed = door.closed)
                     copy_stick_vars(obj, newDoor)
                     add_stick_var(player.world, newDoor)
                     player.playSound(CLOSE_DOOR_SFX)
@@ -48,7 +48,7 @@ on_world_init { p ->
                 val player = it.player()
                 val obj = it.getInteractingGameObj()
                 if (!is_stuck(player.world, obj)) {
-                    val newDoor = player.world.openDoor(obj)
+                    val newDoor = player.world.openDoor(obj, opened = door.opened)
                     copy_stick_vars(obj, newDoor)
                     add_stick_var(player.world, newDoor)
                     player.playSound(OPEN_DOOR_SFX)
@@ -142,7 +142,10 @@ fun copy_stick_vars(from: GameObject, to: GameObject) {
 }
 
 fun add_stick_var(world: World, obj: GameObject) {
-    val currentChanges = get_stick_changes(obj)
+    var currentChanges = get_stick_changes(obj)
+    if (obj.attr.has(STICK_STATE) && Math.abs(world.currentCycle - obj.attr[STICK_STATE]!!.lastChangeCycle) >= RESET_STICK_DELAY) {
+        currentChanges = 0
+    }
     obj.attr[STICK_STATE] = DoorStickState(currentChanges + 1, world.currentCycle)
 }
 

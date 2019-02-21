@@ -33,9 +33,7 @@ object ObjectPathAction {
 
         it.suspendable {
             val route = walkTo(it, obj, lineOfSightRange)
-            if (lineOfSightRange == null) {
-                faceObj(player, obj)
-            }
+            faceObj(player, obj)
             if (route.success) {
                 if (!player.world.plugins.executeObject(player, obj.getTransform(player), opt)) {
                     player.message(Entity.NOTHING_INTERESTING_HAPPENS)

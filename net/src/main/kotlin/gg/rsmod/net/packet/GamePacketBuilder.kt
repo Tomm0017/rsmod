@@ -380,10 +380,10 @@ class GamePacketBuilder {
      */
     fun putSmart(value: Int) {
         checkByteAccess()
-        if (value < 128) {
-            buffer.writeByte(value)
-        } else {
+        if (value >= 0x80) {
             buffer.writeShort(value or 0x8000)
+        } else {
+            buffer.writeByte(value)
         }
     }
 

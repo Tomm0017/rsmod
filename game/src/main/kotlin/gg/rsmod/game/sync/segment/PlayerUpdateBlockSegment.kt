@@ -9,7 +9,7 @@ import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.block.UpdateBlockType
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
-import gg.rsmod.util.TextUtil
+import java.util.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -67,16 +67,19 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
 
             UpdateBlockType.PUBLIC_CHAT -> {
                 val structure = blocks.updateBlocks[blockType]!!.values
-                val packed = ByteArray(256)
-                packed[0] = other.blockBuffer.publicChat.length.toByte()
-                val length = 1 + TextUtil.encryptPlayerChat(packed, 0, 1, other.blockBuffer.publicChat.length, other.blockBuffer.publicChat.toByteArray())
+                val compressed = ByteArray(256)
+                val length = other.world.huffman.compress(other.blockBuffer.publicChat, compressed)
+
+                val data = ByteArray(length)
+                System.arraycopy(compressed, 0, data, 0, length)
 
                 buf.put(structure[0].type, structure[0].order, structure[0].transformation, other.blockBuffer.publicChatEffects)
                 buf.put(structure[1].type, structure[1].order, structure[1].transformation, other.privilege.icon)
                 buf.put(structure[2].type, structure[2].order, structure[2].transformation, 0) // auto
-                println("write length: ${length + 1}")
                 buf.put(DataType.BYTE, length + 1)
-                buf.putBytes(structure[3].transformation, packed)
+                buf.putBytes(structure[3].transformation, data)
+                buf.putSmart(other.blockBuffer.publicChat.length)
+                println("write data: ${Arrays.toString(data)}")
             }
 
             UpdateBlockType.FORCE_CHAT -> {

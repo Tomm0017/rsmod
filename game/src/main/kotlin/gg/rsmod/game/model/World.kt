@@ -20,9 +20,11 @@ import gg.rsmod.game.service.game.EntityExamineService
 import gg.rsmod.game.service.game.NpcStatsService
 import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.game.sync.block.UpdateBlockSet
+import gg.rsmod.util.HuffmanCodec
 import gg.rsmod.util.ServerProperties
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import mu.KotlinLogging
+import net.runelite.cache.IndexType
 import net.runelite.cache.fs.Store
 import java.io.File
 import java.util.*
@@ -48,6 +50,13 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * The [DefinitionSet] that holds general filestore data.
      */
     val definitions = DefinitionSet()
+
+    val huffman by lazy {
+        val binary = filestore.getIndex(IndexType.BINARY)!!
+        val archive = binary.findArchiveByName("huffman")!!
+        val file = archive.getFiles(filestore.storage.loadArchive(archive)!!).files[0]
+        HuffmanCodec(file.contents)
+    }
 
     val players = PawnList(arrayOfNulls<Player>(gameContext.playerLimit))
 

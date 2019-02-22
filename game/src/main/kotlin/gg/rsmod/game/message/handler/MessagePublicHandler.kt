@@ -4,7 +4,6 @@ import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.MessagePublicMessage
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.sync.block.UpdateBlockType
-import gg.rsmod.util.TextUtil
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -12,9 +11,14 @@ import gg.rsmod.util.TextUtil
 class MessagePublicHandler : MessageHandler<MessagePublicMessage> {
 
     override fun handle(client: Client, message: MessagePublicMessage) {
-        val unpacked = TextUtil.decryptPlayerChat(message.data, message.length)
+        val decompressed = ByteArray(256)
+        val huffman = client.world.huffman
+        huffman.decompress(message.data, decompressed, message.length)
+
+        val unpacked = String(decompressed, 0, message.length)
         client.blockBuffer.publicChat = unpacked
         client.blockBuffer.publicChatEffects = message.effect
         client.addBlock(UpdateBlockType.PUBLIC_CHAT)
+        println("unpacked=$unpacked")
     }
 }

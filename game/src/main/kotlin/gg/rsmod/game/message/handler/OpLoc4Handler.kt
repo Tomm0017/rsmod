@@ -2,7 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.action.ObjectPathAction
 import gg.rsmod.game.message.MessageHandler
-import gg.rsmod.game.message.impl.OpLoc2Message
+import gg.rsmod.game.message.impl.OpLoc4Message
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
@@ -16,9 +16,9 @@ import java.lang.ref.WeakReference
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class OpLoc2Handler : MessageHandler<OpLoc2Message> {
+class OpLoc4Handler : MessageHandler<OpLoc4Message> {
 
-    override fun handle(client: Client, message: OpLoc2Message) {
+    override fun handle(client: Client, message: OpLoc4Message) {
         /**
          * If player can't move, we don't do anything.
          */
@@ -40,7 +40,7 @@ class OpLoc2Handler : MessageHandler<OpLoc2Message> {
         val chunk = client.world.chunks.getOrCreate(tile)
         val obj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.id == message.id } ?: return
 
-        log(client, "Object action 2: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
+        log(client, "Object action 4: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
 
         client.closeInterfaceModal()
         client.interruptPlugins()
@@ -51,7 +51,7 @@ class OpLoc2Handler : MessageHandler<OpLoc2Message> {
             client.teleport(client.world.findRandomTileAround(obj.tile, radius = 1, centreWidth = def.width, centreLength = def.length) ?: obj.tile)
         }
 
-        client.attr[INTERACTING_OPT_ATTR] = 2
+        client.attr[INTERACTING_OPT_ATTR] = 4
         client.attr[INTERACTING_OBJ_ATTR] = WeakReference(obj)
         client.executePlugin(ObjectPathAction.walkPlugin)
     }

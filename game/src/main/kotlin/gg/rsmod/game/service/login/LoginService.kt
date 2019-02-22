@@ -6,7 +6,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.protocol.GameHandler
 import gg.rsmod.game.protocol.GameMessageEncoder
-import gg.rsmod.game.protocol.PacketMetadataHelper
+import gg.rsmod.game.protocol.PacketMetadata
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.Service
 import gg.rsmod.game.service.rsa.RsaService
@@ -88,7 +88,7 @@ class LoginService : Service() {
         pipeline.addAfter("packet_encoder", "message_encoder", GameMessageEncoder(gameSystem.service.messageEncoders, gameSystem.service.messageStructures))
 
         pipeline.addBefore("handler", "packet_decoder", GamePacketDecoder(decodeRandom, rsaEncryption,
-                PacketMetadataHelper(gameSystem.service.messageStructures)))
+                PacketMetadata(gameSystem.service.messageStructures)))
 
         client.login()
         client.channel.flush()

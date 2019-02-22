@@ -20,12 +20,12 @@ class OpHeld5Handler : MessageHandler<OpHeld5Message> {
 
         val item = client.inventory[slot] ?: return
 
+
         val remove = client.inventory.remove(item, assureFullRemoval = false, beginSlot = slot)
         if (remove.completed > 0) {
             val floor = GroundItem(item.id, remove.completed, client.tile, client.uid)
             client.world.spawn(floor)
-
-            log(client, "Drop item: item=[%d, %d], slot=%d, parent=%d, child=%d", item.id, remove.completed, slot, hash shr 16, hash and 0xFFFF)
         }
+        log(client, "Drop item: item=[%d, %d], slot=%d, parent=%d, child=%d", item.id, remove.completed, slot, hash shr 16, hash and 0xFFFF)
     }
 }

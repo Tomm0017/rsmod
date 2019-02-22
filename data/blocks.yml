@@ -11,6 +11,7 @@ players:
     - FACE_TILE
     - APPEARANCE
     - FACE_PAWN
+    - PUBLIC_CHAT
     - ANIMATION
 
   blocks:
@@ -58,10 +59,12 @@ players:
       structure:
         - name: effects
           type: SHORT
+          trans: ADD
         - name: icon
           type: BYTE
         - name: auto
           type: BYTE
+          trans: NEGATE
         - name: message
           type: BYTES
 

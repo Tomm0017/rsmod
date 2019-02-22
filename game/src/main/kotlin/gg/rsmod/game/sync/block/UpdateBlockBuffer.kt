@@ -9,6 +9,8 @@ class UpdateBlockBuffer {
 
     private var mask = 0
     var forceChat = ""
+    var publicChat = ""
+    var publicChatEffects = 0
     var faceDegrees = 0
     var facePawnIndex = -1
 

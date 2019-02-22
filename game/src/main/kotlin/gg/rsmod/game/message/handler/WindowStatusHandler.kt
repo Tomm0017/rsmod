@@ -8,7 +8,7 @@ import gg.rsmod.game.model.entity.Client
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class DisplayModeHandler : MessageHandler<WindowStatusMessage> {
+class WindowStatusHandler : MessageHandler<WindowStatusMessage> {
 
     override fun handle(client: Client, message: WindowStatusMessage) {
         client.attr[DISPLAY_MODE_CHANGE_ATTR] = message.mode

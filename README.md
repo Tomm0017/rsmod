@@ -133,7 +133,7 @@ your server and see if it compiles correctly!
 #### I would like a feature added to the core game module
 - If you would like a feature added, please contact **rspsmods@gmail.com**
 #### I found a bug, where can I report it?
-- You can report them on our forums https://rsmod.gg or contact us directly 
+- You can report them on our forums https://rspsmods.com or contact us directly 
 through e-mail: **rspsmods@gmail.com**
 
 ## Acknowledgments
@@ -146,15 +146,17 @@ through e-mail: **rspsmods@gmail.com**
 * ##### Major
     - Using Collision Detection from Apollo 
     - Basic idea behind the Region system (known as Chunk on RS Mod)
-* #### OS-Scape
-    - The idea behind certain features such as TimerSystem, AttributeSystem and Services
-    - The idea behind user-friendly plugin binding
-* #### Rune-Status
+* ##### OS-Scape
+    - The basic idea behind certain features such as TimerSystem, AttributeSystem and Services
+    - The basic idea behind user-friendly plugin binding
+* ##### Rune-Status
     - Discord members lending a hand and being helpful:
-        * Bart
         * Polar
+            * Bunch of advice, including "correct" naming of packets
         * Kris
-        * Ryley (suggested using KotlinScript)
-* #### Kris
-    - Some information on player GPI
-    - Sharing #168 examines
+            * Some information regarding GPI
+            * Rev. 168 examines
+        * Bart
+            * Helped with KotlinScript issue
+        * Ryley
+            * Suggested using KotlinScript

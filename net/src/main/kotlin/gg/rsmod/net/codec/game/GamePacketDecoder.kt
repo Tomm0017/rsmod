@@ -2,7 +2,7 @@ package gg.rsmod.net.codec.game
 
 import gg.rsmod.net.codec.StatefulFrameDecoder
 import gg.rsmod.net.packet.GamePacket
-import gg.rsmod.net.packet.IPacketMetadataHelper
+import gg.rsmod.net.packet.IPacketMetadata
 import gg.rsmod.net.packet.PacketType
 import gg.rsmod.util.io.IsaacRandom
 import io.netty.buffer.ByteBuf
@@ -14,7 +14,7 @@ import mu.KotlinLogging
  * @author Tom <rspsmods@gmail.com>
  */
 class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncryption: Boolean,
-                        private val packetMetadata: IPacketMetadataHelper) : StatefulFrameDecoder<GameDecoderState>(GameDecoderState.OPCODE) {
+                        private val packetMetadata: IPacketMetadata) : StatefulFrameDecoder<GameDecoderState>(GameDecoderState.OPCODE) {
 
     companion object {
         private val logger = KotlinLogging.logger {  }
@@ -36,11 +36,13 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
 
     private fun decodeOpcode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
         if (buf.isReadable) {
+            buf.markReaderIndex()
             opcode = buf.readUnsignedByte().toInt() - (if (rsaEncryption) (random.nextInt() and 0xFF) else 0)
             val metadata = packetMetadata.getType(opcode)
             if (metadata == null) {
                 logger.warn("Channel {} sent message with no valid metadata: {}.", ctx.channel(), opcode)
                 buf.skipBytes(buf.readableBytes())
+                setState(GameDecoderState.OPCODE)
                 return
             }
             type = metadata
@@ -56,7 +58,7 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
                     try {
                         buf.skipBytes(Math.min(buf.readableBytes(), length))
                     } catch (e: Exception) {
-                        logger.error("Could not skip buffer for message with opcode: $opcode", e)
+                        logger.error(e) { "Could not skip buffer for message with opcode: $opcode" }
                     }
                     setState(GameDecoderState.OPCODE)
                 }
@@ -73,6 +75,7 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
                     setState(GameDecoderState.LENGTH)
                 }
                 else -> {
+                    setState(GameDecoderState.OPCODE)
                     throw IllegalStateException("Unhandled packet type $type for opcode $opcode.")
                 }
             }

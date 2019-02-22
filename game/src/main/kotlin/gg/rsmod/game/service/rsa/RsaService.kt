@@ -98,8 +98,7 @@ class RsaService : Service() {
                 writer.writeObject(PemObject("RSA PRIVATE KEY", privateKey.encoded))
             }
         } catch (e: Exception) {
-            System.err.println("Failed to write private key to ${keyPath.toAbsolutePath()}")
-            e.printStackTrace()
+            logger.error(e) { "Failed to write private key to ${keyPath.toAbsolutePath()}" }
         }
 
     }

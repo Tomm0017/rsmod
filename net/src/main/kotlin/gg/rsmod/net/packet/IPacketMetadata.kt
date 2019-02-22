@@ -3,7 +3,7 @@ package gg.rsmod.net.packet
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-interface IPacketMetadataHelper {
+interface IPacketMetadata {
 
     fun getType(opcode: Int): PacketType?
 

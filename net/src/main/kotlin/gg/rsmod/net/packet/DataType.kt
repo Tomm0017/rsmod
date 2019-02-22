@@ -39,6 +39,8 @@ enum class DataType(val bytes: Int) {
      */
     BYTES(-1),
 
+    SMART(-1),
+
     /**
      * A String.
      */

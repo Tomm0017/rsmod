@@ -2,7 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.action.GroundItemPathAction
 import gg.rsmod.game.message.MessageHandler
-import gg.rsmod.game.message.impl.OpObj3Message
+import gg.rsmod.game.message.impl.OpObj1Message
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.attr.INTERACTING_GROUNDITEM_ATTR
@@ -16,9 +16,9 @@ import java.lang.ref.WeakReference
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class OpObj3Handler : MessageHandler<OpObj3Message> {
+class OpObj1Handler : MessageHandler<OpObj1Message> {
 
-    override fun handle(client: Client, message: OpObj3Message) {
+    override fun handle(client: Client, message: OpObj1Message) {
         /**
          * If tile is too far away, don't process it.
          */
@@ -27,7 +27,7 @@ class OpObj3Handler : MessageHandler<OpObj3Message> {
             return
         }
 
-        log(client, "Ground Item action 3: item=%d, x=%d, z=%d, movement=%d", message.item, message.x, message.z, message.movementType)
+        log(client, "Ground Item action 1: item=%d, x=%d, z=%d, movement=%d", message.item, message.x, message.z, message.movementType)
 
         /**
          * Get the region chunk that the object would belong to.
@@ -43,7 +43,7 @@ class OpObj3Handler : MessageHandler<OpObj3Message> {
         client.interruptPlugins()
         client.resetInteractions()
 
-        client.attr[INTERACTING_OPT_ATTR] = 3
+        client.attr[INTERACTING_OPT_ATTR] = 1
         client.attr[INTERACTING_GROUNDITEM_ATTR] = WeakReference(item)
         client.world.pluginExecutor.execute(client, GroundItemPathAction.walkPlugin)
     }

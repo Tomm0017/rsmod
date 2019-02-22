@@ -16,14 +16,20 @@ abstract class MessageDecoder<T: Message> {
      * Decodes the [structure] into value [Map]s that can then be used to create
      * an instance of [T].
      */
-    @Throws(Exception::class)
-    fun decode(opcode: Int, structure: MessageStructure, reader: GamePacketReader): T {
+    open fun decode(opcode: Int, structure: MessageStructure, reader: GamePacketReader): T {
         val values = hashMapOf<String, Number>()
         val stringValues = hashMapOf<String, String>()
         structure.values.values.forEach { value ->
             when (value.type) {
                 DataType.BYTES -> throw Exception("Cannot decode message with type ${value.type}.")
                 DataType.STRING -> stringValues[value.id] = reader.string
+                DataType.SMART -> {
+                    if (value.signature == DataSignature.SIGNED) {
+                        values[value.id] = reader.signedSmart
+                    } else {
+                        values[value.id] = reader.unsignedSmart
+                    }
+                }
                 else -> {
                     if (value.signature == DataSignature.SIGNED) {
                         values[value.id] = reader.getSigned(value.type, value.order, value.transformation)

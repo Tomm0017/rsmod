@@ -38,15 +38,7 @@ class OpLoc1Handler : MessageHandler<OpLoc1Message> {
          * Get the region chunk that the object would belong to.
          */
         val chunk = client.world.chunks.getOrCreate(tile)
-        val obj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.id == message.id }
-
-        /**
-         * [GameObject] doesn't exist in the region.
-         */
-        if (obj == null) {
-            logVerificationFail(client, "Object action 1: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
-            return
-        }
+        val obj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.id == message.id } ?: return
 
         log(client, "Object action 1: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
 

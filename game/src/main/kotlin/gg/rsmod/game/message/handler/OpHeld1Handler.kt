@@ -30,8 +30,6 @@ class OpHeld1Handler : MessageHandler<OpHeld1Message> {
         val item = client.inventory[message.slot] ?: return
 
         if (item.id != message.item) {
-            logVerificationFail(client, "Item action 1: id=%d, slot=%d, component=(%d, %d), inventory=(%d, %d)",
-                    message.item, message.slot, componentParent, componentChild, item.id, item.amount)
             return
         }
 

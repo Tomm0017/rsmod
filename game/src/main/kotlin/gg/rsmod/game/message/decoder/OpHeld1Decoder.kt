@@ -12,8 +12,6 @@ class OpHeld1Decoder : MessageDecoder<OpHeld1Message>() {
         val hash = values["component_hash"]!!.toInt()
         val item = values["item"]!!.toInt()
         val slot = values["slot"]!!.toInt()
-
-        return OpHeld1Message(if (item == 0xFFFF) -1 else item,
-                if (slot == 0xFFFF) -1 else slot, hash)
+        return OpHeld1Message(if (item == 0xFFFF) -1 else item, if (slot == 0xFFFF) -1 else slot, hash)
     }
 }

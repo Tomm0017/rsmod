@@ -3,8 +3,6 @@ package gg.rsmod.game.message.impl
 import gg.rsmod.game.message.Message
 
 /**
- * A message that will be ignored by the message decoder.
- *
  * @author Tom <rspsmods@gmail.com>
  */
-open class IgnoreMessage : Message
+data class OpHeld4Message(val item: Int, val slot: Int, val componentHash: Int) : Message

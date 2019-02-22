@@ -482,6 +482,24 @@ in-packets:
         type: SHORT
         trans: ADD
 
+  - message: gg.rsmod.game.message.impl.OpObj1Message
+    type: FIXED
+    opcode: 5
+    length: 7
+    structure:
+      - name: z
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: item
+        order: LITTLE
+        type: SHORT
+      - name: x
+        order: LITTLE
+        type: SHORT
+      - name: movement_type
+        type: BYTE
+
   - message: gg.rsmod.game.message.impl.OpObj3Message
     type: FIXED
     opcode: 6
@@ -500,19 +518,22 @@ in-packets:
         order: LITTLE
         type: SHORT
 
-  - message: gg.rsmod.game.message.impl.OpHeld5Message
+  - message: gg.rsmod.game.message.impl.OpObj4Message
     type: FIXED
-    opcode: 58
-    length: 8
+    opcode: 29
+    length: 7
     structure:
-      - name: hash
-        type: INT
-      - name: slot
+      - name: z
         type: SHORT
-        sign: UNSIGNED
+        trans: ADD
       - name: item
+        order: LITTLE
         type: SHORT
-        sign: UNSIGNED
+      - name: x
+        type: SHORT
+      - name: movement_type
+        type: BYTE
+        trans: SUBTRACT
 
   - message: gg.rsmod.game.message.impl.ResumePObjDialogMessage
     type: FIXED
@@ -522,6 +543,13 @@ in-packets:
       - name: item
         type: SHORT
         sign: UNSIGNED
+
+  - message: gg.rsmod.game.message.impl.ResumePStringDialogMessage
+    type: VARIABLE_BYTE
+    opcode: 8
+    structure:
+      - name: input
+        type: STRING
 
   - message: gg.rsmod.game.message.impl.ClientCheatMessage
     type: VARIABLE_BYTE
@@ -657,6 +685,27 @@ in-packets:
         type: BYTE
         trans: ADD
 
+  - message: gg.rsmod.game.message.impl.OpLoc4Message
+    type: FIXED
+    opcode: 3
+    length: 7
+    structure:
+      - name: movement_type
+        type: BYTE
+        trans: ADD
+      - name: z
+        sign: UNSIGNED
+        type: SHORT
+        trans: ADD
+      - name: x
+        sign: UNSIGNED
+        type: SHORT
+        trans: ADD
+      - name: id
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+
   - message: gg.rsmod.game.message.impl.IfButtonMessage
     type: FIXED
     opcodes: 68,21,48,19,40,66,85,14,84,0
@@ -736,6 +785,60 @@ in-packets:
         type: SHORT
         trans: ADD
 
+  - message: gg.rsmod.game.message.impl.OpHeld4Message
+    type: FIXED
+    opcode: 7
+    length: 8
+    structure:
+      - name: item
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: component_hash
+        type: INT
+      - name: slot
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+
+  - message: gg.rsmod.game.message.impl.OpHeld5Message
+    type: FIXED
+    opcode: 58
+    length: 8
+    structure:
+      - name: component_hash
+        type: INT
+      - name: slot
+        type: SHORT
+        sign: UNSIGNED
+      - name: item
+        type: SHORT
+        sign: UNSIGNED
+
+  - message: gg.rsmod.game.message.impl.OpHeldTMessage
+    type: FIXED
+    opcode: 2
+    length: 14
+    structure:
+      - name: from_hash
+        order: MIDDLE
+        type: INT
+      - name: to_hash
+        type: INT
+      - name: item_slot
+        sign: UNSIGNED
+        type: SHORT
+      - name: item_id
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+      - name: spell_slot
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+
   - message: gg.rsmod.game.message.impl.CloseModalMessage
     type: FIXED
     opcode: 20
@@ -748,85 +851,72 @@ in-packets:
       - name: name
         type: STRING
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    type: IGNORE
+  - message: gg.rsmod.game.message.impl.EventCameraPositionMessage
+    type: FIXED
     opcode: 39
     length: 4
+    structure:
+      - name: mouse_x
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: mouse_y
+        order: LITTLE
+        type: SHORT
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    type: IGNORE
+  - message: gg.rsmod.game.message.impl.EventMouseIdleMessage
+    type: FIXED
     opcode: 49
     length: 0
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+  - message: gg.rsmod.game.message.impl.EventMouseMoveMessage # TODO: need to refactor code to see what values are received
     type: IGNORE
     opcode: 34
     length: -1
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    type: IGNORE
-    opcode: 2
-    length: 14
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    type: IGNORE
-    opcode: 3
-    length: 7
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    type: IGNORE
-    opcode: 4
-    length: -1
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    type: IGNORE
-    opcode: 5
-    length: 7
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    type: IGNORE
-    opcode: 7
-    length: 8
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    type: IGNORE
-    opcode: 8
-    length: -1
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    type: IGNORE
+  - message: gg.rsmod.game.message.impl.DetectModifiedClientMessage
+    type: FIXED
     opcode: 9
     length: 4
+    structure:
+      - name: dummy
+        type: INT
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    type: IGNORE
-    opcode: 11
-    length: 10
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    type: IGNORE
+  - message: gg.rsmod.game.message.impl.UpdateAppearanceMessage
+    type: FIXED
     opcode: 12
     length: 13
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Keep alive message
+  - message: gg.rsmod.game.message.impl.NoTimeoutMessage
     type: IGNORE
     opcode: 22
     length: 0
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     type: IGNORE
-    opcode: 29
-    length: 7
+    opcode: 4
+    length: -1
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: PING_STATISTICS - need to refactor code to see what values are received
+    type: IGNORE
+    opcode: 11
+    length: 10
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: EVENT_MOUSE_CLICK - need to refactor code to see what values are received
     type: IGNORE
     opcode: 41
     length: 6
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
-    type: IGNORE
+  - message: gg.rsmod.game.message.impl.MessagePublicMessage
+    type: VARIABLE_BYTE
     opcode: 97
-    length: -1
+    structure:
+      - name: type
+        type: BYTE
+      - name: color
+        type: BYTE
+      - name: effect
+        type: BYTE
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Request new region
     type: IGNORE

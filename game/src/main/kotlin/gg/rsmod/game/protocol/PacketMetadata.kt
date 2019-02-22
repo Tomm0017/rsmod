@@ -1,17 +1,17 @@
 package gg.rsmod.game.protocol
 
 import gg.rsmod.game.message.MessageStructureSet
-import gg.rsmod.net.packet.IPacketMetadataHelper
+import gg.rsmod.net.packet.IPacketMetadata
 import gg.rsmod.net.packet.PacketType
 import mu.KotlinLogging
 
 /**
- * A [IPacketMetadataHelper] implementation that is responsible for exposing
+ * A [IPacketMetadata] implementation that is responsible for exposing
  * packet metadata based on their opcode.
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class PacketMetadataHelper(private val structures: MessageStructureSet) : IPacketMetadataHelper {
+class PacketMetadata(private val structures: MessageStructureSet) : IPacketMetadata {
 
     companion object {
         private val logger = KotlinLogging.logger {  }

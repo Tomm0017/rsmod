@@ -1,8 +1,8 @@
 package gg.rsmod.net.packet
 
 import com.google.common.base.Preconditions
-import gg.rsmod.util.io.BufferUtils
 import gg.rsmod.util.DataConstants
+import gg.rsmod.util.io.BufferUtils
 import io.netty.buffer.ByteBuf
 
 /**
@@ -47,6 +47,12 @@ class GamePacketReader(packet: GamePacket) {
             return buffer.writableBytes()
         }
 
+    val readableBytes: Int
+        get() {
+            checkByteAccess()
+            return buffer.readableBytes()
+        }
+
     /**
      * Gets a signed smart from the buffer.
      *
@@ -72,6 +78,12 @@ class GamePacketReader(packet: GamePacket) {
         get() {
             checkByteAccess()
             return BufferUtils.readString(buffer)
+        }
+
+    val jagString: String
+        get() {
+            checkByteAccess()
+            return BufferUtils.readJagexString(buffer)
         }
 
     /**
@@ -362,35 +374,3 @@ class GamePacketReader(packet: GamePacket) {
     }
 
 }
-/**
- * Gets a signed data type from the buffer.
- *
- * @param type The data type.
- * @return The value.
- * @throws IllegalStateException If this reader is not in byte access mode.
- */
-/**
- * Gets a signed data type from the buffer with the specified order.
- *
- * @param type The data type.
- * @param order The byte order.
- * @return The value.
- * @throws IllegalStateException If this reader is not in byte access mode.
- * @throws IllegalArgumentException If the combination is invalid.
- */
-/**
- * Gets an unsigned data type from the buffer.
- *
- * @param type The data type.
- * @return The value.
- * @throws IllegalStateException If this reader is not in byte access mode.
- */
-/**
- * Gets an unsigned data type from the buffer with the specified order.
- *
- * @param type The data type.
- * @param order The byte order.
- * @return The value.
- * @throws IllegalStateException If this reader is not in byte access mode.
- * @throws IllegalArgumentException If the combination is invalid.
- */

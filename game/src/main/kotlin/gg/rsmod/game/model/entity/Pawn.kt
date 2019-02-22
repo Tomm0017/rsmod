@@ -157,6 +157,8 @@ abstract class Pawn(val world: World) : Entity() {
         lock = LockState.NONE
     }
 
+    fun isLocked(): Boolean = lock != LockState.NONE
+
     fun getTransmogId(): Int = transmogId
 
     fun setTransmogId(transmogId: Int) {

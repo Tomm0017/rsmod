@@ -11,6 +11,8 @@ import gg.rsmod.game.model.entity.Client
 class WindowStatusHandler : MessageHandler<WindowStatusMessage> {
 
     override fun handle(client: Client, message: WindowStatusMessage) {
+        client.clientWidth = message.width
+        client.clientHeight = message.height
         client.attr[DISPLAY_MODE_CHANGE_ATTR] = message.mode
         client.world.plugins.executeWindowStatus(client)
     }

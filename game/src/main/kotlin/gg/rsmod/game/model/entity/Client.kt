@@ -59,6 +59,16 @@ class Client(val channel: Channel, world: World) : Player(world) {
      */
     lateinit var uuid: String
 
+    var appletFocused = true
+
+    var clientWidth = 765
+
+    var clientHeight = 503
+
+    var cameraPitch = 0
+
+    var cameraYaw = 0
+
     override fun getType(): EntityType = EntityType.CLIENT
 
     override fun handleLogout() {

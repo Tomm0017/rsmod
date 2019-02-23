@@ -856,11 +856,11 @@ in-packets:
     opcode: 39
     length: 4
     structure:
-      - name: mouse_x
+      - name: pitch
         order: LITTLE
         type: SHORT
         trans: ADD
-      - name: mouse_y
+      - name: yaw
         order: LITTLE
         type: SHORT
 
@@ -892,6 +892,17 @@ in-packets:
     opcode: 22
     length: 0
 
+  - message: gg.rsmod.game.message.impl.MessagePublicMessage
+    type: VARIABLE_BYTE
+    opcode: 97
+    structure:
+      - name: type
+        type: BYTE
+      - name: color
+        type: BYTE
+      - name: effect
+        type: BYTE
+
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown message
     type: IGNORE
     opcode: 4
@@ -907,33 +918,25 @@ in-packets:
     opcode: 41
     length: 6
 
-  - message: gg.rsmod.game.message.impl.MessagePublicMessage
-    type: VARIABLE_BYTE
-    opcode: 97
-    structure:
-      - name: type
-        type: BYTE
-      - name: color
-        type: BYTE
-      - name: effect
-        type: BYTE
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Request new region
-    type: IGNORE
+  - message: gg.rsmod.game.message.impl.MapBuildCompleteMessage
+    type: IGNORE # Don't currently have a need to handle this message
     opcode: 76
     length: 0
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Reconnection
-    type: IGNORE
-    opcode: 4
-    length: -1
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Window focus state change
-    type: IGNORE
+  - message: gg.rsmod.game.message.impl.EventAppletFocusMessage
+    type: FIXED
     opcode: 73
     length: 1
+    structure:
+      - name: state
+        type: BYTE
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Key press message
-    type: IGNORE
+  - message: gg.rsmod.game.message.impl.EventKeyboardMessage
+    type: VARIABLE_SHORT
     opcode: 67
-    length: -2
+    structure:
+      - name: key
+        type: BYTE
+        trans: NEGATE
+      - name: last_key_press
+        type: TRI_BYTE

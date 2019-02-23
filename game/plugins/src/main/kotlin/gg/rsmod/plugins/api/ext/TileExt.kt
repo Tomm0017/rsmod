@@ -10,5 +10,5 @@ import gg.rsmod.game.model.World
 fun Tile.isMulti(world: World): Boolean {
     val region = toRegionId()
     val chunk = toChunkCoords().hashCode()
-    return world.plugins.multiCombatChunks.contains(chunk) || world.plugins.multiCombatRegions.contains(region)
+    return world.multiCombatChunks.contains(chunk) || world.multiCombatRegions.contains(region)
 }

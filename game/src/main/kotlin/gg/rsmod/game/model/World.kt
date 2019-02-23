@@ -22,6 +22,7 @@ import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.game.sync.block.UpdateBlockSet
 import gg.rsmod.util.HuffmanCodec
 import gg.rsmod.util.ServerProperties
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import mu.KotlinLogging
 import net.runelite.cache.IndexType
@@ -174,18 +175,38 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      */
     val timers = TimerSystem()
 
+    /**
+     * The multi-combat area [gg.rsmod.game.model.region.Chunk]s.
+     */
+    val multiCombatChunks = IntOpenHashSet()
+
+    /**
+     * The multi-combat area region (default 8x8 [gg.rsmod.game.model.region.Chunk]s).
+     */
+    val multiCombatRegions = IntOpenHashSet()
+
+    /**
+     * Executed after the server has initialised everything, but is not yet bound
+     * to a network port.
+     */
     fun postLoad() {
         plugins.executeWorldInit(this)
     }
 
+    /**
+     * Executed every game cycle.
+     */
     fun cycle() {
         if (currentCycle++ >= Int.MAX_VALUE - 1) {
             currentCycle = 0
             logger.info("World cycle has been reset.")
         }
 
+        /**
+         * Copy the timers to a mutable map just in case a timer has to modify
+         * the [timers] during its execution, which isn't uncommon.
+         */
         val timersCopy = timers.getTimers().toMutableMap()
-
         timersCopy.forEach { key, time ->
             if (time <= 0) {
                 plugins.executeWorldTimer(this, key)
@@ -195,6 +216,9 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             }
         }
 
+        /**
+         * Tick all timers down by one cycle.
+         */
         timers.getTimers().entries.forEach { timer ->
             timer.setValue(timer.value - 1)
         }
@@ -265,7 +289,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         val def = definitions.get(ItemDef::class.java, item.item)
 
         if (def.isStackable()) {
-            val oldItem = chunk.getEntities<GroundItem>(tile, EntityType.GROUND_ITEM).firstOrNull { it.item == item.item && it.owner == item.owner }
+            val oldItem = chunk.getEntities<GroundItem>(tile, EntityType.GROUND_ITEM).firstOrNull { it.item == item.item && it.ownerUID == item.ownerUID }
             if (oldItem != null) {
                 val oldAmount = oldItem.amount
                 val newAmount = Math.min(Int.MAX_VALUE.toLong(), item.amount.toLong() + oldItem.amount.toLong()).toInt()
@@ -303,6 +327,13 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     fun isSpawned(item: GroundItem): Boolean = chunks.getOrCreate(item.tile).getEntities<GroundItem>(item.tile, EntityType.GROUND_ITEM).contains(item)
 
+    /**
+     * Gets the [GameObject] that is located on [tile] and has a
+     * [GameObject.type] equal to [type].
+     *
+     * @return
+     * null if no [GameObject] with [type] was found in [tile].
+     */
     fun getObject(tile: Tile, type: Int): GameObject? = chunks.get(tile, create = true)!!.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.type == type }
 
     fun getPlayerForName(username: String): Player? {
@@ -315,7 +346,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         return null
     }
 
-    fun getPlayerForUid(uid: Any): Player? = players.firstOrNull { it.uid == uid }
+    fun getPlayerForUid(uid: PlayerUID): Player? = players.firstOrNull { it.uid.value == uid.value }
 
     fun random(boundInclusive: Int) = random.nextInt(boundInclusive + 1)
 

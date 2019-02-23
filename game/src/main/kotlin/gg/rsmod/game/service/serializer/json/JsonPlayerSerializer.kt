@@ -5,7 +5,9 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.lambdaworks.crypto.SCryptUtil
 import gg.rsmod.game.Server
-import gg.rsmod.game.model.*
+import gg.rsmod.game.model.PlayerUID
+import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.interf.DisplayMode
@@ -61,7 +63,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             }
 
             client.loginUsername = data.username
-            client.uid = data.username
+            client.uid = PlayerUID(data.username)
             client.username = data.displayName
             client.passwordHash = data.passwordHash
             client.tile = Tile(data.x, data.z, data.height)

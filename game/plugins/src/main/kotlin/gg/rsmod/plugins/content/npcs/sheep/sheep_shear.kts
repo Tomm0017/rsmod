@@ -48,7 +48,7 @@ suspend fun shear(it: Plugin, p: Player, n: Npc) {
         if (p.inventory.hasSpace()) {
             p.inventory.add(item = Items.WOOL)
         } else {
-            val ground = GroundItem(item = Items.WOOL, amount = 1, tile = Tile(p.tile), owner = p.uid)
+            val ground = GroundItem(item = Items.WOOL, amount = 1, tile = Tile(p.tile), owner = p)
             p.world.spawn(ground)
         }
         p.message("You get some wool.")

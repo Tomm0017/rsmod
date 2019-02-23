@@ -1,7 +1,9 @@
 package gg.rsmod.game.model.shop
 
+import gg.rsmod.game.model.PlayerUID
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -15,7 +17,7 @@ data class Shop(val name: String, val stockType: StockType, val purchasePolicy: 
         const val DEFAULT_RESUPPLY_CYCLES = 25
     }
 
-    val viewers = hashSetOf<Any>()
+    val viewers = ObjectOpenHashSet<PlayerUID>()
 
     fun refresh(world: World) {
         val iterator = viewers.iterator()

@@ -131,7 +131,7 @@ object RangedCombatStrategy : CombatStrategy {
                     pawn.equipment.remove(ammo.id, amount)
                 }
                 if (dropAmmo) {
-                    hitActions.add { world.spawn(GroundItem(ammo.id, amount, target.tile, pawn.uid)) }
+                    hitActions.add { world.spawn(GroundItem(ammo.id, amount, target.tile, pawn)) }
                 }
             }
         }

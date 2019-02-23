@@ -204,7 +204,9 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
 
         updates.forEach { update ->
             val message = EntityGroupMessage(update.type.id, update.toMessage())
-            messages.add(message)
+            if (canBeViewed(p, update.entity)) {
+                messages.add(message)
+            }
         }
 
         if (messages.isNotEmpty()) {

@@ -14,16 +14,14 @@ class OpHeld5Handler : MessageHandler<OpHeld5Message> {
         if (!client.lock.canDropItems()) {
             return
         }
-
         val hash = message.hash
         val slot = message.slot
 
         val item = client.inventory[slot] ?: return
 
-
         val remove = client.inventory.remove(item, assureFullRemoval = false, beginSlot = slot)
         if (remove.completed > 0) {
-            val floor = GroundItem(item.id, remove.completed, client.tile, client.uid)
+            val floor = GroundItem(item.id, remove.completed, client.tile, client)
             client.world.spawn(floor)
         }
         log(client, "Drop item: item=[%d, %d], slot=%d, parent=%d, child=%d", item.id, remove.completed, slot, hash shr 16, hash and 0xFFFF)

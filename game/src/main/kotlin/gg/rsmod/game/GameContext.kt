@@ -28,8 +28,21 @@ import gg.rsmod.game.model.Tile
  * @param skillCount
  * The max amount of skills in our game.
  *
+ * @param runEnergy
+ * If players' run energy will be deducted whilst running.
+ *
+ * @param gItemPublicDelay
+ * The amount of cycles for a [gg.rsmod.game.model.entity.GroundItem] to become
+ * public if it's owned by a player.
+ *
+ * @param gItemDespawnDelay
+ * The amount of cycles for a [gg.rsmod.game.model.entity.GroundItem] to despawn
+ * <strong>after</strong> it has become public. The total time for the despawn
+ * will equal [gItemPublicDelay] + [gItemDespawnDelay].
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 data class GameContext(var initialLaunch: Boolean, val name: String, val revision: Int,
                        val cycleTime: Int, val playerLimit: Int, val home: Tile,
-                       val skillCount: Int, val runEnergy: Boolean)
+                       val skillCount: Int, val runEnergy: Boolean, val gItemPublicDelay: Int,
+                       val gItemDespawnDelay: Int)

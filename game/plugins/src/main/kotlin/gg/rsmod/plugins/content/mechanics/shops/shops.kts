@@ -21,14 +21,14 @@ on_interface_open(interfaceId = SHOP_INTERFACE_ID) {
     val player = it.player()
     it.player().attr[CURRENT_SHOP_ATTR]?.let { shop ->
         player.runClientScript(149, 19726336, 93, 4, 7, 0, -1, "$OPTION_1<col=ff9040>", "$OPTION_2<col=ff9040>", "$OPTION_3<col=ff9040>", "$OPTION_4<col=ff9040>", "$OPTION_5<col=ff9040>")
-        shop.viewers.add(player.uid!!)
+        shop.viewers.add(player.uid)
     }
 }
 
 on_interface_close(interfaceId = SHOP_INTERFACE_ID) {
     val player = it.player()
     it.player().attr[CURRENT_SHOP_ATTR]?.let { shop ->
-        shop.viewers.remove(player.uid!!)
+        shop.viewers.remove(player.uid)
         player.closeInterface(interfaceId = INV_INTERFACE_ID)
         player.openInterface(dest = InterfaceDestination.INVENTORY)
     }

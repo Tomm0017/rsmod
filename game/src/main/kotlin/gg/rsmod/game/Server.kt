@@ -3,6 +3,7 @@ package gg.rsmod.game
 import com.google.common.base.Stopwatch
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.protocol.ClientChannelInitializer
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.Service
@@ -100,7 +101,9 @@ class Server {
                 playerLimit = gameProperties.getOrDefault("max-players", 2000),
                 home = Tile(gameProperties.get<Int>("home-x")!!, gameProperties.get<Int>("home-z")!!, gameProperties.getOrDefault("home-height", 0)),
                 skillCount = gameProperties.get<Int>("skill-count")!!,
-                runEnergy = gameProperties.getOrDefault("run-energy", true))
+                runEnergy = gameProperties.getOrDefault("run-energy", true),
+                gItemPublicDelay = gameProperties.getOrDefault("gitem-public-spawn-delay", GroundItem.DEFAULT_PUBLIC_SPAWN_CYCLES),
+                gItemDespawnDelay = gameProperties.getOrDefault("gitem-despawn-delay", GroundItem.DEFAULT_DESPAWN_CYCLES))
 
         val devContext = DevContext(
                 debugExamines = devProperties.getOrDefault("debug-examines", false),

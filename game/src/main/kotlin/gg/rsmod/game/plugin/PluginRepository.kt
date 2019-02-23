@@ -223,18 +223,52 @@ class PluginRepository(val world: World) {
      */
     private val objInteractionDistancePlugins = hashMapOf<Int, Int>()
 
-    val multiCombatChunks = IntOpenHashSet()
+    /**
+     * Temporarily holds the multi-combat area chunks for this [PluginRepository];
+     * this is then passed onto the [World] and is cleared.
+     *
+     * The int value is calculated via [gg.rsmod.game.model.region.ChunkCoords.hashCode].
+     */
+    internal val multiCombatChunks = IntOpenHashSet()
 
-    val multiCombatRegions = IntOpenHashSet()
+    /**
+     * Temporarily holds the multi-combat area regions for this [PluginRepository].
+     * This is then passed onto the [World] and is cleared.
+     *
+     * The int value is calculated via [gg.rsmod.game.model.Tile.toRegionId].
+     */
+    internal val multiCombatRegions = IntOpenHashSet()
 
+    /**
+     * Temporarily holds all npc spawns set from plugins for this [PluginRepository].
+     * This is then passed onto the [World] and is cleared.
+     */
     internal val npcSpawns = ObjectArrayList<Npc>()
 
+    /**
+     * Temporarily holds all object spawns set from plugins for this [PluginRepository].
+     * This is then passed onto the [World] and is cleared.
+     */
     internal val objSpawns = ObjectArrayList<DynamicObject>()
 
+    /**
+     * Temporarily holds all ground item spawns set from plugins for this
+     * [PluginRepository].
+     * This is then passed onto the [World] and is cleared.
+     */
     internal val itemSpawns = ObjectArrayList<GroundItem>()
 
+    /**
+     * Temporarily holds all npc combat definitions set from plugins for this
+     * [PluginRepository].
+     * This is then passed onto the [World] and is cleared.
+     */
     internal val npcCombatDefs = Int2ObjectOpenHashMap<NpcCombatDef>()
 
+    /**
+     * Temporarily holds all valid shops set from plugins for this [PluginRepository].
+     * This is then passed onto the [World] and is cleared.
+     */
     internal val shops = Object2ObjectOpenHashMap<String, Shop>()
 
     /**
@@ -242,13 +276,15 @@ class PluginRepository(val world: World) {
      */
     fun init(gameService: GameService, jarPluginsDirectory: String, analyzeMode: Boolean) {
         gameService.world.pluginExecutor.init(gameService)
-        initPlugins(jarPluginsDirectory, analyzeMode)
+        loadPlugins(jarPluginsDirectory, analyzeMode)
+
         setCombatDefs()
         spawnEntities()
+        setMultiAreas()
         setShops()
     }
 
-    internal fun initPlugins(jarPluginsDirectory: String, analyzeMode: Boolean) {
+    internal fun loadPlugins(jarPluginsDirectory: String, analyzeMode: Boolean) {
         analyzer = if (analyzeMode) PluginAnalyzer(this) else null
         scanPackageForPlugins(world)
         scanJarDirectoryForPlugins(world, Paths.get(jarPluginsDirectory))
@@ -322,6 +358,15 @@ class PluginRepository(val world: World) {
     private fun setShops() {
         shops.forEach { name, shop -> world.shops[name] = shop }
         shops.clear()
+    }
+
+    private fun setMultiAreas() {
+        world.multiCombatChunks.clear()
+        world.multiCombatRegions.clear()
+        world.multiCombatChunks.addAll(multiCombatChunks)
+        world.multiCombatRegions.addAll(multiCombatRegions)
+        multiCombatChunks.clear()
+        multiCombatRegions.clear()
     }
 
     /**

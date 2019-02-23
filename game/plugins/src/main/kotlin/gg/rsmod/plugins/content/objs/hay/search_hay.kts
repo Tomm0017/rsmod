@@ -32,7 +32,7 @@ suspend fun search(it: Plugin, p: Player, obj: String) {
         0 -> {
             val add = p.inventory.add(item = Items.NEEDLE)
             if (add.hasFailed()) {
-                p.world.spawn(GroundItem(item = Items.NEEDLE, amount = 1, tile = Tile(p.tile), owner = p.uid))
+                p.world.spawn(GroundItem(item = Items.NEEDLE, amount = 1, tile = Tile(p.tile), owner = p))
             }
             it.chatPlayer("Wow! A needle!<br>Now what are the chances of finding that?")
         }

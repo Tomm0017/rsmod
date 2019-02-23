@@ -115,9 +115,7 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
 
             val clientSettings = buf.readByte().toInt()
             val clientResizable = (clientSettings shr 1) == 1
-            @Suppress("unused")
             val clientWidth = buf.readUnsignedShort()
-            @Suppress("unused")
             val clientHeight = buf.readUnsignedShort()
 
             buf.skipBytes(24) // random.dat data
@@ -154,7 +152,7 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
             val request = LoginRequest(channel = ctx.channel(), username = username,
                     password = password, revision = serverRevision, isaacSeed = isaacSeed,
                     crcs = crcs, resizableClient = clientResizable, auth = authCode,
-                    uuid = "".toUpperCase())
+                    uuid = "".toUpperCase(), clientWidth = clientWidth, clientHeight = clientHeight)
             out.add(request)
         }
     }

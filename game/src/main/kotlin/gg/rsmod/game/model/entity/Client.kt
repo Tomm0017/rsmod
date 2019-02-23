@@ -31,6 +31,8 @@ class Client(val channel: Channel, world: World) : Player(world) {
          */
         fun fromRequest(world: World, request: LoginRequest): Client {
             val client = Client(request.channel, world)
+            client.clientWidth = request.clientWidth
+            client.clientHeight = request.clientHeight
             client.loginUsername = request.username
             client.username = request.username
             client.uuid = request.uuid
@@ -59,10 +61,19 @@ class Client(val channel: Channel, world: World) : Player(world) {
      */
     lateinit var uuid: String
 
+    /**
+     * Is the applet focused on the player's computer?
+     */
     var appletFocused = true
 
+    /**
+     * The applet's current width.
+     */
     var clientWidth = 765
 
+    /**
+     * The applet's current height.
+     */
     var clientHeight = 503
 
     var cameraPitch = 0

@@ -33,7 +33,9 @@ object ObjectPathAction {
 
         it.suspendable {
             val route = walkTo(it, obj, lineOfSightRange)
-            faceObj(player, obj)
+            if (lineOfSightRange == null || lineOfSightRange > 0) {
+                faceObj(player, obj)
+            }
             if (route.success) {
                 if (!player.world.plugins.executeObject(player, obj.getTransform(player), opt)) {
                     player.message(Entity.NOTHING_INTERESTING_HAPPENS)
@@ -136,7 +138,7 @@ object ObjectPathAction {
             builder.clipDiagonalTiles()
         }
 
-        if (!wall) {
+        if (!wall && (lineOfSightRange == null || lineOfSightRange > 0)) {
             builder.clipOverlapTiles()
         }
 

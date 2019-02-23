@@ -65,7 +65,9 @@ players:
         - name: auto
           type: BYTE
           trans: NEGATE
-        - name: message
+        - name: compressed_length
+          type: BYTE
+        - name: compressed_data
           type: BYTES
 
     - block: FACE_TILE

@@ -1,5 +1,6 @@
 package gg.rsmod.game.sync.block
 
+import gg.rsmod.game.model.ChatMessage
 import gg.rsmod.game.model.Hit
 
 /**
@@ -9,8 +10,7 @@ class UpdateBlockBuffer {
 
     private var mask = 0
     var forceChat = ""
-    var publicChat = ""
-    var publicChatEffects = 0
+    lateinit var publicChat: ChatMessage
     var faceDegrees = 0
     var facePawnIndex = -1
 

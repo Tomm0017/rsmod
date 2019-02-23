@@ -1,6 +1,7 @@
 package gg.rsmod.game.sync.segment
 
 import gg.rsmod.game.fs.def.NpcDef
+import gg.rsmod.game.model.ChatMessage
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.service.game.ItemStatsService
@@ -9,7 +10,6 @@ import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.block.UpdateBlockType
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
-import java.util.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -67,19 +67,21 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
 
             UpdateBlockType.PUBLIC_CHAT -> {
                 val structure = blocks.updateBlocks[blockType]!!.values
+
+                val chatMessage = other.blockBuffer.publicChat
                 val compressed = ByteArray(256)
-                val length = other.world.huffman.compress(other.blockBuffer.publicChat, compressed)
+                val length = other.world.huffman.compress(chatMessage.text, compressed)
 
-                val data = ByteArray(length)
-                System.arraycopy(compressed, 0, data, 0, length)
+                buf.put(structure[0].type, structure[0].order, structure[0].transformation, (chatMessage.color.id shl 8) or chatMessage.effect.id)
+                buf.put(structure[1].type, structure[1].order, structure[1].transformation, chatMessage.icon)
+                buf.put(structure[2].type, structure[2].order, structure[2].transformation, if (chatMessage.type == ChatMessage.ChatType.AUTOCHAT) 1 else 0)
+                buf.put(structure[3].type, structure[3].order, structure[3].transformation, length + 1)
 
-                buf.put(structure[0].type, structure[0].order, structure[0].transformation, other.blockBuffer.publicChatEffects)
-                buf.put(structure[1].type, structure[1].order, structure[1].transformation, other.privilege.icon)
-                buf.put(structure[2].type, structure[2].order, structure[2].transformation, 0) // auto
-                buf.put(DataType.BYTE, length + 1)
-                buf.putBytes(structure[3].transformation, data)
-                buf.putSmart(other.blockBuffer.publicChat.length)
-                println("write data: ${Arrays.toString(data)}")
+                // NOTE(Tom): seems that they don't use reverse bytes as they once use to.
+                // If they do at some point read reverse bytes, we can add support for it.
+                // To fix the issues that would arise, simply write the smart after the bytes.
+                buf.putSmart(chatMessage.text.length)
+                buf.putBytes(structure[4].transformation, compressed, 0, length)
             }
 
             UpdateBlockType.FORCE_CHAT -> {

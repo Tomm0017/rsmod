@@ -257,6 +257,28 @@ class GamePacketBuilder {
     }
 
     /**
+     * Puts the specified byte array into the buffer.
+     *
+     * @param bytes The byte array.
+     */
+    fun putBytes(bytes: ByteArray, position: Int, length: Int) {
+        for (i in position until position + length) {
+            buffer.writeByte(bytes[i].toInt())
+        }
+    }
+
+    /**
+     * Puts the specified byte array into the buffer.
+     *
+     * @param bytes The byte array.
+     */
+    fun putBytes(transformation: DataTransformation, bytes: ByteArray, position: Int, length: Int) {
+        for (i in position until position + length) {
+            put(DataType.BYTE, transformation, bytes[i].toInt())
+        }
+    }
+
+    /**
      * Puts the bytes from the specified buffer into this packet's buffer.
      *
      * @param buffer The source [ByteBuf].
@@ -381,7 +403,7 @@ class GamePacketBuilder {
     fun putSmart(value: Int) {
         checkByteAccess()
         if (value >= 0x80) {
-            buffer.writeShort(value or 0x8000)
+            buffer.writeShort(value + 0x8000)
         } else {
             buffer.writeByte(value)
         }

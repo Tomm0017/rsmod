@@ -13,7 +13,7 @@ class PlayerPreSynchronizationTask(val player: Player) : SynchronizationTask {
 
     override fun run() {
         player.handleFutureRoute()
-        player.movementQueue.pulse()
+        player.movementQueue.cycle()
 
         if (player.lastKnownRegionBase == null) {
             val regionX = ((player.tile.x shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3

@@ -139,7 +139,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * Message handler: the player's client is requesting to move
      *
      * The [gg.rsmod.game.model.path.FutureRoute.completed] flag is checked on
-     * the player pre-synchronization task, right before [MovementQueue.pulse]
+     * the player pre-synchronization task, right before [MovementQueue.cycle]
      * is called. If the future route is complete, the path is added to the
      * player's movement queue and data is then sent to clients on the player
      * synchronization task.

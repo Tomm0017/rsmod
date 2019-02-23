@@ -24,7 +24,7 @@ class MovementQueue(val pawn: Pawn) {
         addStep(current, step, type)
     }
 
-    fun pulse() {
+    fun cycle() {
         val collision = pawn.world.collision
 
         var next = steps.poll()

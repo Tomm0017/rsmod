@@ -122,7 +122,7 @@ class PluginExecutor {
         val plugins = active.toList()
 
         plugins.forEach { plugin ->
-            plugin.pulse()
+            plugin.cycle()
             if (!plugin.suspended()) {
                 active.remove(plugin)
             }

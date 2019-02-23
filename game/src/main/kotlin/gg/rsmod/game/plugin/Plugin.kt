@@ -67,10 +67,10 @@ class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Conti
     }
 
     /**
-     * The logic in each [SuspendableStep] must be game-thread-safe, so we use pulse
+     * The logic in each [SuspendableStep] must be game-thread-safe, so we use [cycle]
      * method to keep them in-sync.
      */
-    fun pulse() {
+    fun cycle() {
         val next = nextStep ?: return
 
         if (next.condition.resume()) {

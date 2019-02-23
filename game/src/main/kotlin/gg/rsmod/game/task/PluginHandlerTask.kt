@@ -1,11 +1,10 @@
 package gg.rsmod.game.task
 
 import gg.rsmod.game.model.World
-import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.service.GameService
 
 /**
- * A [GameTask] responsible for executing the [PluginExecutor] pulse.
+ * A [GameTask] responsible for executing the [gg.rsmod.game.plugin.Plugin.cycle].
  *
  * @author Tom <rspsmods@gmail.com>
  */

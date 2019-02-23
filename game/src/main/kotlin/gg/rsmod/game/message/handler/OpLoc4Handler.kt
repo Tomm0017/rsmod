@@ -42,6 +42,7 @@ class OpLoc4Handler : MessageHandler<OpLoc4Message> {
 
         log(client, "Object action 4: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
 
+        client.stopMovement()
         client.closeInterfaceModal()
         client.interruptPlugins()
         client.resetInteractions()

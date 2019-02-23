@@ -42,6 +42,7 @@ class OpLoc2Handler : MessageHandler<OpLoc2Message> {
 
         log(client, "Object action 2: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
 
+        client.stopMovement()
         client.closeInterfaceModal()
         client.interruptPlugins()
         client.resetInteractions()

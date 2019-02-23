@@ -273,13 +273,10 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
                  * reached the public delay set by our game, we make it public.
                  */
                 groundItem.removeOwner()
-
                 chunks.get(groundItem.tile)?.let { chunk ->
                     chunk.removeEntity(this, groundItem, groundItem.tile)
                     chunk.addEntity(this, groundItem, groundItem.tile)
                 }
-
-                iterator.remove()
             }
         }
 

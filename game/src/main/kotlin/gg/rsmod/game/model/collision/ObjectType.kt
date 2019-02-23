@@ -28,7 +28,9 @@ enum class ObjectType(val value: Int, val group: ObjectGroup) {
      */
     RECTANGULAR_CORNER(3, ObjectGroup.WALL),
 
-
+    /**
+     * An object placed on a wall that can be interacted with by a player.
+     */
     INTERACTABLE_WALL_DECORATION(4, ObjectGroup.WALL),
 
     /**

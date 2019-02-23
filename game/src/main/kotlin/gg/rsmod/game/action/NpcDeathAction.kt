@@ -19,10 +19,6 @@ object NpcDeathAction {
     }
 
     private suspend fun death(it: Plugin, npc: Npc) {
-        // TODO: check if on osrs the npcs keep the same index after death,
-        // this will expose whether they unregister an npc completely or make
-        // them invisible upon death and if they respawn.
-
         val world = npc.world
         val deathAnimation = npc.combatDef.deathAnimation
         val deathDelay = npc.combatDef.deathDelay

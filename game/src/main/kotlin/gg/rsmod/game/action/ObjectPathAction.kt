@@ -4,7 +4,6 @@ import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
-import gg.rsmod.game.model.collision.ObjectGroup
 import gg.rsmod.game.model.collision.ObjectType
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GameObject
@@ -18,7 +17,7 @@ import gg.rsmod.util.DataConstants
 import java.util.*
 
 /**
- * This class is eesponsible for calculating distances and valid interaction
+ * This class is responsible for calculating distances and valid interaction
  * tiles for [GameObject] path-finding.
  *
  * @author Tom <rspsmods@gmail.com>
@@ -33,10 +32,10 @@ object ObjectPathAction {
 
         it.suspendable {
             val route = walkTo(it, obj, lineOfSightRange)
-            if (lineOfSightRange == null || lineOfSightRange > 0) {
-                faceObj(player, obj)
-            }
             if (route.success) {
+                if (lineOfSightRange == null || lineOfSightRange > 0) {
+                    faceObj(player, obj)
+                }
                 if (!player.world.plugins.executeObject(player, obj.getTransform(player), opt)) {
                     player.message(Entity.NOTHING_INTERESTING_HAPPENS)
                     if (player.world.devContext.debugObjects) {
@@ -44,6 +43,7 @@ object ObjectPathAction {
                     }
                 }
             } else {
+                player.faceTile(obj.tile)
                 player.message(Entity.YOU_CANT_REACH_THAT)
             }
         }
@@ -60,21 +60,24 @@ object ObjectPathAction {
         var length = def.length
         val clipMask = def.clipMask
 
-        val group = ObjectType.values.first { it.value == type }.group
-        val wall = group == ObjectGroup.WALL_DECORATION || group == ObjectGroup.WALL
+        val wall = type == ObjectType.LENGTHWISE_WALL.value || type == ObjectType.DIAGONAL_WALL.value
         val diagonal = type == ObjectType.DIAGONAL_WALL.value || type == ObjectType.DIAGONAL_INTERACTABLE.value
+        val wallDeco = type == ObjectType.INTERACTABLE_WALL_DECORATION.value || type == ObjectType.INTERACTABLE_WALL.value
         val blockDirections = EnumSet.noneOf(Direction::class.java)
 
-        if (!wall && (rot == 1 || rot == 3)) {
+        if (wallDeco) {
+            width = 0
+            length = 0
+        } else if (!wall && (rot == 1 || rot == 3)) {
             width = def.length
             length = def.width
         }
 
-        if (lineOfSightRange != null) {
-            width = Math.max(width, lineOfSightRange)
-            length = Math.max(length, lineOfSightRange)
-        }
-
+        /**
+         * Objects have a clip mask in their [ObjectDef] which can be used
+         * to specify any directions that the object can't be 'interacted'
+         * from.
+         */
         val blockBits = 4
         val clipFlag = (DataConstants.BIT_MASK[blockBits] and (clipMask shl rot)) or (clipMask shr (blockBits - rot))
 
@@ -94,14 +97,24 @@ object ObjectPathAction {
             blockDirections.add(Direction.WEST)
         }
 
+        /**
+         * Wall objects can't be interacted from certain directions due to
+         * how they are visually placed in a tile.
+         */
         val blockedWallDirections = when (rot) {
-            0 -> if (diagonal) EnumSet.of(Direction.EAST) else EnumSet.of(Direction.EAST)
-            1 -> if (diagonal) EnumSet.of(Direction.SOUTH) else EnumSet.of(Direction.SOUTH)
-            2 -> if (diagonal) EnumSet.of(Direction.WEST) else EnumSet.of(Direction.WEST)
-            3 -> if (diagonal) EnumSet.of(Direction.NORTH) else EnumSet.of(Direction.NORTH)
+            0 -> EnumSet.of(Direction.EAST)
+            1 -> EnumSet.of(Direction.SOUTH)
+            2 -> EnumSet.of(Direction.WEST)
+            3 -> EnumSet.of(Direction.NORTH)
             else -> throw IllegalStateException("Invalid object rotation: $rot")
         }
 
+        /**
+         * Diagonal walls have an extra direction set as 'blocked', this is to
+         * avoid the player interacting with the door and having its opened
+         * door object be spawned on top of them, which leads to them being
+         * stuck.
+         */
         if (wall && diagonal) {
             when (rot) {
                 0 -> blockedWallDirections.add(Direction.NORTH)
@@ -112,6 +125,9 @@ object ObjectPathAction {
         }
 
         if (wall) {
+            /**
+             * Check if the [pawn] is within interaction distance of the wall.
+             */
             if (pawn.tile.isWithinRadius(tile, 1)) {
                 val dir = Direction.between(tile, pawn.tile)
                 if (dir !in blockedWallDirections && (diagonal || !AabbUtil.areDiagonal(pawn.tile.x, pawn.tile.z, pawn.getSize(), pawn.getSize(), tile.x, tile.z, width, length))) {
@@ -134,10 +150,19 @@ object ObjectPathAction {
             builder.setTouchRadius(lineOfSightRange)
         }
 
+        /**
+         * If the object is not a 'diagonal' object, you shouldn't be able to
+         * interact with them from diagonal tiles.
+         */
         if (!diagonal) {
             builder.clipDiagonalTiles()
         }
 
+        /**
+         * If the object is not a wall object, or if we have a line of sight range
+         * set for the object, then we shouldn't clip the tiles that overlap the
+         * object; otherwise we do clip them.
+         */
         if (!wall && (lineOfSightRange == null || lineOfSightRange > 0)) {
             builder.clipOverlapTiles()
         }
@@ -167,6 +192,16 @@ object ObjectPathAction {
                 if (!pawn.tile.sameAs(obj.tile)) {
                     pawn.faceTile(obj.tile)
                 }
+            }
+            ObjectType.INTERACTABLE_WALL_DECORATION.value, ObjectType.INTERACTABLE_WALL.value -> {
+                val dir = when (rot) {
+                    0 -> Direction.WEST
+                    1 -> Direction.NORTH
+                    2 -> Direction.EAST
+                    3 -> Direction.SOUTH
+                    else -> throw IllegalStateException("Invalid object rotation: $obj")
+                }
+                pawn.faceTile(pawn.tile.step(dir))
             }
             else -> {
                 var width = def.width

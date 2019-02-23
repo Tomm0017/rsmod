@@ -26,7 +26,7 @@ class GroundItem private constructor(val item: Int, var amount: Int, internal va
         /**
          * The default amount of cycles for this item to despawn from the world.
          */
-        const val DEFAULT_DESPAWN_CYCLES = 500
+        const val DEFAULT_DESPAWN_CYCLES = 600
     }
 
     constructor(item: Int, amount: Int, tile: Tile, owner: Player? = null) : this(item, amount, owner?.uid) {

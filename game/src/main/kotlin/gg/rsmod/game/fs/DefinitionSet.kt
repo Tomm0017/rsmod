@@ -37,7 +37,6 @@ class DefinitionSet {
 
     private var xteaService: XteaKeyService? = null
 
-    @Suppress("UNCHECKED_CAST")
     fun init(store: Store) {
         /**
          * Load [IndexType.CONFIGS] definitions.

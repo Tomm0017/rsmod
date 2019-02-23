@@ -42,7 +42,6 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
             if (metadata == null) {
                 logger.warn("Channel {} sent message with no valid metadata: {}.", ctx.channel(), opcode)
                 buf.skipBytes(buf.readableBytes())
-                setState(GameDecoderState.OPCODE)
                 return
             }
             type = metadata
@@ -60,24 +59,17 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
                     } catch (e: Exception) {
                         logger.error(e) { "Could not skip buffer for message with opcode: $opcode" }
                     }
-                    setState(GameDecoderState.OPCODE)
                 }
                 PacketType.FIXED -> {
                     length = packetMetadata.getLength(opcode)
                     if (length == 0) {
                         out.add(GamePacket(opcode, type, Unpooled.EMPTY_BUFFER))
-                        setState(GameDecoderState.OPCODE)
                     } else {
                         setState(GameDecoderState.PAYLOAD)
                     }
                 }
-                PacketType.VARIABLE_BYTE, PacketType.VARIABLE_SHORT -> {
-                    setState(GameDecoderState.LENGTH)
-                }
-                else -> {
-                    setState(GameDecoderState.OPCODE)
-                    throw IllegalStateException("Unhandled packet type $type for opcode $opcode.")
-                }
+                PacketType.VARIABLE_BYTE, PacketType.VARIABLE_SHORT -> setState(GameDecoderState.LENGTH)
+                else -> throw IllegalStateException("Unhandled packet type $type for opcode $opcode.")
             }
         }
     }

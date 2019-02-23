@@ -4,9 +4,9 @@ import com.google.common.base.Stopwatch
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.GroundItem
+import gg.rsmod.game.model.skill.SkillSet
 import gg.rsmod.game.protocol.ClientChannelInitializer
 import gg.rsmod.game.service.GameService
-import gg.rsmod.game.service.Service
 import gg.rsmod.game.service.rsa.RsaService
 import gg.rsmod.util.ServerProperties
 import io.netty.bootstrap.ServerBootstrap
@@ -20,7 +20,6 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.text.DecimalFormat
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -100,7 +99,7 @@ class Server {
                 cycleTime = gameProperties.getOrDefault("cycle-time", 600),
                 playerLimit = gameProperties.getOrDefault("max-players", 2000),
                 home = Tile(gameProperties.get<Int>("home-x")!!, gameProperties.get<Int>("home-z")!!, gameProperties.getOrDefault("home-height", 0)),
-                skillCount = gameProperties.get<Int>("skill-count")!!,
+                skillCount = gameProperties.getOrDefault("skill-count", SkillSet.DEFAULT_SKILL_COUNT),
                 runEnergy = gameProperties.getOrDefault("run-energy", true),
                 gItemPublicDelay = gameProperties.getOrDefault("gitem-public-spawn-delay", GroundItem.DEFAULT_PUBLIC_SPAWN_CYCLES),
                 gItemDespawnDelay = gameProperties.getOrDefault("gitem-despawn-delay", GroundItem.DEFAULT_DESPAWN_CYCLES))
@@ -126,7 +125,7 @@ class Server {
         /**
          * Load the services required to run the server.
          */
-        loadServices(world, gameProperties)
+        world.loadServices(this, gameProperties)
 
         /**
          * Fetch the [GameService].
@@ -195,34 +194,6 @@ class Server {
         System.gc()
 
         return world
-    }
-
-    /**
-     * Loads all the services listed on our game properties file.
-     */
-    private fun loadServices(world: World, gameProperties: ServerProperties) {
-        val stopwatch = Stopwatch.createUnstarted()
-        val foundServices = gameProperties.get<ArrayList<Any>>("services")!!
-        foundServices.forEach { it ->
-            val values = it as LinkedHashMap<*, *>
-            val className = values["class"] as String
-            val clazz = Class.forName(className).asSubclass(Service::class.java)!!
-            val service = clazz.newInstance()
-
-            val properties = hashMapOf<String, Any>()
-            values.filterKeys { it != "class" }.forEach { key, value ->
-                properties[key as String] = value
-            }
-
-            stopwatch.reset().start()
-            service.init(this, world, ServerProperties().loadMap(properties))
-            stopwatch.stop()
-
-            world.services.add(service)
-            logger.info("Initiated service '{}' in {}ms.", service.javaClass.simpleName, stopwatch.elapsed(TimeUnit.MILLISECONDS))
-        }
-        world.services.forEach { s -> s.postLoad(this, world) }
-        logger.info("Loaded {} game services.", world.services.size)
     }
 
     /**

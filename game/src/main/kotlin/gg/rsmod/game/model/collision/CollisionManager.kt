@@ -10,7 +10,7 @@ import gg.rsmod.game.model.region.ChunkSet
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class CollisionManager(val chunks: ChunkSet, val createChunksIfNeeded: Boolean) {
+class CollisionManager(val chunks: ChunkSet, val createChunksIfNeeded: Boolean = true) {
 
     companion object {
         const val BLOCKED_TILE = 0x1

@@ -31,9 +31,9 @@ class ChunkSet(val world: World) {
 
     private val activeRegions = IntOpenHashSet()
 
-    fun getActiveChunks(): Int = chunks.size
+    fun getActiveChunkCount(): Int = chunks.size
 
-    fun getActiveRegions(): Int = activeRegions.size
+    fun getActiveRegionCount(): Int = activeRegions.size
 
     fun getOrCreate(tile: Tile): Chunk = get(tile.toChunkCoords(), createIfNeeded = true)!!
 

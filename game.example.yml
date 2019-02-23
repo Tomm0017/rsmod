@@ -3,10 +3,10 @@
 name: "RS Mod Server"
 game-port: 43594
 revision: 177
+
+# The coordinates for the home location.
 home-x: 3087
 home-z: 3497
-skill-count: 23
-run-energy: true # If the player will use run energy when running
 
 # Privileges
 # Any privilege you want to be represented in-game you define here.

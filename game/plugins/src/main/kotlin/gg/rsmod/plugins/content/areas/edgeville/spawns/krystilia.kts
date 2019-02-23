@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.content.skills.slayer
+package gg.rsmod.plugins.content.areas.edgeville.spawns
 
 import gg.rsmod.game.model.Direction
 import gg.rsmod.plugins.api.cfg.Npcs

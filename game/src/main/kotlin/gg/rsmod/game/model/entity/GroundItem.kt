@@ -9,7 +9,7 @@ import gg.rsmod.game.model.item.Item
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class GroundItem private constructor(val item: Int, var amount: Int, var ownerUID: PlayerUID?) : Entity() {
+class GroundItem private constructor(val item: Int, var amount: Int, internal var ownerUID: PlayerUID?) : Entity() {
 
     companion object {
         /**
@@ -35,9 +35,9 @@ class GroundItem private constructor(val item: Int, var amount: Int, var ownerUI
 
     constructor(item: Item, tile: Tile, owner: Player? = null) : this(item.id, item.amount, tile, owner)
 
-    var respawnCycles = -1
+    internal var currentCycle = 0
 
-    var currentCycle = 0
+    internal var respawnCycles = -1
 
     override fun getType(): EntityType = EntityType.GROUND_ITEM
 

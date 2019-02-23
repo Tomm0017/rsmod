@@ -250,7 +250,7 @@ class GameService : Service() {
              */
             logger.info("[Cycle time: {}ms] [Entities: {}p / {}n] [Map: {}c / {}r] [Live plugins: {}] [Mem usage: U={}MB / R={}MB / M={}MB].",
                     cycleTime / TICKS_PER_DEBUG_LOG, world.players.count(), world.npcs.count(),
-                    world.chunks.getActiveChunks(), world.chunks.getActiveRegions(), world.pluginExecutor.getActiveCount(),
+                    world.chunks.getActiveChunkCount(), world.chunks.getActiveRegionCount(), world.pluginExecutor.getActiveCount(),
                     (totalMemory - freeMemory) / (1024 * 1024), totalMemory / (1024 * 1024), maxMemory / (1024 * 1024))
             debugTick = 0
             cycleTime = 0

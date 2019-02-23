@@ -61,7 +61,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         r.objSpawns.add(o)
     }
 
-    fun spawn_item(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = 50) {
+    fun spawn_item(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = GroundItem.DEFAULT_RESPAWN_CYCLES) {
         val ground = GroundItem(item, amount, Tile(x, z, height))
         ground.respawnCycles = respawnCycles
         r.itemSpawns.add(ground)
@@ -72,7 +72,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         val def = world.definitions.get(ItemDef::class.java, item)
         val slot = def.inventoryMenu.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
 
-        check(slot != -1) { "Option \"$option\" not found for npc $item [options=${def.inventoryMenu.filterNotNull().filter { it.isNotBlank() }}]" }
+        check(slot != -1) { "Option \"$option\" not found for item $item [options=${def.inventoryMenu.filterNotNull().filter { it.isNotBlank() }}]" }
 
         r.bindItem(item, slot + 1, plugin)
     }
@@ -95,6 +95,16 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         check(slot != -1) { "Option \"$option\" not found for npc $npc [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
 
         r.bindNpc(npc, slot + 1, lineOfSightDistance, plugin)
+    }
+
+    fun on_ground_item_option(item: Int, option: String, plugin: (Plugin) -> Unit) {
+        val opt = option.toLowerCase()
+        val def = world.definitions.get(ItemDef::class.java, item)
+        val slot = def.groundMenu.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
+
+        check(slot != -1) { "Option \"$option\" not found for ground item $item [options=${def.groundMenu.filterNotNull().filter { it.isNotBlank() }}]" }
+
+        r.bindGroundItem(item, slot + 1, plugin)
     }
 
     fun set_window_status_logic(plugin: (Plugin) -> Unit) = r.bindWindowStatus(plugin)
@@ -151,4 +161,6 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
     fun on_obj_option(obj: Int, option: Int, lineOfSightDistance: Int = -1, plugin: (Plugin) -> Unit) = r.bindObject(obj, option, lineOfSightDistance, plugin)
 
     fun on_npc_option(npc: Int, opt: Int, lineOfSightDistance: Int = -1, plugin: (Plugin) -> Unit) = r.bindNpc(npc, opt, lineOfSightDistance, plugin)
+
+    fun on_ground_item_option(item: Int, opt: Int, plugin: (Plugin) -> Unit) = r.bindGroundItem(item, opt, plugin)
 }

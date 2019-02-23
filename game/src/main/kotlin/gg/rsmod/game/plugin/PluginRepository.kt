@@ -195,19 +195,25 @@ class PluginRepository(val world: World) {
 
     /**
      * A map that contains items and any associated menu-click and its respective
-     * plugin executor, if any (would not be in the map if it doesn't have a plugin).
+     * plugin logic, if any (would not be in the map if it doesn't have a plugin).
      */
     private val itemPlugins = hashMapOf<Int, HashMap<Int, (Plugin) -> Unit>>()
 
     /**
+     * A map that contains ground items and any associated menu-click and its respective
+     * plugin logic, if any (would not be in the map if it doesn't have a plugin).
+     */
+    private val groundItemPlugins = hashMapOf<Int, HashMap<Int, (Plugin) -> Unit>>()
+
+    /**
      * A map that contains objects and any associated menu-click and its respective
-     * plugin executor, if any (would not be in the map if it doesn't have a plugin).
+     * plugin logic, if any (would not be in the map if it doesn't have a plugin).
      */
     private val objectPlugins = hashMapOf<Int, HashMap<Int, (Plugin) -> Unit>>()
 
     /**
      * A map that contains npcs and any associated menu-click and its respective
-     * plugin executor, if any (would not be in the map if it doesn't have a plugin).
+     * plugin logic, if any (would not be in the map if it doesn't have a plugin).
      */
     private val npcPlugins = hashMapOf<Int, HashMap<Int, (Plugin) -> Unit>>()
 
@@ -331,16 +337,12 @@ class PluginRepository(val world: World) {
     }
 
     private fun setCombatDefs() {
-        if (npcCombatDefs.isEmpty()) {
-            return
-        }
-        world.getService(NpcStatsService::class.java).ifPresent { s ->
-            npcCombatDefs.forEach { npc, def ->
-                if (s.get(npc) != null) {
-                    logger.warn { "Npc $npc (${world.definitions.get(NpcDef::class.java, npc).name}) has a set combat definition but has been overwritten by a plugin." }
-                }
-                s.set(npc, def)
+        val service = world.getService(NpcStatsService::class.java).orElse(null) ?: return
+        npcCombatDefs.forEach { npc, def ->
+            if (service.get(npc) != null) {
+                logger.warn { "Npc $npc (${world.definitions.get(NpcDef::class.java, npc).name}) has a set combat definition but has been overwritten by a plugin." }
             }
+            service.set(npc, def)
         }
     }
 
@@ -768,6 +770,24 @@ class PluginRepository(val world: World) {
 
     fun executeItem(p: Player, id: Int, opt: Int): Boolean {
         val optMap = itemPlugins[id] ?: return false
+        val logic = optMap[opt] ?: return false
+        p.world.pluginExecutor.execute(p, logic)
+        return true
+    }
+
+    fun bindGroundItem(id: Int, opt: Int, plugin: (Plugin) -> Unit) {
+        val optMap = groundItemPlugins[id] ?: HashMap()
+        if (optMap.containsKey(opt)) {
+            logger.error("Ground item is already bound to a plugin: $id [opt=$opt]")
+            throw IllegalStateException("Ground item is already bound to a plugin: $id [opt=$opt]")
+        }
+        optMap[opt] = plugin
+        groundItemPlugins[id] = optMap
+        pluginCount++
+    }
+
+    fun executeGroundItem(p: Player, id: Int, opt: Int): Boolean {
+        val optMap = groundItemPlugins[id] ?: return false
         val logic = optMap[opt] ?: return false
         p.world.pluginExecutor.execute(p, logic)
         return true

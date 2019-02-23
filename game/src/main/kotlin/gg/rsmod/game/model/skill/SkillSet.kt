@@ -16,6 +16,8 @@ class SkillSet(val maxSkills: Int) {
 
         const val MAX_LVL = 99
 
+        const val DEFAULT_SKILL_COUNT = 23
+
         /**
          * Gets the level correspondent to the [xp] given.
          */

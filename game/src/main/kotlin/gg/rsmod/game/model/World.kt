@@ -1,5 +1,6 @@
 package gg.rsmod.game.model
 
+import com.google.common.base.Stopwatch
 import gg.rsmod.game.DevContext
 import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
@@ -24,11 +25,14 @@ import gg.rsmod.util.HuffmanCodec
 import gg.rsmod.util.ServerProperties
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import mu.KotlinLogging
 import net.runelite.cache.IndexType
 import net.runelite.cache.fs.Store
 import java.io.File
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * The game world, which stores all the entities and nodes that the world
@@ -52,6 +56,9 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      */
     val definitions = DefinitionSet()
 
+    /**
+     * The [HuffmanCodec] used to compress and decompress public chat messages.
+     */
     val huffman by lazy {
         val binary = filestore.getIndex(IndexType.BINARY)!!
         val archive = binary.findArchiveByName("huffman")!!
@@ -65,13 +72,13 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     val chunks = ChunkSet(this)
 
-    val collision = CollisionManager(chunks, createChunksIfNeeded = true)
+    val collision = CollisionManager(chunks)
 
     /**
      * A collection of our [Service]s specified in our game [ServerProperties]
      * files.
      */
-    val services = arrayListOf<Service>()
+    private val services = arrayListOf<Service>()
 
     /**
      * The [PluginExecutor] is responsible for executing plugins as requested by
@@ -99,12 +106,12 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     /**
      * The [UpdateBlockSet] for players.
      */
-    val playerUpdateBlocks = UpdateBlockSet()
+    internal val playerUpdateBlocks = UpdateBlockSet()
 
     /**
      * The [UpdateBlockSet] for npcs.
      */
-    val npcUpdateBlocks = UpdateBlockSet()
+    internal val npcUpdateBlocks = UpdateBlockSet()
 
     /**
      * A [Random] implementation used for pseudo-random purposes through-out
@@ -156,12 +163,12 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * next tick to check if the future route was successful (usually the case,
      * since a whole 600ms have now gone by).
      */
-    var multiThreadPathFinding = false
+    internal var multiThreadPathFinding = false
 
     /**
      * If the [plugins] needs to be hot-swapped in the next upcoming cycle.
      */
-    var hotswapPlugins = false
+    internal var hotswapPlugins = false
 
     /**
      * The available [Shop]s.
@@ -184,6 +191,20 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * The multi-combat area region (default 8x8 [gg.rsmod.game.model.region.Chunk]s).
      */
     val multiCombatRegions = IntOpenHashSet()
+
+    /**
+     * A local collection of [GroundItem]s that are currently spawned. We do
+     * not use [ChunkSet]s to iterate through this as it takes quite a bit of
+     * time to do so every cycle.
+     */
+    private val groundItems = ObjectArrayList<GroundItem>()
+
+    /**
+     * Any ground item that should be spawned in the future. For example, when
+     * a 'permanent' ground item is despawned, it will be added here to be spawned
+     * after a set amount of cycles.
+     */
+    private val groundItemQueue = ObjectArrayList<GroundItem>()
 
     /**
      * Executed after the server has initialised everything, but is not yet bound
@@ -219,8 +240,76 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         /**
          * Tick all timers down by one cycle.
          */
-        timers.getTimers().entries.forEach { timer ->
-            timer.setValue(timer.value - 1)
+        timers.getTimers().entries.forEach { timer -> timer.setValue(timer.value - 1) }
+
+        /**
+         * Cycle through ground items to handle any despawn or respawn.
+         */
+
+        /**
+         * Any ground item that should be removed this cycle will be added here.
+         */
+        val groundItemRemoval = ObjectOpenHashSet<GroundItem>(0)
+
+        /**
+         * Iterate through our registered [groundItems] and increment their current
+         * cycle.
+         */
+        val iterator = groundItems.iterator()
+        while (iterator.hasNext()) {
+            val groundItem = iterator.next()
+
+            groundItem.currentCycle++
+
+            if (groundItem.isPublic() && groundItem.currentCycle >= gameContext.gItemDespawnDelay) {
+                /**
+                 * If the ground item is public and its cycle count has reached the
+                 * despawn delay set by our game, we add it to our removal queue.
+                 */
+                groundItemRemoval.add(groundItem)
+            } else if (!groundItem.isPublic() && groundItem.currentCycle >= gameContext.gItemPublicDelay) {
+                /**
+                 * If the ground item is not public, but its cycle count has
+                 * reached the public delay set by our game, we make it public.
+                 */
+                groundItem.removeOwner()
+
+                chunks.get(groundItem.tile)?.let { chunk ->
+                    chunk.removeEntity(this, groundItem, groundItem.tile)
+                    chunk.addEntity(this, groundItem, groundItem.tile)
+                }
+
+                iterator.remove()
+            }
+        }
+
+        /**
+         * We now remove any ground item that was queued for removal.
+         * We also check to see if they should respawn after a set amount
+         * of cycles; if so, we append it to our [groundItemQueue] to be
+         * spawned at a later point in time.
+         */
+        groundItemRemoval.forEach { item ->
+            remove(item)
+            if (item.respawnCycles > 0) {
+                item.currentCycle = 0
+                groundItemQueue.add(item)
+            }
+        }
+
+        /**
+         * Go over our [groundItemQueue] and respawn any ground item that has
+         * met the respawn criteria.
+         */
+        val queueIterator = groundItemQueue.iterator()
+        while (queueIterator.hasNext()) {
+            val item = queueIterator.next()
+            item.currentCycle++
+            if (item.currentCycle >= item.respawnCycles) {
+                item.currentCycle = 0
+                spawn(item)
+                queueIterator.remove()
+            }
         }
     }
 
@@ -271,7 +360,6 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         if (oldObj != null) {
             chunk.removeEntity(this, oldObj, tile)
         }
-
         chunk.addEntity(this, obj, tile)
     }
 
@@ -299,6 +387,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             }
         }
 
+        groundItems.add(item)
         chunk.addEntity(this, item, tile)
     }
 
@@ -306,7 +395,13 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         val tile = item.tile
         val chunk = chunks.getOrCreate(tile)
 
+        groundItems.remove(item)
         chunk.removeEntity(this, item, tile)
+
+        if (item.respawnCycles > 0) {
+            item.currentCycle = 0
+            groundItemQueue.add(item)
+        }
     }
 
     fun spawn(projectile: Projectile) {
@@ -385,18 +480,6 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         pluginExecutor.execute(ctx, plugin)
     }
 
-    fun loadUpdateBlocks(blocksFile: File) {
-        val properties = ServerProperties().loadYaml(blocksFile)
-
-        if (properties.has("players")) {
-            playerUpdateBlocks.load(properties.extract("players"))
-        }
-
-        if (properties.has("npcs")) {
-            npcUpdateBlocks.load(properties.extract("npcs"))
-        }
-    }
-
     fun sendExamine(p: Player, id: Int, type: ExamineEntityType) {
         val service = getService(EntityExamineService::class.java).orElse(null)
         if (service != null) {
@@ -426,5 +509,48 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         }
         val service = services.firstOrNull { it::class.java == type }
         return if (service != null) Optional.of(service) as Optional<T> else Optional.empty()
+    }
+
+    /**
+     * Loads all the services listed on our game properties file.
+     */
+    internal fun loadServices(server: Server, gameProperties: ServerProperties) {
+        val stopwatch = Stopwatch.createUnstarted()
+        val foundServices = gameProperties.get<ArrayList<Any>>("services")!!
+        foundServices.forEach { s ->
+            val values = s as LinkedHashMap<*, *>
+            val className = values["class"] as String
+            val clazz = Class.forName(className).asSubclass(Service::class.java)!!
+            val service = clazz.newInstance()
+
+            val properties = hashMapOf<String, Any>()
+            values.filterKeys { it != "class" }.forEach { key, value ->
+                properties[key as String] = value
+            }
+
+            stopwatch.reset().start()
+            service.init(server, this, ServerProperties().loadMap(properties))
+            stopwatch.stop()
+
+            services.add(service)
+            logger.info("Initiated service '{}' in {}ms.", service.javaClass.simpleName, stopwatch.elapsed(TimeUnit.MILLISECONDS))
+        }
+        services.forEach { s -> s.postLoad(server, this) }
+        logger.info("Loaded {} game services.", services.size)
+    }
+
+    /**
+     * Load the external [UpdateBlockSet] data.
+     */
+    internal fun loadUpdateBlocks(blocksFile: File) {
+        val properties = ServerProperties().loadYaml(blocksFile)
+
+        if (properties.has("players")) {
+            playerUpdateBlocks.load(properties.extract("players"))
+        }
+
+        if (properties.has("npcs")) {
+            npcUpdateBlocks.load(properties.extract("npcs"))
+        }
     }
 }

@@ -7,6 +7,7 @@ import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
+import java.lang.ref.WeakReference
 
 /**
  * This class is responsible for moving towards a [GroundItem].
@@ -67,7 +68,8 @@ object GroundItemPathAction {
 
             p.world.remove(item)
         } else {
-            // TODO: execute plugins
+            p.attr[INTERACTING_GROUNDITEM_ATTR] = WeakReference(item)
+            p.world.plugins.executeGroundItem(p, item.item, opt)
         }
     }
 }

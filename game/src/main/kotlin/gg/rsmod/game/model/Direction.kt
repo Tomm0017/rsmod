@@ -5,51 +5,25 @@ package gg.rsmod.game.model
  *
  * @author Tom <rspsmods@gmail.com>
  */
-enum class Direction(val value: Int) {
+enum class Direction(val orientationValue: Int, val playerWalkValue: Int, val npcWalkValue: Int) {
 
-    NONE(-1),
+    NONE(orientationValue = -1, playerWalkValue = -1, npcWalkValue = -1),
 
-    NORTH_WEST(0),
+    NORTH_WEST(orientationValue = 0, playerWalkValue = 5, npcWalkValue = 0),
 
-    NORTH(1),
+    NORTH(orientationValue = 1, playerWalkValue = 6, npcWalkValue = 1),
 
-    NORTH_EAST(2),
+    NORTH_EAST(orientationValue = 2, playerWalkValue = 7, npcWalkValue = 2),
 
-    WEST(3),
+    WEST(orientationValue = 3, playerWalkValue = 3, npcWalkValue = 3),
 
-    EAST(4),
+    EAST(orientationValue = 4, playerWalkValue = 4, npcWalkValue = 4),
 
-    SOUTH_WEST(5),
+    SOUTH_WEST(orientationValue = 5, playerWalkValue = 0, npcWalkValue = 5),
 
-    SOUTH(6),
+    SOUTH(orientationValue = 6, playerWalkValue = 1, npcWalkValue = 6),
 
-    SOUTH_EAST(7);
-
-    // TODO(Tom); this and [getNpcWalkIndex] be handled in a better way.
-    // These can change per revision, so should think about externalizing
-    fun getPlayerWalkIndex(): Int = when (this) {
-        SOUTH_WEST -> 0
-        SOUTH -> 1
-        SOUTH_EAST -> 2
-        WEST -> 3
-        EAST -> 4
-        NORTH_WEST -> 5
-        NORTH -> 6
-        NORTH_EAST -> 7
-        NONE -> throw IllegalArgumentException("Invalid walk index for this direction.")
-    }
-
-    fun getNpcWalkIndex(): Int = when (this) {
-        NORTH_WEST -> 0
-        NORTH -> 1
-        NORTH_EAST -> 2
-        WEST -> 3
-        EAST -> 4
-        SOUTH_WEST -> 5
-        SOUTH -> 6
-        SOUTH_EAST -> 7
-        NONE -> throw IllegalArgumentException("Invalid walk index for this direction.")
-    }
+    SOUTH_EAST(orientationValue = 7, playerWalkValue = 2, npcWalkValue = 7);
 
     fun isDiagonal(): Boolean = this == SOUTH_EAST || this == SOUTH_WEST || this == NORTH_EAST || this == NORTH_WEST
 

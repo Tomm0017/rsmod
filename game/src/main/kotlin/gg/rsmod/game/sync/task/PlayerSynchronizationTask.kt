@@ -101,14 +101,14 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 segments.add(PlayerTeleportSegment(player = player, other = local,
                         index = index, encodeUpdateBlocks = requiresBlockUpdate))
             } else if (local.steps != null) {
-                var dx = Misc.DIRECTION_DELTA_X[local.steps!!.walkDirection!!.getPlayerWalkIndex()]
-                var dz = Misc.DIRECTION_DELTA_Z[local.steps!!.walkDirection!!.getPlayerWalkIndex()]
+                var dx = Misc.DIRECTION_DELTA_X[local.steps!!.walkDirection!!.playerWalkValue]
+                var dz = Misc.DIRECTION_DELTA_Z[local.steps!!.walkDirection!!.playerWalkValue]
                 var running = local.steps!!.runDirection != null
 
                 var direction = 0
                 if (running) {
-                    dx += Misc.DIRECTION_DELTA_X[local.steps!!.runDirection!!.getPlayerWalkIndex()]
-                    dz += Misc.DIRECTION_DELTA_Z[local.steps!!.runDirection!!.getPlayerWalkIndex()]
+                    dx += Misc.DIRECTION_DELTA_X[local.steps!!.runDirection!!.playerWalkValue]
+                    dz += Misc.DIRECTION_DELTA_Z[local.steps!!.runDirection!!.playerWalkValue]
                     direction = Misc.getPlayerRunningDirection(dx, dz)
                     running = direction != -1
                 }
@@ -176,14 +176,14 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 segments.add(PlayerTeleportSegment(player = player, other = local,
                         index = index, encodeUpdateBlocks = requiresBlockUpdate))
             } else if (local.steps != null) {
-                var dx = Misc.DIRECTION_DELTA_X[local.steps!!.walkDirection!!.getPlayerWalkIndex()]
-                var dz = Misc.DIRECTION_DELTA_Z[local.steps!!.walkDirection!!.getPlayerWalkIndex()]
+                var dx = Misc.DIRECTION_DELTA_X[local.steps!!.walkDirection!!.playerWalkValue]
+                var dz = Misc.DIRECTION_DELTA_Z[local.steps!!.walkDirection!!.playerWalkValue]
                 var running = local.steps!!.runDirection != null
 
                 var direction = 0
                 if (running) {
-                    dx += Misc.DIRECTION_DELTA_X[local.steps!!.runDirection!!.getPlayerWalkIndex()]
-                    dz += Misc.DIRECTION_DELTA_Z[local.steps!!.runDirection!!.getPlayerWalkIndex()]
+                    dx += Misc.DIRECTION_DELTA_X[local.steps!!.runDirection!!.playerWalkValue]
+                    dz += Misc.DIRECTION_DELTA_Z[local.steps!!.runDirection!!.playerWalkValue]
                     direction = Misc.getPlayerRunningDirection(dx, dz)
                     running = direction != -1
                 }

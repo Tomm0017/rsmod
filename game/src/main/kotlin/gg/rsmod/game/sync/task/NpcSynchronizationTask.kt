@@ -68,8 +68,8 @@ class NpcSynchronizationTask(private val player: Player, private val worldNpcs: 
                 segments.add(NpcTeleportSegment())
             } else if (npc.steps != null) {
                 segments.add(NpcSkipSegment(skip = false))
-                segments.add(NpcWalkSegment(npc.steps!!.walkDirection!!.getNpcWalkIndex(),
-                        npc.steps!!.runDirection?.getNpcWalkIndex() ?: -1, requiresBlockUpdate))
+                segments.add(NpcWalkSegment(npc.steps!!.walkDirection!!.npcWalkValue,
+                        npc.steps!!.runDirection?.npcWalkValue ?: -1, requiresBlockUpdate))
                 if (requiresBlockUpdate) {
                     segments.add(NpcUpdateBlockSegment(npc, false))
                 }

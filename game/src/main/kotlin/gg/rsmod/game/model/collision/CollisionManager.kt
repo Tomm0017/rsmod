@@ -176,7 +176,7 @@ class CollisionManager(val chunks: ChunkSet, val createChunksIfNeeded: Boolean =
                     continue
                 }
 
-                val orientation = direction.value
+                val orientation = direction.orientationValue
                 if (flag.impenetrable) {
                     flag(type, matrix, localX, localZ, projectiles[orientation])
                 }

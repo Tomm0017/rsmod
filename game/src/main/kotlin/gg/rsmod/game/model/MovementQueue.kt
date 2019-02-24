@@ -1,18 +1,30 @@
 package gg.rsmod.game.model
 
+import gg.rsmod.game.model.MovementQueue.Step
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.sync.block.UpdateBlockType
 import java.util.*
 
 /**
+ * Responsible for handling a queue of [Step]s for a [Pawn].
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class MovementQueue(val pawn: Pawn) {
 
+    /**
+     * A [Deque] of steps.
+     */
     private val steps: Deque<Step> = ArrayDeque()
 
+    /**
+     * If any step is queued.
+     */
     fun hasDestination(): Boolean = steps.isNotEmpty()
 
+    /**
+     * Get the last tile in our [steps] without removing it.
+     */
     fun peekLast(): Tile? = if (steps.isNotEmpty()) steps.peekLast().tile else null
 
     fun clear() {

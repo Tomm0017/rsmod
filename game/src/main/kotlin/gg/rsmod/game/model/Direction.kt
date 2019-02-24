@@ -1,7 +1,7 @@
 package gg.rsmod.game.model
 
 /**
- * Represents a cardinal and ordinal direction in the game.
+ * Represents cardinal and ordinal directions in the game.
  *
  * @author Tom <rspsmods@gmail.com>
  */

@@ -79,6 +79,10 @@ class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Conti
         }
     }
 
+    /**
+     * Remove the [ctx] attached to the plugin so that [PluginExecutor.interruptPluginsWithContext]
+     * won't affect the plugin.
+     */
     fun removeContext() {
         ctx = null
     }

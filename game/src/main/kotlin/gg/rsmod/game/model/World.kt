@@ -255,9 +255,9 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
          * Iterate through our registered [groundItems] and increment their current
          * cycle.
          */
-        val iterator = groundItems.iterator()
-        while (iterator.hasNext()) {
-            val groundItem = iterator.next()
+        val groundItemIterator = groundItems.iterator()
+        while (groundItemIterator.hasNext()) {
+            val groundItem = groundItemIterator.next()
 
             groundItem.currentCycle++
 
@@ -298,16 +298,21 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
          * Go over our [groundItemQueue] and respawn any ground item that has
          * met the respawn criteria.
          */
-        val queueIterator = groundItemQueue.iterator()
-        while (queueIterator.hasNext()) {
-            val item = queueIterator.next()
+        val groundItemQueueIterator = groundItemQueue.iterator()
+        while (groundItemQueueIterator.hasNext()) {
+            val item = groundItemQueueIterator.next()
             item.currentCycle++
             if (item.currentCycle >= item.respawnCycles) {
                 item.currentCycle = 0
                 spawn(item)
-                queueIterator.remove()
+                groundItemQueueIterator.remove()
             }
         }
+
+        /**
+         * Cycle through shops for their resupply ticks.
+         */
+        shops.values.forEach { it.cycle(this) }
     }
 
     fun register(p: Player): Boolean {

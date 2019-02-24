@@ -51,6 +51,8 @@ data class Shop(val name: String, val stockType: StockType, val purchasePolicy: 
      */
     val viewers = ObjectOpenHashSet<PlayerUID>()
 
+    private var currentCycle = 0
+
     /**
      * Refresh the shop for all [viewers].
      */
@@ -68,6 +70,30 @@ data class Shop(val name: String, val stockType: StockType, val purchasePolicy: 
             } else {
                 iterator.remove()
             }
+        }
+    }
+
+    fun cycle(world: World) {
+        var refresh = false
+
+        for (i in 0 until items.size) {
+            val item = items[i] ?: continue
+            if (item.currentAmount != item.amount && item.resupplyCycles % currentCycle == 0) {
+                val amount = if (item.currentAmount > item.amount) Math.max(item.amount, item.currentAmount - item.resupplyAmount)
+                                else Math.min(item.amount, item.currentAmount + item.resupplyAmount)
+                item.currentAmount = amount
+                refresh = true
+            }
+        }
+
+        if (refresh) {
+            refresh(world)
+        }
+
+        currentCycle++
+
+        if (currentCycle == Int.MAX_VALUE) {
+            currentCycle = 0
         }
     }
 

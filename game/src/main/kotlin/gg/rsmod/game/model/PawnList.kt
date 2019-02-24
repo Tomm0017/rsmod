@@ -16,6 +16,9 @@ class PawnList<T: Pawn>(private val pawns: Array<T?>) {
      */
     private var count = 0
 
+    /**
+     * Get the backing array for our pawn list.
+     */
     fun getRaw(): Array<T?> = pawns
 
     fun get(index: Int): T? = pawns[index]
@@ -24,6 +27,9 @@ class PawnList<T: Pawn>(private val pawns: Array<T?>) {
 
     fun count(): Int = count
 
+    /**
+     * Invoke [action] for each <strong>non-null</strong> pawn in our list.
+     */
     fun forEach(action: (T) -> Unit) {
         for (element in pawns) {
             if (element != null) {
@@ -32,6 +38,10 @@ class PawnList<T: Pawn>(private val pawns: Array<T?>) {
         }
     }
 
+    /**
+     * Return true if any of <strong>non-null</strong> pawns in our list pass
+     * the [predicate] test.
+     */
     fun any(predicate: (T) -> Boolean): Boolean {
         for (element in pawns) {
             if (element != null && predicate(element)) {
@@ -41,6 +51,10 @@ class PawnList<T: Pawn>(private val pawns: Array<T?>) {
         return false
     }
 
+    /**
+     * Return the amount of <strong>non-null</strong> pawns in our list who
+     * pass the [predicate] test.
+     */
     fun count(predicate: (T) -> Boolean): Int {
         var count = 0
         for (element in pawns) {
@@ -51,6 +65,10 @@ class PawnList<T: Pawn>(private val pawns: Array<T?>) {
         return count
     }
 
+    /**
+     * Get the first <strong>non-null</strong> pawn in our list who passes the
+     * [predicate] test.
+     */
     fun firstOrNull(predicate: (T) -> Boolean): T? {
         for (element in pawns) {
             if (element != null && predicate(element)) {
@@ -60,6 +78,11 @@ class PawnList<T: Pawn>(private val pawns: Array<T?>) {
         return null
     }
 
+    /**
+     * Add [pawn] to our list.
+     *
+     * Note: this will set the [Pawn.index] for [pawn].
+     */
     fun add(pawn: T): Boolean {
         for (i in 1 until pawns.size) {
             if (pawns[i] == null) {
@@ -72,6 +95,14 @@ class PawnList<T: Pawn>(private val pawns: Array<T?>) {
         return false
     }
 
+    /**
+     * Remove [pawn] from our list.
+     *
+     * Note: this will set the [Pawn.index] for [pawn].
+     *
+     * @return
+     * True if the pawn was registered on our list, false otherwise.
+     */
     fun remove(pawn: T): Boolean {
         /**
          * Only able to remove the pawn if it's registered in our array.

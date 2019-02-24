@@ -42,16 +42,25 @@ class Hit private constructor(val hitmarks: List<Hitmark>, val hitbar: Hitbar?, 
      */
     internal var cancelCondition: () -> Boolean = { false }
 
+    /**
+     * @see actions
+     */
     fun addAction(action: () -> Unit): Hit {
         actions.add(action)
         return this
     }
 
+    /**
+     * @see actions
+     */
     fun addActions(actions: Collection<() -> Unit>): Hit {
         this.actions.addAll(actions)
         return this
     }
 
+    /**
+     * @see cancelCondition
+     */
     fun setCancelIf(condition: () -> Boolean): Hit {
         cancelCondition = condition
         return this
@@ -113,51 +122,81 @@ class Hit private constructor(val hitmarks: List<Hitmark>, val hitbar: Hitbar?, 
             return Hit(hitmarks, hitbar, clientDelay, damageDelay)
         }
 
+        /**
+         * @see Hit.hitmarks
+         */
         fun addHit(damage: Int, type: Int): Builder {
             hitmarks.add(Hitmark(type, damage))
             return this
         }
 
+        /**
+         * @see Hit.clientDelay
+         */
         fun setClientDelay(delay: Int): Builder {
             this.clientDelay = delay
             return this
         }
 
+        /**
+         * @see Hit.damageDelay
+         */
         fun setDamageDelay(delay: Int): Builder {
             this.damageDelay = delay
             return this
         }
 
+        /**
+         * Only show the hitbar, but no damage on our [Hit].
+         */
         fun onlyShowHitbar(): Builder {
             this.onlyShowHitbar = true
             return this
         }
 
+        /**
+         * Hide the hitbar, but still show the damage for our [Hit].
+         */
         fun hideHitbar(): Builder {
             this.hideHitbar = true
             return this
         }
 
+        /**
+         * @see Hitbar.type
+         */
         fun setHitbarType(type: Int): Builder {
             this.hitbarType = type
             return this
         }
 
+        /**
+         * @see Hitbar.depleteSpeed
+         */
         fun setHitbarDepleteSpeed(depleteSpeed: Int): Builder {
             this.hitbarDepleteSpeed = depleteSpeed
             return this
         }
 
+        /**
+         * @see Hitbar.percentage
+         */
         fun setHitbarPercentage(percentage: Int): Builder {
             this.hitbarPercentage = percentage
             return this
         }
 
+        /**
+         * @see Hitbar.maxPercentage
+         */
         fun setHitbarMaxPercentage(percentage: Int): Builder {
             this.hitbarMaxPercentage = percentage
             return this
         }
 
+        /**
+         * @see Hitbar.delay
+         */
         fun setHitbarDelay(delay: Int): Builder {
             this.hitbarDelay = delay
             return this

@@ -39,18 +39,41 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
      */
     var respawns = false
 
+    /**
+     * The radius from [spawnTile], in tiles, which the npc can randomly walk.
+     */
     var walkRadius = 0
 
+    /**
+     * The current hitpoints the npc has.
+     */
     private var hitpoints = 10
 
+    /**
+     * The [NpcCombatDef] assigned to our npc. This can change at any point to
+     * another combat definition, for example if we want to transmogify the npc,
+     * it may want to use a different [NpcCombatDef].
+     */
     lateinit var combatDef: NpcCombatDef
 
+    /**
+     * The [CombatClass] the npc will use on its next attack.
+     */
     var combatClass = CombatClass.MELEE
 
+    /**
+     * The [AttackStyle] the npc will use on its next attack.
+     */
     var attackStyle = AttackStyle.CONTROLLED
 
+    /**
+     * The [CombatStyle] the npc will use on its next attack.
+     */
     var combatStyle = CombatStyle.STAB
 
+    /**
+     * Check if the npc will be aggressive towards the parameter player.
+     */
     var aggroCheck: ((Npc, Player) -> Boolean)? = null
 
     override fun getType(): EntityType = EntityType.NPC
@@ -83,9 +106,11 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     }
 
     /**
+     * This method will get the "visually correct" npc id for this npc from
+     * [player]'s view point.
+     *
      * Npcs can change their appearance for each player depending on their
-     * [NpcDef.transforms] and [NpcDef.varp]/[NpcDef.varbit]. This method will
-     * get the "visually correct" npc id for this npc from [player]'s view point.
+     * [NpcDef.transforms] and [NpcDef.varp]/[NpcDef.varbit].
      */
     fun getTransform(player: Player): Int {
         val def = getDef()
@@ -104,14 +129,26 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
         return id
     }
 
+    /**
+     * @see active
+     */
     fun setActive(active: Boolean) {
         this.active = active
     }
 
+    /**
+     * @see active
+     */
     fun isActive(): Boolean = active
 
+    /**
+     * Verifies if the npc is currently spawned in the world.
+     */
     fun isSpawned(): Boolean = index > 0
 
+    /**
+     * Gets the [NpcDef] corresponding to our [id].
+     */
     fun getDef(): NpcDef = world.definitions.get(NpcDef::class.java, id)
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("id", id).add("name", getDef().name).add("index", index).add("active", active).toString()

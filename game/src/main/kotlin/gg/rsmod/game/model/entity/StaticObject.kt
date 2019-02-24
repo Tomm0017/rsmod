@@ -4,8 +4,8 @@ import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 
 /**
- * A [StaticObject] is a game object that is part of the static terrain in our
- * game (loaded from game resources).
+ * A [StaticObject] is a game object that is part of the static terrain loaded
+ * from the game's resources.
  *
  * @author Tom <rspsmods@gmail.com>
  */

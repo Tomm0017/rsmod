@@ -6,7 +6,7 @@ import gg.rsmod.net.packet.PacketType
 import mu.KotlinLogging
 
 /**
- * A [IPacketMetadata] implementation that is responsible for exposing
+ * An [IPacketMetadata] implementation that is responsible for exposing
  * packet metadata based on their opcode.
  *
  * @author Tom <rspsmods@gmail.com>

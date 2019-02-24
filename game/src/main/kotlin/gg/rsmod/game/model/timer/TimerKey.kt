@@ -3,9 +3,18 @@ package gg.rsmod.game.model.timer
 import com.google.common.base.MoreObjects
 
 /**
- * A value used for [TimerSystem] as a key.
+ * A key that represents a timer in a [TimerSystem].
  *
- * @see TimerSystem
+ * @param persistenceKey
+ * If the timer should persist through player sessions, then this value should
+ * be set to a <strong>unique</strong> string/name.
+ * In other words, if the timer should be saved on player log out, set this value
+ * to a string that is not used by any other [TimerKey]s.
+ *
+ * @param tickOffline
+ * If the timer should still tick down while a player is offline. The timer does
+ * not technically 'tick down' while the player is offline, but when they log in,
+ * we calculate the time in between when the timer was saved and the current time.
  *
  * @author Tom <rspsmods@gmail.com>
  */

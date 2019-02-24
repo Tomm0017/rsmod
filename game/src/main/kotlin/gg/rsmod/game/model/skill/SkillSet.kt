@@ -14,8 +14,14 @@ class SkillSet(val maxSkills: Int) {
          */
         const val MAX_XP = 200_000_000
 
-        const val MAX_LVL = 99
+        /**
+         * The maximum level a skill can reach.
+         */
+        private const val MAX_LVL = 99
 
+        /**
+         * The default amount of trainable skills on the game.
+         */
         const val DEFAULT_SKILL_COUNT = 23
 
         /**

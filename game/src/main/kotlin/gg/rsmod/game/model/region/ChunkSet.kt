@@ -6,14 +6,26 @@ import gg.rsmod.game.model.collision.CollisionMatrix
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 
 /**
+ * Stores and exposes [Chunk]s.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class ChunkSet(val world: World) {
 
-    companion object {
-        const val DEFAULT_TOTAL_HEIGHTS = 4
-    }
-
+    /**
+     * Copies the [CollisionMatrix] data from all [Chunk]s that are within
+     * the specified [radius] in the height level of [height].
+     *
+     * @param chunkCoords
+     * The centre [ChunkCoords].
+     *
+     * @param height
+     * The height level of which to copy the [CollisionMatrix] data from.
+     *
+     * @param radius
+     * The radius, in which to copy [CollisionMatrix] data from in relation
+     * to [chunkCoords], in chunk coordinates.
+     */
     fun copyChunksWithinRadius(chunkCoords: ChunkCoords, height: Int, radius: Int): ChunkSet {
         val newSet = ChunkSet(world)
         val surrounding = chunkCoords.getSurroundingCoords(radius)
@@ -35,10 +47,34 @@ class ChunkSet(val world: World) {
 
     fun getActiveRegionCount(): Int = activeRegions.size
 
+    /**
+     * Get the [Chunk] that corresponds to the given [chunks].
+     *
+     * @param tile
+     * The [Tile] to get the [ChunkCoords] from.
+     */
     fun getOrCreate(tile: Tile): Chunk = get(tile.toChunkCoords(), createIfNeeded = true)!!
 
-    fun get(tile: Tile, create: Boolean = false): Chunk? = get(tile.toChunkCoords(), create)
+    /**
+     * Get the [Chunk] that corresponds to the given [chunks].
+     *
+     * @param tile
+     * The [Tile] to get the [ChunkCoords] from.
+     *
+     * @param createIfNeeded
+     * Create the [Chunk] if it does not already exist in our [chunks].
+     */
+    fun get(tile: Tile, createIfNeeded: Boolean = false): Chunk? = get(tile.toChunkCoords(), createIfNeeded)
 
+    /**
+     * Get the [Chunk] that corresponds to the given [chunks].
+     *
+     * @param coords
+     * The [ChunkCoords] to get the [Chunk] for.
+     *
+     * @param createIfNeeded
+     * Create the [Chunk] if it does not already exist in our [chunks].
+     */
     fun get(coords: ChunkCoords, createIfNeeded: Boolean = false): Chunk? {
         val chunk = chunks[coords]
         if (chunk != null) {
@@ -47,7 +83,8 @@ class ChunkSet(val world: World) {
             return null
         }
         val regionId = coords.toTile().toRegionId()
-        val newChunk = Chunk(coords, DEFAULT_TOTAL_HEIGHTS)
+        val newChunk = Chunk(coords, Tile.TOTAL_HEIGHT_LEVELS)
+        newChunk.createEntityContainers()
 
         chunks[coords] = newChunk
         if (activeRegions.add(regionId)) {

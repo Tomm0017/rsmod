@@ -2,3 +2,5 @@
 - Define all messages even for ones that we don't want to handle, this is to avoid byte skipping in the packet decoding net code
 - Implement RSA for game packets
 - Add support for npc collision flags since npcs shouldn't be able to walk on top of one another
+- Implement 'params' for NpcCombatDef to store information such as species
+- Instance map support

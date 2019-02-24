@@ -5,6 +5,8 @@ import gg.rsmod.game.message.impl.ObjDelMessage
 import gg.rsmod.game.model.entity.GroundItem
 
 /**
+ * Represents an update where a [GroundItem] is removed.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class ObjDelUpdate(override val type: EntityUpdateType,

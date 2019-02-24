@@ -19,11 +19,21 @@ class Item(val id: Int, var amount: Int = 1) {
 
     private var attr: HashMap<ItemAttribute, Int>? = null
 
+    /**
+     * Returns a <strong>new</strong> [Item] with the noted link as the item id.
+     * If this item does not have a noted link item id, it will return a new [Item]
+     * with the same [Item.id].
+     */
     fun toNoted(definitions: DefinitionSet): Item {
         val def = definitions.get(ItemDef::class.java, id)
         return if (def.noteTemplateId == 0 && def.noteLinkId > 0) Item(def.noteLinkId, amount).copyAttr(this) else Item(this).copyAttr(this)
     }
 
+    /**
+     * Returns a <strong>new</strong> [Item] with the unnoted link as the item id.
+     * If this item does not have a unnoted link item id, it will return a new [Item]
+     * with the same [Item.id].
+     */
     fun toUnnoted(definitions: DefinitionSet): Item {
         val def = definitions.get(ItemDef::class.java, id)
         return if (def.noteTemplateId > 0) Item(def.noteLinkId, amount).copyAttr(this) else Item(this).copyAttr(this)
@@ -31,11 +41,12 @@ class Item(val id: Int, var amount: Int = 1) {
 
     fun getDef(definitions: DefinitionSet) = definitions.get(ItemDef::class.java, id)
 
+    /**
+     * Returns true if [attr] contains any value.
+     */
     fun hasAnyAttr(): Boolean = attr != null && attr!!.isNotEmpty()
 
-    fun getAttrNullable(attrib: ItemAttribute): Int? = attr?.get(attrib)
-
-    fun getAttr(attrib: ItemAttribute): Int {
+    fun getAttr(attrib: ItemAttribute): Int? {
         constructAttrIfNeeded()
         return attr!![attrib] ?: -1
     }
@@ -46,6 +57,9 @@ class Item(val id: Int, var amount: Int = 1) {
         return this
     }
 
+    /**
+     * Copies the [Item.attr] map from [other] to this.
+     */
     fun copyAttr(other: Item): Item {
         if (other.hasAnyAttr()) {
             constructAttrIfNeeded()

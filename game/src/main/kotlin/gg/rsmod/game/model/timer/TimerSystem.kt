@@ -51,6 +51,9 @@ class TimerSystem {
 
     fun getTimers(): MutableMap<TimerKey, Int> = timers ?: HashMap(0)
 
+    /**
+     * Represents a persistent timer that will be saved through player sessions.
+     */
     data class PersistentTimer(@JsonProperty("identifier") val identifier: String? = null,
                                @JsonProperty("tickOffline") val tickOffline: Boolean = true,
                                @JsonProperty("timeLeft") val timeLeft: Int,

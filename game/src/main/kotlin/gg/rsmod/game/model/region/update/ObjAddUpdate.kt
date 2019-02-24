@@ -5,6 +5,8 @@ import gg.rsmod.game.message.impl.ObjAddMessage
 import gg.rsmod.game.model.entity.GroundItem
 
 /**
+ * Represents an update where a [GroundItem] is spawned.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class ObjAddUpdate(override val type: EntityUpdateType,

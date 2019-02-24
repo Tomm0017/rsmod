@@ -4,9 +4,15 @@ import com.google.common.base.MoreObjects
 import gg.rsmod.game.model.Tile
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 
+/**
+ * Represents coordinates that can be occupied by a [Chunk].
+ *
+ * @author Tom <rspsmods@gmail.com>
+ */
 class ChunkCoords(val x: Int, val z: Int) {
 
     companion object {
+
         fun fromTile(tile: Tile): ChunkCoords = ChunkCoords(tile.getTopLeftRegionX(), tile.getTopLeftRegionZ())
     }
 

@@ -5,6 +5,37 @@ import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 
 /**
+ * A projectile that can be shot in the world.
+ *
+ * @param targetPawn
+ * The [Pawn] that is being targeted by the projectile. Can be set to null if a
+ * [Tile] is the target instead.
+ *
+ * @param targetTile
+ * The [Tile] where the projectile will land. Can be set to null if [Pawn] is
+ * being the target instead.
+ *
+ * @param gfx
+ * The graphic id for the projectile (aka map projectile animation).
+ *
+ * @param startHeight
+ * The visual starting height of the projectile.
+ *
+ * @param endHeight
+ * The visual end height of the projectile.
+ *
+ * @param steepness
+ * The visual steepness of the projectile.
+ *
+ * @param angle
+ * The visual angle of the projectile.
+ *
+ * @param delay
+ * The delay before the projectile is spawned in players' clients, in client time.
+ *
+ * @param lifespan
+ * The amount of time that the projectile will stay in players' client, in client time.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class Projectile private constructor(val targetPawn: Pawn?, val targetTile: Tile,

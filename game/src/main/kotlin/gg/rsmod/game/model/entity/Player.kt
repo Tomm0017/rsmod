@@ -53,6 +53,9 @@ open class Player(world: World) : Pawn(world) {
      */
     var uid = PlayerUID(null)
 
+    /**
+     * The display name.
+     */
     var username = ""
 
     var privilege = Privilege.DEFAULT
@@ -121,30 +124,45 @@ open class Player(world: World) : Pawn(world) {
      * The players in our viewport, including ourselves. This list should not
      * be used outside of our synchronization task.
      */
-    val localPlayers = arrayOfNulls<Player>(2048)
+    internal val localPlayers = arrayOfNulls<Player>(2048)
 
-    val localPlayerIndices = IntArray(2048)
+    /**
+     * The indices of any possible local player in the world.
+     */
+    internal val localPlayerIndices = IntArray(2048)
 
-    var localPlayerCount = 0
+    /**
+     * The current local player count.
+     */
+    internal var localPlayerCount = 0
 
-    val externalPlayerIndices = IntArray(2048)
+    /**
+     * The indices of players outside of our viewport in the world.
+     */
+    internal val externalPlayerIndices = IntArray(2048)
 
-    var externalPlayerCount = 0
+    /**
+     * The amount of players outside of our viewport.
+     */
+    internal var externalPlayerCount = 0
 
-    val otherPlayerSkipFlags = IntArray(2048)
+    /**
+     * The inactivity flags for players.
+     */
+    internal val inactivityPlayerFlags = IntArray(2048)
 
     /**
      * An array that holds the last-known [Tile.to30BitInteger] for every player
      * according to this [Player]. This can vary from player to player, since
      * on log-in, this array will be filled with [0]s for this [Player].
      */
-    val otherPlayerTiles = IntArray(2048)
+    internal val otherPlayerTiles = IntArray(2048)
 
     /**
      * The npcs in our viewport. This list should not be used outside of our
      * synchronization task.
      */
-    val localNpcs = ObjectArrayList<Npc>()
+    internal val localNpcs = ObjectArrayList<Npc>()
 
     /**
      * A flag that represents whether or not we want to remove our
@@ -156,7 +174,7 @@ open class Player(world: World) : Pawn(world) {
      * thinking that the player is trying to click a button on an interface
      * that's not in their [InterfaceSet.visible] map.
      */
-    var closeModal = false
+    internal var closeModal = false
 
     val looks = intArrayOf(9, 14, 109, 26, 33, 36, 42)
 
@@ -169,6 +187,8 @@ open class Player(world: World) : Pawn(world) {
     var skullIcon = -1
 
     var runEnergy = 100.0
+
+    fun getSkills(): SkillSet = skillSet
 
     override fun getType(): EntityType = EntityType.PLAYER
 
@@ -212,7 +232,7 @@ open class Player(world: World) : Pawn(world) {
         if (pendingLogout) {
 
             /**
-             * If a channel is suddenly inactive (disconnected), we don't to 
+             * If a channel is suddenly inactive (disconnected), we don't to
              * immediately unregister the player. However, we do want to
              * unregister the player abruptly if a certain amount of time
              * passes since their channel disconnected.
@@ -381,6 +401,9 @@ open class Player(world: World) : Pawn(world) {
         world.plugins.executeLogin(this)
     }
 
+    /**
+     * Calculate the current weight and equipment bonuses for the player.
+     */
     fun calculateWeightAndBonus(weight: Boolean, bonuses: Boolean = true) {
         world.getService(ItemStatsService::class.java).ifPresent { s ->
 
@@ -402,13 +425,22 @@ open class Player(world: World) : Pawn(world) {
         }
     }
 
+    /**
+     * @see largeViewport
+     */
     fun setLargeViewport(largeViewport: Boolean) {
         this.largeViewport = largeViewport
     }
 
+    /**
+     * @see largeViewport
+     */
     fun hasLargeViewport(): Boolean = largeViewport
 
-    fun closeInterfaceModal() {
+    /**
+     * @see closeModal
+     */
+    internal fun closeInterfaceModal() {
         world.plugins.executeModalClose(this)
     }
 
@@ -458,11 +490,12 @@ open class Player(world: World) : Pawn(world) {
 
     }
 
+    /**
+     * Write a [MessageGameMessage] to the client.
+     */
     fun message(message: String) {
         write(MessageGameMessage(type = 0, message = message, username = null))
     }
-
-    fun getSkills(): SkillSet = skillSet
 
     override fun toString(): String = MoreObjects.toStringHelper(this)
             .add("name", username)

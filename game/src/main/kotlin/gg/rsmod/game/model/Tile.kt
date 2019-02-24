@@ -11,6 +11,13 @@ import gg.rsmod.game.model.region.ChunkCoords
  */
 class Tile {
 
+    companion object {
+        /**
+         * The total amount of height levels that can be used in the game.
+         */
+        const val TOTAL_HEIGHT_LEVELS = 4
+    }
+
     /**
      * A bit-packed integer that holds and represents the [x], [z] and [height] of the tile.
      */
@@ -27,6 +34,7 @@ class Tile {
 
     private constructor(coordinate: Int) {
         this.coordinate = coordinate
+        check(height < TOTAL_HEIGHT_LEVELS) { "Tile height level should not exceed maximum height! [height=$height]" }
     }
 
     constructor(x: Int, z: Int, height: Int = 0) : this((x and 0x7FFF) or ((z and 0x7FFF) shl 15) or (height shl 30))

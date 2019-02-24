@@ -4,7 +4,7 @@ import gg.rsmod.util.BitManipulation
 import it.unimi.dsi.fastutil.shorts.ShortOpenHashSet
 
 /**
- * Holds all [Varp]s for a player.
+ * Holds a set of varps.
  *
  * @author Tom <rspsmods@gmail.com>
  */

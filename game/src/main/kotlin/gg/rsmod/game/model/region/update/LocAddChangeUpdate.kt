@@ -5,6 +5,8 @@ import gg.rsmod.game.message.impl.LocAddChangeMessage
 import gg.rsmod.game.model.entity.GameObject
 
 /**
+ * Represents an update where a [GameObject] is spawned.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class LocAddChangeUpdate(override val type: EntityUpdateType,

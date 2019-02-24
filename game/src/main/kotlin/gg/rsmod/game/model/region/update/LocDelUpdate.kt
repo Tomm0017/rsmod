@@ -5,6 +5,8 @@ import gg.rsmod.game.message.impl.LocDelMessage
 import gg.rsmod.game.model.entity.GameObject
 
 /**
+ * Represents an update where a [GameObject] is removed.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class LocDelUpdate(override val type: EntityUpdateType,

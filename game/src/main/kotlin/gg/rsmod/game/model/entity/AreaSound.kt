@@ -4,6 +4,8 @@ import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 
 /**
+ * A sound that can be spawned in a tile.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class AreaSound private constructor(val id: Int, val radius: Int, val volume: Int, val delay: Int): Entity() {

@@ -1,6 +1,9 @@
 package gg.rsmod.game.model.shop
 
 /**
+ * Represents the purchase policy which a shop can have when an item is
+ * offered to it.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 enum class PurchasePolicy {

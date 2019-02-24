@@ -5,6 +5,8 @@ import gg.rsmod.game.message.impl.ObjCountMessage
 import gg.rsmod.game.model.entity.GroundItem
 
 /**
+ * Represents an update where a [GroundItem]'s [GroundItem.amount] is changed.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class ObjCountUpdate(override val type: EntityUpdateType, override val entity: GroundItem,

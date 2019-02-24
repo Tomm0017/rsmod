@@ -5,6 +5,8 @@ import gg.rsmod.game.message.impl.SoundAreaMessage
 import gg.rsmod.game.model.entity.AreaSound
 
 /**
+ * Represents an update where a [AreaSound] is spawned.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class SoundAreaUpdate(override val type: EntityUpdateType,

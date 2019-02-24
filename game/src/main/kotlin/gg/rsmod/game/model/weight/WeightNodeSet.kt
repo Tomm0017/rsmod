@@ -4,10 +4,15 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import java.util.*
 
 /**
+ * Represents a set of [WeightNode]s.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class WeightNodeSet<T> {
 
+    /**
+     * All the [WeightNode]s that this set represents.
+     */
     private val nodes = ObjectArrayList<WeightNode<T>>()
 
     fun add(node: WeightNode<T>): WeightNodeSet<T> {

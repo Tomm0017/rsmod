@@ -1,6 +1,23 @@
 package gg.rsmod.game.model
 
 /**
+ * Represents a public chat message for players.
+ *
+ * @param text
+ * The text said in the chat message.
+ *
+ * @param icon
+ * The rank icon for the message.
+ *
+ * @param type
+ * The [ChatType] being used.
+ *
+ * @param effect
+ * The [ChatEffect] being used.
+ *
+ * @param color
+ * The [ChatColor] being used.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 data class ChatMessage(val text: String, val icon: Int, val type: ChatType, val effect: ChatEffect, val color: ChatColor) {

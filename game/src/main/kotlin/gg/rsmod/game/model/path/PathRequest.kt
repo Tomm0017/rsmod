@@ -3,9 +3,46 @@ package gg.rsmod.game.model.path
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
+import gg.rsmod.game.model.path.PathRequest.ClipFlag
 import java.util.*
 
 /**
+ * Represents attributes and parameters that a [PathFindingStrategy] can use when
+ * calculating its route.
+ *
+ * @param start
+ * The start tile, also known as Point A.
+ *
+ * @param sourceWidth
+ * The width size of the node requesting the path.
+ *
+ * @param sourceLength
+ * The length size of the node requesting the path.
+ *
+ * @param end
+ * The destination tile, also known as Point B.
+ *
+ * @param targetWidth
+ * The width size of the destination node.
+ *
+ * @param targetLength
+ * The length size of the destination node.
+ *
+ * @param touchRadius
+ * The radius from [end], in tiles, in which the path can complete.
+ *
+ * @param projectilePath
+ * If the path should take projectile collision data into account instead of
+ * normal pawn collision data.
+ *
+ * @param clipFlags
+ * A [Set] of [ClipFlag]s that are used to block, or "clip", certain tiles while
+ * creating a route.
+ *
+ * @param blockedDirections
+ * A [Set] of blocked directions that are bordering the end tile, taking into
+ * account the [targetWidth] and [targetLength].
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val sourceLength: Int, val end: Tile,
@@ -14,7 +51,10 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
 
     companion object {
 
-        fun buildWalkRequest(pawn: Pawn, x: Int, z: Int, projectile: Boolean): PathRequest = Builder()
+        /**
+         * Creates a default walk request.
+         */
+        fun createWalkRequest(pawn: Pawn, x: Int, z: Int, projectile: Boolean): PathRequest = Builder()
                 .setPoints(start = Tile(pawn.tile), end = Tile(x, z, pawn.tile.height))
                 .setSourceSize(width = pawn.getSize(), length =  pawn.getSize())
                 .setTargetSize(width = 0, length = 0)
@@ -93,6 +133,10 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
                     clipFlags, blockedDirections)
         }
 
+        /**
+         * @see PathRequest.start
+         * @see PathRequest.end
+         */
         fun setPoints(start: Tile, end: Tile): Builder {
             check(this.start == null && this.end == null) { "Points have already been set." }
             this.start = start
@@ -100,6 +144,10 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
             return this
         }
 
+        /**
+         * @see PathRequest.sourceWidth
+         * @see PathRequest.sourceLength
+         */
         fun setSourceSize(width: Int, length: Int): Builder {
             check(this.sourceWidth == -1 && this.sourceLength == -1) { "Source size has already been set." }
             this.sourceWidth = width
@@ -107,6 +155,10 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
             return this
         }
 
+        /**
+         * @see PathRequest.targetWidth
+         * @see PathRequest.targetLength
+         */
         fun setTargetSize(width: Int, length: Int): Builder {
             check(this.targetWidth == -1 && this.targetLength == -1) { "Target size has already been set." }
             this.targetWidth = width
@@ -114,29 +166,46 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
             return this
         }
 
+        /**
+         * @see PathRequest.touchRadius
+         */
         fun setTouchRadius(touchRadius: Int): Builder {
             check(this.touchRadius == -1) { "Touch radius has already been set." }
             this.touchRadius = touchRadius
             return this
         }
 
+        /**
+         * @see PathRequest.projectilePath
+         */
         fun findProjectilePath(): Builder {
             check(!projectilePath) { "Projectile path flag has already been set." }
             this.projectilePath = true
             return this
         }
 
+        /**
+         * @see PathRequest.projectilePath
+         */
         fun setProjectilePath(projectile: Boolean): Builder {
             this.projectilePath = projectile
             return this
         }
 
+        /**
+         * @see PathRequest.clipFlags
+         * @see ClipFlag.DIAGONAL
+         */
         fun clipDiagonalTiles(): Builder {
             check(!clipFlags.contains(ClipFlag.DIAGONAL)) { "Diagonal tiles have already been flagged for clipping." }
             clipFlags.add(ClipFlag.DIAGONAL)
             return this
         }
 
+        /**
+         * @see PathRequest.blockedDirections
+         * @see ClipFlag.DIRECTIONS
+         */
         fun clipDirections(vararg blockedDirection: Direction): Builder {
             check(!clipFlags.contains(ClipFlag.DIRECTIONS)) { "A set of directions have already been flagged for clipping." }
             clipFlags.add(ClipFlag.DIRECTIONS)
@@ -144,12 +213,21 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
             return this
         }
 
+        /**
+         * @see PathRequest.clipFlags
+         * @see ClipFlag.OVERLAP
+         */
         fun clipOverlapTiles(): Builder {
             check(!clipFlags.contains(ClipFlag.OVERLAP)) { "Overlapped tiles have already been flagged for clipping." }
             clipFlags.add(ClipFlag.OVERLAP)
             return this
         }
 
+        /**
+         * @see PathRequest.clipFlags
+         * @see ClipFlag.NODE
+         * @see ClipFlag.LINKED_NODE
+         */
         fun clipPathNodes(node: Boolean, link: Boolean): Builder {
             check(!clipFlags.contains(ClipFlag.NODE) && !clipFlags.contains(ClipFlag.LINKED_NODE)) { "Path nodes have already been flagged for clipping." }
             if (node) {

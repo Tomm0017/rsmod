@@ -5,7 +5,7 @@ import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import mu.KotlinLogging
 
 /**
- * Stores interfaces that are visible.
+ * Stores visible interfaces.
  *
  * @author Tom <rspsmods@gmail.com>
  */

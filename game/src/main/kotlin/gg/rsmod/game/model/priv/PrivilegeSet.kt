@@ -18,7 +18,6 @@ class PrivilegeSet : Iterable<Privilege> {
 
     override fun iterator(): Iterator<Privilege> = values.iterator()
 
-    @Throws(Exception::class)
     fun load(properties: ServerProperties) {
         val privilegeDefinitions = properties.get<ArrayList<*>>("privileges")!!
         val definitions = arrayListOf<Privilege>()

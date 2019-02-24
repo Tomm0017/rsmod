@@ -31,7 +31,7 @@ on_timer(SEARCH_FOR_PATH_TIMER) {
         /**
          * Only walk to destination if the chunk has previously been created.
          */
-        if (npc.world.collision.chunks.get(dest, create = false) != null) {
+        if (npc.world.collision.chunks.get(dest, createIfNeeded = false) != null) {
             npc.walkTo(dest)
         }
     }

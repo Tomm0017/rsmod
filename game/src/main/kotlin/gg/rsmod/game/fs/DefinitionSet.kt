@@ -131,6 +131,9 @@ class DefinitionSet {
         return def as T
     }
 
+    /**
+     * Creates an 8x8 [gg.rsmod.game.model.region.Chunk] region.
+     */
     fun createRegion(world: World, id: Int): Boolean {
         if (xteaService == null) {
             xteaService = world.getService(XteaKeyService::class.java).orElse(null)

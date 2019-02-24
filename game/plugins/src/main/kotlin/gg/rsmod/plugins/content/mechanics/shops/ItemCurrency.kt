@@ -40,7 +40,7 @@ open class ItemCurrency(private val currencyItem: Int, private val singularCurre
         return AcceptItemState(true, "")
     }
 
-    override fun sendSellValueMessage(p: Player, item: Int) {
+    override fun onSellValueMessage(p: Player, item: Int) {
         val unnoted = Item(item).toUnnoted(p.world.definitions)
         val value = getSellPrice(p.world, unnoted.id)
         val name = unnoted.getName(p.world.definitions)
@@ -48,7 +48,7 @@ open class ItemCurrency(private val currencyItem: Int, private val singularCurre
         p.message("$name: currently costs $value $currency")
     }
 
-    override fun sendBuyValueMessage(p: Player, shop: Shop, item: Int) {
+    override fun onBuyValueMessage(p: Player, shop: Shop, item: Int) {
         val unnoted = Item(item).toUnnoted(p.world.definitions)
         val acceptance = canAcceptItem(shop, p.world, unnoted.id)
         if (acceptance.acceptable) {

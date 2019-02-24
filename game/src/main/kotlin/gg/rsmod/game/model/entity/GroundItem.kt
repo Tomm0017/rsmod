@@ -7,6 +7,13 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.item.Item
 
 /**
+ * An item that is spawned on the ground.
+ *
+ * @param ownerUID
+ * If null, the item will be visible and can be interacted with by any player
+ * in the world. Otherwise, it will only be visible to the player who's [Player.uid]
+ * matches [ownerUID].
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class GroundItem private constructor(val item: Int, var amount: Int, internal var ownerUID: PlayerUID?) : Entity() {

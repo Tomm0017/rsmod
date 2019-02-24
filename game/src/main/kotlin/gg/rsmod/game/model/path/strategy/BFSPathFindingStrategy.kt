@@ -10,7 +10,7 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import java.util.*
 
 /**
- * A [PathFindingStrategy] which uses breadth-first search algorithm to calculate
+ * A [PathFindingStrategy] which uses Breadth-first Search Algorithm to calculate
  * a valid path to the target location.
  *
  * @author Tom <rspsmods@gmail.com>

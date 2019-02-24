@@ -42,7 +42,7 @@ on_button(interfaceId = SHOP_INTERFACE_ID, component = 16) {
         val shopItem = shop.items[slot] ?: return@on_button
 
         if (opt == 1) {
-            shop.currency.sendSellValueMessage(player, shopItem.item)
+            shop.currency.onSellValueMessage(player, shopItem.item)
         } else if (opt == 10) {
             player.world.sendExamine(player, shopItem.item, ExamineEntityType.ITEM)
         } else {
@@ -66,7 +66,7 @@ on_button(interfaceId = INV_INTERFACE_ID, component = 0) {
         val item = player.inventory[slot] ?: return@on_button
 
         if (opt == 1) {
-            shop.currency.sendBuyValueMessage(player, shop, item.id)
+            shop.currency.onBuyValueMessage(player, shop, item.id)
         } else if (opt == 10) {
             player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
         } else {

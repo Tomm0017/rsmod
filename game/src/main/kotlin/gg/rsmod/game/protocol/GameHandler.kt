@@ -27,8 +27,8 @@ class GameHandler(private val filestore: Store, private val world: World) : Chan
         private val logger = KotlinLogging.logger {  }
 
         /**
-         * A mutable [AttributeKey] that stores the current [ServerSystem] that
-         * will intercept the messages sent by the [io.netty.channel.Channel].
+         * An [AttributeKey] that stores the current [ServerSystem] that
+         * will intercept messages sent by the [io.netty.channel.Channel].
          */
         val SYSTEM_KEY: AttributeKey<ServerSystem> = AttributeKey.valueOf("system")
     }

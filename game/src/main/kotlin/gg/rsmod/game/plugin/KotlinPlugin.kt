@@ -18,11 +18,20 @@ import gg.rsmod.game.model.timer.TimerKey
 import kotlin.script.experimental.annotations.KotlinScript
 
 /**
+ * Represents a KotlinScript plugin.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
-@KotlinScript(displayName = "Kotlin Plugin", fileExtension = "kts")
+@KotlinScript(
+        displayName = "Kotlin Plugin",
+        fileExtension = "kts"
+)
 abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
+    /**
+     * Set the [gg.rsmod.game.model.region.ChunkCoords] with [chunk] as its
+     * [gg.rsmod.game.model.region.ChunkCoords.hashCode], as a multi-combat area.
+     */
     fun set_multi_combat_chunk(chunk: Int) {
         r.multiCombatChunks.add(chunk)
     }
@@ -41,7 +50,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         others.forEach { other -> set_combat_def(other, def) }
     }
 
-    fun create_shop(name: String, currency: ShopCurrency, stockType: StockType = StockType.GLOBAL,
+    fun create_shop(name: String, currency: ShopCurrency, stockType: StockType = StockType.NORMAL,
                     stockSize: Int = Shop.DEFAULT_STOCK_SIZE, purchasePolicy: PurchasePolicy = PurchasePolicy.BUY_TRADEABLES,
                     init: Shop.() -> Unit) {
         val shop = Shop(name, stockType, purchasePolicy, currency, arrayOfNulls(stockSize))

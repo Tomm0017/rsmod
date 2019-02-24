@@ -55,9 +55,11 @@ abstract class GameObject : Entity {
     fun isSpawned(world: World): Boolean = world.isSpawned(this)
 
     /**
-     * Npcs can change their appearance for each player depending on their
-     * [NpcDef.transforms] and [NpcDef.varp]/[NpcDef.varbit]. This method will
-     * get the "visually correct" npc id for this npc from [player]'s view point.
+     * This method will get the "visually correct" object id for this npc from
+     * [player]'s view point.
+     *
+     * Objects can change their appearance for each player depending on their
+     * [ObjectDef.transforms] and [ObjectDef.varp]/[ObjectDef.varbit].
      */
     fun getTransform(player: Player): Int {
         val world = player.world

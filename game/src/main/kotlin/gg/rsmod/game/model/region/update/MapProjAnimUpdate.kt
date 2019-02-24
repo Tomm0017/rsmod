@@ -5,6 +5,8 @@ import gg.rsmod.game.message.impl.MapProjAnimMessage
 import gg.rsmod.game.model.entity.Projectile
 
 /**
+ * Represents an update where a [Projectile] is spawned.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class MapProjAnimUpdate(override val type: EntityUpdateType,

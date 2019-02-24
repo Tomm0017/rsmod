@@ -426,7 +426,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * @return
      * null if no [GameObject] with [type] was found in [tile].
      */
-    fun getObject(tile: Tile, type: Int): GameObject? = chunks.get(tile, create = true)!!.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.type == type }
+    fun getObject(tile: Tile, type: Int): GameObject? = chunks.get(tile, createIfNeeded = true)!!.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.type == type }
 
     fun getPlayerForName(username: String): Player? {
         for (i in 0 until players.capacity) {

@@ -124,6 +124,10 @@ abstract class Pawn(val world: World) : Entity() {
      */
     var invisible = false
 
+    /**
+     * The [FutureRoute] for the pawn, if any.
+     * @see createPathFindingStrategy
+     */
     private var futureRoute: FutureRoute? = null
 
     /**
@@ -149,14 +153,23 @@ abstract class Pawn(val world: World) : Entity() {
 
     abstract fun hasBlock(block: UpdateBlockType): Boolean
 
+    /**
+     * Lock the pawn to the default [LockState.FULL] state.
+     */
     fun lock() {
         lock = LockState.FULL
     }
 
+    /**
+     * Unlock the pawn and set it to [LockState.NONE] state.
+     */
     fun unlock() {
         lock = LockState.NONE
     }
 
+    /**
+     * Checks if the pawn has any lock state set.
+     */
     fun isLocked(): Boolean = lock != LockState.NONE
 
     fun getTransmogId(): Int = transmogId
@@ -174,7 +187,10 @@ abstract class Pawn(val world: World) : Entity() {
 
     fun getCentreTile(): Tile = tile.transform(getSize() shr 1, getSize() shr 1)
 
-    // Credits: Kris#1337
+    /**
+     * Gets the tile the pawn is currently facing towards.
+     * Credits: Kris#1337
+     */
     fun getFrontFacingTile(target: Tile, offset: Int = 0): Tile {
         val size = (getSize() shr 1)
         val centre = getCentreTile()
@@ -194,8 +210,14 @@ abstract class Pawn(val world: World) : Entity() {
         return Tile(tx, tz, tile.height)
     }
 
+    /**
+     * Alias for [getFrontFacingTile] using a [Pawn] as the target tile.
+     */
     fun getFrontFacingTile(target: Pawn, offset: Int = 0): Tile = getFrontFacingTile(target.getCentreTile(), offset)
 
+    /**
+     * Initiate combat with [target].
+     */
     fun attack(target: Pawn) {
         resetInteractions()
         interruptPlugins()
@@ -212,6 +234,9 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
+    /**
+     * Handle a single cycle for [timers].
+     */
     fun timerCycle() {
         val timersCopy = timers.getTimers().toMutableMap()
 
@@ -233,6 +258,9 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
+    /**
+     * Handle a single cycle for [pendingHits].
+     */
     fun hitsCycle() {
         val hitIterator = pendingHits.iterator()
         iterator@ while (hitIterator.hasNext()) {
@@ -281,6 +309,9 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
+    /**
+     * Handle the [futureRoute] if necessary.
+     */
     fun handleFutureRoute() {
         if (futureRoute?.completed == true && futureRoute?.strategy?.cancel == false) {
             val futureRoute = futureRoute!!
@@ -289,7 +320,11 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
-    fun walkPath(path: ArrayDeque<Tile>, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL) {
+    /**
+     * Walk to all the tiles specified in our [path] queue, using [stepType] as
+     * the [MovementQueue.StepType].
+     */
+    fun walkPath(path: Queue<Tile>, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL) {
         if (path.isEmpty()) {
             if (this is Player) {
                 write(SetMapFlagMessage(255, 255))
@@ -340,11 +375,11 @@ abstract class Pawn(val world: World) : Entity() {
         }
 
         val multiThread = world.multiThreadPathFinding
-        val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
+        val request = PathRequest.createWalkRequest(this, x, z, projectilePath)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
         /**
-         * When using multi-thread path-finding, the [PathRequest.buildWalkRequest]
+         * When using multi-thread path-finding, the [PathRequest.createWalkRequest]
          * must have the [tile] in sync with the game-thread, so we need to make sure
          * that in this cycle, the pawn's [tile] does not change. The easiest way to
          * do this is by clearing their movement queue. Though it can cause weird
@@ -374,7 +409,7 @@ abstract class Pawn(val world: World) : Entity() {
             return Route(ArrayDeque(), success = true, tail = Tile(tile))
         }
         val multiThread = world.multiThreadPathFinding
-        val request = PathRequest.buildWalkRequest(this, x, z, projectilePath)
+        val request = PathRequest.createWalkRequest(this, x, z, projectilePath)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
         if (multiThread) {
@@ -455,6 +490,7 @@ abstract class Pawn(val world: World) : Entity() {
 
         val index = if (pawn == null) -1 else if (pawn.getType().isPlayer()) pawn.index + 32768 else pawn.index
         if (blockBuffer.facePawnIndex != index) {
+            blockBuffer.faceDegrees = 0
             blockBuffer.facePawnIndex = index
             addBlock(UpdateBlockType.FACE_PAWN)
         }
@@ -466,6 +502,9 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
+    /**
+     * Resets any interaction this pawn had with another pawn.
+     */
     fun resetInteractions() {
         attr.remove(COMBAT_TARGET_FOCUS_ATTR)
         facePawn(null)
@@ -485,7 +524,7 @@ abstract class Pawn(val world: World) : Entity() {
         world.pluginExecutor.interruptPluginsWithContext(this)
     }
 
-    fun createPathFindingStrategy(copyChunks: Boolean = false): PathFindingStrategy {
+    internal fun createPathFindingStrategy(copyChunks: Boolean = false): PathFindingStrategy {
         val collision: CollisionManager = if (copyChunks) {
             val chunks = world.chunks.copyChunksWithinRadius(tile.toChunkCoords(), height = tile.height, radius = Chunk.CHUNK_VIEW_RADIUS)
             CollisionManager(chunks, createChunksIfNeeded = false)

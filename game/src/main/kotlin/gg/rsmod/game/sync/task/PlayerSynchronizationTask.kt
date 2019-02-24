@@ -39,7 +39,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             } else {
                 player.externalPlayerIndices[player.externalPlayerCount++] = i
             }
-            player.otherPlayerSkipFlags[i] = player.otherPlayerSkipFlags[i] shr 1
+            player.inactivityPlayerFlags[i] = player.inactivityPlayerFlags[i] shr 1
         }
     }
 
@@ -76,13 +76,13 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             val index = player.localPlayerIndices[i]
             val local = player.localPlayers[index]
 
-            if ((player.otherPlayerSkipFlags[index] and 0x1) != 0) {
+            if ((player.inactivityPlayerFlags[index] and 0x1) != 0) {
                 continue
             }
 
             if (skipCount > 0) {
                 skipCount--
-                player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
+                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
                 continue
             }
 
@@ -128,7 +128,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 for (j in i + 1 until player.localPlayerCount) {
                     val nextIndex = player.localPlayerIndices[j]
                     val next = player.localPlayers[nextIndex]
-                    if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) != 0) {
+                    if ((player.inactivityPlayerFlags[nextIndex] and 0x1) != 0) {
                         continue
                     }
                     if (next == null || next.blockBuffer.isDirty() || next.teleport || next.steps != null || next != player && shouldRemove(next)) {
@@ -137,7 +137,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                     skipCount++
                 }
                 segments.add(PlayerSkipCountSegment(skipCount))
-                player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
+                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
             }
         }
         segments.add(SetByteAccessSegment())
@@ -151,13 +151,13 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             val index = player.localPlayerIndices[i]
             val local = player.localPlayers[index]
 
-            if ((player.otherPlayerSkipFlags[index] and 0x1) == 0) {
+            if ((player.inactivityPlayerFlags[index] and 0x1) == 0) {
                 continue
             }
 
             if (skipCount > 0) {
                 skipCount--
-                player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
+                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
                 continue
             }
 
@@ -203,7 +203,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 for (j in i + 1 until player.localPlayerCount) {
                     val nextIndex = player.localPlayerIndices[j]
                     val next = player.localPlayers[nextIndex]
-                    if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) == 0) {
+                    if ((player.inactivityPlayerFlags[nextIndex] and 0x1) == 0) {
                         continue
                     }
                     if (next == null || next.blockBuffer.isDirty() || next.teleport || next.steps != null || next != player && shouldRemove(next)) {
@@ -212,7 +212,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                     skipCount++
                 }
                 segments.add(PlayerSkipCountSegment(skipCount))
-                player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
+                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
             }
         }
         segments.add(SetByteAccessSegment())
@@ -227,13 +227,13 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         for (i in 0 until player.externalPlayerCount) {
             val index = player.externalPlayerIndices[i]
 
-            if ((player.otherPlayerSkipFlags[index] and 0x1) == 0) {
+            if ((player.inactivityPlayerFlags[index] and 0x1) == 0) {
                 continue
             }
 
             if (skipCount > 0) {
                 skipCount--
-                player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
+                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
                 continue
             }
 
@@ -245,7 +245,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 segments.add(AddLocalPlayerSegment(player = player, other = nonLocal, index = index, tileHash = tileHash))
                 segments.add(PlayerUpdateBlockSegment(other = nonLocal, newPlayer = true))
 
-                player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
+                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
                 player.otherPlayerTiles[index] = tileHash
                 player.localPlayers[index] = nonLocal
 
@@ -255,7 +255,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
             for (j in i + 1 until player.externalPlayerCount) {
                 val nextIndex = player.externalPlayerIndices[j]
-                if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) == 0) {
+                if ((player.inactivityPlayerFlags[nextIndex] and 0x1) == 0) {
                     continue
                 }
                 val next = if (nextIndex < player.world.players.capacity) player.world.players.get(nextIndex) else null
@@ -265,7 +265,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 skipCount++
             }
             segments.add(PlayerSkipCountSegment(count = skipCount))
-            player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
+            player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
         }
         segments.add(SetByteAccessSegment())
 
@@ -278,13 +278,13 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         for (i in 0 until player.externalPlayerCount) {
             val index = player.externalPlayerIndices[i]
 
-            if ((player.otherPlayerSkipFlags[index] and 0x1) != 0) {
+            if ((player.inactivityPlayerFlags[index] and 0x1) != 0) {
                 continue
             }
 
             if (skipCount > 0) {
                 skipCount--
-                player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
+                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
                 continue
             }
 
@@ -296,7 +296,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 segments.add(AddLocalPlayerSegment(player = player, other = nonLocal, index = index, tileHash = tileHash))
                 segments.add(PlayerUpdateBlockSegment(other = nonLocal, newPlayer = true))
 
-                player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
+                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
                 player.otherPlayerTiles[index] = tileHash
                 player.localPlayers[index] = nonLocal
 
@@ -306,7 +306,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
             for (j in i + 1 until player.externalPlayerCount) {
                 val nextIndex = player.externalPlayerIndices[j]
-                if ((player.otherPlayerSkipFlags[nextIndex] and 0x1) != 0) {
+                if ((player.inactivityPlayerFlags[nextIndex] and 0x1) != 0) {
                     continue
                 }
                 val next = if (nextIndex < player.world.players.capacity) player.world.players.get(nextIndex) else null
@@ -316,7 +316,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 skipCount++
             }
             segments.add(PlayerSkipCountSegment(count = skipCount))
-            player.otherPlayerSkipFlags[index] = player.otherPlayerSkipFlags[index] or 0x2
+            player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
         }
         segments.add(SetByteAccessSegment())
 

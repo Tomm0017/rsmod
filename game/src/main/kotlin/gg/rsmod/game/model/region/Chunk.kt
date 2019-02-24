@@ -35,7 +35,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         const val MAX_VIEWPORT = CHUNK_SIZE * 13
 
         /**
-         * The amount of [Chunk]s that can be viewed at a time by default.
+         * The amount of [Chunk]s that can be viewed at a time by a player.
          */
         const val CHUNK_VIEW_RADIUS = 3
     }
@@ -44,33 +44,35 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         other.matrices.forEachIndexed { index, matrix ->
             matrices[index] = CollisionMatrix(matrix)
         }
-        // Only copy entities and updates if for some reason we need access to
-        // that data for copies of [Chunk].
     }
-
-    /**
-     * TODO(Tom): when copying [Chunk]s, we should not initialize [entities], [updates] or [matrices].
-     * [matrices] should only be set to nulls and have a way to set a specific index to a [CollisionMatrix].
-     * When the [Chunk] is a normal chunk meant to be on the game-thread, then we should initialize everything.
-     */
 
     /**
      * The array of matrices of 8x8 tiles. Each index representing a height.
      */
-    private val matrices: Array<CollisionMatrix> = CollisionMatrix.createMatrices(ChunkSet.DEFAULT_TOTAL_HEIGHTS, CHUNK_SIZE, CHUNK_SIZE)
+    private val matrices: Array<CollisionMatrix> = CollisionMatrix.createMatrices(Tile.TOTAL_HEIGHT_LEVELS, CHUNK_SIZE, CHUNK_SIZE)
 
     /**
      * The [Entity]s that are currently registered to the [Tile] key. This is
      * not used for [gg.rsmod.game.model.entity.Pawn], but rather [Entity]s
      * that do not regularly change [Tile]s.
      */
-    private var entities: Multimap<Tile, Entity> = HashMultimap.create()
+    private lateinit var entities: Multimap<Tile, Entity>
 
     /**
      * A list of [EntityUpdate]s that will be sent to players who have just entered
      * a region that has this chunk as viewable.
      */
-    private var updates: MutableList<EntityUpdate<*>> = arrayListOf()
+    private lateinit var updates: MutableList<EntityUpdate<*>>
+
+    /**
+     * Create the collections used for [Entity]s and [EntityUpdate]s.
+     * @see entities
+     * @see updates
+     */
+    fun createEntityContainers() {
+        entities = HashMultimap.create()
+        updates = ObjectArrayList()
+    }
 
     fun getMatrix(height: Int): CollisionMatrix = matrices[height]
 
@@ -78,6 +80,9 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         matrices[height] = matrix
     }
 
+    /**
+     * Check if [tile] belongs to this chunk.
+     */
     fun contains(tile: Tile): Boolean = coords == tile.toChunkCoords()
 
     fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = matrices[tile.height].isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
@@ -171,17 +176,22 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         }
     }
 
+    /**
+     * Update the item amount of an existing [GroundItem] in [entities].
+     */
     fun updateGroundItem(world: World, item: GroundItem, oldAmount: Int, newAmount: Int) {
-        if (item.getType().isGroundItem()) {
-            val update = ObjCountUpdate(EntityUpdateType.UPDATE_GROUND_ITEM, item, oldAmount, newAmount)
-            sendUpdate(world, update)
+        val update = ObjCountUpdate(EntityUpdateType.UPDATE_GROUND_ITEM, item, oldAmount, newAmount)
+        sendUpdate(world, update)
 
-            if (updates.removeIf { it.entity == item }) {
-                updates.add(createUpdateFor(item, spawn = true)!!)
-            }
+        if (updates.removeIf { it.entity == item }) {
+            updates.add(createUpdateFor(item, spawn = true)!!)
         }
     }
 
+    /**
+     * Send the [update] to any [Client] entities that are within view distance
+     * of this chunk.
+     */
     private fun sendUpdate(world: World, update: EntityUpdate<*>) {
         val surrounding = coords.getSurroundingCoords()
 
@@ -199,6 +209,12 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         }
     }
 
+    /**
+     * Sends all [updates] from this chunk to the player [p].
+     *
+     * @param gameService
+     * Game service is required to get the XTEA service.
+     */
     fun sendUpdates(p: Player, gameService: GameService) {
         val messages = ObjectArrayList<EntityGroupMessage>()
 
@@ -215,6 +231,9 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         }
     }
 
+    /**
+     * Checks to see if player [p] is able to view [entity].
+     */
     private fun canBeViewed(p: Player, entity: Entity): Boolean {
         if (entity.getType().isGroundItem()) {
             val item = entity as GroundItem
@@ -224,7 +243,6 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
     }
 
     private fun <T: Entity> createUpdateFor(entity: T, spawn: Boolean): EntityUpdate<*>? = when (entity.getType()) {
-
         EntityType.DYNAMIC_OBJECT, EntityType.STATIC_OBJECT ->
             if (spawn) LocAddChangeUpdate(EntityUpdateType.SPAWN_OBJECT, entity as GameObject)
             else LocDelUpdate(EntityUpdateType.REMOVE_OBJECT, entity as GameObject)

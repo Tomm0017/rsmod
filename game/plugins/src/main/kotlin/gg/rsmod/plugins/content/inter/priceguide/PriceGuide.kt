@@ -1,8 +1,8 @@
 package gg.rsmod.plugins.content.inter.priceguide
 
 import gg.rsmod.game.fs.def.ItemDef
-import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.ExamineEntityType
+import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
@@ -17,42 +17,42 @@ import java.text.DecimalFormat
  */
 object PriceGuide {
 
-    const val COMPONENT_ID = 464
-    const val TAB_COMPONENT_ID = 238
+    const val INTERFACE_ID = 464
+    const val TAB_INTERFACE_ID = 238
 
     private val GUIDE_CONTAINER = AttributeKey<ItemContainer>()
-    private val FAKE_INV_CONTAINER = AttributeKey<ItemContainer>()
+    private val TEMP_INV_CONTAINER = AttributeKey<ItemContainer>()
 
     fun open(p: Player) {
-        p.attr.put(GUIDE_CONTAINER, ItemContainer(p.world.definitions, p.inventory.capacity, ContainerStackType.STACK))
-        p.attr.put(FAKE_INV_CONTAINER, ItemContainer(p.inventory))
+        p.attr[GUIDE_CONTAINER] = ItemContainer(p.world.definitions, p.inventory.capacity, ContainerStackType.STACK)
+        p.attr[TEMP_INV_CONTAINER] = ItemContainer(p.inventory)
 
         p.setInterfaceUnderlay(color = -1, transparency = -1)
-        p.openInterface(interfaceId = COMPONENT_ID, dest = InterfaceDestination.MAIN_SCREEN)
-        p.openInterface(interfaceId = TAB_COMPONENT_ID, dest = InterfaceDestination.TAB_AREA)
+        p.openInterface(interfaceId = INTERFACE_ID, dest = InterfaceDestination.MAIN_SCREEN)
+        p.openInterface(interfaceId = TAB_INTERFACE_ID, dest = InterfaceDestination.TAB_AREA)
 
         update(p)
 
-        p.setInterfaceEvents(interfaceId = COMPONENT_ID, component = 2, range = 0..27, setting = 1086)
+        p.setInterfaceEvents(interfaceId = INTERFACE_ID, component = 2, range = 0..27, setting = 1086)
         p.runClientScript(149, 15597568, 93, 4, 7, 0, -1, "Add<col=ff9040>", "Add-5<col=ff9040>", "Add-10<col=ff9040>", "Add-All<col=ff9040>", "Add-X<col=ff9040>")
-        p.setInterfaceEvents(interfaceId = TAB_COMPONENT_ID, component = 0, range = 0..27, setting = 1086)
+        p.setInterfaceEvents(interfaceId = TAB_INTERFACE_ID, component = 0, range = 0..27, setting = 1086)
     }
 
     fun close(p: Player) {
-        p.closeInterface(TAB_COMPONENT_ID)
+        p.closeInterface(TAB_INTERFACE_ID)
         p.attr.remove(GUIDE_CONTAINER)
-        p.attr.remove(FAKE_INV_CONTAINER)
+        p.attr.remove(TEMP_INV_CONTAINER)
     }
 
     fun add(p: Player, fakeInvSlot: Int) {
-        val container = p.attr[FAKE_INV_CONTAINER] ?: return
+        val container = p.attr[TEMP_INV_CONTAINER] ?: return
         val item = container[fakeInvSlot] ?: return
         add(p, item.id, item.amount)
     }
 
     fun add(p: Player, item: Int, amount: Int) {
         val guideContainer = p.attr[GUIDE_CONTAINER] ?: return
-        val invContainer = p.attr[FAKE_INV_CONTAINER] ?: return
+        val invContainer = p.attr[TEMP_INV_CONTAINER] ?: return
 
         if (!p.world.definitions.get(ItemDef::class.java, item).isTradeable()) {
             p.message("You cannot trade that item.")
@@ -80,7 +80,7 @@ object PriceGuide {
 
     fun depositInventory(p: Player) {
         val guideContainer = p.attr[GUIDE_CONTAINER] ?: return
-        val invContainer = p.attr[FAKE_INV_CONTAINER] ?: return
+        val invContainer = p.attr[TEMP_INV_CONTAINER] ?: return
 
         var any = false
         var anyUntradeables = false
@@ -118,7 +118,7 @@ object PriceGuide {
 
     fun remove(p: Player, slot: Int, amount: Int) {
         val guideContainer = p.attr[GUIDE_CONTAINER] ?: return
-        val invContainer = p.attr[FAKE_INV_CONTAINER] ?: return
+        val invContainer = p.attr[TEMP_INV_CONTAINER] ?: return
 
         val item = guideContainer[slot] ?: return
 
@@ -162,7 +162,7 @@ object PriceGuide {
 
     suspend fun add(it: Plugin, slot: Int, opt: Int) {
         val p = it.player()
-        val container = p.attr[FAKE_INV_CONTAINER] ?: return
+        val container = p.attr[TEMP_INV_CONTAINER] ?: return
         val item = container[slot] ?: return
 
         val amount = when (opt) {
@@ -185,19 +185,19 @@ object PriceGuide {
         val valueService = p.world.getService(ItemMarketValueService::class.java).orElse(null)
         val cost = valueService?.get(item) ?: def.cost
 
-        p.setComponentItem(interfaceId = COMPONENT_ID, component = 8, item = item, amountOrZoom = 1)
+        p.setComponentItem(interfaceId = INTERFACE_ID, component = 8, item = item, amountOrZoom = 1)
         p.runClientScript(600, 0, 1, 15, 30408716)
-        p.setComponentText(interfaceId = COMPONENT_ID, component = 12, text = "${def.name}:<br><col=ffffff>${DecimalFormat().format(cost)}</col>")
+        p.setComponentText(interfaceId = INTERFACE_ID, component = 12, text = "${def.name}:<br><col=ffffff>${DecimalFormat().format(cost)}</col>")
     }
 
     fun update(p: Player) {
-        val guideContainer = p.attr[GUIDE_CONTAINER]!!
-        val invContainer = p.attr[FAKE_INV_CONTAINER]!!
+        val guideContainer = p.attr[GUIDE_CONTAINER] ?: return
+        val invContainer = p.attr[TEMP_INV_CONTAINER] ?: return
 
         p.sendItemContainer(key = 90, container = guideContainer)
         p.sendItemContainer(key = 93, container = invContainer)
 
-        p.setComponentItem(interfaceId = COMPONENT_ID, component = 8, item = -1, amountOrZoom = 1)
+        p.setComponentItem(interfaceId = INTERFACE_ID, component = 8, item = -1, amountOrZoom = 1)
 
         val valueService = p.world.getService(ItemMarketValueService::class.java).orElse(null)
         val costs = Array(size = guideContainer.capacity) { 0 }
@@ -211,6 +211,6 @@ object PriceGuide {
         p.runClientScript(785, *costs)
         p.runClientScript(600, 1, 1, 15, 30408716)
 
-        p.setComponentText(interfaceId = COMPONENT_ID, component = 12, text = "Total guide price:<br><col=ffffff>${DecimalFormat().format(guideContainer.networth(p.world))}</col>")
+        p.setComponentText(interfaceId = INTERFACE_ID, component = 12, text = "Total guide price:<br><col=ffffff>${DecimalFormat().format(guideContainer.networth(p.world))}</col>")
     }
 }

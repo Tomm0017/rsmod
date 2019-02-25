@@ -51,7 +51,7 @@ open class Player(world: World) : Pawn(world) {
      * of our [Player] when registered to the [World], it is a value determined
      * when the [Player] first registers their account.
      */
-    var uid = PlayerUID(null)
+    lateinit var uid: PlayerUID
 
     /**
      * The display name.

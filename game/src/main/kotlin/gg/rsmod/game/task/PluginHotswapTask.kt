@@ -10,6 +10,8 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
 /**
+ * A task responsible for swapping the [World.plugins].
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class PluginHotswapTask : GameTask {

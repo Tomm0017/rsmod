@@ -4,3 +4,4 @@
 - Add support for npc collision flags since npcs shouldn't be able to walk on top of one another
 - Implement 'params' for NpcCombatDef to store information such as species
 - Instance map support
+- Redo SimplePathFindingStrategy as current one is hack-y at best

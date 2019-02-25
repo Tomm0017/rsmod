@@ -36,20 +36,33 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         r.multiCombatChunks.add(chunk)
     }
 
+    /**
+     * Set the 8x8 [gg.rsmod.game.model.region.ChunkCoords]s that belong to [region]
+     * as multi-combat areas.
+     */
     fun set_multi_combat_region(region: Int) {
         r.multiCombatRegions.add(region)
     }
 
+    /**
+     * Set the [NpcCombatDef] for npcs with [Npc.id] of [npc].
+     */
     fun set_combat_def(npc: Int, def: NpcCombatDef) {
         check(!r.npcCombatDefs.containsKey(npc)) { "Npc combat definition has been previously set: $npc" }
         r.npcCombatDefs[npc] = def
     }
 
+    /**
+     * Set the [NpcCombatDef] for npcs with [Npc.id] of [npc] and [others].
+     */
     fun set_combat_def(npc: Int, vararg others: Int, def: NpcCombatDef) {
         set_combat_def(npc, def)
         others.forEach { other -> set_combat_def(other, def) }
     }
 
+    /**
+     * Create a [Shop] in our world.
+     */
     fun create_shop(name: String, currency: ShopCurrency, stockType: StockType = StockType.NORMAL,
                     stockSize: Int = Shop.DEFAULT_STOCK_SIZE, purchasePolicy: PurchasePolicy = PurchasePolicy.BUY_TRADEABLES,
                     init: Shop.() -> Unit) {
@@ -58,6 +71,9 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         init(shop)
     }
 
+    /**
+     * Spawn an [Npc] on the given coordinates.
+     */
     fun spawn_npc(npc: Int, x: Int, z: Int, height: Int = 0, walkRadius: Int = 0, direction: Direction = Direction.SOUTH) {
         val n = Npc(npc, Tile(x, z, height), world)
         n.walkRadius = walkRadius
@@ -65,111 +81,235 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         r.npcSpawns.add(n)
     }
 
+    /**
+     * Spawn a [DynamicObject] on the given coordinates.
+     */
     fun spawn_obj(obj: Int, x: Int, z: Int, height: Int = 0, type: Int = 10, rot: Int = 0) {
         val o = DynamicObject(obj, type, rot, Tile(x, z, height))
         r.objSpawns.add(o)
     }
 
+    /**
+     * Spawn a [GroundItem] on the given coordinates.
+     */
     fun spawn_item(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = GroundItem.DEFAULT_RESPAWN_CYCLES) {
         val ground = GroundItem(item, amount, Tile(x, z, height))
         ground.respawnCycles = respawnCycles
         r.itemSpawns.add(ground)
     }
 
-    fun on_item_option(item: Int, option: String, plugin: (Plugin) -> Unit) {
+    /**
+     * Invoke [logic] when the [option] option is clicked on an inventory
+     * [gg.rsmod.game.model.item.Item].
+     *
+     * This method should be used over the option-int variant whenever possible.
+     */
+    fun on_item_option(item: Int, option: String, logic: (Plugin) -> Unit) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(ItemDef::class.java, item)
         val slot = def.inventoryMenu.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
 
         check(slot != -1) { "Option \"$option\" not found for item $item [options=${def.inventoryMenu.filterNotNull().filter { it.isNotBlank() }}]" }
 
-        r.bindItem(item, slot + 1, plugin)
+        r.bindItem(item, slot + 1, logic)
     }
 
-    fun on_obj_option(obj: Int, option: String, lineOfSightDistance: Int = -1, plugin: (Plugin) -> Unit) {
+    /**
+     * Invoke [logic] when the [option] option is clicked on a
+     * [gg.rsmod.game.model.entity.GameObject].
+     *
+     * This method should be used over the option-int variant whenever possible.
+     */
+    fun on_obj_option(obj: Int, option: String, lineOfSightDistance: Int = -1, logic: (Plugin) -> Unit) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(ObjectDef::class.java, obj)
         val slot = def.options.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
 
         check(slot != -1) { "Option \"$option\" not found for object $obj [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
 
-        r.bindObject(obj, slot + 1, lineOfSightDistance, plugin)
+        r.bindObject(obj, slot + 1, lineOfSightDistance, logic)
     }
 
-    fun on_npc_option(npc: Int, option: String, lineOfSightDistance: Int = -1, plugin: (Plugin) -> Unit) {
+    /**
+     * Invoke [logic] when the [option] option is clicked on an [Npc].
+     *
+     * This method should be used over the option-int variant whenever possible.
+     */
+    fun on_npc_option(npc: Int, option: String, lineOfSightDistance: Int = -1, logic: (Plugin) -> Unit) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(NpcDef::class.java, npc)
         val slot = def.options.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
 
         check(slot != -1) { "Option \"$option\" not found for npc $npc [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
 
-        r.bindNpc(npc, slot + 1, lineOfSightDistance, plugin)
+        r.bindNpc(npc, slot + 1, lineOfSightDistance, logic)
     }
 
-    fun on_ground_item_option(item: Int, option: String, plugin: (Plugin) -> Unit) {
+    /**
+     * Invoke [logic] when [option] option is clicked on a [GroundItem].
+     *
+     * This method should be used over the option-int variant whenever possible.
+     */
+    fun on_ground_item_option(item: Int, option: String, logic: (Plugin) -> Unit) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(ItemDef::class.java, item)
         val slot = def.groundMenu.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
 
         check(slot != -1) { "Option \"$option\" not found for ground item $item [options=${def.groundMenu.filterNotNull().filter { it.isNotBlank() }}]" }
 
-        r.bindGroundItem(item, slot + 1, plugin)
+        r.bindGroundItem(item, slot + 1, logic)
     }
 
-    fun set_window_status_logic(plugin: (Plugin) -> Unit) = r.bindWindowStatus(plugin)
+    /**
+     * Set the logic to execute when [gg.rsmod.game.message.impl.WindowStatusMessage]
+     * is handled.
+     */
+    fun set_window_status_logic(logic: (Plugin) -> Unit) = r.bindWindowStatus(logic)
 
-    fun set_modal_close_logic(plugin: (Plugin) -> Unit) = r.bindModalClose(plugin)
+    /**
+     * Set the logic to execute when [gg.rsmod.game.message.impl.CloseModalMessage]
+     * is handled.
+     */
+    fun set_modal_close_logic(logic: (Plugin) -> Unit) = r.bindModalClose(logic)
 
-    fun set_combat_logic(plugin: (Plugin) -> Unit) = r.bindCombat(plugin)
+    /**
+     * Set the logic to execute by default when [gg.rsmod.game.model.entity.Pawn.attack]
+     * is handled.
+     */
+    fun set_combat_logic(logic: (Plugin) -> Unit) = r.bindCombat(logic)
 
-    fun on_world_init(plugin: (Plugin) -> Unit) = r.bindWorldInit(plugin)
+    /**
+     * Invoke [logic] when [World.postLoad] is handled.
+     */
+    fun on_world_init(logic: (Plugin) -> Unit) = r.bindWorldInit(logic)
 
-    fun on_login(plugin: (Plugin) -> Unit) = r.bindLogin(plugin)
+    /**
+     * Invoke [logic] on player log in.
+     */
+    fun on_login(logic: (Plugin) -> Unit) = r.bindLogin(logic)
 
-    fun on_logout(plugin: (Plugin) -> Unit) = r.bindLogout(plugin)
+    /**
+     * Invoke [logic] on player log out.
+     */
+    fun on_logout(logic: (Plugin) -> Unit) = r.bindLogout(logic)
 
-    fun on_npc_combat(npc: Int, vararg others: Int, plugin: (Plugin) -> Unit) {
-        r.bindNpcCombat(npc, plugin)
-        others.forEach { other -> r.bindNpcCombat(other, plugin) }
+    /**
+     * Set the combat logic for [npc] and [others], which will override the [set_combat_logic]
+     * logic.
+     */
+    fun on_npc_combat(npc: Int, vararg others: Int, logic: (Plugin) -> Unit) {
+        r.bindNpcCombat(npc, logic)
+        others.forEach { other -> r.bindNpcCombat(other, logic) }
     }
 
-    fun on_spell_on_npc(parent: Int, child: Int, plugin: (Plugin) -> Unit) = r.bindSpellOnNpc(parent, child, plugin)
+    /**
+     * Invoke [logic] when [gg.rsmod.game.message.impl.OpNpcTMessage] is handled.
+     */
+    fun on_spell_on_npc(parent: Int, child: Int, logic: (Plugin) -> Unit) = r.bindSpellOnNpc(parent, child, logic)
 
+    /**
+     * Invoke [logic] when [gg.rsmod.game.message.impl.IfOpenSubMessage] is handled.
+     */
     fun on_interface_open(interfaceId: Int, logic: (Plugin) -> Unit) = r.bindInterfaceOpen(interfaceId, logic)
 
-    fun on_interface_close(interfaceId: Int, plugin: (Plugin) -> Unit) = r.bindInterfaceClose(interfaceId, plugin)
+    /**
+     * Invoke [logic] when [gg.rsmod.game.model.interf.InterfaceSet.closeByHash]
+     * is handled.
+     */
+    fun on_interface_close(interfaceId: Int, logic: (Plugin) -> Unit) = r.bindInterfaceClose(interfaceId, logic)
 
-    fun on_button(interfaceId: Int, component: Int, plugin: (Plugin) -> Unit) = r.bindButton(interfaceId, component, plugin)
+    /**
+     * Invoke [logic] when [gg.rsmod.game.message.impl.IfButtonMessage] is handled.
+     */
+    fun on_button(interfaceId: Int, component: Int, logic: (Plugin) -> Unit) = r.bindButton(interfaceId, component, logic)
 
-    fun on_timer(key: TimerKey, plugin: (Plugin) -> Unit) = r.bindTimer(key, plugin)
+    /**
+     * Invoke [logic] when [key] reaches a time value of 0.
+     */
+    fun on_timer(key: TimerKey, logic: (Plugin) -> Unit) = r.bindTimer(key, logic)
 
-    fun on_global_npc_spawn(plugin: (Plugin) -> Unit) = r.bindGlobalNpcSpawn(plugin)
+    /**
+     * Invoke [logic] when any npc is spawned into the game with [World.spawn].
+     */
+    fun on_global_npc_spawn(logic: (Plugin) -> Unit) = r.bindGlobalNpcSpawn(logic)
 
-    fun on_npc_spawn(npc: Int, plugin: (Plugin) -> Unit) = r.bindNpcSpawn(npc, plugin)
+    /**
+     * Invoke [logic] when an npc with [Npc.id] matching [npc] is spawned into
+     * the game with [World.spawn].
+     */
+    fun on_npc_spawn(npc: Int, logic: (Plugin) -> Unit) = r.bindNpcSpawn(npc, logic)
 
-    fun on_command(command: String, powerRequired: String? = null, plugin: (Plugin) -> Unit) = r.bindCommand(command, powerRequired, plugin)
+    /**
+     * Invoke [logic] when [gg.rsmod.game.message.impl.ClientCheatMessage] is handled.
+     */
+    fun on_command(command: String, powerRequired: String? = null, logic: (Plugin) -> Unit) = r.bindCommand(command, powerRequired, logic)
 
-    fun on_equip_to_slot(equipSlot: Int, plugin: (Plugin) -> Unit) = r.bindEquipSlot(equipSlot, plugin)
+    /**
+     * Invoke [logic] when an item is equipped onto equipment slot [equipSlot].
+     */
+    fun on_equip_to_slot(equipSlot: Int, logic: (Plugin) -> Unit) = r.bindEquipSlot(equipSlot, logic)
 
-    fun can_equip_item(item: Int, plugin: Function1<Plugin, Boolean>) = r.bindEquipItemRequirement(item, plugin)
+    /**
+     * Return true if [item] can be equipped, false if it can't.
+     */
+    fun can_equip_item(item: Int, logic: (Plugin) -> Boolean) = r.bindEquipItemRequirement(item, logic)
 
-    fun on_item_equip(item: Int, plugin: (Plugin) -> Unit) = r.bindEquipItem(item, plugin)
+    /**
+     * Invoke [logic] when [item] is equipped.
+     */
+    fun on_item_equip(item: Int, logic: (Plugin) -> Unit) = r.bindEquipItem(item, logic)
 
-    fun on_item_unequip(item: Int, plugin: (Plugin) -> Unit) = r.bindUnequipItem(item, plugin)
+    /**
+     * Invoke [logic] when [item] is removed from equipment.
+     */
+    fun on_item_unequip(item: Int, logic: (Plugin) -> Unit) = r.bindUnequipItem(item, logic)
 
-    fun on_enter_region(regionId: Int, plugin: (Plugin) -> Unit) = r.bindRegionEnter(regionId, plugin)
+    /**
+     * Invoke [logic] when a player enters a region (8x8 Chunks).
+     */
+    fun on_enter_region(regionId: Int, logic: (Plugin) -> Unit) = r.bindRegionEnter(regionId, logic)
 
-    fun on_exit_region(regionId: Int, plugin: (Plugin) -> Unit) = r.bindRegionExit(regionId, plugin)
+    /**
+     * Invoke [logic] when a player exits a region (8x8 Chunks).
+     */
+    fun on_exit_region(regionId: Int, logic: (Plugin) -> Unit) = r.bindRegionExit(regionId, logic)
 
-    fun on_enter_chunk(chunkHash: Int, plugin: (Plugin) -> Unit) = r.bindChunkEnter(chunkHash, plugin)
+    /**
+     * Invoke [logic] when a player enters a chunk (8x8 Tiles).
+     */
+    fun on_enter_chunk(chunkHash: Int, logic: (Plugin) -> Unit) = r.bindChunkEnter(chunkHash, logic)
 
-    fun on_exit_chunk(chunkHash: Int, plugin: (Plugin) -> Unit) = r.bindChunkExit(chunkHash, plugin)
+    /**
+     * Invoke [logic] when a player exits a chunk (8x8 Tiles).
+     */
+    fun on_exit_chunk(chunkHash: Int, logic: (Plugin) -> Unit) = r.bindChunkExit(chunkHash, logic)
 
-    fun on_item_option(item: Int, opt: Int, plugin: (Plugin) -> Unit) = r.bindItem(item, opt, plugin)
+    /**
+     * Invoke [logic] when the the option in index [option] is clicked on an inventory item.
+     *
+     * [on_item_option] method should be used over this method whenever possible.
+     */
+    fun on_item_option(item: Int, option: Int, logic: (Plugin) -> Unit) = r.bindItem(item, option, logic)
 
-    fun on_obj_option(obj: Int, option: Int, lineOfSightDistance: Int = -1, plugin: (Plugin) -> Unit) = r.bindObject(obj, option, lineOfSightDistance, plugin)
+    /**
+     * Invoke [logic] when the the option in index [option] is clicked on a
+     * [gg.rsmod.game.model.entity.GameObject].
+     *
+     * [on_obj_option] method should be used over this method whenever possible.
+     */
+    fun on_obj_option(obj: Int, option: Int, lineOfSightDistance: Int = -1, logic: (Plugin) -> Unit) = r.bindObject(obj, option, lineOfSightDistance, logic)
 
-    fun on_npc_option(npc: Int, opt: Int, lineOfSightDistance: Int = -1, plugin: (Plugin) -> Unit) = r.bindNpc(npc, opt, lineOfSightDistance, plugin)
+    /**
+     * Invoke [logic] when the the option in index [option] is clicked on an [Npc].
+     *
+     * [on_npc_option] method should be used over this method whenever possible.
+     */
+    fun on_npc_option(npc: Int, option: Int, lineOfSightDistance: Int = -1, logic: (Plugin) -> Unit) = r.bindNpc(npc, option, lineOfSightDistance, logic)
 
-    fun on_ground_item_option(item: Int, opt: Int, plugin: (Plugin) -> Unit) = r.bindGroundItem(item, opt, plugin)
+    /**
+     * Invoke [logic] when the the option in index [option] is clicked on a [GroundItem].
+     *
+     * [on_ground_item_option] method should be used over this method whenever possible.
+     */
+    fun on_ground_item_option(item: Int, option: Int, logic: (Plugin) -> Unit) = r.bindGroundItem(item, option, logic)
 }

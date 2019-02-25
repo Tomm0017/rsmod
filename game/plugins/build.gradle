@@ -8,4 +8,6 @@ dependencies {
 
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion
     implementation 'com.google.code.gson:gson:2.8.5'
+
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 }

@@ -78,10 +78,19 @@ data class Shop(val name: String, val stockType: StockType, val purchasePolicy: 
 
         for (i in 0 until items.size) {
             val item = items[i] ?: continue
-            if (item.currentAmount != item.amount && item.resupplyCycles % currentCycle == 0) {
+            if (item.currentAmount != item.amount && currentCycle % item.resupplyCycles == 0) {
                 val amount = if (item.currentAmount > item.amount) Math.max(item.amount, item.currentAmount - item.resupplyAmount)
                                 else Math.min(item.amount, item.currentAmount + item.resupplyAmount)
-                item.currentAmount = amount
+                /**
+                 * When an item's initial [ShopItem.amount] is 0, it means that
+                 * the item was not initially in the shop, but was added later.
+                 * These items should be removed once they hit a quantity of 0.
+                 */
+                if (amount == 0 && item.amount == 0) {
+                    items[i] = null
+                } else {
+                    item.currentAmount = amount
+                }
                 refresh = true
             }
         }

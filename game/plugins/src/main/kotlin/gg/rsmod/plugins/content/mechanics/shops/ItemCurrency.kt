@@ -20,24 +20,24 @@ open class ItemCurrency(private val currencyItem: Int, private val singularCurre
 
     private fun canAcceptItem(shop: Shop, world: World, item: Int): AcceptItemState {
         if (item == Items.COINS_995 || item == Items.BLOOD_MONEY) {
-            return AcceptItemState(false, "You can't sell this item to a shop.")
+            return AcceptItemState(acceptable = false, errorMessage = "You can't sell this item to a shop.")
         }
         when {
             shop.purchasePolicy == PurchasePolicy.BUY_TRADEABLES -> {
                 if (!Item(item).getDef(world.definitions).isTradeable()) {
-                    return AcceptItemState(false, "You can't sell this item.")
+                    return AcceptItemState(acceptable = false, errorMessage = "You can't sell this item.")
                 }
             }
             shop.purchasePolicy == PurchasePolicy.BUY_STOCK -> {
                 if (shop.items.none { it?.item == item }) {
-                    return AcceptItemState(false, "You can't sell this item to this shop.")
+                    return AcceptItemState(acceptable = false, errorMessage = "You can't sell this item to this shop.")
                 }
             }
-            shop.purchasePolicy == PurchasePolicy.BUY_ALL -> return AcceptItemState(true, "")
-            shop.purchasePolicy == PurchasePolicy.BUY_NONE -> return AcceptItemState(false, "You can't sell any items to this shop.")
+            shop.purchasePolicy == PurchasePolicy.BUY_ALL -> return AcceptItemState(acceptable = true, errorMessage = "")
+            shop.purchasePolicy == PurchasePolicy.BUY_NONE -> return AcceptItemState(acceptable = false, errorMessage = "You can't sell any items to this shop.")
             else -> throw RuntimeException("Unhandled purchase policy. [shop=${shop.name}, policy=${shop.purchasePolicy}]")
         }
-        return AcceptItemState(true, "")
+        return AcceptItemState(acceptable = true, errorMessage = "")
     }
 
     override fun onSellValueMessage(p: Player, item: Int) {
@@ -61,7 +61,7 @@ open class ItemCurrency(private val currencyItem: Int, private val singularCurre
         }
     }
 
-    override fun getSellPrice(world: World, item: Int): Int = world.definitions.get(ItemDef::class.java, item).cost
+    override fun getSellPrice(world: World, item: Int): Int = Math.max(1, world.definitions.get(ItemDef::class.java, item).cost)
 
     override fun getBuyPrice(world: World, item: Int): Int = (world.definitions.get(ItemDef::class.java, item).cost * 0.6).toInt()
 
@@ -133,9 +133,9 @@ open class ItemCurrency(private val currencyItem: Int, private val singularCurre
         }
 
         val shopSlot = shop.items.indexOfFirst { it?.item == unnoted }
-        val count = if (shopSlot != -1) shop.items[shopSlot]?.amount ?: 0 else 0
+        val count = if (shopSlot != -1) shop.items[shopSlot]?.currentAmount ?: 0 else 0
 
-        val amount = Math.min(amt, Int.MAX_VALUE - count)
+        val amount = Math.min(Math.min(p.inventory.getItemCount(item.id), amt), Int.MAX_VALUE - count)
 
         if (count == 0 && shop.items.none { it == null } || amount == 0) {
             p.message("The shop has run out of space.")
@@ -149,13 +149,14 @@ open class ItemCurrency(private val currencyItem: Int, private val singularCurre
 
         val compensation = Math.min(Int.MAX_VALUE.toLong(), getBuyPrice(p.world, unnoted).toLong() * remove.completed.toLong()).toInt()
         val add = p.inventory.add(item = currencyItem, amount = compensation, assureFullInsertion = true)
-        if (add.requested > 0 && add.completed > 0) {
+        if (add.requested > 0 && add.completed > 0 || compensation == 0) {
             if (shopSlot != -1) {
                 shop.items[shopSlot]!!.currentAmount += amount
             } else {
                 val freeSlot = shop.items.indexOfFirst { it == null }
                 check(freeSlot != -1)
-                shop.items[freeSlot] = ShopItem(unnoted, amount)
+                shop.items[freeSlot] = ShopItem(unnoted, amount = 0)
+                shop.items[freeSlot]!!.currentAmount = amount
             }
             shop.refresh(p.world)
         } else {

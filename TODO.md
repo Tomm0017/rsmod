@@ -4,3 +4,4 @@
 - Implement 'params' for NpcCombatDef to store information such as species
 - Instance map support
 - Redo SimplePathFindingStrategy as current one is really bad and does not even support diagonal movement
+- Implement position multipliers for GPI decoding

@@ -29,6 +29,7 @@ for (equipment in EquipmentType.values) {
         }
     }
 }
+
 bind_unequip(EquipmentType.HEAD, child = 6)
 bind_unequip(EquipmentType.CAPE, child = 7)
 bind_unequip(EquipmentType.AMULET, child = 8)
@@ -39,5 +40,4 @@ bind_unequip(EquipmentType.SHIELD, child = 11)
 bind_unequip(EquipmentType.LEGS, child = 12)
 bind_unequip(EquipmentType.GLOVES, child = 13)
 bind_unequip(EquipmentType.BOOTS, child = 14)
-
 bind_unequip(EquipmentType.RING, child = 15)

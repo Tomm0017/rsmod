@@ -80,7 +80,7 @@ players:
     - block: FACE_PAWN
       bit: 0x2
       structure:
-        - name: pawnIndex
+        - name: pawn_index
           type: SHORT
           trans: ADD
 
@@ -123,7 +123,7 @@ npcs:
     - block: FACE_PAWN
       bit: 0x1
       structure:
-        - name: pawnIndex
+        - name: pawn_index
           order: LITTLE
           type: SHORT
 

@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.content.objs.bankbooth
 
+import com.google.common.collect.ImmutableSet
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.cfg.Objs
@@ -8,9 +9,7 @@ import gg.rsmod.plugins.api.ext.player
 import gg.rsmod.plugins.api.ext.setInterfaceUnderlay
 import gg.rsmod.plugins.content.inter.bank.openBank
 
-val BOOTHS = arrayOf(
-        Objs.BANK_BOOTH, Objs.BANK_BOOTH_6943, Objs.BANK_BOOTH_24101
-)
+val BOOTHS = ImmutableSet.of(Objs.BANK_BOOTH, Objs.BANK_BOOTH_6943, Objs.BANK_BOOTH_24101)
 
 BOOTHS.forEach { booth ->
     on_obj_option(obj = booth, option = "bank") {

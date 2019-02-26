@@ -162,12 +162,7 @@ suspend fun Plugin.messageBox(message: String, lineSpacing: Int = 31) {
  */
 suspend fun Plugin.chatNpc(message: String, npc: Int = -1, animation: Int = 588, title: String? = null) {
     val player = player()
-
-    var npcId = npc
-    if (npcId == -1) {
-        npcId = player.attr[INTERACTING_NPC_ATTR]?.get()?.getTransform(player) ?: throw RuntimeException("Npc id must be manually set as the player is not interacting with an npc.")
-    }
-
+    val npcId = if (npc != -1) npc else player.attr[INTERACTING_NPC_ATTR]?.get()?.getTransform(player) ?: throw RuntimeException("Npc id must be manually set as the player is not interacting with an npc.")
     val dialogTitle = title ?: player.world.definitions.get(NpcDef::class.java, npcId).name
 
     player.setComponentNpcHead(interfaceId = 231, component = 1, npc = npcId)
@@ -192,7 +187,6 @@ suspend fun Plugin.chatNpc(message: String, npc: Int = -1, animation: Int = 588,
  */
 suspend fun Plugin.chatPlayer(message: String, animation: Int = 588, title: String? = null) {
     val player = player()
-
     val dialogTitle = title ?: player.username
 
     player.setComponentPlayerHead(interfaceId = 217, component = 1)

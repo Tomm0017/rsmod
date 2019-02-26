@@ -2,9 +2,9 @@ package gg.rsmod.plugins.content.combat
 
 import gg.rsmod.game.action.PawnPathAction
 import gg.rsmod.game.model.attr.COMBAT_TARGET_FOCUS_ATTR
-import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.ext.clearMapFlag
 import gg.rsmod.plugins.api.ext.getVarbit
@@ -57,6 +57,7 @@ suspend fun cycle(it: Plugin): Boolean {
     val attackRange = strategy.getAttackRange(pawn)
 
     val pathFound = PawnPathAction.walkTo(it, pawn, target, interactionRange = attackRange, lineOfSight = false)
+
     if (!pathFound) {
         pawn.stopMovement()
         if (pawn.getType().isNpc()) {
@@ -68,6 +69,8 @@ suspend fun cycle(it: Plugin): Boolean {
         if (pawn is Player) {
             if (!pawn.timers.has(FROZEN_TIMER)) {
                 pawn.message(Entity.YOU_CANT_REACH_THAT)
+            } else {
+                pawn.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
             }
             pawn.clearMapFlag()
         }

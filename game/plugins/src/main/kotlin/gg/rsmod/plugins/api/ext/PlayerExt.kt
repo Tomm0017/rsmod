@@ -153,6 +153,16 @@ fun Player.closeInterface(interfaceId: Int) {
     }
 }
 
+fun Player.closeInterface(dest: InterfaceDestination) {
+    val displayMode = interfaces.displayMode
+    val child = getChildId(dest, displayMode)
+    val parent = getDisplayComponentId(displayMode)
+    val hash = interfaces.close(parent, child)
+    if (hash != -1) {
+        write(IfCloseSubMessage(hash))
+    }
+}
+
 fun Player.closeComponent(parent: Int, child: Int) {
     interfaces.close(parent, child)
     write(IfCloseSubMessage((parent shl 16) or child))

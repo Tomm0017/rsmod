@@ -13,6 +13,7 @@ import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.WeaponType
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.*
+import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
 import gg.rsmod.plugins.content.combat.createProjectile
 import gg.rsmod.plugins.content.combat.formula.RangedCombatFormula
@@ -89,7 +90,7 @@ object RangedCombatStrategy : CombatStrategy {
          * to the [target].
          */
         val hitActions = arrayListOf<Function0<Unit>>()
-        hitActions.add { postDamage(pawn, target) }
+        hitActions.add { Combat.postDamage(pawn, target) }
 
         if (pawn is Player) {
 
@@ -158,7 +159,7 @@ object RangedCombatStrategy : CombatStrategy {
 
     private fun addCombatXp(player: Player, target: Pawn, damage: Int) {
         val mode = CombatConfigs.getXpMode(player)
-        val multiplier = if (target is Npc) MeleeCombatStrategy.getNpcXpMultiplier(target) else 1.0
+        val multiplier = if (target is Npc) Combat.getNpcXpMultiplier(target) else 1.0
 
         if (mode == XpMode.RANGED) {
             player.addXp(Skills.RANGED, damage * 4.0 * multiplier)

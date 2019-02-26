@@ -44,7 +44,7 @@ on_button(interfaceId = 593, component = 15) {
  */
 on_button(interfaceId = 593, component = 29) {
     val p = it.player()
-    p.toggleVarp(AttackTab.AUTO_RETALIATE_VARP)
+    p.toggleVarp(AttackTab.DISABLE_AUTO_RETALIATE_VARP)
 }
 
 /**

@@ -5,3 +5,4 @@
 - Instance map support
 - Redo SimplePathFindingStrategy as current one is really bad and does not even support diagonal movement
 - Implement position multipliers for GPI decoding
+- Item placeholder logic in ItemContainer should be handled via the bank plugin instead of ItemContainer itself

@@ -44,8 +44,8 @@ object MagicCombatStrategy : CombatStrategy {
          * A list of actions that will be executed upon this hit dealing damage
          * to the [target].
          */
-        val hitActions = arrayListOf<Function0<Unit>>()
-        hitActions.add { postDamage(pawn, target) }
+        val hitActions = arrayListOf<() -> Unit>()
+        hitActions.add { Combat.postDamage(pawn, target) }
 
         val spell = pawn.attr[Combat.CASTING_SPELL]!!
         val projectile = pawn.createProjectile(target, gfx = spell.projectile, type = ProjectileType.MAGIC, endHeight = spell.projectilEndHeight)
@@ -85,7 +85,7 @@ object MagicCombatStrategy : CombatStrategy {
 
     private fun addCombatXp(player: Player, target: Pawn, damage: Int) {
         val mode = CombatConfigs.getXpMode(player)
-        val multiplier = if (target is Npc) MeleeCombatStrategy.getNpcXpMultiplier(target) else 1.0
+        val multiplier = if (target is Npc) Combat.getNpcXpMultiplier(target) else 1.0
 
         if (mode == XpMode.MAGIC) {
             val defensive = player.getVarbit(Combat.SELECTED_AUTOCAST_VARBIT) != 0 && player.getVarbit(Combat.DEFENSIVE_MAGIC_CAST_VARBIT) != 0

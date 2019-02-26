@@ -40,9 +40,7 @@ enum class CollisionFlag(private val bit: Int) {
 
         val values = enumValues<CollisionFlag>()
 
-        fun getFlags(projectiles: Boolean): Array<CollisionFlag> = if (projectiles) projectileFlags() else pawnFlags()
-
-        fun pawnFlags(): Array<CollisionFlag> = arrayOf(
+        private val pawnFlags = arrayOf(
                 PAWN_NORTH_WEST,
                 PAWN_NORTH,
                 PAWN_NORTH_EAST,
@@ -52,7 +50,7 @@ enum class CollisionFlag(private val bit: Int) {
                 PAWN_SOUTH,
                 PAWN_SOUTH_EAST)
 
-        fun projectileFlags(): Array<CollisionFlag> = arrayOf(
+        private val projectileFlags = arrayOf(
                 PROJECTILE_NORTH_WEST,
                 PROJECTILE_NORTH,
                 PROJECTILE_NORTH_EAST,
@@ -61,5 +59,11 @@ enum class CollisionFlag(private val bit: Int) {
                 PROJECTILE_SOUTH_WEST,
                 PROJECTILE_SOUTH,
                 PROJECTILE_SOUTH_EAST)
+
+        fun getFlags(projectiles: Boolean): Array<CollisionFlag> = if (projectiles) projectileFlags() else pawnFlags()
+
+        fun pawnFlags() = pawnFlags
+
+        fun projectileFlags() = projectileFlags
     }
 }

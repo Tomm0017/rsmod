@@ -13,16 +13,16 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.timer.ATTACK_DELAY
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.plugins.api.BonusSlot
 import gg.rsmod.plugins.api.ProjectileType
 import gg.rsmod.plugins.api.WeaponType
-import gg.rsmod.plugins.api.ext.getAttackStyle
-import gg.rsmod.plugins.api.ext.getVarbit
-import gg.rsmod.plugins.api.ext.hasWeaponType
+import gg.rsmod.plugins.api.ext.*
 import gg.rsmod.plugins.content.combat.strategy.CombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.MeleeCombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.RangedCombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
+import gg.rsmod.plugins.content.inter.attack.AttackTab
 import java.lang.ref.WeakReference
 
 /**
@@ -63,7 +63,33 @@ object Combat {
             reset(pawn)
         }
 
-        target.interruptPlugins()
+        if (target is Player && target.interfaces.getModal() != -1) {
+            target.closeInterface(target.interfaces.getModal())
+            target.interfaces.setModal(-1)
+        }
+    }
+
+    fun postDamage(pawn: Pawn, target: Pawn) {
+        if (target.isDead()) {
+            return
+        }
+
+        if (target.getType().isNpc()) {
+            if (!target.attr.has(COMBAT_TARGET_FOCUS_ATTR) || target.attr[COMBAT_TARGET_FOCUS_ATTR]!!.get() != pawn) {
+                target.attack(pawn)
+            }
+        } else if (target is Player) {
+            if (target.getVarp(AttackTab.DISABLE_AUTO_RETALIATE_VARP) == 0 && target.getCombatTarget() != pawn) {
+                target.attack(pawn)
+            }
+        }
+    }
+
+    fun getNpcXpMultiplier(npc: Npc): Double {
+        val def = npc.combatDef
+        val averageLvl = Math.floor((def.attackLvl + def.strengthLvl + def.defenceLvl + def.hitpoints) / 4.0)
+        val averageDefBonus = Math.floor((npc.getBonus(BonusSlot.DEFENCE_STAB) + npc.getBonus(BonusSlot.DEFENCE_SLASH) + npc.getBonus(BonusSlot.DEFENCE_CRUSH)) / 3.0)
+        return 1.0 + Math.floor(averageLvl * (averageDefBonus + npc.getStrengthBonus() + npc.getAttackBonus()) / 5120.0) / 40.0
     }
 
     fun raycast(pawn: Pawn, target: Pawn, distance: Int, projectile: Boolean): Boolean {

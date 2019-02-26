@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.content.objs.hay
 
+import com.google.common.collect.ImmutableSet
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Player
@@ -11,7 +12,7 @@ import gg.rsmod.plugins.api.ext.getInteractingGameObj
 import gg.rsmod.plugins.api.ext.hit
 import gg.rsmod.plugins.api.ext.player
 
-val HAY_OBJECTS = arrayOf(Objs.HAYSTACK, Objs.HAY_BALES, Objs.HAY_BALES_299)
+val HAY_OBJECTS = ImmutableSet.of(Objs.HAYSTACK, Objs.HAY_BALES, Objs.HAY_BALES_299)
 
 HAY_OBJECTS.forEach { hay ->
     on_obj_option(obj = hay, option = "search") {

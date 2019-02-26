@@ -10,6 +10,7 @@ import gg.rsmod.plugins.api.WeaponType
 import gg.rsmod.plugins.api.ext.addXp
 import gg.rsmod.plugins.api.ext.hasWeaponType
 import gg.rsmod.plugins.api.ext.hit
+import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
 import gg.rsmod.plugins.content.combat.formula.MeleeCombatFormula
 
@@ -37,7 +38,7 @@ object MeleeCombatStrategy : CombatStrategy {
          * to the [target].
          */
         val hitActions = arrayListOf<Function0<Unit>>()
-        hitActions.add { postDamage(pawn, target) }
+        hitActions.add { Combat.postDamage(pawn, target) }
 
         val animation = CombatConfigs.getAttackAnimation(pawn)
         pawn.animate(animation)
@@ -58,7 +59,7 @@ object MeleeCombatStrategy : CombatStrategy {
 
     private fun addCombatXp(player: Player, target: Pawn, damage: Int) {
         val mode = CombatConfigs.getXpMode(player)
-        val multiplier = if (target is Npc) getNpcXpMultiplier(target) else 1.0
+        val multiplier = if (target is Npc) Combat.getNpcXpMultiplier(target) else 1.0
 
         when (mode) {
             XpMode.ATTACK -> {

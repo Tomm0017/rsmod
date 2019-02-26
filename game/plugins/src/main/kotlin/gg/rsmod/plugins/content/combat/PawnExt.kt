@@ -48,7 +48,7 @@ fun Pawn.dealHit(target: Pawn, formula: CombatFormula, delay: Int, onHit: (PawnH
     }
 
     val pawnHit = PawnHit(hit, landHit)
-    hit.addAction { onHit(pawnHit) }.setCancelIf { this.isDead() }
+    hit.addAction { onHit(pawnHit) }.addAction { Combat.postDamage(this, target) }.setCancelIf { this.isDead() }
     return pawnHit
 }
 

@@ -10,7 +10,7 @@ import gg.rsmod.plugins.api.ext.setVarp
 object AttackTab {
 
     const val ATTACK_STYLE_VARP = 43
-    const val AUTO_RETALIATE_VARP = 172
+    const val DISABLE_AUTO_RETALIATE_VARP = 172
 
     private const val SPECIAL_ATTACK_ENERGY_VARP = 300
     const val SPECIAL_ATTACK_VARP = 301

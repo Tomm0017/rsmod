@@ -40,6 +40,8 @@ object PawnPathAction {
                 if (pawn is Player) {
                     if (!pawn.timers.has(FROZEN_TIMER)) {
                         pawn.message(Entity.YOU_CANT_REACH_THAT)
+                    } else {
+                        pawn.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
                     }
                     pawn.write(SetMapFlagMessage(255, 255))
                 }
@@ -97,11 +99,13 @@ object PawnPathAction {
                 return false
             }
 
-            return if (!lineOfSight) {
-                bordering(sourceTile, sourceSize, targetTile, interactionRange)
-            } else {
-                overlap(sourceTile, sourceSize, targetTile, interactionRange) && (interactionRange == 0 || !sourceTile.sameAs(targetTile))
-                        && pawn.world.collision.raycast(sourceTile, targetTile, lineOfSight)
+            if (!projectile) {
+                return if (!lineOfSight) {
+                    bordering(sourceTile, sourceSize, targetTile, interactionRange)
+                } else {
+                    overlap(sourceTile, sourceSize, targetTile, interactionRange) && (interactionRange == 0 || !sourceTile.sameAs(targetTile))
+                            && pawn.world.collision.raycast(sourceTile, targetTile, lineOfSight)
+                }
             }
         }
 

@@ -489,11 +489,6 @@ class PluginRepository(val world: World) {
         pluginCount++
     }
 
-    /**
-     * Binding an individual npc's spawn with a plugin will make it so [globalNpcSpawnPlugins]
-     * does not get invoked when an npc with [npc] id is spawned. This functionality may or may
-     * not be kept.
-     */
     fun bindNpcSpawn(npc: Int, plugin: (Plugin) -> Unit) {
         val plugins = npcSpawnPlugins[npc]
         if (plugins != null) {

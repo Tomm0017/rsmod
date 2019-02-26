@@ -34,9 +34,30 @@ services:
   - class: gg.rsmod.game.service.GameService
 
   - class: gg.rsmod.game.service.serializer.json.JsonPlayerSerializer
-    path: "./data/saves/"
+    path: "../data/saves/"
 
   - class: gg.rsmod.game.service.xtea.XteaKeyService
-    path: "./data/xteas/"
+    path: "../data/xteas/"
+
+  - class: gg.rsmod.game.service.game.NpcStatsService
+    path: "../data/cfg/npc-stats.json"
+
+  - class: gg.rsmod.game.service.game.ItemStatsService
+    path: "../data/cfg/item-stats.json"
+
+  - class: gg.rsmod.game.service.game.WeaponConfigService
+    path: "../data/cfg/weapons.json"
+
+  - class: gg.rsmod.game.service.game.EntityExamineService
+    path: "../data/cfg/examines"
+
+  - class: gg.rsmod.game.service.game.DumpEntityIdService
+    cache-path: "../data/cache/"
+    output-path: "../game/plugins/src/main/kotlin/gg/rsmod/plugins/osrs/api/cfg/"
+    dump: false
+
+  - class: gg.rsmod.plugins.service.doors.DoorService
+
+  - class: gg.rsmod.plugins.service.gates.GateService
 
   - class: gg.rsmod.game.service.login.LoginService

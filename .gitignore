@@ -6,11 +6,14 @@ gradlew.bat
 
 /data/cfg/
 /data/saves/
+/data/rsa/
 /data/xteas/
 
 /plugins/
 
 game.yml
+dev-settings.yml
+
 error.log
 
 first-launch

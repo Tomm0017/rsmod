@@ -1,7 +1,7 @@
 package gg.rsmod.game.fs.def
 
 import gg.rsmod.game.fs.Definition
-import gg.rsmod.util.io.BufferUtils
+import gg.rsmod.util.io.readString
 import io.netty.buffer.ByteBuf
 
 /**
@@ -42,7 +42,7 @@ class ItemDef(override val id: Int) : Definition(id) {
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {
             1 -> buf.readUnsignedShort()
-            2 -> name = BufferUtils.readString(buf)
+            2 -> name = buf.readString()
             4 -> buf.readUnsignedShort()
             5 -> buf.readUnsignedShort()
             6 -> buf.readUnsignedShort()
@@ -62,12 +62,12 @@ class ItemDef(override val id: Int) : Definition(id) {
             }
             26 -> buf.readUnsignedShort()
             in 30 until 35 -> {
-                groundMenu[opcode - 30] = BufferUtils.readString(buf)
+                groundMenu[opcode - 30] = buf.readString()
                 if (groundMenu[opcode - 30]!!.toLowerCase() == "null") {
                     groundMenu[opcode - 30] = null
                 }
             }
-            in 35 until 40 -> inventoryMenu[opcode - 35] = BufferUtils.readString(buf)
+            in 35 until 40 -> inventoryMenu[opcode - 35] = buf.readString()
             40 -> {
                 val count = buf.readUnsignedByte()
 

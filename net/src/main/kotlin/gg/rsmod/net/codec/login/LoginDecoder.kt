@@ -1,7 +1,8 @@
 package gg.rsmod.net.codec.login
 
 import gg.rsmod.net.codec.StatefulFrameDecoder
-import gg.rsmod.util.io.BufferUtils
+import gg.rsmod.util.io.readJagexString
+import gg.rsmod.util.io.readString
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelFutureListener
@@ -102,8 +103,8 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
 
             secureBuf.skipBytes(Byte.SIZE_BYTES)
 
-            val password = BufferUtils.readString(secureBuf)
-            val username = BufferUtils.readString(buf)
+            val password = secureBuf.readString()
+            val username = buf.readString()
 
             if (reportedSeed != serverSeed) {
                 buf.resetReaderIndex()
@@ -119,17 +120,17 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
             val clientHeight = buf.readUnsignedShort()
 
             buf.skipBytes(24) // random.dat data
-            BufferUtils.readString(buf)
+            buf.readString()
             buf.skipBytes(4)
 
             buf.skipBytes(17)
-            BufferUtils.readJagexString(buf)
-            BufferUtils.readJagexString(buf)
-            BufferUtils.readJagexString(buf)
-            BufferUtils.readJagexString(buf)
+            buf.readJagexString()
+            buf.readJagexString()
+            buf.readJagexString()
+            buf.readJagexString()
             buf.skipBytes(3)
-            BufferUtils.readJagexString(buf)
-            BufferUtils.readJagexString(buf)
+            buf.readJagexString()
+            buf.readJagexString()
             buf.skipBytes(2)
             buf.skipBytes(4 * 3)
             buf.skipBytes(4)

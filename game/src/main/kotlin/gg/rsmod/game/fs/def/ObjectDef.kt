@@ -1,7 +1,7 @@
 package gg.rsmod.game.fs.def
 
 import gg.rsmod.game.fs.Definition
-import gg.rsmod.util.io.BufferUtils
+import gg.rsmod.util.io.readString
 import io.netty.buffer.ByteBuf
 
 /**
@@ -33,7 +33,7 @@ class ObjectDef(override val id: Int) : Definition(id) {
                     buf.readUnsignedByte() // Model type
                 }
             }
-            2 -> name = BufferUtils.readString(buf)
+            2 -> name = buf.readString()
             5 -> {
                 val count = buf.readUnsignedByte()
                 for (i in 0 until count) {
@@ -55,7 +55,7 @@ class ObjectDef(override val id: Int) : Definition(id) {
             28 -> buf.readUnsignedByte()
             29 -> buf.readByte()
             in 30 until 35 -> {
-                options[opcode - 30] = BufferUtils.readString(buf)
+                options[opcode - 30] = buf.readString()
                 if (options[opcode - 30]?.toLowerCase() == "null") {
                     options[opcode - 30] = null
                 }

@@ -2,7 +2,8 @@ package gg.rsmod.net.packet
 
 import com.google.common.base.Preconditions
 import gg.rsmod.util.DataConstants
-import gg.rsmod.util.io.BufferUtils
+import gg.rsmod.util.io.readJagexString
+import gg.rsmod.util.io.readString
 import io.netty.buffer.ByteBuf
 
 /**
@@ -77,13 +78,13 @@ class GamePacketReader(packet: GamePacket) {
     val string: String
         get() {
             checkByteAccess()
-            return BufferUtils.readString(buffer)
+            return buffer.readString()
         }
 
     val jagString: String
         get() {
             checkByteAccess()
-            return BufferUtils.readJagexString(buffer)
+            return buffer.readJagexString()
         }
 
     /**

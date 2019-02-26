@@ -1,7 +1,7 @@
 package gg.rsmod.game.fs.def
 
 import gg.rsmod.game.fs.Definition
-import gg.rsmod.util.io.BufferUtils
+import gg.rsmod.util.io.readString
 import io.netty.buffer.ByteBuf
 
 /**
@@ -39,7 +39,7 @@ class NpcDef(override val id: Int) : Definition(id) {
                     buf.readUnsignedShort()
                 }
             }
-            2 -> name = BufferUtils.readString(buf)
+            2 -> name = buf.readString()
             12 -> size = buf.readUnsignedByte().toInt()
             13 -> standAnim = buf.readUnsignedShort()
             14 -> walkAnim = buf.readUnsignedShort()
@@ -52,7 +52,7 @@ class NpcDef(override val id: Int) : Definition(id) {
                 render7 = buf.readUnsignedShort()
             }
             in 30 until 35 -> {
-                options[opcode - 30] = BufferUtils.readString(buf)
+                options[opcode - 30] = buf.readString()
                 if (options[opcode - 30]?.toLowerCase() == "null") {
                     options[opcode - 30] = null
                 }

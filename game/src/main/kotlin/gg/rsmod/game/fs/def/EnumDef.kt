@@ -1,7 +1,7 @@
 package gg.rsmod.game.fs.def
 
 import gg.rsmod.game.fs.Definition
-import gg.rsmod.util.io.BufferUtils
+import gg.rsmod.util.io.readString
 import io.netty.buffer.ByteBuf
 
 /**
@@ -23,14 +23,14 @@ class EnumDef(override val id: Int) : Definition(id) {
         when (opcode) {
             1 -> keyType = buf.readUnsignedByte().toInt()
             2 -> valueType = buf.readUnsignedByte().toInt()
-            3 -> defaultString = BufferUtils.readString(buf)
+            3 -> defaultString = buf.readString()
             4 -> defaultInt = buf.readInt()
             5, 6 -> {
                 val count = buf.readUnsignedShort()
                 for (i in 0 until count) {
                     val key = buf.readInt()
                     if (opcode == 5) {
-                        values[key] = BufferUtils.readString(buf)
+                        values[key] = buf.readString()
                     } else {
                         values[key] = buf.readInt()
                     }

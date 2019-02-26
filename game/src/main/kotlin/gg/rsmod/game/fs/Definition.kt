@@ -1,6 +1,6 @@
 package gg.rsmod.game.fs
 
-import gg.rsmod.util.io.BufferUtils
+import gg.rsmod.util.io.readString
 import io.netty.buffer.ByteBuf
 
 /**
@@ -31,7 +31,7 @@ abstract class Definition(open val id: Int) {
             val isString = buf.readUnsignedByte().toInt() == 1
             val id = buf.readUnsignedMedium()
             if (isString) {
-                map[id] = BufferUtils.readString(buf)
+                map[id] = buf.readString()
             } else {
                 map[id] = buf.readInt()
             }

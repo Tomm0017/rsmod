@@ -5,37 +5,34 @@ import io.netty.buffer.ByteBuf
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-object BufferUtils {
+fun ByteBuf.readString(): String {
+    if (isReadable) {
+        val start = readerIndex()
+        while (readByte().toInt() != 0);
+        val size = readerIndex() - start
 
-    @JvmStatic fun readString(buf: ByteBuf): String {
-        if (buf.isReadable) {
-            val start = buf.readerIndex()
-            while (buf.readByte().toInt() != 0);
-            val size = buf.readerIndex() - start
+        val data = ByteArray(size)
+        readerIndex(start)
+        readBytes(data)
 
-            val data = ByteArray(size)
-            buf.readerIndex(start)
-            buf.readBytes(data)
-
-            return String(data, 0, size - 1)
-        } else {
-            return ""
-        }
+        return String(data, 0, size - 1)
+    } else {
+        return ""
     }
+}
 
-    fun readJagexString(buf: ByteBuf): String {
-        if (buf.isReadable && buf.readByte().toInt() != 0) {
-            val start = buf.readerIndex()
-            while (buf.readByte().toInt() != 0);
-            val size = buf.readerIndex() - start
+fun ByteBuf.readJagexString(): String {
+    if (isReadable && readByte().toInt() != 0) {
+        val start = readerIndex()
+        while (readByte().toInt() != 0);
+        val size = readerIndex() - start
 
-            val data = ByteArray(size)
-            buf.readerIndex(start)
-            buf.readBytes(data)
+        val data = ByteArray(size)
+        readerIndex(start)
+        readBytes(data)
 
-            return String(data, 0, size - 1)
-        } else {
-            return ""
-        }
+        return String(data, 0, size - 1)
+    } else {
+        return ""
     }
 }

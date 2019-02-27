@@ -7,7 +7,7 @@ import gg.rsmod.plugins.api.ext.chatPlayer
 import gg.rsmod.plugins.api.ext.options
 
 on_npc_option(npc = Npcs.LESSER_FANATIC, option = "talk-to") {
-    it.suspendable { chat(it) }
+    suspendable { chat(it) }
 }
 
 suspend fun chat(it: Plugin) {

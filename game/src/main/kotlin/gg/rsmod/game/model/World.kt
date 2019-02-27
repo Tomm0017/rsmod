@@ -478,7 +478,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         return null
     }
 
-    fun executePlugin(ctx: Any, plugin: Function1<Plugin, Unit>) {
+    fun executePlugin(ctx: Any, plugin: (Plugin).() -> Unit) {
         pluginExecutor.execute(ctx, plugin)
     }
 

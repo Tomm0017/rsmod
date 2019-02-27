@@ -13,11 +13,11 @@ val BOOTHS = ImmutableSet.of(Objs.BANK_BOOTH, Objs.BANK_BOOTH_6943, Objs.BANK_BO
 
 BOOTHS.forEach { booth ->
     on_obj_option(obj = booth, option = "bank") {
-        it.player().openBank()
+        player.openBank()
     }
 
     on_obj_option(obj = booth, option = "collect") {
-        open_collect(it.player())
+        open_collect(player)
     }
 }
 

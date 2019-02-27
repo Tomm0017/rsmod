@@ -22,15 +22,15 @@ import java.lang.ref.WeakReference
  */
 object PawnPathAction {
 
-    val walkPlugin: (Plugin) -> Unit = {
-        val pawn = it.ctx as Pawn
+    val walkPlugin: Plugin.() -> Unit = {
+        val pawn = ctx as Pawn
         val world = pawn.world
         val npc = pawn.attr[INTERACTING_NPC_ATTR]!!.get()!!
         val opt = pawn.attr[INTERACTING_OPT_ATTR]!!
         val npcId = if (pawn is Player) npc.getTransform(pawn) else npc.id
         val lineOfSightRange = world.plugins.getNpcInteractionDistance(npcId)
 
-        it.suspendable {
+        suspendable {
             pawn.facePawn(npc)
 
             val pathFound = walkTo(it, pawn, npc, interactionRange = lineOfSightRange ?: 1, lineOfSight = lineOfSightRange != null)

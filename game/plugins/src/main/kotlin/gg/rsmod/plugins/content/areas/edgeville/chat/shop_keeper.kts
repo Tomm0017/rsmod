@@ -7,18 +7,18 @@ import gg.rsmod.plugins.api.ext.*
 
 arrayOf(Npcs.SHOP_KEEPER_514, Npcs.SHOP_ASSISTANT_515).forEach { shop ->
     on_npc_option(npc = shop, option = "talk-to") {
-        it.suspendable { dialog(it) }
+        suspendable { dialog(it) }
     }
 
     on_npc_option(npc = shop, option = "trade") {
-        open_shop(it.player())
+        open_shop(player)
     }
 }
 
 suspend fun dialog(it: Plugin) {
     it.chatNpc("Can I help you at all?", animation = 567)
     when (it.options("Yes please. What are you selling?", "No thanks.")) {
-        1 -> open_shop(it.player())
+        1 -> open_shop(it.player)
         2 -> it.chatPlayer("No thanks.", animation = 588)
     }
 }

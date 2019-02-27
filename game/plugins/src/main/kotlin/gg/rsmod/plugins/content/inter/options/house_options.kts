@@ -10,7 +10,7 @@ on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 98) {
     /**
      Teleport inside + doors: varp 1047
      */
-    val p = it.player()
+    val p = player
     if (!p.lock.canInterfaceInteract()) {
         return@on_button
     }
@@ -19,5 +19,5 @@ on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 98) {
 }
 
 on_button(interfaceId = 370, component = 21) {
-    it.player().closeInterface(interfaceId = 370)
+    player.closeInterface(interfaceId = 370)
 }

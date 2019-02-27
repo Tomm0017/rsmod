@@ -6,7 +6,7 @@ import gg.rsmod.plugins.api.ext.chatNpc
 import gg.rsmod.plugins.api.ext.chatPlayer
 
 on_npc_option(npc = Npcs.BROTHER_ALTHRIC, option = "talk-to") {
-    it.suspendable { dialog(it) }
+    suspendable { dialog(it) }
 }
 
 suspend fun dialog(it: Plugin) {

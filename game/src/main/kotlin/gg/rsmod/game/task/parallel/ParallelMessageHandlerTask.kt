@@ -23,7 +23,7 @@ class ParallelMessageHandlerTask(private val executor: ExecutorService) : GameTa
 
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
-            executor.submit(PhasedTask(phaser, Runnable { p.handleMessages() }))
+            executor.submit(PhasedTask(phaser) { p.handleMessages() })
         }
         phaser.arriveAndAwaitAdvance()
     }

@@ -2,8 +2,8 @@ package gg.rsmod.net.packet
 
 import com.google.common.base.Preconditions
 import gg.rsmod.util.DataConstants
-import gg.rsmod.util.io.readJagexString
-import gg.rsmod.util.io.readString
+import gg.rsmod.util.io.BufferUtils.readJagexString
+import gg.rsmod.util.io.BufferUtils.readString
 import io.netty.buffer.ByteBuf
 
 /**

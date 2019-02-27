@@ -7,7 +7,7 @@ import gg.rsmod.plugins.api.cfg.Npcs
 import gg.rsmod.plugins.api.ext.*
 
 on_npc_option(npc = Npcs.ABBOT_LANGLEY, option = "talk-to") {
-    it.suspendable {
+    suspendable {
         dialog(it)
     }
 }
@@ -18,7 +18,7 @@ suspend fun dialog(it: Plugin) {
         1 -> {
             it.chatPlayer("Can you heal me? I'm injured.", animation = 554)
             it.chatNpc("Ok.", animation = 588)
-            heal(it.player())
+            heal(it.player)
             it.messageBox("Abbot Langley places his hands on your head. You feel a little better.")
         }
         2 -> {

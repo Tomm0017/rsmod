@@ -49,7 +49,7 @@ object Prayers {
     }
 
     suspend fun toggle(it: Plugin, prayer: Prayer) {
-        val p = it.player()
+        val p = it.player
 
         if (p.isDead() || !p.lock.canUsePrayer()) {
             p.syncVarp(ACTIVE_PRAYERS_VARP)
@@ -138,15 +138,15 @@ object Prayers {
     }
 
     fun selectQuickPrayer(it: Plugin, prayer: Prayer) {
-        val p = it.player()
+        val player = it.player
 
-        if (p.isDead() || !p.lock.canUsePrayer()) {
-            it.player().setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 0)
+        if (player.isDead() || !player.lock.canUsePrayer()) {
+            player.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 0)
             return
         }
 
         val slot = prayer.quickPrayerSlot
-        val enabled = (it.player().getVarp(SELECTED_QUICK_PRAYERS_VARP) and (1 shl slot)) != 0
+        val enabled = (player.getVarp(SELECTED_QUICK_PRAYERS_VARP) and (1 shl slot)) != 0
 
         it.suspendable {
             if (!enabled) {
@@ -154,15 +154,15 @@ object Prayers {
                     val others = Prayer.values.filter { other -> prayer != other && other.group != null &&
                             (prayer.group == other.group || prayer.overlap.contains(other.group)) }
                     others.forEach { other ->
-                        val otherEnabled = (it.player().getVarp(SELECTED_QUICK_PRAYERS_VARP) and (1 shl other.quickPrayerSlot)) != 0
+                        val otherEnabled = (player.getVarp(SELECTED_QUICK_PRAYERS_VARP) and (1 shl other.quickPrayerSlot)) != 0
                         if (otherEnabled) {
-                            p.setVarp(SELECTED_QUICK_PRAYERS_VARP, it.player().getVarp(SELECTED_QUICK_PRAYERS_VARP) and (1 shl other.quickPrayerSlot).inv())
+                            player.setVarp(SELECTED_QUICK_PRAYERS_VARP, player.getVarp(SELECTED_QUICK_PRAYERS_VARP) and (1 shl other.quickPrayerSlot).inv())
                         }
                     }
-                    p.setVarp(SELECTED_QUICK_PRAYERS_VARP, it.player().getVarp(SELECTED_QUICK_PRAYERS_VARP) or (1 shl slot))
+                    player.setVarp(SELECTED_QUICK_PRAYERS_VARP, player.getVarp(SELECTED_QUICK_PRAYERS_VARP) or (1 shl slot))
                 }
             } else {
-                p.setVarp(SELECTED_QUICK_PRAYERS_VARP, it.player().getVarp(SELECTED_QUICK_PRAYERS_VARP) and (1 shl slot).inv())
+                player.setVarp(SELECTED_QUICK_PRAYERS_VARP, player.getVarp(SELECTED_QUICK_PRAYERS_VARP) and (1 shl slot).inv())
             }
         }
     }
@@ -204,7 +204,7 @@ object Prayers {
     fun isActive(p: Player, prayer: Prayer): Boolean = p.getVarbit(prayer.varbit) != 0
 
     private suspend fun checkRequirements(it: Plugin, prayer: Prayer): Boolean {
-        val p = it.player()
+        val p = it.player
 
         if (p.getSkills().getMaxLevel(Skills.PRAYER) < prayer.level) {
             p.syncVarp(ACTIVE_PRAYERS_VARP)

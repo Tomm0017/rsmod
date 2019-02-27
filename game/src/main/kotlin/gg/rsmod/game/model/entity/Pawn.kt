@@ -513,7 +513,7 @@ abstract class Pawn(val world: World) : Entity() {
     /**
      * Executes a plugin with this [Pawn] as its context.
      */
-    fun executePlugin(plugin: (Plugin) -> Unit) {
+    fun executePlugin(plugin: Plugin.() -> Unit) {
         world.pluginExecutor.execute(this, plugin)
     }
 

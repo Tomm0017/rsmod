@@ -8,7 +8,7 @@ val SUB_SECTION_VARBIT = 4372
 
 SkillGuide.values.forEach { guide ->
     on_button(320, guide.child) {
-        val p = it.player()
+        val p = player
 
         if (!p.lock.canInterfaceInteract()) {
             return@on_button
@@ -24,6 +24,6 @@ SkillGuide.values.forEach { guide ->
 
 for (section in 11..24) {
     on_button(214, section) {
-        it.player().setVarbit(SUB_SECTION_VARBIT, section - 11)
+        player.setVarbit(SUB_SECTION_VARBIT, section - 11)
     }
 }

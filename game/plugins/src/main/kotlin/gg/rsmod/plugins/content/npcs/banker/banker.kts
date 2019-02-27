@@ -9,22 +9,22 @@ import gg.rsmod.plugins.content.inter.bank.openBank
 
 arrayOf(Npcs.BANKER, Npcs.BANKER_395).forEach { banker ->
     on_npc_option(npc = banker, option = "talk-to", lineOfSightDistance = 2) {
-        it.suspendable { dialog(it) }
+        suspendable { dialog(it) }
     }
     on_npc_option(npc = banker, option = "bank", lineOfSightDistance = 2) {
-        it.player().openBank()
+        player.openBank()
     }
     on_npc_option(npc = banker, option = "collect", lineOfSightDistance = 2) {
-        open_collect(it.player())
+        open_collect(player)
     }
 }
 
 suspend fun dialog(it: Plugin) {
     it.chatNpc("Good day, how may I help you?")
     when (options(it)) {
-        1 -> it.player().openBank()
-        2 -> open_pin(it.player())
-        3 -> open_collect(it.player())
+        1 -> it.player.openBank()
+        2 -> open_pin(it.player)
+        3 -> open_collect(it.player)
         4 -> what_is_this_place(it)
     }
 }

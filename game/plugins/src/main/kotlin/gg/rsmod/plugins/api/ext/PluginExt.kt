@@ -26,43 +26,43 @@ const val CHATBOX_CHILD = 561
 /**
  * The default action that will occur when interrupting or finishing a dialog.
  */
-private val closeDialog = { it: Plugin ->
-    it.player().closeComponent(parent = 162, child = CHATBOX_CHILD)
+private val closeDialog: ((Plugin).() -> Unit) = {
+    player.closeComponent(parent = 162, child = CHATBOX_CHILD)
 }
 
 /**
  * Gets the [ctx] as a [Pawn]. If [ctx] is not a [Pawn], a cast exception
  * will be thrown.
  */
-fun Plugin.pawn(): Pawn = ctx as Pawn
+val Plugin.pawn: Pawn get() = ctx as Pawn
 
 /**
  * Gets the [ctx] as a [Player]. If [ctx] is not a [Player], a cast exception
  * will be thrown.
  */
-fun Plugin.player(): Player = ctx as Player
+val Plugin.player: Player get() = ctx as Player
 
 /**
  * Gets the [ctx] as an [Npc]. If [ctx] is not an [Npc], a cast exception
  * will be thrown.
  */
-fun Plugin.npc(): Npc = ctx as Npc
+val Plugin.npc: Npc get() = ctx as Npc
 
-fun Plugin.getCommandArgs(): Array<String> = pawn().attr[COMMAND_ARGS_ATTR]!!
+fun Plugin.getCommandArgs(): Array<String> = pawn.attr[COMMAND_ARGS_ATTR]!!
 
-fun Plugin.getInteractingSlot(): Int = pawn().attr[INTERACTING_SLOT_ATTR]!!
+fun Plugin.getInteractingSlot(): Int = pawn.attr[INTERACTING_SLOT_ATTR]!!
 
-fun Plugin.getInteractingItem(): Item = pawn().attr[INTERACTING_ITEM]!!.get()!!
+fun Plugin.getInteractingItem(): Item = pawn.attr[INTERACTING_ITEM]!!.get()!!
 
-fun Plugin.getInteractingItemId(): Int = pawn().attr[INTERACTING_ITEM_ID]!!
+fun Plugin.getInteractingItemId(): Int = pawn.attr[INTERACTING_ITEM_ID]!!
 
-fun Plugin.getInteractingItemSlot(): Int = pawn().attr[INTERACTING_ITEM_SLOT]!!
+fun Plugin.getInteractingItemSlot(): Int = pawn.attr[INTERACTING_ITEM_SLOT]!!
 
-fun Plugin.getInteractingOption(): Int = pawn().attr[INTERACTING_OPT_ATTR]!!
+fun Plugin.getInteractingOption(): Int = pawn.attr[INTERACTING_OPT_ATTR]!!
 
-fun Plugin.getInteractingGameObj(): GameObject = pawn().attr[INTERACTING_OBJ_ATTR]!!.get()!!
+fun Plugin.getInteractingGameObj(): GameObject = pawn.attr[INTERACTING_OBJ_ATTR]!!.get()!!
 
-fun Plugin.getInteractingNpc(): Npc = pawn().attr[INTERACTING_NPC_ATTR]!!.get()!!
+fun Plugin.getInteractingNpc(): Npc = pawn.attr[INTERACTING_NPC_ATTR]!!.get()!!
 
 /**
  * Prompts the player with options.
@@ -71,7 +71,7 @@ fun Plugin.getInteractingNpc(): Npc = pawn().attr[INTERACTING_NPC_ATTR]!!.get()!
  * The id of the option chosen. The id can range from [1] inclusive to [options.size] inclusive.
  */
 suspend fun Plugin.options(vararg options: String, title: String = "Select an Option"): Int {
-    val player = player()
+    val player = player
 
     player.setVarbit(5983, 1)
     player.runClientScript(2379)
@@ -93,7 +93,7 @@ suspend fun Plugin.options(vararg options: String, title: String = "Select an Op
  * The integer input.
  */
 suspend fun Plugin.inputInteger(description: String = "Enter amount"): Int {
-    val player = player()
+    val player = player
 
     player.runClientScript(108, description)
 
@@ -110,7 +110,7 @@ suspend fun Plugin.inputInteger(description: String = "Enter amount"): Int {
  * The selected item's id.
  */
 suspend fun Plugin.searchItemInput(message: String): Int {
-    val player = player()
+    val player = player
 
     player.runClientScript(750, message, 1, -1)
 
@@ -130,7 +130,7 @@ suspend fun Plugin.searchItemInput(message: String): Int {
  * dialog box.
  */
 suspend fun Plugin.messageBox(message: String, lineSpacing: Int = 31) {
-    val player = player()
+    val player = player
 
     player.setComponentText(interfaceId = 229, component = 1, text = message)
     player.setComponentText(interfaceId = 229, component = 2, text = "Click here to continue")
@@ -161,7 +161,7 @@ suspend fun Plugin.messageBox(message: String, lineSpacing: Int = 31) {
  * The title of the dialog, if left as null, the npc's name will be used.
  */
 suspend fun Plugin.chatNpc(message: String, npc: Int = -1, animation: Int = 588, title: String? = null) {
-    val player = player()
+    val player = player
     val npcId = if (npc != -1) npc else player.attr[INTERACTING_NPC_ATTR]?.get()?.getTransform(player) ?: throw RuntimeException("Npc id must be manually set as the player is not interacting with an npc.")
     val dialogTitle = title ?: player.world.definitions.get(NpcDef::class.java, npcId).name
 
@@ -186,7 +186,7 @@ suspend fun Plugin.chatNpc(message: String, npc: Int = -1, animation: Int = 588,
  * The message to render on the dialog box.
  */
 suspend fun Plugin.chatPlayer(message: String, animation: Int = 588, title: String? = null) {
-    val player = player()
+    val player = player
     val dialogTitle = title ?: player.username
 
     player.setComponentPlayerHead(interfaceId = 217, component = 1)
@@ -216,7 +216,7 @@ suspend fun Plugin.chatPlayer(message: String, animation: Int = 588, title: Stri
  * The amount of the item to show on the dialog.
  */
 suspend fun Plugin.itemMessageBox(message: String, item: Int, amount: Int = 1) {
-    val player = player()
+    val player = player
 
     player.setComponentItem(interfaceId = 193, component = 1, item = item, amountOrZoom = amount)
     player.setComponentText(interfaceId = 193, component = 2, text = message)
@@ -232,7 +232,7 @@ suspend fun Plugin.itemMessageBox(message: String, item: Int, amount: Int = 1) {
 }
 
 suspend fun Plugin.doubleItemMessageBox(message: String, item1: Int, item2: Int, amount1: Int = 1, amount2: Int = 1) {
-    val player = player()
+    val player = player
 
     player.setComponentItem(interfaceId = 11, component = 1, item = item1, amountOrZoom = amount1)
     player.setComponentText(interfaceId = 11, component = 2, text = message)
@@ -247,7 +247,7 @@ suspend fun Plugin.doubleItemMessageBox(message: String, item1: Int, item2: Int,
 }
 
 suspend fun Plugin.levelUpMessageBox(skill: Int, levels: Int) {
-    val player = player()
+    val player = player
 
     if (skill != Skills.HUNTER) {
         val children = mapOf(

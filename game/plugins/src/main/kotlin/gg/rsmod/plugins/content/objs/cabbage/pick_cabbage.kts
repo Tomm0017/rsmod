@@ -10,10 +10,10 @@ import gg.rsmod.plugins.api.ext.player
 val RESPAWN_DELAY = 75
 
 on_obj_option(obj = Objs.CABBAGE_1161, option = "pick", lineOfSightDistance = 0) {
-    val player = it.player()
-    val obj = it.getInteractingGameObj()
+    val player = player
+    val obj = getInteractingGameObj()
 
-    it.suspendable {
+    suspendable {
         val route = player.walkTo(it, obj.tile)
         if (route.success) {
             if (player.inventory.isFull()) {
@@ -26,9 +26,9 @@ on_obj_option(obj = Objs.CABBAGE_1161, option = "pick", lineOfSightDistance = 0)
                 player.inventory.add(item = item)
                 player.world.remove(obj)
                 player.world.executePlugin(obj) {
-                    it.suspendable {
+                    suspendable {
                         it.wait(RESPAWN_DELAY)
-                        player.world.spawn(DynamicObject(obj))
+                        world.spawn(DynamicObject(obj))
                     }
                 }
             }

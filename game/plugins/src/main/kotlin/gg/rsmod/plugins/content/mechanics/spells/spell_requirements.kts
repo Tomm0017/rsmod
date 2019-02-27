@@ -12,8 +12,8 @@ SpellRequirements.loadSpellRequirements(world, SPELLBOOK_POINTER_ENUM)
 SpellRequirements.requirements.filter { it.value.combat }.forEach { entry ->
     val requirement = entry.value
     on_spell_on_npc(requirement.parent, requirement.child) {
-        val player = it.player()
-        val npc = it.getInteractingNpc()
+        val player = player
+        val npc = getInteractingNpc()
         val combatSpell = CombatSpell.values.firstOrNull { spell -> spell.id == requirement.spellId }
         if (combatSpell != null) {
             player.attr[Combat.CASTING_SPELL] = combatSpell

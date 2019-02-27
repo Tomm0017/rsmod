@@ -8,6 +8,6 @@ val SACKS = ImmutableSet.of(Objs.SACKS_365)
 
 SACKS.forEach { sack ->
     on_obj_option(obj = sack, option = "search") {
-        it.player().message("There's nothing interesting in these sacks.")
+        player.message("There's nothing interesting in these sacks.")
     }
 }

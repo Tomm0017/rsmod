@@ -6,7 +6,7 @@ import gg.rsmod.plugins.api.cfg.Npcs
 import gg.rsmod.plugins.api.ext.*
 
 on_npc_option(npc = Npcs.RICHARD_2200, option = "talk-to") {
-    it.suspendable { chat(it) }
+    suspendable { chat(it) }
 }
 
 suspend fun chat(it: Plugin) {
@@ -22,11 +22,11 @@ suspend fun options(it: Plugin) {
             it.chatNpc("from everyone else. They're very useful when out in<br>the wilderness with friends or anyone else you don't<br>want to harm.", animation = 569)
             it.chatNpc("So would you like to buy one?", animation = 567)
             when (it.options("Yes please!", "No thanks.")) {
-                1 -> open_shop(it.player())
+                1 -> open_shop(it.player)
                 2 -> no_thanks(it)
             }
         }
-        2 -> open_shop(it.player())
+        2 -> open_shop(it.player)
         3 -> no_thanks(it)
     }
 }

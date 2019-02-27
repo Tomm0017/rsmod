@@ -8,14 +8,14 @@ val SEARCH_FOR_PATH_TIMER = TimerKey()
 val SEARCH_FOR_PATH_DELAY = 15..30
 
 on_global_npc_spawn {
-    val npc = it.npc()
+    val npc = npc
     if (npc.walkRadius > 0) {
         npc.timers[SEARCH_FOR_PATH_TIMER] = npc.world.random(SEARCH_FOR_PATH_DELAY)
     }
 }
 
 on_timer(SEARCH_FOR_PATH_TIMER) {
-    val npc = it.npc()
+    val npc = npc
     val facing = npc.attr[FACING_PAWN_ATTR]?.get()
 
     /**

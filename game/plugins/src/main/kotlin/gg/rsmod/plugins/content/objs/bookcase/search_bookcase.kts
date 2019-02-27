@@ -10,8 +10,8 @@ val BOOKCASES = ImmutableSet.of(Objs.BOOKCASE_380, Objs.BOOKCASE_381)
 
 BOOKCASES.forEach { case ->
     on_obj_option(obj = case, option = "search") {
-        it.suspendable {
-            search(it, it.player())
+        suspendable {
+            search(it, player)
         }
     }
 }

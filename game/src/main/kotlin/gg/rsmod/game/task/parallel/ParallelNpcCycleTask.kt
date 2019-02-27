@@ -23,7 +23,7 @@ class ParallelNpcCycleTask(private val executor: ExecutorService) : GameTask {
 
         phaser.bulkRegister(npcCount)
         worldNpcs.forEach { n ->
-            executor.submit(PhasedTask(phaser, Runnable { n.cycle() }))
+            executor.submit(PhasedTask(phaser) { n.cycle() })
         }
         phaser.arriveAndAwaitAdvance()
     }

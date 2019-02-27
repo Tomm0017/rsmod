@@ -7,7 +7,7 @@ import gg.rsmod.plugins.api.ext.player
 import gg.rsmod.plugins.api.ext.setSkullIcon
 
 on_timer(SKULL_ICON_DURATION_TIMER) {
-    val player = it.player()
+    val player = player
     if (!player.hasSkullIcon(SkullIcon.NONE)) {
         player.setSkullIcon(SkullIcon.NONE)
     }

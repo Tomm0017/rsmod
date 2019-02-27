@@ -18,13 +18,13 @@ import gg.rsmod.plugins.content.combat.strategy.RangedCombatStrategy
 import gg.rsmod.plugins.content.mechanics.poison.poison
 
 on_npc_combat(Npcs.KING_BLACK_DRAGON) {
-    it.suspendable {
+    suspendable {
         combat(it)
     }
 }
 
 suspend fun combat(it: Plugin) {
-    val npc = it.npc()
+    val npc = it.npc
     var target = npc.getCombatTarget() ?: return
 
     while (npc.canEngageCombat(target)) {

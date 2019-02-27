@@ -10,14 +10,14 @@ import gg.rsmod.plugins.api.ext.options
 import gg.rsmod.plugins.api.ext.player
 
 on_npc_option(npc = Npcs.MONK_2579, option = "talk-to") {
-    it.suspendable { dialog(it) }
+    suspendable { dialog(it) }
 }
 
 suspend fun dialog(it: Plugin) {
     it.chatNpc("Greetings traveller.", animation = 588)
     when (it.options("Can you heal me? I'm injured.", "Isn't this place built a bit out of the way?", "How do I get further into the monastery?")) {
         1 -> {
-            val player = it.player()
+            val player = it.player
             it.chatPlayer("Can you heal me? I'm injured.", animation = 554)
             it.chatNpc("Ok.", animation = 588)
             heal(player)

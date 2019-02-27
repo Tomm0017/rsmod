@@ -4,13 +4,13 @@ import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
 
 on_button(interfaceId = 160, component = 42) {
-    val p = it.player()
+    val p = player
     if (!p.lock.canInterfaceInteract()) {
         return@on_button
     }
 
     if (!p.isInterfaceVisible(WorldMap.INTERFACE_ID)) {
-        val opt = it.getInteractingOption()
+        val opt = getInteractingOption()
         p.sendWorldMapTile()
         p.openInterface(interfaceId = WorldMap.INTERFACE_ID, dest = InterfaceDestination.WORLD_MAP, fullscreen = opt == 2)
         if (opt == 2) {
@@ -24,7 +24,7 @@ on_button(interfaceId = 160, component = 42) {
 }
 
 on_button(interfaceId = WorldMap.INTERFACE_ID, component = 37) {
-    val p = it.player()
+    val p = player
     p.closeInterface(WorldMap.INTERFACE_ID)
     p.openOverlayInterface(p.interfaces.displayMode)
     p.attr.remove(WorldMap.LAST_TILE)
@@ -32,7 +32,7 @@ on_button(interfaceId = WorldMap.INTERFACE_ID, component = 37) {
 }
 
 on_timer(WorldMap.UPDATE_TIMER) {
-    val p = it.player()
+    val p = player
 
     if (p.isInterfaceVisible(WorldMap.INTERFACE_ID)) {
         /**

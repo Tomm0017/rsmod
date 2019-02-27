@@ -3,11 +3,11 @@ package gg.rsmod.plugins.content.inter.kod
 import gg.rsmod.plugins.api.ext.player
 
 on_button(interfaceId = 387, component = 21) {
-    val p = it.player()
+    val p = player
     if (!p.lock.canInterfaceInteract()) {
         return@on_button
     }
-    KeptOnDeath.open(it.player())
+    KeptOnDeath.open(player)
 }
 
 on_interface_close(interfaceId = KeptOnDeath.COMPONENT_ID) {
@@ -16,5 +16,5 @@ on_interface_close(interfaceId = KeptOnDeath.COMPONENT_ID) {
      * inventory container to the tab area, which can mess up other tab area
      * interfaces such as equipment stats.
      */
-    it.player().inventory.dirty = true
+    player.inventory.dirty = true
 }

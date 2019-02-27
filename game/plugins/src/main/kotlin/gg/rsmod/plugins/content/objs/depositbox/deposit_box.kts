@@ -18,14 +18,14 @@ val DEPOSIT_BOXES = ImmutableSet.of(Objs.BANK_DEPOSIT_BOX, Objs.BANK_DEPOSIT_BOX
 
 DEPOSIT_BOXES.forEach { box ->
     on_obj_option(obj = box, option = "deposit") {
-        open_deposit_box(it.player())
+        open_deposit_box(player)
     }
 }
 
 on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 2) {
-    val player = it.player()
-    val slot = it.getInteractingSlot()
-    val opt = it.getInteractingOption()
+    val player = player
+    val slot = getInteractingSlot()
+    val opt = getInteractingOption()
     when (opt) {
         2 -> deposit_item(player, slot, 1)
         3 -> deposit_item(player, slot, 5)
@@ -40,12 +40,12 @@ on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 2) {
 }
 
 on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 4) {
-    val player = it.player()
+    val player = player
     deposit_all(player, player.inventory)
 }
 
 on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 6) {
-    val player = it.player()
+    val player = player
     deposit_all(player, player.equipment, sound = DEPOSIT_EQUIPMENT_SFX)
 }
 

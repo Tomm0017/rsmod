@@ -3,7 +3,7 @@ package gg.rsmod.util.concurrency
 import mu.KotlinLogging
 import java.util.concurrent.Phaser
 
-class PhasedTask(private val phaser: Phaser, private val task: Runnable) : Runnable {
+class PhasedTask(private val phaser: Phaser, private val task: () -> Unit) : Runnable {
 
     companion object {
         private val logger = KotlinLogging.logger {  }
@@ -11,9 +11,9 @@ class PhasedTask(private val phaser: Phaser, private val task: Runnable) : Runna
 
     override fun run() {
         try {
-            task.run()
+            task()
         } catch (e: Exception) {
-            logger.error("Error with task ${task::class.java.simpleName}.", e)
+            logger.error("Error with phased task.", e)
         } finally {
             phaser.arriveAndDeregister()
         }

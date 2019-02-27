@@ -9,6 +9,6 @@ val CRATES = ImmutableSet.of(Objs.CRATE_354, Objs.CRATE_355, Objs.CRATE_356, Obj
 
 CRATES.forEach { crate ->
     on_obj_option(obj = crate, option = "search") {
-        it.player().message("You search the crate but find nothing.")
+        player.message("You search the crate but find nothing.")
     }
 }

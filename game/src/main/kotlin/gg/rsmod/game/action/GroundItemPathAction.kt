@@ -16,8 +16,8 @@ import java.lang.ref.WeakReference
  */
 object GroundItemPathAction {
 
-    val walkPlugin: (Plugin) -> Unit = {
-        val p = it.ctx as Player
+    val walkPlugin: Plugin.() -> Unit = {
+        val p = ctx as Player
         val item = p.attr[INTERACTING_GROUNDITEM_ATTR]!!.get()!!
         val opt = p.attr[INTERACTING_OPT_ATTR]!!
 
@@ -25,7 +25,7 @@ object GroundItemPathAction {
             handleAction(p, item, opt)
         } else {
             p.walkTo(item.tile, MovementQueue.StepType.NORMAL)
-            it.suspendable {
+            suspendable {
                 awaitArrival(it, item, opt)
             }
         }

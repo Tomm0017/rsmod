@@ -10,7 +10,7 @@ import gg.rsmod.plugins.api.ext.*
  * Closing main modal for players.
  */
 set_modal_close_logic {
-    val player = it.player()
+    val player = player
     val modal = player.interfaces.getModal()
     if (modal != -1) {
         player.closeInterface(modal)
@@ -22,7 +22,7 @@ set_modal_close_logic {
  * Execute when a player logs in.
  */
 on_login {
-    val p = it.player()
+    val p = player
 
     /**
      * Skill-related logic.

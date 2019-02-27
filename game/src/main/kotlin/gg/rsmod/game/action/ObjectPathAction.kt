@@ -24,13 +24,13 @@ import java.util.*
  */
 object ObjectPathAction {
 
-    val walkPlugin: (Plugin) -> Unit = {
-        val player = it.ctx as Player
+    val walkPlugin: Plugin.() -> Unit = {
+        val player = ctx as Player
         val obj = player.attr[INTERACTING_OBJ_ATTR]!!.get()!!
         val opt = player.attr[INTERACTING_OPT_ATTR]!!
         val lineOfSightRange = player.world.plugins.getObjInteractionDistance(obj.id)
 
-        it.suspendable {
+        suspendable {
             val route = walkTo(it, obj, lineOfSightRange)
             if (route.success) {
                 if (lineOfSightRange == null || lineOfSightRange > 0) {

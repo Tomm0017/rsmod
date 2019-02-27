@@ -24,22 +24,22 @@ object Launcher {
                 devProps = Paths.get("../dev-settings.yml"),
                 args = args)
 
-        val gameService = world.getService(GameService::class.java, false).orElse(null)
-
-        /*for (i in 0 until 1998) {
+        world.getService(GameService::class.java).orElse(null).let { service ->
+            /*for (i in 0 until 1998) {
             val player = Player(world)
             player.username = "Test $i"
             player.tile = Tile(world.gameContext.home).transform(world.random(-0..0), world.random(-0..0))
 
-            gameService?.submitGameThreadJob {
+            service.submitGameThreadJob {
                 player.register()
                 player.executePlugin {
-                    it.suspendable {
+                    suspendable {
                         walkPlugin(it)
                     }
                 }
             }
         }*/
+        }
     }
 
     private suspend fun walkPlugin(it: Plugin) {

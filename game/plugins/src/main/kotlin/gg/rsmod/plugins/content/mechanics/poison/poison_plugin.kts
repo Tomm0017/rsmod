@@ -1,8 +1,8 @@
 package gg.rsmod.plugins.content.mechanics.poison
 
 import gg.rsmod.game.model.attr.POISON_TICKS_LEFT_ATTR
-import gg.rsmod.game.model.timer.POISON_TIMER
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.timer.POISON_TIMER
 import gg.rsmod.plugins.api.HitType
 import gg.rsmod.plugins.api.ext.hit
 import gg.rsmod.plugins.api.ext.pawn
@@ -10,7 +10,7 @@ import gg.rsmod.plugins.api.ext.pawn
 val POISON_TICK_DELAY = 25
 
 on_timer(POISON_TIMER) {
-    val pawn = it.pawn()
+    val pawn = pawn
     val ticksLeft = pawn.attr[POISON_TICKS_LEFT_ATTR] ?: 0
 
     if (ticksLeft == 0) {

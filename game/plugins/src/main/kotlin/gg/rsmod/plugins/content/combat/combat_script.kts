@@ -13,7 +13,7 @@ import gg.rsmod.plugins.api.ext.setVarp
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 
 set_combat_logic {
-    it.suspendable {
+    suspendable {
         while (true) {
             if (!cycle(it)) {
                 break
@@ -24,7 +24,7 @@ set_combat_logic {
 }
 
 suspend fun cycle(it: Plugin): Boolean {
-    val pawn = it.pawn()
+    val pawn = it.pawn
     val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR]?.get()
 
     if (target == null) {

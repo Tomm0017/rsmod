@@ -11,9 +11,9 @@ import gg.rsmod.game.plugin.Plugin
  */
 object NpcDeathAction {
 
-    val deathPlugin: (Plugin) -> Unit = {
-        val npc = it.ctx as Npc
-        it.suspendable {
+    val deathPlugin: Plugin.() -> Unit = {
+        val npc = ctx as Npc
+        suspendable {
             death(it, npc)
         }
     }

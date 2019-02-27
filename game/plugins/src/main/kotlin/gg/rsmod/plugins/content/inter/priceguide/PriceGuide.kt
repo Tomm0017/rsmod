@@ -141,7 +141,7 @@ object PriceGuide {
     }
 
     suspend fun remove(it: Plugin, slot: Int, opt: Int) {
-        val p = it.player()
+        val p = it.player
         val container = p.attr[GUIDE_CONTAINER] ?: return
         val item = container[slot] ?: return
 
@@ -161,7 +161,7 @@ object PriceGuide {
     }
 
     suspend fun add(it: Plugin, slot: Int, opt: Int) {
-        val p = it.player()
+        val p = it.player
         val container = p.attr[TEMP_INV_CONTAINER] ?: return
         val item = container[slot] ?: return
 

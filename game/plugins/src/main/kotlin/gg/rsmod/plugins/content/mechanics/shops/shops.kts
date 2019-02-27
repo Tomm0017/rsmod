@@ -18,16 +18,16 @@ val OPTION_4 = "Sell ${BUY_OPTS[2]}"
 val OPTION_5 = "Sell ${BUY_OPTS[3]}"
 
 on_interface_open(interfaceId = SHOP_INTERFACE_ID) {
-    val player = it.player()
-    it.player().attr[CURRENT_SHOP_ATTR]?.let { shop ->
+    val player = player
+    player.attr[CURRENT_SHOP_ATTR]?.let { shop ->
         player.runClientScript(149, 19726336, 93, 4, 7, 0, -1, "$OPTION_1<col=ff9040>", "$OPTION_2<col=ff9040>", "$OPTION_3<col=ff9040>", "$OPTION_4<col=ff9040>", "$OPTION_5<col=ff9040>")
         shop.viewers.add(player.uid)
     }
 }
 
 on_interface_close(interfaceId = SHOP_INTERFACE_ID) {
-    val player = it.player()
-    it.player().attr[CURRENT_SHOP_ATTR]?.let { shop ->
+    val player = player
+    player.attr[CURRENT_SHOP_ATTR]?.let { shop ->
         shop.viewers.remove(player.uid)
         player.closeInterface(interfaceId = INV_INTERFACE_ID)
         player.openInterface(dest = InterfaceDestination.INVENTORY)
@@ -35,10 +35,10 @@ on_interface_close(interfaceId = SHOP_INTERFACE_ID) {
 }
 
 on_button(interfaceId = SHOP_INTERFACE_ID, component = 16) {
-    val player = it.player()
+    val player = player
     player.attr[CURRENT_SHOP_ATTR]?.let { shop ->
-        val opt = it.getInteractingOption()
-        val slot = it.getInteractingSlot() - 1
+        val opt = getInteractingOption()
+        val slot = getInteractingSlot() - 1
         val shopItem = shop.items[slot] ?: return@on_button
 
         if (opt == 1) {
@@ -59,10 +59,10 @@ on_button(interfaceId = SHOP_INTERFACE_ID, component = 16) {
 }
 
 on_button(interfaceId = INV_INTERFACE_ID, component = 0) {
-    val player = it.player()
+    val player = player
     player.attr[CURRENT_SHOP_ATTR]?.let { shop ->
-        val opt = it.getInteractingOption()
-        val slot = it.getInteractingSlot()
+        val opt = getInteractingOption()
+        val slot = getInteractingSlot()
         val item = player.inventory[slot] ?: return@on_button
 
         if (opt == 1) {

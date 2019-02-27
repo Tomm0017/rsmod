@@ -28,25 +28,25 @@ val CHANGES_BEFORE_STICK = 5
  */
 val RESET_STICK_DELAY = 25
 
-on_world_init { p ->
-    val world = p.ctx as World
+on_world_init {
+    val world = ctx as World
     world.getService(GateService::class.java).ifPresent { service ->
         service.gates.forEach { gate ->
 
             on_obj_option(obj = gate.closed.hinge, option = "open", lineOfSightDistance = 1) {
-                open_gate(it.player(), it.getInteractingGameObj(), gate)
+                open_gate(player, getInteractingGameObj(), gate)
             }
 
             on_obj_option(obj = gate.closed.extension, option = "open", lineOfSightDistance = 1) {
-                open_gate(it.player(), it.getInteractingGameObj(), gate)
+                open_gate(player, getInteractingGameObj(), gate)
             }
 
             on_obj_option(obj = gate.opened.hinge, option = "close", lineOfSightDistance = 1) {
-                close_gate(it.player(), it.getInteractingGameObj(), gate)
+                close_gate(player, getInteractingGameObj(), gate)
             }
 
             on_obj_option(obj = gate.opened.extension, option = "close", lineOfSightDistance = 1) {
-                close_gate(it.player(), it.getInteractingGameObj(), gate)
+                close_gate(player, getInteractingGameObj(), gate)
             }
         }
     }

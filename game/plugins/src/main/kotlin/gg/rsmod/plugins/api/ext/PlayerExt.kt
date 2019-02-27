@@ -394,7 +394,7 @@ fun Player.addXp(skill: Int, xp: Double) {
          * Show the level-up chatbox interface.
          */
         executePlugin {
-            it.suspendable { it.levelUpMessageBox(skill, increment) }
+            suspendable { it.levelUpMessageBox(skill, increment) }
         }
     }
 }

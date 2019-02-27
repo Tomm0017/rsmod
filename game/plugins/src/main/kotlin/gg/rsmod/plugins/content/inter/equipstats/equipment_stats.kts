@@ -8,8 +8,8 @@ import gg.rsmod.plugins.api.ext.*
 
 fun bind_unequip(equipment: EquipmentType, child: Int) {
     on_button(interfaceId = EquipmentStats.INTERFACE_ID, component = child) {
-        val p = it.player()
-        val opt = it.getInteractingOption()
+        val p = player
+        val opt = getInteractingOption()
 
         if (opt == 1) {
             EquipAction.unequip(p, equipment.id)
@@ -21,7 +21,7 @@ fun bind_unequip(equipment: EquipmentType, child: Int) {
         } else {
             val item = p.equipment[equipment.id] ?: return@on_button
             if (!p.world.plugins.executeItem(p, item.id, opt)) {
-                val slot = it.getInteractingSlot()
+                val slot = getInteractingSlot()
                 if (p.world.devContext.debugButtons) {
                     p.message("Unhandled button action: [parent=84, child=$child, option=$opt, slot=$slot, item=${item.id}]")
                 }
@@ -31,10 +31,10 @@ fun bind_unequip(equipment: EquipmentType, child: Int) {
 }
 
 on_button(interfaceId = EquipmentStats.TAB_INTERFACE_ID, component = 0) {
-    val p = it.player()
+    val p = player
 
-    val slot = it.getInteractingSlot()
-    val opt = it.getInteractingOption()
+    val slot = getInteractingSlot()
+    val opt = getInteractingOption()
     val item = p.inventory[slot] ?: return@on_button
 
     if (opt == 1) {
@@ -51,7 +51,7 @@ on_button(interfaceId = EquipmentStats.TAB_INTERFACE_ID, component = 0) {
 }
 
 on_button(interfaceId = 387, component = 17) {
-    val p = it.player()
+    val p = player
 
     if (!p.lock.canInterfaceInteract()) {
         return@on_button
@@ -67,7 +67,7 @@ on_button(interfaceId = 387, component = 17) {
 }
 
 on_interface_close(interfaceId = EquipmentStats.INTERFACE_ID) {
-    it.player().closeInterface(interfaceId = EquipmentStats.TAB_INTERFACE_ID)
+    player.closeInterface(interfaceId = EquipmentStats.TAB_INTERFACE_ID)
 }
 
 bind_unequip(EquipmentType.HEAD, child = 11)

@@ -7,7 +7,7 @@ import gg.rsmod.plugins.api.ext.*
  */
 Hotkey.values.forEach { hotkey ->
     on_button(interfaceId = 121, component = hotkey.child) {
-        it.player().setVarbit(KeyBinding.FOCUSED_HOTKEY_VARBIT, hotkey.id)
+        player.setVarbit(KeyBinding.FOCUSED_HOTKEY_VARBIT, hotkey.id)
     }
 }
 
@@ -15,11 +15,11 @@ Hotkey.values.forEach { hotkey ->
  * Set hotkey value.
  */
 on_button(interfaceId = 121, component = 111) {
-    val p = it.player()
+    val p = player
     val focused = p.getVarbit(KeyBinding.FOCUSED_HOTKEY_VARBIT)
     val hotkey = Hotkey.values.firstOrNull { h -> h.id == focused } ?: return@on_button
 
-    val slot = it.getInteractingSlot()
+    val slot = getInteractingSlot()
     KeyBinding.set(p, hotkey, slot)
 }
 
@@ -27,7 +27,7 @@ on_button(interfaceId = 121, component = 111) {
  * Restore defaults.
  */
 on_button(interfaceId = 121, component = 104) {
-    val p = it.player()
+    val p = player
 
     Hotkey.values.forEach { hotkey ->
         p.setVarbit(hotkey.varbit, hotkey.defaultValue)
@@ -35,5 +35,5 @@ on_button(interfaceId = 121, component = 104) {
 }
 
 on_button(interfaceId = 121, component = 103) {
-    it.player().toggleVarbit(KeyBinding.ESC_CLOSES_INTERFACES)
+    player.toggleVarbit(KeyBinding.ESC_CLOSES_INTERFACES)
 }

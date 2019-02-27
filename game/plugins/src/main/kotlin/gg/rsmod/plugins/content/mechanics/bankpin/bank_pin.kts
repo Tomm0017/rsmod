@@ -8,7 +8,7 @@ import gg.rsmod.plugins.api.ext.setComponentText
 val INTERFACE_ID = 14
 
 on_interface_open(INTERFACE_ID) {
-    open_settings(it.player())
+    open_settings(player)
 }
 
 fun open_settings(p: Player) {

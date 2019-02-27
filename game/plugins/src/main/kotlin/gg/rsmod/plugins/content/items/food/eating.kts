@@ -5,13 +5,13 @@ import gg.rsmod.plugins.api.ext.player
 
 Food.values.forEach { food ->
     on_item_option(item = food.item, option = "eat") {
-        val p = it.player()
+        val p = player
 
         if (!Foods.canEat(p, food)) {
             return@on_item_option
         }
 
-        val inventorySlot = it.getInteractingItemSlot()
+        val inventorySlot = getInteractingItemSlot()
         if (p.inventory.remove(item = food.item, beginSlot = inventorySlot).hasSucceeded()) {
             Foods.eat(p, food)
             if (food.replacement != -1) {

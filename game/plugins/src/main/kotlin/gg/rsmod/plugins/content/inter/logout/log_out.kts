@@ -8,7 +8,7 @@ import gg.rsmod.plugins.api.ext.player
  * Logout button.
  */
 on_button(interfaceId = 182, component = 8) {
-    val p = it.player()
+    val p = player
     if (!p.timers.has(ACTIVE_COMBAT_TIMER)) {
         p.requestLogout()
         p.write(LogoutFullMessage())

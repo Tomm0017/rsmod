@@ -5,7 +5,7 @@ import gg.rsmod.plugins.api.ext.*
 import gg.rsmod.plugins.api.getDisplayComponentId
 
 on_login {
-    it.player().setInterfaceEvents(interfaceId = SpellFilters.INTERFACE_ID, component = 184, range = 0..4, setting = 2)
+    player.setInterfaceEvents(interfaceId = SpellFilters.INTERFACE_ID, component = 184, range = 0..4, setting = 2)
 }
 
 DisplayMode.values.forEach { mode ->
@@ -16,15 +16,15 @@ DisplayMode.values.forEach { mode ->
         else -> return@forEach
     }
     on_button(interfaceId = getDisplayComponentId(mode), component = child) {
-        val opt = it.getInteractingOption()
+        val opt = getInteractingOption()
         if (opt == 2) {
-            it.player().toggleVarbit(SpellFilters.DISABLE_FILTERS_VARBIT)
+            player.toggleVarbit(SpellFilters.DISABLE_FILTERS_VARBIT)
         }
     }
 }
 
 on_button(interfaceId = SpellFilters.INTERFACE_ID, component = 184) {
-    val slot = it.getInteractingSlot()
+    val slot = getInteractingSlot()
     val varbit = when (slot) {
         0 -> SpellFilters.FILTER_COMBAT_VARBIT
         1 -> SpellFilters.FILTER_TELEPORTS_VARBIT
@@ -33,5 +33,5 @@ on_button(interfaceId = SpellFilters.INTERFACE_ID, component = 184) {
         4 -> SpellFilters.FILTER_BY_RUNES_VARBIT
         else -> return@on_button
     }
-    it.player().toggleVarbit(varbit)
+    player.toggleVarbit(varbit)
 }

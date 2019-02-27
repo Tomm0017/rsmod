@@ -11,7 +11,7 @@ val MEN = arrayOf(Npcs.MAN_3014, Npcs.MAN_3078, Npcs.MAN_3079, Npcs.MAN_3080,
 
 MEN.forEach { man ->
     on_npc_option(npc = man, option = "talk-to") {
-        it.suspendable {
+        suspendable {
             chat(it)
         }
     }
@@ -19,7 +19,7 @@ MEN.forEach { man ->
 
 suspend fun chat(it: Plugin) {
     it.chatPlayer("Hello, how's it going?", animation = 567)
-    when (it.player().world.random(17)) {
+    when (it.player.world.random(17)) {
         0 -> it.chatNpc("Not too bad thanks.", animation = 567)
         1 -> {
             it.chatNpc("I'm fine, how are you?", animation = 567)
@@ -62,7 +62,7 @@ suspend fun chat(it: Plugin) {
         12 -> {
             val npc = it.getInteractingNpc()
             it.chatNpc("Are you asking for a fight?", animation = 614)
-            npc.attack(it.player())
+            npc.attack(it.player)
         }
         13 -> it.chatNpc("I'm a little worried - I've heard there's lots of people<br>going about, killing citizens at random.", animation = 589)
         14 -> it.chatNpc("That is classified information.", animation = 588)

@@ -18,8 +18,8 @@ val trees = arrayListOf(
 
 trees.forEach { tree ->
     on_obj_option(obj = tree.obj, option = 1) {
-        val obj = it.getInteractingGameObj()
-        it.suspendable {
+        val obj = getInteractingGameObj()
+        suspendable {
             Woodcutting.chopDownTree(it, obj, tree.type, tree.trunk)
         }
     }

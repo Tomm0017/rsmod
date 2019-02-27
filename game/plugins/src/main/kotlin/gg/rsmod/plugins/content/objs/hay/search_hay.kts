@@ -16,10 +16,10 @@ val HAY_OBJECTS = ImmutableSet.of(Objs.HAYSTACK, Objs.HAY_BALES, Objs.HAY_BALES_
 
 HAY_OBJECTS.forEach { hay ->
     on_obj_option(obj = hay, option = "search") {
-        val player = it.player()
-        val obj = it.getInteractingGameObj()
+        val player = player
+        val obj = getInteractingGameObj()
         val name = obj.getDef(player.world.definitions).name
-        it.suspendable { search(it, player, name.toLowerCase()) }
+        suspendable { search(it, player, name.toLowerCase()) }
     }
 }
 

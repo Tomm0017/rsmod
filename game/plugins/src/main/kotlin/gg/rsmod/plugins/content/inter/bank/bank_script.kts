@@ -4,34 +4,34 @@ import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.plugins.api.ext.*
 
 on_interface_close(Bank.BANK_INTERFACE_ID) {
-    it.player().closeInterface(Bank.INV_INTERFACE_ID)
+    player.closeInterface(Bank.INV_INTERFACE_ID)
 }
 
 intArrayOf(17, 19).forEachIndexed { index, button ->
     on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = button) {
-        it.player().setVarbit(Bank.REARRANGE_MODE_VARBIT, index)
+        player.setVarbit(Bank.REARRANGE_MODE_VARBIT, index)
     }
 }
 
 intArrayOf(22, 24).forEachIndexed { index, button ->
     on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = button) {
-        it.player().setVarbit(Bank.WITHDRAW_AS_VARBIT, index)
+        player.setVarbit(Bank.WITHDRAW_AS_VARBIT, index)
     }
 }
 
 on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 38) {
-    it.player().toggleVarbit(Bank.ALWAYS_PLACEHOLD_VARBIT)
+    player.toggleVarbit(Bank.ALWAYS_PLACEHOLD_VARBIT)
 }
 
 intArrayOf(28, 30, 32, 34, 36).forEach { quantity ->
     on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = quantity) {
         val state = (quantity - 28) / 2
-        it.player().setVarbit(Bank.QUANTITY_VARBIT, state)
+        player.setVarbit(Bank.QUANTITY_VARBIT, state)
     }
 }
 
 on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 42) {
-    val p = it.player()
+    val p = player
     val from = p.inventory
     val to = p.bank
 
@@ -55,7 +55,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 42) {
 }
 
 on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
-    val p = it.player()
+    val p = player
     val from = p.equipment
     val to = p.bank
 
@@ -79,10 +79,10 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
 }
 
 on_button(interfaceId = Bank.INV_INTERFACE_ID, component = Bank.INV_INTERFACE_CHILD) p@ {
-    val p = it.player()
+    val p = player
 
-    val opt = it.getInteractingOption()
-    val slot = it.getInteractingSlot()
+    val opt = getInteractingOption()
+    val slot = getInteractingSlot()
     val item = p.inventory[slot] ?: return@p
 
     if (opt == 10) {
@@ -124,7 +124,7 @@ on_button(interfaceId = Bank.INV_INTERFACE_ID, component = Bank.INV_INTERFACE_CH
     if (amount == 0) {
         amount = p.inventory.getItemCount(item.id)
     } else if (amount == -1) {
-        it.suspendable {
+        suspendable {
             amount = it.inputInteger("How many would you like to bank?")
             if (amount > 0) {
                 p.setVarbit(Bank.LAST_X_INPUT, amount)
@@ -138,10 +138,10 @@ on_button(interfaceId = Bank.INV_INTERFACE_ID, component = Bank.INV_INTERFACE_CH
 }
 
 on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
-    val p = it.player()
+    val p = player
 
-    val opt = it.getInteractingOption()
-    val slot = it.getInteractingSlot()
+    val opt = getInteractingOption()
+    val slot = getInteractingSlot()
     val item = p.bank[slot] ?: return@p
 
     if (opt == 10) {
@@ -205,7 +205,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
             p.bank.set(slot, null)
             return@p
         }
-        it.suspendable {
+        suspendable {
             amount = it.inputInteger("How many would you like to withdraw?")
             if (amount > 0) {
                 p.setVarbit(Bank.LAST_X_INPUT, amount)

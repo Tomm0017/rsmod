@@ -34,7 +34,7 @@ Here are the instructions for how you would create a few different scripts.
     This script is pretty similar to the last, except we have a new piece of 
     important code. When you want to create a piece of code that will be 
     scheduled at a certain point, you want to surround the code with `Plugin.suspendable`
-    (in this case, `it.suspendable { ... }`). 
+    (in this case, `suspendable { ... }`). 
         
     And that's it! You're on your way to creating all sorts of crazy scripts now.
     

@@ -1,7 +1,7 @@
 package gg.rsmod.game.fs.def
 
 import gg.rsmod.game.fs.Definition
-import gg.rsmod.util.io.readString
+import gg.rsmod.util.io.BufferUtils.readString
 import io.netty.buffer.ByteBuf
 
 /**

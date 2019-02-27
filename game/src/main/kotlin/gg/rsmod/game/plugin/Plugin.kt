@@ -36,7 +36,7 @@ class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Conti
      * was interrupted by another action such as walking or a new script being
      * executed by the same [ctx].
      */
-    var interruptAction: Function1<Plugin, Unit>? = null
+    var interruptAction: ((Plugin).() -> Unit)? = null
 
     /**
      * The next [SuspendableStep], if any, that must be handled once a [SuspendableCondition]
@@ -61,8 +61,10 @@ class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Conti
     /**
      * Boilerplate to signal the use of suspendable logic.
      */
-    fun suspendable(block: suspend CoroutineScope.() -> Unit) {
-        val coroutine = block.createCoroutine(receiver = CoroutineScope(dispatcher), completion = this)
+    fun suspendable(block: suspend CoroutineScope.(Plugin) -> Unit) {
+        val plugin = this
+        val scope = suspend { block(CoroutineScope(dispatcher), plugin) }
+        val coroutine = scope.createCoroutine(completion = this)
         coroutine.resume(Unit)
     }
 

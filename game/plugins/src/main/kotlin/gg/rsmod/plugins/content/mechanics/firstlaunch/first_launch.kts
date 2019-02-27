@@ -8,7 +8,7 @@ import gg.rsmod.plugins.api.ext.player
 import gg.rsmod.plugins.content.inter.emotes.EmotesTab
 
 on_login {
-    val p = it.player()
+    val p = player
     if (p.world.gameContext.initialLaunch) {
         p.world.gameContext.initialLaunch = false
 
@@ -17,12 +17,12 @@ on_login {
                 ?: p.world.privileges.get(Privilege.DEV_POWER)
                 ?: Privilege.DEFAULT
         EmotesTab.unlockAll(p)
-        it.suspendable { dialog(it) }
+        suspendable { dialog(it) }
     }
 }
 
 suspend fun dialog(it: Plugin) {
-    val p = it.player()
+    val p = it.player
 
     val api = p.world.server.getApiName()
     val site = p.world.server.getApiSite()

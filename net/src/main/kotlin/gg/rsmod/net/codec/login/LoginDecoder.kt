@@ -1,8 +1,8 @@
 package gg.rsmod.net.codec.login
 
 import gg.rsmod.net.codec.StatefulFrameDecoder
-import gg.rsmod.util.io.readJagexString
-import gg.rsmod.util.io.readString
+import gg.rsmod.util.io.BufferUtils.readJagexString
+import gg.rsmod.util.io.BufferUtils.readString
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelFutureListener

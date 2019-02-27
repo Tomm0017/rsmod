@@ -6,8 +6,8 @@ import gg.rsmod.plugins.api.ext.player
 import gg.rsmod.plugins.api.ext.toggleStorageBit
 
 on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 71) {
-    it.suspendable {
-        val p = it.player()
+    suspendable {
+        val p = player
         while (true) {
 
             /**

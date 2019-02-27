@@ -26,14 +26,14 @@ val CHANGES_BEFORE_STICK = 5
  */
 val RESET_STICK_DELAY = 25
 
-on_world_init { p ->
-    val world = p.ctx as World
+on_world_init {
+    val world = ctx as World
     world.getService(DoorService::class.java).ifPresent { service ->
 
         service.doors.forEach { door ->
             on_obj_option(obj = door.opened, option = "close") {
-                val player = it.player()
-                val obj = it.getInteractingGameObj()
+                val player = player
+                val obj = getInteractingGameObj()
                 if (!is_stuck(player.world, obj)) {
                     val newDoor = player.world.closeDoor(obj, closed = door.closed, invertTransform = obj.type == ObjectType.DIAGONAL_WALL.value)
                     copy_stick_vars(obj, newDoor)
@@ -46,8 +46,8 @@ on_world_init { p ->
             }
 
             on_obj_option(obj = door.closed, option = "open") {
-                val player = it.player()
-                val obj = it.getInteractingGameObj()
+                val player = player
+                val obj = getInteractingGameObj()
                 val newDoor = player.world.openDoor(obj, opened = door.opened, invertTransform = obj.type == ObjectType.DIAGONAL_WALL.value)
                 copy_stick_vars(obj, newDoor)
                 add_stick_var(player.world, newDoor)
@@ -57,19 +57,19 @@ on_world_init { p ->
 
         service.doubleDoors.forEach { doors ->
             on_obj_option(obj = doors.closed.left, option = "open") {
-                handle_double_doors(it.player(), it.getInteractingGameObj(), doors, open = true)
+                handle_double_doors(player, getInteractingGameObj(), doors, open = true)
             }
 
             on_obj_option(obj = doors.closed.right, option = "open") {
-                handle_double_doors(it.player(), it.getInteractingGameObj(), doors, open = true)
+                handle_double_doors(player, getInteractingGameObj(), doors, open = true)
             }
 
             on_obj_option(obj = doors.opened.left, option = "close") {
-                handle_double_doors(it.player(), it.getInteractingGameObj(), doors, open = false)
+                handle_double_doors(player, getInteractingGameObj(), doors, open = false)
             }
 
             on_obj_option(obj = doors.opened.right, option = "close") {
-                handle_double_doors(it.player(), it.getInteractingGameObj(), doors, open = false)
+                handle_double_doors(player, getInteractingGameObj(), doors, open = false)
             }
         }
     }

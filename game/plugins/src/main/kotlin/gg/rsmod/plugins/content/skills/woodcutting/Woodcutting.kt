@@ -19,7 +19,7 @@ object Woodcutting {
     data class Tree(val type: TreeType, val obj: Int, val trunk: Int)
 
     suspend fun chopDownTree(it: Plugin, obj: GameObject, tree: TreeType, trunkId: Int) {
-        val p = it.player()
+        val p = it.player
 
         if (!canChop(p, obj, tree)) {
             return
@@ -45,7 +45,7 @@ object Woodcutting {
                 if (p.world.random(tree.depleteChance) == 0) {
                     p.playSound(3600)
                     p.animate(-1)
-                    it.player().addXp(Skills.WOODCUTTING, tree.xp)
+                    p.addXp(Skills.WOODCUTTING, tree.xp)
 
                     if (trunkId != -1) {
                         val world = p.world

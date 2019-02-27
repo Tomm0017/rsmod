@@ -17,7 +17,7 @@ on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 100) {
     [Invoke Script]: [2276, 2]
     [Invoke Script]: [733, 0, 0, 0, 0, 0, 0, 0, 0]
      */
-    val p = it.player()
+    val p = player
     if (!p.lock.canInterfaceInteract()) {
         return@on_button
     }

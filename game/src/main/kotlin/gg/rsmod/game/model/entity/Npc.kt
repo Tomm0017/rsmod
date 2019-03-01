@@ -19,6 +19,7 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
 
     companion object {
         internal const val RESET_PAWN_FACE_DELAY = 25
+        const val DEFAULT_RESPAWN_DELAY = 25
     }
 
     constructor(id: Int, tile: Tile, world: World) : this(id, world, spawnTile = Tile(tile)) {

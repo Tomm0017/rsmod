@@ -6,6 +6,9 @@ import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
+import gg.rsmod.game.model.attr.LEVEL_UP_INCREMENT
+import gg.rsmod.game.model.attr.LEVEL_UP_OLD_XP
+import gg.rsmod.game.model.attr.LEVEL_UP_SKILL_ID
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.interf.InterfaceSet
@@ -187,6 +190,10 @@ open class Player(world: World) : Pawn(world) {
     var skullIcon = -1
 
     var runEnergy = 100.0
+
+    var gameMode = 0
+
+    var xpRate = 1.0
 
     fun getSkills(): SkillSet = skillSet
 
@@ -422,6 +429,34 @@ open class Player(world: World) : Pawn(world) {
                     stats.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
                 }
             }
+        }
+    }
+
+    fun addXp(skill: Int, xp: Double) {
+        val currentXp = getSkills().getCurrentXp(skill)
+        if (currentXp >= SkillSet.MAX_XP) {
+            return
+        }
+        val totalXp = Math.min(SkillSet.MAX_XP.toDouble(), (currentXp + xp))
+        /**
+         * Amount of levels that have increased with the addition of [xp].
+         */
+        val increment = SkillSet.getLevelForXp(totalXp) - SkillSet.getLevelForXp(currentXp)
+
+        /**
+         * Only increment the 'current' level if it's set at its capped level.
+         */
+        if (getSkills().getCurrentLevel(skill) == getSkills().getMaxLevel(skill)) {
+            getSkills().setBaseXp(skill, totalXp)
+        } else {
+            getSkills().setXp(skill, totalXp)
+        }
+
+        if (increment > 0) {
+            attr[LEVEL_UP_SKILL_ID] = skill
+            attr[LEVEL_UP_INCREMENT] = increment
+            attr[LEVEL_UP_OLD_XP] = currentXp
+            world.plugins.executeSkillLevelUp(this)
         }
     }
 

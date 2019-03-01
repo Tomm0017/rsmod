@@ -6,7 +6,6 @@ import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.Skills
-import gg.rsmod.plugins.api.ext.addXp
 import gg.rsmod.plugins.api.ext.filterableMessage
 import gg.rsmod.plugins.api.ext.playSound
 import gg.rsmod.plugins.api.ext.player

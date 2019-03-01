@@ -148,7 +148,7 @@ object RangedCombatStrategy : CombatStrategy {
             addCombatXp(pawn as Player, target, damage)
         }
 
-        target.hit(damage = damage, type = if (landHit) HitType.HIT else HitType.BLOCK, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize() / 2)))
+        target.hit(damage = damage, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize() / 2)))
                 .addActions(hitActions).setCancelIf { pawn.isDead() }
     }
 

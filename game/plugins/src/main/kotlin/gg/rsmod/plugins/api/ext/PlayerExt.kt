@@ -14,7 +14,6 @@ import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.game.model.skill.SkillSet
 import gg.rsmod.game.model.timer.SKULL_ICON_DURATION_TIMER
 import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.game.sync.block.UpdateBlockType
@@ -360,43 +359,6 @@ fun Player.sendWeaponComponentInformation() {
 
     setComponentText(593, 1, name)
     setVarbit(357, panel)
-}
-
-fun Player.addXp(skill: Int, xp: Double) {
-    val currentXp = getSkills().getCurrentXp(skill)
-    if (currentXp >= SkillSet.MAX_XP) {
-        return
-    }
-    val totalXp = Math.min(SkillSet.MAX_XP.toDouble(), (currentXp + xp))
-    /**
-     * Amount of levels that have increased with the addition of [xp].
-     */
-    val increment = SkillSet.getLevelForXp(totalXp) - SkillSet.getLevelForXp(currentXp)
-
-    /**
-     * Only increment the 'current' level if it's set at its capped level.
-     */
-    if (getSkills().getCurrentLevel(skill) == getSkills().getMaxLevel(skill)) {
-        getSkills().setBaseXp(skill, totalXp)
-    } else {
-        getSkills().setXp(skill, totalXp)
-    }
-
-    if (increment > 0) {
-        /**
-         * Calculate the combat level for the player if they leveled up a combat
-         * skill.
-         */
-        if (Skills.isCombat(skill)) {
-            calculateAndSetCombatLevel()
-        }
-        /**
-         * Show the level-up chatbox interface.
-         */
-        executePlugin {
-            suspendable { it.levelUpMessageBox(skill, increment) }
-        }
-    }
 }
 
 fun Player.calculateAndSetCombatLevel(): Boolean {

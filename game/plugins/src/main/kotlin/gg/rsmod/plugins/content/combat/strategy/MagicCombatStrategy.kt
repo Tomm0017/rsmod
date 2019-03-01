@@ -6,10 +6,8 @@ import gg.rsmod.game.model.combat.XpMode
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.api.HitType
 import gg.rsmod.plugins.api.ProjectileType
 import gg.rsmod.plugins.api.Skills
-import gg.rsmod.plugins.api.ext.addXp
 import gg.rsmod.plugins.api.ext.getVarbit
 import gg.rsmod.plugins.api.ext.hit
 import gg.rsmod.plugins.api.ext.playSound
@@ -74,7 +72,7 @@ object MagicCombatStrategy : CombatStrategy {
             addCombatXp(pawn as Player, target, damage)
         }
 
-        target.hit(damage = damage, type = if (landHit) HitType.HIT else HitType.BLOCK, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize() / 2)))
+        target.hit(damage = damage, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize() / 2)))
                 .addActions(hitActions).setCancelIf { pawn.isDead() }
     }
 

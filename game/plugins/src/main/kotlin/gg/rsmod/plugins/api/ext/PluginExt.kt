@@ -34,19 +34,19 @@ private val closeDialog: ((Plugin).() -> Unit) = {
  * Gets the [ctx] as a [Pawn]. If [ctx] is not a [Pawn], a cast exception
  * will be thrown.
  */
-val Plugin.pawn: Pawn get() = ctx as Pawn
+inline val Plugin.pawn: Pawn get() = ctx as Pawn
 
 /**
  * Gets the [ctx] as a [Player]. If [ctx] is not a [Player], a cast exception
  * will be thrown.
  */
-val Plugin.player: Player get() = ctx as Player
+inline val Plugin.player: Player get() = ctx as Player
 
 /**
  * Gets the [ctx] as an [Npc]. If [ctx] is not an [Npc], a cast exception
  * will be thrown.
  */
-val Plugin.npc: Npc get() = ctx as Npc
+inline val Plugin.npc: Npc get() = ctx as Npc
 
 fun Plugin.getCommandArgs(): Array<String> = pawn.attr[COMMAND_ARGS_ATTR]!!
 

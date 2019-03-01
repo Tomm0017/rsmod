@@ -142,3 +142,18 @@ val INTERACTING_COMPONENT_PARENT = AttributeKey<Int>()
  * Interacting interface child id.
  */
 val INTERACTING_COMPONENT_CHILD = AttributeKey<Int>()
+
+/**
+ * The skill id of the latest level up.
+ */
+val LEVEL_UP_SKILL_ID = AttributeKey<Int>()
+
+/**
+ * The amount of levels that have incremented in a skill level up.
+ */
+val LEVEL_UP_INCREMENT = AttributeKey<Int>()
+
+/**
+ * The previous skill XP of the latest level up.
+ */
+val LEVEL_UP_OLD_XP = AttributeKey<Double>()

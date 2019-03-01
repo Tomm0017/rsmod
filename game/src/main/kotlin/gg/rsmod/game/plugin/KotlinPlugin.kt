@@ -76,6 +76,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
      */
     fun spawn_npc(npc: Int, x: Int, z: Int, height: Int = 0, walkRadius: Int = 0, direction: Direction = Direction.SOUTH) {
         val n = Npc(npc, Tile(x, z, height), world)
+        n.respawns = true
         n.walkRadius = walkRadius
         n.lastFacingDirection = direction
         r.npcSpawns.add(n)
@@ -177,6 +178,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
      * is handled.
      */
     fun set_combat_logic(logic: (Plugin).() -> Unit) = r.bindCombat(logic)
+
+    /**
+     * Set the logic to execute when a player levels a skill.
+     */
+    fun set_level_up_logic(logic: (Plugin).() -> Unit) = r.bindSkillLevelUp(logic)
 
     /**
      * Invoke [logic] when [World.postLoad] is handled.

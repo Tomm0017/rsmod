@@ -61,10 +61,10 @@ class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Conti
     /**
      * Boilerplate to signal the use of suspendable logic.
      */
-    fun suspendable(block: suspend CoroutineScope.(Plugin) -> Unit) {
+    fun suspendable(scope: suspend CoroutineScope.(Plugin) -> Unit) {
         val plugin = this
-        val scope = suspend { block(CoroutineScope(dispatcher), plugin) }
-        val coroutine = scope.createCoroutine(completion = this)
+        val suspendLogic = suspend { scope(CoroutineScope(dispatcher), plugin) }
+        val coroutine = suspendLogic.createCoroutine(completion = this)
         coroutine.resume(Unit)
     }
 

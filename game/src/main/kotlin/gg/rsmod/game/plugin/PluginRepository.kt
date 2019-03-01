@@ -166,6 +166,11 @@ class PluginRepository(val world: World) {
     private val unequipItemPlugins = hashMapOf<Int, (Plugin).() -> Unit>()
 
     /**
+     * A plugin that executes when a player levels up a skill.
+     */
+    private var skillLevelUps: ((Plugin).() -> Unit)? = null
+
+    /**
      * A map that contains any plugin that will be executed upon entering a new
      * region. The key is the region id and the value is a list of plugins
      * that will execute upon entering the region.
@@ -694,6 +699,15 @@ class PluginRepository(val world: World) {
             return true
         }
         return false
+    }
+
+    fun bindSkillLevelUp(plugin: Plugin.() -> Unit) {
+        check(skillLevelUps == null) { "Skill level up logic already set." }
+        skillLevelUps = plugin
+    }
+
+    fun executeSkillLevelUp(p: Player) {
+        skillLevelUps?.let { p.world.pluginExecutor.execute(p, it) }
     }
 
     fun bindRegionEnter(regionId: Int, plugin: (Plugin).() -> Unit) {

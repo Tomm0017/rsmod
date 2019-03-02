@@ -46,7 +46,7 @@ class QueueTaskSystem(private val headPriority: Boolean) {
                      * Plugin is no longer in a suspended state, which means its job is
                      * complete.
                      */
-                    queue.remove()
+                    queue.remove(task)
                     /**
                      * Since this plugin is complete, let's handle any upcoming
                      * plugin now instead of waiting until next cycle.

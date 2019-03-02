@@ -81,6 +81,7 @@ suspend fun Plugin.options(vararg options: String, title: String = "Select an Op
 
     onInterrupt = closeDialog
     waitReturnValue()
+    onInterrupt!!(this)
 
     return requestReturnValue as? Int ?: -1
 }

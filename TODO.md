@@ -1,4 +1,3 @@
-- Define all gg.rsmod.game.message.Messages to avoid byte skipping in the packet decoding net code
 - Implement ISAAC for game packets
 - Add support for npc collision flags as npcs shouldn't be able to walk on top of one another
 - Implement 'params' for NpcCombatDef to store information such as species
@@ -7,4 +6,3 @@
 - Implement position multipliers for GPI decoding
 - Item placeholder logic in ItemContainer should be handled via the bank plugin instead of ItemContainer itself
 - Decouple World from Player
-- (Coroutine) Suspendable plugins should be queued onto a player instead of the PluginExecutor, with different queue types: weak, normal, strong

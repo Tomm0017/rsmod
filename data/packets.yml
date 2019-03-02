@@ -940,3 +940,240 @@ in-packets:
         trans: NEGATE
       - name: last_key_press
         type: TRI_BYTE
+
+  # Ignored packets
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: CLAN_KICKUSER
+    type: IGNORE
+    opcode: 13
+    length: -1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: CHAT_SETMODE
+    type: IGNORE
+    opcode: 15
+    length: 3
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: BUG_REPORT
+    type: IGNORE
+    opcode: 16
+    length: -2
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPOBJU
+    type: IGNORE
+    opcode: 18
+    length: 15
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPNPCU
+    type: IGNORE
+    opcode: 23
+    length: 11
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPOBJ6
+    type: IGNORE
+    opcode: 24
+    length: 2
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: MESSAGE_PRIVATE
+    type: IGNORE
+    opcode: 25
+    length: -2
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IF1_BUTTON2
+    type: IGNORE
+    opcode: 26
+    length: 8
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER4
+    type: IGNORE
+    opcode: 27
+    length: 3
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IGNORELIST_DEL
+    type: IGNORE
+    opcode: 28
+    length: -1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPNPC6
+    type: IGNORE
+    opcode: 30
+    length: 2
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IF1_BUTTON5
+    type: IGNORE
+    opcode: 32
+    length: 8
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: FREECAM_EXIT
+    type: IGNORE
+    opcode: 37
+    length: 0
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: SEND_SNAPSHOT
+    type: IGNORE
+    opcode: 38
+    length: -1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown
+    type: IGNORE
+    opcode: 43
+    length: -1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPLOCU
+    type: IGNORE
+    opcode: 44
+    length: 15
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown
+    type: IGNORE
+    opcode: 45
+    length: 4
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IF1_BUTTON1
+    type: IGNORE
+    opcode: 46
+    length: 8
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER1
+    type: IGNORE
+    opcode: 47
+    length: 3
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER8
+    type: IGNORE
+    opcode: 50
+    length: 3
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPOBJ5
+    type: IGNORE
+    opcode: 51
+    length: 7
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPOBJT
+    type: IGNORE
+    opcode: 53
+    length: 13
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: FRIENDLIST_DEL
+    type: IGNORE
+    opcode: 54
+    length: -1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYERT
+    type: IGNORE
+    opcode: 55
+    length: 9
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER2
+    type: IGNORE
+    opcode: 56
+    length: 3
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IF_BUTTOND
+    type: IGNORE
+    opcode: 57
+    length: 16
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER3
+    type: IGNORE
+    opcode: 62
+    length: 3
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPHELDU
+    type: IGNORE
+    opcode: 63
+    length: 16
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IF1_BUTTON4
+    type: IGNORE
+    opcode: 64
+    length: 8
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IF1_BUTTON3
+    type: IGNORE
+    opcode: 65
+    length: 8
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown
+    type: IGNORE
+    opcode: 69
+    length: 4
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPHELD3
+    type: IGNORE
+    opcode: 72
+    length: 8
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPOBJ2
+    type: IGNORE
+    opcode: 74
+    length: 7
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER7
+    type: IGNORE
+    opcode: 75
+    length: 3
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: FRIEND_SETRANK
+    type: IGNORE
+    opcode: 77
+    length: -1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPHELDD
+    type: IGNORE
+    opcode: 80
+    length: 9
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYERU
+    type: IGNORE
+    opcode: 81
+    length: 11
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IF_BUTTONT
+    type: IGNORE
+    opcode: 82
+    length: 16
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER5
+    type: IGNORE
+    opcode: 83
+    length: 3
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: FRIENDLIST_ADD
+    type: IGNORE
+    opcode: 88
+    length: -1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IGNORELIST_ADD
+    type: IGNORE
+    opcode: 90
+    length: -1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: REFLECTION_CHECK_REPLY
+    type: IGNORE
+    opcode: 91
+    length: -1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPLOCT
+    type: IGNORE
+    opcode: 92
+    length: 13
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER6
+    type: IGNORE
+    opcode: 93
+    length: 3
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPLOC5
+    type: IGNORE
+    opcode: 94
+    length: 7
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: RESUME_P_NAMEDIALOG
+    type: IGNORE
+    opcode: 95
+    length: -1
+
+  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown
+    type: IGNORE
+    opcode: 99
+    length: 7

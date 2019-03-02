@@ -37,13 +37,13 @@ class MessageStructureSet {
     @Throws(Exception::class)
     fun load(packetStructures: File): MessageStructureSet {
         val properties = ServerProperties().loadYaml(packetStructures)
-        load(properties, false)
-        load(properties, true)
+        load(properties, storeOpcodes = false)
+        load(properties, storeOpcodes = true)
         return this
     }
 
-    private fun load(properties: ServerProperties, inPackets: Boolean) {
-        val packets = properties.get<ArrayList<Any>>(if (inPackets) "in-packets" else "out-packets")!!
+    private fun load(properties: ServerProperties, storeOpcodes: Boolean) {
+        val packets = properties.get<ArrayList<Any>>(if (storeOpcodes) "in-packets" else "out-packets")!!
         packets.forEach { packet ->
             val values = packet as LinkedHashMap<*, *>
             val className = values["message"] as String
@@ -75,14 +75,14 @@ class MessageStructureSet {
                 val messageStructure = MessageStructure(type = packetType, opcodes = packetOpcodes.toIntArray(), length = packetLength,
                         values = packetValues)
                 structureClasses[clazz] = messageStructure
-                if (inPackets) {
+                if (storeOpcodes) {
                     packetOpcodes.forEach { opcode -> structureOpcodes[opcode] = messageStructure }
                 }
             } else {
                 val messageStructure = MessageStructure(type = packetType, opcodes = packetOpcodes.toIntArray(),
                         length = packetLength, values = LinkedHashMap())
                 structureClasses[clazz] = messageStructure
-                if (inPackets) {
+                if (storeOpcodes) {
                     packetOpcodes.forEach { opcode -> structureOpcodes[opcode] = messageStructure }
                 }
             }

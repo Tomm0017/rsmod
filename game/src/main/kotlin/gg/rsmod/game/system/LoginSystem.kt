@@ -11,8 +11,7 @@ import io.netty.channel.ChannelHandlerContext
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class LoginSystem(override val channel: Channel, private val world: World)
-    : ServerSystem(channel) {
+class LoginSystem(override val channel: Channel, private val world: World) : ServerSystem(channel) {
 
     companion object {
         private var loginService: LoginService? = null
@@ -21,7 +20,7 @@ class LoginSystem(override val channel: Channel, private val world: World)
     override fun receiveMessage(ctx: ChannelHandlerContext, msg: Any) {
         if (msg is LoginRequest) {
             if (loginService == null) {
-                loginService = world.getService(LoginService::class.java).get()
+                loginService = world.getService(LoginService::class.java)
             }
             loginService!!.addLoginRequest(world, msg)
         }

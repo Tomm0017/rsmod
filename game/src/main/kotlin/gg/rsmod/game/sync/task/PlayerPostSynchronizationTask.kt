@@ -22,7 +22,7 @@ class PlayerPostSynchronizationTask(val player: Player) : SynchronizationTask {
         val oldChunk = if (oldTile != null) player.world.chunks.get(oldTile.toChunkCoords(), createIfNeeded = false)!! else null
         val newChunk = player.world.chunks.get(player.tile.toChunkCoords(), createIfNeeded = false)
         if (oldChunk != newChunk && newChunk != null) {
-            player.world.getService(GameService::class.java).ifPresent { service ->
+            player.world.getService(GameService::class.java)?.let { service ->
                 val oldSurroundings = oldChunk?.coords?.getSurroundingCoords() ?: ObjectOpenHashSet()
                 val newSurroundings = newChunk.coords.getSurroundingCoords()
                 newSurroundings.removeAll(oldSurroundings)

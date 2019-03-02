@@ -285,8 +285,7 @@ class PluginRepository(val world: World) {
     /**
      * Initiates and populates all our plugins.
      */
-    fun init(gameService: GameService, jarPluginsDirectory: String, analyzeMode: Boolean) {
-        gameService.world.pluginExecutor.init(gameService)
+    fun init(jarPluginsDirectory: String, analyzeMode: Boolean) {
         loadPlugins(jarPluginsDirectory, analyzeMode)
 
         setCombatDefs()
@@ -342,7 +341,7 @@ class PluginRepository(val world: World) {
     }
 
     private fun setCombatDefs() {
-        val service = world.getService(NpcStatsService::class.java).orElse(null) ?: return
+        val service = world.getService(NpcStatsService::class.java) ?: return
         npcCombatDefs.forEach { npc, def ->
             if (service.get(npc) != null) {
                 logger.warn { "Npc $npc (${world.definitions.get(NpcDef::class.java, npc).name}) has a set combat definition but has been overwritten by a plugin." }
@@ -390,7 +389,7 @@ class PluginRepository(val world: World) {
     }
 
     fun executeWorldInit(world: World) {
-        worldInitPlugins.forEach { logic -> world.pluginExecutor.execute(world, logic) }
+        worldInitPlugins.forEach { logic -> world.executePlugin(world, logic) }
     }
 
     fun bindCombat(plugin: (Plugin).() -> Unit) {
@@ -403,7 +402,7 @@ class PluginRepository(val world: World) {
 
     fun executeCombat(pawn: Pawn) {
         if (combatPlugin != null) {
-            pawn.world.pluginExecutor.execute(pawn, combatPlugin!!)
+            pawn.executePlugin(combatPlugin!!)
         }
     }
 
@@ -418,7 +417,7 @@ class PluginRepository(val world: World) {
 
     fun executeNpcCombat(n: Npc): Boolean {
         val plugin = npcCombatPlugins[n.id] ?: return false
-        n.world.pluginExecutor.execute(n, plugin)
+        n.executePlugin(plugin)
         return true
     }
 
@@ -435,7 +434,7 @@ class PluginRepository(val world: World) {
     fun executeSpellOnNpc(p: Player, parent: Int, child: Int): Boolean {
         val hash = (parent shl 16) or child
         val plugin = spellOnNpcPlugins[hash] ?: return false
-        p.world.pluginExecutor.execute(p, plugin)
+        p.executePlugin(plugin)
         return true
     }
 
@@ -449,7 +448,7 @@ class PluginRepository(val world: World) {
 
     fun executeWindowStatus(p: Player) {
         if (windowStatusPlugin != null) {
-            p.world.pluginExecutor.execute(p, windowStatusPlugin!!)
+            p.executePlugin(windowStatusPlugin!!)
         } else {
             logger.warn { "Window status is not bound to a plugin." }
         }
@@ -465,7 +464,7 @@ class PluginRepository(val world: World) {
 
     fun executeModalClose(p: Player) {
         if (closeModalPlugin != null) {
-            p.world.pluginExecutor.execute(p, closeModalPlugin!!)
+            p.executePlugin(closeModalPlugin!!)
         } else {
             logger.warn { "Modal close is not bound to a plugin." }
         }
@@ -477,7 +476,7 @@ class PluginRepository(val world: World) {
     }
 
     fun executeLogin(p: Player) {
-        loginPlugins.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+        loginPlugins.forEach { logic -> p.executePlugin(logic) }
     }
 
     fun bindLogout(plugin: (Plugin).() -> Unit) {
@@ -486,7 +485,7 @@ class PluginRepository(val world: World) {
     }
 
     fun executeLogout(p: Player) {
-        logoutPlugins.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+        logoutPlugins.forEach { logic -> p.executePlugin(logic) }
     }
 
     fun bindGlobalNpcSpawn(plugin: (Plugin).() -> Unit) {
@@ -507,9 +506,9 @@ class PluginRepository(val world: World) {
     fun executeNpcSpawn(n: Npc) {
         val customPlugins = npcSpawnPlugins[n.id]
         if (customPlugins != null && customPlugins.isNotEmpty()) {
-            customPlugins.forEach { logic -> n.world.pluginExecutor.execute(n, logic) }
+            customPlugins.forEach { logic -> n.executePlugin(logic) }
         }
-        globalNpcSpawnPlugins.forEach { logic -> n.world.pluginExecutor.execute(n, logic) }
+        globalNpcSpawnPlugins.forEach { logic -> n.executePlugin(logic) }
     }
 
     fun bindTimer(key: TimerKey, plugin: (Plugin).() -> Unit) {
@@ -524,7 +523,7 @@ class PluginRepository(val world: World) {
     fun executeTimer(pawn: Pawn, key: TimerKey): Boolean {
         val plugin = timerPlugins[key]
         if (plugin != null) {
-            pawn.world.pluginExecutor.execute(pawn, plugin)
+            pawn.executePlugin(plugin)
             return true
         }
         return false
@@ -533,7 +532,7 @@ class PluginRepository(val world: World) {
     fun executeWorldTimer(world: World, key: TimerKey): Boolean {
         val plugin = timerPlugins[key]
         if (plugin != null) {
-            world.pluginExecutor.execute(world, plugin)
+            world.executePlugin(world, plugin)
             return true
         }
         return false
@@ -551,7 +550,7 @@ class PluginRepository(val world: World) {
     fun executeInterfaceOpen(p: Player, interfaceId: Int): Boolean {
         val plugin = interfaceOpenPlugins[interfaceId]
         if (plugin != null) {
-            p.world.pluginExecutor.execute(p, plugin)
+            p.executePlugin(plugin)
             return true
         }
         return false
@@ -569,7 +568,7 @@ class PluginRepository(val world: World) {
     fun executeInterfaceClose(p: Player, interfaceId: Int): Boolean {
         val plugin = interfaceClosePlugins[interfaceId]
         if (plugin != null) {
-            p.world.pluginExecutor.execute(p, plugin)
+            p.executePlugin(plugin)
             return true
         }
         return false
@@ -601,7 +600,7 @@ class PluginRepository(val world: World) {
             } else {
                 p.attr.put(COMMAND_ARGS_ATTR, emptyArray())
             }
-            p.world.pluginExecutor.execute(p, plugin)
+            p.executePlugin(plugin)
             return true
         }
         return false
@@ -621,7 +620,7 @@ class PluginRepository(val world: World) {
         val hash = (parent shl 16) or child
         val plugin = buttonPlugins[hash]
         if (plugin != null) {
-            p.world.pluginExecutor.execute(p, plugin)
+            p.executePlugin(plugin)
             return true
         }
         return false
@@ -635,7 +634,7 @@ class PluginRepository(val world: World) {
     fun executeEquipSlot(p: Player, equipSlot: Int): Boolean {
         val plugin = equipSlotPlugins[equipSlot]
         if (plugin != null) {
-            plugin.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+            plugin.forEach { logic -> p.executePlugin(logic) }
             return true
         }
         return false
@@ -657,7 +656,7 @@ class PluginRepository(val world: World) {
              * Plugin returns true if the item can be equipped, false if it
              * should block the item from being equipped.
              */
-            return p.world.pluginExecutor.execute(p, plugin) == true
+            return p.executePlugin(plugin) == true
         }
         /**
          * Should always be able to wear items by default.
@@ -677,7 +676,7 @@ class PluginRepository(val world: World) {
     fun executeEquipItem(p: Player, item: Int): Boolean {
         val plugin = equipItemPlugins[item]
         if (plugin != null) {
-            p.world.pluginExecutor.execute(p, plugin)
+            p.executePlugin(plugin)
             return true
         }
         return false
@@ -695,7 +694,7 @@ class PluginRepository(val world: World) {
     fun executeUnequipItem(p: Player, item: Int): Boolean {
         val plugin = unequipItemPlugins[item]
         if (plugin != null) {
-            p.world.pluginExecutor.execute(p, plugin)
+            p.executePlugin(plugin)
             return true
         }
         return false
@@ -707,7 +706,7 @@ class PluginRepository(val world: World) {
     }
 
     fun executeSkillLevelUp(p: Player) {
-        skillLevelUps?.let { p.world.pluginExecutor.execute(p, it) }
+        skillLevelUps?.let { p.executePlugin(it) }
     }
 
     fun bindRegionEnter(regionId: Int, plugin: (Plugin).() -> Unit) {
@@ -721,7 +720,7 @@ class PluginRepository(val world: World) {
     }
 
     fun executeRegionEnter(p: Player, regionId: Int) {
-        enterRegionPlugins[regionId]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+        enterRegionPlugins[regionId]?.forEach { logic -> p.executePlugin(logic) }
     }
 
     fun bindRegionExit(regionId: Int, plugin: (Plugin).() -> Unit) {
@@ -735,7 +734,7 @@ class PluginRepository(val world: World) {
     }
 
     fun executeRegionExit(p: Player, regionId: Int) {
-        exitRegionPlugins[regionId]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+        exitRegionPlugins[regionId]?.forEach { logic -> p.executePlugin(logic) }
     }
 
     fun bindChunkEnter(chunkHash: Int, plugin: (Plugin).() -> Unit) {
@@ -749,7 +748,7 @@ class PluginRepository(val world: World) {
     }
 
     fun executeChunkEnter(p: Player, chunkHash: Int) {
-        enterChunkPlugins[chunkHash]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+        enterChunkPlugins[chunkHash]?.forEach { logic -> p.executePlugin(logic) }
     }
 
     fun bindChunkExit(chunkHash: Int, plugin: (Plugin).() -> Unit) {
@@ -763,7 +762,7 @@ class PluginRepository(val world: World) {
     }
 
     fun executeChunkExit(p: Player, chunkHash: Int) {
-        exitChunkPlugins[chunkHash]?.forEach { logic -> p.world.pluginExecutor.execute(p, logic) }
+        exitChunkPlugins[chunkHash]?.forEach { logic -> p.executePlugin(logic) }
     }
 
     fun bindItem(id: Int, opt: Int, plugin: (Plugin).() -> Unit) {
@@ -780,7 +779,7 @@ class PluginRepository(val world: World) {
     fun executeItem(p: Player, id: Int, opt: Int): Boolean {
         val optMap = itemPlugins[id] ?: return false
         val logic = optMap[opt] ?: return false
-        p.world.pluginExecutor.execute(p, logic)
+        p.executePlugin(logic)
         return true
     }
 
@@ -798,7 +797,7 @@ class PluginRepository(val world: World) {
     fun executeGroundItem(p: Player, id: Int, opt: Int): Boolean {
         val optMap = groundItemPlugins[id] ?: return false
         val logic = optMap[opt] ?: return false
-        p.world.pluginExecutor.execute(p, logic)
+        p.executePlugin(logic)
         return true
     }
 
@@ -821,7 +820,7 @@ class PluginRepository(val world: World) {
     fun executeObject(p: Player, id: Int, opt: Int): Boolean {
         val optMap = objectPlugins[id] ?: return false
         val logic = optMap[opt] ?: return false
-        p.world.pluginExecutor.execute(p, logic)
+        p.executePlugin(logic)
         return true
     }
 
@@ -844,7 +843,7 @@ class PluginRepository(val world: World) {
     fun executeNpc(p: Player, id: Int, opt: Int): Boolean {
         val optMap = npcPlugins[id] ?: return false
         val logic = optMap[opt] ?: return false
-        p.world.pluginExecutor.execute(p, logic)
+        p.executePlugin(logic)
         return true
     }
 
@@ -878,7 +877,7 @@ class PluginRepository(val world: World) {
             println()
 
             println("\tWarming up JVM before analyzing...")
-            world.getService(GameService::class.java, false).ifPresent { s -> s.pause = true }
+            world.getService(GameService::class.java, false)?.let { s -> s.pause = true }
             val warmupStart = Stopwatch.createStarted()
             for (i in 0 until 10_000) {
                 // Note(Tom): we could also use future to do this just in case
@@ -888,7 +887,7 @@ class PluginRepository(val world: World) {
                     break
                 }
             }
-            world.getService(GameService::class.java, false).ifPresent { s -> s.pause = false }
+            world.getService(GameService::class.java, false)?.let { s -> s.pause = false }
 
             println()
             println()
@@ -907,7 +906,6 @@ class PluginRepository(val world: World) {
             println("\t------------------------------------------------------------------------------------------------")
 
             executePlugins(world, warmup = false)
-            world.pluginExecutor.killAll()
 
             println()
             println()

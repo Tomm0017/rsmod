@@ -35,7 +35,7 @@ class LoginWorker(private val boss: LoginService) : Runnable {
 
                 if (loadResult == PlayerLoadResult.LOAD_ACCOUNT || loadResult == PlayerLoadResult.NEW_ACCOUNT) {
                     val world = request.world
-                    val service = client.world.getService(GameService::class.java, false).get()
+                    val service = client.world.getService(GameService::class.java)!!
                     val encodeRandom = IsaacRandom(request.login.isaacSeed.map { it + 50 }.toIntArray())
                     val decodeRandom = IsaacRandom(request.login.isaacSeed)
 

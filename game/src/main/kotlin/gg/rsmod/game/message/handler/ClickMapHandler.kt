@@ -19,7 +19,7 @@ class ClickMapHandler : MessageHandler<MoveGameClickMessage> {
         log(client, "Click map: x=%d, z=%d, type=%d", message.x, message.z, message.movementType)
 
         client.closeInterfaceModal()
-        client.interruptPlugins()
+        client.interruptAllQueues()
         client.resetInteractions()
 
         if (message.movementType == 2 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {

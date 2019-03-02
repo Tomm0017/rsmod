@@ -63,7 +63,7 @@ fun checkRadius(npc: Npc) {
 }
 
 fun canAttack(npc: Npc, target: Player): Boolean {
-    if (!target.isOnline() || target.invisible) {
+    if (!target.isOnline || target.invisible) {
         return false
     }
     return npc.aggroCheck == null || npc.aggroCheck?.invoke(npc, target) == true

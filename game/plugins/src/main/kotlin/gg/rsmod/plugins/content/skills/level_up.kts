@@ -22,5 +22,5 @@ set_level_up_logic {
     /**
      * Show the level-up chatbox interface.
      */
-    suspendable { it.levelUpMessageBox(skill, increment) }
+    player.queue { levelUpMessageBox(skill, increment) }
 }

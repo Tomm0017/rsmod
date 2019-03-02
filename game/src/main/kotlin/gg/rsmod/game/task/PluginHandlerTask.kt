@@ -11,6 +11,25 @@ import gg.rsmod.game.service.GameService
 class PluginHandlerTask : GameTask {
 
     override fun execute(world: World, service: GameService) {
-        world.pluginExecutor.pulse()
+        var playerQueues = 0
+        var npcQueues = 0
+        var worldQueues = 0
+
+        world.players.forEach { player ->
+            player.queues.cycle()
+            playerQueues += player.queues.size
+        }
+
+        world.npcs.forEach { npc ->
+            npc.queues.cycle()
+            npcQueues += npc.queues.size
+        }
+
+        world.queues.cycle()
+        worldQueues = world.queues.size
+
+        service.totalPlayerQueues = playerQueues
+        service.totalNpcQueues = npcQueues
+        service.totalWorldQueues = worldQueues
     }
 }

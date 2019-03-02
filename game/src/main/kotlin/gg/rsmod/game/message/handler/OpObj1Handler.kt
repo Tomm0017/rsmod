@@ -40,11 +40,11 @@ class OpObj1Handler : MessageHandler<OpObj1Message> {
         }
 
         client.closeInterfaceModal()
-        client.interruptPlugins()
+        client.interruptAllQueues()
         client.resetInteractions()
 
         client.attr[INTERACTING_OPT_ATTR] = 1
         client.attr[INTERACTING_GROUNDITEM_ATTR] = WeakReference(item)
-        client.world.pluginExecutor.execute(client, GroundItemPathAction.walkPlugin)
+        client.executePlugin(GroundItemPathAction.walkPlugin)
     }
 }

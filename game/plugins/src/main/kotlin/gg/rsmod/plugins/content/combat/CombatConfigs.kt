@@ -394,7 +394,7 @@ object CombatConfigs {
 
     private fun getItemStats(world: World): ItemStatsService? {
         if (cachedItemStats == null) {
-            cachedItemStats = world.getService(ItemStatsService::class.java).orElse(null)
+            cachedItemStats = world.getService(ItemStatsService::class.java)
         }
         return cachedItemStats
     }

@@ -11,6 +11,6 @@ class ResumePauseButtonHandler : MessageHandler<ResumePauseButtonMessage> {
 
     override fun handle(client: Client, message: ResumePauseButtonMessage) {
         log(client, "Continue dialog: interface=%d, component=%d, slot=%d", message.parent, message.child, message.slot)
-        client.world.pluginExecutor.submitReturnType(client, message.slot)
+        client.queues.submitReturnValue(message.slot)
     }
 }

@@ -329,5 +329,5 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
     private fun shouldAdd(other: Player): Boolean = !other.invisible && other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) && other != player
 
-    private fun shouldRemove(other: Player): Boolean = !other.isOnline() || other.invisible || !other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE)
+    private fun shouldRemove(other: Player): Boolean = !other.isOnline || other.invisible || !other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE)
 }

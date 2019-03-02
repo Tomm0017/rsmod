@@ -11,6 +11,6 @@ class ResumePStringDialogHandler : MessageHandler<ResumePStringDialogMessage> {
 
     override fun handle(client: Client, message: ResumePStringDialogMessage) {
         log(client, "String input dialog: input=%d", message.input)
-        client.world.pluginExecutor.submitReturnType(client, message.input)
+        client.queues.submitReturnValue(message.input)
     }
 }

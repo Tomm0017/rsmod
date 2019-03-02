@@ -12,6 +12,7 @@ import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.priv.Privilege
+import gg.rsmod.game.model.queue.QueueTaskPriority
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Items
@@ -23,6 +24,26 @@ import gg.rsmod.plugins.content.inter.bank.openBank
 import gg.rsmod.plugins.content.mechanics.spells.SpellRequirements
 import gg.rsmod.util.Misc
 import java.text.DecimalFormat
+
+on_command("test") {
+    player.queue {
+        chatPlayer("testing")
+        chatPlayer("test2")
+    }
+    player.queue {
+        levelUpMessageBox(Skills.FIREMAKING, 3)
+    }
+}
+
+on_command("test2") {
+    player.queue(QueueTaskPriority.STACK_WITH_PREVIOUS) {
+        chatPlayer("testing")
+        chatPlayer("test2")
+    }
+    player.queue(QueueTaskPriority.STACK_WITH_PREVIOUS) {
+        levelUpMessageBox(Skills.FIREMAKING, 3)
+    }
+}
 
 on_command("max") {
     val player = player
@@ -260,17 +281,6 @@ on_command("interface", Privilege.ADMIN_POWER) {
         val component = values[0].toInt()
         p.openInterface(component, InterfaceDestination.MAIN_SCREEN)
         p.message("Opening interface <col=801700>$component</col>")
-    }
-}
-
-on_command("dialogs", Privilege.ADMIN_POWER) {
-    suspendable {
-        options("test")
-        inputInteger("test")
-        messageBox("test")
-        chatNpc("test", 3080)
-        itemMessageBox("test", 4151)
-        doubleItemMessageBox("test", 4151, 11802)
     }
 }
 

@@ -79,9 +79,8 @@ suspend fun Plugin.options(vararg options: String, title: String = "Select an Op
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 219)
     player.runClientScript(58, title, options.joinToString("|"))
 
-    interruptAction = closeDialog
+    onInterrupt = closeDialog
     waitReturnValue()
-    interruptAction?.invoke(this)
 
     return requestReturnValue as? Int ?: -1
 }
@@ -138,9 +137,9 @@ suspend fun Plugin.messageBox(message: String, lineSpacing: Int = 31) {
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 229)
     player.runClientScript(600, 1, 1, lineSpacing, 15007745)
 
-    interruptAction = closeDialog
+    onInterrupt = closeDialog
     waitReturnValue()
-    interruptAction?.invoke(this)
+    onInterrupt!!(this)
 }
 
 /**
@@ -174,9 +173,9 @@ suspend fun Plugin.chatNpc(message: String, npc: Int = -1, animation: Int = 588,
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 231)
     player.runClientScript(600, 1, 1, 16, 15138820)
 
-    interruptAction = closeDialog
+    onInterrupt = closeDialog
     waitReturnValue()
-    interruptAction?.invoke(this)
+    onInterrupt!!(this)
 }
 
 /**
@@ -198,9 +197,9 @@ suspend fun Plugin.chatPlayer(message: String, animation: Int = 588, title: Stri
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 217)
     player.runClientScript(600, 1, 1, 16, 14221316)
 
-    interruptAction = closeDialog
+    onInterrupt = closeDialog
     waitReturnValue()
-    interruptAction?.invoke(this)
+    onInterrupt!!(this)
 }
 
 /**
@@ -226,9 +225,9 @@ suspend fun Plugin.itemMessageBox(message: String, item: Int, amount: Int = 1) {
     player.setInterfaceEvents(interfaceId = 193, component = 5, range = -1..-1, setting = 0)
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 193)
 
-    interruptAction = closeDialog
+    onInterrupt = closeDialog
     waitReturnValue()
-    interruptAction?.invoke(this)
+    onInterrupt!!(this)
 }
 
 suspend fun Plugin.doubleItemMessageBox(message: String, item1: Int, item2: Int, amount1: Int = 1, amount2: Int = 1) {
@@ -241,12 +240,12 @@ suspend fun Plugin.doubleItemMessageBox(message: String, item1: Int, item2: Int,
     player.setInterfaceEvents(interfaceId = 11, component = 4, range = -1..-1, setting = 1)
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 11)
 
-    interruptAction = closeDialog
+    onInterrupt = closeDialog
     waitReturnValue()
-    interruptAction?.invoke(this)
+    onInterrupt!!(this)
 }
 
-suspend fun Plugin.levelUpMessageBox(skill: Int, levels: Int) {
+suspend fun Plugin.levelUpMessageBox(skill: Int, levelIncrement: Int) {
     val player = player
 
     if (skill != Skills.HUNTER) {
@@ -281,14 +280,14 @@ suspend fun Plugin.levelUpMessageBox(skill: Int, levels: Int) {
         val skillName = Skills.getSkillName(player.world, skill)
         val initialChar = Character.toLowerCase(skillName.toCharArray().first())
         val vowel = initialChar == 'a' || initialChar == 'e' || initialChar == 'i' || initialChar == 'o' || initialChar == 'u'
-        val levelFormat = if (levels == 1) (if (vowel) "an" else "a") else "$levels"
+        val levelFormat = if (levelIncrement == 1) (if (vowel) "an" else "a") else "$levelIncrement"
 
-        player.setComponentText(interfaceId = 233, component = 1, text = "<col=000080>Congratulations, you just advanced $levelFormat $skillName ${"level".plural(levels)}.")
+        player.setComponentText(interfaceId = 233, component = 1, text = "<col=000080>Congratulations, you just advanced $levelFormat $skillName ${"level".plural(levelIncrement)}.")
         player.setComponentText(interfaceId = 233, component = 2, text = "Your $skillName level is now ${player.getSkills().getMaxLevel(skill)}.")
         player.setComponentText(interfaceId = 233, component = 3, text = "Click here to continue")
         player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 233)
     } else {
-        val levelFormat = if (levels == 1) "a" else "$levels"
+        val levelFormat = if (levelIncrement == 1) "a" else "$levelIncrement"
 
         player.setInterfaceEvents(interfaceId = 132, component = 3, from = -1, to = -1, setting = 1)
         player.setInterfaceEvents(interfaceId = 132, component = 4, from = -1, to = -1, setting = 0)
@@ -296,7 +295,7 @@ suspend fun Plugin.levelUpMessageBox(skill: Int, levels: Int) {
 
         player.setComponentItem(interfaceId = 193, component = 1, item = 9951, amountOrZoom = 400)
 
-        player.setComponentText(interfaceId = 193, component = 2, text = "<col=000080>Congratulations, you've just advanced $levelFormat Hunter ${"level".plural(levels)}." +
+        player.setComponentText(interfaceId = 193, component = 2, text = "<col=000080>Congratulations, you've just advanced $levelFormat Hunter ${"level".plural(levelIncrement)}." +
                 "<col=000000><br><br>Your Hunter level is now ${player.getSkills().getMaxLevel(skill)}.")
         player.setComponentText(interfaceId = 193, component = 3, text = "Click here to continue")
         player.setComponentText(interfaceId = 193, component = 4, text = "")
@@ -305,7 +304,7 @@ suspend fun Plugin.levelUpMessageBox(skill: Int, levels: Int) {
         player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 193)
     }
 
-    interruptAction = closeDialog
+    onInterrupt = closeDialog
     waitReturnValue()
-    interruptAction?.invoke(this)
+    onInterrupt!!(this)
 }

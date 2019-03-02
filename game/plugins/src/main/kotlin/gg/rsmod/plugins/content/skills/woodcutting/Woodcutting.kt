@@ -48,16 +48,13 @@ object Woodcutting {
 
                     if (trunkId != -1) {
                         val world = p.world
-                        world.executePlugin(obj) {
-                            it.suspendable {
-                                val trunk = DynamicObject(obj, trunkId)
-
-                                world.remove(obj)
-                                world.spawn(trunk)
-                                it.wait(tree.respawnTime.random())
-                                world.remove(trunk)
-                                world.spawn(DynamicObject(obj))
-                            }
+                        world.queue {
+                            val trunk = DynamicObject(obj, trunkId)
+                            world.remove(obj)
+                            world.spawn(trunk)
+                            wait(tree.respawnTime.random())
+                            world.remove(trunk)
+                            world.spawn(DynamicObject(obj))
                         }
                     }
                     break

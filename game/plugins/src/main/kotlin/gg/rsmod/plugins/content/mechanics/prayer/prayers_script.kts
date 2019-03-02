@@ -18,8 +18,8 @@ on_logout {
  */
 Prayer.values.forEach { prayer ->
     on_button(interfaceId = 541, component = prayer.child) {
-        suspendable {
-            Prayers.toggle(it, prayer)
+        player.queue {
+            Prayers.toggle(this, prayer)
         }
     }
 }

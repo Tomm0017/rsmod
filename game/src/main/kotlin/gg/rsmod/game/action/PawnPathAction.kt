@@ -30,10 +30,10 @@ object PawnPathAction {
         val npcId = if (pawn is Player) npc.getTransform(pawn) else npc.id
         val lineOfSightRange = world.plugins.getNpcInteractionDistance(npcId)
 
-        suspendable {
+        pawn.queue {
             pawn.facePawn(npc)
 
-            val pathFound = walkTo(it, pawn, npc, interactionRange = lineOfSightRange ?: 1, lineOfSight = lineOfSightRange != null)
+            val pathFound = walkTo(this, pawn, npc, interactionRange = lineOfSightRange ?: 1, lineOfSight = lineOfSightRange != null)
 
             if (!pathFound) {
                 pawn.movementQueue.clear()
@@ -46,7 +46,7 @@ object PawnPathAction {
                     pawn.write(SetMapFlagMessage(255, 255))
                 }
                 pawn.facePawn(null)
-                return@suspendable
+                return@queue
             }
 
             pawn.stopMovement()

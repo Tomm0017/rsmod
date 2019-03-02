@@ -10,7 +10,7 @@ import gg.rsmod.plugins.api.ext.options
 import gg.rsmod.plugins.api.ext.player
 
 on_npc_option(npc = Npcs.MONK_2579, option = "talk-to") {
-    suspendable { dialog(it) }
+    player.queue { dialog(this) }
 }
 
 suspend fun dialog(it: Plugin) {

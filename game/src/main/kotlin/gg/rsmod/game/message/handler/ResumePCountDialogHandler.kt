@@ -11,6 +11,6 @@ class ResumePCountDialogHandler : MessageHandler<ResumePCountDialogMessage> {
 
     override fun handle(client: Client, message: ResumePCountDialogMessage) {
         log(client, "Integer input dialog: input=%d", message.input)
-        client.world.pluginExecutor.submitReturnType(client, Math.max(0, message.input))
+        client.queues.submitReturnValue(Math.max(0, message.input))
     }
 }

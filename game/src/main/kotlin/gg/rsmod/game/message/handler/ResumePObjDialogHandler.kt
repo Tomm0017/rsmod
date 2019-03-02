@@ -11,6 +11,6 @@ class ResumePObjDialogHandler : MessageHandler<ResumePObjDialogMessage> {
 
     override fun handle(client: Client, message: ResumePObjDialogMessage) {
         log(client, "Searched item: item=%d", message.item)
-        client.world.pluginExecutor.submitReturnType(client, message.item)
+        client.queues.submitReturnValue(message.item)
     }
 }

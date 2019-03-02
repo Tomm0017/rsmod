@@ -18,7 +18,7 @@ class TeleportHandler : MessageHandler<TeleportMessage> {
         log(client, "Teleport world map: unknown=%d, x=%d, z=%d, height=%d", message.unknown, message.x, message.z, message.height)
 
         client.closeInterfaceModal()
-        client.interruptPlugins()
+        client.interruptAllQueues()
         client.resetInteractions()
 
         if (client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {

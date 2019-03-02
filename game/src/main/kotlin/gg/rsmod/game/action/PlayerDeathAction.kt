@@ -10,8 +10,8 @@ object PlayerDeathAction {
 
     val deathPlugin: Plugin.() -> Unit = {
         val player = ctx as Player
-        suspendable {
-            death(it, player)
+        player.queue {
+            death(this, player)
         }
     }
 

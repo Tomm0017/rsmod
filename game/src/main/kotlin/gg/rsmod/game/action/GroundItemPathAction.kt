@@ -25,8 +25,8 @@ object GroundItemPathAction {
             handleAction(p, item, opt)
         } else {
             p.walkTo(item.tile, MovementQueue.StepType.NORMAL)
-            suspendable {
-                awaitArrival(it, item, opt)
+            p.queue {
+                awaitArrival(this, item, opt)
             }
         }
     }

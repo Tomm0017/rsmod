@@ -101,11 +101,11 @@ open class Player(world: World) : Pawn(world) {
 
     private val skillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
 
-    val inventory by lazy { ItemContainer(world.definitions, 28, ContainerStackType.NORMAL) }
+    val inventory by lazy { ItemContainer(world.definitions, capacity = 28, stackType = ContainerStackType.NORMAL) }
 
-    val equipment by lazy { ItemContainer(world.definitions, 14, ContainerStackType.NORMAL) }
+    val equipment by lazy { ItemContainer(world.definitions, capacity = 14, stackType = ContainerStackType.NORMAL) }
 
-    val bank by lazy { ItemContainer(world.definitions, 800, ContainerStackType.STACK) }
+    val bank by lazy { ItemContainer(world.definitions, capacity = 800, stackType = ContainerStackType.STACK) }
 
     val interfaces by lazy { InterfaceSet(this) }
 
@@ -169,7 +169,7 @@ open class Player(world: World) : Pawn(world) {
 
     /**
      * A flag that represents whether or not we want to remove our
-     * [InterfaceSet.currentMainScreenInterface] from our [InterfaceSet.visible] map
+     * [InterfaceSet.currentModal] from our [InterfaceSet.visible] map
      * near the end of the next available game cycle.
      *
      * It can't be removed immediately due to the [CloseModalMessage]
@@ -365,7 +365,7 @@ open class Player(world: World) : Pawn(world) {
      * data for the player and call this super method at the end.
      */
     protected open fun handleLogout() {
-        interruptPlugins()
+        interruptAllQueues()
         world.plugins.executeLogout(this)
         world.unregister(this)
     }
@@ -382,9 +382,7 @@ open class Player(world: World) : Pawn(world) {
     /**
      * Registers this player to the [world].
      */
-    fun register(): Boolean {
-        return world.register(this)
-    }
+    fun register(): Boolean = world.register(this)
 
     /**
      * Handles any logic that should be executed upon log in.
@@ -412,7 +410,7 @@ open class Player(world: World) : Pawn(world) {
      * Calculate the current weight and equipment bonuses for the player.
      */
     fun calculateWeightAndBonus(weight: Boolean, bonuses: Boolean = true) {
-        world.getService(ItemStatsService::class.java).ifPresent { s ->
+        world.getService(ItemStatsService::class.java)?.let { s ->
 
             if (weight) {
                 val inventoryWeight = inventory.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
@@ -433,29 +431,29 @@ open class Player(world: World) : Pawn(world) {
     }
 
     fun addXp(skill: Int, xp: Double) {
-        val currentXp = getSkills().getCurrentXp(skill)
-        if (currentXp >= SkillSet.MAX_XP) {
+        val oldXp = getSkills().getCurrentXp(skill)
+        if (oldXp >= SkillSet.MAX_XP) {
             return
         }
-        val totalXp = Math.min(SkillSet.MAX_XP.toDouble(), (currentXp + xp))
+        val newXp = Math.min(SkillSet.MAX_XP.toDouble(), (oldXp + xp))
         /**
          * Amount of levels that have increased with the addition of [xp].
          */
-        val increment = SkillSet.getLevelForXp(totalXp) - SkillSet.getLevelForXp(currentXp)
+        val increment = SkillSet.getLevelForXp(newXp) - SkillSet.getLevelForXp(oldXp)
 
         /**
          * Only increment the 'current' level if it's set at its capped level.
          */
         if (getSkills().getCurrentLevel(skill) == getSkills().getMaxLevel(skill)) {
-            getSkills().setBaseXp(skill, totalXp)
+            getSkills().setBaseXp(skill, newXp)
         } else {
-            getSkills().setXp(skill, totalXp)
+            getSkills().setXp(skill, newXp)
         }
 
         if (increment > 0) {
             attr[LEVEL_UP_SKILL_ID] = skill
             attr[LEVEL_UP_INCREMENT] = increment
-            attr[LEVEL_UP_OLD_XP] = currentXp
+            attr[LEVEL_UP_OLD_XP] = oldXp
             world.plugins.executeSkillLevelUp(this)
         }
     }
@@ -487,7 +485,7 @@ open class Player(world: World) : Pawn(world) {
      *
      * @return [true] if the player is registered to a [PawnList].
      */
-    fun isOnline(): Boolean = index > 0
+    val isOnline: Boolean get() = index > 0
 
     /**
      * Default method to handle any incoming [Message]s that won't be

@@ -40,13 +40,14 @@ object EquipAction {
     }
 
     fun equip(p: Player, item: Item, inventorySlot: Int = -1): Result {
-        val statService = p.world.getService(ItemStatsService::class.java).orElse(null)
+        val statService = p.world.getService(ItemStatsService::class.java)
         if (statService == null) {
             if (p.world.plugins.executeItem(p, item.id, 2)) {
                 return Result.PLUGIN
             }
             return Result.UNHANDLED
         }
+
         val stats = statService.get(item.id)
         if (stats == null || stats.equipSlot < 0) {
             if (p.world.plugins.executeItem(p, item.id, 2)) {

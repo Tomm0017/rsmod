@@ -64,7 +64,7 @@ object Prayers {
             return
         }
 
-        it.interruptAction = { p.syncVarp(ACTIVE_PRAYERS_VARP) }
+        it.onInterrupt = { p.syncVarp(ACTIVE_PRAYERS_VARP) }
         while (p.lock.delaysPrayer()) {
             it.wait(1)
         }
@@ -148,9 +148,9 @@ object Prayers {
         val slot = prayer.quickPrayerSlot
         val enabled = (player.getVarp(SELECTED_QUICK_PRAYERS_VARP) and (1 shl slot)) != 0
 
-        it.suspendable {
+        it.player.queue {
             if (!enabled) {
-                if (checkRequirements(it, prayer)) {
+                if (checkRequirements(this, prayer)) {
                     val others = Prayer.values.filter { other -> prayer != other && other.group != null &&
                             (prayer.group == other.group || prayer.overlap.contains(other.group)) }
                     others.forEach { other ->

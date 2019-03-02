@@ -5,9 +5,10 @@ import gg.rsmod.plugins.api.cfg.Npcs
 import gg.rsmod.plugins.api.ext.chatNpc
 import gg.rsmod.plugins.api.ext.chatPlayer
 import gg.rsmod.plugins.api.ext.options
+import gg.rsmod.plugins.api.ext.player
 
 on_npc_option(npc = Npcs.LESSER_FANATIC, option = "talk-to") {
-    suspendable { chat(it) }
+    player.queue { chat(this) }
 }
 
 suspend fun chat(it: Plugin) {

@@ -140,7 +140,7 @@ object Combat {
         val pvm = pawn.getType().isPlayer() && target.getType().isNpc()
 
         if (pawn is Player) {
-            if (!pawn.isOnline()) {
+            if (!pawn.isOnline) {
                 return false
             }
 
@@ -168,7 +168,7 @@ object Combat {
                 return false
             }
         } else if (target is Player) {
-            if (!target.isOnline() || target.invisible) {
+            if (!target.isOnline || target.invisible) {
                 return false
             }
         }

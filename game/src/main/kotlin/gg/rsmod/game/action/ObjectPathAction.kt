@@ -30,8 +30,8 @@ object ObjectPathAction {
         val opt = player.attr[INTERACTING_OPT_ATTR]!!
         val lineOfSightRange = player.world.plugins.getObjInteractionDistance(obj.id)
 
-        suspendable {
-            val route = walkTo(it, obj, lineOfSightRange)
+        player.queue {
+            val route = walkTo(this, obj, lineOfSightRange)
             if (route.success) {
                 if (lineOfSightRange == null || lineOfSightRange > 0) {
                     faceObj(player, obj)

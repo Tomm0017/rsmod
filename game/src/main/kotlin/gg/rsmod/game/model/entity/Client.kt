@@ -84,7 +84,7 @@ class Client(val channel: Channel, world: World) : Player(world) {
 
     override fun handleLogout() {
         super.handleLogout()
-        world.getService(PlayerSerializerService::class.java, searchSubclasses = true).ifPresent { it.saveClientData(this) }
+        world.getService(PlayerSerializerService::class.java, searchSubclasses = true)?.saveClientData(this)
     }
 
     override fun handleMessages() {

@@ -10,7 +10,7 @@ import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
  * @author Tom <rspsmods@gmail.com>
  */
 fun ItemContainer.networth(world: World): Long {
-    val service = world.getService(ItemMarketValueService::class.java).orElse(null)
+    val service = world.getService(ItemMarketValueService::class.java)
     var networth = 0L
     getBackingArray().forEach { item ->
         if (item != null) {

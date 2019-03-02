@@ -72,8 +72,7 @@ class Server {
      * can start multiple servers with different game property files.
      */
     @Throws(Exception::class)
-    fun startGame(filestore: Path, gameProps: Path, packets: Path, blocks: Path, devProps: Path?,
-                  args: Array<String>): World {
+    fun startGame(filestore: Path, gameProps: Path, packets: Path, blocks: Path, devProps: Path?, args: Array<String>): World {
         val stopwatch = Stopwatch.createStarted()
         val individualStopwatch = Stopwatch.createUnstarted()
 
@@ -126,20 +125,18 @@ class Server {
          * Load the services required to run the server.
          */
         world.loadServices(this, gameProperties)
-
-        /**
-         * Fetch the [GameService].
-         */
-        val gameService = world.getService(type = GameService::class.java).get()
+        world.init()
 
         /**
          * Load the packets for the game.
          */
-        individualStopwatch.reset().start()
-        gameService.messageStructures.load(packets.toFile())
-        gameService.messageEncoders.init()
-        gameService.messageDecoders.init(gameService.messageStructures)
-        logger.info("Loaded message codec and handlers in {}ms.", individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
+        world.getService(type = GameService::class.java)?.let { gameService ->
+            individualStopwatch.reset().start()
+            gameService.messageStructures.load(packets.toFile())
+            gameService.messageEncoders.init()
+            gameService.messageDecoders.init(gameService.messageStructures)
+            logger.info("Loaded message codec and handlers in {}ms.", individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
+        }
 
         /**
          * Load the update blocks for the game.
@@ -159,8 +156,7 @@ class Server {
          * Load the plugins for game content.
          */
         individualStopwatch.reset().start()
-        world.plugins.init(gameService = gameService,
-                jarPluginsDirectory = gameProperties.getOrDefault("plugin-packed-path", "../plugins"),
+        world.plugins.init(jarPluginsDirectory = gameProperties.getOrDefault("plugin-packed-path", "../plugins"),
                 analyzeMode = args.any { it == "-analyze" })
         logger.info("Loaded {} plugins in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
@@ -177,7 +173,7 @@ class Server {
         /**
          * Binding the network to allow incoming and outgoing connections.
          */
-        val rsaService = world.getService(RsaService::class.java).orElse(null)
+        val rsaService = world.getService(RsaService::class.java)
         val serverBootstrap = ServerBootstrap()
         val clientChannelInitializer = ClientChannelInitializer(revision = gameContext.revision,
                 rsaExponent = rsaService?.getExponent(), rsaModulus = rsaService?.getModulus(),

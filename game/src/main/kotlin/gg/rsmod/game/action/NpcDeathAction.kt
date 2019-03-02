@@ -13,8 +13,8 @@ object NpcDeathAction {
 
     val deathPlugin: Plugin.() -> Unit = {
         val npc = ctx as Npc
-        suspendable {
-            death(it, npc)
+        npc.queue {
+            death(this, npc)
         }
     }
 

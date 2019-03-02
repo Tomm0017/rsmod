@@ -18,14 +18,14 @@ on_interface_close(interfaceId = PriceGuide.INTERFACE_ID) {
 }
 
 on_button(interfaceId = PriceGuide.TAB_INTERFACE_ID, component = 0) {
-    suspendable {
-        PriceGuide.add(it, it.getInteractingSlot(), it.getInteractingOption())
+    player.queue {
+        PriceGuide.add(this, getInteractingSlot(), getInteractingOption())
     }
 }
 
 on_button(interfaceId = PriceGuide.INTERFACE_ID, component = 2) {
-    suspendable {
-        PriceGuide.remove(it, it.getInteractingSlot(), it.getInteractingOption())
+    player.queue {
+        PriceGuide.remove(this, getInteractingSlot(), getInteractingOption())
     }
 }
 
@@ -34,8 +34,8 @@ on_button(interfaceId = PriceGuide.INTERFACE_ID, component = 10) {
 }
 
 on_button(interfaceId = PriceGuide.INTERFACE_ID, component = 5) {
-    suspendable {
-        val item = it.searchItemInput("Select an item to ask about its price:")
+    player.queue {
+        val item = searchItemInput("Select an item to ask about its price:")
         PriceGuide.search(player, item)
     }
 }

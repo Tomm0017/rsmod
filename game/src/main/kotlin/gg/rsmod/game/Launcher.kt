@@ -24,7 +24,7 @@ object Launcher {
                 devProps = Paths.get("../dev-settings.yml"),
                 args = args)
 
-        world.getService(GameService::class.java).orElse(null).let { service ->
+        world.getService(GameService::class.java)?.let { service ->
             /*for (i in 0 until 1998) {
             val player = Player(world)
             player.username = "Test $i"

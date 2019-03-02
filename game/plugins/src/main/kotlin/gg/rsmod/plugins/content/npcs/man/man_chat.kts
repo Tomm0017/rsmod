@@ -11,9 +11,7 @@ val MEN = arrayOf(Npcs.MAN_3014, Npcs.MAN_3078, Npcs.MAN_3079, Npcs.MAN_3080,
 
 MEN.forEach { man ->
     on_npc_option(npc = man, option = "talk-to") {
-        suspendable {
-            chat(it)
-        }
+        npc.queue { chat(this) }
     }
 }
 

@@ -28,7 +28,7 @@ class OpNpc4Handler : MessageHandler<OpNpc4Message> {
         }
 
         client.closeInterfaceModal()
-        client.interruptPlugins()
+        client.interruptAllQueues()
         client.resetInteractions()
 
         client.attr[INTERACTING_OPT_ATTR] = 4

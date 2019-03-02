@@ -6,7 +6,7 @@ import gg.rsmod.plugins.api.cfg.Npcs
 import gg.rsmod.plugins.api.ext.*
 
 on_npc_option(npc = Npcs.RICHARD_2200, option = "talk-to") {
-    suspendable { chat(it) }
+    player.queue { chat(this) }
 }
 
 suspend fun chat(it: Plugin) {

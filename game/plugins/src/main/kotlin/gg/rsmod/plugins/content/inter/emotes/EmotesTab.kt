@@ -60,11 +60,7 @@ object EmotesTab {
     fun performEmote(p: Player, emote: Emote) {
         if (emote.varbit != -1 && p.getVarbit(emote.varbit) != emote.requiredVarbitValue) {
             val description = emote.unlockDescription ?: "You have not unlocked this emote yet."
-            p.executePlugin {
-                suspendable {
-                    it.messageBox(description)
-                }
-            }
+            p.queue { messageBox(description) }
             return
         }
 

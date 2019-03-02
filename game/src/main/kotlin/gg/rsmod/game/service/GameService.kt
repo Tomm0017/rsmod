@@ -58,7 +58,7 @@ class GameService : Service() {
      * A list of jobs that will be executed on the next cycle after being
      * submitted.
      */
-    private val gameThreadJobs = ConcurrentLinkedQueue<Function0<Unit>>()
+    private val gameThreadJobs = ConcurrentLinkedQueue<() -> Unit>()
 
     /**
      * The amount of ticks that have gone by since the last debug log.
@@ -86,25 +86,43 @@ class GameService : Service() {
      * The amount of time, in milliseconds, that [SequentialPlayerCycleTask] has taken
      * for each [gg.rsmod.game.model.entity.Player].
      */
-    val playerTimes = hashMapOf<String, Long>()
+    internal val playerTimes = hashMapOf<String, Long>()
+
+    /**
+     * The amount of active [gg.rsmod.game.model.PriorityQueue]s throughout the
+     * [gg.rsmod.game.model.entity.Player]s.
+     */
+    internal var totalPlayerQueues = 0
+
+    /**
+     * The amount of active [gg.rsmod.game.model.PriorityQueue]s throughout the
+     * [gg.rsmod.game.model.entity.Npc]s.
+     */
+    internal var totalNpcQueues = 0
+
+    /**
+     * The amount of active [gg.rsmod.game.model.PriorityQueue]s throughout the
+     * [gg.rsmod.game.model.World].
+     */
+    internal var totalWorldQueues = 0
 
     /**
      * A list of tasks that will be executed per game cycle.
      */
     private val tasks = arrayListOf<GameTask>()
 
-    val messageStructures = MessageStructureSet()
+    internal val messageStructures = MessageStructureSet()
 
-    val messageEncoders = MessageEncoderSet()
+    internal val messageEncoders = MessageEncoderSet()
 
-    val messageDecoders = MessageDecoderSet()
+    internal val messageDecoders = MessageDecoderSet()
 
     /**
      * This flag indicates that the game cycles should pause.
      *
      * Should not be used without proper knowledge of how it works!
      */
-    var pause = false
+    internal var pause = false
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         this.world = world
@@ -182,7 +200,7 @@ class GameService : Service() {
          */
         gameThreadJobs.forEach { job ->
             try {
-                job.invoke()
+                job()
             } catch (e: Exception) {
                 logger.error("Error executing game-thread job.", e)
             }
@@ -238,9 +256,12 @@ class GameService : Service() {
              * c: chunks [gg.rsmod.game.model.region.Chunk]
              * r: regions
              *
-             * [Live Plugins]
+             * [Queues]
              * The amount of plugins that are being executed on this exact
              * game cycle.
+             * p: players
+             * n: npcs
+             * w: world
              *
              * [Mem Usage]
              * Memory usage statistics.
@@ -248,9 +269,9 @@ class GameService : Service() {
              * R: reserved memory, in megabytes
              * M: max memory available, in megabytes
              */
-            logger.info("[Cycle time: {}ms] [Entities: {}p / {}n] [Map: {}c / {}r] [Live plugins: {}] [Mem usage: U={}MB / R={}MB / M={}MB].",
+            logger.info("[Cycle time: {}ms] [Entities: {}p / {}n] [Map: {}c / {}r] [Queues: {}p / {}n / {}w] [Mem usage: U={}MB / R={}MB / M={}MB].",
                     cycleTime / TICKS_PER_DEBUG_LOG, world.players.count(), world.npcs.count(),
-                    world.chunks.getActiveChunkCount(), world.chunks.getActiveRegionCount(), world.pluginExecutor.getActiveCount(),
+                    world.chunks.getActiveChunkCount(), world.chunks.getActiveRegionCount(), totalPlayerQueues, totalNpcQueues, totalWorldQueues,
                     (totalMemory - freeMemory) / (1024 * 1024), totalMemory / (1024 * 1024), maxMemory / (1024 * 1024))
             debugTick = 0
             cycleTime = 0

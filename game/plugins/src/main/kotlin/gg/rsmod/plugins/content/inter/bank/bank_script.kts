@@ -124,8 +124,8 @@ on_button(interfaceId = Bank.INV_INTERFACE_ID, component = Bank.INV_INTERFACE_CH
     if (amount == 0) {
         amount = p.inventory.getItemCount(item.id)
     } else if (amount == -1) {
-        suspendable {
-            amount = it.inputInteger("How many would you like to bank?")
+        player.queue {
+            amount = inputInteger("How many would you like to bank?")
             if (amount > 0) {
                 p.setVarbit(Bank.LAST_X_INPUT, amount)
                 Bank.deposit(p, item.id, amount)
@@ -205,8 +205,8 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
             p.bank.set(slot, null)
             return@p
         }
-        suspendable {
-            amount = it.inputInteger("How many would you like to withdraw?")
+        player.queue {
+            amount = inputInteger("How many would you like to withdraw?")
             if (amount > 0) {
                 p.setVarbit(Bank.LAST_X_INPUT, amount)
                 Bank.withdraw(p, item.id, amount, slot, placehold)

@@ -17,12 +17,16 @@ import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.Route
 import gg.rsmod.game.model.path.strategy.BFSPathFindingStrategy
 import gg.rsmod.game.model.path.strategy.SimplePathFindingStrategy
+import gg.rsmod.game.model.queue.QueueTask
+import gg.rsmod.game.model.queue.QueueTaskPriority
+import gg.rsmod.game.model.queue.QueueTaskSystem
 import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
 import gg.rsmod.game.model.timer.TimerSystem
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.block.UpdateBlockBuffer
 import gg.rsmod.game.sync.block.UpdateBlockType
+import kotlinx.coroutines.CoroutineScope
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -92,6 +96,8 @@ abstract class Pawn(val world: World) : Entity() {
      * @see TimerSystem
      */
     val timers = TimerSystem()
+
+    internal val queues = QueueTaskSystem(headPriority = true)
 
     /**
      * The equipment bonus for the pawn.
@@ -220,7 +226,7 @@ abstract class Pawn(val world: World) : Entity() {
      */
     fun attack(target: Pawn) {
         resetInteractions()
-        interruptPlugins()
+        interruptAllQueues()
 
         attr[COMBAT_TARGET_FOCUS_ATTR] = WeakReference(target)
 
@@ -289,7 +295,7 @@ abstract class Pawn(val world: World) : Entity() {
                         }
                         if (getCurrentHp() <= 0) {
                             hit.actions.forEach { action -> action() }
-                            interruptPlugins()
+                            interruptAllQueues()
                             if (getType().isPlayer()) {
                                 executePlugin(PlayerDeathAction.deathPlugin)
                             } else {
@@ -510,18 +516,23 @@ abstract class Pawn(val world: World) : Entity() {
         facePawn(null)
     }
 
-    /**
-     * Executes a plugin with this [Pawn] as its context.
-     */
-    fun executePlugin(plugin: Plugin.() -> Unit) {
-        world.pluginExecutor.execute(this, plugin)
+    fun queue(priority: QueueTaskPriority = QueueTaskPriority.TERMINATE_PREVIOUS, logic: suspend Plugin.(CoroutineScope) -> Unit) {
+        queues.queue(this, world.coroutineDispatcher, priority, logic)
     }
 
     /**
-     * Terminates any on-going plugins that are being executed by this [Pawn].
+     * Terminates any on-going [QueueTask]s that are being executed by this [Pawn].
      */
-    fun interruptPlugins() {
-        world.pluginExecutor.interruptPluginsWithContext(this)
+    fun interruptAllQueues() {
+        queues.terminateAll()
+    }
+
+    /**
+     * Executes a plugin with this [Pawn] as its context.
+     */
+    fun <T> executePlugin(logic: Plugin.() -> T): T {
+        val plugin = Plugin(this)
+        return logic(plugin)
     }
 
     internal fun createPathFindingStrategy(copyChunks: Boolean = false): PathFindingStrategy {

@@ -10,12 +10,14 @@ import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.priv.PrivilegeSet
+import gg.rsmod.game.model.queue.QueueTaskPriority
+import gg.rsmod.game.model.queue.QueueTaskSystem
 import gg.rsmod.game.model.region.ChunkSet
 import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.timer.TimerSystem
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.game.plugin.PluginExecutor
 import gg.rsmod.game.plugin.PluginRepository
+import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.Service
 import gg.rsmod.game.service.game.EntityExamineService
 import gg.rsmod.game.service.game.NpcStatsService
@@ -27,6 +29,8 @@ import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import mu.KotlinLogging
 import net.runelite.cache.IndexType
 import net.runelite.cache.fs.Store
@@ -66,6 +70,16 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         HuffmanCodec(file.contents)
     }
 
+    /**
+     * A collection of our [Service]s specified in our game [ServerProperties]
+     * files.
+     */
+    private val services = arrayListOf<Service>()
+
+    lateinit var coroutineDispatcher: CoroutineDispatcher
+
+    var queues = QueueTaskSystem(headPriority = false)
+
     val players = PawnList(arrayOfNulls<Player>(gameContext.playerLimit))
 
     val npcs = PawnList(arrayOfNulls<Npc>(Short.MAX_VALUE.toInt()))
@@ -73,18 +87,6 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     val chunks = ChunkSet(this)
 
     val collision = CollisionManager(chunks)
-
-    /**
-     * A collection of our [Service]s specified in our game [ServerProperties]
-     * files.
-     */
-    private val services = arrayListOf<Service>()
-
-    /**
-     * The [PluginExecutor] is responsible for executing plugins as requested by
-     * the game.
-     */
-    val pluginExecutor = PluginExecutor()
 
     /**
      * The plugin repository that's responsible for storing all the plugins found.
@@ -206,18 +208,24 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      */
     private val groundItemQueue = ObjectArrayList<GroundItem>()
 
+    internal fun init() {
+        getService(GameService::class.java)?.let { service ->
+            coroutineDispatcher = service.dispatcher
+        }
+    }
+
     /**
      * Executed after the server has initialised everything, but is not yet bound
      * to a network port.
      */
-    fun postLoad() {
+    internal fun postLoad() {
         plugins.executeWorldInit(this)
     }
 
     /**
      * Executed every game cycle.
      */
-    fun cycle() {
+    internal fun cycle() {
         if (currentCycle++ >= Int.MAX_VALUE - 1) {
             currentCycle = 0
             logger.info("World cycle has been reset.")
@@ -332,8 +340,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         val added = npcs.add(npc)
         if (added) {
             var combatDef: NpcCombatDef? = null
-            val statService = getService(NpcStatsService::class.java).orElse(null)
-            if (statService != null) {
+
+            getService(NpcStatsService::class.java)?.let { statService ->
                 combatDef = statService.get(npc.id)
             }
 
@@ -478,12 +486,17 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         return null
     }
 
-    fun executePlugin(ctx: Any, plugin: (Plugin).() -> Unit) {
-        pluginExecutor.execute(ctx, plugin)
+    fun queue(logic: suspend Plugin.(CoroutineScope) -> Unit) {
+        queues.queue(this, coroutineDispatcher, QueueTaskPriority.STACK_WITH_PREVIOUS, logic)
+    }
+
+    fun executePlugin(ctx: Any, logic: (Plugin).() -> Unit) {
+        val plugin = Plugin(ctx)
+        logic(plugin)
     }
 
     fun sendExamine(p: Player, id: Int, type: ExamineEntityType) {
-        val service = getService(EntityExamineService::class.java).orElse(null)
+        val service = getService(EntityExamineService::class.java)
         if (service != null) {
             val examine = when (type) {
                 ExamineEntityType.ITEM -> service.getItem(id)
@@ -504,13 +517,11 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * When [searchSubclasses] is false: the service class must be equal to the [type].
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T: Service> getService(type: Class<out T>, searchSubclasses: Boolean = false): Optional<T> {
+    fun <T: Service> getService(type: Class<out T>, searchSubclasses: Boolean = false): T? {
         if (searchSubclasses) {
-            val service = services.firstOrNull { type.isAssignableFrom(it::class.java) }
-            return if (service != null) Optional.of(service) as Optional<T> else Optional.empty()
+            return services.firstOrNull { type.isAssignableFrom(it::class.java) } as T?
         }
-        val service = services.firstOrNull { it::class.java == type }
-        return if (service != null) Optional.of(service) as Optional<T> else Optional.empty()
+        return services.firstOrNull { it::class.java == type } as T?
     }
 
     /**

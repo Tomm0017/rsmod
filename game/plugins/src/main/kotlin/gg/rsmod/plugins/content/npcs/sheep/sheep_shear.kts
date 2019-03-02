@@ -16,7 +16,6 @@ Sheep.SHEEP_NPCS.forEach { sheep ->
     if (world.definitions.get(NpcDef::class.java, sheep).options.contains("Shear")) {
 
         on_npc_option(npc = sheep, option = "shear") {
-            val player = player
             val npc = getInteractingNpc()
 
             player.facePawn(null)
@@ -25,7 +24,7 @@ Sheep.SHEEP_NPCS.forEach { sheep ->
                 player.message("You need a set of shears to do this.")
                 return@on_npc_option
             }
-            suspendable { shear(it, player, npc) }
+            player.queue { shear(this, player, npc) }
         }
     }
 }
@@ -52,11 +51,7 @@ suspend fun shear(it: Plugin, p: Player, n: Npc) {
             p.world.spawn(ground)
         }
         p.message("You get some wool.")
-        n.executePlugin {
-            suspendable {
-                transmog_sheep(it, n)
-            }
-        }
+        n.queue { transmog_sheep(this, n) }
     } else {
         p.message("The sheep manages to get away from you!")
     }

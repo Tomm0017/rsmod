@@ -16,7 +16,7 @@ val SKULL_LONG_DURATION = 2000
 
 arrayOf(Npcs.EMBLEM_TRADER, Npcs.EMBLEM_TRADER_316).forEach { npc ->
     on_npc_option(npc = npc, option = "talk-to") {
-        suspendable { chat(it) }
+        player.queue { chat(this) }
     }
 
     on_npc_option(npc = npc, option = "trade") {
@@ -24,19 +24,19 @@ arrayOf(Npcs.EMBLEM_TRADER, Npcs.EMBLEM_TRADER_316).forEach { npc ->
     }
 
     on_npc_option(npc = npc, option = "skull") {
-        suspendable {
+        player.queue {
             if (player.hasSkullIcon(SkullIcon.NONE)) {
-                give_pk_skull(it)
+                give_pk_skull(this)
             } else {
-                extend_pk_skull(it)
+                extend_pk_skull(this)
             }
         }
     }
 
     if (npc == Npcs.EMBLEM_TRADER) {
         on_npc_option(npc = npc, option = "hide-streaks") {
-            suspendable {
-                if (it.options("Yes", "No", title = "Hide kill streak data?") == 1) {
+            player.queue {
+                if (options("Yes", "No", title = "Hide kill streak data?") == 1) {
                     val player = player
                     hide_killstreak_data(player)
                     player.message("Bounty Hunter kill streak data has now been hidden.")
@@ -45,8 +45,8 @@ arrayOf(Npcs.EMBLEM_TRADER, Npcs.EMBLEM_TRADER_316).forEach { npc ->
         }
     } else if (npc == Npcs.EMBLEM_TRADER_316) {
         on_npc_option(npc = npc, option = "show-streaks") {
-            suspendable {
-                if (it.options("Yes", "No", title = "Show kill streak data?") == 1) {
+            player.queue {
+                if (options("Yes", "No", title = "Show kill streak data?") == 1) {
                     val player = player
                     show_killstreak_data(player)
                     player.message("Bounty Hunter kill streak data has now been activated.")

@@ -18,9 +18,7 @@ import gg.rsmod.plugins.content.combat.strategy.RangedCombatStrategy
 import gg.rsmod.plugins.content.mechanics.poison.poison
 
 on_npc_combat(Npcs.KING_BLACK_DRAGON) {
-    suspendable {
-        combat(it)
-    }
+    npc.queue { combat(this) }
 }
 
 suspend fun combat(it: Plugin) {

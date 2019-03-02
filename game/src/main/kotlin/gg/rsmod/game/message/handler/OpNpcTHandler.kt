@@ -26,7 +26,7 @@ class OpNpcTHandler : MessageHandler<OpNpcTMessage> {
 
         log(client, "Spell on npc: npc=%d. index=%d, component=[%d, %d], movement=%d", npc.id, message.npcIndex, parent, child, message.movementType)
 
-        client.interruptPlugins()
+        client.interruptAllQueues()
         client.resetInteractions()
 
         if (message.movementType == 1 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
@@ -34,7 +34,7 @@ class OpNpcTHandler : MessageHandler<OpNpcTMessage> {
         }
 
         client.closeInterfaceModal()
-        client.interruptPlugins()
+        client.interruptAllQueues()
         client.resetInteractions()
 
         client.attr[INTERACTING_NPC_ATTR] = WeakReference(npc)

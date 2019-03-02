@@ -13,12 +13,12 @@ import gg.rsmod.plugins.api.ext.setVarp
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 
 set_combat_logic {
-    suspendable {
+    pawn.queue {
         while (true) {
-            if (!cycle(it)) {
+            if (!cycle(this)) {
                 break
             }
-            it.wait(1)
+            wait(1)
         }
     }
 }

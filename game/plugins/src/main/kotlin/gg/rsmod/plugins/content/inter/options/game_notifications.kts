@@ -6,8 +6,7 @@ import gg.rsmod.plugins.api.ext.player
 import gg.rsmod.plugins.api.ext.toggleStorageBit
 
 on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 71) {
-    suspendable {
-        val p = player
+    player.queue {
         while (true) {
 
             /**
@@ -29,19 +28,19 @@ on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 71) {
                 var text = n.second
                 if (n.first != null) {
                     if (n.third) {
-                        text += ": ${if (p.hasStorageBit(OptionsTab.GAME_NOTIFICATIONS, n.first!!)) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}"
+                        text += ": ${if (player.hasStorageBit(OptionsTab.GAME_NOTIFICATIONS, n.first!!)) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}"
                     } else {
-                        text += ": ${if (p.hasStorageBit(OptionsTab.GAME_NOTIFICATIONS, n.first!!)) "<col=178000>enabled</col>" else "<col=801700>disabled</col>"}"
+                        text += ": ${if (player.hasStorageBit(OptionsTab.GAME_NOTIFICATIONS, n.first!!)) "<col=178000>enabled</col>" else "<col=801700>disabled</col>"}"
                     }
                 }
                 text
             }
 
-            val option = it.options(options = *page1.toTypedArray(), title = "Select an option to toggle")
+            val option = options(options = *page1.toTypedArray(), title = "Select an option to toggle")
             if (option >= 1 && option <= notifications.size) {
                 val notification = notifications[option - 1]
                 if (notification.first != null) {
-                    p.toggleStorageBit(OptionsTab.GAME_NOTIFICATIONS, notification.first!!)
+                    player.toggleStorageBit(OptionsTab.GAME_NOTIFICATIONS, notification.first!!)
                 } else {
                     break
                 }

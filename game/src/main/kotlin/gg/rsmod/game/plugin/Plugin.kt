@@ -4,8 +4,6 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.plugin.coroutine.*
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import mu.KotlinLogging
 import kotlin.coroutines.*
 
@@ -15,12 +13,9 @@ import kotlin.coroutines.*
  * @param ctx
  * Can be anything from [Player] to [gg.rsmod.game.model.entity.Pawn].
  *
- * @param dispatcher
- * The [CoroutineDispatcher] used to create the scope for our suspendable plugins.
- *
  * @author Tom <rspsmods@gmail.com>
  */
-class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Continuation<Unit> {
+class Plugin(var ctx: Any?) : Continuation<Unit> {
 
     companion object {
         private val logger = KotlinLogging.logger {  }
@@ -36,7 +31,7 @@ class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Conti
      * was interrupted by another action such as walking or a new script being
      * executed by the same [ctx].
      */
-    var interruptAction: ((Plugin).() -> Unit)? = null
+    var onInterrupt: ((Plugin).() -> Unit)? = null
 
     /**
      * The next [SuspendableStep], if any, that must be handled once a [SuspendableCondition]
@@ -59,20 +54,10 @@ class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Conti
     }
 
     /**
-     * Boilerplate to signal the use of suspendable logic.
-     */
-    fun suspendable(scope: suspend CoroutineScope.(Plugin) -> Unit) {
-        val plugin = this
-        val suspendLogic = suspend { scope(CoroutineScope(dispatcher), plugin) }
-        val coroutine = suspendLogic.createCoroutine(completion = this)
-        coroutine.resume(Unit)
-    }
-
-    /**
      * The logic in each [SuspendableStep] must be game-thread-safe, so we use [cycle]
      * method to keep them in-sync.
      */
-    fun cycle() {
+    internal fun cycle() {
         val next = nextStep ?: return
 
         if (next.condition.resume()) {
@@ -82,20 +67,12 @@ class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Conti
     }
 
     /**
-     * Remove the [ctx] attached to the plugin so that [PluginExecutor.interruptPluginsWithContext]
-     * won't affect the plugin.
-     */
-    fun removeContext() {
-        ctx = null
-    }
-
-    /**
      * Terminate any further execution of this plugin, at any state.
      */
     fun terminate() {
         nextStep = null
         requestReturnValue = null
-        interruptAction?.invoke(this)
+        onInterrupt?.invoke(this)
     }
 
     /**
@@ -116,7 +93,7 @@ class Plugin(var ctx: Any?, private val dispatcher: CoroutineDispatcher) : Conti
      * Wait for [predicate] to return true.
      */
     suspend fun wait(predicate: () -> Boolean): Unit = suspendCoroutine {
-        nextStep = SuspendableStep(PredicateCondition { predicate.invoke() }, it)
+        nextStep = SuspendableStep(PredicateCondition { predicate() }, it)
     }
 
     /**

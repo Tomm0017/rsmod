@@ -7,9 +7,7 @@ import gg.rsmod.plugins.api.cfg.Npcs
 import gg.rsmod.plugins.api.ext.*
 
 on_npc_option(npc = Npcs.ABBOT_LANGLEY, option = "talk-to") {
-    suspendable {
-        dialog(it)
-    }
+    player.queue { dialog(this) }
 }
 
 suspend fun dialog(it: Plugin) {

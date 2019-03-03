@@ -134,7 +134,6 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
 
             val clientSettings = xteaBuf.readByte().toInt()
             val clientResizable = (clientSettings shr 1) == 1
-            val clientLowMem = (clientSettings and 1) == 1
             val clientWidth = xteaBuf.readUnsignedShort()
             val clientHeight = xteaBuf.readUnsignedShort()
 

@@ -2,9 +2,9 @@ package gg.rsmod.game.service.serializer
 
 import com.lambdaworks.crypto.SCryptUtil
 import gg.rsmod.game.Server
-import gg.rsmod.game.model.attr.NEW_ACCOUNT_ATTR
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.attr.NEW_ACCOUNT_ATTR
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.Service
 import gg.rsmod.net.codec.login.LoginRequest

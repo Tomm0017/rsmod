@@ -160,11 +160,11 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
 
             logger.info { "User '$username' login request from ${ctx.channel()}." }
 
-            // TODO: reconnect without password
             val request = LoginRequest(channel = ctx.channel(), username = username,
                     password = password ?: "", revision = serverRevision, xteaKeys = xteaKeys,
                     crcs = crcs, resizableClient = clientResizable, auth = authCode,
-                    uuid = "".toUpperCase(), clientWidth = clientWidth, clientHeight = clientHeight)
+                    uuid = "".toUpperCase(), clientWidth = clientWidth, clientHeight = clientHeight,
+                    reconnecting = reconnecting)
             out.add(request)
         }
     }

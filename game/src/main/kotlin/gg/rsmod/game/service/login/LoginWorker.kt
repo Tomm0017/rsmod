@@ -57,6 +57,7 @@ class LoginWorker(private val boss: LoginService) : Runnable {
                 } else {
                     val errorCode = when (loadResult) {
                         PlayerLoadResult.INVALID_CREDENTIALS -> LoginResultType.INVALID_CREDENTIALS
+                        PlayerLoadResult.INVALID_RECONNECTION -> LoginResultType.BAD_SESSION_ID
                         PlayerLoadResult.MALFORMED -> LoginResultType.ACCOUNT_LOCKED
                         else -> LoginResultType.COULD_NOT_COMPLETE_LOGIN
                     }

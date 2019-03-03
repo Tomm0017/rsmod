@@ -22,6 +22,7 @@ import mu.KotlinLogging
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.*
 
 /**
  * A [PlayerSerializerService] implementation that decodes and encodes player
@@ -58,8 +59,18 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             val data = json.fromJson<PlayerSaveData>(reader, PlayerSaveData::class.java)
             reader.close()
 
-            if (!SCryptUtil.check(request.password, data.passwordHash)) {
-                return PlayerLoadResult.INVALID_CREDENTIALS
+            if (!request.reconnecting) {
+                /**
+                 * If the request isn't a 'reconnection' request, we have to
+                 * verify the password is correct.
+                 */
+                if (!SCryptUtil.check(request.password, data.passwordHash)) {
+                    return PlayerLoadResult.INVALID_CREDENTIALS
+                }
+            } else {
+                if (!Arrays.equals(data.previousXteas, request.xteaKeys)) {
+                    return PlayerLoadResult.INVALID_RECONNECTION
+                }
             }
 
             client.loginUsername = data.username
@@ -103,7 +114,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     }
 
     override fun saveClientData(client: Client): Boolean {
-        val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername,
+        val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername, previousXteas = client.currentXteaKeys,
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
                 privilege = client.privilege.id, runEnergy = client.runEnergy, displayMode = client.interfaces.displayMode.id,
                 skills = getSkills(client), inventory = client.inventory.toMap(), equipment = client.equipment.toMap(),

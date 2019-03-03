@@ -36,6 +36,7 @@ class Client(val channel: Channel, world: World) : Player(world) {
             client.loginUsername = request.username
             client.username = request.username
             client.uuid = request.uuid
+            client.currentXteaKeys = request.xteaKeys
             return client
         }
     }
@@ -60,6 +61,11 @@ class Client(val channel: Channel, world: World) : Player(world) {
      * The client's UUID.
      */
     lateinit var uuid: String
+
+    /**
+     * The xteas for the current log-in session.
+     */
+    lateinit var currentXteaKeys: IntArray
 
     /**
      * Is the applet focused on the player's computer?

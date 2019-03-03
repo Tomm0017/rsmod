@@ -5,7 +5,6 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathFindingStrategy
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.game.service.GameService
 import java.nio.file.Paths
 
 object Launcher {
@@ -24,22 +23,20 @@ object Launcher {
                 devProps = Paths.get("../dev-settings.yml"),
                 args = args)
 
-        world.getService(GameService::class.java)?.let { service ->
-            /*for (i in 0 until 1998) {
-            val player = Player(world)
-            player.username = "Test $i"
-            player.tile = Tile(world.gameContext.home).transform(world.random(-0..0), world.random(-0..0))
+        /*world.getService(GameService::class.java)?.let { service ->
+            for (i in 0 until 1998) {
+                val player = Player(world)
+                player.username = "Test $i"
+                player.tile = Tile(world.gameContext.home).transform(world.random(-0..0), world.random(-0..0))
 
-            service.submitGameThreadJob {
-                player.register()
-                player.executePlugin {
-                    suspendable {
-                        walkPlugin(it)
+                service.submitGameThreadJob {
+                    player.register()
+                    player.queue {
+                        walkPlugin(this)
                     }
                 }
             }
         }*/
-        }
     }
 
     private suspend fun walkPlugin(it: Plugin) {

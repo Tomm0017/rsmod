@@ -92,7 +92,6 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
             val xteaKeys = IntArray(4) { secureBuf.readInt() }
             val reportedSeed = secureBuf.readLong()
 
-            val authType: Int
             val authCode: Int
             val password: String?
             val previousXteaKeys = IntArray(4)
@@ -102,11 +101,10 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
                     previousXteaKeys[i] = secureBuf.readInt()
                 }
 
-                authType = -1
                 authCode = -1
                 password = null
             } else {
-                authType = secureBuf.readByte().toInt()
+                val authType = secureBuf.readByte().toInt()
 
                 if (authType == 0) {
                     authCode = secureBuf.readInt()

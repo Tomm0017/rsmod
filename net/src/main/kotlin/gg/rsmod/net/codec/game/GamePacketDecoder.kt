@@ -13,8 +13,7 @@ import mu.KotlinLogging
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncryption: Boolean,
-                        private val packetMetadata: IPacketMetadata) : StatefulFrameDecoder<GameDecoderState>(GameDecoderState.OPCODE) {
+class GamePacketDecoder(private val random: IsaacRandom?, private val packetMetadata: IPacketMetadata) : StatefulFrameDecoder<GameDecoderState>(GameDecoderState.OPCODE) {
 
     companion object {
         private val logger = KotlinLogging.logger {  }
@@ -37,7 +36,8 @@ class GamePacketDecoder(private val random: IsaacRandom, private val rsaEncrypti
     private fun decodeOpcode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
         if (buf.isReadable) {
             buf.markReaderIndex()
-            opcode = buf.readUnsignedByte().toInt() - (if (rsaEncryption) (random.nextInt() and 0xFF) else 0)
+
+            opcode = buf.readUnsignedByte().toInt() - (random?.nextInt() ?: 0) and 0xFF
             val metadata = packetMetadata.getType(opcode)
             if (metadata == null) {
                 logger.warn("Channel {} sent message with no valid metadata: {}.", ctx.channel(), opcode)

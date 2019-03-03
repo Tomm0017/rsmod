@@ -941,8 +941,6 @@ in-packets:
       - name: last_key_press
         type: TRI_BYTE
 
-  # Ignored packets
-
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: CLAN_KICKUSER
     type: IGNORE
     opcode: 13

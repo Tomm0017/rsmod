@@ -3,6 +3,7 @@ package gg.rsmod.net.codec.login
 import gg.rsmod.net.codec.StatefulFrameDecoder
 import gg.rsmod.util.io.BufferUtils.readJagexString
 import gg.rsmod.util.io.BufferUtils.readString
+import gg.rsmod.util.io.Xtea
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelFutureListener
@@ -25,6 +26,8 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
 
     private var payloadLength = -1
 
+    private var reconnecting = false
+
     override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>, state: LoginDecoderState) {
         buf.markReaderIndex()
         when (state) {
@@ -37,6 +40,7 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
         if (buf.isReadable) {
             val opcode = buf.readByte().toInt()
             if (opcode == LOGIN_OPCODE || opcode == RECONNECT_OPCODE) {
+                reconnecting = opcode == RECONNECT_OPCODE
                 setState(LoginDecoderState.HEADER)
             } else {
                 writeResponse(ctx, LoginResultType.BAD_SESSION_ID)
@@ -85,73 +89,80 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
                 return
             }
 
-            val clientSeed = IntArray(4)
-            for (i in 0 until clientSeed.size) {
-                clientSeed[i] = secureBuf.readInt()
-            }
+            val xteaKeys = IntArray(4) { secureBuf.readInt() }
             val reportedSeed = secureBuf.readLong()
 
-            var authCode = -1
-            val authRequest = secureBuf.readByte().toInt()
-            if (authRequest == 1 && authRequest == 3) {
-                authCode = secureBuf.readUnsignedMedium()
-            } else if (authRequest == 0) {
-                secureBuf.skipBytes(Int.SIZE_BYTES) // some info from 2fa
+            val authType: Int
+            val authCode: Int
+            val password: String?
+            val previousXteaKeys = IntArray(4)
+
+            if (reconnecting) {
+                for (i in 0 until previousXteaKeys.size) {
+                    previousXteaKeys[i] = secureBuf.readInt()
+                }
+
+                authType = -1
+                authCode = -1
+                password = null
             } else {
-                secureBuf.skipBytes(Int.SIZE_BYTES)
+                authType = secureBuf.readByte().toInt()
+
+                if (authType == 0) {
+                    authCode = secureBuf.readInt()
+                } else if (authType == 1 || authType == 3) {
+                    authCode = secureBuf.readUnsignedMedium()
+                    secureBuf.skipBytes(Byte.SIZE_BYTES)
+                } else {
+                    authCode = secureBuf.readInt()
+                }
+
+                secureBuf.skipBytes(Byte.SIZE_BYTES)
+                password = secureBuf.readString()
             }
 
-            secureBuf.skipBytes(Byte.SIZE_BYTES)
-
-            val password = secureBuf.readString()
-            val username = buf.readString()
+            val xteaBuf = buf.decipher(xteaKeys)
+            val username = xteaBuf.readString()
 
             if (reportedSeed != serverSeed) {
-                buf.resetReaderIndex()
-                buf.skipBytes(payloadLength)
+                xteaBuf.resetReaderIndex()
+                xteaBuf.skipBytes(payloadLength)
                 logger.info("User '{}' login request seed mismatch [receivedSeed=$reportedSeed, expectedSeed=$serverSeed].", username, reportedSeed, serverSeed)
                 writeResponse(ctx, LoginResultType.BAD_SESSION_ID)
                 return
             }
 
-            val clientSettings = buf.readByte().toInt()
+            val clientSettings = xteaBuf.readByte().toInt()
             val clientResizable = (clientSettings shr 1) == 1
-            val clientWidth = buf.readUnsignedShort()
-            val clientHeight = buf.readUnsignedShort()
+            val clientLowMem = (clientSettings and 1) == 1
+            val clientWidth = xteaBuf.readUnsignedShort()
+            val clientHeight = xteaBuf.readUnsignedShort()
 
-            buf.skipBytes(24) // random.dat data
-            buf.readString()
-            buf.skipBytes(4)
+            xteaBuf.skipBytes(24) // random.dat data
+            xteaBuf.readString()
+            xteaBuf.skipBytes(4)
 
-            buf.skipBytes(17)
-            buf.readJagexString()
-            buf.readJagexString()
-            buf.readJagexString()
-            buf.readJagexString()
-            buf.skipBytes(3)
-            buf.readJagexString()
-            buf.readJagexString()
-            buf.skipBytes(2)
-            buf.skipBytes(4 * 3)
-            buf.skipBytes(4)
-            buf.skipBytes(1)
-            buf.skipBytes(Int.SIZE_BYTES)
+            xteaBuf.skipBytes(17)
+            xteaBuf.readJagexString()
+            xteaBuf.readJagexString()
+            xteaBuf.readJagexString()
+            xteaBuf.readJagexString()
+            xteaBuf.skipBytes(3)
+            xteaBuf.readJagexString()
+            xteaBuf.readJagexString()
+            xteaBuf.skipBytes(2)
+            xteaBuf.skipBytes(4 * 3)
+            xteaBuf.skipBytes(4)
+            xteaBuf.skipBytes(1)
+            xteaBuf.skipBytes(Int.SIZE_BYTES)
 
-            val crcs = IntArray(18)
-            for (i in 0 until crcs.size) {
-                crcs[i] = buf.readInt()
-            }
+            val crcs = IntArray(18) { xteaBuf.readInt() }
 
-            val isaacSeed = IntArray(4)
-            isaacSeed[0] = clientSeed[0]
-            isaacSeed[1] = clientSeed[1]
-            isaacSeed[2] = serverSeed.toInt() shr 32
-            isaacSeed[3] = serverSeed.toInt()
+            logger.info { "User '$username' login request from ${ctx.channel()}." }
 
-            logger.info("User '{}' login request from {}.", username, ctx.channel())
-
+            // TODO: reconnect without password
             val request = LoginRequest(channel = ctx.channel(), username = username,
-                    password = password, revision = serverRevision, isaacSeed = isaacSeed,
+                    password = password ?: "", revision = serverRevision, xteaKeys = xteaKeys,
                     crcs = crcs, resizableClient = clientResizable, auth = authCode,
                     uuid = "".toUpperCase(), clientWidth = clientWidth, clientHeight = clientHeight)
             out.add(request)
@@ -162,5 +173,11 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
         val buf = ctx.channel().alloc().buffer(1)
         buf.writeByte(result.id)
         ctx.writeAndFlush(buf).addListener(ChannelFutureListener.CLOSE)
+    }
+
+    private fun ByteBuf.decipher(xteaKeys: IntArray): ByteBuf {
+        val data = ByteArray(readableBytes())
+        readBytes(data)
+        return Unpooled.wrappedBuffer(Xtea.decipher(xteaKeys, data, 0, data.size))
     }
 }

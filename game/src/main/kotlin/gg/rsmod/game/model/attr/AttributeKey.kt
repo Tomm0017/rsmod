@@ -22,7 +22,6 @@ import com.google.common.base.MoreObjects
  *
  * @author Tom <rspsmods@gmail.com>
  */
-@Suppress("unused")
 class AttributeKey<T>(val persistenceKey: String? = null) {
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("persistenceKey", persistenceKey).toString()

@@ -76,17 +76,19 @@ class LoginService : Service() {
          * next game cycle after completion. Should benchmark first.
          */
         val pipeline = client.channel.pipeline()
-        val rsaEncryption = client.world.getService(RsaService::class.java) != null
+        val isaacEncryption = client.world.getService(RsaService::class.java) != null
+        val encoderIsaac = if (isaacEncryption) encodeRandom else null
+        val decoderIsaac = if (isaacEncryption) decodeRandom else null
 
         pipeline.remove("handshake_encoder")
         pipeline.remove("login_decoder")
         pipeline.remove("login_encoder")
 
-        pipeline.addFirst("packet_encoder", GamePacketEncoder(encodeRandom, rsaEncryption))
+        pipeline.addFirst("packet_encoder", GamePacketEncoder(encoderIsaac))
         pipeline.addAfter("packet_encoder", "message_encoder", GameMessageEncoder(gameSystem.service.messageEncoders, gameSystem.service.messageStructures))
 
-        pipeline.addBefore("handler", "packet_decoder", GamePacketDecoder(decodeRandom, rsaEncryption,
-                PacketMetadata(gameSystem.service.messageStructures)))
+        pipeline.addBefore("handler", "packet_decoder",
+                GamePacketDecoder(decoderIsaac, PacketMetadata(gameSystem.service.messageStructures)))
 
         client.login()
         client.channel.flush()

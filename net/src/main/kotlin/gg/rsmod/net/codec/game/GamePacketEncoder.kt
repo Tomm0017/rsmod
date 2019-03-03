@@ -12,7 +12,7 @@ import java.text.DecimalFormat
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class GamePacketEncoder(private val random: IsaacRandom, private val rsaEncryption: Boolean) : MessageToByteEncoder<GamePacket>() {
+class GamePacketEncoder(private val random: IsaacRandom?) : MessageToByteEncoder<GamePacket>() {
 
     companion object {
         private val logger = KotlinLogging.logger {  }
@@ -26,7 +26,7 @@ class GamePacketEncoder(private val random: IsaacRandom, private val rsaEncrypti
             logger.error("Message length {} too long for 'variable-short' packet on channel {}.", DecimalFormat().format(msg.length), ctx.channel())
             return
         }
-        out.writeByte(msg.opcode + (if (rsaEncryption) (random.nextInt() and 0xFF) else 0))
+        out.writeByte((msg.opcode + (random?.nextInt() ?: 0)) and 0xFF)
         when (msg.type) {
             PacketType.VARIABLE_BYTE -> out.writeByte(msg.length)
             PacketType.VARIABLE_SHORT -> out.writeShort(msg.length)

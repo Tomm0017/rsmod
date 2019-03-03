@@ -34,10 +34,11 @@ class LoginWorker(private val boss: LoginService) : Runnable {
                 val loadResult: PlayerLoadResult = boss.serializer.loadClientData(client, request.login)
 
                 if (loadResult == PlayerLoadResult.LOAD_ACCOUNT || loadResult == PlayerLoadResult.NEW_ACCOUNT) {
+                    val decodeRandom = IsaacRandom(request.login.xteaKeys)
+                    val encodeRandom = IsaacRandom(IntArray(request.login.xteaKeys.size) { request.login.xteaKeys[it] + 50 })
+
                     val world = request.world
                     val service = client.world.getService(GameService::class.java)!!
-                    val encodeRandom = IsaacRandom(request.login.isaacSeed.map { it + 50 }.toIntArray())
-                    val decodeRandom = IsaacRandom(request.login.isaacSeed)
 
                     service.submitGameThreadJob {
                         val loginResult: LoginResultType = when {

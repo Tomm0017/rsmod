@@ -9,8 +9,12 @@ import gg.rsmod.game.model.PlayerUID
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.AttributeKey
+import gg.rsmod.game.model.container.ContainerKey
+import gg.rsmod.game.model.container.ContainerStackType
+import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.interf.DisplayMode
+import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.service.serializer.PlayerLoadResult
@@ -89,9 +93,16 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                 client.getSkills().setXp(skill.skill, skill.xp)
                 client.getSkills().setCurrentLevel(skill.skill, skill.lvl)
             }
-            client.inventory.setItems(data.inventory)
-            client.equipment.setItems(data.equipment)
-            client.bank.setItems(data.bank)
+            data.itemContainers.forEach {
+                val key = ContainerKey(it.name)
+                val container = if (client.containers.containsKey(key)) client.containers[key] else {
+                    client.containers[key] = ItemContainer(client.world.definitions, it.capacity, it.stackType)
+                    client.containers[key]
+                }!!
+                it.items.forEach { slot, item ->
+                    container.set(slot, item)
+                }
+            }
             data.attributes.forEach { key, value ->
                 val attribute = AttributeKey<Any>(key)
                 client.attr[attribute] = if (value is Double) value.toInt() else value
@@ -121,14 +132,23 @@ class JsonPlayerSerializer : PlayerSerializerService() {
         val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername, previousXteas = client.currentXteaKeys,
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
                 privilege = client.privilege.id, runEnergy = client.runEnergy, displayMode = client.interfaces.displayMode.id,
-                skills = getSkills(client), inventory = client.inventory.toMap(), equipment = client.equipment.toMap(),
-                bank = client.bank.toMap(), attributes = client.attr.toPersistentMap(),
+                skills = getSkills(client), itemContainers = getContainers(client), attributes = client.attr.toPersistentMap(),
                 timers = client.timers.toPersistentTimers(), varps = client.varps.getAll().filter { it.state != 0 })
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))
         val json = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
         json.toJson(data, writer)
         writer.close()
         return true
+    }
+
+    private fun getContainers(client: Client): List<PersistentContainer> {
+        val containers = arrayListOf<PersistentContainer>()
+
+        client.containers.forEach { key, container ->
+            containers.add(PersistentContainer(key.name, container.capacity, container.stackType, container.toMap()))
+        }
+
+        return containers
     }
 
     private fun getSkills(client: Client): List<PersistentSkill> {
@@ -143,6 +163,11 @@ class JsonPlayerSerializer : PlayerSerializerService() {
 
         return skills
     }
+
+    data class PersistentContainer(@JsonProperty("name") val name: String,
+                                   @JsonProperty("capacity") val capacity: Int,
+                                   @JsonProperty("stackType") val stackType: ContainerStackType,
+                                   @JsonProperty("items") val items: Map<Int, Item>)
 
     data class PersistentSkill(@JsonProperty("skill") val skill: Int,
                                @JsonProperty("xp") val xp: Double,

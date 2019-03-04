@@ -9,8 +9,7 @@ import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
 import gg.rsmod.game.model.attr.LEVEL_UP_INCREMENT
 import gg.rsmod.game.model.attr.LEVEL_UP_OLD_XP
 import gg.rsmod.game.model.attr.LEVEL_UP_SKILL_ID
-import gg.rsmod.game.model.container.ContainerStackType
-import gg.rsmod.game.model.container.ItemContainer
+import gg.rsmod.game.model.container.*
 import gg.rsmod.game.model.interf.InterfaceSet
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.priv.Privilege
@@ -22,6 +21,7 @@ import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.game.sync.block.UpdateBlockType
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * A [Pawn] that represents a player.
@@ -99,17 +99,23 @@ open class Player(world: World) : Pawn(world) {
      */
     @Volatile private var setDisconnectionTimer = false
 
-    private val skillSet by lazy { SkillSet(maxSkills = world.gameContext.skillCount) }
+    val containers = HashMap<ContainerKey, ItemContainer>().apply {
+        put(INVENTORY_KEY, ItemContainer(world.definitions, capacity = 28, stackType = ContainerStackType.NORMAL))
+        put(EQUIPMENT_KEY, ItemContainer(world.definitions, capacity = 14, stackType = ContainerStackType.NORMAL))
+        put(BANK_KEY, ItemContainer(world.definitions, capacity = 800, stackType = ContainerStackType.STACK))
+    }
 
-    val inventory by lazy { ItemContainer(world.definitions, capacity = 28, stackType = ContainerStackType.NORMAL) }
+    val inventory: ItemContainer = containers[INVENTORY_KEY]!!
 
-    val equipment by lazy { ItemContainer(world.definitions, capacity = 14, stackType = ContainerStackType.NORMAL) }
+    val equipment: ItemContainer = containers[EQUIPMENT_KEY]!!
 
-    val bank by lazy { ItemContainer(world.definitions, capacity = 800, stackType = ContainerStackType.STACK) }
+    val bank: ItemContainer = containers[BANK_KEY]!!
+
+    private val skillSet = SkillSet(maxSkills = world.gameContext.skillCount)
 
     val interfaces by lazy { InterfaceSet(this) }
 
-    val varps by lazy { VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java)) }
+    val varps = VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java))
 
     /**
      * Flag that indicates whether or not to refresh the shop the player currently

@@ -11,7 +11,7 @@ import mu.KotlinLogging
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private val stackType: ContainerStackType) : Iterable<Item?> {
+class ItemContainer(val definitions: DefinitionSet, val capacity: Int, val stackType: ContainerStackType) : Iterable<Item?> {
 
     companion object {
         private val logger = KotlinLogging.logger {  }

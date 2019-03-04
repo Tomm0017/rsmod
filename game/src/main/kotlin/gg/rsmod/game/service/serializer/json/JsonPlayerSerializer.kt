@@ -61,13 +61,17 @@ class JsonPlayerSerializer : PlayerSerializerService() {
 
             if (!request.reconnecting) {
                 /**
-                 * If the request isn't a 'reconnection' request, we have to
+                 * If the [request] is not a [LoginRequest.reconnecting] request, we have to
                  * verify the password is correct.
                  */
                 if (!SCryptUtil.check(request.password, data.passwordHash)) {
                     return PlayerLoadResult.INVALID_CREDENTIALS
                 }
             } else {
+                /**
+                 * If the [request] is a [LoginRequest.reconnecting] request, we
+                 * verify that the login xteas match from our previous session.
+                 */
                 if (!Arrays.equals(data.previousXteas, request.xteaKeys)) {
                     return PlayerLoadResult.INVALID_RECONNECTION
                 }

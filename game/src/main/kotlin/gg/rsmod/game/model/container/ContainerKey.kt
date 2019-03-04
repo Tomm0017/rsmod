@@ -1,6 +1,8 @@
 package gg.rsmod.game.model.container
 
 /**
+ * A unique key used for an [ItemContainer].
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 data class ContainerKey(val name: String) {

@@ -99,6 +99,9 @@ open class Player(world: World) : Pawn(world) {
      */
     @Volatile private var setDisconnectionTimer = false
 
+    /**
+     * A map that contains all the [ItemContainer]s a player can have.
+     */
     val containers = HashMap<ContainerKey, ItemContainer>().apply {
         put(INVENTORY_KEY, ItemContainer(world.definitions, capacity = 28, stackType = ContainerStackType.NORMAL))
         put(EQUIPMENT_KEY, ItemContainer(world.definitions, capacity = 14, stackType = ContainerStackType.NORMAL))
@@ -111,11 +114,11 @@ open class Player(world: World) : Pawn(world) {
 
     val bank: ItemContainer = containers[BANK_KEY]!!
 
-    private val skillSet = SkillSet(maxSkills = world.gameContext.skillCount)
-
     val interfaces by lazy { InterfaceSet(this) }
 
     val varps = VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java))
+
+    private val skillSet = SkillSet(maxSkills = world.gameContext.skillCount)
 
     /**
      * Flag that indicates whether or not to refresh the shop the player currently

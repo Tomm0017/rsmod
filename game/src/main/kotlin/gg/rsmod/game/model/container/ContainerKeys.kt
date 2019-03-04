@@ -1,6 +1,9 @@
 package gg.rsmod.game.model.container
 
 /**
+ * A decoupled file that holds ContainerKeys that are pre-defined in our core
+ * game-module.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 

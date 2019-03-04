@@ -9,7 +9,11 @@ import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
 import gg.rsmod.game.model.attr.LEVEL_UP_INCREMENT
 import gg.rsmod.game.model.attr.LEVEL_UP_OLD_XP
 import gg.rsmod.game.model.attr.LEVEL_UP_SKILL_ID
-import gg.rsmod.game.model.container.*
+import gg.rsmod.game.model.container.ItemContainer
+import gg.rsmod.game.model.container.key.BANK_KEY
+import gg.rsmod.game.model.container.key.ContainerKey
+import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
+import gg.rsmod.game.model.container.key.INVENTORY_KEY
 import gg.rsmod.game.model.interf.InterfaceSet
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.priv.Privilege
@@ -57,10 +61,13 @@ open class Player(world: World) : Pawn(world) {
     lateinit var uid: PlayerUID
 
     /**
-     * The display name.
+     * The display name that will show on the player while in-game.
      */
     var username = ""
 
+    /**
+     * @see Privilege
+     */
     var privilege = Privilege.DEFAULT
 
     /**
@@ -103,9 +110,9 @@ open class Player(world: World) : Pawn(world) {
      * A map that contains all the [ItemContainer]s a player can have.
      */
     val containers = HashMap<ContainerKey, ItemContainer>().apply {
-        put(INVENTORY_KEY, ItemContainer(world.definitions, capacity = 28, stackType = ContainerStackType.NORMAL))
-        put(EQUIPMENT_KEY, ItemContainer(world.definitions, capacity = 14, stackType = ContainerStackType.NORMAL))
-        put(BANK_KEY, ItemContainer(world.definitions, capacity = 800, stackType = ContainerStackType.STACK))
+        put(INVENTORY_KEY, ItemContainer(world.definitions, INVENTORY_KEY))
+        put(EQUIPMENT_KEY, ItemContainer(world.definitions, EQUIPMENT_KEY))
+        put(BANK_KEY, ItemContainer(world.definitions, BANK_KEY))
     }
 
     val inventory: ItemContainer = containers[INVENTORY_KEY]!!

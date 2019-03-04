@@ -9,8 +9,6 @@ import gg.rsmod.game.model.PlayerUID
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.AttributeKey
-import gg.rsmod.game.model.container.ContainerKey
-import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.interf.DisplayMode
@@ -58,6 +56,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             return PlayerLoadResult.NEW_ACCOUNT
         }
         try {
+            val world = client.world
             val reader = Files.newBufferedReader(save)
             val json = Gson()
             val data = json.fromJson<PlayerSaveData>(reader, PlayerSaveData::class.java)
@@ -86,7 +85,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.username = data.displayName
             client.passwordHash = data.passwordHash
             client.tile = Tile(data.x, data.z, data.height)
-            client.privilege = client.world.privileges.get(data.privilege) ?: Privilege.DEFAULT
+            client.privilege = world.privileges.get(data.privilege) ?: Privilege.DEFAULT
             client.runEnergy = data.runEnergy
             client.interfaces.displayMode = DisplayMode.values.firstOrNull { it.id == data.displayMode } ?: DisplayMode.FIXED
             data.skills.forEach { skill ->
@@ -94,9 +93,13 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                 client.getSkills().setCurrentLevel(skill.skill, skill.lvl)
             }
             data.itemContainers.forEach {
-                val key = ContainerKey(it.name)
+                val key = world.registeredContainers.firstOrNull { other -> other.name == it.name }
+                if (key == null) {
+                    logger.error { "Container was found in serialized data, but is not found registered in our World. [key=${it.name}]" }
+                    return@forEach
+                }
                 val container = if (client.containers.containsKey(key)) client.containers[key] else {
-                    client.containers[key] = ItemContainer(client.world.definitions, it.capacity, it.stackType)
+                    client.containers[key] = ItemContainer(client.world.definitions, key)
                     client.containers[key]
                 }!!
                 it.items.forEach { slot, item ->
@@ -146,7 +149,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
 
         client.containers.forEach { key, container ->
             if (!container.isEmpty()) {
-                containers.add(PersistentContainer(key.name, container.capacity, container.stackType, container.toMap()))
+                containers.add(PersistentContainer(key.name, container.toMap()))
             }
         }
 
@@ -167,8 +170,6 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     }
 
     data class PersistentContainer(@JsonProperty("name") val name: String,
-                                   @JsonProperty("capacity") val capacity: Int,
-                                   @JsonProperty("stackType") val stackType: ContainerStackType,
                                    @JsonProperty("items") val items: Map<Int, Item>)
 
     data class PersistentSkill(@JsonProperty("skill") val skill: Int,

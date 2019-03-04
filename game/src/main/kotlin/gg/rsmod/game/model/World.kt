@@ -8,6 +8,10 @@ import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.combat.NpcCombatDef
+import gg.rsmod.game.model.container.key.BANK_KEY
+import gg.rsmod.game.model.container.key.ContainerKey
+import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
+import gg.rsmod.game.model.container.key.INVENTORY_KEY
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.priv.PrivilegeSet
 import gg.rsmod.game.model.queue.QueueTaskPriority
@@ -78,7 +82,9 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     lateinit var coroutineDispatcher: CoroutineDispatcher
 
-    var queues = QueueTaskSystem(headPriority = false)
+    internal var queues = QueueTaskSystem(headPriority = false)
+
+    internal val registeredContainers = ObjectOpenHashSet<ContainerKey>()
 
     val players = PawnList(arrayOfNulls<Player>(gameContext.playerLimit))
 
@@ -220,6 +226,10 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      */
     internal fun postLoad() {
         plugins.executeWorldInit(this)
+
+        arrayOf(INVENTORY_KEY, EQUIPMENT_KEY, BANK_KEY).forEach { key ->
+            registeredContainers.add(key)
+        }
     }
 
     /**

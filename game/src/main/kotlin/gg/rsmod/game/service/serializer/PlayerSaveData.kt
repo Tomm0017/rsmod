@@ -1,6 +1,5 @@
 package gg.rsmod.game.service.serializer
 
-import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.timer.TimerSystem
 import gg.rsmod.game.model.varp.Varp
 import gg.rsmod.game.service.serializer.json.JsonPlayerSerializer
@@ -14,8 +13,7 @@ data class PlayerSaveData(val passwordHash: String, val username: String, val di
                           val previousXteas: IntArray, val x: Int, val z: Int, val height: Int, val privilege: Int,
                           val displayMode: Int, val runEnergy: Double, val skills: List<JsonPlayerSerializer.PersistentSkill>,
                           val attributes: Map<String, Any>, val timers: List<TimerSystem.PersistentTimer>,
-                          val inventory: Map<Int, Item>, val equipment: Map<Int, Item>,
-                          val bank: Map<Int, Item>, val varps: List<Varp>) {
+                          val itemContainers: List<JsonPlayerSerializer.PersistentContainer>, val varps: List<Varp>) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -36,9 +34,7 @@ data class PlayerSaveData(val passwordHash: String, val username: String, val di
         if (skills != other.skills) return false
         if (attributes != other.attributes) return false
         if (timers != other.timers) return false
-        if (inventory != other.inventory) return false
-        if (equipment != other.equipment) return false
-        if (bank != other.bank) return false
+        if (itemContainers != other.itemContainers) return false
         if (varps != other.varps) return false
 
         return true
@@ -58,10 +54,9 @@ data class PlayerSaveData(val passwordHash: String, val username: String, val di
         result = 31 * result + skills.hashCode()
         result = 31 * result + attributes.hashCode()
         result = 31 * result + timers.hashCode()
-        result = 31 * result + inventory.hashCode()
-        result = 31 * result + equipment.hashCode()
-        result = 31 * result + bank.hashCode()
+        result = 31 * result + itemContainers.hashCode()
         result = 31 * result + varps.hashCode()
         return result
     }
+
 }

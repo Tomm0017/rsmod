@@ -785,6 +785,25 @@ in-packets:
         type: SHORT
         trans: ADD
 
+  - message: gg.rsmod.game.message.impl.OpHeld3Message
+    type: FIXED
+    opcode: 72
+    length: 8
+    structure:
+      - name: component_hash
+        order: LITTLE
+        type: INT
+      - name: slot
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: item
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+
   - message: gg.rsmod.game.message.impl.OpHeld4Message
     type: FIXED
     opcode: 7
@@ -1095,11 +1114,6 @@ in-packets:
     type: IGNORE
     opcode: 69
     length: 4
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPHELD3
-    type: IGNORE
-    opcode: 72
-    length: 8
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPOBJ2
     type: IGNORE

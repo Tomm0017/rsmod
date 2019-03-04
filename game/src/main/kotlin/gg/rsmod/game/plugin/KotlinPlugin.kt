@@ -7,6 +7,7 @@ import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.combat.NpcCombatDef
+import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
@@ -69,6 +70,14 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
         val shop = Shop(name, stockType, purchasePolicy, currency, arrayOfNulls(stockSize))
         r.shops[name] = shop
         init(shop)
+    }
+
+    /**
+     * Create a [ContainerKey] to register to the [World] for serialization
+     * later on.
+     */
+    fun register_container_key(key: ContainerKey) {
+        r.containerKeys.add(key)
     }
 
     /**

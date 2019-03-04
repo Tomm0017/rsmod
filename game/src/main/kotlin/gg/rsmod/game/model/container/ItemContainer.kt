@@ -2,6 +2,7 @@ package gg.rsmod.game.model.container
 
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
+import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.item.SlotItem
 import mu.KotlinLogging
@@ -11,11 +12,14 @@ import mu.KotlinLogging
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private val stackType: ContainerStackType) : Iterable<Item?> {
+class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Iterable<Item?> {
 
     companion object {
         private val logger = KotlinLogging.logger {  }
     }
+
+    constructor(definitions: DefinitionSet, capacity: Int, stackType: ContainerStackType)
+            : this(definitions, ContainerKey("", capacity, stackType))
 
     constructor(other: ItemContainer) : this(other.definitions, other.capacity, other.stackType) {
         for (i in 0 until capacity) {
@@ -23,6 +27,10 @@ class ItemContainer(val definitions: DefinitionSet, val capacity: Int, private v
             set(i, item)
         }
     }
+
+    val capacity = key.capacity
+
+    val stackType = key.stackType
 
     private val items = Array<Item?>(capacity) { null }
 

@@ -113,7 +113,7 @@ fun Player.openInterface(interfaceId: Int, dest: InterfaceDestination, fullscree
     if (displayMode == DisplayMode.FULLSCREEN) {
         openOverlayInterface(displayMode)
     }
-    openInterface(parent, child, interfaceId, if (dest.clickThrough) 1 else 0, isMainComponent = dest == InterfaceDestination.MAIN_SCREEN)
+    openInterface(parent, child, interfaceId, if (dest.clickThrough) 1 else 0, isModal = dest == InterfaceDestination.MAIN_SCREEN || dest == InterfaceDestination.TAB_AREA)
 }
 
 /**
@@ -133,11 +133,11 @@ fun Player.openInterface(dest: InterfaceDestination, autoClose: Boolean = false)
     if (displayMode == DisplayMode.FULLSCREEN) {
         openOverlayInterface(displayMode)
     }
-    openInterface(parent, child, dest.interfaceId, if (dest.clickThrough) 1 else 0, isMainComponent = dest == InterfaceDestination.MAIN_SCREEN)
+    openInterface(parent, child, dest.interfaceId, if (dest.clickThrough) 1 else 0, isModal = dest == InterfaceDestination.MAIN_SCREEN || dest == InterfaceDestination.TAB_AREA)
 }
 
-fun Player.openInterface(parent: Int, child: Int, interfaceId: Int, type: Int = 0, isMainComponent: Boolean = false) {
-    if (isMainComponent) {
+fun Player.openInterface(parent: Int, child: Int, interfaceId: Int, type: Int = 0, isModal: Boolean = false) {
+    if (isModal) {
         interfaces.openModal(parent, child, interfaceId)
     } else {
         interfaces.open(parent, child, interfaceId)

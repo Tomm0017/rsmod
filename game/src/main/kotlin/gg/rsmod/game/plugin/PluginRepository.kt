@@ -8,6 +8,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.*
 import gg.rsmod.game.model.combat.NpcCombatDef
+import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.shop.Shop
@@ -19,6 +20,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import mu.KotlinLogging
 import java.lang.ref.WeakReference
 import java.net.URLClassLoader
@@ -283,6 +285,12 @@ class PluginRepository(val world: World) {
     internal val shops = Object2ObjectOpenHashMap<String, Shop>()
 
     /**
+     * Temporarily holds all container keys set from plugins for this [PluginRepository].
+     * This is then passed onto the [World] and is cleared.
+     */
+    internal val containerKeys = ObjectOpenHashSet<ContainerKey>()
+
+    /**
      * Initiates and populates all our plugins.
      */
     fun init(jarPluginsDirectory: String, analyzeMode: Boolean) {
@@ -291,6 +299,7 @@ class PluginRepository(val world: World) {
         setCombatDefs()
         spawnEntities()
         setMultiAreas()
+        setContainers()
         setShops()
     }
 
@@ -373,6 +382,11 @@ class PluginRepository(val world: World) {
         world.multiCombatRegions.addAll(multiCombatRegions)
         multiCombatChunks.clear()
         multiCombatRegions.clear()
+    }
+
+    private fun setContainers() {
+        world.registeredContainers.addAll(containerKeys)
+        containerKeys.clear()
     }
 
     /**

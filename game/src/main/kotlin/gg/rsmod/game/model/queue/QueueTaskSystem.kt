@@ -8,6 +8,14 @@ import kotlin.coroutines.createCoroutine
 import kotlin.coroutines.resume
 
 /**
+ * A system responsible for the the coroutine logic.
+ *
+ * @param headPriority
+ * If true, the last inserted [QueueTask] takes priority and trailing [QueueTask]s are not
+ * taken into account until said task is finished.
+ * If false, all [QueueTask]s in [queue] have their plugin invoke [Plugin.cycle]
+ * every [cycle].
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class QueueTaskSystem(private val headPriority: Boolean) {

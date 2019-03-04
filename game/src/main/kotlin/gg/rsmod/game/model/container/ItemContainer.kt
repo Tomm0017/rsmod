@@ -30,7 +30,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
 
     val capacity = key.capacity
 
-    val stackType = key.stackType
+    private val stackType = key.stackType
 
     private val items = Array<Item?>(capacity) { null }
 

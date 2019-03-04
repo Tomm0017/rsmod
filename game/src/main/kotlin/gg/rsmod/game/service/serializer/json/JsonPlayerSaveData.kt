@@ -1,25 +1,24 @@
-package gg.rsmod.game.service.serializer
+package gg.rsmod.game.service.serializer.json
 
 import gg.rsmod.game.model.timer.TimerSystem
 import gg.rsmod.game.model.varp.Varp
-import gg.rsmod.game.service.serializer.json.JsonPlayerSerializer
 
 /**
- * The data that will be decoded/encoded by the [PlayerSerializerService].
+ * The data that will be decoded/encoded by the [JsonPlayerSerializer].
  *
  * @author Tom <rspsmods@gmail.com>
  */
-data class PlayerSaveData(val passwordHash: String, val username: String, val displayName: String,
-                          val previousXteas: IntArray, val x: Int, val z: Int, val height: Int, val privilege: Int,
-                          val displayMode: Int, val runEnergy: Double, val skills: List<JsonPlayerSerializer.PersistentSkill>,
-                          val attributes: Map<String, Any>, val timers: List<TimerSystem.PersistentTimer>,
-                          val itemContainers: List<JsonPlayerSerializer.PersistentContainer>, val varps: List<Varp>) {
+data class JsonPlayerSaveData(val passwordHash: String, val username: String, val displayName: String,
+                              val previousXteas: IntArray, val x: Int, val z: Int, val height: Int, val privilege: Int,
+                              val displayMode: Int, val runEnergy: Double, val skills: List<JsonPlayerSerializer.PersistentSkill>,
+                              val attributes: Map<String, Any>, val timers: List<TimerSystem.PersistentTimer>,
+                              val itemContainers: List<JsonPlayerSerializer.PersistentContainer>, val varps: List<Varp>) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as PlayerSaveData
+        other as JsonPlayerSaveData
 
         if (passwordHash != other.passwordHash) return false
         if (username != other.username) return false

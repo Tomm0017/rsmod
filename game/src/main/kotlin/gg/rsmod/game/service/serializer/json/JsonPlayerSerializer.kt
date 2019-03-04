@@ -16,7 +16,6 @@ import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.service.serializer.PlayerLoadResult
-import gg.rsmod.game.service.serializer.PlayerSaveData
 import gg.rsmod.game.service.serializer.PlayerSerializerService
 import gg.rsmod.net.codec.login.LoginRequest
 import gg.rsmod.util.ServerProperties
@@ -59,7 +58,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             val world = client.world
             val reader = Files.newBufferedReader(save)
             val json = Gson()
-            val data = json.fromJson<PlayerSaveData>(reader, PlayerSaveData::class.java)
+            val data = json.fromJson<JsonPlayerSaveData>(reader, JsonPlayerSaveData::class.java)
             reader.close()
 
             if (!request.reconnecting) {
@@ -132,7 +131,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     }
 
     override fun saveClientData(client: Client): Boolean {
-        val data = PlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername, previousXteas = client.currentXteaKeys,
+        val data = JsonPlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername, previousXteas = client.currentXteaKeys,
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
                 privilege = client.privilege.id, runEnergy = client.runEnergy, displayMode = client.interfaces.displayMode.id,
                 skills = getSkills(client), itemContainers = getContainers(client), attributes = client.attr.toPersistentMap(),

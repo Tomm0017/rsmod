@@ -110,16 +110,16 @@ open class Player(world: World) : Pawn(world) {
      * A map that contains all the [ItemContainer]s a player can have.
      */
     val containers = HashMap<ContainerKey, ItemContainer>().apply {
-        put(INVENTORY_KEY, ItemContainer(world.definitions, INVENTORY_KEY))
-        put(EQUIPMENT_KEY, ItemContainer(world.definitions, EQUIPMENT_KEY))
-        put(BANK_KEY, ItemContainer(world.definitions, BANK_KEY))
+        put(INVENTORY_KEY,  inventory)
+        put(EQUIPMENT_KEY,  equipment)
+        put(BANK_KEY,       bank)
     }
 
-    val inventory: ItemContainer = containers[INVENTORY_KEY]!!
+    val inventory = ItemContainer(world.definitions, INVENTORY_KEY)
 
-    val equipment: ItemContainer = containers[EQUIPMENT_KEY]!!
+    val equipment = ItemContainer(world.definitions, EQUIPMENT_KEY)
 
-    val bank: ItemContainer = containers[BANK_KEY]!!
+    val bank = ItemContainer(world.definitions, BANK_KEY)
 
     val interfaces by lazy { InterfaceSet(this) }
 

@@ -106,6 +106,12 @@ open class Player(world: World) : Pawn(world) {
      */
     @Volatile private var setDisconnectionTimer = false
 
+    val inventory = ItemContainer(world.definitions, INVENTORY_KEY)
+
+    val equipment = ItemContainer(world.definitions, EQUIPMENT_KEY)
+
+    val bank = ItemContainer(world.definitions, BANK_KEY)
+
     /**
      * A map that contains all the [ItemContainer]s a player can have.
      */
@@ -114,12 +120,6 @@ open class Player(world: World) : Pawn(world) {
         put(EQUIPMENT_KEY,  equipment)
         put(BANK_KEY,       bank)
     }
-
-    val inventory = ItemContainer(world.definitions, INVENTORY_KEY)
-
-    val equipment = ItemContainer(world.definitions, EQUIPMENT_KEY)
-
-    val bank = ItemContainer(world.definitions, BANK_KEY)
 
     val interfaces by lazy { InterfaceSet(this) }
 

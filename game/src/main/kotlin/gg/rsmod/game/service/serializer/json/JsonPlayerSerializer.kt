@@ -94,7 +94,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             data.itemContainers.forEach {
                 val key = world.registeredContainers.firstOrNull { other -> other.name == it.name }
                 if (key == null) {
-                    logger.error { "Container was found in serialized data, but is not found registered in our World. [key=${it.name}]" }
+                    logger.error { "Container was found in serialized data, but is not registered to our World. [key=${it.name}]" }
                     return@forEach
                 }
                 val container = if (client.containers.containsKey(key)) client.containers[key] else {

@@ -28,7 +28,7 @@ class OpNpc3Handler : MessageHandler<OpNpc3Message> {
         }
 
         client.closeInterfaceModal()
-        client.interruptAllQueues()
+        client.interruptQueues()
         client.resetInteractions()
 
         client.attr[INTERACTING_OPT_ATTR] = 3

@@ -40,7 +40,7 @@ class OpObj4Handler : MessageHandler<OpObj4Message> {
         }
 
         client.closeInterfaceModal()
-        client.interruptAllQueues()
+        client.interruptQueues()
         client.resetInteractions()
 
         client.attr[INTERACTING_OPT_ATTR] = 4

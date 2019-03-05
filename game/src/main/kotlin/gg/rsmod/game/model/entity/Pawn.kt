@@ -18,8 +18,8 @@ import gg.rsmod.game.model.path.Route
 import gg.rsmod.game.model.path.strategy.BFSPathFindingStrategy
 import gg.rsmod.game.model.path.strategy.SimplePathFindingStrategy
 import gg.rsmod.game.model.queue.QueueTask
-import gg.rsmod.game.model.queue.QueueTaskPriority
 import gg.rsmod.game.model.queue.QueueTaskSystem
+import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
 import gg.rsmod.game.model.timer.TimerSystem
@@ -226,7 +226,7 @@ abstract class Pawn(val world: World) : Entity() {
      */
     fun attack(target: Pawn) {
         resetInteractions()
-        interruptAllQueues()
+        interruptQueues()
 
         attr[COMBAT_TARGET_FOCUS_ATTR] = WeakReference(target)
 
@@ -295,7 +295,7 @@ abstract class Pawn(val world: World) : Entity() {
                         }
                         if (getCurrentHp() <= 0) {
                             hit.actions.forEach { action -> action() }
-                            interruptAllQueues()
+                            interruptQueues()
                             if (getType().isPlayer()) {
                                 executePlugin(PlayerDeathAction.deathPlugin)
                             } else {
@@ -516,15 +516,15 @@ abstract class Pawn(val world: World) : Entity() {
         facePawn(null)
     }
 
-    fun queue(priority: QueueTaskPriority = QueueTaskPriority.TERMINATE_PREVIOUS, logic: suspend Plugin.(CoroutineScope) -> Unit) {
+    fun queue(priority: TaskPriority = TaskPriority.STANDARD, logic: suspend Plugin.(CoroutineScope) -> Unit) {
         queues.queue(this, world.coroutineDispatcher, priority, logic)
     }
 
     /**
      * Terminates any on-going [QueueTask]s that are being executed by this [Pawn].
      */
-    fun interruptAllQueues() {
-        queues.terminateAll()
+    fun interruptQueues() {
+        queues.terminateTasks()
     }
 
     /**

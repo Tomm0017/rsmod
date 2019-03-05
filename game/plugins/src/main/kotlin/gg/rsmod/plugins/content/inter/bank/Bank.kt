@@ -40,7 +40,7 @@ object Bank {
             }
 
             val left = amount - withdrawn
-            withdrawn += from.swap(to, item.id, Math.min(left, item.amount), beginSlot = i, note = p.getVarbit(WITHDRAW_AS_VARBIT) == 1)
+            withdrawn += from.transfer(to, item.id, Math.min(left, item.amount), beginSlot = i, note = p.getVarbit(WITHDRAW_AS_VARBIT) == 1)
 
             if (from[i] == null) {
                 if (placehold || p.getVarbit(ALWAYS_PLACEHOLD_VARBIT) == 1) {
@@ -83,7 +83,7 @@ object Bank {
             }
 
             val left = amount - deposited
-            deposited += from.swap(to, item.id, Math.min(left, item.amount), beginSlot = i, note = false)
+            deposited += from.transfer(to, item.id, Math.min(left, item.amount), beginSlot = i, note = false)
         }
 
         if (deposited == 0) {

@@ -14,8 +14,8 @@ import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
 import gg.rsmod.game.model.container.key.INVENTORY_KEY
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.priv.PrivilegeSet
-import gg.rsmod.game.model.queue.QueueTaskPriority
 import gg.rsmod.game.model.queue.QueueTaskSystem
+import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.model.region.ChunkSet
 import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.timer.TimerSystem
@@ -497,7 +497,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     }
 
     fun queue(logic: suspend Plugin.(CoroutineScope) -> Unit) {
-        queues.queue(this, coroutineDispatcher, QueueTaskPriority.STACK_WITH_PREVIOUS, logic)
+        queues.queue(this, coroutineDispatcher, TaskPriority.STANDARD, logic)
     }
 
     fun executePlugin(ctx: Any, logic: (Plugin).() -> Unit) {

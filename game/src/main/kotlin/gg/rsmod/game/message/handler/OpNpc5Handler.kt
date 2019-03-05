@@ -28,7 +28,7 @@ class OpNpc5Handler : MessageHandler<OpNpc5Message> {
         }
 
         client.closeInterfaceModal()
-        client.interruptAllQueues()
+        client.interruptQueues()
         client.resetInteractions()
 
         client.attr[INTERACTING_OPT_ATTR] = 5

@@ -10,6 +10,9 @@ import gg.rsmod.game.model.entity.Client
 class CloseMainComponentHandler : MessageHandler<CloseModalMessage> {
 
     override fun handle(client: Client, message: CloseModalMessage) {
-        client.closeModal = true
+        if (client.interfaces.getModal() != -1) {
+            client.interfaces.close(client.interfaces.getModal())
+            client.interfaces.setModal(-1)
+        }
     }
 }

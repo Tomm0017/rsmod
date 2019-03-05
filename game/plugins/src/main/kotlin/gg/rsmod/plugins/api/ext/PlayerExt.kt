@@ -230,6 +230,10 @@ fun Player.sendItemContainer(parent: Int, child: Int, key: Int, container: ItemC
     write(UpdateInvFullMessage(parent = parent, child = child, containerKey = key, items = container.getBackingArray()))
 }
 
+fun Player.updateItemContainer(key: Int, container: ItemContainer) {
+    // TODO: UpdateInvPartialMessage
+}
+
 fun Player.sendRunEnergy(energy: Int) {
     write(UpdateRunEnergyMessage(energy))
 }

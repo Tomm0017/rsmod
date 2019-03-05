@@ -354,9 +354,9 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
      * To get the amount of items that couldn't be removed, see [ItemTransaction.getLeftOver].
      *
      * @param assureFullRemoval
-     * If [true], we make sure the container has [amount] or more items who's
+     * If true, we make sure the container has [amount] or more items who's
      * [Item.id] matches [item], before attempting to remove any.
-     * If [false], it will remove any item with [Item.id] of [item] which it can find
+     * If false, it will remove any item with [Item.id] of [item] which it can find
      * until [amount] have been removed or until the container has no more.
      *
      * @param beginSlot

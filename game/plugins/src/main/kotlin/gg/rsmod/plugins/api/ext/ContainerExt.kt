@@ -21,7 +21,13 @@ fun ItemContainer.networth(world: World): Long {
     return networth
 }
 
-fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int, note: Boolean): Int {
+/**
+ * Transfer [item] from [this] container to [to] container.
+ *
+ * @return
+ * The amount of items that were transferred.
+ */
+fun ItemContainer.transfer(to: ItemContainer, item: Item, beginSlot: Int = -1, note: Boolean = false): Int {
     check(item.amount > 0)
 
     val copy = Item(item)
@@ -30,7 +36,7 @@ fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int, note: Bool
      * Try to remove the items from this container.
      */
     val removal = remove(item.id, item.amount, assureFullRemoval = true, beginSlot = beginSlot)
-    if (removal.hasFailed()) {
+    if (removal.completed == 0) {
         return 0
     }
 
@@ -44,7 +50,7 @@ fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int, note: Bool
      * If any of the item could not be added to the container [to], we refund it
      * to this container.
      */
-    val addition = to.add(noted.id, noted.amount, assureFullInsertion = false)
+    val addition = to.add(noted.id, removal.completed, assureFullInsertion = false)
     if (addition.hasSucceeded()) {
         /**
          * If there items were successfully added to [to], we copy the attributes
@@ -71,16 +77,19 @@ fun ItemContainer.swap(to: ItemContainer, item: Item, beginSlot: Int, note: Bool
 }
 
 /**
- * Similar to other [swap] method, however this does not copy any attributes.
+ * Similar to other [transfer] method, however this does not copy any attributes.
+ *
+ * @return
+ * The amount of items that were transferred.
  */
-fun ItemContainer.swap(to: ItemContainer, item: Int, amount: Int, beginSlot: Int, note: Boolean): Int {
+fun ItemContainer.transfer(to: ItemContainer, item: Int, amount: Int, beginSlot: Int = -1, note: Boolean = false): Int {
     val copy = Item(item, amount)
 
     /**
      * Try to remove the items from this container.
      */
     val removal = remove(item, amount, assureFullRemoval = true, beginSlot = beginSlot)
-    if (removal.hasFailed()) {
+    if (removal.completed == 0) {
         return 0
     }
 
@@ -94,7 +103,7 @@ fun ItemContainer.swap(to: ItemContainer, item: Int, amount: Int, beginSlot: Int
      * If any of the item could not be added to the container [to], we refund it
      * to this container.
      */
-    val addition = to.add(noted.id, noted.amount, assureFullInsertion = false)
+    val addition = to.add(noted.id, removal.completed, assureFullInsertion = false)
 
     if (addition.getLeftOver() > 0) {
         val refund = add(copy.id, addition.getLeftOver(), assureFullInsertion = true, beginSlot = beginSlot)

@@ -24,13 +24,18 @@ class QueueTaskSystem(private val headPriority: Boolean) {
 
     val size: Int get() = queue.size
 
-    fun queue(ctx: Any, dispatcher: CoroutineDispatcher, priority: QueueTaskPriority, block: suspend Plugin.(CoroutineScope) -> Unit) {
+    fun queue(ctx: Any, dispatcher: CoroutineDispatcher, priority: TaskPriority, block: suspend Plugin.(CoroutineScope) -> Unit) {
         val plugin = Plugin(ctx)
         val suspendBlock = suspend { block(plugin, CoroutineScope(dispatcher)) }
         val task = QueueTask(priority, plugin, suspendBlock.createCoroutine(completion = plugin))
 
-        if (priority == QueueTaskPriority.TERMINATE_PREVIOUS) {
-            terminateAll()
+        if (priority == TaskPriority.STRONG) {
+            terminateTasks()
+        }
+
+        if (queue.isEmpty()) {
+            task.invoked = true
+            task.continuation.resume(Unit)
         }
 
         queue.addFirst(task)
@@ -94,11 +99,7 @@ class QueueTaskSystem(private val headPriority: Boolean) {
         plugin.requestReturnValue = value
     }
 
-    /**
-     * Terminates all elements in [queue] and invokes [Plugin.terminate]
-     * for each [QueueTask]
-     */
-    fun terminateAll() {
+    fun terminateTasks() {
         queue.forEach { it.plugin.terminate() }
         queue.clear()
     }

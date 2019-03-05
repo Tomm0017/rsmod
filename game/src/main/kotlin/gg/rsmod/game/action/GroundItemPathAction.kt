@@ -1,5 +1,6 @@
 package gg.rsmod.game.action
 
+import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.attr.INTERACTING_GROUNDITEM_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
@@ -26,6 +27,10 @@ object GroundItemPathAction {
         } else {
             p.walkTo(item.tile, MovementQueue.StepType.NORMAL)
             p.queue {
+                onInterrupt = {
+                    p.stopMovement()
+                    p.write(SetMapFlagMessage(255, 255))
+                }
                 awaitArrival(this, item, opt)
             }
         }

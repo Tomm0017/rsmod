@@ -183,18 +183,6 @@ open class Player(world: World) : Pawn(world) {
      */
     internal val localNpcs = ObjectArrayList<Npc>()
 
-    /**
-     * A flag that represents whether or not we want to remove our
-     * [InterfaceSet.currentModal] from our [InterfaceSet.visible] map
-     * near the end of the next available game cycle.
-     *
-     * It can't be removed immediately due to the [CloseModalMessage]
-     * being received before [IfButtonMessage], which leads to the server
-     * thinking that the player is trying to click a button on an interface
-     * that's not in their [InterfaceSet.visible] map.
-     */
-    internal var closeModal = false
-
     val looks = intArrayOf(9, 14, 109, 26, 33, 36, 42)
 
     val lookColors = intArrayOf(0, 3, 2, 0, 0)
@@ -356,17 +344,6 @@ open class Player(world: World) : Pawn(world) {
      */
     fun postCycle() {
         /**
-         * Close the main interface if it's pending.
-         */
-        if (closeModal) {
-            if (interfaces.getModal() != -1) {
-                interfaces.close(interfaces.getModal())
-                interfaces.setModal(-1)
-            }
-            closeModal = false
-        }
-
-        /**
          * Flush the channel at the end.
          */
         channelFlush()
@@ -381,7 +358,7 @@ open class Player(world: World) : Pawn(world) {
      * data for the player and call this super method at the end.
      */
     protected open fun handleLogout() {
-        interruptAllQueues()
+        interruptQueues()
         world.plugins.executeLogout(this)
         world.unregister(this)
     }
@@ -487,7 +464,7 @@ open class Player(world: World) : Pawn(world) {
     fun hasLargeViewport(): Boolean = largeViewport
 
     /**
-     * @see closeModal
+     * Invoked when the player should close their current interface modal.
      */
     internal fun closeInterfaceModal() {
         world.plugins.executeModalClose(this)

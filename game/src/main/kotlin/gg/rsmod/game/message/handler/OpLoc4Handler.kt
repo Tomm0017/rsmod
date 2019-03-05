@@ -44,7 +44,7 @@ class OpLoc4Handler : MessageHandler<OpLoc4Message> {
 
         client.stopMovement()
         client.closeInterfaceModal()
-        client.interruptAllQueues()
+        client.interruptQueues()
         client.resetInteractions()
 
         if (message.movementType == 1 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {

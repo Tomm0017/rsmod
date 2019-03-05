@@ -1,9 +1,11 @@
 package gg.rsmod.plugins.content.items.lootingbag
 
+import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.*
@@ -34,6 +36,71 @@ arrayOf(Items.LOOTING_BAG, Items.LOOTING_BAG_22586).forEach { bag ->
     }
 }
 
+on_button(interfaceId = TAB_INTERFACE_ID, component = 5) {
+    val slot = getInteractingSlot()
+    when (getInteractingOption()) {
+        1 -> store(player, slot = slot, amount = 1)
+        2 -> store(player, slot = slot, amount = 5)
+        3 -> store(player, slot = slot, amount = Int.MAX_VALUE)
+        4 -> player.queue { store(player, slot = slot, amount = inputInteger()) }
+        9 -> {
+            val item = player.inventory[slot] ?: return@on_button
+            player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+        }
+    }
+}
+
+/**
+ * "Bank your loot"
+ * Bank items from your looting bag.
+ */
+on_button(interfaceId = 15, component = 10) {
+    val slot = getInteractingSlot()
+    when (getInteractingOption()) {
+        1 -> bank(player, slot = slot, amount = 1)
+        2 -> bank(player, slot = slot, amount = 5)
+        3 -> bank(player, slot = slot, amount = Int.MAX_VALUE)
+        4 -> player.queue { bank(player, slot = slot, amount = inputInteger()) }
+        10 -> {
+            val item = player.containers[CONTAINER_KEY]?.get(slot) ?: return@on_button
+            player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+        }
+    }
+}
+
+fun store(p: Player, slot: Int, amount: Int) {
+    val item = p.inventory[slot] ?: return
+
+    if (item.id == Items.LOOTING_BAG || item.id == Items.LOOTING_BAG_22586) {
+        p.message("You may be surprised to learn that bagception is not permitted.")
+        return
+    }
+
+    if (!item.getDef(p.world.definitions).isTradeable()) {
+        p.message("Only tradeable items can be put in the bag.")
+        return
+    }
+
+    // TODO: check if in wilderness ("You can't put items in the looting bag unless you're in the Wilderness.")
+
+    p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(p.world.definitions, CONTAINER_KEY) }
+    val container = p.containers[CONTAINER_KEY]!!
+
+    val transferred = p.inventory.transfer(container, item = item.id, amount = amount)
+    if (transferred == 0) {
+        p.message("The bag's too full.")
+    }
+    p.sendItemContainer(CONTAINER_ID, container)
+}
+
+fun bank(p: Player, slot: Int, amount: Int) {
+    val container = p.containers[CONTAINER_KEY] ?: return
+    val item = container[slot] ?: return
+
+    container.transfer(p.bank, item = item.id, amount = amount)
+    p.sendItemContainer(CONTAINER_ID, container)
+}
+
 fun open(p: Player, slot: Int) {
     val remove = p.inventory.remove(item = Items.LOOTING_BAG, beginSlot = slot)
     if (remove.hasSucceeded()) {
@@ -57,7 +124,7 @@ fun check(p: Player) {
 
     p.runClientScript(495, "Looting bag", 0)
     p.sendItemContainer(CONTAINER_ID, container)
-    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Value: ")
+    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Value: ") //##,### coins
 
     set_interrupt_queue(p)
 }
@@ -66,13 +133,13 @@ fun deposit(p: Player) {
     p.openInterface(dest = InterfaceDestination.TAB_AREA, interfaceId = TAB_INTERFACE_ID)
     p.setInterfaceEvents(interfaceId = TAB_INTERFACE_ID, component = 5, range = 0..27, setting = 542)
     p.runClientScript(495, "Add to bag", 1)
-    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Value: ")
+    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Bag value: ") //##,### coins
 
     set_interrupt_queue(p)
 }
 
 fun set_interrupt_queue(p: Player) {
-    p.queue {
+    p.queue(TaskPriority.STRONG) {
         onInterrupt = {
             if (player.interfaces.isVisible(TAB_INTERFACE_ID)) {
                 player.closeInterface(TAB_INTERFACE_ID)

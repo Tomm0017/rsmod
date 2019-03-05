@@ -1,6 +1,7 @@
 package gg.rsmod.game.action
 
 import gg.rsmod.game.fs.def.ObjectDef
+import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
@@ -31,6 +32,11 @@ object ObjectPathAction {
         val lineOfSightRange = player.world.plugins.getObjInteractionDistance(obj.id)
 
         player.queue {
+            onInterrupt = {
+                player.stopMovement()
+                player.write(SetMapFlagMessage(255, 255))
+            }
+
             val route = walkTo(this, obj, lineOfSightRange)
             if (route.success) {
                 if (lineOfSightRange == null || lineOfSightRange > 0) {

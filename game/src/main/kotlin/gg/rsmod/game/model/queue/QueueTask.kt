@@ -6,7 +6,7 @@ import kotlin.coroutines.Continuation
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class QueueTask(val priority: QueueTaskPriority, val plugin: Plugin, val continuation: Continuation<Unit>) {
+data class QueueTask(val priority: TaskPriority, val plugin: Plugin, val continuation: Continuation<Unit>) {
 
     var invoked = false
 

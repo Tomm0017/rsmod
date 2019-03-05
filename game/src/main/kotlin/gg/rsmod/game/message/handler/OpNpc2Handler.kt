@@ -24,7 +24,7 @@ class OpNpc2Handler : MessageHandler<OpNpc2Message> {
         }
 
         client.closeInterfaceModal()
-        client.interruptAllQueues()
+        client.interruptQueues()
         client.resetInteractions()
 
         client.attack(npc)

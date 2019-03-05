@@ -31,6 +31,13 @@ object PawnPathAction {
         val lineOfSightRange = world.plugins.getNpcInteractionDistance(npcId)
 
         pawn.queue {
+            onInterrupt = {
+                pawn.stopMovement()
+                if (pawn is Player) {
+                    pawn.write(SetMapFlagMessage(255, 255))
+                }
+            }
+
             pawn.facePawn(npc)
 
             val pathFound = walkTo(this, pawn, npc, interactionRange = lineOfSightRange ?: 1, lineOfSight = lineOfSightRange != null)

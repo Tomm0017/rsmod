@@ -126,7 +126,7 @@ fun check(p: Player) {
     p.sendItemContainer(CONTAINER_ID, container)
     p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Value: ") //##,### coins
 
-    set_interrupt_queue(p)
+    set_queue(p)
 }
 
 fun deposit(p: Player) {
@@ -135,16 +135,9 @@ fun deposit(p: Player) {
     p.runClientScript(495, "Add to bag", 1)
     p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Bag value: ") //##,### coins
 
-    set_interrupt_queue(p)
+    set_queue(p)
 }
 
-fun set_interrupt_queue(p: Player) {
-    p.queue(TaskPriority.STRONG) {
-        onInterrupt = {
-            if (player.interfaces.isVisible(TAB_INTERFACE_ID)) {
-                player.closeInterface(TAB_INTERFACE_ID)
-            }
-        }
-        waitInterfaceClose(TAB_INTERFACE_ID)
-    }
+fun set_queue(p: Player) {
+    p.queue(TaskPriority.STRONG) { waitInterfaceClose(TAB_INTERFACE_ID) }
 }

@@ -21,5 +21,9 @@ on_button(interfaceId = 160, component = 1) {
         }
     } else if (option == 2 && player.lock.canInterfaceInteract()) {
         // TODO
+        player.queue {
+            player.openInterface(dest = InterfaceDestination.MAIN_SCREEN, interfaceId = SETUP_INTERFACE_ID)
+            waitInterfaceClose(SETUP_INTERFACE_ID)
+        }
     }
 }

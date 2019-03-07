@@ -5,6 +5,7 @@ import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.cfg.Items
@@ -76,7 +77,7 @@ fun store(p: Player, slot: Int, amount: Int) {
         return
     }
 
-    if (!item.getDef(p.world.definitions).isTradeable()) {
+    if (!item.toUnnoted(p.world.definitions).getDef(p.world.definitions).isTradeable()) {
         p.message("Only tradeable items can be put in the bag.")
         return
     }
@@ -86,9 +87,10 @@ fun store(p: Player, slot: Int, amount: Int) {
     p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(p.world.definitions, CONTAINER_KEY) }
     val container = p.containers[CONTAINER_KEY]!!
 
-    val transferred = p.inventory.transfer(container, item = item.id, amount = amount)
+    val transferred = p.inventory.transfer(container, item = Item(item, amount).copyAttr(item))
     if (transferred == 0) {
         p.message("The bag's too full.")
+        return
     }
     p.sendItemContainer(CONTAINER_ID, container)
 }
@@ -97,7 +99,7 @@ fun bank(p: Player, slot: Int, amount: Int) {
     val container = p.containers[CONTAINER_KEY] ?: return
     val item = container[slot] ?: return
 
-    container.transfer(p.bank, item = item.id, amount = amount)
+    container.transfer(p.bank, item = Item(item, amount).copyAttr(item))
     p.sendItemContainer(CONTAINER_ID, container)
 }
 

@@ -9,7 +9,6 @@ import net.runelite.cache.fs.Store
 import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry
 import org.apache.commons.compress.archivers.sevenz.SevenZFile
 import org.apache.commons.io.FileUtils
-import org.apache.logging.log4j.LogManager
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.parser.Parser
@@ -36,7 +35,7 @@ class ItemStatsDumper {
             val definitions = DefinitionSet()
 
             filestore.load()
-            definitions.init(filestore)
+            definitions.loadAll(filestore)
 
             ItemStatsDumper().dumpAll(definitions, Paths.get("./data", "cfg", "item-stats.json"))
         }

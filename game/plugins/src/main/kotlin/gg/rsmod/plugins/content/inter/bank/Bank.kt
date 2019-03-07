@@ -28,6 +28,7 @@ object Bank {
         val to = p.inventory
 
         val amount = Math.min(from.getItemCount(id), amt)
+        val note = p.getVarbit(WITHDRAW_AS_VARBIT) == 1
 
         for (i in slot until from.capacity) {
             val item = from[i] ?: continue
@@ -40,7 +41,13 @@ object Bank {
             }
 
             val left = amount - withdrawn
-            withdrawn += from.transfer(to, item.id, Math.min(left, item.amount), beginSlot = i, note = p.getVarbit(WITHDRAW_AS_VARBIT) == 1)
+
+            val copy = Item(item.id, Math.min(left, item.amount))
+            if (copy.amount >= item.amount) {
+                copy.copyAttr(item)
+            }
+
+            withdrawn += from.transfer(to, item = copy, beginSlot = i, note = note, unnote = !note)
 
             if (from[i] == null) {
                 if (placehold || p.getVarbit(ALWAYS_PLACEHOLD_VARBIT) == 1) {
@@ -83,7 +90,13 @@ object Bank {
             }
 
             val left = amount - deposited
-            deposited += from.transfer(to, item.id, Math.min(left, item.amount), beginSlot = i, note = false)
+
+            val copy = Item(item.id, Math.min(left, item.amount))
+            if (copy.amount >= item.amount) {
+                copy.copyAttr(item)
+            }
+
+            deposited += from.transfer(to, item = copy, beginSlot = i, note = false, unnote = true)
         }
 
         if (deposited == 0) {

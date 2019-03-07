@@ -3,16 +3,18 @@ package gg.rsmod.plugins.api.ext
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.container.ItemContainer
+import gg.rsmod.game.model.container.ItemTransaction
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
+
 fun ItemContainer.networth(world: World): Long {
     val service = world.getService(ItemMarketValueService::class.java)
     var networth = 0L
-    getBackingArray().forEach { item ->
+    getRaw().forEach { item ->
         if (item != null) {
             val cost = service?.get(item.id) ?: world.definitions.getNullable(ItemDef::class.java, item.id)?.cost ?: 0
             networth += cost * item.amount
@@ -27,98 +29,54 @@ fun ItemContainer.networth(world: World): Long {
  * @return
  * The amount of items that were transferred.
  */
-fun ItemContainer.transfer(to: ItemContainer, item: Item, beginSlot: Int = -1, note: Boolean = false): Int {
+fun ItemContainer.transfer(to: ItemContainer, item: Item, beginSlot: Int = -1, note: Boolean = false, unnote: Boolean = false): Int {
     check(item.amount > 0)
 
-    val copy = Item(item)
+    /**
+     * Get the maximum amount of the item that can be transferred.
+     */
+    val amount = Math.min(item.amount, getItemCount(item.id))
 
     /**
-     * Try to remove the items from this container.
+     * Copy the item with the corrected amount.
      */
-    val removal = remove(item.id, item.amount, assureFullRemoval = true, beginSlot = beginSlot)
-    if (removal.completed == 0) {
-        return 0
-    }
-
-    /**
-     * Turn the initial item into its noted or unnoted form, depending on [note].
-     */
-    val noted = if (note) copy.toNoted(definitions) else copy.toUnnoted(definitions)
-
-    /**
-     * Try to add as many of the requested amount of the item to the container [to].
-     * If any of the item could not be added to the container [to], we refund it
-     * to this container.
-     */
-    val addition = to.add(noted.id, removal.completed, assureFullInsertion = false)
-    if (addition.hasSucceeded()) {
-        /**
-         * If there items were successfully added to [to], we copy the attributes
-         * from the initial [item].
-         */
-        val first = addition.items.firstOrNull { it.item.amount == 1 }
-        first?.item?.copyAttr(copy)
-    } else {
-        val refund = add(copy.id, addition.getLeftOver(), assureFullInsertion = true, beginSlot = beginSlot)
-        /**
-         * As the logic could've only gotten this far if the initial item was
-         * completely removed from [ItemContainer.this] container, the initial
-         * item is now gone. We want the refunded item to copy the attributes
-         * of the original.
-         *
-         * This is so that if, for example, you try to transfer 2 toxic blowpipes,
-         * both were removed, but only 1 was transferred  the other blowpipe will
-         * get its initial attributes refunded.
-         */
-        refund.items.firstOrNull()?.item?.copyAttr(copy)
-        return 0
-    }
-    return addition.completed
-}
-
-/**
- * Similar to other [transfer] method, however this does not copy any attributes.
- *
- * @return
- * The amount of items that were transferred.
- */
-fun ItemContainer.transfer(to: ItemContainer, item: Int, amount: Int, beginSlot: Int = -1, note: Boolean = false): Int {
     val copy = Item(item, amount)
 
     /**
-     * Try to remove the items from this container.
+     * If we're transferring the whole item, make sure to copy its attributes.
      */
-    val removal = remove(item, amount, assureFullRemoval = true, beginSlot = beginSlot)
-    if (removal.completed == 0) {
+    if (amount >= item.amount) {
+        copy.copyAttr(item)
+    }
+
+    /**
+     * Turn the initial item into its noted or unnoted form, depending on [note]
+     * and [unnote].
+     */
+    val finalItem = if (note) copy.toNoted(definitions) else if (unnote) copy.toUnnoted(definitions) else copy
+
+    val add = to.add(finalItem.id, finalItem.amount, assureFullInsertion = false)
+    if (add.completed == 0) {
+        return 0
+    }
+
+    val remove = remove(item.id, add.completed, assureFullRemoval = true, beginSlot = beginSlot)
+    if (remove.completed == 0) {
+        add.revert(to)
         return 0
     }
 
     /**
-     * Turn the initial item into its noted or unnoted form, depending on [note].
+     * The first item added to [to] should copy any attributes that were on
+     * the initial copy of [item].
      */
-    val noted = if (note) copy.toNoted(definitions) else copy.toUnnoted(definitions)
+    add.first().item.copyAttr(copy)
 
-    /**
-     * Try to add as many of the requested amount of the item to the container [to].
-     * If any of the item could not be added to the container [to], we refund it
-     * to this container.
-     */
-    val addition = to.add(noted.id, removal.completed, assureFullInsertion = false)
+    return remove.completed
+}
 
-    if (addition.getLeftOver() > 0) {
-        val refund = add(copy.id, addition.getLeftOver(), assureFullInsertion = true, beginSlot = beginSlot)
-
-        /**
-         * As the logic could've only gotten this far if the initial item was
-         * completely removed from [ItemContainer.this] container, the initial
-         * item is now gone. We want the refunded item to copy the attributes
-         * of the original.
-         *
-         * This is so that if, for example, you try to transfer 2 toxic blowpipes,
-         * both were removed, but only 1 was transferred  the other blowpipe will
-         * get its initial attributes refunded.
-         */
-        refund.items.firstOrNull()?.item?.copyAttr(copy)
+fun ItemTransaction.revert(from: ItemContainer) {
+    items.forEach {
+        from.remove(item = it.item, beginSlot = it.slot)
     }
-    return addition.completed
 }

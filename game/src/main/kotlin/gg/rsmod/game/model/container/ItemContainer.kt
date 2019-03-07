@@ -45,7 +45,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
     /**
      * Gets the collection of nullable [Item]s in this container.
      */
-    fun getBackingArray(): Array<Item?> = items
+    fun getRaw(): Array<Item?> = items
 
     /**
      * Checks if the container has an [Item] which has the same [Item.id] as

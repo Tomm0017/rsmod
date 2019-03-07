@@ -118,7 +118,7 @@ class Server {
         individualStopwatch.reset().start()
         world.filestore = Store(filestore.toFile())
         world.filestore.load()
-        world.definitions.init(world.filestore)
+        world.definitions.loadAll(world.filestore)
         logger.info("Loaded filestore from path {} in {}ms.", filestore, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
         /**

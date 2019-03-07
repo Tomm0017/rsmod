@@ -1,6 +1,5 @@
 - Implement position multipliers for GPI decoding
 - Instance map support
-- Support to add player vars that will be serialized through plugins
 
 Backlog:
 - Add support for npc collision flags as npcs shouldn't be able to walk on top of one another

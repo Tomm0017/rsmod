@@ -219,15 +219,15 @@ fun Player.openOverlayInterface(displayMode: DisplayMode) {
 }
 
 fun Player.sendItemContainer(key: Int, container: ItemContainer) {
-    write(UpdateInvFullMessage(containerKey = key, items = container.getBackingArray()))
+    write(UpdateInvFullMessage(containerKey = key, items = container.getRaw()))
 }
 
 fun Player.sendItemContainer(parent: Int, child: Int, container: ItemContainer) {
-    write(UpdateInvFullMessage(parent = parent, child = child, items = container.getBackingArray()))
+    write(UpdateInvFullMessage(parent = parent, child = child, items = container.getRaw()))
 }
 
 fun Player.sendItemContainer(parent: Int, child: Int, key: Int, container: ItemContainer) {
-    write(UpdateInvFullMessage(parent = parent, child = child, containerKey = key, items = container.getBackingArray()))
+    write(UpdateInvFullMessage(parent = parent, child = child, containerKey = key, items = container.getRaw()))
 }
 
 fun Player.updateItemContainer(key: Int, container: ItemContainer) {
@@ -399,7 +399,7 @@ fun Player.calculateDeathContainers(): DeathContainers {
     val keptContainer = ItemContainer(world.definitions, keepAmount, ContainerStackType.NO_STACK)
     val lostContainer = ItemContainer(world.definitions, inventory.capacity + equipment.capacity, ContainerStackType.NORMAL)
 
-    var totalItems = inventory.getBackingArray().filterNotNull() + equipment.getBackingArray().filterNotNull()
+    var totalItems = inventory.getRaw().filterNotNull() + equipment.getRaw().filterNotNull()
     val valueService = world.getService(ItemMarketValueService::class.java)
 
     if (valueService != null) {

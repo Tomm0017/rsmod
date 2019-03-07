@@ -26,7 +26,7 @@ class ItemContainerTests {
             store = Store(Paths.get("..", "data", "cache").toFile())
             store.load()
 
-            definitions.init(store)
+            definitions.loadAll(store)
 
             assertNotEquals(definitions.getCount(ItemDef::class.java), 0)
         }

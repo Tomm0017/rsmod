@@ -14,7 +14,6 @@ import net.runelite.cache.ConfigType
 import net.runelite.cache.IndexType
 import net.runelite.cache.definitions.loaders.LocationsLoader
 import net.runelite.cache.definitions.loaders.MapLoader
-import net.runelite.cache.fs.FSFile
 import net.runelite.cache.fs.Store
 import java.io.IOException
 
@@ -37,68 +36,82 @@ class DefinitionSet {
 
     private var xteaService: XteaKeyService? = null
 
-    fun init(store: Store) {
-        /**
-         * Load [IndexType.CONFIGS] definitions.
-         */
-        val configs = store.getIndex(IndexType.CONFIGS)!!
-
+    fun loadAll(store: Store) {
         /**
          * Load [VarpDef]s.
          */
-        val varpArchive = configs.getArchive(ConfigType.VARPLAYER.id)!!
-        val varpFiles = varpArchive.getFiles(store.storage.loadArchive(varpArchive)!!).files
-        loadDefinitions(VarpDef::class.java, varpFiles)
-        logger.info("Loaded ${varpFiles.size} varp definitions.")
+        load(store, VarpDef::class.java)
+        logger.info("Loaded ${getCount(VarpDef::class.java)} varp definitions.")
 
         /**
          * Load [VarbitDef]s.
          */
-        val varbitArchive = configs.getArchive(ConfigType.VARBIT.id)!!
-        val varbitFiles = varbitArchive.getFiles(store.storage.loadArchive(varbitArchive)!!).files
-        loadDefinitions(VarbitDef::class.java, varbitFiles)
-        logger.info("Loaded ${varbitFiles.size} varbit definitions.")
+        load(store, VarbitDef::class.java)
+        logger.info("Loaded ${getCount(VarbitDef::class.java)} varbit definitions.")
 
         /**
          * Load [EnumDef]s.
          */
-        val enumArchive = configs.getArchive(ConfigType.ENUM.id)!!
-        val enumFiles = enumArchive.getFiles(store.storage.loadArchive(enumArchive)!!).files
-        loadDefinitions(EnumDef::class.java, enumFiles)
-        logger.info("Loaded ${enumFiles.size} enum definitions.")
+        load(store, EnumDef::class.java)
+        logger.info("Loaded ${getCount(EnumDef::class.java)} enum definitions.")
 
         /**
          * Load [NpcDef]s.
          */
-        val npcArchive = configs.getArchive(ConfigType.NPC.id)!!
-        val npcFiles = npcArchive.getFiles(store.storage.loadArchive(npcArchive)!!).files
-        loadDefinitions(NpcDef::class.java, npcFiles)
-        logger.info("Loaded ${npcFiles.size} npc definitions.")
+        load(store, NpcDef::class.java)
+        logger.info("Loaded ${getCount(NpcDef::class.java)} npc definitions.")
 
         /**
          * Load [ItemDef]s.
          */
-        val itemArchive = configs.getArchive(ConfigType.ITEM.id)!!
-        val itemFiles = itemArchive.getFiles(store.storage.loadArchive(itemArchive)!!).files
-        loadDefinitions(ItemDef::class.java, itemFiles)
-        logger.info("Loaded ${itemFiles.size} item definitions.")
+        load(store, ItemDef::class.java)
+        logger.info("Loaded ${getCount(ItemDef::class.java)} item definitions.")
 
         /**
          * Load [ObjectDef]s.
          */
-        val objArchive = configs.getArchive(ConfigType.OBJECT.id)!!
-        val objFiles = objArchive.getFiles(store.storage.loadArchive(objArchive)!!).files
-        loadDefinitions(ObjectDef::class.java, objFiles)
-        logger.info("Loaded ${objFiles.size} object definitions.")
+        load(store, ObjectDef::class.java)
+        logger.info("Loaded ${getCount(ObjectDef::class.java)} object definitions.")
     }
 
-    private inline fun <reified T: Definition> loadDefinitions(type: Class<T>, files: MutableList<FSFile>) {
+    fun <T: Definition> load(store: Store, type: Class<out T>) {
+        val configType: ConfigType = when (type) {
+            VarpDef::class.java -> ConfigType.VARPLAYER
+            VarbitDef::class.java -> ConfigType.VARBIT
+            EnumDef::class.java -> ConfigType.ENUM
+            NpcDef::class.java -> ConfigType.NPC
+            ObjectDef::class.java -> ConfigType.OBJECT
+            ItemDef::class.java -> ConfigType.ITEM
+            else -> throw IllegalArgumentException("Unhandled class type ${type::class.java}.")
+        }
+        val configs = store.getIndex(IndexType.CONFIGS)!!
+        val archive = configs.getArchive(configType.id)!!
+        val files = archive.getFiles(store.storage.loadArchive(archive)!!).files
+
         val definitions = HashMap<Int, T?>(files.size + 1)
         for (i in 0 until files.size) {
             val def = createDefinition(type, files[i].fileId, files[i].contents)
             definitions[files[i].fileId] = def
         }
         defs[type] = definitions
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T: Definition> createDefinition(type: Class<out T>, id: Int, data: ByteArray): T {
+        val def: Definition = when (type) {
+            VarpDef::class.java -> VarpDef(id)
+            VarbitDef::class.java -> VarbitDef(id)
+            EnumDef::class.java -> EnumDef(id)
+            NpcDef::class.java -> NpcDef(id)
+            ObjectDef::class.java -> ObjectDef(id)
+            ItemDef::class.java -> ItemDef(id)
+            else -> throw IllegalArgumentException("Unhandled class type ${type::class.java}.")
+        }
+
+        val buf = Unpooled.wrappedBuffer(data)
+        def.decode(buf)
+        buf.release()
+        return def as T
     }
 
     fun getCount(type: Class<*>) = defs[type]!!.size
@@ -111,24 +124,6 @@ class DefinitionSet {
     @Suppress("UNCHECKED_CAST")
     fun <T: Definition> getNullable(type: Class<out T>, id: Int): T? {
         return (defs[type]!!)[id] as T?
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    fun <T: Definition> createDefinition(type: Class<out T>, id: Int, data: ByteArray): T {
-        val def: Definition = when (type) {
-            VarpDef::class.java -> VarpDef(id)
-            VarbitDef::class.java -> VarbitDef(id)
-            EnumDef::class.java -> EnumDef(id)
-            NpcDef::class.java -> NpcDef(id)
-            ObjectDef::class.java -> ObjectDef(id)
-            ItemDef::class.java -> ItemDef(id)
-            else -> throw IllegalArgumentException("Unhandled definition class type ${type::class.java}.")
-        }
-
-        val buf = Unpooled.wrappedBuffer(data)
-        def.decode(buf)
-        buf.release()
-        return def as T
     }
 
     /**

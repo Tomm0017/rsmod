@@ -20,6 +20,24 @@ import kotlin.coroutines.resume
  */
 class QueueTaskSystem(private val headPriority: Boolean) {
 
+    /**
+     * TODO:
+     *
+     * Current situation:
+     * Our "walk-to" for pawn and object targets are kept alive until we arrive
+     * to our destination. This is not the case on 07 as seen by the following
+     * situation:
+     *
+     * Walk to an npc -> open xp drop setup -> npc moves from original location
+     *
+     * In the above case, you will walk to the original destination and wait until
+     * your xp drop setup window has been closed - once it's closed, if the npc is not
+     * within range, you will walk towards it again.
+     *
+     * What this tells us is that the walk-to is not a queue, but the execution
+     * of the "npc action" is.
+     */
+
     private val queue: LinkedList<QueueTask> = LinkedList()
 
     val size: Int get() = queue.size
@@ -38,7 +56,7 @@ class QueueTaskSystem(private val headPriority: Boolean) {
             task.continuation.resume(Unit)
         }
 
-        queue.addFirst(task)
+        queue.addLast(task)
     }
 
     fun cycle() {

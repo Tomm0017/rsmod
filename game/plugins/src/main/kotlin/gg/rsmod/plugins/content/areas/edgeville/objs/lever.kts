@@ -1,6 +1,5 @@
 package gg.rsmod.plugins.content.areas.edgeville.objs
 
-import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.plugins.api.cfg.Objs
 import gg.rsmod.plugins.api.ext.getInteractingGameObj
@@ -17,7 +16,6 @@ on_obj_option(Objs.LEVER_26761, "pull") {
         wait(1)
 
         player.world.queue {
-            val world = ctx as World
             val pulled = DynamicObject(obj, 88)
             world.remove(obj)
             world.spawn(pulled)

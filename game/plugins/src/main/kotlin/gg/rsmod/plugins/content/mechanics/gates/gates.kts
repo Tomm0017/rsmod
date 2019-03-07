@@ -29,7 +29,6 @@ val CHANGES_BEFORE_STICK = 5
 val RESET_STICK_DELAY = 25
 
 on_world_init {
-    val world = ctx as World
     world.getService(GateService::class.java)?.let { service ->
         service.gates.forEach { gate ->
 

@@ -317,7 +317,7 @@ fun Player.hasEquipped(slot: EquipmentType, vararg items: Int): Boolean {
     return items.any { equipment.hasAt(slot.id, it) }
 }
 
-fun Player.hasEquipped(items: IntArray) = items.all { equipment.hasItem(it) }
+fun Player.hasEquipped(items: IntArray) = items.all { equipment.contains(it) }
 
 fun Player.getEquipment(slot: EquipmentType): Item? = equipment[slot.id]
 

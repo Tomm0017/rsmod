@@ -250,6 +250,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
     fun on_global_npc_spawn(logic: (Plugin).() -> Unit) = r.bindGlobalNpcSpawn(logic)
 
     /**
+     * Invoke [logic] when a ground item is picked up by a [gg.rsmod.game.model.entity.Player].
+     */
+    fun on_global_item_pickup(logic: Plugin.() -> Unit) = r.bindGlobalGroundItemPickUp(logic)
+
+    /**
      * Invoke [logic] when an npc with [Npc.id] matching [npc] is spawned into
      * the game with [World.spawn].
      */

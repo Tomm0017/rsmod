@@ -237,6 +237,12 @@ class PluginRepository(val world: World) {
     private val objInteractionDistancePlugins = hashMapOf<Int, Int>()
 
     /**
+     * A list of plugins that will be invoked when a ground item is picked up
+     * by a player.
+     */
+    private val globalGroundItemPickUp = ObjectArrayList<(Plugin).() -> Unit>()
+
+    /**
      * Temporarily holds the multi-combat area chunks for this [PluginRepository];
      * this is then passed onto the [World] and is cleared.
      *
@@ -859,6 +865,16 @@ class PluginRepository(val world: World) {
         val logic = optMap[opt] ?: return false
         p.executePlugin(logic)
         return true
+    }
+
+    fun bindGlobalGroundItemPickUp(plugin: (Plugin).() -> Unit) {
+        globalGroundItemPickUp.add(plugin)
+    }
+
+    fun executeGlobalGroundItemPickUp(p: Player) {
+        globalGroundItemPickUp.forEach { plugin ->
+            p.executePlugin(plugin)
+        }
     }
 
     private class PluginAnalyzer(private val repository: PluginRepository) {

@@ -1,6 +1,7 @@
 package gg.rsmod.plugins.content.items.lootingbag
 
 import gg.rsmod.game.model.ExamineEntityType
+import gg.rsmod.game.model.attr.GROUNDITEM_PICKUP_TRANSACTION
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.container.key.ContainerKey
@@ -21,6 +22,14 @@ on_item_option(Items.LOOTING_BAG, "open") {
 on_item_option(Items.LOOTING_BAG_22586, "close") {
     close(player, getInteractingItemSlot())
     player.message("You close your looting bag.")
+}
+
+on_global_item_pickup {
+    if (player.inventory.contains(Items.LOOTING_BAG_22586) && in_wilderness(player)) {
+        val inventoryTransaction = player.attr[GROUNDITEM_PICKUP_TRANSACTION]?.get() ?: return@on_global_item_pickup
+        val transactionItem = inventoryTransaction.items.first()
+        store(player, transactionItem.item, transactionItem.item.amount, transactionItem.slot)
+    }
 }
 
 arrayOf(Items.LOOTING_BAG, Items.LOOTING_BAG_22586).forEach { bag ->
@@ -65,6 +74,9 @@ on_button(interfaceId = 15, component = 10) {
     }
 }
 
+// TODO:
+fun in_wilderness(p: Player): Boolean = true
+
 fun store(p: Player, slot: Int, amount: Int) {
     val item = p.inventory[slot] ?: return
 
@@ -78,17 +90,25 @@ fun store(p: Player, slot: Int, amount: Int) {
         return
     }
 
-    // TODO: check if in wilderness ("You can't put items in the looting bag unless you're in the Wilderness.")
+    if (!in_wilderness(p)) {
+        p.message("You can't put items in the looting bag unless you're in the Wilderness.")
+        return
+    }
 
+    store(p, item, amount)
+}
+
+fun store(p: Player, item: Item, amount: Int, beginSlot: Int = -1): Boolean {
     p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(p.world.definitions, CONTAINER_KEY) }
     val container = p.containers[CONTAINER_KEY]!!
 
-    val transferred = p.inventory.transfer(container, item = Item(item, amount).copyAttr(item))
+    val transferred = p.inventory.transfer(container, item = Item(item, amount).copyAttr(item), beginSlot = beginSlot)
     if (transferred == 0) {
         p.message("The bag's too full.")
-        return
+        return false
     }
     p.sendItemContainer(CONTAINER_ID, container)
+    return true
 }
 
 fun bank(p: Player, slot: Int, amount: Int) {

@@ -2,6 +2,7 @@ package gg.rsmod.game.action
 
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.MovementQueue
+import gg.rsmod.game.model.attr.GROUNDITEM_PICKUP_TRANSACTION
 import gg.rsmod.game.model.attr.INTERACTING_GROUNDITEM_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Entity
@@ -72,6 +73,9 @@ object GroundItemPathAction {
             }
 
             p.world.remove(item)
+
+            p.attr[GROUNDITEM_PICKUP_TRANSACTION] = WeakReference(add)
+            p.world.plugins.executeGlobalGroundItemPickUp(p)
         } else {
             p.attr[INTERACTING_GROUNDITEM_ATTR] = WeakReference(item)
             p.world.plugins.executeGroundItem(p, item.item, opt)

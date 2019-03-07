@@ -1,5 +1,6 @@
 package gg.rsmod.game.model.attr
 
+import gg.rsmod.game.model.container.ItemTransaction
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
@@ -107,6 +108,12 @@ val INTERACTING_SLOT_ATTR = AttributeKey<Int>()
  * The [GroundItem] that was last clicked on.
  */
 val INTERACTING_GROUNDITEM_ATTR = AttributeKey<WeakReference<GroundItem>>()
+
+/**
+ * The last [ItemTransaction] to occur when a ground item is picked up
+ * from the ground.
+ */
+val GROUNDITEM_PICKUP_TRANSACTION = AttributeKey<WeakReference<ItemTransaction>>()
 
 /**
  * The [GameObject] that was last clicked on.

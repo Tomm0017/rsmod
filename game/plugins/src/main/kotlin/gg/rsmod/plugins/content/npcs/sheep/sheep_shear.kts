@@ -11,7 +11,7 @@ Sheep.SHEEP_NPCS.forEach { sheep ->
 
             player.facePawn(null)
             player.faceTile(npc.tile)
-            if (!player.inventory.hasItem(Items.SHEARS)) {
+            if (!player.inventory.contains(Items.SHEARS)) {
                 player.message("You need a set of shears to do this.")
                 return@on_npc_option
             }

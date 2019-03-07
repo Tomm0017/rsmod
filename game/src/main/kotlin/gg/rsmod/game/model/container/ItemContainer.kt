@@ -51,7 +51,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
      * Checks if the container has an [Item] which has the same [Item.id] as
      * [itemId].
      */
-    fun hasItem(itemId: Int): Boolean = items.any { it?.id == itemId }
+    fun contains(itemId: Int): Boolean = items.any { it?.id == itemId }
 
     /**
      * Checks if the container has an [Item] which has the same [Item.id] as

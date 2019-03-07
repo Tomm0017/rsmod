@@ -1,13 +1,6 @@
 package gg.rsmod.plugins.content.mechanics.gates
 
 import gg.rsmod.game.model.World
-import gg.rsmod.game.model.attr.AttributeKey
-import gg.rsmod.game.model.entity.DynamicObject
-import gg.rsmod.game.model.entity.GameObject
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.api.ext.getInteractingGameObj
-import gg.rsmod.plugins.api.ext.playSound
-import gg.rsmod.plugins.api.ext.player
 import gg.rsmod.plugins.service.doors.DoorStickState
 import gg.rsmod.plugins.service.gates.GateService
 import gg.rsmod.plugins.service.gates.GateSet

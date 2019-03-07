@@ -1,11 +1,5 @@
 package gg.rsmod.plugins.content.mechanics.prayer
 
-import gg.rsmod.plugins.api.InterfaceDestination
-import gg.rsmod.plugins.api.ext.getInteractingOption
-import gg.rsmod.plugins.api.ext.getInteractingSlot
-import gg.rsmod.plugins.api.ext.openInterface
-import gg.rsmod.plugins.api.ext.player
-
 /**
  * Deactivate all prayers on log out.
  */

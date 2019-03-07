@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.areas.edgeville.spawns
 
-import gg.rsmod.plugins.api.cfg.Npcs
-
 spawn_npc(npc = Npcs.SKELETON, x = 3072, z = 3529, walkRadius = 12)
 spawn_npc(npc = Npcs.SKELETON_73, x = 3076, z = 3533, walkRadius = 12)
 

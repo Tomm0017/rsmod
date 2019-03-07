@@ -1,11 +1,7 @@
 package gg.rsmod.plugins.content.mechanics.poison
 
 import gg.rsmod.game.model.attr.POISON_TICKS_LEFT_ATTR
-import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.timer.POISON_TIMER
-import gg.rsmod.plugins.api.HitType
-import gg.rsmod.plugins.api.ext.hit
-import gg.rsmod.plugins.api.ext.pawn
 
 val POISON_TICK_DELAY = 25
 

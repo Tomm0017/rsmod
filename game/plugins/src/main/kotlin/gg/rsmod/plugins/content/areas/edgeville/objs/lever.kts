@@ -1,10 +1,5 @@
 package gg.rsmod.plugins.content.areas.edgeville.objs
 
-import gg.rsmod.game.model.entity.DynamicObject
-import gg.rsmod.plugins.api.cfg.Objs
-import gg.rsmod.plugins.api.ext.getInteractingGameObj
-import gg.rsmod.plugins.api.ext.player
-
 on_obj_option(Objs.LEVER_26761, "pull") {
     val obj = getInteractingGameObj()
 

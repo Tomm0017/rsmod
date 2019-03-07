@@ -2,10 +2,6 @@ package gg.rsmod.plugins.content.inter.options
 
 import gg.rsmod.game.model.attr.DISPLAY_MODE_CHANGE_ATTR
 import gg.rsmod.game.model.interf.DisplayMode
-import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.api.InterfaceDestination
-import gg.rsmod.plugins.api.OSRSGameframe
-import gg.rsmod.plugins.api.ext.*
 
 fun bind_setting(child: Int, plugin: Plugin.() -> Unit) {
     on_button(interfaceId = OptionsTab.INTERFACE_ID, component = child) {

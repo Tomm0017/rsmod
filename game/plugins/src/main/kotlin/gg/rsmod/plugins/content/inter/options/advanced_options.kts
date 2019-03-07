@@ -1,9 +1,6 @@
 package gg.rsmod.plugins.content.inter.options
 
 import gg.rsmod.game.model.interf.DisplayMode
-import gg.rsmod.plugins.api.InterfaceDestination
-import gg.rsmod.plugins.api.OSRSGameframe
-import gg.rsmod.plugins.api.ext.*
 
 on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 4) {
     player.toggleVarbit(OSRSGameframe.CHATBOX_SCROLLBAR_VARBIT)

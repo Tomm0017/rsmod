@@ -1,10 +1,5 @@
 package gg.rsmod.plugins.content.npcs.banker
 
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.api.InterfaceDestination
-import gg.rsmod.plugins.api.cfg.Npcs
-import gg.rsmod.plugins.api.ext.*
 import gg.rsmod.plugins.content.inter.bank.openBank
 
 arrayOf(Npcs.BANKER, Npcs.BANKER_395).forEach { banker ->

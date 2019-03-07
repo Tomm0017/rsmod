@@ -1,13 +1,5 @@
 package gg.rsmod.plugins.content.areas.edgeville.objs
 
-import gg.rsmod.game.model.entity.DynamicObject
-import gg.rsmod.game.model.entity.GameObject
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.api.cfg.Objs
-import gg.rsmod.plugins.api.ext.getInteractingGameObj
-import gg.rsmod.plugins.api.ext.playSound
-import gg.rsmod.plugins.api.ext.player
-
 val OPEN_SFX = 53
 val CLOSE_SFX = 54
 

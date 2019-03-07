@@ -2,15 +2,6 @@ package gg.rsmod.plugins.content.objs.hay
 
 import com.google.common.collect.ImmutableSet
 import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.entity.GroundItem
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.api.cfg.Items
-import gg.rsmod.plugins.api.cfg.Objs
-import gg.rsmod.plugins.api.ext.chatPlayer
-import gg.rsmod.plugins.api.ext.getInteractingGameObj
-import gg.rsmod.plugins.api.ext.hit
-import gg.rsmod.plugins.api.ext.player
 
 val HAY_OBJECTS = ImmutableSet.of(Objs.HAYSTACK, Objs.HAY_BALES, Objs.HAY_BALES_299)
 

@@ -3,13 +3,8 @@ package gg.rsmod.plugins.content.combat
 import gg.rsmod.game.action.PawnPathAction
 import gg.rsmod.game.model.attr.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.entity.Entity
-import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.api.ext.clearMapFlag
-import gg.rsmod.plugins.api.ext.getVarbit
-import gg.rsmod.plugins.api.ext.pawn
-import gg.rsmod.plugins.api.ext.setVarp
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 
 set_combat_logic {

@@ -1,10 +1,6 @@
 package gg.rsmod.plugins.content.objs.bookcase
 
 import com.google.common.collect.ImmutableSet
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.api.cfg.Objs
-import gg.rsmod.plugins.api.ext.player
 
 val BOOKCASES = ImmutableSet.of(Objs.BOOKCASE_380, Objs.BOOKCASE_381)
 

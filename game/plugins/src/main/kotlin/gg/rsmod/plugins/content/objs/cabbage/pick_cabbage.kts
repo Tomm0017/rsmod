@@ -1,12 +1,5 @@
 package gg.rsmod.plugins.content.objs.cabbage
 
-import gg.rsmod.game.model.entity.DynamicObject
-import gg.rsmod.game.model.entity.Entity
-import gg.rsmod.plugins.api.cfg.Items
-import gg.rsmod.plugins.api.cfg.Objs
-import gg.rsmod.plugins.api.ext.getInteractingGameObj
-import gg.rsmod.plugins.api.ext.player
-
 val RESPAWN_DELAY = 75
 
 on_obj_option(obj = Objs.CABBAGE_1161, option = "pick", lineOfSightDistance = 0) {

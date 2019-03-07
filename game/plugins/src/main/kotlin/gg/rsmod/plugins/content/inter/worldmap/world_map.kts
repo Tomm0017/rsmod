@@ -1,8 +1,5 @@
 package gg.rsmod.plugins.content.inter.worldmap
 
-import gg.rsmod.plugins.api.InterfaceDestination
-import gg.rsmod.plugins.api.ext.*
-
 on_button(interfaceId = 160, component = 42) {
     val p = player
     if (!p.lock.canInterfaceInteract()) {

@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.areas.edgeville.spawns
 
-import gg.rsmod.plugins.api.cfg.Npcs
-
 // Near jail
 spawn_npc(npc = Npcs.GUARD_3094, x = 3108, z = 3513, walkRadius = 5)
 spawn_npc(npc = Npcs.GUARD_3094, x = 3110, z = 3515, walkRadius = 5)

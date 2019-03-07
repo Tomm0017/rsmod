@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.areas.edgeville.spawns
 
-import gg.rsmod.plugins.api.cfg.Npcs
-
 // Inside east building
 spawn_npc(npc = Npcs.MAN_3078, x = 3094, z = 3511, walkRadius = 3)
 spawn_npc(npc = Npcs.MAN_3078, x = 3097, z = 3511, walkRadius = 3)

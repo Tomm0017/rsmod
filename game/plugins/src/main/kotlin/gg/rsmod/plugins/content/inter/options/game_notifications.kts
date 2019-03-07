@@ -1,10 +1,5 @@
 package gg.rsmod.plugins.content.inter.options
 
-import gg.rsmod.plugins.api.ext.hasStorageBit
-import gg.rsmod.plugins.api.ext.options
-import gg.rsmod.plugins.api.ext.player
-import gg.rsmod.plugins.api.ext.toggleStorageBit
-
 on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 71) {
     player.queue {
         while (true) {

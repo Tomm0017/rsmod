@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.mechanics.run
 
-import gg.rsmod.plugins.api.ext.player
-
 on_login {
     player.timers[RunEnergy.RUN_DRAIN] = 1
 }

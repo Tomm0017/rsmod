@@ -2,7 +2,6 @@ package gg.rsmod.plugins.content.inter.logout
 
 import gg.rsmod.game.message.impl.LogoutFullMessage
 import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
-import gg.rsmod.plugins.api.ext.player
 
 /**
  * Logout button.

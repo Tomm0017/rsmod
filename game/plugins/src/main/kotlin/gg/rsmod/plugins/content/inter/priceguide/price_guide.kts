@@ -1,10 +1,5 @@
 package gg.rsmod.plugins.content.inter.priceguide
 
-import gg.rsmod.plugins.api.ext.getInteractingOption
-import gg.rsmod.plugins.api.ext.getInteractingSlot
-import gg.rsmod.plugins.api.ext.player
-import gg.rsmod.plugins.api.ext.searchItemInput
-
 on_button(interfaceId = 387, component = 19) {
     val p = player
     if (!p.lock.canInterfaceInteract()) {

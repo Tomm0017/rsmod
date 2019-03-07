@@ -1,11 +1,5 @@
 package gg.rsmod.plugins.content.areas.edgeville.chat
 
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.api.Skills
-import gg.rsmod.plugins.api.cfg.Npcs
-import gg.rsmod.plugins.api.ext.*
-
 on_npc_option(npc = Npcs.ABBOT_LANGLEY, option = "talk-to") {
     player.queue { dialog(this) }
 }

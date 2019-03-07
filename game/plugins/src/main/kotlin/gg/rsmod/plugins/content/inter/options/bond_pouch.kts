@@ -1,11 +1,5 @@
 package gg.rsmod.plugins.content.inter.options
 
-import gg.rsmod.plugins.api.InterfaceDestination
-import gg.rsmod.plugins.api.ext.openInterface
-import gg.rsmod.plugins.api.ext.player
-import gg.rsmod.plugins.api.ext.runClientScript
-import gg.rsmod.plugins.api.ext.setInterfaceUnderlay
-
 on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 100) {
     /**
     [Varp (SHORT)]: id=1780, state=6

@@ -1,11 +1,5 @@
 package gg.rsmod.plugins.content
 
-import gg.rsmod.plugins.api.ChatMessageType
-import gg.rsmod.plugins.api.InterfaceDestination
-import gg.rsmod.plugins.api.OSRSGameframe
-import gg.rsmod.plugins.api.Skills
-import gg.rsmod.plugins.api.ext.*
-
 /**
  * Closing main modal for players.
  */

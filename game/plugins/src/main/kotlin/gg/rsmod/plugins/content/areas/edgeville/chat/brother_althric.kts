@@ -1,11 +1,5 @@
 package gg.rsmod.plugins.content.areas.edgeville.chat
 
-import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.api.cfg.Npcs
-import gg.rsmod.plugins.api.ext.chatNpc
-import gg.rsmod.plugins.api.ext.chatPlayer
-import gg.rsmod.plugins.api.ext.player
-
 on_npc_option(npc = Npcs.BROTHER_ALTHRIC, option = "talk-to") {
     player.queue {
         dialog(this)

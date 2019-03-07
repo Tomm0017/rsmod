@@ -1,8 +1,5 @@
 package gg.rsmod.plugins.content.items.food
 
-import gg.rsmod.plugins.api.ext.getInteractingItemSlot
-import gg.rsmod.plugins.api.ext.player
-
 Food.values.forEach { food ->
     on_item_option(item = food.item, option = "eat") {
         val p = player

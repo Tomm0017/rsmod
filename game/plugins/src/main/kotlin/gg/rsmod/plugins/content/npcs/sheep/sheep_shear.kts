@@ -2,15 +2,6 @@ package gg.rsmod.plugins.content.npcs.sheep
 
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.entity.GroundItem
-import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.api.cfg.Items
-import gg.rsmod.plugins.api.cfg.Npcs
-import gg.rsmod.plugins.api.ext.getInteractingNpc
-import gg.rsmod.plugins.api.ext.playSound
-import gg.rsmod.plugins.api.ext.player
 
 Sheep.SHEEP_NPCS.forEach { sheep ->
     if (world.definitions.get(NpcDef::class.java, sheep).options.contains("Shear")) {

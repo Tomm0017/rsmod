@@ -1,8 +1,6 @@
 package gg.rsmod.plugins.content.skills.woodcutting
 
 import com.google.common.collect.ImmutableSet
-import gg.rsmod.plugins.api.ext.getInteractingGameObj
-import gg.rsmod.plugins.api.ext.player
 import gg.rsmod.plugins.content.skills.woodcutting.Woodcutting.Tree
 
 val trees = ImmutableSet.of(

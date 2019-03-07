@@ -2,10 +2,6 @@ package gg.rsmod.plugins.content.skills
 
 import gg.rsmod.game.model.attr.LEVEL_UP_INCREMENT
 import gg.rsmod.game.model.attr.LEVEL_UP_SKILL_ID
-import gg.rsmod.plugins.api.Skills
-import gg.rsmod.plugins.api.ext.calculateAndSetCombatLevel
-import gg.rsmod.plugins.api.ext.levelUpMessageBox
-import gg.rsmod.plugins.api.ext.player
 
 set_level_up_logic {
     val skill = player.attr[LEVEL_UP_SKILL_ID]!!

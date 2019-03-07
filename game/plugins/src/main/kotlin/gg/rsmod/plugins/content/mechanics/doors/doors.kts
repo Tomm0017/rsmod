@@ -1,11 +1,7 @@
 package gg.rsmod.plugins.content.mechanics.doors
 
-import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.collision.ObjectType
-import gg.rsmod.game.model.entity.GameObject
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.api.ext.*
 import gg.rsmod.plugins.service.doors.DoorService
 import gg.rsmod.plugins.service.doors.DoorStickState
 import gg.rsmod.plugins.service.doors.DoubleDoorSet

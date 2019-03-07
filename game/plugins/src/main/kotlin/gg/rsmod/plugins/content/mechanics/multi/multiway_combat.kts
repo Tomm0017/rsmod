@@ -1,8 +1,5 @@
 package gg.rsmod.plugins.content.mechanics.multi
 
-import gg.rsmod.plugins.api.ext.player
-import gg.rsmod.plugins.api.ext.setVarbit
-
 val MULTIWAY_VARBIT = 4605
 
 on_world_init {

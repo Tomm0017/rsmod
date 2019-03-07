@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.areas.edgeville.spawns
 
-import gg.rsmod.plugins.api.cfg.Npcs
-
 spawn_npc(npc = Npcs.BROTHER_ALTHRIC, x = 3047, z = 3506, walkRadius = 3)
 spawn_npc(npc = Npcs.ABBOT_LANGLEY, x = 3058, z = 3484, walkRadius = 2)
 

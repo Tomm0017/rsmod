@@ -1,8 +1,6 @@
 package gg.rsmod.plugins.content.mechanics.npcwalk
 
 import gg.rsmod.game.model.attr.FACING_PAWN_ATTR
-import gg.rsmod.game.model.timer.TimerKey
-import gg.rsmod.plugins.api.ext.npc
 
 val SEARCH_FOR_PATH_TIMER = TimerKey()
 val SEARCH_FOR_PATH_DELAY = 15..30

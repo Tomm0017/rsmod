@@ -1,8 +1,5 @@
 package gg.rsmod.plugins.content.npcs.sheep
 
-import gg.rsmod.game.model.timer.TimerKey
-import gg.rsmod.plugins.api.ext.npc
-
 val YELL_DELAY = TimerKey()
 
 Sheep.SHEEP_NPCS.forEach { sheep ->

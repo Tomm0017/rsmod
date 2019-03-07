@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.mechanics.spells
 
-import gg.rsmod.plugins.api.ext.getInteractingNpc
-import gg.rsmod.plugins.api.ext.player
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 

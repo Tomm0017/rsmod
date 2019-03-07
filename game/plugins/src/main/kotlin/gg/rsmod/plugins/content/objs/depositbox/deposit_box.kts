@@ -3,10 +3,6 @@ package gg.rsmod.plugins.content.objs.depositbox
 import com.google.common.collect.ImmutableSet
 import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.game.model.container.ItemContainer
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.api.InterfaceDestination
-import gg.rsmod.plugins.api.cfg.Objs
-import gg.rsmod.plugins.api.ext.*
 
 val DEPOSIT_INTERFACE_ID = 192
 val DEPOSIT_EQUIPMENT_SFX = 2238

@@ -1,10 +1,5 @@
 package gg.rsmod.plugins.content.mechanics.bankpin
 
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.api.ext.player
-import gg.rsmod.plugins.api.ext.setComponentHidden
-import gg.rsmod.plugins.api.ext.setComponentText
-
 val INTERFACE_ID = 14
 
 on_interface_open(INTERFACE_ID) {

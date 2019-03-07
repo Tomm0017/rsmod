@@ -4,12 +4,8 @@ import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.container.key.ContainerKey
-import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.queue.TaskPriority
-import gg.rsmod.plugins.api.InterfaceDestination
-import gg.rsmod.plugins.api.cfg.Items
-import gg.rsmod.plugins.api.ext.*
 
 val CONTAINER_KEY = ContainerKey("looting_bag", capacity = 28, stackType = ContainerStackType.NORMAL)
 val CONTAINER_ID = 516
@@ -99,7 +95,7 @@ fun bank(p: Player, slot: Int, amount: Int) {
     val container = p.containers[CONTAINER_KEY] ?: return
     val item = container[slot] ?: return
 
-    container.transfer(p.bank, item = Item(item, amount).copyAttr(item))
+    container.transfer(p.bank, item = Item(item, amount).copyAttr(item), unnote = true)
     p.sendItemContainer(CONTAINER_ID, container)
 }
 

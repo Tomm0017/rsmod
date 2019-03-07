@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.inter.keybind
 
-import gg.rsmod.plugins.api.ext.*
-
 /**
  * Set 'focused' hotkey.
  */

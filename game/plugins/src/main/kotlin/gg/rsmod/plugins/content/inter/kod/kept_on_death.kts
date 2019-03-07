@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.inter.kod
 
-import gg.rsmod.plugins.api.ext.player
-
 on_button(interfaceId = 387, component = 21) {
     val p = player
     if (!p.lock.canInterfaceInteract()) {

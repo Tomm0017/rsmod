@@ -1,10 +1,6 @@
 package gg.rsmod.plugins.content.inter.attack
 
 import gg.rsmod.game.model.attr.NEW_ACCOUNT_ATTR
-import gg.rsmod.plugins.api.EquipmentType
-import gg.rsmod.plugins.api.ext.player
-import gg.rsmod.plugins.api.ext.setVarp
-import gg.rsmod.plugins.api.ext.toggleVarp
 
 /**
  * First log-in logic (when accounts have just been made).

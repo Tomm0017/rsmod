@@ -1,8 +1,6 @@
 package gg.rsmod.plugins.content.areas.edgeville.shops
 
 import gg.rsmod.game.model.shop.PurchasePolicy
-import gg.rsmod.game.model.shop.ShopItem
-import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.content.mechanics.shops.CoinCurrency
 
 create_shop("Richard's Wilderness Cape Shop.", CoinCurrency(), purchasePolicy = PurchasePolicy.BUY_STOCK) {

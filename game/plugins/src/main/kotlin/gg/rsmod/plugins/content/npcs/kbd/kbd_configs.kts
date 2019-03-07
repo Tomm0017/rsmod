@@ -1,7 +1,6 @@
 package gg.rsmod.plugins.content.npcs.kbd
 
 import gg.rsmod.game.model.combat.NpcCombatDef
-import gg.rsmod.plugins.api.cfg.Npcs
 
 set_multi_combat_region(region = 9033)
 

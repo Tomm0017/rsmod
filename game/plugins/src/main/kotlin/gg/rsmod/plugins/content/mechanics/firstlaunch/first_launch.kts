@@ -1,10 +1,6 @@
 package gg.rsmod.plugins.content.mechanics.firstlaunch
 
 import gg.rsmod.game.model.priv.Privilege
-import gg.rsmod.game.plugin.Plugin
-import gg.rsmod.plugins.api.ext.doubleItemMessageBox
-import gg.rsmod.plugins.api.ext.itemMessageBox
-import gg.rsmod.plugins.api.ext.player
 import gg.rsmod.plugins.content.inter.emotes.EmotesTab
 
 on_login {

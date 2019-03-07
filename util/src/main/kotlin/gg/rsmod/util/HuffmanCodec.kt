@@ -75,7 +75,6 @@ class HuffmanCodec(private val sizes: ByteArray) {
                         keys = ints_13
                     }
 
-                    i_12 = i_12 ushr 1
                     i_11++
                 }
 

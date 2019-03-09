@@ -3,7 +3,6 @@ package gg.rsmod.game.action
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
-import gg.rsmod.game.service.game.ItemStatsService
 
 /**
  * This class is responsible for handling armor equip and unequip related
@@ -40,16 +39,9 @@ object EquipAction {
     }
 
     fun equip(p: Player, item: Item, inventorySlot: Int = -1): Result {
-        val statService = p.world.getService(ItemStatsService::class.java)
-        if (statService == null) {
-            if (p.world.plugins.executeItem(p, item.id, 2)) {
-                return Result.PLUGIN
-            }
-            return Result.UNHANDLED
-        }
+        val def = p.world.definitions.get(ItemDef::class.java, item.id)
 
-        val stats = statService.get(item.id)
-        if (stats == null || stats.equipSlot < 0) {
+        if (def.equipSlot < 0) {
             if (p.world.plugins.executeItem(p, item.id, 2)) {
                 return Result.PLUGIN
             }
@@ -60,12 +52,11 @@ object EquipAction {
             return Result.PLUGIN
         }
 
-        val equipSlot = stats.equipSlot
-        val equipType = stats.equipType
+        val equipSlot = def.equipSlot
+        val equipType = def.equipType
 
         val replace = p.equipment[equipSlot]
-        val itemDef = p.world.definitions.get(ItemDef::class.java, item.id)
-        val stackable = itemDef.isStackable()
+        val stackable = def.stackable
 
         /**
          * If [item] is stackable and the player has the item equipped already,
@@ -95,9 +86,9 @@ object EquipAction {
              */
             val unequip = arrayListOf(equipSlot)
 
-            if (equipType != 0) {
+            if (equipType != -1) {
                 /**
-                 * [gg.rsmod.game.model.item.ItemStats.equipType] counts as a 'secondary'
+                 * [gg.rsmod.game.fs.def.ItemDef.equipType] counts as a 'secondary'
                  * equipment slot, which should be unequipped as well.
                  *
                  * For example, 2h swords have an equipment type of 5, which is also
@@ -114,8 +105,8 @@ object EquipAction {
              */
             for (i in 0 until p.equipment.capacity) {
                 val equip = p.equipment[i] ?: continue
-                val otherStats = statService.get(equip.id) ?: continue
-                if (otherStats.equipType == equipSlot && otherStats.equipType != 0) {
+                val otherDef = p.world.definitions.get(ItemDef::class.java, equip.id)
+                if (otherDef.equipType == equipSlot && otherDef.equipType != 0) {
                     unequip.add(i)
                 }
             }

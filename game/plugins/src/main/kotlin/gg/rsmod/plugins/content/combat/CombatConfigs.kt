@@ -8,7 +8,7 @@ import gg.rsmod.game.model.combat.XpMode
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.service.game.ItemStatsService
+import gg.rsmod.game.service.game.ItemMetadataService
 import gg.rsmod.plugins.api.EquipmentType
 import gg.rsmod.plugins.api.WeaponType
 import gg.rsmod.plugins.api.cfg.Items
@@ -26,7 +26,7 @@ import gg.rsmod.plugins.content.combat.strategy.RangedCombatStrategy
  */
 object CombatConfigs {
 
-    private var cachedItemStats: ItemStatsService? = null
+    private var cachedItemStats: ItemMetadataService? = null
 
     private const val PLAYER_DEFAULT_ATTACK_SPEED = 4
 
@@ -60,9 +60,7 @@ object CombatConfigs {
         if (pawn is Player) {
             val default = PLAYER_DEFAULT_ATTACK_SPEED
             val weapon = pawn.getEquipment(EquipmentType.WEAPON) ?: return default
-            val stats = getItemStats(pawn.world) ?: return default
-            val weaponStats = stats.get(weapon.id) ?: return default
-            return Math.max(MIN_ATTACK_SPEED, weaponStats.attackSpeed)
+            return Math.max(MIN_ATTACK_SPEED, weapon.getDef(pawn.world.definitions).attackSpeed)
         }
 
         throw IllegalArgumentException("Invalid pawn type.")
@@ -392,9 +390,9 @@ object CombatConfigs {
         }
     }
 
-    private fun getItemStats(world: World): ItemStatsService? {
+    private fun getItemStats(world: World): ItemMetadataService? {
         if (cachedItemStats == null) {
-            cachedItemStats = world.getService(ItemStatsService::class.java)
+            cachedItemStats = world.getService(ItemMetadataService::class.java)
         }
         return cachedItemStats
     }

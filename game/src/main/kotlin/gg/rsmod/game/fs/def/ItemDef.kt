@@ -3,6 +3,8 @@ package gg.rsmod.game.fs.def
 import gg.rsmod.game.fs.Definition
 import gg.rsmod.util.io.BufferUtils.readString
 import io.netty.buffer.ByteBuf
+import it.unimi.dsi.fastutil.bytes.Byte2ByteOpenHashMap
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -10,12 +12,15 @@ import io.netty.buffer.ByteBuf
 class ItemDef(override val id: Int) : Definition(id) {
 
     var name = ""
-    var stackable = false
+    var stacks = false
     var cost = 0
     var members = false
     val groundMenu = Array<String?>(5) { null }
     val inventoryMenu = Array<String?>(5) { null }
-    var tradeable = false
+    /**
+     * The item can be traded through the grand exchange.
+     */
+    var grandExchange = false
     var teamCape = 0
     /**
      * When an item is noted or unnoted (and has a noted variant), this will
@@ -31,13 +36,23 @@ class ItemDef(override val id: Int) : Definition(id) {
     var placeholderId = 0
     var placeholderTemplateId = 0
 
-    val params = hashMapOf<Int, Any>()
+    val params = Int2ObjectOpenHashMap<Any>()
 
-    fun isStackable(): Boolean = stackable || noteTemplateId > 0
+    val stackable: Boolean get() = stacks || noteTemplateId > 0
 
-    fun isNoted(): Boolean = noteTemplateId > 0
+    val noted: Boolean get() = noteTemplateId > 0
 
-    fun isTradeable(): Boolean = tradeable
+    /**
+     * Custom metadata.
+     */
+    var examine: String? = null
+    var tradeable = false
+    var weight = 0.0
+    var attackSpeed = -1
+    var equipSlot = -1
+    var equipType = 0
+    lateinit var bonuses: IntArray
+    val skillReqs = Byte2ByteOpenHashMap()
 
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {
@@ -48,7 +63,7 @@ class ItemDef(override val id: Int) : Definition(id) {
             6 -> buf.readUnsignedShort()
             7 -> buf.readUnsignedShort()
             8 -> buf.readUnsignedShort()
-            11 -> stackable = true
+            11 -> stacks = true
             12 -> cost = buf.readInt()
             16 -> members = true
             23 -> {
@@ -85,7 +100,7 @@ class ItemDef(override val id: Int) : Definition(id) {
                 }
             }
             42 -> buf.readByte()
-            65 -> tradeable = true
+            65 -> grandExchange = true
             78 -> buf.readUnsignedShort()
             79 -> buf.readUnsignedShort()
             90 -> buf.readUnsignedShort()

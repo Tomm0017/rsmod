@@ -54,7 +54,7 @@ object PriceGuide {
         val guideContainer = p.attr[GUIDE_CONTAINER] ?: return
         val invContainer = p.attr[TEMP_INV_CONTAINER] ?: return
 
-        if (!p.world.definitions.get(ItemDef::class.java, item).isTradeable()) {
+        if (!p.world.definitions.get(ItemDef::class.java, item).tradeable) {
             p.message("You cannot trade that item.")
             return
         }
@@ -88,7 +88,7 @@ object PriceGuide {
         for (i in 0 until invContainer.capacity) {
             val item = invContainer[i] ?: continue
 
-            if (!p.world.definitions.get(ItemDef::class.java, item.id).isTradeable()) {
+            if (!p.world.definitions.get(ItemDef::class.java, item.id).tradeable) {
                 anyUntradeables = true
                 continue
             }
@@ -211,6 +211,6 @@ object PriceGuide {
         p.runClientScript(785, *costs)
         p.runClientScript(600, 1, 1, 15, 30408716)
 
-        p.setComponentText(interfaceId = INTERFACE_ID, component = 12, text = "Total guide price:<br><col=ffffff>${DecimalFormat().format(guideContainer.networth(p.world))}</col>")
+        p.setComponentText(interfaceId = INTERFACE_ID, component = 12, text = "Total guide price:<br><col=ffffff>${DecimalFormat().format(guideContainer.getNetworth(p.world))}</col>")
     }
 }

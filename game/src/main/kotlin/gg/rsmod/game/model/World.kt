@@ -396,7 +396,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
         val def = definitions.get(ItemDef::class.java, item.item)
 
-        if (def.isStackable()) {
+        if (def.stackable) {
             val oldItem = chunk.getEntities<GroundItem>(tile, EntityType.GROUND_ITEM).firstOrNull { it.item == item.item && it.ownerUID == item.ownerUID }
             if (oldItem != null) {
                 val oldAmount = oldItem.amount

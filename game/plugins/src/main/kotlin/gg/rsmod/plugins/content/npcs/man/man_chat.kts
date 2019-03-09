@@ -3,7 +3,7 @@ package gg.rsmod.plugins.content.npcs.man
 val MEN = arrayOf(Npcs.MAN_3014, Npcs.MAN_3078, Npcs.MAN_3079, Npcs.MAN_3080,
         Npcs.MAN_3081, Npcs.MAN_3082, Npcs.MAN_3260, Npcs.MAN_3264, Npcs.MAN_3265,
         Npcs.MAN_3266, Npcs.MAN_3652, Npcs.MAN_6987, Npcs.MAN_6988, Npcs.MAN_6989,
-        Npcs.MAN_7281, Npcs.MAN_7547)
+        Npcs.MAN_7281)
 
 MEN.forEach { man ->
     on_npc_option(npc = man, option = "talk-to") {

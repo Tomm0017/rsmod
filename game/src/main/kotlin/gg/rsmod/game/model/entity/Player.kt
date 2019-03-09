@@ -21,7 +21,7 @@ import gg.rsmod.game.model.skill.SkillSet
 import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.timer.FORCE_DISCONNECTION_TIMER
 import gg.rsmod.game.model.varp.VarpSet
-import gg.rsmod.game.service.game.ItemStatsService
+import gg.rsmod.game.service.game.ItemMetadataService
 import gg.rsmod.game.sync.block.UpdateBlockType
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import java.util.*
@@ -403,11 +403,11 @@ open class Player(world: World) : Pawn(world) {
      * Calculate the current weight and equipment bonuses for the player.
      */
     fun calculateWeightAndBonus(weight: Boolean, bonuses: Boolean = true) {
-        world.getService(ItemStatsService::class.java)?.let { s ->
+        world.getService(ItemMetadataService::class.java)?.let { s ->
 
             if (weight) {
-                val inventoryWeight = inventory.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
-                val equipmentWeight = equipment.filterNotNull().sumByDouble { s.get(it.id)?.weight ?: 0.0 }
+                val inventoryWeight = inventory.filterNotNull().sumByDouble { it.getDef(world.definitions).weight }
+                val equipmentWeight = equipment.filterNotNull().sumByDouble { it.getDef(world.definitions).weight }
                 this.weight = inventoryWeight + equipmentWeight
                 write(UpdateRunWeightMessage(this.weight.toInt()))
             }
@@ -416,8 +416,8 @@ open class Player(world: World) : Pawn(world) {
                 Arrays.fill(equipmentBonuses, 0)
                 for (i in 0 until equipment.capacity) {
                     val item = equipment[i] ?: continue
-                    val stats = s.get(item.id) ?: continue
-                    stats.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
+                    val def = item.getDef(world.definitions)
+                    def.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
                 }
             }
         }

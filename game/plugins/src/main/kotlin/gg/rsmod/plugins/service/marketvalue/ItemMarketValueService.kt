@@ -23,7 +23,7 @@ class ItemMarketValueService : Service() {
         for (i in 0 until items) {
             val def = world.definitions.getNullable(ItemDef::class.java, i) ?: continue
 
-            if (!def.isNoted() && def.name.isNotBlank()) {
+            if (!def.noted && def.name.isNotBlank()) {
                 values[i] = def.cost
                 if (def.noteTemplateId == 0 && def.noteLinkId > 0) {
                     values[def.noteLinkId] = def.cost

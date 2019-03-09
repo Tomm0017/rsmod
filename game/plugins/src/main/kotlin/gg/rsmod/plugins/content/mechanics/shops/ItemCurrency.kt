@@ -24,7 +24,7 @@ open class ItemCurrency(private val currencyItem: Int, private val singularCurre
         }
         when {
             shop.purchasePolicy == PurchasePolicy.BUY_TRADEABLES -> {
-                if (!Item(item).getDef(world.definitions).isTradeable()) {
+                if (!Item(item).getDef(world.definitions).tradeable) {
                     return AcceptItemState(acceptable = false, errorMessage = "You can't sell this item.")
                 }
             }

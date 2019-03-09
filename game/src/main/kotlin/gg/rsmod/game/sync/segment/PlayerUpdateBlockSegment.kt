@@ -4,7 +4,6 @@ import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.ChatMessage
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.service.game.ItemStatsService
 import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.block.UpdateBlockType
@@ -120,7 +119,6 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                 val transmog = other.getTransmogId() >= 0
 
                 if (!transmog) {
-                    val statsService = other.world.getService(ItemStatsService::class.java)
                     val translation = arrayOf(-1, -1, -1, -1, 2, -1, 3, 5, 0, 4, 6, 1)
 
                     val arms = 6
@@ -128,23 +126,21 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                     val beard = 11
 
                     for (i in 0 until 12) {
-                        if (statsService != null) {
-                            if (i == arms) {
-                                val item = other.equipment[4]
-                                if (item != null) {
-                                    if (statsService.get(item.id)?.equipType == arms) {
-                                        appBuf.put(DataType.BYTE, 0)
-                                        continue
-                                    }
+                        if (i == arms) {
+                            val item = other.equipment[4]
+                            if (item != null) {
+                                if (item.getDef(other.world.definitions).equipType == arms) {
+                                    appBuf.put(DataType.BYTE, 0)
+                                    continue
                                 }
-                            } else if (i == hair) {
-                                val item = other.equipment[0]
-                                if (item != null) {
-                                    val equipType = statsService.get(item.id)?.equipType ?: -1
-                                    if (equipType == hair || equipType == beard) {
-                                        appBuf.put(DataType.BYTE, 0)
-                                        continue
-                                    }
+                            }
+                        } else if (i == hair) {
+                            val item = other.equipment[0]
+                            if (item != null) {
+                                val equipType = item.getDef(other.world.definitions).equipType
+                                if (equipType == hair || equipType == beard) {
+                                    appBuf.put(DataType.BYTE, 0)
+                                    continue
                                 }
                             }
                         }

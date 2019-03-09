@@ -148,9 +148,9 @@ class InterfaceSet(val player: Player) {
     fun isOccupied(parent: Int, child: Int): Boolean = visible.containsKey((parent shl 16) or child)
 
     /**
-     * Checks if the [component] is currently visible on any interface.
+     * Checks if the [interfaceId] is currently visible on any interface.
      */
-    fun isVisible(component: Int): Boolean = visible.values.contains(component)
+    fun isVisible(interfaceId: Int): Boolean = visible.values.contains(interfaceId)
 
     /**
      * Set an interface as being visible. This should be reserved for settings
@@ -164,4 +164,12 @@ class InterfaceSet(val player: Player) {
             this.visible.remove(hash)
         }
     }
+
+    /**
+     * Gets the interface id that is attached to [parent] and [child].
+     *
+     * @return
+     * -1 if no interface has been attached to [parent] and [child].
+     */
+    fun getInterfaceAt(parent: Int, child: Int): Int = visible.getOrDefault((parent shl 16) or child, -1)
 }

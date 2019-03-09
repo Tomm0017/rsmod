@@ -49,9 +49,15 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
 
     /**
      * Checks if the container has an [Item] which has the same [Item.id] as
-     * [itemId].
+     * [item].
      */
-    fun contains(itemId: Int): Boolean = items.any { it?.id == itemId }
+    fun contains(item: Int): Boolean = items.any { it?.id == item }
+
+    /**
+     * Checks if the container has an [Item] which has the same [Item.id] as
+     * [item] or any of the values (if any) in [others].
+     */
+    fun containsAny(item: Int, vararg others: Int): Boolean = items.any { it != null && (it.id == item || it.id in others) }
 
     /**
      * Checks if the container has an [Item] which has the same [Item.id] as
@@ -207,7 +213,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
         /**
          * Should the item stack?
          */
-        val stack = !forceNoStack && stackType != ContainerStackType.NO_STACK && (def.isStackable() || stackType == ContainerStackType.STACK)
+        val stack = !forceNoStack && stackType != ContainerStackType.NO_STACK && (def.stackable || stackType == ContainerStackType.STACK)
 
         /**
          * Check if there's a placeholder in this item container corresponding to

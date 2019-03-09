@@ -18,8 +18,14 @@ object Bank {
     const val REARRANGE_MODE_VARBIT = 3959
     const val ALWAYS_PLACEHOLD_VARBIT = 3755
     const val LAST_X_INPUT = 3960
-    const val SELECTED_TAB = 4150
     const val QUANTITY_VARBIT = 6590
+    const val SELECTED_TAB_VARBIT = 4150
+
+    /**
+     * Visual varbit for the "Bank your loot" tab area interface when storing
+     * items from a looting bag into the bank.
+     */
+    const val BANK_YOUR_LOOT_VARBIT = 4139
 
     fun withdraw(p: Player, id: Int, amt: Int, slot: Int, placehold: Boolean) {
         var withdrawn = 0
@@ -120,5 +126,7 @@ object Bank {
         p.setInterfaceEvents(interfaceId = INV_INTERFACE_ID, component = 10, range = 0..27, setting = 1054)
         p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 47, range = 1..816, setting = 2)
         p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 50, range = 0..3, setting = 2)
+
+        p.setVarbit(BANK_YOUR_LOOT_VARBIT, 0)
     }
 }

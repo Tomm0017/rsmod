@@ -2,6 +2,7 @@ package gg.rsmod.game.fs
 
 import gg.rsmod.util.io.BufferUtils.readString
 import io.netty.buffer.ByteBuf
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 
 /**
  * A [Definition] is used to represent metadata that can be decoded from the
@@ -23,8 +24,8 @@ abstract class Definition(open val id: Int) {
 
     abstract fun decode(buf: ByteBuf, opcode: Int)
 
-    fun readParams(buf: ByteBuf): Map<Int, Any> {
-        val map = hashMapOf<Int, Any>()
+    fun readParams(buf: ByteBuf): Int2ObjectOpenHashMap<Any> {
+        val map = Int2ObjectOpenHashMap<Any>()
 
         val length = buf.readUnsignedByte()
         for (i in 0 until length) {

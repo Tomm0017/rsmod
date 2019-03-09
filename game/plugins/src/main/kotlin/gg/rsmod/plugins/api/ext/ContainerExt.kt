@@ -11,7 +11,7 @@ import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
  * @author Tom <rspsmods@gmail.com>
  */
 
-fun ItemContainer.networth(world: World): Long {
+fun ItemContainer.getNetworth(world: World): Long {
     val service = world.getService(ItemMarketValueService::class.java)
     var networth = 0L
     getRaw().forEach { item ->

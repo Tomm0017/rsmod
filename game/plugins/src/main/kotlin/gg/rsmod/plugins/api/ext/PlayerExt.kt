@@ -113,7 +113,7 @@ fun Player.openInterface(interfaceId: Int, dest: InterfaceDestination, fullscree
     if (displayMode == DisplayMode.FULLSCREEN) {
         openOverlayInterface(displayMode)
     }
-    openInterface(parent, child, interfaceId, if (dest.clickThrough) 1 else 0, isModal = dest == InterfaceDestination.MAIN_SCREEN || dest == InterfaceDestination.TAB_AREA)
+    openInterface(parent, child, interfaceId, if (dest.clickThrough) 1 else 0, isModal = dest == InterfaceDestination.MAIN_SCREEN)
 }
 
 /**
@@ -133,7 +133,7 @@ fun Player.openInterface(dest: InterfaceDestination, autoClose: Boolean = false)
     if (displayMode == DisplayMode.FULLSCREEN) {
         openOverlayInterface(displayMode)
     }
-    openInterface(parent, child, dest.interfaceId, if (dest.clickThrough) 1 else 0, isModal = dest == InterfaceDestination.MAIN_SCREEN || dest == InterfaceDestination.TAB_AREA)
+    openInterface(parent, child, dest.interfaceId, if (dest.clickThrough) 1 else 0, isModal = dest == InterfaceDestination.MAIN_SCREEN)
 }
 
 fun Player.openInterface(parent: Int, child: Int, interfaceId: Int, type: Int = 0, isModal: Boolean = false) {
@@ -158,13 +158,20 @@ fun Player.closeInterface(dest: InterfaceDestination) {
     val parent = getDisplayComponentId(displayMode)
     val hash = interfaces.close(parent, child)
     if (hash != -1) {
-        write(IfCloseSubMessage(hash))
+        write(IfCloseSubMessage((parent shl 16) or child))
     }
 }
 
 fun Player.closeComponent(parent: Int, child: Int) {
     interfaces.close(parent, child)
     write(IfCloseSubMessage((parent shl 16) or child))
+}
+
+fun Player.getInterfaceAt(dest: InterfaceDestination): Int {
+    val displayMode = interfaces.displayMode
+    val child = getChildId(dest, displayMode)
+    val parent = getDisplayComponentId(displayMode)
+    return interfaces.getInterfaceAt(parent, child)
 }
 
 fun Player.isInterfaceVisible(interfaceId: Int): Boolean = interfaces.isVisible(interfaceId)
@@ -232,6 +239,7 @@ fun Player.sendItemContainer(parent: Int, child: Int, key: Int, container: ItemC
 
 fun Player.updateItemContainer(key: Int, container: ItemContainer) {
     // TODO: UpdateInvPartialMessage
+    write(UpdateInvFullMessage(containerKey = key, items = container.getRaw()))
 }
 
 fun Player.sendRunEnergy(energy: Int) {

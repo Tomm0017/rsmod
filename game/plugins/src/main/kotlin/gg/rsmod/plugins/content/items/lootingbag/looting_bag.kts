@@ -14,14 +14,16 @@ val TAB_INTERFACE_ID = 81
 
 register_container_key(CONTAINER_KEY) // Mark key as needing to be de-serialized on log-in.
 
-on_item_option(Items.LOOTING_BAG, "open") {
-    open(player, getInteractingItemSlot())
-    player.message("You open your looting bag, ready to fill it.")
-}
-
-on_item_option(Items.LOOTING_BAG_22586, "close") {
-    close(player, getInteractingItemSlot())
-    player.message("You close your looting bag.")
+on_login {
+    /**
+     * If a player has a looting bag when they log in, we need to send the item
+     * container. If you open a bank before checking/depositing an item
+     * in your looting bag, the bag won't have the "view" option on it.
+     */
+    if (player.inventory.containsAny(Items.LOOTING_BAG, Items.LOOTING_BAG_22586)) {
+        val container = player.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(player.world.definitions, CONTAINER_KEY) }
+        player.sendItemContainer(CONTAINER_ID, container)
+    }
 }
 
 on_global_item_pickup {
@@ -30,6 +32,16 @@ on_global_item_pickup {
         val transactionItem = inventoryTransaction.items.first()
         store(player, transactionItem.item, transactionItem.item.amount, transactionItem.slot)
     }
+}
+
+on_item_option(Items.LOOTING_BAG, "open") {
+    open(player, getInteractingItemSlot())
+    player.message("You open your looting bag, ready to fill it.")
+}
+
+on_item_option(Items.LOOTING_BAG_22586, "close") {
+    close(player, getInteractingItemSlot())
+    player.message("You close your looting bag.")
 }
 
 arrayOf(Items.LOOTING_BAG, Items.LOOTING_BAG_22586).forEach { bag ->
@@ -49,6 +61,11 @@ on_button(interfaceId = TAB_INTERFACE_ID, component = 5) {
         2 -> store(player, slot = slot, amount = 5)
         3 -> store(player, slot = slot, amount = Int.MAX_VALUE)
         4 -> player.queue { store(player, slot = slot, amount = inputInteger()) }
+        5 -> {
+            val container = player.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(player.world.definitions, CONTAINER_KEY) }
+            val item = container[slot] ?: return@on_button
+            player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+        }
         9 -> {
             val item = player.inventory[slot] ?: return@on_button
             player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
@@ -85,7 +102,8 @@ fun store(p: Player, slot: Int, amount: Int) {
         return
     }
 
-    if (!item.toUnnoted(p.world.definitions).getDef(p.world.definitions).isTradeable()) {
+    // TODO: coins are set to untradeable for some reason
+    if (!item.toUnnoted(p.world.definitions).getDef(p.world.definitions).tradeable) {
         p.message("Only tradeable items can be put in the bag.")
         return
     }
@@ -99,8 +117,7 @@ fun store(p: Player, slot: Int, amount: Int) {
 }
 
 fun store(p: Player, item: Item, amount: Int, beginSlot: Int = -1): Boolean {
-    p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(p.world.definitions, CONTAINER_KEY) }
-    val container = p.containers[CONTAINER_KEY]!!
+    val container = p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(p.world.definitions, CONTAINER_KEY) }
 
     val transferred = p.inventory.transfer(container, item = Item(item, amount).copyAttr(item), beginSlot = beginSlot)
     if (transferred == 0) {
@@ -115,7 +132,11 @@ fun bank(p: Player, slot: Int, amount: Int) {
     val container = p.containers[CONTAINER_KEY] ?: return
     val item = container[slot] ?: return
 
-    container.transfer(p.bank, item = Item(item, amount).copyAttr(item), unnote = true)
+    val transfer = container.transfer(p.bank, item = Item(item, amount).copyAttr(item), unnote = true)
+    if (transfer == 0) {
+        p.message("Bank full.")
+        return
+    }
     p.sendItemContainer(CONTAINER_ID, container)
 }
 
@@ -142,7 +163,7 @@ fun check(p: Player) {
 
     p.runClientScript(495, "Looting bag", 0)
     p.sendItemContainer(CONTAINER_ID, container)
-    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Value: ") //##,### coins
+    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Value: ${container.getNetworth(p.world).decimalFormat()} coins")
 
     set_queue(p)
 }
@@ -151,11 +172,19 @@ fun deposit(p: Player) {
     p.openInterface(dest = InterfaceDestination.TAB_AREA, interfaceId = TAB_INTERFACE_ID)
     p.setInterfaceEvents(interfaceId = TAB_INTERFACE_ID, component = 5, range = 0..27, setting = 542)
     p.runClientScript(495, "Add to bag", 1)
-    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Bag value: ") //##,### coins
+    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Bag value: ${p.inventory.getNetworth(p.world).decimalFormat()} coins")
 
     set_queue(p)
 }
 
 fun set_queue(p: Player) {
-    p.queue(TaskPriority.STRONG) { waitInterfaceClose(TAB_INTERFACE_ID) }
+    p.queue(TaskPriority.STRONG) {
+        onInterrupt = {
+            if (p.interfaces.isVisible(TAB_INTERFACE_ID)) {
+                p.closeInterface(TAB_INTERFACE_ID)
+            }
+        }
+        waitInterfaceClose(TAB_INTERFACE_ID)
+        onInterrupt?.invoke(this)
+    }
 }

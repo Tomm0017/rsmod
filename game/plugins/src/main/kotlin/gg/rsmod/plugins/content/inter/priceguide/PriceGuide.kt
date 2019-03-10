@@ -150,7 +150,7 @@ object PriceGuide {
             2 -> 5
             3 -> 10
             4 -> container.getItemCount(item.id)
-            5 -> it.inputInteger()
+            5 -> it.inputInt()
             10 -> {
                 p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
                 return
@@ -170,7 +170,7 @@ object PriceGuide {
             2 -> 5
             3 -> 10
             4 -> container.getItemCount(item.id)
-            5 -> it.inputInteger()
+            5 -> it.inputInt()
             10 -> {
                 p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
                 return

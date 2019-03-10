@@ -60,7 +60,7 @@ on_button(interfaceId = TAB_INTERFACE_ID, component = 5) {
         1 -> store(player, slot = slot, amount = 1)
         2 -> store(player, slot = slot, amount = 5)
         3 -> store(player, slot = slot, amount = Int.MAX_VALUE)
-        4 -> player.queue { store(player, slot = slot, amount = inputInteger()) }
+        4 -> player.queue { store(player, slot = slot, amount = inputInt()) }
         5 -> {
             val container = player.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(player.world.definitions, CONTAINER_KEY) }
             val item = container[slot] ?: return@on_button
@@ -83,7 +83,7 @@ on_button(interfaceId = 15, component = 10) {
         1 -> bank(player, slot = slot, amount = 1)
         2 -> bank(player, slot = slot, amount = 5)
         3 -> bank(player, slot = slot, amount = Int.MAX_VALUE)
-        4 -> player.queue { bank(player, slot = slot, amount = inputInteger()) }
+        4 -> player.queue { bank(player, slot = slot, amount = inputInt()) }
         10 -> {
             val item = player.containers[CONTAINER_KEY]?.get(slot) ?: return@on_button
             player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
@@ -106,7 +106,6 @@ fun store(p: Player, slot: Int, amount: Int) {
         return
     }
 
-    // TODO: coins are set to untradeable for some reason
     if (!item.toUnnoted(p.world.definitions).getDef(p.world.definitions).tradeable) {
         p.message("Only tradeable items can be put in the bag.")
         return

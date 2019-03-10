@@ -1,6 +1,7 @@
 package gg.rsmod.plugins.api.ext
 
 import gg.rsmod.game.fs.def.NpcDef
+import gg.rsmod.game.message.impl.TriggerOnDialogAbortMessage
 import gg.rsmod.game.model.attr.*
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Npc
@@ -28,6 +29,13 @@ const val CHATBOX_CHILD = 561
  */
 private val closeDialog: ((Plugin).() -> Unit) = {
     player.closeComponent(parent = 162, child = CHATBOX_CHILD)
+}
+
+/**
+ * Invoked when input dialog queues are interrupted.
+ */
+private val closeInput: ((Plugin).() -> Unit) = {
+    player.write(TriggerOnDialogAbortMessage())
 }
 
 /**
@@ -92,12 +100,14 @@ suspend fun Plugin.options(vararg options: String, title: String = "Select an Op
  * @return
  * The integer input.
  */
-suspend fun Plugin.inputInteger(description: String = "Enter amount"): Int {
+suspend fun Plugin.inputInt(description: String = "Enter amount"): Int {
     val player = player
 
     player.runClientScript(108, description)
 
+    onInterrupt = closeInput
     waitReturnValue()
+    onInterrupt!!(this)
 
     return requestReturnValue as? Int ?: -1
 }

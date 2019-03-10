@@ -53,6 +53,7 @@ class MessageEncoderSet {
         put(MapProjAnimEncoder(), MapProjAnimMessage::class.java)
         put(SynthSoundEncoder(), SynthSoundMessage::class.java)
         put(SoundAreaEncoder(), SoundAreaMessage::class.java)
+        put(OnDialogAbortEncoder(), TriggerOnDialogAbortMessage::class.java)
     }
 
     private fun <T: Message> put(encoder: MessageEncoder<T>, message: Class<out T>) {

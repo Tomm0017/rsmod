@@ -3,6 +3,10 @@
 
 out-packets:
 
+  - message: gg.rsmod.game.message.impl.TriggerOnDialogAbortMessage
+    type: FIXED
+    opcode: 52
+
   - message: gg.rsmod.game.message.impl.SoundAreaMessage
     type: FIXED
     opcode: 12

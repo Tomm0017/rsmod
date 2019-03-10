@@ -56,7 +56,7 @@ class QueueTaskSystem(private val headPriority: Boolean) {
             task.continuation.resume(Unit)
         }
 
-        queue.addLast(task)
+        queue.addFirst(task)
     }
 
     fun cycle() {

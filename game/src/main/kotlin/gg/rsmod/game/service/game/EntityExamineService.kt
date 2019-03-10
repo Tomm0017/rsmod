@@ -3,7 +3,6 @@ package gg.rsmod.game.service.game
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import gg.rsmod.game.Server
-import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.World
@@ -23,7 +22,6 @@ class EntityExamineService : Service() {
 
     private lateinit var world: World
 
-    private val items = hashMapOf<Int, String>()
 
     private val npcs = hashMapOf<Int, String>()
 
@@ -35,8 +33,6 @@ class EntityExamineService : Service() {
             throw FileNotFoundException("Path not found: ${path.toAbsolutePath()}")
         }
         this.world = world
-
-        loadItems("items.json")
         loadNpcs("npcs.json")
         loadObjects("objects.json")
     }
@@ -47,15 +43,9 @@ class EntityExamineService : Service() {
     override fun terminate(server: Server, world: World) {
     }
 
-    fun getItem(id: Int): String = items[id] ?: "It's a ${world.definitions.get(ItemDef::class.java, id).name}"
-
     fun getNpc(id: Int): String = npcs[id] ?: "It's a ${world.definitions.get(NpcDef::class.java, id).name}"
 
     fun getObj(id: Int): String = objects[id] ?: "It's a ${world.definitions.get(ObjectDef::class.java, id).name}"
-
-    fun loadItems(fileName: String) {
-        load(fileName, items)
-    }
 
     fun loadNpcs(fileName: String) {
         load(fileName, npcs)

@@ -50,7 +50,7 @@ class ItemMetadataService : Service() {
 
         for (i in 0 until itemCount) {
             val def = definitions.get(ItemDef::class.java, i)
-            val data = if (items.containsKey(def.id)) (items[def.id])!! else continue
+            val data = items[def.id] ?: continue
             def.name = data.name
             def.examine = data.examine
             def.tradeable = data.tradeable
@@ -85,7 +85,8 @@ class ItemMetadataService : Service() {
     }
 
     private fun getSkillId(name: String): Byte = when (name) {
-        // Need to get a better
+        // Need to get a better dump db. As we can see, this one has some
+        // inconsistency for some reason.
         "attack" -> 0
         "defence" -> 1
         "strength" -> 2
@@ -188,7 +189,66 @@ class ItemMetadataService : Service() {
                                  @JsonProperty("magic_damage") val magicDamage: Int = 0,
                                  @JsonProperty("prayer") val prayer: Int = 0,
                                  @JsonProperty("render_animations") val renderAnimations: IntArray? = null,
-                                 @JsonProperty("skill_reqs") val skillReqs: Array<SkillRequirement>? = null)
+                                 @JsonProperty("skill_reqs") val skillReqs: Array<SkillRequirement>? = null) {
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as Equipment
+
+            if (equipSlot != other.equipSlot) return false
+            if (weaponType != other.weaponType) return false
+            if (attackSpeed != other.attackSpeed) return false
+            if (attackStab != other.attackStab) return false
+            if (attackSlash != other.attackSlash) return false
+            if (attackCrush != other.attackCrush) return false
+            if (attackMagic != other.attackMagic) return false
+            if (attackRanged != other.attackRanged) return false
+            if (defenceStab != other.defenceStab) return false
+            if (defenceSlash != other.defenceSlash) return false
+            if (defenceCrush != other.defenceCrush) return false
+            if (defenceMagic != other.defenceMagic) return false
+            if (defenceRanged != other.defenceRanged) return false
+            if (meleeStrength != other.meleeStrength) return false
+            if (rangedStrength != other.rangedStrength) return false
+            if (magicDamage != other.magicDamage) return false
+            if (prayer != other.prayer) return false
+            if (renderAnimations != null) {
+                if (other.renderAnimations == null) return false
+                if (!renderAnimations.contentEquals(other.renderAnimations)) return false
+            } else if (other.renderAnimations != null) return false
+            if (skillReqs != null) {
+                if (other.skillReqs == null) return false
+                if (!skillReqs.contentEquals(other.skillReqs)) return false
+            } else if (other.skillReqs != null) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = equipSlot?.hashCode() ?: 0
+            result = 31 * result + weaponType
+            result = 31 * result + attackSpeed
+            result = 31 * result + attackStab
+            result = 31 * result + attackSlash
+            result = 31 * result + attackCrush
+            result = 31 * result + attackMagic
+            result = 31 * result + attackRanged
+            result = 31 * result + defenceStab
+            result = 31 * result + defenceSlash
+            result = 31 * result + defenceCrush
+            result = 31 * result + defenceMagic
+            result = 31 * result + defenceRanged
+            result = 31 * result + meleeStrength
+            result = 31 * result + rangedStrength
+            result = 31 * result + magicDamage
+            result = 31 * result + prayer
+            result = 31 * result + (renderAnimations?.contentHashCode() ?: 0)
+            result = 31 * result + (skillReqs?.contentHashCode() ?: 0)
+            return result
+        }
+    }
 
     private data class SkillRequirement(@JsonProperty("skill") val skill: String?,
                                         @JsonProperty("level") val level: Int?)

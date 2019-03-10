@@ -833,8 +833,18 @@ in-packets:
         type: SHORT
         sign: UNSIGNED
       - name: item
-        type: SHORT
         sign: UNSIGNED
+        type: SHORT
+
+  - message: gg.rsmod.game.message.impl.OpHeld6Message
+    type: FIXED
+    opcode: 24
+    length: 2
+    structure:
+      - name: item
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
 
   - message: gg.rsmod.game.message.impl.OpHeldTMessage
     type: FIXED
@@ -984,11 +994,6 @@ in-packets:
     type: IGNORE
     opcode: 23
     length: 11
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPOBJ6
-    type: IGNORE
-    opcode: 24
-    length: 2
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: MESSAGE_PRIVATE
     type: IGNORE

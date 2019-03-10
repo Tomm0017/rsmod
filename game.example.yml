@@ -42,11 +42,8 @@ services:
   - class: gg.rsmod.game.service.game.NpcStatsService
     path: "../data/cfg/npc-stats.json"
 
-  - class: gg.rsmod.game.service.game.ItemStatsService
-    path: "../data/cfg/item-stats.json"
-
-  - class: gg.rsmod.game.service.game.WeaponConfigService
-    path: "../data/cfg/weapons.json"
+  - class: gg.rsmod.game.service.game.ItemMetadataService
+    path: "../data/cfg/items.yml"
 
   - class: gg.rsmod.game.service.game.EntityExamineService
     path: "../data/cfg/examines"

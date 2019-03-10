@@ -343,6 +343,8 @@ fun Player.hasSkullIcon(icon: SkullIcon): Boolean = skullIcon == icon.id
 
 fun Player.isClientResizable(): Boolean = interfaces.displayMode == DisplayMode.RESIZABLE_NORMAL || interfaces.displayMode == DisplayMode.RESIZABLE_LIST
 
+fun Player.inWilderness(): Boolean = getInterfaceAt(InterfaceDestination.PVP_OVERLAY) != -1
+
 fun Player.sendWorldMapTile() {
     runClientScript(1749, tile.to30BitInteger())
 }

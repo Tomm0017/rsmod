@@ -5,6 +5,7 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import mu.KotlinLogging
 
 /**
@@ -16,7 +17,7 @@ class ItemMarketValueService : Service() {
         private val logger = KotlinLogging.logger {  }
     }
 
-    private val values = hashMapOf<Int, Int>()
+    private val values = Int2IntOpenHashMap()
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         val items = world.definitions.getCount(ItemDef::class.java)
@@ -39,5 +40,11 @@ class ItemMarketValueService : Service() {
     override fun terminate(server: Server, world: World) {
     }
 
-    fun get(item: Int): Int = values[item] ?: 0
+    fun get(item: Int): Int {
+        val value = values[item]
+        if (value != values.defaultReturnValue()) {
+            return value
+        }
+        return 0
+    }
 }

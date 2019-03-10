@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.content.items.lootingbag
 
+import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.game.model.attr.GROUNDITEM_PICKUP_TRANSACTION
 import gg.rsmod.game.model.container.ContainerStackType
@@ -7,9 +8,11 @@ import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.queue.TaskPriority
+import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
 
 val CONTAINER_KEY = ContainerKey("looting_bag", capacity = 28, stackType = ContainerStackType.NORMAL)
-val CONTAINER_ID = 516
+val LOOTING_BAG_CONTAINER_ID = 516
+val INV_CONTAINER_KEY = 93
 val TAB_INTERFACE_ID = 81
 
 register_container_key(CONTAINER_KEY) // Mark key as needing to be de-serialized on log-in.
@@ -22,12 +25,12 @@ on_login {
      */
     if (player.inventory.containsAny(Items.LOOTING_BAG, Items.LOOTING_BAG_22586)) {
         val container = player.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(player.world.definitions, CONTAINER_KEY) }
-        player.sendItemContainer(CONTAINER_ID, container)
+        player.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
     }
 }
 
 on_global_item_pickup {
-    if (player.inventory.contains(Items.LOOTING_BAG_22586) && in_wilderness(player)) {
+    if (player.inventory.contains(Items.LOOTING_BAG_22586) && player.inWilderness()) {
         val inventoryTransaction = player.attr[GROUNDITEM_PICKUP_TRANSACTION]?.get() ?: return@on_global_item_pickup
         val transactionItem = inventoryTransaction.items.first()
         store(player, transactionItem.item, transactionItem.item.amount, transactionItem.slot)
@@ -51,6 +54,10 @@ arrayOf(Items.LOOTING_BAG, Items.LOOTING_BAG_22586).forEach { bag ->
 
     on_item_option(bag, "deposit") {
         deposit(player)
+    }
+
+    on_item_option(bag, "settings") {
+        settings(player)
     }
 }
 
@@ -91,12 +98,18 @@ on_button(interfaceId = 15, component = 10) {
     }
 }
 
+on_button(interfaceId = 15, component = 5) {
+    val container = player.containers[CONTAINER_KEY] ?: return@on_button
+    when {
+        container.isEmpty() -> player.message("You have nothing to deposit.")
+        bank_all(player, container) -> player.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
+        else -> player.message("Bank full.")
+    }
+}
+
 on_button(TAB_INTERFACE_ID, component = 2) {
     player.closeInterface(TAB_INTERFACE_ID)
 }
-
-// TODO:
-fun in_wilderness(p: Player): Boolean = true
 
 fun store(p: Player, slot: Int, amount: Int) {
     val item = p.inventory[slot] ?: return
@@ -111,7 +124,7 @@ fun store(p: Player, slot: Int, amount: Int) {
         return
     }
 
-    if (!in_wilderness(p)) {
+    if (!p.inWilderness()) {
         p.message("You can't put items in the looting bag unless you're in the Wilderness.")
         return
     }
@@ -127,7 +140,7 @@ fun store(p: Player, item: Item, amount: Int, beginSlot: Int = -1): Boolean {
         p.message("The bag's too full.")
         return false
     }
-    p.sendItemContainer(CONTAINER_ID, container)
+    p.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
     return true
 }
 
@@ -140,7 +153,22 @@ fun bank(p: Player, slot: Int, amount: Int) {
         p.message("Bank full.")
         return
     }
-    p.sendItemContainer(CONTAINER_ID, container)
+    p.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
+}
+
+fun bank_all(p: Player, container: ItemContainer): Boolean {
+    var any = false
+
+    container.forEach { item ->
+        if (item != null) {
+            val transfer = container.transfer(p.bank, item = item, unnote = true)
+            if (transfer != 0) {
+                any = true
+            }
+        }
+    }
+
+    return any
 }
 
 fun open(p: Player, slot: Int) {
@@ -157,16 +185,31 @@ fun close(p: Player, slot: Int) {
     }
 }
 
+fun settings(p: Player) {
+    p.queue {
+        when (options("... ask how many to store.", "... always store as many as possible.", title = "When using items on the bag...")) {
+            // TODO: impl effect
+            1 -> {
+                p.message("When using items on the bag, you will be asked how many of that item you wish to store in the bag.")
+            }
+            2 -> {
+                p.message("When using items on the bag, you will immediately store as many of that item as possible in the bag.")
+            }
+        }
+    }
+}
+
 fun check(p: Player) {
     val container = p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(p.world.definitions, CONTAINER_KEY) }
 
-    p.runClientScript(149, 81 shl 16 or 5, 516, 4, 7, 0, -1, "", "", "", "", "Examine")
+    p.runClientScript(149, 81 shl 16 or 5, LOOTING_BAG_CONTAINER_ID, 4, 7, 0, -1, "", "", "", "", "Examine")
     p.openInterface(dest = InterfaceDestination.TAB_AREA, interfaceId = TAB_INTERFACE_ID)
     p.setInterfaceEvents(interfaceId = TAB_INTERFACE_ID, component = 5, range = 0..27, setting = 32)
 
     p.runClientScript(495, "Looting bag", 0)
-    p.sendItemContainer(CONTAINER_ID, container)
+    p.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
     p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Value: ${container.getNetworth(p.world).decimalFormat()} coins")
+    p.runClientScript(1235, LOOTING_BAG_CONTAINER_ID, *get_item_prices(p.world, container))
 
     set_queue(p)
 }
@@ -176,6 +219,7 @@ fun deposit(p: Player) {
     p.setInterfaceEvents(interfaceId = TAB_INTERFACE_ID, component = 5, range = 0..27, setting = 542)
     p.runClientScript(495, "Add to bag", 1)
     p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Bag value: ${p.inventory.getNetworth(p.world).decimalFormat()} coins")
+    p.runClientScript(1235, INV_CONTAINER_KEY, *get_item_prices(p.world, p.inventory))
 
     set_queue(p)
 }
@@ -189,4 +233,17 @@ fun set_queue(p: Player) {
         }
         waitInterfaceClose(TAB_INTERFACE_ID)
     }
+}
+
+fun get_item_prices(world: World, container: ItemContainer): Array<Int> {
+    val marketService = world.getService(ItemMarketValueService::class.java)
+    val prices = Array(container.capacity) { -1 }
+
+    container.forEachIndexed { index, item ->
+        if (item != null) {
+            prices[index] = marketService?.get(item.id) ?: world.definitions.get(ItemDef::class.java, item.id).cost
+        }
+    }
+
+    return prices
 }

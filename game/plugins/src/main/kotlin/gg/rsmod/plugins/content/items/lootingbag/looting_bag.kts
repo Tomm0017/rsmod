@@ -91,6 +91,10 @@ on_button(interfaceId = 15, component = 10) {
     }
 }
 
+on_button(TAB_INTERFACE_ID, component = 2) {
+    player.closeInterface(TAB_INTERFACE_ID)
+}
+
 // TODO:
 fun in_wilderness(p: Player): Boolean = true
 
@@ -185,6 +189,5 @@ fun set_queue(p: Player) {
             }
         }
         waitInterfaceClose(TAB_INTERFACE_ID)
-        onInterrupt?.invoke(this)
     }
 }

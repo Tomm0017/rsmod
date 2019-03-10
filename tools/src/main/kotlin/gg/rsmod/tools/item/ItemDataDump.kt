@@ -3,6 +3,7 @@ package gg.rsmod.tools.item
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
@@ -21,6 +22,8 @@ object ItemDataDump {
     private const val JSON_ENDPOINT = "https://www.osrsbox.com/osrsbox-db/items-complete.json"
 
     private val FILE_OUTPUT = Paths.get(".", "data", "cfg", "items.yml")
+
+    private val weapons = hashMapOf<Int, Weapon>()
 
     @JvmStatic fun main(vararg args: String) {
         val client = OkHttpClient()
@@ -45,6 +48,13 @@ object ItemDataDump {
     private fun parse(json: String): Map<Int, ItemMetadata> = GsonBuilder().create().fromJson<Map<Int, ItemMetadata>>(json, object : TypeToken<Map<Int, ItemMetadata>>() {}.type)
 
     private fun toGameFormat(output: Path, metadata: Array<ItemMetadata>) {
+        Files.newBufferedReader(Paths.get(".", "data", "cfg", "weapons.json")).use { reader ->
+            val weapons = Gson().fromJson<Array<Weapon>>(reader, object : TypeToken<Array<Weapon>>() {}.type)
+            weapons.forEach { weapon ->
+                this.weapons[weapon.item] = weapon
+            }
+        }
+
         Files.newBufferedWriter(output).use { writer ->
             val mapper = ObjectMapper(YAMLFactory())
             mapper.propertyNamingStrategy = PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
@@ -57,60 +67,14 @@ object ItemDataDump {
     private fun transformEquipmentMetadata(input: ItemMetadata): OutputMetadata.EquipmentMetadata {
         val equipment = input.equipment!!
 
-        var equipSlot = -1
-        var equipType = -1
-
-        if (equipment.slot != null) {
-            when (equipment.slot) {
-                "head" -> {
-                    equipSlot = 0
-                    equipType = 8
-                }
-                "cape" -> {
-                    equipSlot = 1
-                }
-                "neck" -> {
-                    equipSlot = 2
-                }
-                "2h" -> {
-                    equipSlot = 3
-                    equipType = 5
-                }
-                "weapon" -> {
-                    equipSlot = 3
-                }
-                "body" -> {
-                    equipSlot = 4
-                    equipType = 6
-                }
-                "shield" -> {
-                    equipSlot = 5
-                }
-                "legs" -> {
-                    equipSlot = 7
-                }
-                "hands" -> {
-                    equipSlot = 9
-                }
-                "feet" -> {
-                    equipSlot = 10
-                }
-                "ring" -> {
-                    equipSlot = 12
-                }
-                "ammo" -> {
-                    equipSlot = 13
-                }
-                else -> throw RuntimeException("Unhandled equipment slot: ${equipment.slot}")
-            }
-        }
-
-        return OutputMetadata.EquipmentMetadata(equipSlot, equipType, equipment.attackSpeed, equipment.attackStab,
+        return OutputMetadata.EquipmentMetadata(equipment.slot, weapons[input.id]?.type ?: -1, equipment.attackSpeed, equipment.attackStab,
                 equipment.attackSlash, equipment.attackCrush, equipment.attackMagic, equipment.attackRanged,
                 equipment.defenceStab, equipment.defenceSlash, equipment.defenceCrush, equipment.defenceMagic,
                 equipment.defenceRanged, equipment.meleeStrength, equipment.rangedStrength, equipment.magicDamage,
-                equipment.prayer, equipment.skillReqs)
+                equipment.prayer, equipment.skillReqs, weapons[input.id]?.animations)
     }
+
+    private data class Weapon(val item: Int, val type: Int, val animations: IntArray)
 
     private data class OutputMetadata(@SerializedName("id") val id: Int,
                                       @SerializedName("name") val name: String,
@@ -119,28 +83,29 @@ object ItemDataDump {
                                       @SerializedName("weight") val weight: Double,
                                       @SerializedName("equip") val equipment: EquipmentMetadata?) {
 
-        internal data class EquipmentMetadata(@SerializedName("equip_slot") val equipSlot: Int,
-                                              @SerializedName("equip_type") val equipType: Int,
-                                              @SerializedName("attack_speed") val attackSpeed: Int,
+        internal data class EquipmentMetadata(@SerializedName("equip_slot") val equipSlot: String? = null,
+                                              @SerializedName("weapon_type") val weaponType: Int = -1,
+                                              @SerializedName("attack_speed") val attackSpeed: Int = -1,
 
-                                              @SerializedName("attack_stab") val attackStab: Int,
-                                              @SerializedName("attack_slash") val attackSlash: Int,
-                                              @SerializedName("attack_crush") val attackCrush: Int,
-                                              @SerializedName("attack_magic") val attackMagic: Int,
-                                              @SerializedName("attack_ranged") val attackRanged: Int,
+                                              @SerializedName("attack_stab") val attackStab: Int = 0,
+                                              @SerializedName("attack_slash") val attackSlash: Int = 0,
+                                              @SerializedName("attack_crush") val attackCrush: Int = 0,
+                                              @SerializedName("attack_magic") val attackMagic: Int = 0,
+                                              @SerializedName("attack_ranged") val attackRanged: Int = 0,
 
-                                              @SerializedName("defence_stab") val defenceStab: Int,
-                                              @SerializedName("defence_slash") val defenceSlash: Int,
-                                              @SerializedName("defence_crush") val defenceCrush: Int,
-                                              @SerializedName("defence_magic") val defenceMagic: Int,
-                                              @SerializedName("defence_ranged") val defenceRanged: Int,
+                                              @SerializedName("defence_stab") val defenceStab: Int = 0,
+                                              @SerializedName("defence_slash") val defenceSlash: Int = 0,
+                                              @SerializedName("defence_crush") val defenceCrush: Int = 0,
+                                              @SerializedName("defence_magic") val defenceMagic: Int = 0,
+                                              @SerializedName("defence_ranged") val defenceRanged: Int = 0,
 
-                                              @SerializedName("melee_strength") val meleeStrength: Int,
-                                              @SerializedName("ranged_strength") val rangedStrength: Int,
-                                              @SerializedName("magic_damage") val magicDamage: Int,
-                                              @SerializedName("prayer") val prayer: Int,
+                                              @SerializedName("melee_strength") val meleeStrength: Int = 0,
+                                              @SerializedName("ranged_strength") val rangedStrength: Int = 0,
+                                              @SerializedName("magic_damage") val magicDamage: Int = 0,
+                                              @SerializedName("prayer") val prayer: Int = 0,
 
-                                              @SerializedName("skill_reqs") val skillReqs: Array<SkillRequirement>?)
+                                              @SerializedName("skill_reqs") val skillReqs: Array<SkillRequirement>? = null,
+                                              @SerializedName("render_anims") val renderAnimations: IntArray?)
     }
 
     private data class ItemMetadata(@SerializedName("id") val id: Int,

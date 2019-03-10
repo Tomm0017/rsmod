@@ -4,7 +4,6 @@ import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.ChatMessage
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.block.UpdateBlockType
 import gg.rsmod.net.packet.DataType
@@ -170,26 +169,9 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
 
                     val weapon = other.equipment[3] // Assume slot 3 is the weapon.
                     if (weapon != null) {
-                        val renderService = other.world.getService(WeaponConfigService::class.java)
-                        var defaultWeaponRender = true
-
-                        if (renderService != null) {
-                            val stats = renderService.get(weapon.id)
-                            if (stats != null) {
-                                stats.animations.forEachIndexed { index, anim ->
-                                    animations[index] = anim
-                                }
-                                defaultWeaponRender = false
-                            }
-                        }
-
-                        /**
-                         * Default render animations while wielding a weapon.
-                         */
-                        if (defaultWeaponRender) {
-                            intArrayOf(809, 823, 819, 820, 821, 822, 824).forEachIndexed { index, anim ->
-                                animations[index] = anim
-                            }
+                        val def = weapon.getDef(other.world.definitions)
+                        def.renderAnimations?.forEachIndexed { index, anim ->
+                            animations[index] = anim
                         }
                     }
 

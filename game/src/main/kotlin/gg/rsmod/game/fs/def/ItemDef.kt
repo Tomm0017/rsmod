@@ -38,10 +38,6 @@ class ItemDef(override val id: Int) : Definition(id) {
 
     val params = Int2ObjectOpenHashMap<Any>()
 
-    val stackable: Boolean get() = stacks || noteTemplateId > 0
-
-    val noted: Boolean get() = noteTemplateId > 0
-
     /**
      * Custom metadata.
      */
@@ -51,8 +47,10 @@ class ItemDef(override val id: Int) : Definition(id) {
     var attackSpeed = -1
     var equipSlot = -1
     var equipType = 0
+    var weaponType = -1
+    var renderAnimations: IntArray? = null
     lateinit var bonuses: IntArray
-    val skillReqs = Byte2ByteOpenHashMap()
+    lateinit var skillReqs: Byte2ByteOpenHashMap
 
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {
@@ -127,4 +125,8 @@ class ItemDef(override val id: Int) : Definition(id) {
             249 -> params.putAll(readParams(buf))
         }
     }
+
+    val stackable: Boolean get() = stacks || noteTemplateId > 0
+
+    val noted: Boolean get() = noteTemplateId > 0
 }

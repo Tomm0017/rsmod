@@ -9,6 +9,7 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
+import it.unimi.dsi.fastutil.bytes.Byte2ByteOpenHashMap
 import mu.KotlinLogging
 import java.io.BufferedReader
 import java.io.FileNotFoundException
@@ -44,7 +45,6 @@ class ItemMetadataService : Service() {
     private fun load(definitions: DefinitionSet, reader: BufferedReader) {
         val mapper = ObjectMapper(YAMLFactory())
         val items = mapper.readValue(reader, Array<Metadata>::class.java).map { it.id to it }.toMap()
-        println(items[4151])
 
         val itemCount = definitions.getCount(ItemDef::class.java)
 
@@ -58,10 +58,21 @@ class ItemMetadataService : Service() {
 
             if (data.equipment != null) {
                 val equipment = data.equipment
+                val slots = if (equipment.equipSlot != null) getEquipmentSlots(equipment.equipSlot) else null
 
                 def.attackSpeed = equipment.attackSpeed
-                def.equipSlot = equipment.equipSlot
-                def.equipType = equipment.equipType
+                def.weaponType = equipment.weaponType
+                def.renderAnimations = equipment.renderAnimations
+                if (slots != null) {
+                    def.equipSlot = slots.slot
+                    def.equipType = slots.secondary
+                }
+                if (equipment.skillReqs != null) {
+                    def.skillReqs = Byte2ByteOpenHashMap()
+                    equipment.skillReqs.filter { it.skill != null }.forEach { req ->
+                        def.skillReqs[getSkillId(req.skill!!)] = req.level!!.toByte()
+                    }
+                }
 
                 def.bonuses = intArrayOf(
                         equipment.attackStab, equipment.attackSlash, equipment.attackCrush, equipment.attackMagic, equipment.attackRanged,
@@ -73,16 +84,94 @@ class ItemMetadataService : Service() {
         logger.info { "Loaded ${items.size} item metadata set${if (items.size != 1) "s" else ""}." }
     }
 
+    private fun getSkillId(name: String): Byte = when (name) {
+        // Need to get a better
+        "attack" -> 0
+        "defence" -> 1
+        "strength" -> 2
+        "hitpoints" -> 3
+        "range", "ranged" -> 4
+        "prayer" -> 5
+        "magic" -> 6
+        "cooking" -> 7
+        "woodcutting" -> 8
+        "fletching" -> 9
+        "fishing" -> 10
+        "firemaking" -> 11
+        "crafting" -> 12
+        "smithing" -> 13
+        "mining" -> 14
+        "herblore" -> 15
+        "agility" -> 16
+        "thieving", "theiving" -> 17
+        "slayer" -> 18
+        "farming" -> 19
+        "runecrafting" -> 20
+        "hunter" -> 21
+        "construction", "contruction" -> 22
+        "combat" -> 3
+        else -> throw IllegalArgumentException("Illegal skill name: $name")
+    }
+
+    private fun getEquipmentSlots(slot: String): EquipmentSlots {
+        val equipSlot: Int
+        var equipType = -1
+        when (slot) {
+            "head" -> {
+                equipSlot = 0
+                equipType = 8
+            }
+            "cape" -> {
+                equipSlot = 1
+            }
+            "neck" -> {
+                equipSlot = 2
+            }
+            "2h" -> {
+                equipSlot = 3
+                equipType = 5
+            }
+            "weapon" -> {
+                equipSlot = 3
+            }
+            "body" -> {
+                equipSlot = 4
+                equipType = 6
+            }
+            "shield" -> {
+                equipSlot = 5
+            }
+            "legs" -> {
+                equipSlot = 7
+            }
+            "hands" -> {
+                equipSlot = 9
+            }
+            "feet" -> {
+                equipSlot = 10
+            }
+            "ring" -> {
+                equipSlot = 12
+            }
+            "ammo" -> {
+                equipSlot = 13
+            }
+            else -> throw IllegalArgumentException("Illegal equipment slot: $slot")
+        }
+        return EquipmentSlots(equipSlot, equipType)
+    }
+
+    private data class EquipmentSlots(val slot: Int, val secondary: Int)
 
     private data class Metadata(val id: Int = -1,
-                           val name: String = "",
-                           val examine: String? = null,
-                           val tradeable: Boolean = false,
-                           val weight: Double = 0.0,
-                           val equipment: Equipment? = null)
+                                val name: String = "",
+                                val examine: String? = null,
+                                val tradeable: Boolean = false,
+                                val weight: Double = 0.0,
+                                val equipment: Equipment? = null)
 
-    private data class Equipment(@JsonProperty("equip_slot") val equipSlot: Int = -1,
-                                 @JsonProperty("equip_type") val equipType: Int = -1,
+    private data class Equipment(@JsonProperty("equip_slot") val equipSlot: String? = null,
+                                 @JsonProperty("weapon_type") val weaponType: Int = -1,
                                  @JsonProperty("attack_speed") val attackSpeed: Int = -1,
                                  @JsonProperty("attack_stab") val attackStab: Int = 0,
                                  @JsonProperty("attack_slash") val attackSlash: Int = 0,
@@ -98,6 +187,7 @@ class ItemMetadataService : Service() {
                                  @JsonProperty("ranged_strength") val rangedStrength: Int = 0,
                                  @JsonProperty("magic_damage") val magicDamage: Int = 0,
                                  @JsonProperty("prayer") val prayer: Int = 0,
+                                 @JsonProperty("render_animations") val renderAnimations: IntArray? = null,
                                  @JsonProperty("skill_reqs") val skillReqs: Array<SkillRequirement>? = null)
 
     private data class SkillRequirement(@JsonProperty("skill") val skill: String?,

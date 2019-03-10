@@ -509,12 +509,17 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         val service = getService(EntityExamineService::class.java)
         if (service != null) {
             val examine = when (type) {
-                ExamineEntityType.ITEM -> service.getItem(id)
+                ExamineEntityType.ITEM -> definitions.get(ItemDef::class.java, id).examine
                 ExamineEntityType.NPC -> service.getNpc(id)
                 ExamineEntityType.OBJECT -> service.getObj(id)
             }
-            val extension = if (devContext.debugExamines) " ($id)" else ""
-            p.message(examine + extension)
+
+            if (examine != null) {
+                val extension = if (devContext.debugExamines) " ($id)" else ""
+                p.message(examine + extension)
+            } else {
+                logger.warn { "No examine info found for entity [$type, $id]" }
+            }
         } else {
             logger.warn("No examine service found! Could not send examine message to player: ${p.username}.")
         }

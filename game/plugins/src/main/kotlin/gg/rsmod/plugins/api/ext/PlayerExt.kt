@@ -15,7 +15,6 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.timer.SKULL_ICON_DURATION_TIMER
-import gg.rsmod.game.service.game.WeaponConfigService
 import gg.rsmod.game.sync.block.UpdateBlockType
 import gg.rsmod.plugins.api.*
 import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
@@ -362,8 +361,7 @@ fun Player.sendWeaponComponentInformation() {
         val definition = world.definitions.get(ItemDef::class.java, weapon.id)
         name = definition.name
 
-        val weaponConfig = world.getService(WeaponConfigService::class.java)
-        panel = weaponConfig?.get(weapon.id)?.type ?: 0
+        panel = Math.max(0, definition.weaponType)
     } else {
         name = "Unarmed"
         panel = 0

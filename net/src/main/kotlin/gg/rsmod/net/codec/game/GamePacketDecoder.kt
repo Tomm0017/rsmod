@@ -49,12 +49,12 @@ class GamePacketDecoder(private val random: IsaacRandom?, private val packetMeta
             when (type) {
                 PacketType.IGNORE -> {
                     var length = packetMetadata.getLength(opcode)
-                    if (length == -1) {
-                        length = buf.readUnsignedByte().toInt()
-                    } else if (length == -2) {
-                        length = buf.readUnsignedShort()
-                    }
                     try {
+                        if (length == -1) {
+                            length = buf.readUnsignedByte().toInt()
+                        } else if (length == -2) {
+                            length = buf.readUnsignedShort()
+                        }
                         buf.skipBytes(Math.min(buf.readableBytes(), length))
                     } catch (e: Exception) {
                         logger.error(e) { "Could not skip buffer for message with opcode: $opcode" }

@@ -16,6 +16,8 @@ val LOOTING_BAG_CONTAINER_ID = 516
 val INV_CONTAINER_KEY = 93
 val TAB_INTERFACE_ID = 81
 
+val VALUE_TEXT_COMPONENT = 6
+
 register_container_key(CONTAINER_KEY) // Mark key as needing to be de-serialized on log-in.
 
 on_login {
@@ -155,6 +157,7 @@ fun store(p: Player, item: Item, amount: Int, beginSlot: Int = -1): Boolean {
         return false
     }
     p.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
+    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = VALUE_TEXT_COMPONENT, text = "Bag value: ${p.inventory.getNetworth(p.world).decimalFormat()} coins")
     return true
 }
 
@@ -222,7 +225,7 @@ fun check(p: Player) {
 
     p.runClientScript(495, "Looting bag", 0)
     p.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
-    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Value: ${container.getNetworth(p.world).decimalFormat()} coins")
+    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = VALUE_TEXT_COMPONENT, text = "Value: ${container.getNetworth(p.world).decimalFormat()} coins")
     p.runClientScript(1235, LOOTING_BAG_CONTAINER_ID, *get_item_prices(p.world, container))
 
     set_queue(p)
@@ -232,7 +235,7 @@ fun deposit(p: Player) {
     p.openInterface(dest = InterfaceDestination.TAB_AREA, interfaceId = TAB_INTERFACE_ID)
     p.setInterfaceEvents(interfaceId = TAB_INTERFACE_ID, component = 5, range = 0..27, setting = 542)
     p.runClientScript(495, "Add to bag", 1)
-    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = 6, text = "Bag value: ${p.inventory.getNetworth(p.world).decimalFormat()} coins")
+    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = VALUE_TEXT_COMPONENT, text = "Bag value: ${p.inventory.getNetworth(p.world).decimalFormat()} coins")
     p.runClientScript(1235, INV_CONTAINER_KEY, *get_item_prices(p.world, p.inventory))
 
     set_queue(p)

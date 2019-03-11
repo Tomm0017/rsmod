@@ -38,6 +38,12 @@ class DefinitionSet {
 
     fun loadAll(store: Store) {
         /**
+         * Load [AnimDef]s.
+         */
+        load(store, AnimDef::class.java)
+        logger.info("Loaded ${getCount(AnimDef::class.java)} animation definitions.")
+
+        /**
          * Load [VarpDef]s.
          */
         load(store, VarpDef::class.java)
@@ -82,6 +88,7 @@ class DefinitionSet {
             NpcDef::class.java -> ConfigType.NPC
             ObjectDef::class.java -> ConfigType.OBJECT
             ItemDef::class.java -> ConfigType.ITEM
+            AnimDef::class.java -> ConfigType.SEQUENCE
             else -> throw IllegalArgumentException("Unhandled class type ${type::class.java}.")
         }
         val configs = store.getIndex(IndexType.CONFIGS)!!
@@ -105,6 +112,7 @@ class DefinitionSet {
             NpcDef::class.java -> NpcDef(id)
             ObjectDef::class.java -> ObjectDef(id)
             ItemDef::class.java -> ItemDef(id)
+            AnimDef::class.java -> AnimDef(id)
             else -> throw IllegalArgumentException("Unhandled class type ${type::class.java}.")
         }
 

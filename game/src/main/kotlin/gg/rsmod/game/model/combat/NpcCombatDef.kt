@@ -8,7 +8,7 @@ package gg.rsmod.game.model.combat
 class NpcCombatDef private constructor(
         val hitpoints: Int, val attackLvl: Int, val strengthLvl: Int, val defenceLvl: Int,
         val magicLvl: Int, val rangedLvl: Int, val attackSpeed: Int, val attackAnimation: Int,
-        val blockAnimation: Int, val deathAnimation: Int, val deathDelay: Int, val respawnDelay: Int,
+        val blockAnimation: Int, val deathAnimation: List<Int>, val respawnDelay: Int,
         val aggressiveRadius: Int, val aggroTargetDelay: Int, val poisonChance: Double,
         val poisonImmunity: Boolean, val venomImmunity: Boolean, val slayerReq: Int, val slayerXp: Double,
         val bonuses: IntArray = IntArray(14) { 0 }) {
@@ -31,64 +31,9 @@ class NpcCombatDef private constructor(
 
     fun isUndead(): Boolean = false
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as NpcCombatDef
-
-        if (hitpoints != other.hitpoints) return false
-        if (attackLvl != other.attackLvl) return false
-        if (strengthLvl != other.strengthLvl) return false
-        if (defenceLvl != other.defenceLvl) return false
-        if (magicLvl != other.magicLvl) return false
-        if (rangedLvl != other.rangedLvl) return false
-        if (attackSpeed != other.attackSpeed) return false
-        if (attackAnimation != other.attackAnimation) return false
-        if (blockAnimation != other.blockAnimation) return false
-        if (deathAnimation != other.deathAnimation) return false
-        if (deathDelay != other.deathDelay) return false
-        if (respawnDelay != other.respawnDelay) return false
-        if (aggressiveRadius != other.aggressiveRadius) return false
-        if (aggroTargetDelay != other.aggroTargetDelay) return false
-        if (poisonChance != other.poisonChance) return false
-        if (poisonImmunity != other.poisonImmunity) return false
-        if (venomImmunity != other.venomImmunity) return false
-        if (slayerReq != other.slayerReq) return false
-        if (slayerXp != other.slayerXp) return false
-        if (!bonuses.contentEquals(other.bonuses)) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = hitpoints
-        result = 31 * result + attackLvl
-        result = 31 * result + strengthLvl
-        result = 31 * result + defenceLvl
-        result = 31 * result + magicLvl
-        result = 31 * result + rangedLvl
-        result = 31 * result + attackSpeed
-        result = 31 * result + attackAnimation
-        result = 31 * result + blockAnimation
-        result = 31 * result + deathAnimation
-        result = 31 * result + deathDelay
-        result = 31 * result + respawnDelay
-        result = 31 * result + aggressiveRadius
-        result = 31 * result + aggroTargetDelay
-        result = 31 * result + poisonChance.hashCode()
-        result = 31 * result + poisonImmunity.hashCode()
-        result = 31 * result + venomImmunity.hashCode()
-        result = 31 * result + slayerReq
-        result = 31 * result + slayerXp.hashCode()
-        result = 31 * result + bonuses.contentHashCode()
-        return result
-    }
-
     companion object {
         private const val DEFAULT_HITPOINTS = 10
         private const val DEFAULT_ATTACK_SPEED = 4
-        private const val DEFAULT_DEATH_DELAY = 3
         private const val DEFAULT_RESPAWN_DELAY = 25
 
         private const val ATTACK_STAB_BONUS = 0
@@ -109,8 +54,8 @@ class NpcCombatDef private constructor(
         private const val MAGIC_BONUS = 13
 
         val DEFAULT = NpcCombatDef(hitpoints = DEFAULT_HITPOINTS, attackLvl = 1, strengthLvl = 1, defenceLvl = 1, magicLvl = 1, rangedLvl = 1,
-                attackSpeed = DEFAULT_ATTACK_SPEED, aggressiveRadius = 0, aggroTargetDelay = 0, attackAnimation = 422, blockAnimation = 424, deathAnimation = 836,
-                deathDelay = DEFAULT_DEATH_DELAY, respawnDelay = DEFAULT_RESPAWN_DELAY, poisonChance = 0.0, poisonImmunity = false, venomImmunity = false, slayerReq = 1, slayerXp = 0.0,
+                attackSpeed = DEFAULT_ATTACK_SPEED, aggressiveRadius = 0, aggroTargetDelay = 0, attackAnimation = 422, blockAnimation = 424, deathAnimation = listOf(836),
+                respawnDelay = DEFAULT_RESPAWN_DELAY, poisonChance = 0.0, poisonImmunity = false, venomImmunity = false, slayerReq = 1, slayerXp = 0.0,
                 bonuses = IntArray(14) { 0 })
     }
 
@@ -134,9 +79,7 @@ class NpcCombatDef private constructor(
 
         private var blockAnimation = -1
 
-        private var deathAnimation = -1
-
-        private var deathDelay = -1
+        private var deathAnimation = arrayListOf<Int>()
 
         private var respawnDelay = -1
 
@@ -189,10 +132,6 @@ class NpcCombatDef private constructor(
                 attackSpeed = DEFAULT_ATTACK_SPEED
             }
 
-            if (deathDelay == -1) {
-                deathDelay = DEFAULT_DEATH_DELAY
-            }
-
             if (respawnDelay == -1) {
                 respawnDelay = DEFAULT_RESPAWN_DELAY
             }
@@ -219,7 +158,7 @@ class NpcCombatDef private constructor(
 
             return NpcCombatDef(hitpoints = hitpoints, attackLvl = attackLvl, strengthLvl = strengthLvl, defenceLvl = defenceLvl, magicLvl = magicLvl, rangedLvl = rangedLvl,
                     attackSpeed = attackSpeed, aggressiveRadius = aggressiveRadius, aggroTargetDelay = aggroTargetDelay, attackAnimation = attackAnimation, blockAnimation = blockAnimation,
-                    deathAnimation = deathAnimation, deathDelay = deathDelay, respawnDelay = respawnDelay, poisonChance = poisonChance, poisonImmunity = poisonImmunity, venomImmunity = venomImmunity,
+                    deathAnimation = deathAnimation, respawnDelay = respawnDelay, poisonChance = poisonChance, poisonImmunity = poisonImmunity, venomImmunity = venomImmunity,
                     slayerReq = slayerReq, slayerXp = slayerXp, bonuses = bonuses.copyOf())
         }
 
@@ -269,12 +208,12 @@ class NpcCombatDef private constructor(
         }
 
         fun setDeathAnimation(deathAnimation: Int): Builder {
-            this.deathAnimation = deathAnimation
+            this.deathAnimation = arrayListOf(deathAnimation)
             return this
         }
 
-        fun setDeathDelay(deathDelay: Int): Builder {
-            this.deathDelay = deathDelay
+        fun addDeathAnimation(deathAnimation: Int): Builder {
+            this.deathAnimation.add(deathAnimation)
             return this
         }
 

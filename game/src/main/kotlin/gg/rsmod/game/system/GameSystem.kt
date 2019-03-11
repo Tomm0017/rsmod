@@ -18,8 +18,7 @@ import java.util.concurrent.BlockingQueue
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class GameSystem(override val channel: Channel, val client: Client,
-                 val service: GameService) : ServerSystem(channel) {
+class GameSystem(channel: Channel, val client: Client, val service: GameService) : ServerSystem(channel) {
 
     companion object {
         private val logger = KotlinLogging.logger {  }

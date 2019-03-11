@@ -17,7 +17,7 @@ import net.runelite.cache.fs.jagex.DiskStorage
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class FilestoreSystem(override val channel: Channel, private val filestore: Store) : ServerSystem(channel) {
+class FilestoreSystem(channel: Channel, private val filestore: Store) : ServerSystem(channel) {
 
     /**
      * TODO(Tom): the logic for encoding the data should be handled

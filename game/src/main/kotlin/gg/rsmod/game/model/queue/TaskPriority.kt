@@ -13,14 +13,18 @@ enum class TaskPriority {
     WEAK,
 
     /**
-     * A standard queue task will wait if you have other tasks and execute
-     * once they complete and will be cancelled when a player clicks away.
+     * A standard queue task will execute immediately. If you have other tasks
+     * pending, they will wait until this priority completes first and then continue.
+     *
+     * This priority type is cancelled when a player clicks away.
      */
     STANDARD,
 
     /**
      * A strong queue task will terminate all previous tasks and execute
-     * immediately and will be cancelled when a player clicks away.
+     * immediately.
+     *
+     * This priority type is cancelled when a player clicks away.
      */
     STRONG
 }

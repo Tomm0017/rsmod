@@ -35,8 +35,6 @@ class GamePacketDecoder(private val random: IsaacRandom?, private val packetMeta
 
     private fun decodeOpcode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
         if (buf.isReadable) {
-            buf.markReaderIndex()
-
             opcode = buf.readUnsignedByte().toInt() - (random?.nextInt() ?: 0) and 0xFF
             val metadata = packetMetadata.getType(opcode)
             if (metadata == null) {
@@ -48,16 +46,14 @@ class GamePacketDecoder(private val random: IsaacRandom?, private val packetMeta
 
             when (type) {
                 PacketType.IGNORE -> {
-                    var length = packetMetadata.getLength(opcode)
-                    try {
+                    if (buf.isReadable) {
+                        var length = packetMetadata.getLength(opcode)
                         if (length == -1) {
                             length = buf.readUnsignedByte().toInt()
                         } else if (length == -2) {
                             length = buf.readUnsignedShort()
                         }
-                        buf.skipBytes(Math.min(buf.readableBytes(), length))
-                    } catch (e: Exception) {
-                        logger.error(e) { "Could not skip buffer for message with opcode: $opcode" }
+                        buf.skipBytes(length)
                     }
                 }
                 PacketType.FIXED -> {

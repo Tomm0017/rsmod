@@ -11,7 +11,7 @@ import io.netty.channel.ChannelHandlerContext
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class LoginSystem(override val channel: Channel, private val world: World) : ServerSystem(channel) {
+class LoginSystem(channel: Channel, private val world: World) : ServerSystem(channel) {
 
     companion object {
         private var loginService: LoginService? = null

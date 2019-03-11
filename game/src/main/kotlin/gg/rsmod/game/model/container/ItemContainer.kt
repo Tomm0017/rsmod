@@ -85,6 +85,8 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
 
     fun isEmpty(): Boolean = items.none { it != null }
 
+    fun hasAny(): Boolean = items.any { it != null }
+
     fun hasSpace(): Boolean = getNextFreeSlot() != -1
 
     /**

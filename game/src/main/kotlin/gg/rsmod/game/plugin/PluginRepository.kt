@@ -213,6 +213,12 @@ class PluginRepository(val world: World) {
     private val groundItemPlugins = hashMapOf<Int, HashMap<Int, (Plugin).() -> Unit>>()
 
     /**
+     * A map of plugins that check if an item with the associated key, can be
+     * dropped on the floor.
+     */
+    private val canDropItemPlugins = Int2ObjectOpenHashMap<(Plugin).() -> Boolean>()
+
+    /**
      * A map that contains objects and any associated menu-click and its respective
      * plugin logic, if any (would not be in the map if it doesn't have a plugin).
      */
@@ -818,6 +824,22 @@ class PluginRepository(val world: World) {
         val optMap = groundItemPlugins[id] ?: return false
         val logic = optMap[opt] ?: return false
         p.executePlugin(logic)
+        return true
+    }
+
+    fun bindCanItemDrop(item: Int, plugin: (Plugin).() -> Boolean) {
+        if (canDropItemPlugins.containsKey(item)) {
+            logger.error("Item already bound to a 'can-drop' plugin: $item")
+            throw IllegalStateException("Item already bound to a 'can-drop' plugin: $item")
+        }
+        canDropItemPlugins[item] = plugin
+    }
+
+    fun canDropItem(p: Player, item: Int): Boolean {
+        val plugin = canDropItemPlugins[item]
+        if (plugin != null) {
+            return p.executePlugin(plugin)
+        }
         return true
     }
 

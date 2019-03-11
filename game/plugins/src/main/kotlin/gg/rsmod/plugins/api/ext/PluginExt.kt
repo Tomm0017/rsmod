@@ -256,6 +256,18 @@ suspend fun Plugin.doubleItemMessageBox(message: String, item1: Int, item2: Int,
     onInterrupt!!(this)
 }
 
+suspend fun Plugin.destroyItem(title: String = "Are you sure you want to destroy this item?", note: String, item: Int, amount: Int): Boolean {
+    player.setTempVarbit(5983, 0)
+    player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 584)
+    player.runClientScript(814, item, amount, 0, title, note)
+
+    onInterrupt = closeDialog
+    waitReturnValue()
+    onInterrupt!!(this)
+
+    return requestReturnValue as? Int == 1
+}
+
 suspend fun Plugin.levelUpMessageBox(skill: Int, levelIncrement: Int) {
     val player = player
 

@@ -333,4 +333,10 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
      * [on_ground_item_option] method should be used over this method whenever possible.
      */
     fun on_ground_item_option(item: Int, option: Int, logic: (Plugin).() -> Unit) = r.bindGroundItem(item, option, logic)
+
+    /**
+     * Returns true if the item can be dropped on the floor via the 'drop' menu
+     * option - return false otherwise.
+     */
+    fun can_drop_item(item: Int, plugin: (Plugin).() -> Boolean) = r.bindCanItemDrop(item, plugin)
 }

@@ -3,6 +3,7 @@ package gg.rsmod.plugins.content.items.lootingbag
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.game.model.attr.GROUNDITEM_PICKUP_TRANSACTION
+import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.container.key.ContainerKey
@@ -58,6 +59,19 @@ arrayOf(Items.LOOTING_BAG, Items.LOOTING_BAG_22586).forEach { bag ->
 
     on_item_option(bag, "settings") {
         settings(player)
+    }
+
+    can_drop_item(bag) {
+        val slot = player.attr[INTERACTING_ITEM_SLOT] ?: return@can_drop_item false
+
+        player.queue {
+            val container = player.containers[CONTAINER_KEY] ?: return@queue
+            val destroy = destroyItem(note = if (container.hasAny()) "If you destroy it, the contents will be lost." else "The bag is empty. Are you sure you want to destroy it?", item = bag, amount = 1)
+            if (destroy) {
+                player.inventory.remove(item = bag, amount = 1, beginSlot = slot)
+            }
+        }
+        return@can_drop_item false
     }
 }
 

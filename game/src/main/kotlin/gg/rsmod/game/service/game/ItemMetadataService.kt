@@ -2,6 +2,7 @@ package gg.rsmod.game.service.game
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.DefinitionSet
@@ -44,6 +45,8 @@ class ItemMetadataService : Service() {
 
     private fun load(definitions: DefinitionSet, reader: BufferedReader) {
         val mapper = ObjectMapper(YAMLFactory())
+        mapper.propertyNamingStrategy = PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+
         val items = mapper.readValue(reader, Array<Metadata>::class.java).map { it.id to it }.toMap()
 
         val itemCount = definitions.getCount(ItemDef::class.java)

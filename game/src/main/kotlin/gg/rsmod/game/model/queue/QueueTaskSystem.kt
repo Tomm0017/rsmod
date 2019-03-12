@@ -43,15 +43,14 @@ class QueueTaskSystem(private val headPriority: Boolean) {
             while (true) {
                 val task = queue.peekFirst() ?: break
 
+                if (task.priority == TaskPriority.STANDARD && task.ctx is Player && hasMenuOpen(task.ctx)) {
+                    /**
+                     * @see TaskPriority.STANDARD
+                     */
+                    break
+                }
+
                 if (!task.invoked) {
-
-                    if (task.priority == TaskPriority.STANDARD && task.ctx is Player && hasMenuOpen(task.ctx)) {
-                        /**
-                         * @see TaskPriority.STANDARD
-                         */
-                        break
-                    }
-
                     task.invoked = true
                     task.coroutine.resume(Unit)
                 }

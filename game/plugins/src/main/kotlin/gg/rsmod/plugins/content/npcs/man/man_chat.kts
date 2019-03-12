@@ -14,7 +14,6 @@ MEN.forEach { man ->
 }
 
 suspend fun chat(it: QueueTask) {
-    println("chat")
     it.chatPlayer("Hello, how's it going?", animation = 567)
     when (it.player.world.random(17)) {
         0 -> it.chatNpc("Not too bad thanks.", animation = 567)

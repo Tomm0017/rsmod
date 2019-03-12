@@ -2,6 +2,7 @@ package gg.rsmod.game.action
 
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.QueueTask
+import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.plugin.Plugin
 
 /**
@@ -11,7 +12,7 @@ object PlayerDeathAction {
 
     val deathPlugin: Plugin.() -> Unit = {
         val player = ctx as Player
-        player.queue {
+        player.queue(TaskPriority.STRONG) {
             death(player)
         }
     }

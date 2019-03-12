@@ -919,6 +919,33 @@ in-packets:
     type: FIXED
     opcode: 12
     length: 13
+    structure:
+      - name: gender
+        type: BYTE
+      - name: appearance0
+        type: BYTE
+      - name: appearance1
+        type: BYTE
+      - name: appearance2
+        type: BYTE
+      - name: appearance3
+        type: BYTE
+      - name: appearance4
+        type: BYTE
+      - name: appearance5
+        type: BYTE
+      - name: appearance6
+        type: BYTE
+      - name: color0
+        type: BYTE
+      - name: color1
+        type: BYTE
+      - name: color2
+        type: BYTE
+      - name: color3
+        type: BYTE
+      - name: color4
+        type: BYTE
 
   - message: gg.rsmod.game.message.impl.NoTimeoutMessage
     type: IGNORE

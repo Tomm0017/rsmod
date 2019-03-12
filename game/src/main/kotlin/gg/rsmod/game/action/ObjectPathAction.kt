@@ -13,6 +13,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.Route
 import gg.rsmod.game.model.queue.QueueTask
+import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.AabbUtil
 import gg.rsmod.util.DataConstants
@@ -32,7 +33,7 @@ object ObjectPathAction {
         val opt = player.attr[INTERACTING_OPT_ATTR]!!
         val lineOfSightRange = player.world.plugins.getObjInteractionDistance(obj.id)
 
-        player.queue {
+        player.queue(TaskPriority.STANDARD) {
             terminateAction = {
                 player.stopMovement()
                 player.write(SetMapFlagMessage(255, 255))

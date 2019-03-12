@@ -9,6 +9,7 @@ import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.QueueTask
+import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.plugin.Plugin
 import java.lang.ref.WeakReference
 
@@ -28,7 +29,7 @@ object GroundItemPathAction {
             handleAction(p, item, opt)
         } else {
             p.walkTo(item.tile, MovementQueue.StepType.NORMAL)
-            p.queue {
+            p.queue(TaskPriority.STANDARD) {
                 terminateAction = {
                     p.stopMovement()
                     p.write(SetMapFlagMessage(255, 255))

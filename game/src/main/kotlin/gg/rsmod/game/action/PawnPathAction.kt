@@ -12,6 +12,7 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.queue.QueueTask
+import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
 import gg.rsmod.game.plugin.Plugin
@@ -31,7 +32,7 @@ object PawnPathAction {
         val npcId = if (pawn is Player) npc.getTransform(pawn) else npc.id
         val lineOfSightRange = world.plugins.getNpcInteractionDistance(npcId)
 
-        pawn.queue {
+        pawn.queue(TaskPriority.STANDARD) {
             terminateAction = {
                 pawn.stopMovement()
                 if (pawn is Player) {
@@ -39,56 +40,70 @@ object PawnPathAction {
                 }
             }
 
-            pawn.facePawn(npc)
+            walk(this, pawn, npc, npcId, opt, lineOfSightRange)
+        }
+    }
 
-            val pathFound = walkTo(this, pawn, npc, interactionRange = lineOfSightRange ?: 1, lineOfSight = lineOfSightRange != null)
+    suspend fun walk(it: QueueTask, pawn: Pawn, npc: Npc, npcId: Int, opt: Int, lineOfSightRange: Int?) {
+        val world = pawn.world
+        val initialTile = Tile(npc.tile)
 
-            if (!pathFound) {
-                pawn.movementQueue.clear()
-                if (pawn is Player) {
-                    if (!pawn.timers.has(FROZEN_TIMER)) {
-                        pawn.message(Entity.YOU_CANT_REACH_THAT)
-                    } else {
-                        pawn.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
-                    }
-                    pawn.write(SetMapFlagMessage(255, 255))
-                }
-                pawn.facePawn(null)
-                return@queue
-            }
+        pawn.facePawn(npc)
 
-            pawn.stopMovement()
-
+        val pathFound = walkTo(it, pawn, npc, interactionRange = lineOfSightRange ?: 1, lineOfSight = lineOfSightRange != null)
+        if (!pathFound) {
+            pawn.movementQueue.clear()
             if (pawn is Player) {
-                /**
-                 * On 07, only one npc can be facing the player at a time,
-                 * so if the last pawn that faced the player is still facing
-                 * them, then we reset their face target.
-                 */
-                pawn.attr[NPC_FACING_US_ATTR]?.get()?.let { other ->
-                    if (other.attr[FACING_PAWN_ATTR]?.get() == pawn) {
-                        other.facePawn(null)
-                        other.timers.remove(RESET_PAWN_FACING_TIMER)
-                    }
+                if (!pawn.timers.has(FROZEN_TIMER)) {
+                    pawn.message(Entity.YOU_CANT_REACH_THAT)
+                } else {
+                    pawn.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
                 }
-                pawn.attr[NPC_FACING_US_ATTR] = WeakReference(npc)
+                pawn.write(SetMapFlagMessage(255, 255))
+            }
+            pawn.facePawn(null)
+            return
+        }
 
-                /**
-                 * Stop the npc from walking while the player talks to it
-                 * for [Npc.RESET_PAWN_FACE_DELAY] cycles.
-                 */
-                npc.stopMovement()
-                if (npc.attr[FACING_PAWN_ATTR]?.get() != pawn) {
-                    npc.facePawn(pawn)
-                    npc.timers[RESET_PAWN_FACING_TIMER] = Npc.RESET_PAWN_FACE_DELAY
-                }
-                pawn.facePawn(null)
-                pawn.faceTile(npc.tile)
+        pawn.stopMovement()
 
-                val handled = world.plugins.executeNpc(pawn, npcId, opt)
-                if (!handled) {
-                    pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
+        if (pawn is Player) {
+            /**
+             * If the npc has moved from the time this queue was added to
+             * when it was actually invoked, we need to walk towards it again.
+             */
+            if (!npc.tile.sameAs(initialTile)) {
+                walk(it, pawn, npc, npcId, opt, lineOfSightRange)
+                return
+            }
+            /**
+             * On 07, only one npc can be facing the player at a time,
+             * so if the last pawn that faced the player is still facing
+             * them, then we reset their face target.
+             */
+            pawn.attr[NPC_FACING_US_ATTR]?.get()?.let { other ->
+                if (other.attr[FACING_PAWN_ATTR]?.get() == pawn) {
+                    other.facePawn(null)
+                    other.timers.remove(RESET_PAWN_FACING_TIMER)
                 }
+            }
+            pawn.attr[NPC_FACING_US_ATTR] = WeakReference(npc)
+
+            /**
+             * Stop the npc from walking while the player talks to it
+             * for [Npc.RESET_PAWN_FACE_DELAY] cycles.
+             */
+            npc.stopMovement()
+            if (npc.attr[FACING_PAWN_ATTR]?.get() != pawn) {
+                npc.facePawn(pawn)
+                npc.timers[RESET_PAWN_FACING_TIMER] = Npc.RESET_PAWN_FACE_DELAY
+            }
+            pawn.facePawn(null)
+            pawn.faceTile(npc.tile)
+
+            val handled = world.plugins.executeNpc(pawn, npcId, opt)
+            if (!handled) {
+                pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
             }
         }
     }

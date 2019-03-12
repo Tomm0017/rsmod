@@ -3,6 +3,7 @@ package gg.rsmod.game.action
 import gg.rsmod.game.fs.def.AnimDef
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.queue.QueueTask
+import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.plugin.Plugin
 
 /**
@@ -14,7 +15,7 @@ object NpcDeathAction {
 
     val deathPlugin: Plugin.() -> Unit = {
         val npc = ctx as Npc
-        npc.queue {
+        npc.queue(TaskPriority.STRONG) {
             death(npc)
         }
     }

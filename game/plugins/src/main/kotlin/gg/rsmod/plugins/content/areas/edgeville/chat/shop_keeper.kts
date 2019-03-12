@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.areas.edgeville.chat
 
+import gg.rsmod.game.model.queue.QueueTask
+
 arrayOf(Npcs.SHOP_KEEPER_514, Npcs.SHOP_ASSISTANT_515).forEach { shop ->
     on_npc_option(npc = shop, option = "talk-to") {
         player.queue { dialog(this) }
@@ -10,7 +12,7 @@ arrayOf(Npcs.SHOP_KEEPER_514, Npcs.SHOP_ASSISTANT_515).forEach { shop ->
     }
 }
 
-suspend fun dialog(it: Plugin) {
+suspend fun dialog(it: QueueTask) {
     it.chatNpc("Can I help you at all?", animation = 567)
     when (it.options("Yes please. What are you selling?", "No thanks.")) {
         1 -> open_shop(it.player)

@@ -2,9 +2,8 @@ package gg.rsmod.plugins.content.combat
 
 import gg.rsmod.game.action.PawnPathAction
 import gg.rsmod.game.model.attr.COMBAT_TARGET_FOCUS_ATTR
-import gg.rsmod.game.model.entity.Entity
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.timer.FROZEN_TIMER
-import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 
 set_combat_logic {
@@ -18,7 +17,7 @@ set_combat_logic {
     }
 }
 
-suspend fun cycle(it: Plugin): Boolean {
+suspend fun cycle(it: QueueTask): Boolean {
     val pawn = it.pawn
     val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR]?.get()
 

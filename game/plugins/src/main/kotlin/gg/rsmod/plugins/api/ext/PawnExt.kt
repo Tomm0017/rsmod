@@ -1,7 +1,11 @@
 package gg.rsmod.plugins.api.ext
 
 import gg.rsmod.game.model.Hit
+import gg.rsmod.game.model.attr.*
+import gg.rsmod.game.model.entity.GameObject
+import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
+import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.plugins.api.BonusSlot
 import gg.rsmod.plugins.api.HitType
@@ -11,6 +15,22 @@ import gg.rsmod.plugins.api.PrayerIcon
 /**
  * @author Tom <rspsmods@gmail.com>
  */
+
+fun Pawn.getCommandArgs(): Array<String> = attr[COMMAND_ARGS_ATTR]!!
+
+fun Pawn.getInteractingSlot(): Int = attr[INTERACTING_SLOT_ATTR]!!
+
+fun Pawn.getInteractingItem(): Item = attr[INTERACTING_ITEM]!!.get()!!
+
+fun Pawn.getInteractingItemId(): Int = attr[INTERACTING_ITEM_ID]!!
+
+fun Pawn.getInteractingItemSlot(): Int = attr[INTERACTING_ITEM_SLOT]!!
+
+fun Pawn.getInteractingOption(): Int = attr[INTERACTING_OPT_ATTR]!!
+
+fun Pawn.getInteractingGameObj(): GameObject = attr[INTERACTING_OBJ_ATTR]!!.get()!!
+
+fun Pawn.getInteractingNpc(): Npc = attr[INTERACTING_NPC_ATTR]!!.get()!!
 
 fun Pawn.hasPrayerIcon(icon: PrayerIcon): Boolean = prayerIcon == icon.id
 

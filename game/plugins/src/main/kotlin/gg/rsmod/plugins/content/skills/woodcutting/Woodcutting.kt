@@ -4,7 +4,7 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.ext.filterableMessage
 import gg.rsmod.plugins.api.ext.playSound
@@ -17,7 +17,7 @@ object Woodcutting {
 
     data class Tree(val type: TreeType, val obj: Int, val trunk: Int)
 
-    suspend fun chopDownTree(it: Plugin, obj: GameObject, tree: TreeType, trunkId: Int) {
+    suspend fun chopDownTree(it: QueueTask, obj: GameObject, tree: TreeType, trunkId: Int) {
         val p = it.player
 
         if (!canChop(p, obj, tree)) {

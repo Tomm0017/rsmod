@@ -1,6 +1,5 @@
 package gg.rsmod.plugins.content.mechanics.gates
 
-import gg.rsmod.game.model.World
 import gg.rsmod.plugins.service.doors.DoorStickState
 import gg.rsmod.plugins.service.gates.GateService
 import gg.rsmod.plugins.service.gates.GateSet
@@ -26,19 +25,19 @@ on_world_init {
         service.gates.forEach { gate ->
 
             on_obj_option(obj = gate.closed.hinge, option = "open", lineOfSightDistance = 1) {
-                open_gate(player, getInteractingGameObj(), gate)
+                open_gate(player, player.getInteractingGameObj(), gate)
             }
 
             on_obj_option(obj = gate.closed.extension, option = "open", lineOfSightDistance = 1) {
-                open_gate(player, getInteractingGameObj(), gate)
+                open_gate(player, player.getInteractingGameObj(), gate)
             }
 
             on_obj_option(obj = gate.opened.hinge, option = "close", lineOfSightDistance = 1) {
-                close_gate(player, getInteractingGameObj(), gate)
+                close_gate(player, player.getInteractingGameObj(), gate)
             }
 
             on_obj_option(obj = gate.opened.extension, option = "close", lineOfSightDistance = 1) {
-                close_gate(player, getInteractingGameObj(), gate)
+                close_gate(player, player.getInteractingGameObj(), gate)
             }
         }
     }

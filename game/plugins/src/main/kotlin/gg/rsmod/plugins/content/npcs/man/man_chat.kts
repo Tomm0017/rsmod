@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.npcs.man
 
+import gg.rsmod.game.model.queue.QueueTask
+
 val MEN = arrayOf(Npcs.MAN_3014, Npcs.MAN_3078, Npcs.MAN_3079, Npcs.MAN_3080,
         Npcs.MAN_3081, Npcs.MAN_3082, Npcs.MAN_3260, Npcs.MAN_3264, Npcs.MAN_3265,
         Npcs.MAN_3266, Npcs.MAN_3652, Npcs.MAN_6987, Npcs.MAN_6988, Npcs.MAN_6989,
@@ -11,7 +13,7 @@ MEN.forEach { man ->
     }
 }
 
-suspend fun chat(it: Plugin) {
+suspend fun chat(it: QueueTask) {
     it.chatPlayer("Hello, how's it going?", animation = 567)
     when (it.player.world.random(17)) {
         0 -> it.chatNpc("Not too bad thanks.", animation = 567)
@@ -54,7 +56,7 @@ suspend fun chat(it: Plugin) {
         }
         11 -> it.chatNpc("I'm very well thank you.")
         12 -> {
-            val npc = it.getInteractingNpc()
+            val npc = it.player.getInteractingNpc()
             it.chatNpc("Are you asking for a fight?", animation = 614)
             npc.attack(it.player)
         }

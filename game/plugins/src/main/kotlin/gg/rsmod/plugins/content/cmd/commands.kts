@@ -46,7 +46,7 @@ on_command("mypos", Privilege.ADMIN_POWER) {
 on_command("tele", Privilege.ADMIN_POWER) {
     val p = player
 
-    val args = getCommandArgs()
+    val args = player.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::tele 3200 3200</col>") { values ->
         val x = values[0].toInt()
         val z = values[1].toInt()
@@ -88,7 +88,7 @@ on_command("invisible", Privilege.ADMIN_POWER) {
 on_command("npc", Privilege.ADMIN_POWER) {
     val p = player
 
-    val args = getCommandArgs()
+    val args = player.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::npc 1</col>") { values ->
         val id = values[0].toInt()
         val npc = Npc(id, p.tile, p.world)
@@ -99,7 +99,7 @@ on_command("npc", Privilege.ADMIN_POWER) {
 on_command("obj", Privilege.ADMIN_POWER) {
     val p = player
 
-    val args = getCommandArgs()
+    val args = player.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::obj 1</col>") { values ->
         val id = values[0].toInt()
         val type = if (values.size > 1) values[1].toInt() else 10
@@ -142,7 +142,7 @@ on_command("reset", Privilege.ADMIN_POWER) {
 on_command("setlvl", Privilege.ADMIN_POWER) {
     val p = player
 
-    val args = getCommandArgs()
+    val args = player.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::setlvl 0 99</col> or <col=801700>::setlvl attack 99</col>") { values ->
         var skill: Int
         try {
@@ -176,7 +176,7 @@ on_command("setlvl", Privilege.ADMIN_POWER) {
 on_command("item", Privilege.ADMIN_POWER) {
     val p = player
 
-    val args = getCommandArgs()
+    val args = player.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::item 4151 1</col> or <col=801700>::item 4151</col>") { values ->
         val item = values[0].toInt()
         val amount = if (values.size > 1) Math.min(Int.MAX_VALUE.toLong(), Misc.parseAmount(values[1])).toInt() else 1
@@ -199,7 +199,7 @@ on_command("food", Privilege.ADMIN_POWER) {
 on_command("varp", Privilege.ADMIN_POWER) {
     val p = player
 
-    val args = getCommandArgs()
+    val args = player.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::varp 173 1</col>") { values ->
         val varp = values[0].toInt()
         val state = values[1].toInt()
@@ -212,7 +212,7 @@ on_command("varp", Privilege.ADMIN_POWER) {
 on_command("varbit", Privilege.ADMIN_POWER) {
     val p = player
 
-    val args = getCommandArgs()
+    val args = player.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::varbit 5451 1</col>") { values ->
         val varbit = values[0].toInt()
         val state = values[1].toInt()
@@ -225,7 +225,7 @@ on_command("varbit", Privilege.ADMIN_POWER) {
 on_command("getvarbits", Privilege.ADMIN_POWER) {
     val p = player
 
-    val args = getCommandArgs()
+    val args = player.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::getvarbits 83</col>") { values ->
         val varp = values[0].toInt()
         val varbits = arrayListOf<VarbitDef>()
@@ -246,7 +246,7 @@ on_command("getvarbits", Privilege.ADMIN_POWER) {
 on_command("interface", Privilege.ADMIN_POWER) {
     val p = player
 
-    val args = getCommandArgs()
+    val args = player.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::interface 214</col>") { values ->
         val component = values[0].toInt()
         p.openInterface(component, InterfaceDestination.MAIN_SCREEN)

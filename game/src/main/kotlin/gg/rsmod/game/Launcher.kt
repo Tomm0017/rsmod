@@ -4,7 +4,7 @@ import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathFindingStrategy
-import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.game.model.queue.QueueTask
 import java.nio.file.Paths
 
 object Launcher {
@@ -39,12 +39,12 @@ object Launcher {
         }*/
     }
 
-    private suspend fun walkPlugin(it: Plugin) {
-        val p = it.ctx as Player
+    private suspend fun QueueTask.walkPlugin() {
+        val p = ctx as Player
 
         val start = Tile(p.tile)
         while (true) {
-            it.wait(1)
+            wait(1)
             if (p.hasMoveDestination()) {
                 continue
             }

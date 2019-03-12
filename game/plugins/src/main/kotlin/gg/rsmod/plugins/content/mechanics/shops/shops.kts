@@ -35,8 +35,8 @@ on_interface_close(interfaceId = SHOP_INTERFACE_ID) {
 on_button(interfaceId = SHOP_INTERFACE_ID, component = 16) {
     val player = player
     player.attr[CURRENT_SHOP_ATTR]?.let { shop ->
-        val opt = getInteractingOption()
-        val slot = getInteractingSlot() - 1
+        val opt = player.getInteractingOption()
+        val slot = player.getInteractingSlot() - 1
         val shopItem = shop.items[slot] ?: return@on_button
 
         if (opt == 1) {
@@ -59,8 +59,8 @@ on_button(interfaceId = SHOP_INTERFACE_ID, component = 16) {
 on_button(interfaceId = INV_INTERFACE_ID, component = 0) {
     val player = player
     player.attr[CURRENT_SHOP_ATTR]?.let { shop ->
-        val opt = getInteractingOption()
-        val slot = getInteractingSlot()
+        val opt = player.getInteractingOption()
+        val slot = player.getInteractingSlot()
         val item = player.inventory[slot] ?: return@on_button
 
         if (opt == 1) {

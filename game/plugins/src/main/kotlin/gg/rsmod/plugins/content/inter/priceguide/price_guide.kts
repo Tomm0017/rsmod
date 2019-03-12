@@ -14,13 +14,13 @@ on_interface_close(interfaceId = PriceGuide.INTERFACE_ID) {
 
 on_button(interfaceId = PriceGuide.TAB_INTERFACE_ID, component = 0) {
     player.queue {
-        PriceGuide.add(this, getInteractingSlot(), getInteractingOption())
+        PriceGuide.add(this, player.getInteractingSlot(), player.getInteractingOption())
     }
 }
 
 on_button(interfaceId = PriceGuide.INTERFACE_ID, component = 2) {
     player.queue {
-        PriceGuide.remove(this, getInteractingSlot(), getInteractingOption())
+        PriceGuide.remove(this, player.getInteractingSlot(), player.getInteractingOption())
     }
 }
 

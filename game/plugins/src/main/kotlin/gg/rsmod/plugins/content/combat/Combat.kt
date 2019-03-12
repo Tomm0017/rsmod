@@ -10,9 +10,9 @@ import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.timer.ATTACK_DELAY
-import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.BonusSlot
 import gg.rsmod.plugins.api.ProjectileType
 import gg.rsmod.plugins.api.WeaponType
@@ -100,7 +100,7 @@ object Combat {
         return start.isWithinRadius(end, distance) && world.collision.raycast(start, end, projectile = projectile)
     }
 
-    suspend fun moveToAttackRange(it: Plugin, pawn: Pawn, target: Pawn, distance: Int, projectile: Boolean): Boolean {
+    suspend fun moveToAttackRange(it: QueueTask, pawn: Pawn, target: Pawn, distance: Int, projectile: Boolean): Boolean {
         val world = pawn.world
         val start = pawn.tile
         val end = target.tile

@@ -13,22 +13,19 @@ Hotkey.values.forEach { hotkey ->
  * Set hotkey value.
  */
 on_button(interfaceId = 121, component = 111) {
-    val p = player
-    val focused = p.getVarbit(KeyBinding.FOCUSED_HOTKEY_VARBIT)
+    val focused = player.getVarbit(KeyBinding.FOCUSED_HOTKEY_VARBIT)
     val hotkey = Hotkey.values.firstOrNull { h -> h.id == focused } ?: return@on_button
 
-    val slot = getInteractingSlot()
-    KeyBinding.set(p, hotkey, slot)
+    val slot = player.getInteractingSlot()
+    KeyBinding.set(player, hotkey, slot)
 }
 
 /**
  * Restore defaults.
  */
 on_button(interfaceId = 121, component = 104) {
-    val p = player
-
     Hotkey.values.forEach { hotkey ->
-        p.setVarbit(hotkey.varbit, hotkey.defaultValue)
+        player.setVarbit(hotkey.varbit, hotkey.defaultValue)
     }
 }
 

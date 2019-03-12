@@ -4,11 +4,11 @@ val OPEN_SFX = 53
 val CLOSE_SFX = 54
 
 on_obj_option(obj = Objs.COFFIN_398, option = "open") {
-    open(player, getInteractingGameObj())
+    open(player, player.getInteractingGameObj())
 }
 
 on_obj_option(obj = Objs.COFFIN_3577, option = "close") {
-    close(player, getInteractingGameObj())
+    close(player, player.getInteractingGameObj())
 }
 
 fun open(p: Player, obj: GameObject) {

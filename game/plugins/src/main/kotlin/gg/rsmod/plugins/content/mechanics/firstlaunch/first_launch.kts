@@ -1,6 +1,7 @@
 package gg.rsmod.plugins.content.mechanics.firstlaunch
 
 import gg.rsmod.game.model.priv.Privilege
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.content.inter.emotes.EmotesTab
 
 on_login {
@@ -17,7 +18,7 @@ on_login {
     }
 }
 
-suspend fun dialog(it: Plugin) {
+suspend fun dialog(it: QueueTask) {
     val api = it.player.world.server.getApiName()
     val site = it.player.world.server.getApiSite()
 

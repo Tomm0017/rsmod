@@ -19,9 +19,8 @@ DEPOSIT_BOXES.forEach { box ->
 }
 
 on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 2) {
-    val player = player
-    val slot = getInteractingSlot()
-    val opt = getInteractingOption()
+    val slot = player.getInteractingSlot()
+    val opt = player.getInteractingOption()
     when (opt) {
         2 -> deposit_item(player, slot, 1)
         3 -> deposit_item(player, slot, 5)

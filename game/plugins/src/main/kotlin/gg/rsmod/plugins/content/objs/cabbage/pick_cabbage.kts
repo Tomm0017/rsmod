@@ -3,7 +3,7 @@ package gg.rsmod.plugins.content.objs.cabbage
 val RESPAWN_DELAY = 75
 
 on_obj_option(obj = Objs.CABBAGE_1161, option = "pick", lineOfSightDistance = 0) {
-    val obj = getInteractingGameObj()
+    val obj = player.getInteractingGameObj()
 
     player.queue {
         val route = player.walkTo(this, obj.tile)

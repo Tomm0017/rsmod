@@ -35,16 +35,15 @@ on_timer(Prayers.PRAYER_DRAIN) {
  * Toggle quick-prayers.
  */
 on_button(interfaceId = 160, component = 14) {
-    val p = player
-    val opt = getInteractingOption()
-    Prayers.toggleQuickPrayers(p, opt)
+    val opt = player.getInteractingOption()
+    Prayers.toggleQuickPrayers(player, opt)
 }
 
 /**
  * Select quick-prayer.
  */
 on_button(interfaceId = 77, component = 4) {
-    val slot = getInteractingSlot()
+    val slot = player.getInteractingSlot()
     val prayer = Prayer.values.firstOrNull { prayer -> prayer.quickPrayerSlot == slot } ?: return@on_button
     Prayers.selectQuickPrayer(this, prayer)
 }
@@ -53,6 +52,5 @@ on_button(interfaceId = 77, component = 4) {
  * Accept selected quick-prayer.
  */
 on_button(interfaceId = 77, component = 5) {
-    val p = player
-    p.openInterface(InterfaceDestination.PRAYER)
+    player.openInterface(InterfaceDestination.PRAYER)
 }

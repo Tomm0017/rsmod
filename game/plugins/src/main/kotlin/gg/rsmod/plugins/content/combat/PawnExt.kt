@@ -6,8 +6,8 @@ import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.PawnHit
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Projectile
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
-import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.ProjectileType
 import gg.rsmod.plugins.api.ext.hit
 import gg.rsmod.plugins.content.combat.formula.CombatFormula
@@ -32,7 +32,7 @@ fun Pawn.isAttackDelayReady(): Boolean = Combat.isAttackDelayReady(this)
 
 fun Pawn.combatRaycast(target: Pawn, distance: Int, projectile: Boolean): Boolean = Combat.raycast(this, target, distance, projectile)
 
-suspend fun Pawn.canAttackMelee(it: Plugin, target: Pawn, moveIfNeeded: Boolean): Boolean =
+suspend fun Pawn.canAttackMelee(it: QueueTask, target: Pawn, moveIfNeeded: Boolean): Boolean =
         Combat.areBordering(tile.x, tile.z, getSize(), getSize(), target.tile.x, target.tile.z, target.getSize(), target.getSize())
                 || moveIfNeeded && moveToAttackRange(it, target, distance = 0, projectile = false)
 
@@ -52,7 +52,7 @@ fun Pawn.dealHit(target: Pawn, formula: CombatFormula, delay: Int, onHit: (PawnH
     return pawnHit
 }
 
-suspend fun Pawn.moveToAttackRange(it: Plugin, target: Pawn, distance: Int, projectile: Boolean): Boolean = Combat.moveToAttackRange(it, this, target, distance, projectile)
+suspend fun Pawn.moveToAttackRange(it: QueueTask, target: Pawn, distance: Int, projectile: Boolean): Boolean = Combat.moveToAttackRange(it, this, target, distance, projectile)
 
 fun Pawn.postAttackLogic(target: Pawn) = Combat.postAttack(this, target)
 

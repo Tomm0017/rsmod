@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.content.npcs.banker
 
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.content.inter.bank.openBank
 
 arrayOf(Npcs.BANKER, Npcs.BANKER_395).forEach { banker ->
@@ -14,7 +15,7 @@ arrayOf(Npcs.BANKER, Npcs.BANKER_395).forEach { banker ->
     }
 }
 
-suspend fun dialog(it: Plugin) {
+suspend fun dialog(it: QueueTask) {
     it.chatNpc("Good day, how may I help you?")
     when (options(it)) {
         1 -> it.player.openBank()
@@ -24,9 +25,9 @@ suspend fun dialog(it: Plugin) {
     }
 }
 
-suspend fun options(it: Plugin): Int = it.options("I'd like to access my bank account, please.", "I'd like to check my PIN settings.", "I'd like to collect items.", "What is this place?")
+suspend fun options(it: QueueTask): Int = it.options("I'd like to access my bank account, please.", "I'd like to check my PIN settings.", "I'd like to collect items.", "What is this place?")
 
-suspend fun what_is_this_place(it: Plugin) {
+suspend fun what_is_this_place(it: QueueTask) {
     it.chatNpc("This is a branch of the Bank of Gielinor. We have<br>branches in many towns.", animation = 568)
     it.chatPlayer("And what do you do?", animation = 554)
     it.chatNpc("We will look after your items and money for you.<br>Leave your valuables with us if you want to keep them<br>safe.", animation = 569)

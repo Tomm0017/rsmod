@@ -71,8 +71,8 @@ on_interface_open(interfaceId = STORE_INTERFACE_ID) {
 
 on_button(interfaceId = STORE_INTERFACE_ID, component = 2) {
     val player = player
-    val item = getInteractingItemId()
-    val opt = getInteractingOption()
+    val item = player.getInteractingItemId()
+    val opt = player.getInteractingOption()
 
     val price = ITEM_PRICES[item] ?: return@on_button
 

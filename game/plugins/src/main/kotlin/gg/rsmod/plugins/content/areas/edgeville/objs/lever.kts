@@ -1,7 +1,7 @@
 package gg.rsmod.plugins.content.areas.edgeville.objs
 
 on_obj_option(Objs.LEVER_26761, "pull") {
-    val obj = getInteractingGameObj()
+    val obj = player.getInteractingGameObj()
 
     player.queue {
         player.lock()

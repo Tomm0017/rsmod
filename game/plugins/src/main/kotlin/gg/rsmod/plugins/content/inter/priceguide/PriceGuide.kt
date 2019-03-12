@@ -6,7 +6,7 @@ import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
 import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
@@ -140,7 +140,7 @@ object PriceGuide {
         update(p)
     }
 
-    suspend fun remove(it: Plugin, slot: Int, opt: Int) {
+    suspend fun remove(it: QueueTask, slot: Int, opt: Int) {
         val p = it.player
         val container = p.attr[GUIDE_CONTAINER] ?: return
         val item = container[slot] ?: return
@@ -160,7 +160,7 @@ object PriceGuide {
         remove(p = p, slot = slot, amount = amount)
     }
 
-    suspend fun add(it: Plugin, slot: Int, opt: Int) {
+    suspend fun add(it: QueueTask, slot: Int, opt: Int) {
         val p = it.player
         val container = p.attr[TEMP_INV_CONTAINER] ?: return
         val item = container[slot] ?: return

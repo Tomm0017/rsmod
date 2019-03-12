@@ -14,6 +14,7 @@ import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
 import gg.rsmod.game.model.container.key.INVENTORY_KEY
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.priv.PrivilegeSet
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.QueueTaskSystem
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.model.region.ChunkSet
@@ -496,7 +497,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         return null
     }
 
-    fun queue(logic: suspend Plugin.(CoroutineScope) -> Unit) {
+    fun queue(logic: suspend QueueTask.(CoroutineScope) -> Unit) {
         queues.queue(this, coroutineDispatcher, TaskPriority.STANDARD, logic)
     }
 

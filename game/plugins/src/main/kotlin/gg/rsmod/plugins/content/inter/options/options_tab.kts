@@ -176,7 +176,7 @@ bind_setting(child = 85) {
  * Set player option priority.
  */
 bind_setting(child = 106) {
-    val slot = getInteractingSlot()
+    val slot = player.getInteractingSlot()
     player.setVarp(OSRSGameframe.PLAYER_ATTACK_PRIORITY_VARP, slot - 1)
 }
 
@@ -184,7 +184,7 @@ bind_setting(child = 106) {
  * Set npc option priority.
  */
 bind_setting(child = 107) {
-    val slot = getInteractingSlot()
+    val slot = player.getInteractingSlot()
     player.setVarp(OSRSGameframe.NPC_ATTACK_PRIORITY_VARP, slot - 1)
 }
 

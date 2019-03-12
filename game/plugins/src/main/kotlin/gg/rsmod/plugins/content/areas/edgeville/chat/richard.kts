@@ -1,15 +1,17 @@
 package gg.rsmod.plugins.content.areas.edgeville.chat
 
+import gg.rsmod.game.model.queue.QueueTask
+
 on_npc_option(npc = Npcs.RICHARD_2200, option = "talk-to") {
     player.queue { chat(this) }
 }
 
-suspend fun chat(it: Plugin) {
+suspend fun chat(it: QueueTask) {
     it.chatNpc("Hello there, are you interested in buying one of my<br>special capes?", animation = 568)
     options(it)
 }
 
-suspend fun options(it: Plugin) {
+suspend fun options(it: QueueTask) {
     when (it.options("What's so special about your capes?", "Yes please!", "No thanks.")) {
         1 -> {
             it.chatPlayer("What's so special about your capes?", animation = 554)
@@ -30,6 +32,6 @@ fun open_shop(p: Player) {
     p.openShop("Richard's Wilderness Cape Shop.")
 }
 
-suspend fun no_thanks(it: Plugin) {
+suspend fun no_thanks(it: QueueTask) {
     it.chatPlayer("No thanks.", animation = 588)
 }

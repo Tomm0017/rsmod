@@ -1,6 +1,5 @@
 package gg.rsmod.plugins.content.mechanics.doors
 
-import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.collision.ObjectType
 import gg.rsmod.plugins.service.doors.DoorService
 import gg.rsmod.plugins.service.doors.DoorStickState
@@ -27,8 +26,7 @@ on_world_init {
 
         service.doors.forEach { door ->
             on_obj_option(obj = door.opened, option = "close") {
-                val player = player
-                val obj = getInteractingGameObj()
+                val obj = player.getInteractingGameObj()
                 if (!is_stuck(player.world, obj)) {
                     val newDoor = player.world.closeDoor(obj, closed = door.closed, invertTransform = obj.type == ObjectType.DIAGONAL_WALL.value)
                     copy_stick_vars(obj, newDoor)
@@ -41,8 +39,7 @@ on_world_init {
             }
 
             on_obj_option(obj = door.closed, option = "open") {
-                val player = player
-                val obj = getInteractingGameObj()
+                val obj = player.getInteractingGameObj()
                 val newDoor = player.world.openDoor(obj, opened = door.opened, invertTransform = obj.type == ObjectType.DIAGONAL_WALL.value)
                 copy_stick_vars(obj, newDoor)
                 add_stick_var(player.world, newDoor)
@@ -52,19 +49,19 @@ on_world_init {
 
         service.doubleDoors.forEach { doors ->
             on_obj_option(obj = doors.closed.left, option = "open") {
-                handle_double_doors(player, getInteractingGameObj(), doors, open = true)
+                handle_double_doors(player, player.getInteractingGameObj(), doors, open = true)
             }
 
             on_obj_option(obj = doors.closed.right, option = "open") {
-                handle_double_doors(player, getInteractingGameObj(), doors, open = true)
+                handle_double_doors(player, player.getInteractingGameObj(), doors, open = true)
             }
 
             on_obj_option(obj = doors.opened.left, option = "close") {
-                handle_double_doors(player, getInteractingGameObj(), doors, open = false)
+                handle_double_doors(player, player.getInteractingGameObj(), doors, open = false)
             }
 
             on_obj_option(obj = doors.opened.right, option = "close") {
-                handle_double_doors(player, getInteractingGameObj(), doors, open = false)
+                handle_double_doors(player, player.getInteractingGameObj(), doors, open = false)
             }
         }
     }

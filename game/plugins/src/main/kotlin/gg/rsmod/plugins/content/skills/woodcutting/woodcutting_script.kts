@@ -18,7 +18,7 @@ val trees = ImmutableSet.of(
 
 trees.forEach { tree ->
     on_obj_option(obj = tree.obj, option = 1) {
-        val obj = getInteractingGameObj()
+        val obj = player.getInteractingGameObj()
         player.queue { Woodcutting.chopDownTree(this, obj, tree.type, tree.trunk) }
     }
 }

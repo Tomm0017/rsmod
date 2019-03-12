@@ -8,6 +8,7 @@ import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.plugin.Plugin
 import java.lang.ref.WeakReference
 
@@ -32,13 +33,13 @@ object GroundItemPathAction {
                     p.stopMovement()
                     p.write(SetMapFlagMessage(255, 255))
                 }
-                awaitArrival(this, item, opt)
+                awaitArrival(item, opt)
             }
         }
     }
 
-    private suspend fun awaitArrival(it: Plugin, item: GroundItem, opt: Int) {
-        val p = it.ctx as Player
+    private suspend fun QueueTask.awaitArrival(item: GroundItem, opt: Int) {
+        val p = ctx as Player
         val destination = p.movementQueue.peekLast()
         if (destination == null) {
             p.message(Entity.YOU_CANT_REACH_THAT)
@@ -46,7 +47,7 @@ object GroundItemPathAction {
         }
         while (true) {
             if (!p.tile.sameAs(destination)) {
-                it.wait(1)
+                wait(1)
                 continue
             }
             // TODO: check if player can grab the item by leaning over

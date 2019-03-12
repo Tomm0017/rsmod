@@ -403,10 +403,10 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
-    suspend fun walkTo(it: Plugin, tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
+    suspend fun walkTo(it: QueueTask, tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
                        projectilePath: Boolean = false) = walkTo(it, tile.x, tile.z, stepType, projectilePath)
 
-    suspend fun walkTo(it: Plugin, x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
+    suspend fun walkTo(it: QueueTask, x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
                        projectilePath: Boolean = false): Route {
         /**
          * Already standing on requested destination.
@@ -516,7 +516,7 @@ abstract class Pawn(val world: World) : Entity() {
         facePawn(null)
     }
 
-    fun queue(priority: TaskPriority = TaskPriority.STANDARD, logic: suspend Plugin.(CoroutineScope) -> Unit) {
+    fun queue(priority: TaskPriority = TaskPriority.STANDARD, logic: suspend QueueTask.(CoroutineScope) -> Unit) {
         queues.queue(this, world.coroutineDispatcher, priority, logic)
     }
 

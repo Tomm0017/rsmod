@@ -3,6 +3,7 @@ package gg.rsmod.plugins.content.npcs.kbd
 import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.CombatStyle
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.content.combat.*
 import gg.rsmod.plugins.content.combat.formula.DragonfireFormula
 import gg.rsmod.plugins.content.combat.formula.MeleeCombatFormula
@@ -13,7 +14,7 @@ on_npc_combat(Npcs.KING_BLACK_DRAGON) {
     npc.queue { combat(this) }
 }
 
-suspend fun combat(it: Plugin) {
+suspend fun combat(it: QueueTask) {
     val npc = it.npc
     var target = npc.getCombatTarget() ?: return
 

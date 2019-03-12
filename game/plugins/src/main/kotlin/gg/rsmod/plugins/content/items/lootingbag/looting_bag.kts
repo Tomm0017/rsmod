@@ -41,12 +41,12 @@ on_global_item_pickup {
 }
 
 on_item_option(Items.LOOTING_BAG, "open") {
-    open(player, getInteractingItemSlot())
+    open(player, player.getInteractingItemSlot())
     player.message("You open your looting bag, ready to fill it.")
 }
 
 on_item_option(Items.LOOTING_BAG_22586, "close") {
-    close(player, getInteractingItemSlot())
+    close(player, player.getInteractingItemSlot())
     player.message("You close your looting bag.")
 }
 
@@ -78,8 +78,8 @@ arrayOf(Items.LOOTING_BAG, Items.LOOTING_BAG_22586).forEach { bag ->
 }
 
 on_button(interfaceId = TAB_INTERFACE_ID, component = 5) {
-    val slot = getInteractingSlot()
-    when (getInteractingOption()) {
+    val slot = player.getInteractingSlot()
+    when (player.getInteractingOption()) {
         1 -> store(player, slot = slot, amount = 1)
         2 -> store(player, slot = slot, amount = 5)
         3 -> store(player, slot = slot, amount = Int.MAX_VALUE)
@@ -101,8 +101,8 @@ on_button(interfaceId = TAB_INTERFACE_ID, component = 5) {
  * Bank items from your looting bag.
  */
 on_button(interfaceId = 15, component = 10) {
-    val slot = getInteractingSlot()
-    when (getInteractingOption()) {
+    val slot = player.getInteractingSlot()
+    when (player.getInteractingOption()) {
         1 -> bank(player, slot = slot, amount = 1)
         2 -> bank(player, slot = slot, amount = 5)
         3 -> bank(player, slot = slot, amount = Int.MAX_VALUE)

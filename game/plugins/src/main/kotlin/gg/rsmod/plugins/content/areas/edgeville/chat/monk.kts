@@ -1,10 +1,12 @@
 package gg.rsmod.plugins.content.areas.edgeville.chat
 
+import gg.rsmod.game.model.queue.QueueTask
+
 on_npc_option(npc = Npcs.MONK_2579, option = "talk-to") {
     player.queue { dialog(this) }
 }
 
-suspend fun dialog(it: Plugin) {
+suspend fun dialog(it: QueueTask) {
     it.chatNpc("Greetings traveller.", animation = 588)
     when (it.options("Can you heal me? I'm injured.", "Isn't this place built a bit out of the way?", "How do I get further into the monastery?")) {
         1 -> {

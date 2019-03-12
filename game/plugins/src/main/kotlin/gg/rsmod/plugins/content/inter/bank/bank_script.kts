@@ -78,18 +78,16 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
 }
 
 on_button(interfaceId = Bank.INV_INTERFACE_ID, component = Bank.INV_INTERFACE_CHILD) p@ {
-    val p = player
-
-    val opt = getInteractingOption()
-    val slot = getInteractingSlot()
-    val item = p.inventory[slot] ?: return@p
+    val opt = player.getInteractingOption()
+    val slot = player.getInteractingSlot()
+    val item = player.inventory[slot] ?: return@p
 
     if (opt == 10) {
-        p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
+        player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
         return@p
     }
 
-    val quantityVarbit = p.getVarbit(Bank.QUANTITY_VARBIT)
+    val quantityVarbit = player.getVarbit(Bank.QUANTITY_VARBIT)
     var amount: Int
 
     when {
@@ -97,7 +95,7 @@ on_button(interfaceId = Bank.INV_INTERFACE_ID, component = Bank.INV_INTERFACE_CH
             2 -> 1
             4 -> 5
             5 -> 10
-            6 -> p.getVarbit(Bank.LAST_X_INPUT)
+            6 -> player.getVarbit(Bank.LAST_X_INPUT)
             7 -> -1 // X
             8 -> 0 // All
             else -> return@p
@@ -105,7 +103,7 @@ on_button(interfaceId = Bank.INV_INTERFACE_ID, component = Bank.INV_INTERFACE_CH
         opt == 2 -> amount = when (quantityVarbit) {
             1 -> 5
             2 -> 10
-            3 -> if (p.getVarbit(Bank.LAST_X_INPUT) == 0) -1 else p.getVarbit(Bank.LAST_X_INPUT)
+            3 -> if (player.getVarbit(Bank.LAST_X_INPUT) == 0) -1 else player.getVarbit(Bank.LAST_X_INPUT)
             4 -> 0 // All
             else -> return@p
         }
@@ -113,7 +111,7 @@ on_button(interfaceId = Bank.INV_INTERFACE_ID, component = Bank.INV_INTERFACE_CH
             3 -> 1
             4 -> 5
             5 -> 10
-            6 -> p.getVarbit(Bank.LAST_X_INPUT)
+            6 -> player.getVarbit(Bank.LAST_X_INPUT)
             7 -> -1 // X
             8 -> 0 // All
             else -> return@p
@@ -121,43 +119,41 @@ on_button(interfaceId = Bank.INV_INTERFACE_ID, component = Bank.INV_INTERFACE_CH
     }
 
     if (amount == 0) {
-        amount = p.inventory.getItemCount(item.id)
+        amount = player.inventory.getItemCount(item.id)
     } else if (amount == -1) {
-        player.queue {
+        this.player.queue {
             amount = inputInt("How many would you like to bank?")
             if (amount > 0) {
-                p.setVarbit(Bank.LAST_X_INPUT, amount)
-                Bank.deposit(p, item.id, amount)
+                player.setVarbit(Bank.LAST_X_INPUT, amount)
+                Bank.deposit(player, item.id, amount)
             }
         }
         return@p
     }
 
-    Bank.deposit(p, item.id, amount)
+    Bank.deposit(player, item.id, amount)
 }
 
 on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
-    val p = player
-
-    val opt = getInteractingOption()
-    val slot = getInteractingSlot()
-    val item = p.bank[slot] ?: return@p
+    val opt = player.getInteractingOption()
+    val slot = player.getInteractingSlot()
+    val item = player.bank[slot] ?: return@p
 
     if (opt == 10) {
-        p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
+        player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
         return@p
     }
 
     var amount: Int
     var placehold = false
 
-    val quantityVarbit = p.getVarbit(Bank.QUANTITY_VARBIT)
+    val quantityVarbit = player.getVarbit(Bank.QUANTITY_VARBIT)
     when {
         quantityVarbit == 0 -> amount = when (opt) {
             1 -> 1
             3 -> 5
             4 -> 10
-            5 -> p.getVarbit(Bank.LAST_X_INPUT)
+            5 -> player.getVarbit(Bank.LAST_X_INPUT)
             6 -> -1 // X
             7 -> item.amount
             8 -> item.amount - 1
@@ -171,7 +167,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
             0 -> 1
             1 -> 5
             2 -> 10
-            3 -> if (p.getVarbit(Bank.LAST_X_INPUT) == 0) -1 else p.getVarbit(Bank.LAST_X_INPUT)
+            3 -> if (player.getVarbit(Bank.LAST_X_INPUT) == 0) -1 else player.getVarbit(Bank.LAST_X_INPUT)
             4 -> item.amount
             8 -> {
                 placehold = true
@@ -183,7 +179,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
             2 -> 1
             3 -> 5
             4 -> 10
-            5 -> p.getVarbit(Bank.LAST_X_INPUT)
+            5 -> player.getVarbit(Bank.LAST_X_INPUT)
             6 -> -1 // X
             7 -> item.amount
             8 -> item.amount - 1
@@ -201,14 +197,14 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
          * as "withdraw-x" would.
          */
         if (item.amount == 0) {
-            p.bank.set(slot, null)
+            player.bank.set(slot, null)
             return@p
         }
-        player.queue {
+        this.player.queue {
             amount = inputInt("How many would you like to withdraw?")
             if (amount > 0) {
-                p.setVarbit(Bank.LAST_X_INPUT, amount)
-                Bank.withdraw(p, item.id, amount, slot, placehold)
+                player.setVarbit(Bank.LAST_X_INPUT, amount)
+                Bank.withdraw(player, item.id, amount, slot, placehold)
             }
         }
         return@p
@@ -216,6 +212,6 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
 
     amount = Math.max(0, amount)
     if (amount > 0) {
-        Bank.withdraw(p, item.id, amount, slot, placehold)
+        Bank.withdraw(player, item.id, amount, slot, placehold)
     }
 }

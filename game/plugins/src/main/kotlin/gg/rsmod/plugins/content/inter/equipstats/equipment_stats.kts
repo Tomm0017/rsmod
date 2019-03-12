@@ -5,22 +5,21 @@ import gg.rsmod.game.model.ExamineEntityType
 
 fun bind_unequip(equipment: EquipmentType, child: Int) {
     on_button(interfaceId = EquipmentStats.INTERFACE_ID, component = child) {
-        val p = player
-        val opt = getInteractingOption()
+        val opt = player.getInteractingOption()
 
         if (opt == 1) {
-            EquipAction.unequip(p, equipment.id)
-            p.calculateWeightAndBonus(weight = false, bonuses = true)
-            EquipmentStats.sendBonuses(p)
+            EquipAction.unequip(player, equipment.id)
+            player.calculateWeightAndBonus(weight = false, bonuses = true)
+            EquipmentStats.sendBonuses(player)
         } else if (opt == 10) {
-            val item = p.equipment[equipment.id] ?: return@on_button
-            p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
+            val item = player.equipment[equipment.id] ?: return@on_button
+            player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
         } else {
-            val item = p.equipment[equipment.id] ?: return@on_button
-            if (!p.world.plugins.executeItem(p, item.id, opt)) {
-                val slot = getInteractingSlot()
-                if (p.world.devContext.debugButtons) {
-                    p.message("Unhandled button action: [parent=84, child=$child, option=$opt, slot=$slot, item=${item.id}]")
+            val item = player.equipment[equipment.id] ?: return@on_button
+            if (!player.world.plugins.executeItem(player, item.id, opt)) {
+                val slot = player.getInteractingSlot()
+                if (player.world.devContext.debugButtons) {
+                    player.message("Unhandled button action: [parent=84, child=$child, option=$opt, slot=$slot, item=${item.id}]")
                 }
             }
         }
@@ -28,22 +27,20 @@ fun bind_unequip(equipment: EquipmentType, child: Int) {
 }
 
 on_button(interfaceId = EquipmentStats.TAB_INTERFACE_ID, component = 0) {
-    val p = player
-
-    val slot = getInteractingSlot()
-    val opt = getInteractingOption()
-    val item = p.inventory[slot] ?: return@on_button
+    val slot = player.getInteractingSlot()
+    val opt = player.getInteractingOption()
+    val item = player.inventory[slot] ?: return@on_button
 
     if (opt == 1) {
-        val result = EquipAction.equip(p, item, inventorySlot = slot)
+        val result = EquipAction.equip(player, item, inventorySlot = slot)
         if (result == EquipAction.Result.SUCCESS) {
-            p.calculateWeightAndBonus(weight = false, bonuses = true)
-            EquipmentStats.sendBonuses(p)
+            player.calculateWeightAndBonus(weight = false, bonuses = true)
+            EquipmentStats.sendBonuses(player)
         } else if (result == EquipAction.Result.UNHANDLED) {
-            p.message("You can't equip that.")
+            player.message("You can't equip that.")
         }
     } else if (opt == 10) {
-        p.world.sendExamine(p, item.id, ExamineEntityType.ITEM)
+        player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
     }
 }
 

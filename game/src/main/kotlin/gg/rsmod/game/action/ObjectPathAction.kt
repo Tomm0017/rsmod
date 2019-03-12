@@ -12,6 +12,7 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.Route
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.AabbUtil
 import gg.rsmod.util.DataConstants
@@ -37,7 +38,7 @@ object ObjectPathAction {
                 player.write(SetMapFlagMessage(255, 255))
             }
 
-            val route = walkTo(this, obj, lineOfSightRange)
+            val route = walkTo(obj, lineOfSightRange)
             if (route.success) {
                 if (lineOfSightRange == null || lineOfSightRange > 0) {
                     faceObj(player, obj)
@@ -55,8 +56,8 @@ object ObjectPathAction {
         }
     }
 
-    private suspend fun walkTo(it: Plugin, obj: GameObject, lineOfSightRange: Int?): Route {
-        val pawn = it.ctx as Pawn
+    private suspend fun QueueTask.walkTo(obj: GameObject, lineOfSightRange: Int?): Route {
+        val pawn = ctx as Pawn
 
         val def = obj.getDef(pawn.world.definitions)
         val tile = obj.tile
@@ -178,7 +179,7 @@ object ObjectPathAction {
 
         val last = pawn.movementQueue.peekLast()
         while (last != null && !pawn.tile.sameAs(last)) {
-            it.wait(1)
+            wait(1)
         }
 
         if (wall && !route.success && pawn.tile.isWithinRadius(tile, 1) && Direction.between(tile, pawn.tile) !in blockedWallDirections) {

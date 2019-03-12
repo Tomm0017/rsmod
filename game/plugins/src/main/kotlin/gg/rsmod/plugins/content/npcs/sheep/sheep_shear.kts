@@ -2,12 +2,13 @@ package gg.rsmod.plugins.content.npcs.sheep
 
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.queue.QueueTask
 
 Sheep.SHEEP_NPCS.forEach { sheep ->
     if (world.definitions.get(NpcDef::class.java, sheep).options.contains("Shear")) {
 
         on_npc_option(npc = sheep, option = "shear") {
-            val npc = getInteractingNpc()
+            val npc = player.getInteractingNpc()
 
             player.facePawn(null)
             player.faceTile(npc.tile)
@@ -20,7 +21,7 @@ Sheep.SHEEP_NPCS.forEach { sheep ->
     }
 }
 
-suspend fun shear(it: Plugin, p: Player, n: Npc) {
+suspend fun shear(it: QueueTask, p: Player, n: Npc) {
     val flee = n.world.percentChance(15.0)
 
     p.lock()
@@ -58,7 +59,7 @@ fun flee(n: Npc) {
     n.walkTo(dest)
 }
 
-suspend fun transmog_sheep(it: Plugin, n: Npc) {
+suspend fun transmog_sheep(it: QueueTask, n: Npc) {
     n.setTransmogId(if (n.id == 2803) Npcs.SHEEP_2792 else Npcs.SHEEP_2793)
     it.wait(100)
     n.setTransmogId(n.id)

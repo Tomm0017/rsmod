@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.areas.edgeville.chat
 
+import gg.rsmod.game.model.queue.QueueTask
+
 val HIDE_STREAK_VARBIT = 1621
 val LIMIT_TARGETS_VARBIT = 6503
 
@@ -48,7 +50,7 @@ arrayOf(Npcs.EMBLEM_TRADER, Npcs.EMBLEM_TRADER_316).forEach { npc ->
     }
 }
 
-suspend fun chat(it: Plugin) {
+suspend fun chat(it: QueueTask) {
     it.chatNpc("Hello, wanderer.", animation = 588)
     it.chatNpc("Don't suppose you've come across any strange...<br>emblems or artefacts along your journey?", animation = 589)
     it.chatPlayer("Not that I've seen.", animation = 588)
@@ -56,7 +58,7 @@ suspend fun chat(it: Plugin) {
     options(it)
 }
 
-suspend fun options(it: Plugin) {
+suspend fun options(it: QueueTask) {
     val player = it.player
 
     val skullOption = if (player.hasSkullIcon(SkullIcon.NONE)) "Can I have a PK skull, please?" else "Can you make my PK skull last longer?"
@@ -74,7 +76,7 @@ suspend fun options(it: Plugin) {
     }
 }
 
-suspend fun rewards(it: Plugin) {
+suspend fun rewards(it: QueueTask) {
     it.chatPlayer("What rewards have you got?", animation = 554)
     open_bounty_store(it.player)
 }
@@ -84,7 +86,7 @@ fun open_bounty_store(p: Player) {
     p.openInterface(interfaceId = 178, dest = InterfaceDestination.MAIN_SCREEN)
 }
 
-suspend fun pk_skull(it: Plugin) {
+suspend fun pk_skull(it: QueueTask) {
     val player = it.player
     if (player.hasSkullIcon(SkullIcon.NONE)) {
         it.chatPlayer("Can I have a PK skull, please?", animation = 554)
@@ -95,21 +97,21 @@ suspend fun pk_skull(it: Plugin) {
     }
 }
 
-suspend fun give_pk_skull(it: Plugin) {
+suspend fun give_pk_skull(it: QueueTask) {
     if (it.options("Give me a PK skull.", "Cancel.", title = "A PK skull means you drop ALL your items on death.") == 1) {
         it.player.skull(SkullIcon.WHITE, durationCycles = SKULL_SHORT_DURATION)
         it.itemMessageBox("You are now skulled.", item = Items.SKULL)
     }
 }
 
-suspend fun extend_pk_skull(it: Plugin) {
+suspend fun extend_pk_skull(it: QueueTask) {
     if (it.options("Yes", "No", title = "Extend your PK skull duration?") == 1) {
         it.player.skull(SkullIcon.WHITE, durationCycles = SKULL_LONG_DURATION)
         it.itemMessageBox("Your PK skull will now last for the full 20 minutes.", item = Items.SKULL)
     }
 }
 
-suspend fun killstreak_data(it: Plugin) {
+suspend fun killstreak_data(it: QueueTask) {
     if (it.player.getVarbit(HIDE_STREAK_VARBIT) == 0) {
         it.chatPlayer("I don't want to see kill streak data.", animation = 554)
         hide_killstreak_data(it.player)
@@ -129,7 +131,7 @@ fun show_killstreak_data(p: Player) {
     p.setVarbit(HIDE_STREAK_VARBIT, 0)
 }
 
-suspend fun limit_targets(it: Plugin) {
+suspend fun limit_targets(it: QueueTask) {
     val player = it.player
     if (player.getVarbit(LIMIT_TARGETS_VARBIT) == 0) {
         it.chatPlayer("I'd like to limit my potential targets.", animation = 554)

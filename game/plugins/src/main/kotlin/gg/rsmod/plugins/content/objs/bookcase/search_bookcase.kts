@@ -1,6 +1,7 @@
 package gg.rsmod.plugins.content.objs.bookcase
 
 import com.google.common.collect.ImmutableSet
+import gg.rsmod.game.model.queue.QueueTask
 
 val BOOKCASES = ImmutableSet.of(Objs.BOOKCASE_380, Objs.BOOKCASE_381)
 
@@ -10,7 +11,7 @@ BOOKCASES.forEach { case ->
     }
 }
 
-suspend fun search(it: Plugin, p: Player) {
+suspend fun search(it: QueueTask, p: Player) {
     p.lock()
     p.message("You search the books...")
     it.wait(3)

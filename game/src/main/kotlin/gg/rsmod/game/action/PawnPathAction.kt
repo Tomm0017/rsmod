@@ -11,6 +11,7 @@ import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathRequest
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
 import gg.rsmod.game.plugin.Plugin
@@ -92,7 +93,7 @@ object PawnPathAction {
         }
     }
 
-    suspend fun walkTo(it: Plugin, pawn: Pawn, target: Pawn, interactionRange: Int, lineOfSight: Boolean): Boolean {
+    suspend fun walkTo(it: QueueTask, pawn: Pawn, target: Pawn, interactionRange: Int, lineOfSight: Boolean): Boolean {
         val sourceSize = pawn.getSize()
         val targetSize = target.getSize()
         val sourceTile = pawn.tile

@@ -5,6 +5,7 @@ import gg.rsmod.game.model.attr.PROTECT_ITEM_ATTR
 import gg.rsmod.game.model.bits.INFINITE_VARS_STORAGE
 import gg.rsmod.game.model.bits.InfiniteVarsType
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.block.UpdateBlockType
@@ -48,7 +49,7 @@ object Prayers {
         }
     }
 
-    suspend fun toggle(it: Plugin, prayer: Prayer) {
+    suspend fun toggle(it: QueueTask, prayer: Prayer) {
         val p = it.player
 
         if (p.isDead() || !p.lock.canUsePrayer()) {
@@ -203,7 +204,7 @@ object Prayers {
 
     fun isActive(p: Player, prayer: Prayer): Boolean = p.getVarbit(prayer.varbit) != 0
 
-    private suspend fun checkRequirements(it: Plugin, prayer: Prayer): Boolean {
+    private suspend fun checkRequirements(it: QueueTask, prayer: Prayer): Boolean {
         val p = it.player
 
         if (p.getSkills().getMaxLevel(Skills.PRAYER) < prayer.level) {

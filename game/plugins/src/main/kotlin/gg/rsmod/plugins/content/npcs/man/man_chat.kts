@@ -9,11 +9,12 @@ val MEN = arrayOf(Npcs.MAN_3014, Npcs.MAN_3078, Npcs.MAN_3079, Npcs.MAN_3080,
 
 MEN.forEach { man ->
     on_npc_option(npc = man, option = "talk-to") {
-        npc.queue { chat(this) }
+        player.queue { chat(this) }
     }
 }
 
 suspend fun chat(it: QueueTask) {
+    println("chat")
     it.chatPlayer("Hello, how's it going?", animation = 567)
     when (it.player.world.random(17)) {
         0 -> it.chatNpc("Not too bad thanks.", animation = 567)
@@ -66,5 +67,4 @@ suspend fun chat(it: QueueTask) {
         16 -> it.chatNpc("No, I don't want to buy anything!", animation = 614)
         17 -> it.chatNpc("Hello.", animation = 567)
     }
-
 }

@@ -184,6 +184,18 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
     fun set_modal_close_logic(logic: (Plugin).() -> Unit) = r.bindModalClose(logic)
 
     /**
+     * Set the logic to check if a player has a menu opened and any [gg.rsmod.game.model.queue.QueueTask]
+     * with a [gg.rsmod.game.model.queue.TaskPriority.STANDARD] priority should wait before executing.
+     *
+     * @see PluginRepository.isMenuOpenedPlugin
+     *
+     * @return
+     * True if the player has a menu opened and any standard task should wait
+     * before executing.
+     */
+    fun set_menu_open_check(logic: Plugin.() -> Boolean) = r.setMenuOpenedCheck(logic)
+
+    /**
      * Set the logic to execute by default when [gg.rsmod.game.model.entity.Pawn.attack]
      * is handled.
      */

@@ -73,6 +73,13 @@ class PluginRepository(val world: World) {
     private var closeModalPlugin: ((Plugin).() -> Unit)? = null
 
     /**
+     * This plugin is used to check if a player has a menu opened and any
+     * [gg.rsmod.game.model.queue.QueueTask] with a [gg.rsmod.game.model.queue.TaskPriority.STANDARD]
+     * priority should wait before executing.
+     */
+    private var isMenuOpenedPlugin: ((Plugin).() -> Boolean)? = null
+
+    /**
      * A list of plugins that will be executed upon login.
      */
     private val loginPlugins = arrayListOf<(Plugin).() -> Unit>()
@@ -495,6 +502,16 @@ class PluginRepository(val world: World) {
             logger.warn { "Modal close is not bound to a plugin." }
         }
     }
+
+    fun setMenuOpenedCheck(plugin: (Plugin).() -> Boolean) {
+        if (isMenuOpenedPlugin != null) {
+            logger.error("\"Menu Opened\" is already bound to a plugin")
+            throw IllegalStateException("\"Menu Opened\" is already bound to a plugin")
+        }
+        isMenuOpenedPlugin = plugin
+    }
+
+    fun isMenuOpened(p: Player): Boolean = if (isMenuOpenedPlugin != null) p.executePlugin(isMenuOpenedPlugin!!) else false
 
     fun bindLogin(plugin: (Plugin).() -> Unit) {
         loginPlugins.add(plugin)

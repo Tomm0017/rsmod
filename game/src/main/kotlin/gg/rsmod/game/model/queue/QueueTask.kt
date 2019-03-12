@@ -19,6 +19,8 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
         private val logger = KotlinLogging.logger {  }
     }
 
+    lateinit var coroutine: Continuation<Unit>
+
     /**
      * If the task's logic has already been invoked.
      */
@@ -121,4 +123,16 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
     suspend fun waitReturnValue(): Unit = suspendCoroutine {
         nextStep = SuspendableStep(PredicateCondition { requestReturnValue != null }, it)
     }
+
+    override fun equals(other: Any?): Boolean {
+        val o = other as? QueueTask ?: return false
+        return super.equals(o) && o.coroutine == coroutine
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + coroutine.hashCode()
+        return result
+    }
+
 }

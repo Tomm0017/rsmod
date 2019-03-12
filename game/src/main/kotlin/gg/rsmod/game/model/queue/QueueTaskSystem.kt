@@ -1,6 +1,6 @@
 package gg.rsmod.game.model.queue
 
-import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.game.model.entity.Player
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import java.util.*
@@ -13,8 +13,7 @@ import kotlin.coroutines.resume
  * @param headPriority
  * If true, the last inserted [QueueTask] takes priority and trailing [QueueTask]s are not
  * taken into account until said task is finished.
- * If false, all [QueueTask]s in [queue] have their plugin invoke [Plugin.cycle]
- * every [cycle].
+ * If false, all [QueueTask]s in [queue] will [QueueTask.cycle].
  *
  * @author Tom <rspsmods@gmail.com>
  */
@@ -24,19 +23,17 @@ class QueueTaskSystem(private val headPriority: Boolean) {
 
     val size: Int get() = queue.size
 
+    private fun hasMenuOpen(player: Player): Boolean = player.world.plugins.isMenuOpened(player)
+
     fun queue(ctx: Any, dispatcher: CoroutineDispatcher, priority: TaskPriority, block: suspend QueueTask.(CoroutineScope) -> Unit) {
         val task = QueueTask(ctx, priority)
         val suspendBlock = suspend { block(task, CoroutineScope(dispatcher)) }
-        val continuation = suspendBlock.createCoroutine(completion = task)
+
+        task.coroutine = suspendBlock.createCoroutine(completion = task)
 
         if (priority == TaskPriority.STRONG) {
             terminateTasks()
         }
-
-        // TODO: remove code below this as we're going to be redoing it to match
-        // how osrs does their queues
-        task.invoked = true
-        continuation.resume(Unit)
 
         queue.addFirst(task)
     }
@@ -44,18 +41,26 @@ class QueueTaskSystem(private val headPriority: Boolean) {
     fun cycle() {
         if (headPriority) {
             while (true) {
-                val task = queue.peek() ?: break
+                val task = queue.peekFirst() ?: break
 
                 if (!task.invoked) {
+
+                    if (task.priority == TaskPriority.STANDARD && task.ctx is Player && hasMenuOpen(task.ctx)) {
+                        /**
+                         * @see TaskPriority.STANDARD
+                         */
+                        break
+                    }
+
                     task.invoked = true
-                    //task.continuation.resume(Unit)
+                    task.coroutine.resume(Unit)
                 }
 
                 task.cycle()
 
                 if (!task.suspended()) {
                     /**
-                     * Plugin is no longer in a suspended state, which means its job is
+                     * Task is no longer in a suspended state, which means its job is
                      * complete.
                      */
                     queue.remove(task)
@@ -71,6 +76,11 @@ class QueueTaskSystem(private val headPriority: Boolean) {
             val iterator = queue.iterator()
             while (iterator.hasNext()) {
                 val task = iterator.next()
+
+                if (!task.invoked) {
+                    task.invoked = true
+                    task.coroutine.resume(Unit)
+                }
 
                 task.cycle()
 

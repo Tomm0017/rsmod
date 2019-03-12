@@ -53,7 +53,11 @@ class GamePacketDecoder(private val random: IsaacRandom?, private val packetMeta
                         } else if (length == -2) {
                             length = buf.readUnsignedShort()
                         }
-                        buf.skipBytes(length)
+                        try {
+                            buf.skipBytes(length)
+                        } catch (e: IndexOutOfBoundsException) {
+                            logger.error(e) { "Could not skip length of $length for message with opcode $opcode" }
+                        }
                     }
                 }
                 PacketType.FIXED -> {

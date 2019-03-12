@@ -273,6 +273,10 @@ fun Player.setVarbit(id: Int, value: Int) {
     varps.setBit(def.varp, def.startBit, def.endBit, value)
 }
 
+/**
+ * Write a varbit message to the player's client without actually modifying
+ * its varp value in [Player.varps].
+ */
 fun Player.sendTempVarbit(id: Int, value: Int) {
     val def = world.definitions.get(VarbitDef::class.java, id)
     val state = BitManipulation.setBit(varps.getState(def.varp), def.startBit, def.endBit, value)

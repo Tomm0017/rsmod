@@ -8,23 +8,18 @@ package gg.rsmod.game.model.queue
 enum class TaskPriority {
 
     /**
-     * A weak queue task can be cancelled when a player clicks away.
+     * A weak priority task is cancelled if the player clicks away.
      */
     WEAK,
 
     /**
-     * A standard queue task will execute immediately. If you have other tasks
-     * pending, they will wait until this priority completes first and then continue.
-     *
-     * This priority type is cancelled when a player clicks away.
+     * A standard priority task will wait if you have a menu open,
+     * and execute when said menu closes.
      */
     STANDARD,
 
     /**
-     * A strong queue task will terminate all previous tasks and execute
-     * immediately.
-     *
-     * This priority type is cancelled when a player clicks away.
+     * A strong priority task will close menus to execute itself sooner.
      */
     STRONG
 }

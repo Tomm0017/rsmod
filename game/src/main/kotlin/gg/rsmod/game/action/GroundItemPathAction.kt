@@ -29,7 +29,7 @@ object GroundItemPathAction {
         } else {
             p.walkTo(item.tile, MovementQueue.StepType.NORMAL)
             p.queue {
-                onInterrupt = {
+                terminateAction = {
                     p.stopMovement()
                     p.write(SetMapFlagMessage(255, 255))
                 }

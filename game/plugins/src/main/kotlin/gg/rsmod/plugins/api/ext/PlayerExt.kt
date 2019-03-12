@@ -273,7 +273,7 @@ fun Player.setVarbit(id: Int, value: Int) {
     varps.setBit(def.varp, def.startBit, def.endBit, value)
 }
 
-fun Player.setTempVarbit(id: Int, value: Int) {
+fun Player.sendTempVarbit(id: Int, value: Int) {
     val def = world.definitions.get(VarbitDef::class.java, id)
     val state = BitManipulation.setBit(varps.getState(def.varp), def.startBit, def.endBit, value)
     val message = if (state in -Byte.MAX_VALUE..Byte.MAX_VALUE) VarpSmallMessage(def.varp, state) else VarpLargeMessage(def.varp, state)

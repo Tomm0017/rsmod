@@ -8,6 +8,9 @@ import mu.KotlinLogging
 import kotlin.coroutines.*
 
 /**
+ * Represents a task that can be paused, or suspended, and resumed at any point
+ * in the future.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Unit> {
@@ -16,19 +19,21 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
         private val logger = KotlinLogging.logger {  }
     }
 
+    /**
+     * If the task's logic has already been invoked.
+     */
     var invoked = false
 
     /**
-     * A value that can be requested by a plugin, such as an input for dialogs.
+     * A value that can be requested by a task, such as an input for dialogs.
      */
     var requestReturnValue: Any? = null
 
     /**
-     * Can represent an action that should be executed if, and only if, this plugin
-     * was interrupted by another action such as walking or a new script being
-     * executed by the same [ctx].
+     * Can represent an action that should be executed if, and only if, this task
+     * was terminated [terminate].
      */
-    var onInterrupt: ((QueueTask).() -> Unit)? = null
+    var terminateAction: ((QueueTask).() -> Unit)? = null
 
     /**
      * The next [SuspendableStep], if any, that must be handled once a [SuspendableCondition]
@@ -37,7 +42,7 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
     private var nextStep: SuspendableStep? = null
 
     /**
-     * The [CoroutineContext] implementation for our [Plugin].
+     * The [CoroutineContext] implementation for our task.
      */
     override val context: CoroutineContext = EmptyCoroutineContext
 
@@ -51,8 +56,8 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
     }
 
     /**
-     * The logic in each [SuspendableStep] must be game-thread-safe, so we use [cycle]
-     * method to keep them in-sync.
+     * The logic in each [SuspendableStep] must be game-thread-safe, so we use
+     * this method to keep them in-sync.
      */
     internal fun cycle() {
         val next = nextStep ?: return
@@ -64,22 +69,22 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
     }
 
     /**
-     * Terminate any further execution of this plugin, at any state.
+     * Terminate any further execution of this task, during any state.
      */
     fun terminate() {
         nextStep = null
         requestReturnValue = null
-        onInterrupt?.invoke(this)
+        terminateAction?.invoke(this)
     }
 
     /**
-     * If the plugin has been suspended.
+     * If the task has been "paused" (aka suspended).
      */
     fun suspended(): Boolean = nextStep != null
 
     /**
      * Wait for the specified amount of game cycles [cycles] before
-     * continuing the logic associated with this plugin.
+     * continuing the logic associated with this task.
      */
     suspend fun wait(cycles: Int): Unit = suspendCoroutine {
         check(cycles > 0) { "Wait cycles must be greater than 0." }
@@ -110,7 +115,8 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
     }
 
     /**
-     * Wait for a return value to be available before continuing.
+     * Wait for <strong>any</strong> return value to be available before
+     * continuing.
      */
     suspend fun waitReturnValue(): Unit = suspendCoroutine {
         nextStep = SuspendableStep(PredicateCondition { requestReturnValue != null }, it)

@@ -33,7 +33,7 @@ object ObjectPathAction {
         val lineOfSightRange = player.world.plugins.getObjInteractionDistance(obj.id)
 
         player.queue {
-            onInterrupt = {
+            terminateAction = {
                 player.stopMovement()
                 player.write(SetMapFlagMessage(255, 255))
             }

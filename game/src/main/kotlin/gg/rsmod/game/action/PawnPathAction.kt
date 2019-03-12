@@ -32,7 +32,7 @@ object PawnPathAction {
         val lineOfSightRange = world.plugins.getNpcInteractionDistance(npcId)
 
         pawn.queue {
-            onInterrupt = {
+            terminateAction = {
                 pawn.stopMovement()
                 if (pawn is Player) {
                     pawn.write(SetMapFlagMessage(255, 255))

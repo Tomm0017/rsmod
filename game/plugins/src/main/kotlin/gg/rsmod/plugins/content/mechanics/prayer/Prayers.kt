@@ -65,7 +65,7 @@ object Prayers {
             return
         }
 
-        it.onInterrupt = { p.syncVarp(ACTIVE_PRAYERS_VARP) }
+        it.terminateAction = { p.syncVarp(ACTIVE_PRAYERS_VARP) }
         while (p.lock.delaysPrayer()) {
             it.wait(1)
         }

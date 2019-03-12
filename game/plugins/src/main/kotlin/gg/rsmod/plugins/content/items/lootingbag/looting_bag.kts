@@ -243,7 +243,7 @@ fun deposit(p: Player) {
 
 fun set_queue(p: Player) {
     p.queue(TaskPriority.STRONG) {
-        onInterrupt = {
+        terminateAction = {
             if (p.interfaces.isVisible(TAB_INTERFACE_ID)) {
                 p.closeInterface(TAB_INTERFACE_ID)
             }

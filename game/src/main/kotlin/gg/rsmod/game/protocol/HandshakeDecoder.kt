@@ -19,8 +19,8 @@ import java.math.BigInteger
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class HandshakeDecoder(private val revision: Int, private val rsaExponent: BigInteger?,
-                       private val rsaModulus: BigInteger?) : ByteToMessageDecoder() {
+class HandshakeDecoder(private val revision: Int, private val cacheIndexCount: Int,
+                       private val rsaExponent: BigInteger?, private val rsaModulus: BigInteger?) : ByteToMessageDecoder() {
 
     companion object {
         private val logger = KotlinLogging.logger {  }
@@ -44,7 +44,7 @@ class HandshakeDecoder(private val revision: Int, private val rsaExponent: BigIn
                 val serverSeed = (Math.random() * Long.MAX_VALUE).toLong()
 
                 p.addFirst("login_encoder", LoginEncoder())
-                p.addAfter("handshake_decoder", "login_decoder", LoginDecoder(revision, rsaExponent, rsaModulus, serverSeed))
+                p.addAfter("handshake_decoder", "login_decoder", LoginDecoder(revision, cacheIndexCount, serverSeed, rsaExponent, rsaModulus))
 
                 ctx.writeAndFlush(ctx.alloc().buffer(1).writeByte(0))
                 ctx.writeAndFlush(ctx.alloc().buffer(8).writeLong(serverSeed))

@@ -15,8 +15,8 @@ import java.util.concurrent.Executors
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class ClientChannelInitializer(private val revision: Int, private val rsaExponent: BigInteger?,
-                               private val rsaModulus: BigInteger?, filestore: Store, world: World) : ChannelInitializer<SocketChannel>() {
+class ClientChannelInitializer(private val revision: Int, private val rsaExponent: BigInteger?, private val rsaModulus: BigInteger?,
+                               private val filestore: Store, world: World) : ChannelInitializer<SocketChannel>() {
 
     /**
      * A global traffic handler that limits the amount of bandwidth all channels
@@ -32,12 +32,13 @@ class ClientChannelInitializer(private val revision: Int, private val rsaExponen
 
     override fun initChannel(ch: SocketChannel) {
         val p = ch.pipeline()
+        val indexCount = filestore.indexes.size - 1
 
         p.addLast("global_traffic", globalTrafficHandler)
         p.addLast("channel_traffic", ChannelTrafficShapingHandler(0, 1024 * 5, 1000))
         p.addLast("timeout", IdleStateHandler(30, 0, 0))
         p.addLast("handshake_encoder", HandshakeEncoder())
-        p.addLast("handshake_decoder", HandshakeDecoder(revision, rsaExponent, rsaModulus))
+        p.addLast("handshake_decoder", HandshakeDecoder(revision = revision, cacheIndexCount = indexCount, rsaExponent = rsaExponent, rsaModulus = rsaModulus))
         p.addLast("handler", handler)
     }
 }

@@ -14,8 +14,8 @@ import java.math.BigInteger
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class LoginDecoder(private val serverRevision: Int, private val rsaExponent: BigInteger?,
-                   private val rsaModulus: BigInteger?, private val serverSeed: Long) : StatefulFrameDecoder<LoginDecoderState>(LoginDecoderState.HANDSHAKE) {
+class LoginDecoder(private val serverRevision: Int, private val cacheIndexCount: Int, private val serverSeed: Long,
+                   private val rsaExponent: BigInteger?, private val rsaModulus: BigInteger?) : StatefulFrameDecoder<LoginDecoderState>(LoginDecoderState.HANDSHAKE) {
 
     companion object {
         private val logger = KotlinLogging.logger {  }
@@ -153,9 +153,7 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
             xteaBuf.skipBytes(1)
             xteaBuf.skipBytes(Int.SIZE_BYTES)
 
-            // TODO: specify amount of cache files through a constructor param
-            // and use it here instead of having to manually edit this every time
-            val crcs = IntArray(20) { xteaBuf.readInt() }
+            val crcs = IntArray(cacheIndexCount) { xteaBuf.readInt() }
 
             logger.info { "User '$username' login request from ${ctx.channel()}." }
 

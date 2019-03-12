@@ -8,12 +8,12 @@ import kotlin.coroutines.createCoroutine
 import kotlin.coroutines.resume
 
 /**
- * A system responsible for the the coroutine logic.
+ * A system responsible for task coroutine logic.
  *
  * @param headPriority
  * If true, the last inserted [QueueTask] takes priority and trailing [QueueTask]s are not
  * taken into account until said task is finished.
- * If false, all [QueueTask]s in [queue] will [QueueTask.cycle].
+ * If false, all [QueueTask]s in [queue] will invoke [QueueTask.cycle].
  *
  * @author Tom <rspsmods@gmail.com>
  */
@@ -106,6 +106,10 @@ class QueueTaskSystem(private val headPriority: Boolean) {
         task.requestReturnValue = value
     }
 
+    /**
+     * Remove all [QueueTask] from our [queue], invoking each task's [QueueTask.terminate]
+     * before-hand.
+     */
     fun terminateTasks() {
         queue.forEach { it.terminate() }
         queue.clear()

@@ -19,5 +19,4 @@ class LoginEncoder : MessageToByteEncoder<LoginResponse>() {
         out.writeShort(msg.index)
         out.writeBoolean(true) // members
     }
-
 }

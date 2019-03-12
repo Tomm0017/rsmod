@@ -49,7 +49,7 @@ class Server {
     @Throws(Exception::class)
     fun startServer(apiProps: Path) {
         Thread.setDefaultUncaughtExceptionHandler { t, e -> logger.error("Uncaught server exception in thread $t!", e) }
-        val overallStopwatch = Stopwatch.createStarted()
+        val stopwatch = Stopwatch.createStarted()
 
         /**
          * Load the API property file.
@@ -60,7 +60,7 @@ class Server {
         /**
          * Inform the time it took to load the API related logic.
          */
-        logger.info("${getApiName()} loaded up in ${overallStopwatch.elapsed(TimeUnit.MILLISECONDS)}ms.")
+        logger.info("${getApiName()} loaded up in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms.")
         logger.info("Visit our site ${getApiSite()} to purchase & sell plugins.")
     }
 
@@ -75,7 +75,6 @@ class Server {
     fun startGame(filestore: Path, gameProps: Path, packets: Path, blocks: Path, devProps: Path?, args: Array<String>): World {
         val stopwatch = Stopwatch.createStarted()
         val individualStopwatch = Stopwatch.createUnstarted()
-
 
         /**
          * Load the game property file.
@@ -156,7 +155,8 @@ class Server {
          * Load the plugins for game content.
          */
         individualStopwatch.reset().start()
-        world.plugins.init(jarPluginsDirectory = gameProperties.getOrDefault("plugin-packed-path", "../plugins"),
+        world.plugins.init(
+                jarPluginsDirectory = gameProperties.getOrDefault("plugin-packed-path", "../plugins"),
                 analyzeMode = args.any { it == "-analyze" })
         logger.info("Loaded {} plugins in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 

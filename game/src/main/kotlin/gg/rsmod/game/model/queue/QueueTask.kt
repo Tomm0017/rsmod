@@ -32,8 +32,8 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
     var requestReturnValue: Any? = null
 
     /**
-     * Can represent an action that should be executed if, and only if, this task
-     * was terminated [terminate].
+     * Represents an action that should be executed if, and only if, this task
+     * was terminated via [terminate].
      */
     var terminateAction: ((QueueTask).() -> Unit)? = null
 
@@ -71,7 +71,8 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
     }
 
     /**
-     * Terminate any further execution of this task, during any state.
+     * Terminate any further execution of this task, during any state,
+     * and invoke [terminateAction] if applicable (not null).
      */
     fun terminate() {
         nextStep = null

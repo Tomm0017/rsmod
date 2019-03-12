@@ -43,10 +43,10 @@ class QueueTaskSystem(private val headPriority: Boolean) {
             while (true) {
                 val task = queue.peekFirst() ?: break
 
+                /**
+                 * @see TaskPriority.STANDARD
+                 */
                 if (task.priority == TaskPriority.STANDARD && task.ctx is Player && hasMenuOpen(task.ctx)) {
-                    /**
-                     * @see TaskPriority.STANDARD
-                     */
                     break
                 }
 
@@ -102,7 +102,7 @@ class QueueTaskSystem(private val headPriority: Boolean) {
      * The return value that the plugin has asked for.
      */
     fun submitReturnValue(value: Any) {
-        val task = queue.peek()!! // Shouldn't call this method without a queued task.
+        val task = queue.peek() ?: return // Shouldn't call this method without a queued task.
         task.requestReturnValue = value
     }
 

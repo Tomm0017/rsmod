@@ -153,7 +153,9 @@ class LoginDecoder(private val serverRevision: Int, private val rsaExponent: Big
             xteaBuf.skipBytes(1)
             xteaBuf.skipBytes(Int.SIZE_BYTES)
 
-            val crcs = IntArray(18) { xteaBuf.readInt() }
+            // TODO: specify amount of cache files through a constructor param
+            // and use it here instead of having to manually edit this every time
+            val crcs = IntArray(20) { xteaBuf.readInt() }
 
             logger.info { "User '$username' login request from ${ctx.channel()}." }
 

@@ -54,6 +54,7 @@ on_login {
     if (player.getVarp(1055) == 0 && displayName) {
         player.syncVarp(1055)
     }
+    player.setVarbit(8119, 1) // Has display name
 
     /**
      * Game-related logic.

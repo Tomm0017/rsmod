@@ -8,7 +8,6 @@ import gg.rsmod.util.ServerProperties
 import mu.KotlinLogging
 import net.runelite.cache.IndexType
 import org.apache.commons.io.FilenameUtils
-import org.apache.logging.log4j.LogManager
 import java.io.FileNotFoundException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -26,7 +25,6 @@ class XteaKeyService : Service() {
 
     private val keys = hashMapOf<Int, IntArray>()
 
-    @Throws(Exception::class)
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         val path = Paths.get(serviceProperties.get<String>("path")!!)
         if (!Files.exists(path)) {

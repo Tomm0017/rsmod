@@ -16,6 +16,10 @@ import java.util.concurrent.Future
  */
 class PluginHotswapTask : GameTask {
 
+    /**
+     * TODO: this doesn't work properly yet.
+     */
+
     companion object {
         private val logger = KotlinLogging.logger {  }
     }
@@ -41,7 +45,9 @@ class PluginHotswapTask : GameTask {
     private fun initiateSwap(world: World) {
         pluginRepository = executor.submit(Callable<PluginRepository> {
             val repository = PluginRepository(world)
-            repository.loadPlugins(jarPluginsDirectory = "./../plugins", analyzeMode = false)
+            repository.loadPlugins(
+                    jarPluginsDirectory = "./../plugins",
+                    analyzeMode = false)
             return@Callable repository
         })
     }

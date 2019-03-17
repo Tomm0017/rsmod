@@ -87,7 +87,6 @@ class MessageDecoderSet {
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     fun get(opcode: Int): MessageDecoder<*>? {
         return decoders[opcode]
     }

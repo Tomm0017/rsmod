@@ -125,7 +125,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
 
             return PlayerLoadResult.LOAD_ACCOUNT
         } catch (e: Exception) {
-            logger.error("Error when loading player: ${request.username}", e)
+            logger.error(e) { "Error when loading player: ${request.username}" }
             return PlayerLoadResult.MALFORMED
         }
     }

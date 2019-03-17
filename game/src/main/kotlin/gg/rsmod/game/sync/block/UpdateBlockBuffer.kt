@@ -9,8 +9,10 @@ import gg.rsmod.game.model.Hit
 class UpdateBlockBuffer {
 
     private var mask = 0
+
     var forceChat = ""
     lateinit var publicChat: ChatMessage
+
     var faceDegrees = 0
     var facePawnIndex = -1
 

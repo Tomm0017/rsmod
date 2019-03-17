@@ -15,6 +15,7 @@ class ChunkCreationTask : GameTask {
 
     override fun execute(world: World, service: GameService) {
         world.players.forEach { p ->
+
             if (p.lastChunkTile == null || !p.tile.sameAs(p.lastChunkTile!!)) {
 
                 if (p.lastChunkTile != null) {

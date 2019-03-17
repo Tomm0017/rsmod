@@ -36,7 +36,6 @@ class RsaService : Service() {
 
     private lateinit var modulus: BigInteger
 
-    @Throws(RuntimeException::class)
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         keyPath = Paths.get(serviceProperties.getOrDefault("path", "./data/rsa/key.pem"))
 
@@ -47,8 +46,8 @@ class RsaService : Service() {
         }
 
         try {
-            PemReader(Files.newBufferedReader(keyPath)).use { pemReader ->
-                val pem = pemReader.readPemObject()
+            PemReader(Files.newBufferedReader(keyPath)).use { reader ->
+                val pem = reader.readPemObject()
                 val keySpec = PKCS8EncodedKeySpec(pem.content)
 
                 Security.addProvider(BouncyCastleProvider())

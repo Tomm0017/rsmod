@@ -25,11 +25,6 @@ class LoginWorker(private val boss: LoginService) : Runnable {
         while (true) {
             val request = boss.requests.take()
             try {
-                if (request.login.crcs.filterIndexed { index, crc -> crc != request.login.crcs[index] }.isNotEmpty()) {
-                    request.login.channel.writeAndFlush(LoginResultType.REVISION_MISMATCH).addListener(ChannelFutureListener.CLOSE)
-                    continue
-                }
-
                 val client = Client.fromRequest(request.world, request.login)
                 val loadResult: PlayerLoadResult = boss.serializer.loadClientData(client, request.login)
 

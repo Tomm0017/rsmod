@@ -10,12 +10,13 @@ import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import mu.KotlinLogging
 import java.math.BigInteger
+import java.util.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class LoginDecoder(private val serverRevision: Int, private val cacheIndexCount: Int, private val serverSeed: Long,
-                   private val rsaExponent: BigInteger?, private val rsaModulus: BigInteger?) : StatefulFrameDecoder<LoginDecoderState>(LoginDecoderState.HANDSHAKE) {
+class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntArray,
+                   private val serverSeed: Long, private val rsaExponent: BigInteger?, private val rsaModulus: BigInteger?) : StatefulFrameDecoder<LoginDecoderState>(LoginDecoderState.HANDSHAKE) {
 
     companion object {
         private val logger = KotlinLogging.logger {  }
@@ -43,7 +44,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheIndexCount:
                 reconnecting = opcode == RECONNECT_OPCODE
                 setState(LoginDecoderState.HEADER)
             } else {
-                writeResponse(ctx, LoginResultType.BAD_SESSION_ID)
+                ctx.writeResponse(LoginResultType.BAD_SESSION_ID)
             }
         }
     }
@@ -59,7 +60,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheIndexCount:
                     payloadLength = size - (Int.SIZE_BYTES + Int.SIZE_BYTES + Byte.SIZE_BYTES)
                     decodePayload(ctx, buf, out)
                 } else {
-                    writeResponse(ctx, LoginResultType.REVISION_MISMATCH)
+                    ctx.writeResponse(LoginResultType.REVISION_MISMATCH)
                 }
             } else {
                 buf.resetReaderIndex()
@@ -85,7 +86,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheIndexCount:
                 buf.resetReaderIndex()
                 buf.skipBytes(payloadLength)
                 logger.info("Channel '{}' login request rejected.", ctx.channel())
-                writeResponse(ctx, LoginResultType.BAD_SESSION_ID)
+                ctx.writeResponse(LoginResultType.BAD_SESSION_ID)
                 return
             }
 
@@ -126,7 +127,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheIndexCount:
                 xteaBuf.resetReaderIndex()
                 xteaBuf.skipBytes(payloadLength)
                 logger.info("User '{}' login request seed mismatch [receivedSeed=$reportedSeed, expectedSeed=$serverSeed].", username, reportedSeed, serverSeed)
-                writeResponse(ctx, LoginResultType.BAD_SESSION_ID)
+                ctx.writeResponse(LoginResultType.BAD_SESSION_ID)
                 return
             }
 
@@ -137,39 +138,61 @@ class LoginDecoder(private val serverRevision: Int, private val cacheIndexCount:
 
             xteaBuf.skipBytes(24) // random.dat data
             xteaBuf.readString()
-            xteaBuf.skipBytes(4)
-
-            xteaBuf.skipBytes(17)
-            xteaBuf.readJagexString()
-            xteaBuf.readJagexString()
-            xteaBuf.readJagexString()
-            xteaBuf.readJagexString()
-            xteaBuf.skipBytes(3)
-            xteaBuf.readJagexString()
-            xteaBuf.readJagexString()
-            xteaBuf.skipBytes(2)
-            xteaBuf.skipBytes(4 * 3)
-            xteaBuf.skipBytes(4)
-            xteaBuf.skipBytes(1)
             xteaBuf.skipBytes(Int.SIZE_BYTES)
 
-            val crcs = IntArray(cacheIndexCount) { xteaBuf.readInt() }
+            xteaBuf.skipBytes(Byte.SIZE_BYTES * 9)
+            xteaBuf.skipBytes(Short.SIZE_BYTES)
+            xteaBuf.skipBytes(Byte.SIZE_BYTES)
+            xteaBuf.skipBytes(Byte.SIZE_BYTES * 3)
+            xteaBuf.skipBytes(Short.SIZE_BYTES)
+            xteaBuf.readJagexString()
+            xteaBuf.readJagexString()
+            xteaBuf.readJagexString()
+            xteaBuf.readJagexString()
+            xteaBuf.skipBytes(Byte.SIZE_BYTES)
+            xteaBuf.skipBytes(Short.SIZE_BYTES)
+            xteaBuf.readJagexString()
+            xteaBuf.readJagexString()
+            xteaBuf.skipBytes(Byte.SIZE_BYTES * 2)
+            xteaBuf.skipBytes(Int.SIZE_BYTES * 3)
+            xteaBuf.skipBytes(Int.SIZE_BYTES)
+            xteaBuf.readJagexString()
+
+            xteaBuf.skipBytes(Int.SIZE_BYTES * 3)
+
+            val crcs = IntArray(cacheCrcs.size) { xteaBuf.readInt() }
+
+            for (i in 0 until crcs.size) {
+                /**
+                 * CRC for index 16 is always sent as 0 (at least on the
+                 * Desktop client, need to look into mobile).
+                 */
+                if (i == 16) {
+                    continue
+                }
+                if (crcs[i] != cacheCrcs[i]) {
+                    buf.resetReaderIndex()
+                    buf.skipBytes(payloadLength)
+                    logger.info { "User '$username' login request crc mismatch [requestCrc=${Arrays.toString(crcs)}, cacheCrc=${Arrays.toString(cacheCrcs)}]." }
+                    ctx.writeResponse(LoginResultType.REVISION_MISMATCH)
+                    return
+                }
+            }
 
             logger.info { "User '$username' login request from ${ctx.channel()}." }
 
             val request = LoginRequest(channel = ctx.channel(), username = username,
                     password = password ?: "", revision = serverRevision, xteaKeys = xteaKeys,
-                    crcs = crcs, resizableClient = clientResizable, auth = authCode,
-                    uuid = "".toUpperCase(), clientWidth = clientWidth, clientHeight = clientHeight,
+                    resizableClient = clientResizable, auth = authCode, uuid = "".toUpperCase(), clientWidth = clientWidth, clientHeight = clientHeight,
                     reconnecting = reconnecting)
             out.add(request)
         }
     }
 
-    private fun writeResponse(ctx: ChannelHandlerContext, result: LoginResultType) {
-        val buf = ctx.channel().alloc().buffer(1)
+    private fun ChannelHandlerContext.writeResponse(result: LoginResultType) {
+        val buf = channel().alloc().buffer(1)
         buf.writeByte(result.id)
-        ctx.writeAndFlush(buf).addListener(ChannelFutureListener.CLOSE)
+        writeAndFlush(buf).addListener(ChannelFutureListener.CLOSE)
     }
 
     private fun ByteBuf.decipher(xteaKeys: IntArray): ByteBuf {

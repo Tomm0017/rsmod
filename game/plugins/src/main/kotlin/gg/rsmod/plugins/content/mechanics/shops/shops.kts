@@ -1,6 +1,5 @@
 package gg.rsmod.plugins.content.mechanics.shops
 
-import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
 
 val SHOP_INTERFACE_ID = 300

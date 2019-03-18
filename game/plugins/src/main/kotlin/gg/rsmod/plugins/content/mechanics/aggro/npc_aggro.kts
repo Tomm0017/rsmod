@@ -1,6 +1,5 @@
 package gg.rsmod.plugins.content.mechanics.aggro
 
-import gg.rsmod.game.model.EntityType
 import gg.rsmod.plugins.content.combat.isAttacking
 
 val AGGRO_CHECK_TIMER = TimerKey()

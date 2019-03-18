@@ -20,14 +20,14 @@ class InstancedMap(val area: Area, val chunks: InstancedChunkSet) {
      * zzzzzzzzzzzzz-xxxxxxxxxxxxx-hhhhhhhhhhhhh
      * `
      */
-    fun getCoordinates(abs: Tile): IntArray {
+    fun getCoordinates(relative: Tile): IntArray {
         val heights = Tile.TOTAL_HEIGHT_LEVELS
         val bounds = Chunk.CHUNKS_PER_REGION
 
         val coordinates = IntArray(heights * bounds * bounds)
 
-        val startX = abs.x - 48
-        val startZ = abs.z - 48
+        val startX = relative.x - 48
+        val startZ = relative.z - 48
 
         var index = 0
         for (height in 0 until heights) {

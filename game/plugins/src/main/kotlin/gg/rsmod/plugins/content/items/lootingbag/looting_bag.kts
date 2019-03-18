@@ -1,14 +1,8 @@
 package gg.rsmod.plugins.content.items.lootingbag
 
 import gg.rsmod.game.fs.def.ItemDef
-import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.game.model.attr.GROUNDITEM_PICKUP_TRANSACTION
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
-import gg.rsmod.game.model.container.ContainerStackType
-import gg.rsmod.game.model.container.ItemContainer
-import gg.rsmod.game.model.container.key.ContainerKey
-import gg.rsmod.game.model.item.Item
-import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
 
 val CONTAINER_KEY = ContainerKey("looting_bag", capacity = 28, stackType = ContainerStackType.NORMAL)

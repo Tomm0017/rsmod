@@ -406,7 +406,7 @@ open class Player(world: World) : Pawn(world) {
                     continue
                 }
                 externalPlayerIndices[externalPlayerCount++] = i
-                playerTiles[i] = world.players[i]?.tile?.as18BitInteger ?: 0
+                //playerTiles[i] = if (i < world.players.capacity) world.players[i]?.tile?.as18BitInteger ?: 0 else 0
             }
 
             write(RebuildLoginMessage(index, tile, playerTiles, world.xteaKeyService))

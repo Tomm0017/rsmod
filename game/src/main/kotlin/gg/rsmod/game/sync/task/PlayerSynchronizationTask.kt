@@ -66,160 +66,104 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         return players
     }
 
+    private fun addLocalSegments(initial: Boolean, segments: MutableList<SynchronizationSegment>) {
+        var skipCount = 0
+
+        for (i in 0 until player.localPlayerCount) {
+            val index = player.localPlayerIndices[i]
+            val local = player.localPlayers[index]
+
+            val skip = when {
+                initial -> (player.inactivityPlayerFlags[index] and 0x1) != 0
+                else -> (player.inactivityPlayerFlags[index] and 0x1) == 0
+            }
+
+            if (skip) {
+                continue
+            }
+
+            if (skipCount > 0) {
+                skipCount--
+                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
+                continue
+            }
+
+            if (local != player && (local == null || shouldRemove(local))) {
+                player.localPlayers[index] = null
+                player.otherPlayerTiles[index] = 0
+                segments.add(RemoveLocalPlayerSegment())
+                continue
+            }
+
+            val requiresBlockUpdate = local.blockBuffer.isDirty()
+            if (requiresBlockUpdate) {
+                segments.add(PlayerUpdateBlockSegment(other = local, newPlayer = false))
+            }
+            if (local.teleport) {
+                segments.add(PlayerTeleportSegment(player = player, other = local,
+                        index = index, encodeUpdateBlocks = requiresBlockUpdate))
+            } else if (local.steps != null) {
+                var dx = Misc.DIRECTION_DELTA_X[local.steps!!.walkDirection!!.playerWalkValue]
+                var dz = Misc.DIRECTION_DELTA_Z[local.steps!!.walkDirection!!.playerWalkValue]
+                var running = local.steps!!.runDirection != null
+
+                var direction = 0
+                if (running) {
+                    dx += Misc.DIRECTION_DELTA_X[local.steps!!.runDirection!!.playerWalkValue]
+                    dz += Misc.DIRECTION_DELTA_Z[local.steps!!.runDirection!!.playerWalkValue]
+                    direction = Misc.getPlayerRunningDirection(dx, dz)
+                    running = direction != -1
+                }
+                if (!running) {
+                    direction = Misc.getPlayerWalkingDirection(dx, dz)
+                }
+
+                segments.add(PlayerWalkSegment(encodeUpdateBlocks = requiresBlockUpdate, running = running,
+                        direction = direction))
+
+                if (!requiresBlockUpdate && running) {
+                    segments.add(PlayerUpdateBlockSegment(other = local, newPlayer = false))
+                }
+            } else if (requiresBlockUpdate) {
+                segments.add(SignalPlayerUpdateBlockSegment())
+            } else {
+                for (j in i + 1 until player.localPlayerCount) {
+                    val nextIndex = player.localPlayerIndices[j]
+                    val next = player.localPlayers[nextIndex]
+                    val skipNext = when {
+                        initial -> (player.inactivityPlayerFlags[nextIndex] and 0x1) != 0
+                        else -> (player.inactivityPlayerFlags[nextIndex] and 0x1) == 0
+                    }
+                    if (skipNext) {
+                        continue
+                    }
+                    if (next == null || next.blockBuffer.isDirty() || next.teleport || next.steps != null || next != player && shouldRemove(next)) {
+                        break
+                    }
+                    skipCount++
+                }
+                segments.add(PlayerSkipCountSegment(skipCount))
+                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
+            }
+        }
+
+        if (skipCount > 0) {
+            throw RuntimeException()
+        }
+    }
+
     private fun getSegments(): List<SynchronizationSegment> {
         val segments = arrayListOf<SynchronizationSegment>()
 
         var skipCount = 0
 
         segments.add(SetBitAccessSegment())
-        for (i in 0 until player.localPlayerCount) {
-            val index = player.localPlayerIndices[i]
-            val local = player.localPlayers[index]
-
-            if ((player.inactivityPlayerFlags[index] and 0x1) != 0) {
-                continue
-            }
-
-            if (skipCount > 0) {
-                skipCount--
-                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
-                continue
-            }
-
-            if (local != player && (local == null || shouldRemove(local))) {
-                player.localPlayers[index] = null
-                player.otherPlayerTiles[index] = 0
-                segments.add(RemoveLocalPlayerSegment())
-                continue
-            }
-
-            val requiresBlockUpdate = local.blockBuffer.isDirty()
-            if (requiresBlockUpdate) {
-                segments.add(PlayerUpdateBlockSegment(other = local, newPlayer = false))
-            }
-            if (local.teleport) {
-                segments.add(PlayerTeleportSegment(player = player, other = local,
-                        index = index, encodeUpdateBlocks = requiresBlockUpdate))
-            } else if (local.steps != null) {
-                var dx = Misc.DIRECTION_DELTA_X[local.steps!!.walkDirection!!.playerWalkValue]
-                var dz = Misc.DIRECTION_DELTA_Z[local.steps!!.walkDirection!!.playerWalkValue]
-                var running = local.steps!!.runDirection != null
-
-                var direction = 0
-                if (running) {
-                    dx += Misc.DIRECTION_DELTA_X[local.steps!!.runDirection!!.playerWalkValue]
-                    dz += Misc.DIRECTION_DELTA_Z[local.steps!!.runDirection!!.playerWalkValue]
-                    direction = Misc.getPlayerRunningDirection(dx, dz)
-                    running = direction != -1
-                }
-                if (!running) {
-                    direction = Misc.getPlayerWalkingDirection(dx, dz)
-                }
-
-                segments.add(PlayerWalkSegment(encodeUpdateBlocks = requiresBlockUpdate, running = running,
-                        direction = direction))
-
-                if (!requiresBlockUpdate && running) {
-                    segments.add(PlayerUpdateBlockSegment(other = local, newPlayer = false))
-                }
-            } else if (requiresBlockUpdate) {
-                segments.add(SignalPlayerUpdateBlockSegment())
-            } else {
-                for (j in i + 1 until player.localPlayerCount) {
-                    val nextIndex = player.localPlayerIndices[j]
-                    val next = player.localPlayers[nextIndex]
-                    if ((player.inactivityPlayerFlags[nextIndex] and 0x1) != 0) {
-                        continue
-                    }
-                    if (next == null || next.blockBuffer.isDirty() || next.teleport || next.steps != null || next != player && shouldRemove(next)) {
-                        break
-                    }
-                    skipCount++
-                }
-                segments.add(PlayerSkipCountSegment(skipCount))
-                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
-            }
-        }
+        addLocalSegments(true, segments)
         segments.add(SetByteAccessSegment())
-
-        if (skipCount > 0) {
-            throw RuntimeException()
-        }
 
         segments.add(SetBitAccessSegment())
-        for (i in 0 until player.localPlayerCount) {
-            val index = player.localPlayerIndices[i]
-            val local = player.localPlayers[index]
-
-            if ((player.inactivityPlayerFlags[index] and 0x1) == 0) {
-                continue
-            }
-
-            if (skipCount > 0) {
-                skipCount--
-                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
-                continue
-            }
-
-            if (local != player && (local == null || shouldRemove(local))) {
-                player.localPlayers[index] = null
-                player.otherPlayerTiles[index] = 0
-                segments.add(RemoveLocalPlayerSegment())
-                continue
-            }
-
-            val requiresBlockUpdate = local.blockBuffer.isDirty()
-            if (requiresBlockUpdate) {
-                segments.add(PlayerUpdateBlockSegment(other = local, newPlayer = false))
-            }
-            if (local.teleport) {
-                segments.add(PlayerTeleportSegment(player = player, other = local,
-                        index = index, encodeUpdateBlocks = requiresBlockUpdate))
-            } else if (local.steps != null) {
-                var dx = Misc.DIRECTION_DELTA_X[local.steps!!.walkDirection!!.playerWalkValue]
-                var dz = Misc.DIRECTION_DELTA_Z[local.steps!!.walkDirection!!.playerWalkValue]
-                var running = local.steps!!.runDirection != null
-
-                var direction = 0
-                if (running) {
-                    dx += Misc.DIRECTION_DELTA_X[local.steps!!.runDirection!!.playerWalkValue]
-                    dz += Misc.DIRECTION_DELTA_Z[local.steps!!.runDirection!!.playerWalkValue]
-                    direction = Misc.getPlayerRunningDirection(dx, dz)
-                    running = direction != -1
-                }
-                if (!running) {
-                    direction = Misc.getPlayerWalkingDirection(dx, dz)
-                }
-
-                segments.add(PlayerWalkSegment(encodeUpdateBlocks = requiresBlockUpdate, running = running,
-                        direction = direction))
-
-                if (!requiresBlockUpdate && running) {
-                    segments.add(PlayerUpdateBlockSegment(other = local, newPlayer = false))
-                }
-            } else if (requiresBlockUpdate) {
-                segments.add(SignalPlayerUpdateBlockSegment())
-            } else {
-                for (j in i + 1 until player.localPlayerCount) {
-                    val nextIndex = player.localPlayerIndices[j]
-                    val next = player.localPlayers[nextIndex]
-                    if ((player.inactivityPlayerFlags[nextIndex] and 0x1) == 0) {
-                        continue
-                    }
-                    if (next == null || next.blockBuffer.isDirty() || next.teleport || next.steps != null || next != player && shouldRemove(next)) {
-                        break
-                    }
-                    skipCount++
-                }
-                segments.add(PlayerSkipCountSegment(skipCount))
-                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
-            }
-        }
+        addLocalSegments(false, segments)
         segments.add(SetByteAccessSegment())
-
-        if (skipCount > 0) {
-            throw RuntimeException()
-        }
 
         segments.add(SetBitAccessSegment())
 

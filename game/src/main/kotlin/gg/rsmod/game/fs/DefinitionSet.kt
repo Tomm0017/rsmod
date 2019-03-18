@@ -190,6 +190,7 @@ class DefinitionSet {
         val blockedTileBuilder = CollisionUpdate.Builder()
         blockedTileBuilder.setType(CollisionUpdate.Type.ADD)
         blocked.forEach { tile ->
+            world.chunks.getOrCreate(tile).blockedTiles.add(tile)
             blockedTileBuilder.putTile(tile, false, *Direction.NESW)
         }
         world.collision.applyUpdate(blockedTileBuilder.build())

@@ -76,7 +76,7 @@ class Tile {
 
     fun step(direction: Direction, num: Int = 1): Tile = Tile(this.x + (num * direction.getDeltaX()), this.z + (num * direction.getDeltaZ()), this.height)
 
-    fun transformAndRotate(localX: Int, localZ: Int, orientation: Int, width: Int = 0, length: Int = 0): Tile {
+    fun transformAndRotate(localX: Int, localZ: Int, orientation: Int, width: Int = 1, length: Int = 1): Tile {
         val localWidth = Chunk.CHUNK_SIZE - 1
         val localLength = Chunk.CHUNK_SIZE - 1
 

@@ -11,8 +11,8 @@ import io.netty.buffer.Unpooled
 class RebuildRegionEncoder : MessageEncoder<RebuildRegionMessage>() {
 
     override fun extract(message: RebuildRegionMessage, key: String): Number = when (key) {
-        "x" -> message.x shr 3
-        "z" -> message.z shr 3
+        "x" -> message.x
+        "z" -> message.z
         "force_load" -> message.forceLoad
         else -> throw Exception("Unhandled value key.")
     }

@@ -29,20 +29,25 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         const val CHUNK_SIZE = 8
 
         /**
-         * The size of a region, in tiles.
+         * The amount of chunks in a region.
          */
-        const val REGION_SIZE = CHUNK_SIZE * 8
-
-        /**
-         * The size of the viewport a [gg.rsmod.game.model.entity.Player] can
-         * 'see' at a time, in tiles.
-         */
-        const val MAX_VIEWPORT = CHUNK_SIZE * 13
+        const val CHUNKS_PER_REGION = 13
 
         /**
          * The amount of [Chunk]s that can be viewed at a time by a player.
          */
         const val CHUNK_VIEW_RADIUS = 3
+
+        /**
+         * The size of a region, in tiles.
+         */
+        const val REGION_SIZE = CHUNK_SIZE * CHUNK_SIZE
+
+        /**
+         * The size of the viewport a [gg.rsmod.game.model.entity.Player] can
+         * 'see' at a time, in tiles.
+         */
+        const val MAX_VIEWPORT = CHUNK_SIZE * CHUNKS_PER_REGION
     }
 
     constructor(other: Chunk) : this(other.coords, other.heights) {
@@ -53,6 +58,8 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
      * The array of matrices of 8x8 tiles. Each index representing a height.
      */
     private val matrices: Array<CollisionMatrix> = CollisionMatrix.createMatrices(Tile.TOTAL_HEIGHT_LEVELS, CHUNK_SIZE, CHUNK_SIZE)
+
+    internal val blockedTiles: MutableSet<Tile> = hashSetOf()
 
     /**
      * The [Entity]s that are currently registered to the [Tile] key. This is

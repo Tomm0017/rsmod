@@ -11,15 +11,15 @@ import io.netty.buffer.Unpooled
 class RebuildNormalEncoder : MessageEncoder<RebuildNormalMessage>() {
 
     override fun extract(message: RebuildNormalMessage, key: String): Number = when (key) {
-        "x" -> message.x shr 3
-        "z" -> message.z shr 3
+        "x" -> message.x
+        "z" -> message.z
         else -> throw Exception("Unhandled value key.")
     }
 
     override fun extractBytes(message: RebuildNormalMessage, key: String): ByteArray = when (key) {
         "xteas" -> {
-            val chunkX = message.x shr 3
-            val chunkZ = message.z shr 3
+            val chunkX = message.x
+            val chunkZ = message.z
 
             val lx = (chunkX - (Chunk.MAX_VIEWPORT shr 4)) shr 3
             val rx = (chunkX + (Chunk.MAX_VIEWPORT shr 4)) shr 3

@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.content.inter.worldmap
 
-on_button(interfaceId = 160, component = 42) {
+on_button(interfaceId = 160, component = 43) {
     if (!player.lock.canInterfaceInteract()) {
         return@on_button
     }

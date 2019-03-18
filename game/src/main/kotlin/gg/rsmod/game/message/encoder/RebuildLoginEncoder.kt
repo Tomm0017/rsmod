@@ -39,7 +39,7 @@ class RebuildLoginEncoder : MessageEncoder<RebuildLoginMessage>() {
         /**
          * Since the xtea payload is exactly the same as the [RebuildNormalMessage], let's reuse it.
          */
-        "xteas" -> RebuildNormalEncoder().extractBytes(RebuildNormalMessage(message.tile.x, message.tile.z, message.xteaKeyService), key)
+        "xteas" -> RebuildNormalEncoder().extractBytes(RebuildNormalMessage(message.tile.x shr 3, message.tile.z shr 3, message.xteaKeyService), key)
         else -> throw Exception("Unhandled value key.")
     }
 }

@@ -19,7 +19,7 @@ class PlayerPostSynchronizationTask(val player: Player) : SynchronizationTask {
         player.steps = null
         player.blockBuffer.clean()
 
-        val oldChunk = if (oldTile != null) player.world.chunks.get(oldTile.chunkCoords, createIfNeeded = false)!! else null
+        val oldChunk = if (oldTile != null) player.world.chunks.get(oldTile.chunkCoords, createIfNeeded = false) else null
         val newChunk = player.world.chunks.get(player.tile.chunkCoords, createIfNeeded = false)
         if (oldChunk != newChunk && newChunk != null) {
             player.world.getService(GameService::class.java)?.let { service ->

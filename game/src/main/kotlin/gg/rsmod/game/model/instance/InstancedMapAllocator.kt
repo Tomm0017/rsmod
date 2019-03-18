@@ -29,7 +29,7 @@ class InstancedMapAllocator {
          * [Instance support]: the amount of instances the world can support at a time,
          * assuming every map is 64x64 in size, which isn't always the case.
          */
-        private val VALID_AREA = Area(6400, 128, 9600, 6400)//Area(bottomLeftX = 6400, bottomLeftZ = 0, topRightX = 9600, topRightZ = 6400)
+        private val VALID_AREA = Area(bottomLeftX = 6400, bottomLeftZ = 0, topRightX = 9600, topRightZ = 6400)
     }
 
     private val maps = arrayListOf<InstancedMap>()
@@ -96,14 +96,16 @@ class InstancedMapAllocator {
     private fun allocate(x: Int, z: Int, chunks: InstancedChunkSet): InstancedMap =
             InstancedMap(Area(x, z, x + chunks.regionSize * Chunk.REGION_SIZE, z + chunks.regionSize * Chunk.REGION_SIZE), chunks)
 
-    private fun deallocate(map: InstancedMap) {
+    private fun deallocate(world: World, map: InstancedMap) {
         if (maps.remove(map)) {
-            removeCollision(map)
+            removeCollision(world, map)
         }
     }
 
+    fun getMap(tile: Tile): InstancedMap? = maps.find { it.area.contains(tile) }
+
     fun applyCollision(world: World, map: InstancedMap, bypassObjectChunkBounds: Boolean) {
-        val bounds = InstancedChunkSet.CHUNK_BOUNDS
+        val bounds = Chunk.CHUNKS_PER_REGION * map.chunks.regionSize
         val heights = Tile.TOTAL_HEIGHT_LEVELS
 
         val chunks = map.chunks.values
@@ -118,7 +120,7 @@ class InstancedMapAllocator {
                     val chunkX = (coords shr 14) and 0x3FF
                     val chunkZ = coords and 0x7FF
 
-                    val baseTile = map.area.bottomLeft.transform((chunkX - 6) shl 3, (chunkZ - 6) shl 3, chunkH)
+                    val baseTile = map.area.bottomLeft.transform(chunkX shl 3, chunkZ shl 3, chunkH)
                     val newChunk = world.chunks.getOrCreate(baseTile)
 
                     if (chunk != null) {
@@ -131,18 +133,27 @@ class InstancedMapAllocator {
                                 val width = def.getRotatedWidth(obj)
                                 val length = def.getRotatedLength(obj)
 
-                                val localX = obj.tile.x - ((obj.tile.x shr 3) shl 3)
-                                val localZ = obj.tile.z - ((obj.tile.z shr 3) shl 3)
+                                val localX = obj.tile.x % 8
+                                val localZ = obj.tile.z % 8
 
                                 val newObj = DynamicObject(obj.id, obj.type, (obj.rot + chunk.rot) and 0x3, baseTile.transformAndRotate(localX, localZ, chunk.rot, width, length))
+                                val insideChunk = newObj.tile.isInSameChunk(baseTile)
 
-                                if (newObj.tile.isInSameChunk(baseTile)) {
+                                if (insideChunk) {
                                     newChunk.addEntity(world, newObj, newObj.tile)
-
                                 } else if (!bypassObjectChunkBounds) {
                                     throw IllegalStateException("Could not copy object due to its size and rotation outcome (object rotation + chunk rotation). " +
                                             "The object would, otherwise, be spawned out of bounds of its original chunk. [obj=$obj, copy=$newObj]")
                                 }
+                            }
+                        }
+
+                        copyChunk.blockedTiles.forEach { tile ->
+                            if (tile.height == chunkH && tile.isInSameChunk(copyTile)) {
+                                val localX = tile.x % 8
+                                val localZ = tile.z % 8
+                                val local = baseTile.transformAndRotate(localX, localZ, chunk.rot)
+                                newChunk.getMatrix(chunkH).block(local.x % 8, local.z % 8, impenetrable = true)
                             }
                         }
                     } else {
@@ -157,7 +168,13 @@ class InstancedMapAllocator {
         }
     }
 
-    fun removeCollision(map: InstancedMap) {
+    fun removeCollision(world: World, map: InstancedMap) {
+        val regionCount = map.chunks.regionSize
+        val chunks = world.chunks
 
+        for (i in 0 until regionCount) {
+            val tile = map.area.bottomLeft.transform(i * Chunk.REGION_SIZE, i * Chunk.REGION_SIZE)
+            chunks.remove(tile.chunkCoords)
+        }
     }
 }

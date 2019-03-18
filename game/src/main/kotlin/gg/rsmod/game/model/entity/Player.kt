@@ -5,6 +5,7 @@ import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.Coordinate
 import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
 import gg.rsmod.game.model.attr.LEVEL_UP_INCREMENT
 import gg.rsmod.game.model.attr.LEVEL_UP_OLD_XP
@@ -70,10 +71,10 @@ open class Player(world: World) : Pawn(world) {
     var privilege = Privilege.DEFAULT
 
     /**
-     * The base region [Tile] is the most bottom-left (south-west) tile where
+     * The base region [Coordinate] is the most bottom-left (south-west) tile where
      * the last known region for this player begins.
      */
-    var lastKnownRegionBase: Tile? = null
+    var lastKnownRegionBase: Coordinate? = null
 
     /**
      * A flag that indicates whether or not the [login] method has been executed.

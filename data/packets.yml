@@ -726,6 +726,27 @@ in-packets:
         order: LITTLE
         type: SHORT
 
+  - message: gg.rsmod.game.message.impl.OpLoc5Message
+    type: FIXED
+    opcode: 94
+    length: 7
+    structure:
+      - name: id
+        sign: UNSIGNED
+        type: SHORT
+      - name: movement_type
+        type: BYTE
+        trans: ADD
+      - name: x
+        sign: UNSIGNED
+        type: SHORT
+        trans: ADD
+      - name: z
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+
   - message: gg.rsmod.game.message.impl.IfButtonMessage
     type: FIXED
     opcodes: 68,21,48,19,40,66,85,14,84,0
@@ -1226,11 +1247,6 @@ in-packets:
     type: IGNORE
     opcode: 93
     length: 3
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPLOC5
-    type: IGNORE
-    opcode: 94
-    length: 7
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: RESUME_P_NAMEDIALOG
     type: IGNORE

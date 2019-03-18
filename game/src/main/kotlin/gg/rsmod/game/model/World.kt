@@ -13,6 +13,7 @@ import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
 import gg.rsmod.game.model.container.key.INVENTORY_KEY
 import gg.rsmod.game.model.entity.*
+import gg.rsmod.game.model.instance.InstancedMapAllocator
 import gg.rsmod.game.model.priv.PrivilegeSet
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.QueueTaskSystem
@@ -94,6 +95,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     val chunks = ChunkSet(this)
 
     val collision = CollisionManager(chunks)
+
+    val instanceAllocator = InstancedMapAllocator()
 
     /**
      * The plugin repository that's responsible for storing all the plugins found.

@@ -50,7 +50,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             for (x in -radius..radius) {
                 for (z in -radius..radius) {
                     val tile = player.tile.transform(x, z)
-                    val chunk = player.world.chunks.get(tile.toChunkCoords(), createIfNeeded = false) ?: continue
+                    val chunk = player.world.chunks.get(tile.asChunkCoords, createIfNeeded = false) ?: continue
                     chunk.getEntities<Player>(tile, EntityType.PLAYER, EntityType.CLIENT).forEach { p ->
                         if (p != player && players.size < MAX_LOCAL_PLAYERS) {
                             players.add(p)
@@ -241,7 +241,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
             if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE
                     && player.localPlayerCount + added < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
-                val tileHash = nonLocal.tile.to30BitInteger()
+                val tileHash = nonLocal.tile.as30BitInteger
                 segments.add(AddLocalPlayerSegment(player = player, other = nonLocal, index = index, tileHash = tileHash))
                 segments.add(PlayerUpdateBlockSegment(other = nonLocal, newPlayer = true))
 
@@ -292,7 +292,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
             if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE
                     && player.localPlayerCount + added < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
-                val tileHash = nonLocal.tile.to30BitInteger()
+                val tileHash = nonLocal.tile.as30BitInteger
                 segments.add(AddLocalPlayerSegment(player = player, other = nonLocal, index = index, tileHash = tileHash))
                 segments.add(PlayerUpdateBlockSegment(other = nonLocal, newPlayer = true))
 

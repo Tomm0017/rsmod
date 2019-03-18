@@ -17,11 +17,13 @@ data class Area(val bottomLeftX: Int, val bottomLeftZ: Int, val topRightX: Int, 
      * Example of when the tile is not perfectly centered:
      * [topRightX - bottomLeftZ % 2 != 0] or [topRightZ - bottomLeft % 2 != 0]
      */
-    fun getMiddleTileEstimate(): Tile = Tile(bottomLeftX + (topRightX - bottomLeftX), bottomLeftZ + (topRightZ - bottomLeftZ))
+    val centre: Tile get() = Tile(bottomLeftX + (topRightX - bottomLeftX), bottomLeftZ + (topRightZ - bottomLeftZ))
 
-    fun toBottomLeft(): Tile = Tile(bottomLeftX, bottomLeftZ)
+    val bottomLeft: Tile get() = Tile(bottomLeftX, bottomLeftZ)
 
-    fun toTopRight(): Tile = Tile(topRightX, topRightZ)
+    val topRight: Tile get() = Tile(topRightX, topRightZ)
+
+    fun contains(x: Int, z: Int): Boolean = x in bottomLeftX..topRightX && z in bottomLeftZ..topRightZ
 
     fun contains(t: Tile): Boolean = t.x in bottomLeftX..topRightX && t.z in bottomLeftZ..topRightZ
 

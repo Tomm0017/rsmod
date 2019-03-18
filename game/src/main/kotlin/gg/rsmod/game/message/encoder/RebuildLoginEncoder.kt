@@ -23,7 +23,7 @@ class RebuildLoginEncoder : MessageEncoder<RebuildLoginMessage>() {
             val buf = GamePacketBuilder()
 
             buf.switchToBitAccess()
-            buf.putBits(30, message.tile.to30BitInteger())
+            buf.putBits(30, message.tile.as30BitInteger)
             for (i in 1 until 2048) {
                 if (i != message.playerIndex) {
                     buf.putBits(18, 0)

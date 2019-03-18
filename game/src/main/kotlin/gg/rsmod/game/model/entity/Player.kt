@@ -170,7 +170,7 @@ open class Player(world: World) : Pawn(world) {
     internal val inactivityPlayerFlags = IntArray(2048)
 
     /**
-     * An array that holds the last-known [Tile.to30BitInteger] for every player
+     * An array that holds the last-known [Tile.get30BitInteger] for every player
      * according to this [Player]. This can vary from player to player, since
      * on log-in, this array will be filled with [0]s for this [Player].
      */
@@ -271,12 +271,12 @@ open class Player(world: World) : Pawn(world) {
             }
         }
 
-        val oldRegion = lastTile?.toRegionId() ?: -1
-        if (oldRegion != tile.toRegionId()) {
+        val oldRegion = lastTile?.regionId ?: -1
+        if (oldRegion != tile.regionId) {
             if (oldRegion != -1) {
                 world.plugins.executeRegionExit(this, oldRegion)
             }
-            world.plugins.executeRegionEnter(this, tile.toRegionId())
+            world.plugins.executeRegionEnter(this, tile.regionId)
         }
 
         if (inventory.dirty) {

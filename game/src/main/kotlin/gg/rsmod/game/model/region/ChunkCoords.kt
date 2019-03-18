@@ -13,7 +13,7 @@ class ChunkCoords(val x: Int, val z: Int) {
 
     companion object {
 
-        fun fromTile(tile: Tile): ChunkCoords = ChunkCoords(tile.getTopLeftRegionX(), tile.getTopLeftRegionZ())
+        fun fromTile(tile: Tile): ChunkCoords = ChunkCoords(tile.getTopLeftRegionX, tile.getTopLeftRegionZ)
     }
 
     fun toTile(): Tile = Tile((x + 6) shl 3, (z + 6) shl 3)

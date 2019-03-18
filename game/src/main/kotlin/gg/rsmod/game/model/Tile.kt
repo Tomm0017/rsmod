@@ -75,10 +75,6 @@ class Tile {
 
     fun getDelta(other: Tile): Int = Math.abs(x - other.x) + Math.abs(z - other.z)
 
-    fun getTopLeftRegionX() = (x shr 3) - 6
-
-    fun getTopLeftRegionZ() = (z shr 3) - 6
-
     /**
      * Returns the local tile of our region relative to the current [x] and [z].
      *
@@ -86,10 +82,26 @@ class Tile {
      */
     fun toLocal(other: Tile): Tile = Tile(((other.x shr 3) - (x shr 3)) shl 3, ((other.z shr 3) - (z shr 3)) shl 3, height)
 
+    val getTopLeftRegionX: Int get() = (x shr 3) - 6
+
+    val getTopLeftRegionZ: Int get() = (z shr 3) - 6
+
+    /**
+     * Get the region id based on these coordinates.
+     */
+    val regionId: Int get() = ((x shr 6) shl 8) or (z shr 6)
+
     /**
      * Returns the base tile of our region relative to the current [x], [z] and [Chunk.MAX_VIEWPORT].
      */
-    fun toRegionBase(): Tile = Tile(((x shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3, ((z shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3, height)
+    val asRegionBase: Tile get() = Tile(((x shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3, ((z shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3, height)
+
+    val asChunkCoords: ChunkCoords get() = ChunkCoords.fromTile(this)
+
+    /**
+     * The tile packed as a 30-bit integer.
+     */
+    val as30BitInteger: Int get() = (z and 0x3FFF) or (x and 0x3FFF shl 14) or (height and 0x3 shl 28)
 
     /**
      * Checks if the [other] tile has the same coordinates as this tile.
@@ -97,18 +109,6 @@ class Tile {
     fun sameAs(other: Tile): Boolean = other.x == x && other.z == z && other.height == height
 
     fun sameAs(x: Int, z: Int): Boolean = x == this.x && z == this.z
-
-    fun toChunkCoords(): ChunkCoords = ChunkCoords.fromTile(this)
-
-    /**
-     * Get the region id based on these coordinates.
-     */
-    fun toRegionId(): Int = ((x shr 6) shl 8) or (z shr 6)
-
-    /**
-     * The tile packed as a 30-bit integer.
-     */
-    fun to30BitInteger(): Int = (z and 0x3FFF) or (x and 0x3FFF shl 14) or (height and 0x3 shl 28)
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("x", x).add("z", z).add("height", height).toString()
 

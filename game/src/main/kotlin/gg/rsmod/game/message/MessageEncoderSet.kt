@@ -36,6 +36,7 @@ class MessageEncoderSet {
         put(IfMoveSubEncoder(), IfMoveSubMessage::class.java)
         put(RunClientScriptEncoder(), RunClientScriptMessage::class.java)
         put(RebuildNormalEncoder(), RebuildNormalMessage::class.java)
+        put(RebuildRegionEncoder(), RebuildRegionMessage::class.java)
         put(MessageGameEncoder(), MessageGameMessage::class.java)
         put(LogoutFullEncoder(), LogoutFullMessage::class.java)
         put(UpdateStatEncoder(), UpdateStatMessage::class.java)

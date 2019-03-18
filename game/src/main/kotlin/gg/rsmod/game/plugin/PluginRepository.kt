@@ -267,7 +267,7 @@ class PluginRepository(val world: World) {
      * Temporarily holds the multi-combat area regions for this [PluginRepository].
      * This is then passed onto the [World] and is cleared.
      *
-     * The int value is calculated via [gg.rsmod.game.model.Tile.toRegionId].
+     * The int value is calculated via [gg.rsmod.game.model.Tile.regionId].
      */
     internal val multiCombatRegions = IntOpenHashSet()
 

@@ -99,6 +99,22 @@ out-packets:
       - name: xteas
         type: BYTES
 
+  - message: gg.rsmod.game.message.impl.RebuildRegionMessage
+    type: VARIABLE_SHORT
+    opcode: 51
+    structure:
+      - name: z
+        type: SHORT
+        trans: ADD
+      - name: x
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: force_load
+        type: BYTE
+      - name: data
+        type: BYTES
+
   - message: gg.rsmod.game.message.impl.IfOpenTopMessage
     type: FIXED
     opcode: 84

@@ -53,7 +53,7 @@ class ChunkSet(val world: World) {
      * @param tile
      * The [Tile] to get the [ChunkCoords] from.
      */
-    fun getOrCreate(tile: Tile): Chunk = get(tile.toChunkCoords(), createIfNeeded = true)!!
+    fun getOrCreate(tile: Tile): Chunk = get(tile.asChunkCoords, createIfNeeded = true)!!
 
     /**
      * Get the [Chunk] that corresponds to the given [chunks].
@@ -64,7 +64,7 @@ class ChunkSet(val world: World) {
      * @param createIfNeeded
      * Create the [Chunk] if it does not already exist in our [chunks].
      */
-    fun get(tile: Tile, createIfNeeded: Boolean = false): Chunk? = get(tile.toChunkCoords(), createIfNeeded)
+    fun get(tile: Tile, createIfNeeded: Boolean = false): Chunk? = get(tile.asChunkCoords, createIfNeeded)
 
     /**
      * Get the [Chunk] that corresponds to the given [chunks].
@@ -82,7 +82,7 @@ class ChunkSet(val world: World) {
         } else if (!createIfNeeded) {
             return null
         }
-        val regionId = coords.toTile().toRegionId()
+        val regionId = coords.toTile().regionId
         val newChunk = Chunk(coords, Tile.TOTAL_HEIGHT_LEVELS)
         newChunk.createEntityContainers()
 
@@ -92,4 +92,6 @@ class ChunkSet(val world: World) {
         }
         return newChunk
     }
+
+    fun remove(coords: ChunkCoords): Boolean = chunks.remove(coords) != null
 }

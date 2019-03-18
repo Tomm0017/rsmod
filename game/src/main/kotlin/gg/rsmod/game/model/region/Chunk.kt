@@ -29,6 +29,11 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         const val CHUNK_SIZE = 8
 
         /**
+         * The size of a region, in tiles.
+         */
+        const val REGION_SIZE = CHUNK_SIZE * 8
+
+        /**
          * The size of the viewport a [gg.rsmod.game.model.entity.Player] can
          * 'see' at a time, in tiles.
          */
@@ -41,9 +46,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
     }
 
     constructor(other: Chunk) : this(other.coords, other.heights) {
-        other.matrices.forEachIndexed { index, matrix ->
-            matrices[index] = CollisionMatrix(matrix)
-        }
+        copyMatrices(other)
     }
 
     /**
@@ -80,10 +83,16 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         matrices[height] = matrix
     }
 
+    fun copyMatrices(other: Chunk) {
+        other.matrices.forEachIndexed { index, matrix ->
+            matrices[index] = CollisionMatrix(matrix)
+        }
+    }
+
     /**
      * Check if [tile] belongs to this chunk.
      */
-    fun contains(tile: Tile): Boolean = coords == tile.toChunkCoords()
+    fun contains(tile: Tile): Boolean = coords == tile.asChunkCoords
 
     fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = matrices[tile.height].isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
 

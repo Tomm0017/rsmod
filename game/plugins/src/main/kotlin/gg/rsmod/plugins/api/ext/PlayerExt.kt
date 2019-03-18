@@ -350,7 +350,7 @@ fun Player.isClientResizable(): Boolean = interfaces.displayMode == DisplayMode.
 fun Player.inWilderness(): Boolean = getInterfaceAt(InterfaceDestination.PVP_OVERLAY) != -1
 
 fun Player.sendWorldMapTile() {
-    runClientScript(1749, tile.to30BitInteger())
+    runClientScript(1749, tile.as30BitInteger)
 }
 
 fun Player.sendCombatLevelText() {

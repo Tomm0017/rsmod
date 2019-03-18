@@ -537,7 +537,7 @@ abstract class Pawn(val world: World) : Entity() {
 
     internal fun createPathFindingStrategy(copyChunks: Boolean = false): PathFindingStrategy {
         val collision: CollisionManager = if (copyChunks) {
-            val chunks = world.chunks.copyChunksWithinRadius(tile.asChunkCoords, height = tile.height, radius = Chunk.CHUNK_VIEW_RADIUS)
+            val chunks = world.chunks.copyChunksWithinRadius(tile.chunkCoords, height = tile.height, radius = Chunk.CHUNK_VIEW_RADIUS)
             CollisionManager(chunks, createChunksIfNeeded = false)
         } else {
             world.collision

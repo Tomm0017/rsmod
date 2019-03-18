@@ -5,4 +5,4 @@ package gg.rsmod.game.model.instance
  *
  * @author Tom <rspsmods@gmail.com>
  */
-data class InstancedChunk(var packed: Int)
+data class InstancedChunk(var packed: Int, val rot: Int)

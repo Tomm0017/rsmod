@@ -92,7 +92,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
     /**
      * Check if [tile] belongs to this chunk.
      */
-    fun contains(tile: Tile): Boolean = coords == tile.asChunkCoords
+    fun contains(tile: Tile): Boolean = coords == tile.chunkCoords
 
     fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = matrices[tile.height].isBlocked(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE, direction, projectile)
 

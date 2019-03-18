@@ -53,7 +53,7 @@ class ChunkSet(val world: World) {
      * @param tile
      * The [Tile] to get the [ChunkCoords] from.
      */
-    fun getOrCreate(tile: Tile): Chunk = get(tile.asChunkCoords, createIfNeeded = true)!!
+    fun getOrCreate(tile: Tile): Chunk = get(tile.chunkCoords, createIfNeeded = true)!!
 
     /**
      * Get the [Chunk] that corresponds to the given [chunks].
@@ -64,7 +64,7 @@ class ChunkSet(val world: World) {
      * @param createIfNeeded
      * Create the [Chunk] if it does not already exist in our [chunks].
      */
-    fun get(tile: Tile, createIfNeeded: Boolean = false): Chunk? = get(tile.asChunkCoords, createIfNeeded)
+    fun get(tile: Tile, createIfNeeded: Boolean = false): Chunk? = get(tile.chunkCoords, createIfNeeded)
 
     /**
      * Get the [Chunk] that corresponds to the given [chunks].

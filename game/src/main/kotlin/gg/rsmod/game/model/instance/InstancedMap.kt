@@ -5,7 +5,4 @@ import gg.rsmod.game.model.Area
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class InstancedMap(val area: Area, val chunks: InstancedChunkSet) {
-
-    val regionSize: Int get() = chunks.regionSize
-}
+data class InstancedMap(val area: Area, val chunks: InstancedChunkSet)

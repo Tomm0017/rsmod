@@ -21,7 +21,7 @@ class PawnList<T: Pawn>(private val pawns: Array<T?>) {
      */
     fun getRaw(): Array<T?> = pawns
 
-    fun get(index: Int): T? = pawns[index]
+    operator fun get(index: Int): T? = pawns[index]
 
     fun contains(pawn: T): Boolean = pawns[pawn.index] == pawn
 

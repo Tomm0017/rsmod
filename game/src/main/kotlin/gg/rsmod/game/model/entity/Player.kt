@@ -5,7 +5,6 @@ import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.*
-import gg.rsmod.game.model.Coordinate
 import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
 import gg.rsmod.game.model.attr.LEVEL_UP_INCREMENT
 import gg.rsmod.game.model.attr.LEVEL_UP_OLD_XP
@@ -176,6 +175,22 @@ open class Player(world: World) : Pawn(world) {
      * on log-in, this array will be filled with [0]s for this [Player].
      */
     internal val otherPlayerTiles = IntArray(2048)
+
+    /**
+     * Credits to Kris (<a href="https://www.rune-server.ee/members/kris/">Rune-Server
+     * profile</a>) for the documentation.
+     *
+     * Position multipliers, used to transmit coordinates when they exceed 8191 in either direction.
+     * RS only transmits 13 bits for x & y coordinates, meaning maximum value allowed is 2^13 - 1 = 8191.
+     * For that reason, if it is needed to transmit coordinates higher than that, a multiplier must be transmitted
+     * to the client which will then transform the coordinate to (multiplier * 8192) + remainderCoordinate.
+     *
+     * Maximum allowed coordinates are 16383 in both directions; going past that will not render characters anymore.
+     *
+     * Coordinates were transmitted on a region level prior to deadman mode, which was why the method was
+     * initially created.
+     */
+    internal val playerTileMultipliers = IntArray(2048)
 
     /**
      * The npcs in our viewport. This list should not be used outside of our
@@ -385,14 +400,16 @@ open class Player(world: World) : Pawn(world) {
             localPlayers[index] = this
             localPlayerIndices[localPlayerCount++] = index
 
+            val playerTiles = IntArray(2048)
             for (i in 1 until 2048) {
                 if (i == index) {
                     continue
                 }
                 externalPlayerIndices[externalPlayerCount++] = i
+                playerTiles[i] = world.players[i]?.tile?.as18BitInteger ?: 0
             }
 
-            write(RebuildLoginMessage(index, tile, world.xteaKeyService))
+            write(RebuildLoginMessage(index, tile, playerTiles, world.xteaKeyService))
         }
 
         initiated = true

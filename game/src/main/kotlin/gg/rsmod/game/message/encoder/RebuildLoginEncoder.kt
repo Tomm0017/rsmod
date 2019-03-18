@@ -26,7 +26,7 @@ class RebuildLoginEncoder : MessageEncoder<RebuildLoginMessage>() {
             buf.putBits(30, message.tile.as30BitInteger)
             for (i in 1 until 2048) {
                 if (i != message.playerIndex) {
-                    buf.putBits(18, 0)
+                    buf.putBits(18, message.playerTiles[i])
                 }
             }
             buf.switchToByteAccess()

@@ -53,6 +53,11 @@ class Tile {
     val chunkCoords: ChunkCoords get() = ChunkCoords.fromTile(this)
 
     /**
+     * The tile packed as an 18-bit integer.
+     */
+    val as18BitInteger: Int get() = (z shr 6) or ((x shr 6) shl 8) or (height shl 16)
+
+    /**
      * The tile packed as a 30-bit integer.
      */
     val as30BitInteger: Int get() = (z and 0x3FFF) or (x and 0x3FFF shl 14) or (height and 0x3 shl 28)

@@ -7,4 +7,4 @@ import gg.rsmod.game.service.xtea.XteaKeyService
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class RebuildLoginMessage(val playerIndex: Int, val tile: Tile, val xteaKeyService: XteaKeyService?) : Message
+class RebuildLoginMessage(val playerIndex: Int, val tile: Tile, val playerTiles: IntArray, val xteaKeyService: XteaKeyService?) : Message

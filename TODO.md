@@ -1,5 +1,5 @@
 - Implement position multipliers for GPI decoding
-- Instance map support
+- Look into why opcode 34 and opcode 41 (both related to mouse packets) will sometimes not be able to skip their length
 
 Backlog:
 - Add support for npc collision flags as npcs shouldn't be able to walk on top of one another

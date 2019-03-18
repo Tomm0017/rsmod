@@ -6,6 +6,7 @@ import gg.rsmod.net.packet.IPacketMetadata
 import gg.rsmod.net.packet.PacketType
 import gg.rsmod.util.io.IsaacRandom
 import io.netty.buffer.ByteBuf
+import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelHandlerContext
 import mu.KotlinLogging
 
@@ -71,7 +72,6 @@ class GamePacketDecoder(private val random: IsaacRandom?, private val packetMeta
 
     private fun decodePayload(buf: ByteBuf, out: MutableList<Any>) {
         if (buf.readableBytes() >= length) {
-            val payload = buf.readBytes(length)
             setState(GameDecoderState.OPCODE)
 
             /**
@@ -79,6 +79,7 @@ class GamePacketDecoder(private val random: IsaacRandom?, private val packetMeta
              * we queue it up for our game to process the packet.
              */
             if (!ignore) {
+                val payload = if (length == 0) Unpooled.EMPTY_BUFFER else buf.readBytes(length)
                 out.add(GamePacket(opcode, type, payload))
             }
         }

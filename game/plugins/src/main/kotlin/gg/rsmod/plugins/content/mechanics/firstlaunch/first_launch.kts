@@ -1,7 +1,6 @@
 package gg.rsmod.plugins.content.mechanics.firstlaunch
 
 import gg.rsmod.game.model.priv.Privilege
-import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.content.inter.emotes.EmotesTab
 
 on_login {

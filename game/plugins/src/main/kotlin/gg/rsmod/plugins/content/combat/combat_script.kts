@@ -2,7 +2,6 @@ package gg.rsmod.plugins.content.combat
 
 import gg.rsmod.game.action.PawnPathAction
 import gg.rsmod.game.model.attr.COMBAT_TARGET_FOCUS_ATTR
-import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 

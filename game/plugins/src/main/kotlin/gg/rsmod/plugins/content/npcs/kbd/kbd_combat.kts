@@ -3,7 +3,6 @@ package gg.rsmod.plugins.content.npcs.kbd
 import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.CombatStyle
-import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.content.combat.*
 import gg.rsmod.plugins.content.combat.formula.DragonfireFormula
 import gg.rsmod.plugins.content.combat.formula.MeleeCombatFormula

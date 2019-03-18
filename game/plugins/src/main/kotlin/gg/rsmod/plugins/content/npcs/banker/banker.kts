@@ -1,6 +1,5 @@
 package gg.rsmod.plugins.content.npcs.banker
 
-import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.content.inter.bank.openBank
 
 arrayOf(Npcs.BANKER, Npcs.BANKER_395).forEach { banker ->

@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.areas.edgeville.chat
 
-import gg.rsmod.game.model.queue.QueueTask
-
 val HIDE_STREAK_VARBIT = 1621
 val LIMIT_TARGETS_VARBIT = 6503
 

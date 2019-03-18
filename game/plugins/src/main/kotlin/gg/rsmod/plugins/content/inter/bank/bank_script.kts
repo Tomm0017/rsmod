@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.inter.bank
 
-import gg.rsmod.game.model.ExamineEntityType
-
 on_interface_close(Bank.BANK_INTERFACE_ID) {
     player.closeInterface(dest = InterfaceDestination.TAB_AREA)
 }

@@ -1,8 +1,6 @@
 package gg.rsmod.plugins.content.npcs.sheep
 
 import gg.rsmod.game.fs.def.NpcDef
-import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.queue.QueueTask
 
 Sheep.SHEEP_NPCS.forEach { sheep ->
     if (world.definitions.get(NpcDef::class.java, sheep).options.contains("Shear")) {

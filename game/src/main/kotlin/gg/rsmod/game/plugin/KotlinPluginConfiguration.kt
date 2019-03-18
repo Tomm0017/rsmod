@@ -10,12 +10,12 @@ object KotlinPluginConfiguration : ScriptCompilationConfiguration({
             "gg.rsmod.game.model.entity.*",
             "gg.rsmod.game.model.container.*",
             "gg.rsmod.game.model.container.key.*",
+            "gg.rsmod.game.model.queue.*",
             "gg.rsmod.game.model.attr.AttributeKey",
             "gg.rsmod.game.model.timer.TimerKey",
             "gg.rsmod.game.model.shop.ShopItem",
             "gg.rsmod.game.model.shop.PurchasePolicy",
             "gg.rsmod.game.model.shop.StockType",
-            "gg.rsmod.game.model.queue.TaskPriority",
 
             "gg.rsmod.game.plugin.Plugin",
 

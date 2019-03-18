@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.pvp.bountyhunter
 
-import gg.rsmod.game.model.ExamineEntityType
-import gg.rsmod.game.model.item.Item
 import java.text.DecimalFormat
 
 val STORE_INTERFACE_ID = 178

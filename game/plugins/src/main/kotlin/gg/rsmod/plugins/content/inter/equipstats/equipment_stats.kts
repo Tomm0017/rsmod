@@ -1,7 +1,6 @@
 package gg.rsmod.plugins.content.inter.equipstats
 
 import gg.rsmod.game.action.EquipAction
-import gg.rsmod.game.model.ExamineEntityType
 
 fun bind_unequip(equipment: EquipmentType, child: Int) {
     on_button(interfaceId = EquipmentStats.INTERFACE_ID, component = child) {

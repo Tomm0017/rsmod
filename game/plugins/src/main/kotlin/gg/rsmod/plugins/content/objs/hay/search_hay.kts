@@ -1,8 +1,6 @@
 package gg.rsmod.plugins.content.objs.hay
 
 import com.google.common.collect.ImmutableSet
-import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.queue.QueueTask
 
 val HAY_OBJECTS = ImmutableSet.of(Objs.HAYSTACK, Objs.HAY_BALES, Objs.HAY_BALES_299)
 

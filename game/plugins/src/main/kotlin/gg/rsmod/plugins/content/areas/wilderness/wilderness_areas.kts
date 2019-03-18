@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.areas.wilderness
 
-import gg.rsmod.game.model.Tile
-
 val CHECK_TIMER = TimerKey()
 val WAS_IN_WILD = AttributeKey<Boolean>()
 

@@ -1,7 +1,6 @@
 package gg.rsmod.plugins.content.objs.bookcase
 
 import com.google.common.collect.ImmutableSet
-import gg.rsmod.game.model.queue.QueueTask
 
 val BOOKCASES = ImmutableSet.of(Objs.BOOKCASE_380, Objs.BOOKCASE_381)
 

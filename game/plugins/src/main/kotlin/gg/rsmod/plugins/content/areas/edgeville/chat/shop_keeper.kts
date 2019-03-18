@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.areas.edgeville.chat
 
-import gg.rsmod.game.model.queue.QueueTask
-
 arrayOf(Npcs.SHOP_KEEPER_514, Npcs.SHOP_ASSISTANT_515).forEach { shop ->
     on_npc_option(npc = shop, option = "talk-to") {
         player.queue { dialog(this) }

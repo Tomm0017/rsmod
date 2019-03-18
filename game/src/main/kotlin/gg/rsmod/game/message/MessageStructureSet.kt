@@ -60,10 +60,6 @@ class MessageStructureSet {
                 packetOpcodes.add(values["opcode"] as Int)
             }
 
-            if (ignore) {
-                println("ignoring packet: $packetOpcodes")
-            }
-
             if (clazz::class.java != IgnoreMessage::class.java) {
                 val packetStructure = if (values.containsKey("structure")) values["structure"] as ArrayList<*> else null
                 val packetValues = LinkedHashMap<String, MessageValue>()

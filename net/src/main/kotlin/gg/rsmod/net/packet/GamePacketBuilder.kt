@@ -462,4 +462,6 @@ class GamePacketBuilder {
     }
 
     fun getBuffer(): ByteBuf = buffer
+
+    val readableBytes: Int get() = buffer.readableBytes()
 }

@@ -49,7 +49,8 @@ class MessageStructureSet {
             val className = values["message"] as String
             val packetType = if (values.containsKey("type")) PacketType.valueOf((values["type"] as String).toUpperCase()) else PacketType.FIXED
             val clazz = Class.forName(className)
-            val packetLength = if (values.containsKey("length")) values["length"] as Int else 0
+            val packetLength = values["length"] as? Int ?: 0
+            val ignore = values["ignore"] as? Boolean ?: false
 
             val packetOpcodes = arrayListOf<Int>()
             if (values.containsKey("opcodes")) {
@@ -57,6 +58,10 @@ class MessageStructureSet {
                 split.forEach { v -> packetOpcodes.add(v.toInt()) }
             } else if (values.containsKey("opcode")) {
                 packetOpcodes.add(values["opcode"] as Int)
+            }
+
+            if (ignore) {
+                println("ignoring packet: $packetOpcodes")
             }
 
             if (clazz::class.java != IgnoreMessage::class.java) {
@@ -73,14 +78,14 @@ class MessageStructureSet {
                             signature = signature)
                 }
                 val messageStructure = MessageStructure(type = packetType, opcodes = packetOpcodes.toIntArray(), length = packetLength,
-                        values = packetValues)
+                        ignore = ignore, values = packetValues)
                 structureClasses[clazz] = messageStructure
                 if (storeOpcodes) {
                     packetOpcodes.forEach { opcode -> structureOpcodes[opcode] = messageStructure }
                 }
             } else {
-                val messageStructure = MessageStructure(type = packetType, opcodes = packetOpcodes.toIntArray(),
-                        length = packetLength, values = LinkedHashMap())
+                val messageStructure = MessageStructure(type = packetType, opcodes = packetOpcodes.toIntArray(), length = packetLength,
+                        ignore = ignore, values = LinkedHashMap())
                 structureClasses[clazz] = messageStructure
                 if (storeOpcodes) {
                     packetOpcodes.forEach { opcode -> structureOpcodes[opcode] = messageStructure }

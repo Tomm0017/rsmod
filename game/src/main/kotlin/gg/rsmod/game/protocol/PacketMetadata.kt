@@ -3,7 +3,7 @@ package gg.rsmod.game.protocol
 import gg.rsmod.game.message.MessageStructureSet
 import gg.rsmod.net.packet.IPacketMetadata
 import gg.rsmod.net.packet.PacketType
-import mu.KotlinLogging
+import mu.KLogging
 
 /**
  * An [IPacketMetadata] implementation that is responsible for exposing
@@ -13,14 +13,12 @@ import mu.KotlinLogging
  */
 class PacketMetadata(private val structures: MessageStructureSet) : IPacketMetadata {
 
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
+    companion object : KLogging()
 
-    override fun getType(opcode: Int): PacketType? {
-        val structure = structures.get(opcode) ?: return null
-        return structure.type
-    }
+    /**
+     * Logging in case of null value should be handled in usage implementation.
+     */
+    override fun getType(opcode: Int): PacketType? = structures.get(opcode)?.type
 
     override fun getLength(opcode: Int): Int {
         val structure = structures.get(opcode)
@@ -29,5 +27,14 @@ class PacketMetadata(private val structures: MessageStructureSet) : IPacketMetad
             return 0
         }
         return structure.length
+    }
+
+    override fun shouldIgnore(opcode: Int): Boolean {
+        val structure = structures.get(opcode)
+        if (structure == null) {
+            logger.warn("No message structure found for message with opcode {}.", opcode)
+            return true
+        }
+        return structure.ignore
     }
 }

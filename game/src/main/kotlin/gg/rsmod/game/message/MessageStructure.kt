@@ -14,6 +14,9 @@ import gg.rsmod.net.packet.PacketType
  * @param length
  * The length of the payload, if any.
  *
+ * @param ignore
+ * If the packet should be skipped over and not processed by the server.
+ *
  * @param values
  * The [MessageValue]s. The order is important as it will be
  * encoded and decoded based on its order. This is why it's using the
@@ -22,7 +25,7 @@ import gg.rsmod.net.packet.PacketType
  * @author Tom <rspsmods@gmail.com>
  */
 data class MessageStructure(val type: PacketType, val opcodes: IntArray, val length: Int,
-                            val values: LinkedHashMap<String, MessageValue>) {
+                            val ignore: Boolean, val values: LinkedHashMap<String, MessageValue>) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -33,6 +36,7 @@ data class MessageStructure(val type: PacketType, val opcodes: IntArray, val len
         if (type != other.type) return false
         if (!opcodes.contentEquals(other.opcodes)) return false
         if (length != other.length) return false
+        if (ignore != other.ignore) return false
         if (values != other.values) return false
 
         return true
@@ -42,7 +46,9 @@ data class MessageStructure(val type: PacketType, val opcodes: IntArray, val len
         var result = type.hashCode()
         result = 31 * result + opcodes.contentHashCode()
         result = 31 * result + length
+        result = 31 * result + ignore.hashCode()
         result = 31 * result + values.hashCode()
         return result
     }
+
 }

@@ -76,6 +76,19 @@ class Tile {
 
     fun step(direction: Direction, num: Int = 1): Tile = Tile(this.x + (num * direction.getDeltaX()), this.z + (num * direction.getDeltaZ()), this.height)
 
+    fun transformAndRotate(localX: Int, localZ: Int, orientation: Int, width: Int = 0, length: Int = 0): Tile {
+        val localWidth = Chunk.CHUNK_SIZE - 1
+        val localLength = Chunk.CHUNK_SIZE - 1
+
+        return when (orientation) {
+            0 -> transform(localX, localZ)
+            1 -> transform(localZ, localLength - localX - (width - 1))
+            2 -> transform(localWidth - localX - (width - 1), localLength - localZ - (length - 1))
+            3 -> transform(localWidth - localZ - (length - 1), localX)
+            else -> throw IllegalArgumentException("Illegal orientation! Value must be in bounds [0-3]")
+        }
+    }
+
     /**
      * Checks if the [other] tile is within the [radius]x[radius] distance of
      * this [Tile].

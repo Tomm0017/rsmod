@@ -1,6 +1,7 @@
 package gg.rsmod.game.fs.def
 
 import gg.rsmod.game.fs.Definition
+import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.util.io.BufferUtils.readString
 import io.netty.buffer.ByteBuf
 
@@ -23,6 +24,16 @@ class ObjectDef(override val id: Int) : Definition(id) {
     var rotated = false
     val options: Array<String?> = Array(5) { "" }
     var transforms: Array<Int>? = null
+
+    fun getRotatedWidth(obj: GameObject): Int = when {
+        (obj.rot and 0x1) == 1 -> length
+        else -> width
+    }
+
+    fun getRotatedLength(obj: GameObject): Int = when {
+        (obj.rot and 0x1) == 1 -> width
+        else -> length
+    }
 
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {

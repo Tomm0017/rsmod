@@ -15,7 +15,7 @@ class InstancedChunkSet(val regionSize: Int, val values: Map<Int, InstancedChunk
          */
         const val CHUNK_BOUNDS = 13
 
-        private fun getCoordinates(x: Int, z: Int, height: Int): Int = ((height and 0x3) shl 28) or ((x and 0x3FF) shl 14) or (z and 0x7FF)
+        fun getCoordinates(x: Int, z: Int, height: Int): Int = ((height and 0x3) shl 28) or ((x and 0x3FF) shl 14) or (z and 0x7FF)
     }
 
     /**

@@ -36,11 +36,9 @@ abstract class GameObject : Entity {
      */
     val timers = TimerSystem()
 
-    val type: Int
-        get() = settings.toInt() shr 2
+    val type: Int get() = settings.toInt() shr 2
 
-    val rot: Int
-        get() = settings.toInt() and 3
+    val rot: Int get() = settings.toInt() and 3
 
     private constructor(id: Int, settings: Int, tile: Tile) {
         this.id = id

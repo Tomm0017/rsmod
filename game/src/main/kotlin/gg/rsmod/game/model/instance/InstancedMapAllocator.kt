@@ -7,16 +7,14 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.StaticObject
 import gg.rsmod.game.model.region.Chunk
-import mu.KotlinLogging
+import mu.KLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 class InstancedMapAllocator {
 
-    companion object {
-
-        private val logger = KotlinLogging.logger {  }
+    companion object : KLogging() {
 
         /**
          * 07 identifies instanced maps by having an X-axis of 6400 or above. They
@@ -36,7 +34,37 @@ class InstancedMapAllocator {
 
     private val maps = arrayListOf<InstancedMap>()
 
-    fun allocate(world: World, chunks: InstancedChunkSet): InstancedMap? {
+    /**
+     * Allocate a new [InstancedMap] given [chunks].
+     *
+     * @param world
+     * The [World] that the instanced map is apart of.
+     *
+     * @param chunks
+     * The [InstancedChunkSet] that holds all the [InstancedChunk]s that will make
+     * up the newly constructed [InstancedMap], if applicable.
+     *
+     * @param bypassObjectChunkBounds
+     * If true, objects that are found to exceed the bounds of its [Chunk] will
+     * not throw an error - however the object will not be applied to the [world]'s
+     * [gg.rsmod.game.model.region.ChunkSet], so this flag should be used with
+     * that caveat in mind.
+     *
+     * Explanation:
+     * In certain scenarios, an object's tile can overextend its original [Chunk]
+     * where it would be placed in the [InstancedMap]; this can occur in any object
+     * who's width or length is greater than 1 (one).
+     *
+     * Example:
+     * - 2x2 object is in the local tile of 2,7 (in respect to its [Chunk])
+     * - The [InstancedChunk.rot] is set to 2 (two)
+     * - The outcome local tile would be 2,-1
+     *
+     * The outcome local tile would be out-of-bounds in its [Chunk] and would
+     * lead to undesired behaviour.
+     *
+     */
+    fun allocate(world: World, chunks: InstancedChunkSet, bypassObjectChunkBounds: Boolean = false): InstancedMap? {
         val area = VALID_AREA
         val step = 64
 
@@ -56,7 +84,7 @@ class InstancedMapAllocator {
                 }
 
                 val map = allocate(x, z, chunks)
-                applyCollision(world, map)
+                applyCollision(world, map, bypassObjectChunkBounds)
                 maps.add(map)
                 return map
             }
@@ -74,66 +102,55 @@ class InstancedMapAllocator {
         }
     }
 
-    fun applyCollision(world: World, map: InstancedMap) {
+    fun applyCollision(world: World, map: InstancedMap, bypassObjectChunkBounds: Boolean) {
+        val bounds = InstancedChunkSet.CHUNK_BOUNDS
+        val heights = Tile.TOTAL_HEIGHT_LEVELS
+
         val chunks = map.chunks.values
 
-        val localWidth = Chunk.CHUNK_SIZE - 1
-        val localHeight = Chunk.CHUNK_SIZE - 1
+        for (height in 0 until heights) {
+            for (x in 0 until bounds) {
+                for (z in 0 until bounds) {
+                    val coords = InstancedChunkSet.getCoordinates(x, z, height)
+                    val chunk = chunks[coords]
 
-        chunks.forEach { chunkCoordinates, chunk ->
-            val copyTile = Tile.fromRotatedHash(chunk.packed)
+                    val chunkH = (coords shr 28) and 0x3
+                    val chunkX = (coords shr 14) and 0x3FF
+                    val chunkZ = coords and 0x7FF
 
-            val chunkH = (chunkCoordinates shr 28) and 0x3
-            val chunkX = (chunkCoordinates shr 14) and 0x3FF
-            val chunkZ = chunkCoordinates and 0x7FF
+                    val baseTile = map.area.bottomLeft.transform((chunkX - 6) shl 3, (chunkZ - 6) shl 3, chunkH)
+                    val newChunk = world.chunks.getOrCreate(baseTile)
 
-            val newTile = map.area.bottomLeft.transform((chunkX - 6) shl 3, (chunkZ - 6) shl 3, chunkH)
+                    if (chunk != null) {
+                        val copyTile = Tile.fromRotatedHash(chunk.packed)
+                        val copyChunk = world.chunks.get(copyTile.chunkCoords, createIfNeeded = true)!!
 
-            val copyChunk = world.chunks.get(copyTile.chunkCoords, createIfNeeded = true)!!
-            val newChunk = world.chunks.getOrCreate(newTile)
+                        copyChunk.getEntities<StaticObject>(EntityType.STATIC_OBJECT).forEach { obj ->
+                            if (obj.tile.height == chunkH && obj.tile.isInSameChunk(copyTile)) {
+                                val def = obj.getDef(world.definitions)
+                                val width = def.getRotatedWidth(obj)
+                                val length = def.getRotatedLength(obj)
 
-            copyChunk.getEntities<StaticObject>(EntityType.STATIC_OBJECT).forEach { obj ->
-                if (obj.tile.height == chunkH && obj.tile.isInSameChunk(copyTile)) {
-                    val def = obj.getDef(world.definitions)
-                    var width = def.width
-                    var length = def.length
+                                val localX = obj.tile.x - ((obj.tile.x shr 3) shl 3)
+                                val localZ = obj.tile.z - ((obj.tile.z shr 3) shl 3)
 
-                    val diffX = obj.tile.x - ((obj.tile.x shr 3) shl 3)
-                    val diffZ = obj.tile.z - ((obj.tile.z shr 3) shl 3)
+                                val newObj = DynamicObject(obj.id, obj.type, (obj.rot + chunk.rot) and 0x3, baseTile.transformAndRotate(localX, localZ, chunk.rot, width, length))
 
-                    val newRot = (obj.rot + chunk.rot) and 0x3
-                    if ((obj.rot and 0x1) == 1) {
-                        width = def.length
-                        length = def.width
-                    }
+                                if (newObj.tile.isInSameChunk(baseTile)) {
+                                    newChunk.addEntity(world, newObj, newObj.tile)
 
-                    val localX: Int
-                    val localZ: Int
-                    when (chunk.rot) {
-                        1 -> {
-                            localX = diffZ
-                            localZ = localHeight - diffX - (width - 1)
+                                } else if (!bypassObjectChunkBounds) {
+                                    throw IllegalStateException("Could not copy object due to its size and rotation outcome (object rotation + chunk rotation). " +
+                                            "The object would, otherwise, be spawned out of bounds of its original chunk. [obj=$obj, copy=$newObj]")
+                                }
+                            }
                         }
-                        2 -> {
-                            localX = localWidth - diffX - (width - 1)
-                            localZ = localHeight - diffZ - (length - 1)
-                        }
-                        3 -> {
-                            localX = localWidth - diffZ - (length - 1)
-                            localZ = diffX
-                        }
-                        else -> {
-                            localX = diffX
-                            localZ = diffZ
-                        }
-                    }
-
-                    val newObj = DynamicObject(obj.id, obj.type, newRot, newTile.transform(localX, localZ))
-                    if (newObj.tile.isInSameChunk(newTile)) {
-                        newChunk.addEntity(world, newObj, newObj.tile)
                     } else {
-                        logger.warn { "Could not copy object due to its size and rotation outcome (object rotation + chunk rotation). " +
-                                "The object would, otherwise, be spawned out of bounds of its original chunk. [obj=$obj, copy=$newObj]" }
+                        for (lx in 0 until Chunk.CHUNK_SIZE) {
+                            for (lz in 0 until Chunk.CHUNK_SIZE) {
+                                newChunk.getMatrix(chunkH).block(lx, lz, impenetrable = true)
+                            }
+                        }
                     }
                 }
             }

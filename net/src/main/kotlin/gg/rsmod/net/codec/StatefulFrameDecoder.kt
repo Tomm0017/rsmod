@@ -19,14 +19,7 @@ import java.util.*
  * @author Graham
  * @param <T> The state enumeration.
 </T> */
-abstract class StatefulFrameDecoder<T : Enum<T>>
-/**
- * Creates the stateful frame decoder with the specified initial state.
- *
- * @param state The initial state.
- * @throws NullPointerException If the state is `null`.
- */
-(private var state: T) : ByteToMessageDecoder() {
+abstract class StatefulFrameDecoder<T : Enum<T>>(private var state: T) : ByteToMessageDecoder() {
 
     /**
      * Sets a new state.

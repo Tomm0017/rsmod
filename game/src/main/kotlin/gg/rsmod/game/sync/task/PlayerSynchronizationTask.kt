@@ -1,6 +1,5 @@
 package gg.rsmod.game.sync.task
 
-import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.SynchronizationTask
@@ -41,29 +40,6 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             }
             player.inactivityPlayerFlags[i] = player.inactivityPlayerFlags[i] shr 1
         }
-    }
-
-    private fun getPrioritizedWorldPlayers(): List<Player> {
-        val players = arrayListOf<Player>()
-
-        mainLoop@ for (radius in 0..Player.NORMAL_VIEW_DISTANCE) {
-            for (x in -radius..radius) {
-                for (z in -radius..radius) {
-                    val tile = player.tile.transform(x, z)
-                    val chunk = player.world.chunks.get(tile.chunkCoords, createIfNeeded = false) ?: continue
-                    chunk.getEntities<Player>(tile, EntityType.PLAYER, EntityType.CLIENT).forEach { p ->
-                        if (p != player && players.size < MAX_LOCAL_PLAYERS) {
-                            players.add(p)
-                        }
-                    }
-                    if (players.size >= MAX_LOCAL_PLAYERS) {
-                        break@mainLoop
-                    }
-                }
-            }
-        }
-
-        return players
     }
 
     private fun getSegments(): List<SynchronizationSegment> {
@@ -124,8 +100,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 segments.add(PlayerUpdateBlockSegment(other = local, newPlayer = false))
             }
             if (local.teleport) {
-                segments.add(PlayerTeleportSegment(player = player, other = local,
-                        index = index, encodeUpdateBlocks = requiresBlockUpdate))
+                segments.add(PlayerTeleportSegment(player = player, other = local, encodeUpdateBlocks = requiresBlockUpdate))
             } else if (local.steps != null) {
                 var dx = Misc.DIRECTION_DELTA_X[local.steps!!.walkDirection!!.playerWalkValue]
                 var dz = Misc.DIRECTION_DELTA_Z[local.steps!!.walkDirection!!.playerWalkValue]
@@ -203,16 +178,19 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 continue
             }
 
-            val nonLocal = if (index < player.world.players.capacity) player.world.players.get(index) else null
+            val nonLocal = if (index < player.world.players.capacity) player.world.players[index] else null
 
-            if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE
-                    && player.localPlayerCount + added < MAX_LOCAL_PLAYERS && shouldAdd(nonLocal)) {
-                val tileHash = nonLocal.tile.as30BitInteger
-                segments.add(AddLocalPlayerSegment(player = player, other = nonLocal, index = index, tileHash = tileHash))
+            if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE && player.localPlayerCount + added < MAX_LOCAL_PLAYERS
+                    && shouldAdd(nonLocal)) {
+
+                val oldTileHash = player.otherPlayerTiles[index]
+                val currTileHash = nonLocal.tile.as30BitInteger
+
+                segments.add(AddLocalPlayerSegment(other = nonLocal, last18BitTileHash = oldTileHash, curr18BitTileHash = currTileHash))
                 segments.add(PlayerUpdateBlockSegment(other = nonLocal, newPlayer = true))
 
                 player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
-                player.otherPlayerTiles[index] = tileHash
+                player.otherPlayerTiles[index] = currTileHash
                 player.localPlayers[index] = nonLocal
 
                 added++

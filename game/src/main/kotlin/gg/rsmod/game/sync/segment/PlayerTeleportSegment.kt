@@ -7,7 +7,7 @@ import gg.rsmod.net.packet.GamePacketBuilder
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class PlayerTeleportSegment(private val player: Player, private val other: Player, private val index: Int, private val encodeUpdateBlocks: Boolean) : SynchronizationSegment {
+class PlayerTeleportSegment(private val player: Player, private val other: Player, private val encodeUpdateBlocks: Boolean) : SynchronizationSegment {
 
     override fun encode(buf: GamePacketBuilder) {
         /**
@@ -35,7 +35,7 @@ class PlayerTeleportSegment(private val player: Player, private val other: Playe
         /**
          * If the move is within a short radius, we want to save some bandwidth.
          */
-        if (Math.abs(dx) <= 14 && Math.abs(dz) <= 14) {
+        if (Math.abs(dx) < Player.NORMAL_VIEW_DISTANCE && Math.abs(dz) < Player.NORMAL_VIEW_DISTANCE) {
             if (dx < 0) {
                 dx += 32
             }

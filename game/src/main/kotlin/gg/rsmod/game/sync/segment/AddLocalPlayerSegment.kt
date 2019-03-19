@@ -7,11 +7,10 @@ import gg.rsmod.net.packet.GamePacketBuilder
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class AddLocalPlayerSegment(val player: Player, val other: Player,
-                            private val index: Int, private val tileHash: Int) : SynchronizationSegment {
+class AddLocalPlayerSegment(private val other: Player, private val last18BitTileHash: Int, private val curr18BitTileHash: Int) : SynchronizationSegment {
 
     override fun encode(buf: GamePacketBuilder) {
-        val updateLocation = PlayerLocationHashSegment(player.otherPlayerTiles[index], tileHash)
+        val updateLocation = PlayerLocationHashSegment(last18BitTileHash, curr18BitTileHash)
 
         /**
          * Signal to the client that the player needs to be decoded.

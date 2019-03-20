@@ -448,7 +448,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     }
 
     /**
-     * Despawn all entities in an area.
+     * Despawn entities in an area.
      */
     fun removeAll(area: Area) {
         for (i in 0 until npcs.capacity) {

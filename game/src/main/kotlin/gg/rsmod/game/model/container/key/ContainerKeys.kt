@@ -3,7 +3,7 @@ package gg.rsmod.game.model.container.key
 import gg.rsmod.game.model.container.ContainerStackType
 
 /**
- * A decoupled file that holds ContainerKeys that are pre-defined in our core
+ * A decoupled file that holds [ContainerKey]s that are pre-defined in our core
  * game-module.
  *
  * @author Tom <rspsmods@gmail.com>

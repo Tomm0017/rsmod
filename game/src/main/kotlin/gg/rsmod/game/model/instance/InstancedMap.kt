@@ -7,13 +7,32 @@ import gg.rsmod.game.model.region.Chunk
 import java.util.*
 
 /**
+ * A dynamically constructed map area made up of one or more [InstancedChunk]s.
+ *
+ * @param area
+ * The total area that this map covers in the game world.
+ *
+ * @param chunks
+ * The copied chunks that make up this instanced map.
+ *
+ * @param exitTile
+ * The [Tile] that players will be taken to under certain circumstances, such as
+ * logging out of the game while in the instanced map area.
+ *
+ * @param owner
+ * The [PlayerUID] of the 'owner'. This value can be null, unless [attr] contains
+ * an attribute which requires an owner.
+ *
+ * @param attr
+ * A set of [InstancedMapAttribute]s that our map has.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class InstancedMap internal constructor(val area: Area, val chunks: InstancedChunkSet, val exitTile: Tile,
                                         val owner: PlayerUID?, val attr: EnumSet<InstancedMapAttribute>) {
 
     /**
-     * Get the [InstancedChunk.packed] values.
+     * Get the [InstancedChunk.packed] values in relation to the [relative] tile.
      *
      * The values are represented as:
      * `

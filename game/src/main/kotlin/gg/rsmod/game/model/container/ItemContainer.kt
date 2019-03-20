@@ -28,6 +28,9 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
         }
     }
 
+    /**
+     * The total amount of items that the container can hold at a time.
+     */
     val capacity = key.capacity
 
     private val stackType = key.stackType
@@ -85,8 +88,16 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
 
     fun isEmpty(): Boolean = items.none { it != null }
 
+    /**
+     * @return
+     * true if the container has any item at all which is not null.
+     */
     fun hasAny(): Boolean = items.any { it != null }
 
+    /**
+     * @return
+     * true if the container has any free slot available.
+     */
     fun hasSpace(): Boolean = getNextFreeSlot() != -1
 
     /**
@@ -134,18 +145,6 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
             }
         }
         return -1
-    }
-
-    /**
-     * Will copy the items over from the [items] map and place them in the container
-     * slot relevant to the key in the map. This does not remove old items in
-     * the container, unless the slot of the item is associated to the [items]
-     * map as a key.
-     */
-    fun setItems(items: Map<Int, Item>) {
-        items.forEach { index, item ->
-            set(index, item)
-        }
     }
 
     /**

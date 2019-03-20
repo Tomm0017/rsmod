@@ -11,6 +11,8 @@ import gg.rsmod.game.model.region.Chunk
 import mu.KLogging
 
 /**
+ * A system responsible for allocating and de-allocating [InstancedMaps].
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class InstancedMapAllocator {
@@ -39,8 +41,15 @@ class InstancedMapAllocator {
         private const val SCAN_MAPS_CYCLES = 25
     }
 
+    /**
+     * A list of active [InstancedMap]s.
+     */
     private val maps = arrayListOf<InstancedMap>()
 
+    /**
+     * The current cycles that keep track of how long before our allocated
+     * should scan for 'inactive' [InstancedMap]s.
+     */
     private var deallocationScanCycle = 0
 
     /**
@@ -91,6 +100,10 @@ class InstancedMapAllocator {
             removeCollision(world, map)
             world.removeAll(map.area)
 
+            /**
+             * If the map is de-allocated, we want to move any players in the
+             * instance to the [InstancedMap.exitTile].
+             */
             world.players.forEach { player ->
                 if (map.area.contains(player.tile)) {
                     player.teleport(map.exitTile)
@@ -130,25 +143,26 @@ class InstancedMapAllocator {
     internal fun cycle(world: World) {
         if (deallocationScanCycle++ == SCAN_MAPS_CYCLES) {
 
-            var deallocated = 0
-
             for (i in 0 until maps.size) {
                 val map = maps[i]
 
+                /**
+                 * If there's no players in the [map] area, we can de-allocate
+                 * the map.
+                 */
                 if (world.players.none { map.area.contains(it.tile) }) {
                     deallocate(world, map)
-                    deallocated++
                 }
             }
 
             deallocationScanCycle = 0
-
-            if (deallocated > 0) {
-                logger.info { "De-allocated $deallocated instanced map${if (deallocated != 1) "s" else ""}." }
-            }
         }
     }
 
+    /**
+     * @return
+     * An [InstancedMap] who's area contains [tile], or null if no map is found in said tile.
+     */
     fun getMap(tile: Tile): InstancedMap? = maps.find { it.area.contains(tile) }
 
     private fun applyCollision(world: World, map: InstancedMap, bypassObjectChunkBounds: Boolean) {

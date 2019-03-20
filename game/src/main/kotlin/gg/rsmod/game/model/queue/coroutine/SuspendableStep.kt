@@ -1,4 +1,4 @@
-package gg.rsmod.game.plugin.coroutine
+package gg.rsmod.game.model.queue.coroutine
 
 import kotlin.coroutines.Continuation
 

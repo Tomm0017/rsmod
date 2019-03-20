@@ -26,9 +26,29 @@ data class ItemTransaction(val requested: Int, val completed: Int, val items: Li
 
     override fun iterator(): Iterator<SlotItem> = items.iterator()
 
+    /**
+     * @return
+     * The amount of items that did not go through with the transaction.
+     *
+     * For example
+     * If the item is three (3) abyssal whips, but the container only has
+     * two (2) slots available and does not have a stack type of
+     * [ContainerStackType.STACK], this method will then return one (1)
+     * as one abyssal whip was unable to be added.
+     */
     fun getLeftOver(): Int = requested - completed
 
+    /**
+     * @return
+     * true if the transaction was completely successful
+     * ([completed] == [requested]).
+     */
     fun hasSucceeded(): Boolean = completed == requested
 
+    /**
+     * @return
+     * true if the transaction was not completely successful.
+     * ([completed] != [requested]).
+     */
     fun hasFailed(): Boolean = !hasSucceeded()
 }

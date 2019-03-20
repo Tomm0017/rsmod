@@ -5,10 +5,33 @@ import gg.rsmod.game.model.Tile
 import java.util.*
 
 /**
+ * Configurations required to construct a new [InstancedMap].
+ *
+ * @see InstancedMap
+ *
+ * @param bypassObjectChunkBounds
+ * If true, objects that are found to exceed the bounds of its [Chunk] will
+ * not throw an error - however the object will not be applied to the world's
+ * [gg.rsmod.game.model.region.ChunkSet], so this flag should be used with
+ * that caveat in mind.
+ *
+ * Explanation:
+ * In certain scenarios, an object's tile can overextend its original [Chunk]
+ * where it would be placed in the [InstancedMap]; this can occur in any object
+ * who's width or length is greater than 1 (one).
+ *
+ * Example:
+ * - 2x2 object is in the local tile of 2,7 (in respect to its [Chunk])
+ * - The [InstancedChunk.rot] is set to 2 (two)
+ * - The outcome local tile would be 2,-1
+ *
+ * The outcome local tile would be out-of-bounds in its [Chunk] and would
+ * lead to undesired behaviour.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
-class InstancedMapConfiguration(val exitTile: Tile, val owner: PlayerUID?, val attributes: EnumSet<InstancedMapAttribute>,
-                                val bypassObjectChunkBounds: Boolean) {
+class InstancedMapConfiguration private constructor(val exitTile: Tile, val owner: PlayerUID?, val attributes: EnumSet<InstancedMapAttribute>,
+                                                    val bypassObjectChunkBounds: Boolean) {
 
     class Builder {
 
@@ -18,25 +41,6 @@ class InstancedMapConfiguration(val exitTile: Tile, val owner: PlayerUID?, val a
 
         private val attributes = EnumSet.noneOf(InstancedMapAttribute::class.java)
 
-        /**
-         * If true, objects that are found to exceed the bounds of its [Chunk] will
-         * not throw an error - however the object will not be applied to the [world]'s
-         * [gg.rsmod.game.model.region.ChunkSet], so this flag should be used with
-         * that caveat in mind.
-         *
-         * Explanation:
-         * In certain scenarios, an object's tile can overextend its original [Chunk]
-         * where it would be placed in the [InstancedMap]; this can occur in any object
-         * who's width or length is greater than 1 (one).
-         *
-         * Example:
-         * - 2x2 object is in the local tile of 2,7 (in respect to its [Chunk])
-         * - The [InstancedChunk.rot] is set to 2 (two)
-         * - The outcome local tile would be 2,-1
-         *
-         * The outcome local tile would be out-of-bounds in its [Chunk] and would
-         * lead to undesired behaviour.
-         */
         private var bypassObjectChunkBounds: Boolean = false
 
         fun build(): InstancedMapConfiguration {

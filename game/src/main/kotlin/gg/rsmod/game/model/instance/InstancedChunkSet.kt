@@ -3,6 +3,18 @@ package gg.rsmod.game.model.instance
 import gg.rsmod.game.model.Tile
 
 /**
+ * A set of [InstancedChunk]s that can be used to construct an [InstancedMap].
+ *
+ * @param regionSize
+ * The amount of regions (64x64 tiles) that the [values] occupy.
+ *
+ * @param values
+ * A map of [InstancedChunk]s that this set makes up, with the chunk coordinates,
+ * in relation to map, as a key.
+ *
+ * For example
+ * The most bottom-left chunk would have a chunk coordinate of 0,0.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class InstancedChunkSet(val regionSize: Int, val values: Map<Int, InstancedChunk>) {
@@ -34,7 +46,7 @@ class InstancedChunkSet(val regionSize: Int, val values: Map<Int, InstancedChunk
             }
 
             val packed = copy.toRotatedInteger(rotation)
-            val chunk = InstancedChunk(packed, rotation)
+            val chunk = InstancedChunk(packed)
 
             val coordinates = getCoordinates(chunkX, chunkZ, height)
             chunks[coordinates] = chunk

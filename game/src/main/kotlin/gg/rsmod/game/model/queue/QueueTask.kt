@@ -3,7 +3,7 @@ package gg.rsmod.game.model.queue
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.plugin.coroutine.*
+import gg.rsmod.game.model.queue.coroutine.*
 import mu.KotlinLogging
 import kotlin.coroutines.*
 

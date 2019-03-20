@@ -87,7 +87,7 @@ class Tile {
             1 -> transform(localZ, localLength - localX - (width - 1))
             2 -> transform(localWidth - localX - (width - 1), localLength - localZ - (length - 1))
             3 -> transform(localWidth - localZ - (length - 1), localX)
-            else -> throw IllegalArgumentException("Illegal orientation! Value must be in bounds [0-3]")
+            else -> throw IllegalArgumentException("Illegal orientation! Value must be in bounds [0-3]. [orientation=$orientation]")
         }
     }
 
@@ -118,12 +118,18 @@ class Tile {
     fun getDelta(other: Tile): Int = Math.abs(x - other.x) + Math.abs(z - other.z)
 
     /**
-     * Returns the local tile of our region relative to the current [x] and [z].
+     * @return
+     * The local tile of our region relative to the current [x] and [z].
      *
      * The [other] tile will always have coords equal to or greater than our own.
      */
     fun toLocal(other: Tile): Tile = Tile(((other.x shr 3) - (x shr 3)) shl 3, ((other.z shr 3) - (z shr 3)) shl 3, height)
 
+    /**
+     * @return
+     * A bit-packed value of the tile, in [Chunk] coordinates, which also stores
+     * a rotation/orientation value.
+     */
     fun toRotatedInteger(rot: Int): Int = ((height and 0x3) shl 24) or (((x shr 3) and 0x3FF) shl 14) or (((z shr 3) and 0x7FF) shl 3) or ((rot and 0x3) shl 1)
 
     /**

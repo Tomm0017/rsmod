@@ -15,7 +15,7 @@ class PlayerTeleportSegment(private val player: Player, private val other: Playe
          */
         buf.putBits(1, 1)
         /**
-         * Does [other] have pending [gg.rsmod.game.sync.UpdateBlockType]s?
+         * Does [other] have pending [gg.rsmod.game.sync.block.UpdateBlockType]s?
          */
         buf.putBit(encodeUpdateBlocks)
         /**
@@ -28,20 +28,14 @@ class PlayerTeleportSegment(private val player: Player, private val other: Playe
          * The difference from [other]'s last tile as far as [player]'s client is
          * concerned.
          */
-        var dx = other.tile.x - (other.lastTile?.x ?: 0)
-        var dz = other.tile.z - (other.lastTile?.z ?: 0)
-        val dh = other.tile.height - (other.lastTile?.height ?: 0)
+        val diffX = other.tile.x - (other.lastTile?.x ?: 0)
+        val diffZ = other.tile.z - (other.lastTile?.z ?: 0)
+        val diffH = other.tile.height - (other.lastTile?.height ?: 0)
 
         /**
          * If the move is within a short radius, we want to save some bandwidth.
          */
-        if (Math.abs(dx) < Player.NORMAL_VIEW_DISTANCE && Math.abs(dz) < Player.NORMAL_VIEW_DISTANCE) {
-            if (dx < 0) {
-                dx += 32
-            }
-            if (dz < 0) {
-                dz += 32
-            }
+        if (Math.abs(diffX) <= Player.NORMAL_VIEW_DISTANCE && Math.abs(diffZ) <= Player.NORMAL_VIEW_DISTANCE) {
             /**
              * Signal to the client that the difference in tiles are within
              * viewing distance.
@@ -50,7 +44,9 @@ class PlayerTeleportSegment(private val player: Player, private val other: Playe
             /**
              * Write the difference in tiles.
              */
-            buf.putBits(12, (dz and 0x1F) or ((dx and 0x1F) shl 5) or ((dh and 0x3) shl 10))
+            buf.putBits(2, diffH and 0x3)
+            buf.putBits(5, diffX and 0x1F)
+            buf.putBits(5, diffZ and 0x1F)
         } else {
             /**
              * Signal to the client that the difference in tiles are not within
@@ -60,7 +56,9 @@ class PlayerTeleportSegment(private val player: Player, private val other: Playe
             /**
              * Write the difference in tiles.
              */
-            buf.putBits(30, (dz and 0x3FFF) or ((dx and 0x3FFF) shl 14) or ((dh and 0x3) shl 28))
+            buf.putBits(2, diffH and 0x3)
+            buf.putBits(14, diffX and 0x3FFF)
+            buf.putBits(14, diffZ and 0x3FFF)
         }
     }
 }

@@ -142,39 +142,41 @@ open class Player(world: World) : Pawn(world) {
      * The players in our viewport, including ourselves. This list should not
      * be used outside of our synchronization task.
      */
-    internal val localPlayers = arrayOfNulls<Player>(2048)
+    internal val gpiLocalPlayers = arrayOfNulls<Player>(2048)
 
     /**
      * The indices of any possible local player in the world.
      */
-    internal val localPlayerIndices = IntArray(2048)
+    internal val gpiLocalIndexes = IntArray(2048)
 
     /**
      * The current local player count.
      */
-    internal var localPlayerCount = 0
+    internal var gpiLocalCount = 0
 
     /**
      * The indices of players outside of our viewport in the world.
      */
-    internal val externalPlayerIndices = IntArray(2048)
+    internal val gpiExternalIndexes = IntArray(2048)
 
     /**
      * The amount of players outside of our viewport.
      */
-    internal var externalPlayerCount = 0
+    internal var gpiExternalCount = 0
 
     /**
      * The inactivity flags for players.
      */
-    internal val inactivityPlayerFlags = IntArray(2048)
+    internal val gpiInactivityFlags = IntArray(2048)
 
     /**
-     * An array that holds the last-known [Tile.as30BitInteger] for every player
-     * according to this [Player]. This can vary from player to player, since
-     * on log-in, this array will be filled with [0]s for this [Player].
+     * GPI tile hash multipliers.
+     *
+     * The player synchronization task will send [Tile.x] and [Tile.z] as 13-bit
+     * values, which is 2^13 (8192). To send a player position higher than said
+     * value in either direction, we must also send a multiplier.
      */
-    internal val otherPlayerTiles = IntArray(2048)
+    internal val gpiTileHashMultipliers = IntArray(2048)
 
     /**
      * The npcs in our viewport. This list should not be used outside of our
@@ -381,19 +383,19 @@ open class Player(world: World) : Pawn(world) {
      */
     fun login() {
         if (getType().isHumanControlled()) {
-            localPlayers[index] = this
-            localPlayerIndices[localPlayerCount++] = index
+            gpiLocalPlayers[index] = this
+            gpiLocalIndexes[gpiLocalCount++] = index
 
             for (i in 1 until 2048) {
                 if (i == index) {
                     continue
                 }
-                externalPlayerIndices[externalPlayerCount++] = i
-                //otherPlayerTiles[i] = if (i < world.players.capacity) world.players[i]?.tile?.as18BitInteger ?: 0 else 0
+                gpiExternalIndexes[gpiExternalCount++] = i
+                gpiTileHashMultipliers[i] = if (i < world.players.capacity) world.players[i]?.tile?.asTileHashMultiplier ?: 0 else 0
             }
 
-            val tiles = IntArray(otherPlayerTiles.size)
-            System.arraycopy(otherPlayerTiles, 0, tiles, 0, tiles.size)
+            val tiles = IntArray(gpiTileHashMultipliers.size)
+            System.arraycopy(gpiTileHashMultipliers, 0, tiles, 0, tiles.size)
 
             write(RebuildLoginMessage(index, tile, tiles, world.xteaKeyService))
         }

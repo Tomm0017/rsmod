@@ -30,15 +30,15 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         buf.putBytes(maskBuf.getBuffer())
         player.write(buf.toGamePacket())
 
-        player.localPlayerCount = 0
-        player.externalPlayerCount = 0
+        player.gpiLocalCount = 0
+        player.gpiExternalCount = 0
         for (i in 1 until 2048) {
-            if (player.localPlayers[i] != null) {
-                player.localPlayerIndices[player.localPlayerCount++] = i
+            if (player.gpiLocalPlayers[i] != null) {
+                player.gpiLocalIndexes[player.gpiLocalCount++] = i
             } else {
-                player.externalPlayerIndices[player.externalPlayerCount++] = i
+                player.gpiExternalIndexes[player.gpiExternalCount++] = i
             }
-            player.inactivityPlayerFlags[i] = player.inactivityPlayerFlags[i] shr 1
+            player.gpiInactivityFlags[i] = player.gpiInactivityFlags[i] shr 1
         }
     }
 
@@ -69,13 +69,13 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
     private fun addLocalSegments(initial: Boolean, segments: MutableList<SynchronizationSegment>) {
         var skipCount = 0
 
-        for (i in 0 until player.localPlayerCount) {
-            val index = player.localPlayerIndices[i]
-            val local = player.localPlayers[index]
+        for (i in 0 until player.gpiLocalCount) {
+            val index = player.gpiLocalIndexes[i]
+            val local = player.gpiLocalPlayers[index]
 
             val skip = when (initial) {
-                true -> (player.inactivityPlayerFlags[index] and 0x1) != 0
-                else -> (player.inactivityPlayerFlags[index] and 0x1) == 0
+                true -> (player.gpiInactivityFlags[index] and 0x1) != 0
+                else -> (player.gpiInactivityFlags[index] and 0x1) == 0
             }
 
             if (skip) {
@@ -84,14 +84,23 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
             if (skipCount > 0) {
                 skipCount--
-                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
+                player.gpiInactivityFlags[index] = player.gpiInactivityFlags[index] or 0x2
                 continue
             }
 
             if (local != player && (local == null || shouldRemove(local))) {
-                player.localPlayers[index] = null
-                player.otherPlayerTiles[index] = 0
-                segments.add(RemoveLocalPlayerSegment())
+                val lastTileHash = player.gpiTileHashMultipliers[index]
+                val currTileHash = local?.tile?.asTileHashMultiplier ?: 0
+                val updateTileHash = lastTileHash != currTileHash
+
+                segments.add(RemoveLocalPlayerSegment(updateTileHash))
+                if (updateTileHash) {
+                    segments.add(PlayerLocationHashSegment(lastTileHash, currTileHash))
+                }
+
+                player.gpiLocalPlayers[index] = null
+                player.gpiTileHashMultipliers[index] = currTileHash
+
                 continue
             }
 
@@ -126,12 +135,12 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             } else if (requiresBlockUpdate) {
                 segments.add(SignalPlayerUpdateBlockSegment())
             } else {
-                for (j in i + 1 until player.localPlayerCount) {
-                    val nextIndex = player.localPlayerIndices[j]
-                    val next = player.localPlayers[nextIndex]
+                for (j in i + 1 until player.gpiLocalCount) {
+                    val nextIndex = player.gpiLocalIndexes[j]
+                    val next = player.gpiLocalPlayers[nextIndex]
                     val skipNext = when (initial) {
-                        true -> (player.inactivityPlayerFlags[nextIndex] and 0x1) != 0
-                        else -> (player.inactivityPlayerFlags[nextIndex] and 0x1) == 0
+                        true -> (player.gpiInactivityFlags[nextIndex] and 0x1) != 0
+                        else -> (player.gpiInactivityFlags[nextIndex] and 0x1) == 0
                     }
                     if (skipNext) {
                         continue
@@ -142,7 +151,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                     skipCount++
                 }
                 segments.add(PlayerSkipCountSegment(skipCount))
-                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
+                player.gpiInactivityFlags[index] = player.gpiInactivityFlags[index] or 0x2
             }
         }
 
@@ -160,12 +169,12 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         var skipCount = 0
         var added = previouslyAdded
 
-        for (i in 0 until player.externalPlayerCount) {
-            val index = player.externalPlayerIndices[i]
+        for (i in 0 until player.gpiExternalCount) {
+            val index = player.gpiExternalIndexes[i]
 
             val skip = when (initial) {
-                true -> (player.inactivityPlayerFlags[index] and 0x1) == 0
-                else -> (player.inactivityPlayerFlags[index] and 0x1) != 0
+                true -> (player.gpiInactivityFlags[index] and 0x1) == 0
+                else -> (player.gpiInactivityFlags[index] and 0x1) != 0
             }
 
             if (skip) {
@@ -174,46 +183,48 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
             if (skipCount > 0) {
                 skipCount--
-                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
+                player.gpiInactivityFlags[index] = player.gpiInactivityFlags[index] or 0x2
                 continue
             }
 
             val nonLocal = if (index < player.world.players.capacity) player.world.players[index] else null
 
-            if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE && player.localPlayerCount + added < MAX_LOCAL_PLAYERS
+            if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE && player.gpiLocalCount + added < MAX_LOCAL_PLAYERS
                     && shouldAdd(nonLocal)) {
 
-                val oldTileHash = player.otherPlayerTiles[index]
-                val currTileHash = nonLocal.tile.as30BitInteger
+                val oldTileHash = player.gpiTileHashMultipliers[index]
+                val currTileHash = nonLocal.tile.asTileHashMultiplier
 
-                segments.add(AddLocalPlayerSegment(other = nonLocal, last18BitTileHash = oldTileHash, curr18BitTileHash = currTileHash))
+                val tileUpdateSegment = if (oldTileHash == currTileHash) null else PlayerLocationHashSegment(oldTileHash, currTileHash)
+
+                segments.add(AddLocalPlayerSegment(other = nonLocal, locationSegment = tileUpdateSegment))
                 segments.add(PlayerUpdateBlockSegment(other = nonLocal, newPlayer = true))
 
-                player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
-                player.otherPlayerTiles[index] = currTileHash
-                player.localPlayers[index] = nonLocal
+                player.gpiInactivityFlags[index] = player.gpiInactivityFlags[index] or 0x2
+                player.gpiTileHashMultipliers[index] = currTileHash
+                player.gpiLocalPlayers[index] = nonLocal
 
                 added++
                 continue
             }
 
-            for (j in i + 1 until player.externalPlayerCount) {
-                val nextIndex = player.externalPlayerIndices[j]
+            for (j in i + 1 until player.gpiExternalCount) {
+                val nextIndex = player.gpiExternalIndexes[j]
                 val skipNext = when (initial) {
-                    true -> (player.inactivityPlayerFlags[nextIndex] and 0x1) == 0
-                    else -> (player.inactivityPlayerFlags[nextIndex] and 0x1) != 0
+                    true -> (player.gpiInactivityFlags[nextIndex] and 0x1) == 0
+                    else -> (player.gpiInactivityFlags[nextIndex] and 0x1) != 0
                 }
                 if (skipNext) {
                     continue
                 }
-                val next = if (nextIndex < player.world.players.capacity) player.world.players.get(nextIndex) else null
-                if (next != null && shouldAdd(next)) {
+                val next = if (nextIndex < player.world.players.capacity) player.world.players[nextIndex] else null
+                if (next != null && shouldAdd(next) || next?.tile?.asTileHashMultiplier != player.gpiTileHashMultipliers[nextIndex]) {
                     break
                 }
                 skipCount++
             }
             segments.add(PlayerSkipCountSegment(count = skipCount))
-            player.inactivityPlayerFlags[index] = player.inactivityPlayerFlags[index] or 0x2
+            player.gpiInactivityFlags[index] = player.gpiInactivityFlags[index] or 0x2
         }
 
         if (skipCount > 0) {

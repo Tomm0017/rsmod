@@ -6,7 +6,7 @@ import gg.rsmod.net.packet.GamePacketBuilder
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class RemoveLocalPlayerSegment : SynchronizationSegment {
+class RemoveLocalPlayerSegment(val updateTileHash: Boolean) : SynchronizationSegment {
 
     override fun encode(buf: GamePacketBuilder) {
         /**
@@ -26,6 +26,6 @@ class RemoveLocalPlayerSegment : SynchronizationSegment {
          * Signal to the client that the player's location does not need to be
          * decoded.
          */
-        buf.putBits(1, 0)
+        buf.putBits(1, if (updateTileHash) 1 else 0)
     }
 }

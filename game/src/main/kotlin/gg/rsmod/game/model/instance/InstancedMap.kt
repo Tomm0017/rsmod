@@ -1,13 +1,16 @@
 package gg.rsmod.game.model.instance
 
 import gg.rsmod.game.model.Area
+import gg.rsmod.game.model.PlayerUID
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.region.Chunk
+import java.util.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class InstancedMap(val area: Area, val chunks: InstancedChunkSet) {
+class InstancedMap internal constructor(val area: Area, val chunks: InstancedChunkSet, val exitTile: Tile,
+                                        val owner: PlayerUID?, val attr: EnumSet<InstancedMapAttribute>) {
 
     /**
      * Get the [InstancedChunk.packed] values.

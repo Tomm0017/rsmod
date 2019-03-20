@@ -12,8 +12,9 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 class ChunkCoords(val x: Int, val z: Int) {
 
     companion object {
+        fun fromTile(x: Int, z: Int): ChunkCoords = ChunkCoords(x, z)
 
-        fun fromTile(tile: Tile): ChunkCoords = ChunkCoords(tile.topLeftRegionX, tile.topLeftRegionZ)
+        fun fromTile(tile: Tile): ChunkCoords = fromTile(tile.topLeftRegionX, tile.topLeftRegionZ)
     }
 
     fun toTile(): Tile = Tile((x + 6) shl 3, (z + 6) shl 3)

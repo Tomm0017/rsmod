@@ -1,13 +1,12 @@
 package gg.rsmod.game.model.instance
 
-import gg.rsmod.game.model.Area
-import gg.rsmod.game.model.EntityType
-import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.World
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.entity.DynamicObject
+import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.entity.StaticObject
 import gg.rsmod.game.model.region.Chunk
 import mu.KLogging
+import java.util.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -30,9 +29,17 @@ class InstancedMapAllocator {
          * assuming every map is 64x64 in size, which isn't always the case.
          */
         private val VALID_AREA = Area(bottomLeftX = 6400, bottomLeftZ = 0, topRightX = 9600, topRightZ = 6400)
+
+        /**
+         * The amount of game cycles that must go by before scanning the active
+         * [maps] for any [InstancedMap] eligible to be de-allocated.
+         */
+        private const val SCAN_MAPS_CYCLES = 25
     }
 
     private val maps = arrayListOf<InstancedMap>()
+
+    private var deallocationScanCycle = 0
 
     /**
      * Allocate a new [InstancedMap] given [chunks].
@@ -43,28 +50,8 @@ class InstancedMapAllocator {
      * @param chunks
      * The [InstancedChunkSet] that holds all the [InstancedChunk]s that will make
      * up the newly constructed [InstancedMap], if applicable.
-     *
-     * @param bypassObjectChunkBounds
-     * If true, objects that are found to exceed the bounds of its [Chunk] will
-     * not throw an error - however the object will not be applied to the [world]'s
-     * [gg.rsmod.game.model.region.ChunkSet], so this flag should be used with
-     * that caveat in mind.
-     *
-     * Explanation:
-     * In certain scenarios, an object's tile can overextend its original [Chunk]
-     * where it would be placed in the [InstancedMap]; this can occur in any object
-     * who's width or length is greater than 1 (one).
-     *
-     * Example:
-     * - 2x2 object is in the local tile of 2,7 (in respect to its [Chunk])
-     * - The [InstancedChunk.rot] is set to 2 (two)
-     * - The outcome local tile would be 2,-1
-     *
-     * The outcome local tile would be out-of-bounds in its [Chunk] and would
-     * lead to undesired behaviour.
-     *
      */
-    fun allocate(world: World, chunks: InstancedChunkSet, bypassObjectChunkBounds: Boolean = false): InstancedMap? {
+    fun allocate(world: World, chunks: InstancedChunkSet, exitTile: Tile, configs: Configuration? = null): InstancedMap? {
         val area = VALID_AREA
         val step = 64
 
@@ -83,8 +70,8 @@ class InstancedMapAllocator {
                     continue
                 }
 
-                val map = allocate(x, z, chunks)
-                applyCollision(world, map, bypassObjectChunkBounds)
+                val map = allocate(x, z, chunks, exitTile, configs)
+                applyCollision(world, map, configs?.bypassObjectChunkBounds ?: false)
                 maps.add(map)
                 return map
             }
@@ -93,18 +80,76 @@ class InstancedMapAllocator {
         return null
     }
 
-    private fun allocate(x: Int, z: Int, chunks: InstancedChunkSet): InstancedMap =
-            InstancedMap(Area(x, z, x + chunks.regionSize * Chunk.REGION_SIZE, z + chunks.regionSize * Chunk.REGION_SIZE), chunks)
+    private fun allocate(x: Int, z: Int, chunks: InstancedChunkSet, exitTile: Tile, configs: Configuration?): InstancedMap =
+            InstancedMap(Area(x, z, x + chunks.regionSize * Chunk.REGION_SIZE, z + chunks.regionSize * Chunk.REGION_SIZE), chunks, exitTile,
+                    configs?.owner, configs?.attributes ?: EnumSet.noneOf(InstancedMapAttribute::class.java))
 
     private fun deallocate(world: World, map: InstancedMap) {
         if (maps.remove(map)) {
             removeCollision(world, map)
+            world.removeAll(map.area)
+
+            world.players.forEach { player ->
+                if (map.area.contains(player.tile)) {
+                    player.teleport(map.exitTile)
+                }
+            }
+        }
+    }
+
+    internal fun logout(player: Player) {
+        val world = player.world
+
+        getMap(player.tile)?.let { map ->
+            player.teleport(map.exitTile)
+
+            if (map.attr.contains(InstancedMapAttribute.DEALLOCATE_ON_LOGOUT)) {
+                val mapOwner = map.owner!! // If map has this attribute, they should also set an owner.
+                if (player.uid == mapOwner) {
+                    deallocate(world, map)
+                }
+            }
+        }
+    }
+
+    internal fun death(player: Player) {
+        val world = player.world
+
+        getMap(player.tile)?.let { map ->
+            if (map.attr.contains(InstancedMapAttribute.DEALLOCATE_ON_DEATH)) {
+                val mapOwner = map.owner!! // If map has this attribute, they should also set an owner.
+                if (player.uid == mapOwner) {
+                    deallocate(world, map)
+                }
+            }
+        }
+    }
+
+    internal fun cycle(world: World) {
+        if (deallocationScanCycle++ == SCAN_MAPS_CYCLES) {
+
+            var deallocated = 0
+
+            for (i in 0 until maps.size) {
+                val map = maps[i]
+
+                if (world.players.none { map.area.contains(it.tile) }) {
+                    deallocate(world, map)
+                    deallocated++
+                }
+            }
+
+            deallocationScanCycle = 0
+
+            if (deallocated > 0) {
+                logger.info { "De-allocated $deallocated instanced map${if (deallocated != 1) "s" else ""}." }
+            }
         }
     }
 
     fun getMap(tile: Tile): InstancedMap? = maps.find { it.area.contains(tile) }
 
-    fun applyCollision(world: World, map: InstancedMap, bypassObjectChunkBounds: Boolean) {
+    private fun applyCollision(world: World, map: InstancedMap, bypassObjectChunkBounds: Boolean) {
         val bounds = Chunk.CHUNKS_PER_REGION * map.chunks.regionSize
         val heights = Tile.TOTAL_HEIGHT_LEVELS
 
@@ -168,13 +213,69 @@ class InstancedMapAllocator {
         }
     }
 
-    fun removeCollision(world: World, map: InstancedMap) {
+    private fun removeCollision(world: World, map: InstancedMap) {
         val regionCount = map.chunks.regionSize
         val chunks = world.chunks
 
         for (i in 0 until regionCount) {
             val tile = map.area.bottomLeft.transform(i * Chunk.REGION_SIZE, i * Chunk.REGION_SIZE)
             chunks.remove(tile.chunkCoords)
+        }
+    }
+
+    class Configuration {
+
+        internal var owner: PlayerUID? = null
+
+        internal val attributes = EnumSet.noneOf(InstancedMapAttribute::class.java)
+
+        /**
+         * If true, objects that are found to exceed the bounds of its [Chunk] will
+         * not throw an error - however the object will not be applied to the [world]'s
+         * [gg.rsmod.game.model.region.ChunkSet], so this flag should be used with
+         * that caveat in mind.
+         *
+         * Explanation:
+         * In certain scenarios, an object's tile can overextend its original [Chunk]
+         * where it would be placed in the [InstancedMap]; this can occur in any object
+         * who's width or length is greater than 1 (one).
+         *
+         * Example:
+         * - 2x2 object is in the local tile of 2,7 (in respect to its [Chunk])
+         * - The [InstancedChunk.rot] is set to 2 (two)
+         * - The outcome local tile would be 2,-1
+         *
+         * The outcome local tile would be out-of-bounds in its [Chunk] and would
+         * lead to undesired behaviour.
+         */
+        internal var bypassObjectChunkBounds: Boolean = false
+
+        /**
+         * Verify that the [Configuration] is in an acceptable state for usage.
+         */
+        fun verify(): Configuration {
+            val ownerRequired = EnumSet.of(InstancedMapAttribute.DEALLOCATE_ON_LOGOUT, InstancedMapAttribute.DEALLOCATE_ON_DEATH)
+            check(owner != null || attributes.none { it in ownerRequired }) { "One or more attributes require an owner to be set." }
+            return this
+        }
+
+        fun setOwner(owner: PlayerUID): Configuration {
+            this.owner = owner
+            return this
+        }
+
+        fun addAttribute(attribute: InstancedMapAttribute, vararg others: InstancedMapAttribute): Configuration {
+            attributes.add(attribute)
+            attributes.addAll(others)
+            return this
+        }
+
+        /**
+         * @see bypassObjectChunkBounds
+         */
+        fun setBypassObjectChunkBounds(bypassObjectChunkBounds: Boolean): Configuration {
+            this.bypassObjectChunkBounds = bypassObjectChunkBounds
+            return this
         }
     }
 }

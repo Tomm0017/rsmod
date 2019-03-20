@@ -351,29 +351,6 @@ open class Player(world: World) : Pawn(world) {
     }
 
     /**
-     * Handles the logic that must be executed once a player has successfully
-     * logged out. This means all the prerequisites have been met for the player
-     * to log out of the [world].
-     *
-     * The [Client] implementation overrides this method and will handle saving
-     * data for the player and call this super method at the end.
-     */
-    protected open fun handleLogout() {
-        interruptQueues()
-        world.plugins.executeLogout(this)
-        world.unregister(this)
-    }
-
-    /**
-     * Requests for this player to log out. However, the player may not be able
-     * to log out immediately under certain circumstances.
-     */
-    fun requestLogout() {
-        pendingLogout = true
-        setDisconnectionTimer = true
-    }
-
-    /**
      * Registers this player to the [world].
      */
     fun register(): Boolean = world.register(this)
@@ -402,6 +379,30 @@ open class Player(world: World) : Pawn(world) {
 
         initiated = true
         world.plugins.executeLogin(this)
+    }
+
+    /**
+     * Requests for this player to log out. However, the player may not be able
+     * to log out immediately under certain circumstances.
+     */
+    fun requestLogout() {
+        pendingLogout = true
+        setDisconnectionTimer = true
+    }
+
+    /**
+     * Handles the logic that must be executed once a player has successfully
+     * logged out. This means all the prerequisites have been met for the player
+     * to log out of the [world].
+     *
+     * The [Client] implementation overrides this method and will handle saving
+     * data for the player and call this super method at the end.
+     */
+    protected open fun handleLogout() {
+        interruptQueues()
+        world.instanceAllocator.logout(this)
+        world.plugins.executeLogout(this)
+        world.unregister(this)
     }
 
     /**

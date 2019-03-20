@@ -21,6 +21,7 @@ class InstancedChunkSet(val regionSize: Int, val values: Map<Int, InstancedChunk
             if (regionSize == -1) {
                 regionSize = 1
             }
+
             return InstancedChunkSet(regionSize, chunks)
         }
 

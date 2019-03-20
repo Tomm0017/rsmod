@@ -335,6 +335,11 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
          * Cycle through shops for their resupply ticks.
          */
         shops.values.forEach { it.cycle(this) }
+
+        /**
+         * Cycle through instanced maps.
+         */
+        instanceAllocator.cycle(this)
     }
 
     fun register(p: Player): Boolean {
@@ -440,6 +445,25 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         val chunk = chunks.getOrCreate(tile)
 
         chunk.addEntity(this, sound, tile)
+    }
+
+    /**
+     * Despawn all entities in an area.
+     */
+    fun removeAll(area: Area) {
+        for (i in 0 until npcs.capacity) {
+            val npc = npcs[i] ?: continue
+            if (area.contains(npc.tile)) {
+                remove(npc)
+            }
+        }
+
+        for (i in 0 until groundItems.size) {
+            val item = groundItems[i] ?: continue
+            if (area.contains(item.tile)) {
+                remove(item)
+            }
+        }
     }
 
     fun isSpawned(obj: GameObject): Boolean = chunks.getOrCreate(obj.tile).getEntities<GameObject>(obj.tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).contains(obj)

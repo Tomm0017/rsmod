@@ -39,7 +39,8 @@ class PawnList<T: Pawn>(private val pawns: Array<T?>) {
     }
 
     /**
-     * Return true if any of <strong>non-null</strong> pawns in our list pass
+     * @return
+     * True if any of <strong>non-null</strong> pawns in our list pass
      * the [predicate] test.
      */
     fun any(predicate: (T) -> Boolean): Boolean {
@@ -52,7 +53,22 @@ class PawnList<T: Pawn>(private val pawns: Array<T?>) {
     }
 
     /**
-     * Return the amount of <strong>non-null</strong> pawns in our list who
+     * @return
+     * False if any of <strong>non-null</strong> pawns in our list pass
+     * the [predicate] test.
+     */
+    fun none(predicate: (T) -> Boolean): Boolean {
+        for (element in pawns) {
+            if (element != null && predicate(element)) {
+                return false
+            }
+        }
+        return true
+    }
+
+    /**
+     * @return
+     * The amount of <strong>non-null</strong> pawns in our list who
      * pass the [predicate] test.
      */
     fun count(predicate: (T) -> Boolean): Int {

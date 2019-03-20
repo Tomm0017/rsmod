@@ -1,7 +1,5 @@
 package gg.rsmod.game.model
 
-import gg.rsmod.game.model.entity.Pawn
-
 /**
  * Represents a quad area in the world.
  *
@@ -26,6 +24,4 @@ data class Area(val bottomLeftX: Int, val bottomLeftZ: Int, val topRightX: Int, 
     fun contains(x: Int, z: Int): Boolean = x in bottomLeftX..topRightX && z in bottomLeftZ..topRightZ
 
     fun contains(t: Tile): Boolean = t.x in bottomLeftX..topRightX && t.z in bottomLeftZ..topRightZ
-
-    fun contains(pawn: Pawn): Boolean = contains(pawn.tile)
 }

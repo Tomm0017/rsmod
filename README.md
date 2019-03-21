@@ -10,8 +10,8 @@ and it'll automatically load on the next server startup!
 
 ## Creating Your First Plugin 
 
-- Creating your first plugin is super simple! Scripts are written in **KotlinScript**. 
-Here are the instructions for how you would create a few different plugins.
+-   Creating your first plugin is super simple! Plugins are written in **KotlinScript**. 
+    Here are the instructions for how you would create a few different plugins.
 
     Before we begin...
     -
@@ -33,7 +33,7 @@ Here are the instructions for how you would create a few different plugins.
         }
     
     This is a pretty simple plugin. Let's go over the lines of code that are 
-    labelled.
+    labeled.
     
     1. The package in which the file is located. It's valid to not include a package, however
     if any other plugin uses the same name and doesn't specify a package in a similar fashion,
@@ -76,8 +76,8 @@ Here are the instructions for how you would create a few different plugins.
     on the object, it will throw an error when you start the server.
     2. To use the 'scheduler' we have to wrap the code in ``Player.queue``.
     3. We make our player perform animation ``879``.
-    4. The code is then signalled to wait for 2 **game cycles** (a game cycle is 600 milliseconds).
-    5. After the specified amount of ticks have gone by (in this case, 2 ticks), the rest of
+    4. Signal the code to wait for 2 **game cycles** (a single game cycle is 600 milliseconds).
+    5. After the specified amount of cycles have gone by (in this case, 2 cycles), the rest of
     the code is executed, this includes ``player.animate(-1)`` which will reset the player's
     animation since they have already chopped down the logs!
     

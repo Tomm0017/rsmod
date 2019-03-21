@@ -39,6 +39,11 @@ class RsaService : Service() {
             service.keyPath = Paths.get(path)
             service.radix = radix
 
+            val directory = service.keyPath.parent.toAbsolutePath()
+            if (!Files.exists(directory)) {
+                Files.createDirectory(directory)
+            }
+
             logger.info("Generating RSA key pair...")
             service.createPair(bitCount)
         }
@@ -114,7 +119,7 @@ class RsaService : Service() {
         val publicKey = keyPair.public as RSAPublicKey
 
         println("")
-        println("Place these keys in the client (find BigInteger(\"10001\") in client code):")
+        println("Place these keys in the client (find BigInteger(\"10001\" in client code):")
         println("--------------------")
         println("public key: " + publicKey.publicExponent.toString(radix))
         println("modulus: " + publicKey.modulus.toString(radix))

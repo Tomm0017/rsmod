@@ -6,7 +6,79 @@ others make plugins for them and simply drop them into the Plugins module
 and it'll automatically load on the next server startup! 
 
 ## Configuring The Project
-- TODO
+There's two ways to launch RS Mod. One is for users who want to look into the code and 
+possibly create their own content. The other is for users who simply want to run the server
+as fast as possible and log in quick. 
+
+### I want to run the server quickly
+- Go to the repository's release page: https://github.com/Tomm0017/rsmod/releases
+- Download the latest release
+- Extract the archive on your desktop (or anywhere of your preference)
+- Open the archive and open the following directory: ``game-$version-number/bin``
+- If you are running Windows, run the ``game.bat`` file. 
+If you are running Linux or Mac, run the ``game`` file
+- The first time to launch it, you will receive a prompt saying that you do not 
+have an RSA private key. Enter ``y`` on your terminal/command prompt and wait for
+a message stating that your key was created. **Do not close the terminal/command prompt** 
+- Once your key is created, you will have to follow the instructions on the terminal/command prompt
+    - You need to copy the public keys you are given and replace them in your client
+    - In your client, you can find the text ``BigInteger("10001`` which will usually be the
+    place where you need to replace both the public keys (the ``"10001"`` key is usually the same)
+    - Once you have replaced the keys in the client, you can restart the server and launch your client  
+- Skip to step ``5) Choose your revision`` in ``I want to run the server and begin making my own content``
+and continue from there
+
+### I want to run the server and begin making my own content
+
+##### 1) Clone/Download the Repository
+- Go to the repository page: https://github.com/Tomm0017/rsmod
+- Clone or download the repository
+
+##### 2) Open the project in IntelliJ
+- If you do not have IntelliJ, you can download it from here: https://www.jetbrains.com/idea/download/
+- In your IntelliJ window, go to the top-left menu bar and navigate to ``File -> New -> Project from Existing Sources...``
+- Select the RSMod repository which you downloaded on the previous step  
+- In the ``Import Project`` window, select ``Import project from external model`` -> ``Gradle``
+- You can skip the next window, simply hit the ``Finish`` button
+- Give the project a bit of time to create and index its files
+
+##### 3) Install RSMod
+- On the top-right there should be a box ``Add Configuration...``, click on the box
+- On the top-left of the ``Run/Debug Configurations`` window, click on the ``+`` button
+- Select ``Gradle`` from the drop-down menu
+- In the Unnamed Gradle task, you should now fill in the ``Configuration``
+- ``Gradle project``: click the folder button on its right side and select the ``:game`` option
+- ``Tasks``: set value to ``install``
+- ``Arguments``: set value to ```-x test```
+- Now hit the ``Ok`` button
+- Next to the new button that should appear where the ``Add Configuration...`` was previously, 
+there should be a green ``run`` button, click on that and let the installation begin.
+
+##### 4) RSA key setup
+RSA is a method to stop man-in-the-middle (MITM) attacks on packets. RS Mod has this method enabled by default,
+no two servers should use the same private key so you must create your own:
+
+- After the ``install`` task completes, it will print out a message on the IntelliJ console
+- The console message explains that you must find ``BigInteger("10001"`` in your client and
+replace it the values with the ones printed on the console. If you missed the console messages
+you can run the ``install`` task again. 
+
+##### 5) Choose your revision
+Now you're ready to start choosing the direction of your server!
+
+- Head to the following archives page and select a revision you want your server to run on:
+https://archive.runestats.com/osrs/
+- Download whichever archive you want
+- Open the archive that you downloaded
+- Copy the files in its "cache" and place them in your RS Mod folder ``${rsmod-project}/data/cache``
+- Create the folder ``${rsmod-project}/data/xteas/``
+- Copy the file ``xteas.json`` and place it in the ``xteas`` folder you just created
+
+##### Troubleshooting
+- I receive a ``Revision mismatch for channel`` when trying to log in
+    - Find the revision of your **client** (*not cache*)
+    - Open ``${rsmod-project}/game.yml``
+    - Edit the value for ``revision: 178`` to match your client's revision
 
 ## Creating Your First Plugin 
 
@@ -105,7 +177,7 @@ and it'll automatically load on the next server startup!
         * ``chatNpc(String message)``
         * ``chatPlayer(String message)``
         * ``messageBox(String message)`` an empty dialog box with a message
-        * ``itemMessageBox(String message, Int itemId)`` a dialog that shows an item next to it`
+        * ``itemMessageBox(String message, Int itemId)`` a dialog that shows an item next to it
         * ``options(String... options)`` returns an Int in respect to the option the player chooses
                 from this dialog. If a player clicks on the first option, this method returns ``1``.
                  

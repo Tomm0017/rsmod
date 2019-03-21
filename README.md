@@ -52,9 +52,9 @@ a message stating that your key was created. **Do not close the terminal/command
 - On the top-left of the ``Run/Debug Configurations`` window, click on the ``+`` button
 - Select ``Gradle`` from the drop-down menu
 - In the Unnamed Gradle task, you should now fill in the ``Configuration``
-    - ``Gradle project``: click the folder button on its right side and select the ``:game`` option
-    - ``Tasks``: set value to ``install``
-    - ``Arguments``: set value to ```-x test```
+    - ``Gradle project`` click the folder button on its right side and select the ``:game`` option
+    - ``Tasks`` set value to ``install``
+    - ``Arguments`` set value to ```-x test```
 - Now hit the ``Ok`` button
 - Next to the new button that should appear where the ``Add Configuration...`` was previously, 
 there should be a green ``run`` button, click on that and let the installation begin.
@@ -79,7 +79,23 @@ https://archive.runestats.com/osrs/
 - Create the folder ``${rsmod-project}/data/xteas/``
 - Copy the file ``xteas.json`` and place it in the ``xteas`` folder you just created
 
+##### 6) Run the Server
+This step is similar to step ``3) Install RSMod``
+
+- On the top-right there should be a box ``Add Configuration...``, click on the box
+- On the top-left of the ``Run/Debug Configurations`` window, click on the ``+`` button
+- Select ``Gradle`` from the drop-down menu
+- In the Unnamed Gradle task, you should now fill in the ``Configuration``
+    - ``Gradle project`` click the folder button on its right side and select the ``:game`` option
+    - ``Tasks`` set value to ``run``
+- Now hit the ``Ok`` button
+- Next to the new button that should appear where the other configuration was previously, 
+there should be a green ``run`` button, click on that and let the installation begin.
+
+
 ##### Troubleshooting
+- *Where can I get a client?*
+    - You can get a client from 
 - *I receive a* ``Revision mismatch for channel`` *console message when trying to log in*
     - Find the revision of your **client** (*not cache*)
     - Open ``${rsmod-project}/game.yml``

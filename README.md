@@ -10,7 +10,7 @@ and it'll automatically load on the next server startup!
 
 ## Creating Your First Script 
 
-- Creating your first script is super simple! Scripts are written in **Kotlin**. 
+- Creating your first script is super simple! Scripts are written in **KotlinScript**. 
 Here are the instructions for how you would create a few different scripts.
     
     I want to create a Command

@@ -84,7 +84,7 @@ tasks.register("install") {
         copy {
             into "${rootProject.projectDir}/"
             from "${rootProject.projectDir}/game.example.yml"
-            rename 'game.example.yml', 'game2.yml'
+            rename 'game.example.yml', 'game.yml'
         }
 
         javaexec {

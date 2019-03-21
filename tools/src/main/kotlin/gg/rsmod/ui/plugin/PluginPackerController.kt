@@ -73,39 +73,20 @@ class PluginPackerController : Initializable {
             }
         }
 
-        gameJarButton.setOnAction {
-            val chooser = FileChooser()
-            chooser.title = "Select game.jar file"
-            chooser.extensionFilters.add(FileChooser.ExtensionFilter("JAR", "*.jar"))
+        dependencyButton.setOnAction {
+            val chooser = DirectoryChooser()
+            chooser.title = "Select dependency folder"
 
-            if (gameJarPath.text.isNotBlank()) {
-                val oldPath = Paths.get(gameJarPath.text)
-                chooser.initialDirectory = if (Files.exists(oldPath)) oldPath.parent.toFile() else null
+            if (dependencyPath.text.isNotBlank()) {
+                val oldPath = Paths.get(dependencyPath.text)
+                chooser.initialDirectory = if (Files.exists(oldPath)) oldPath.toFile() else null
             } else {
                 chooser.initialDirectory = Paths.get(".").toFile()
             }
 
-            val file = chooser.showOpenDialog(primaryStage)
-            if (file != null) {
-                setText(gameJarPath, file.absolutePath)
-            }
-        }
-
-        pluginsJarButton.setOnAction {
-            val chooser = FileChooser()
-            chooser.title = "Select plugins.jar file"
-            chooser.extensionFilters.add(FileChooser.ExtensionFilter("JAR", "*.jar"))
-
-            if (pluginsJarPath.text.isNotBlank()) {
-                val oldPath = Paths.get(pluginsJarPath.text)
-                chooser.initialDirectory = if (Files.exists(oldPath)) oldPath.parent.toFile() else null
-            } else {
-                chooser.initialDirectory = Paths.get(".").toFile()
-            }
-
-            val file = chooser.showOpenDialog(primaryStage)
-            if (file != null) {
-                setText(pluginsJarPath, file.absolutePath)
+            val folder = chooser.showDialog(primaryStage)
+            if (folder != null) {
+                setText(dependencyPath, folder.absolutePath)
             }
         }
 
@@ -199,11 +180,8 @@ class PluginPackerController : Initializable {
             compilerPath.isDisable = !newValue
             compilerButton.isDisable = !newValue
 
-            gameJarPath.isDisable = !newValue
-            gameJarButton.isDisable = !newValue
-
-            pluginsJarPath.isDisable = !newValue
-            pluginsJarButton.isDisable = !newValue
+            dependencyPath.isDisable = !newValue
+            dependencyButton.isDisable = !newValue
         }
 
         zipPlugin.selectedProperty().addListener { _, _, newValue ->
@@ -212,18 +190,14 @@ class PluginPackerController : Initializable {
             compilerPath.isDisable = newValue
             compilerButton.isDisable = newValue
 
-            gameJarPath.isDisable = newValue
-            gameJarButton.isDisable = newValue
-
-            pluginsJarPath.isDisable = newValue
-            pluginsJarButton.isDisable = newValue
+            dependencyPath.isDisable = newValue
+            dependencyButton.isDisable = newValue
         }
 
 
         packPlugin.setOnAction {
             val compiler = Paths.get(compilerPath.text)
-            val gameJar = Paths.get(gameJarPath.text)
-            val pluginsJar = Paths.get(pluginsJarPath.text)
+            val dependency = Paths.get(dependencyPath.text)
             val sourceFolder = Paths.get(sourcePath.text)
             val outputFolder = Paths.get(outputPath.text)
             val plugin = pluginName.text
@@ -235,15 +209,9 @@ class PluginPackerController : Initializable {
                     return@setOnAction
                 }
 
-                if (gameJarPath.text.isBlank() || !Files.exists(gameJar) || Files.isDirectory(gameJar)) {
-                    alertDialog(Alert.AlertType.ERROR, "Error", "The game jar file does not exist!",
-                            "File: ${gameJarPath.text}", primaryStage, icons)
-                    return@setOnAction
-                }
-
-                if (pluginsJarPath.text.isBlank() || !Files.exists(pluginsJar) || Files.isDirectory(pluginsJar)) {
-                    alertDialog(Alert.AlertType.ERROR, "Error", "The plugins jar file does not exist!",
-                            "File: ${pluginsJarPath.text}", primaryStage, icons)
+                if (dependencyPath.text.isBlank() || !Files.exists(dependency) || !Files.isDirectory(dependency)) {
+                    alertDialog(Alert.AlertType.ERROR, "Error", "The dependency folder does not exist!",
+                            "Directory: ${dependencyPath.text}", primaryStage, icons)
                     return@setOnAction
                 }
             }
@@ -268,9 +236,9 @@ class PluginPackerController : Initializable {
 
             packPlugin.isDisable = true
             if (jarPlugin.isSelected) {
+                val dependencies = Files.walk(dependency).filter { it.fileName.toString().endsWith(".jar") }.toList()
                 if (PluginPacker().compileBinary(compilerPath = compiler.toAbsolutePath().toString(),
-                                gameJar = gameJar.toAbsolutePath().toString(),
-                                pluginJar = pluginsJar.toAbsolutePath().toString(),
+                                dependencies = dependencies,
                                 pluginName = plugin,
                                 outputPath = outputFolder,
                                 paths = Files.walk(sourceFolder).toList())) {
@@ -312,8 +280,7 @@ class PluginPackerController : Initializable {
                     settings.load(reader)
 
                     compilerPath.text = settings.getProperty("compilerPath", "")
-                    gameJarPath.text = settings.getProperty("gameJar", "")
-                    pluginsJarPath.text = settings.getProperty("pluginsJar", "")
+                    dependencyPath.text = settings.getProperty("dependency", "")
                     outputPath.text = settings.getProperty("outputPath", "")
                     sourcePath.text = settings.getProperty("pluginFilesPath", "")
                     pluginName.text = settings.getProperty("plugin", "")
@@ -333,8 +300,7 @@ class PluginPackerController : Initializable {
         try {
             val properties = Properties()
             properties.setProperty("compilerPath", compilerPath.text)
-            properties.setProperty("gameJar", gameJarPath.text)
-            properties.setProperty("pluginsJar", pluginsJarPath.text)
+            properties.setProperty("dependency", dependencyPath.text)
             properties.setProperty("outputPath", outputPath.text)
             properties.setProperty("pluginFilesPath", sourcePath.text)
             properties.setProperty("plugin", pluginName.text)
@@ -377,16 +343,10 @@ class PluginPackerController : Initializable {
     private lateinit var compilerButton: Button
 
     @FXML
-    private lateinit var gameJarPath: TextField
+    private lateinit var dependencyPath: TextField
 
     @FXML
-    private lateinit var gameJarButton: Button
-
-    @FXML
-    private lateinit var pluginsJarPath: TextField
-
-    @FXML
-    private lateinit var pluginsJarButton: Button
+    private lateinit var dependencyButton: Button
 
     @FXML
     private lateinit var singleSourceFile: CheckBox

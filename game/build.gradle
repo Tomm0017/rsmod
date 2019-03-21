@@ -54,3 +54,38 @@ applicationDistribution.from("$rootDir") {
     include 'game.example.yml'
     into 'bin/'
 }
+
+apply plugin: 'application'
+
+task extractDependencies(type: Copy) {
+
+    from(zipTree("build/distributions/game-${project.version}.zip")) {
+        include "game-${project.version}/lib/*"
+        eachFile {
+            path = name
+        }
+        includeEmptyDirs = false
+    }
+    into 'build/libs'
+}
+
+build.dependsOn extractDependencies
+
+tasks.register("install") {
+    description = 'Install RSMod'
+
+    doLast {
+
+        copy {
+            from 'game.example.yml'
+            into '.'
+            rename 'game.example.yml', 'game.yml'
+        }
+
+        javaexec {
+            classpath = sourceSets.main.runtimeClasspath
+            main = "gg.rsmod.game.service.rsa.RsaService"
+            args = [ "16", "2048", "../data/rsa/key.pem" ] // radix, bitcount, rsa pem file
+        }
+    }
+}

@@ -17,12 +17,11 @@ class PluginPacker {
         return zipFiles(outputPath.resolve("$pluginName.zip"), paths, removeParent)
     }
 
-    fun compileBinary(compilerPath: String, gameJar: String, pluginJar: String,
-                      pluginName: String, outputPath: Path, paths: List<Path>): Boolean {
+    fun compileBinary(compilerPath: String, dependencies: List<Path>, pluginName: String, outputPath: Path, paths: List<Path>): Boolean {
         val tmpOutput = outputPath.resolve("$pluginName.tmp")
         val output = outputPath.resolve("$pluginName.jar")
 
-        val success = compileKotlin(compilerPath, gameJar, pluginJar, tmpOutput, paths)
+        val success = compileKotlin(compilerPath, dependencies, tmpOutput, paths)
         if (success) {
             try {
                 zipFiles(output = output, paths = Files.walk(tmpOutput).toList(),
@@ -35,11 +34,12 @@ class PluginPacker {
         return false
     }
 
-    private fun compileKotlin(compilerPath: String, gameJar: String, pluginJar: String, plugin: Path, paths: List<Path>): Boolean {
-        val splitPaths = paths.filter { it.fileName.toString().endsWith(".kt") || it.fileName.toString().endsWith(".kts") }.joinToString(" ") { "\"$it\"" }
+    private fun compileKotlin(compilerPath: String, dependencies: List<Path>, outputPlugin: Path, inputPluginPaths: List<Path>): Boolean {
+        val pluginPaths = inputPluginPaths.filter { it.fileName.toString().endsWith(".kt") || it.fileName.toString().endsWith(".kts") }.joinToString(" ") { "\"$it\"" }
+        val dependencyPaths = dependencies.joinToString(";") { "\"$it\"" }
 
         // TODO: command args must include /bin/bash and -c for linux systems
-        val process = ProcessBuilder(compilerPath, "$splitPaths -classpath \"$gameJar\";$pluginJar -d \"$plugin\"").inheritIO()
+        val process = ProcessBuilder(compilerPath, "-jvm-target", "1.8", "$pluginPaths -classpath $dependencyPaths -d \"$outputPlugin\"").inheritIO()
         val status = process.start()
         status.waitFor(30, TimeUnit.SECONDS)
         status.destroyForcibly()

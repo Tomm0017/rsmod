@@ -4,7 +4,7 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import mu.KotlinLogging
+import mu.KLogging
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.io.pem.PemObject
 import org.bouncycastle.util.io.pem.PemReader
@@ -26,8 +26,21 @@ import java.security.spec.PKCS8EncodedKeySpec
  */
 class RsaService : Service() {
 
-    companion object {
-        private val logger = KotlinLogging.logger {  }
+    companion object : KLogging() {
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val radix = args[0].toInt()
+            val bitCount = args[1].toInt()
+            val path = args[2]
+
+            val service = RsaService()
+            service.keyPath = Paths.get(path)
+            service.radix = radix
+
+            logger.info("Generating RSA key pair...")
+            service.createPair(bitCount)
+        }
     }
 
     private lateinit var keyPath: Path
@@ -36,8 +49,11 @@ class RsaService : Service() {
 
     private lateinit var modulus: BigInteger
 
+    private var radix = -1
+
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         keyPath = Paths.get(serviceProperties.getOrDefault("path", "./data/rsa/key.pem"))
+        radix = serviceProperties.getOrDefault("radix", 16)
 
         if (!Files.exists(keyPath)) {
             logger.info("Generating RSA key pair...")
@@ -86,10 +102,10 @@ class RsaService : Service() {
         val publicKey = keyPair.public as RSAPublicKey
 
         println("")
-        println("Place these keys in the client and restart the server & client:")
+        println("Place these keys in the client:")
         println("--------------------")
-        println("public key: " + publicKey.publicExponent)
-        println("modulus: " + publicKey.modulus)
+        println("public key: " + publicKey.publicExponent.toString(radix))
+        println("modulus: " + publicKey.modulus.toString(radix))
         println("")
 
         try {

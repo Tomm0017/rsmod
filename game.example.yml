@@ -57,4 +57,8 @@ services:
 
   - class: gg.rsmod.plugins.service.gates.GateService
 
+  - class: gg.rsmod.game.service.rsa.RsaService
+    path: "../data/rsa/key.pem"
+    radix: 16
+
   - class: gg.rsmod.game.service.login.LoginService

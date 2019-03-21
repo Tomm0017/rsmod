@@ -87,17 +87,16 @@ through e-mail: **rspsmods@gmail.com**
 * ##### Major
     - Using Collision Detection from Apollo 
     - Basic idea behind the Region system (known as Chunk on RS Mod)
-* ##### Bart
+* ##### Polar
+    - Helpful lad who shares a lot of OSRS knowledge
+    - Useful OSRS archives https://archive.runestats.com/osrs/
+    - Conversations of how to improve RS Mod 
+* ##### Kris
+    - Always willing to lend a hand and share some code 
+* ##### Bart and Scu11
+    - Helped solve an issue with setting up KotlinScript 
+* ##### Bart (from original OSS team)
     - The basic idea behind certain features such as TimerSystem, AttributeSystem and Services
     - The basic idea behind user-friendly plugin binding
 * ##### Rune-Status
-    - Discord members lending a hand and being helpful:
-        * Polar
-            * Bunch of advice, including "correct" naming of packets
-        * Kris
-            * Some information regarding GPI
-            * Rev. 168 examines
-        * Bart
-            * Helped with KotlinScript issue
-        * Ryley
-            * Suggested using KotlinScript
+    - Discord members lending a hand and being helpful

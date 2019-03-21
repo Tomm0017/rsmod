@@ -22,3 +22,96 @@ allprojects {
 
 apply from: 'gradle/properties.gradle'
 apply from: 'gradle/wrapper.gradle'
+
+task packageServer(type: Zip) {
+    archiveFileName = "rsmod.zip"
+    destinationDirectory = file('.')
+
+    from('./') {
+        include 'gradlew'
+        include 'gradlew.bat'
+
+        include 'build.gradle'
+        include 'settings.gradle'
+
+        include 'LICENSE'
+        include 'README.md'
+
+        include 'dev-settings.example.yml'
+        rename 'dev-settings.example.yml', 'dev-settings.yml'
+
+        include 'first-launch-template'
+        rename 'first-launch-template', 'first-launch'
+    }
+
+    from ('gradle/') {
+        into ('gradle')
+    }
+
+    from('data/') {
+        into 'data'
+
+        exclude 'cache'
+        exclude 'rsa'
+        exclude 'saves'
+        exclude 'xteas'
+    }
+
+    from('game/') {
+        into 'game'
+
+        exclude 'build'
+        exclude 'out'
+        exclude 'plugins'
+        exclude 'src/main/java'
+        exclude 'src/test/java'
+    }
+
+    from('game/plugins') {
+        into 'game/plugins'
+
+        include 'src/main/kotlin/gg/rsmod/plugins/api/**'
+        include 'src/main/kotlin/gg/rsmod/plugins/content/osrs.kts'
+        include 'src/main/kotlin/gg/rsmod/plugins/service/**'
+    }
+
+    from('net/') {
+        into 'net'
+
+        exclude 'build'
+        exclude 'out'
+        exclude 'src/main/java'
+        exclude 'src/test/java'
+    }
+
+    from('tools/') {
+        into 'tools'
+
+        exclude 'build'
+        exclude 'out'
+        exclude 'src/main/java'
+        exclude 'src/test/java'
+    }
+
+    from('util/') {
+        into 'util'
+
+        exclude 'build'
+        exclude 'out'
+        exclude 'src/main/java'
+        exclude 'src/test/java'
+    }
+}
+
+task packageLibs(type: Zip) {
+    archiveFileName = "rsmod-libs.zip"
+    destinationDirectory = file('.')
+
+    from('game/build/libs/') {
+        rename "game-${project.version}.jar", "game.jar"
+    }
+
+    from('game/plugins/build/libs/') {
+        rename "plugins-${project.version}.jar", "plugins.jar"
+    }
+}

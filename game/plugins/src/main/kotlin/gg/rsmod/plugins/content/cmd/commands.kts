@@ -10,7 +10,6 @@ import gg.rsmod.plugins.content.combat.formula.MagicCombatFormula
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 import gg.rsmod.plugins.content.inter.bank.openBank
 import gg.rsmod.plugins.content.mechanics.spells.SpellRequirements
-import gg.rsmod.util.Misc
 import java.text.DecimalFormat
 
 on_command("max") {
@@ -177,7 +176,7 @@ on_command("item", Privilege.ADMIN_POWER) {
     val args = player.getCommandArgs()
     tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::item 4151 1</col> or <col=801700>::item 4151</col>") { values ->
         val item = values[0].toInt()
-        val amount = if (values.size > 1) Math.min(Int.MAX_VALUE.toLong(), Misc.parseAmount(values[1])).toInt() else 1
+        val amount = if (values.size > 1) Math.min(Int.MAX_VALUE.toLong(), values[1].parseAmount()).toInt() else 1
         if (item < p.world.definitions.getCount(ItemDef::class.java)) {
             val def = p.world.definitions.get(ItemDef::class.java, Item(item).toUnnoted(p.world.definitions).id)
             val result = p.inventory.add(item = item, amount = amount, assureFullInsertion = false)

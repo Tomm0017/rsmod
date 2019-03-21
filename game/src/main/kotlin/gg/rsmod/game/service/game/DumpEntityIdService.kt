@@ -7,7 +7,7 @@ import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import mu.KotlinLogging
+import mu.KLogging
 import net.runelite.cache.util.Namer
 import java.io.PrintWriter
 import java.nio.file.Files
@@ -18,10 +18,6 @@ import java.nio.file.Paths
  * @author Tom <rspsmods@gmail.com>
  */
 class DumpEntityIdService : Service() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     private var dump = false
 
@@ -109,4 +105,6 @@ class DumpEntityIdService : Service() {
 
     override fun terminate(server: Server, world: World) {
     }
+
+    companion object: KLogging()
 }

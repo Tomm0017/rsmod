@@ -6,7 +6,7 @@ import gg.rsmod.game.message.MessageStructureSet
 import gg.rsmod.net.packet.GamePacketBuilder
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToMessageEncoder
-import mu.KotlinLogging
+import mu.KLogging
 
 /**
  * An implementation of [MessageToMessageEncoder] which is responsible for taking
@@ -20,10 +20,6 @@ import mu.KotlinLogging
  * @author Tom <rspsmods@gmail.com>
  */
 class GameMessageEncoder(private val encoders: MessageEncoderSet, private val structures: MessageStructureSet) : MessageToMessageEncoder<Message>() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     override fun encode(ctx: ChannelHandlerContext, msg: Message, out: MutableList<Any>) {
         val encoder = encoders.get(msg.javaClass)
@@ -43,4 +39,6 @@ class GameMessageEncoder(private val encoders: MessageEncoderSet, private val st
         encoder.encode(msg, builder, structure)
         out.add(builder.toGamePacket())
     }
+
+    companion object: KLogging()
 }

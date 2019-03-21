@@ -13,11 +13,6 @@ import gg.rsmod.util.Misc
  */
 class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
 
-    companion object {
-        private const val MAX_LOCAL_PLAYERS = 255
-        private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 40
-    }
-
     override fun run() {
         val buf = GamePacketBuilder(player.world.playerUpdateBlocks.updateOpcode, PacketType.VARIABLE_SHORT)
         val maskBuf = GamePacketBuilder()
@@ -237,4 +232,9 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
     private fun shouldAdd(other: Player): Boolean = !other.invisible && other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) && other != player
 
     private fun shouldRemove(other: Player): Boolean = !other.isOnline || other.invisible || !other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE)
+
+    companion object {
+        private const val MAX_LOCAL_PLAYERS = 255
+        private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 40
+    }
 }

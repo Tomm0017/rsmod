@@ -15,7 +15,7 @@ import gg.rsmod.game.task.sequential.*
 import gg.rsmod.util.ServerProperties
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
-import mu.KotlinLogging
+import mu.KLogging
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -27,15 +27,6 @@ import java.util.concurrent.TimeUnit
  * @author Tom <rspsmods@gmail.com>
  */
 class GameService : Service() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-
-        /**
-         * The amount of ticks that must go by for debug info to be logged.
-         */
-        private const val TICKS_PER_DEBUG_LOG = 10
-    }
 
     /**
      * The associated world with our current game.
@@ -288,5 +279,13 @@ class GameService : Service() {
             logger.error { taskTimes.toList().sortedByDescending { (_, value) -> value }.toMap() }
             logger.error { playerTimes.toList().sortedByDescending { (_, value) -> value }.toMap() }
         }
+    }
+
+    companion object: KLogging() {
+
+        /**
+         * The amount of ticks that must go by for debug info to be logged.
+         */
+        private const val TICKS_PER_DEBUG_LOG = 10
     }
 }

@@ -18,24 +18,6 @@ import gg.rsmod.game.model.item.Item
  */
 class GroundItem private constructor(val item: Int, var amount: Int, internal var ownerUID: PlayerUID?) : Entity() {
 
-    companion object {
-        /**
-         * The default amount of cycles for this ground item to respawn if flagged
-         * to do so.
-         */
-        const val DEFAULT_RESPAWN_CYCLES = 50
-
-        /**
-         * The default amount of cycles for this item to be publicly visible.
-         */
-        const val DEFAULT_PUBLIC_SPAWN_CYCLES = 100
-
-        /**
-         * The default amount of cycles for this item to despawn from the world.
-         */
-        const val DEFAULT_DESPAWN_CYCLES = 600
-    }
-
     constructor(item: Int, amount: Int, tile: Tile, owner: Player? = null) : this(item, amount, owner?.uid) {
         this.tile = tile
     }
@@ -59,4 +41,22 @@ class GroundItem private constructor(val item: Int, var amount: Int, internal va
     }
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("item", item).add("amount", amount).add("tile", tile.toString()).add("owner", ownerUID).toString()
+
+    companion object {
+        /**
+         * The default amount of cycles for this ground item to respawn if flagged
+         * to do so.
+         */
+        const val DEFAULT_RESPAWN_CYCLES = 50
+
+        /**
+         * The default amount of cycles for this item to be publicly visible.
+         */
+        const val DEFAULT_PUBLIC_SPAWN_CYCLES = 100
+
+        /**
+         * The default amount of cycles for this item to despawn from the world.
+         */
+        const val DEFAULT_DESPAWN_CYCLES = 600
+    }
 }

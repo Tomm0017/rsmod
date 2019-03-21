@@ -5,7 +5,7 @@ import gg.rsmod.net.codec.filestore.FilestoreRequest
 import gg.rsmod.net.codec.filestore.FilestoreResponse
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext
-import mu.KotlinLogging
+import mu.KLogging
 import net.runelite.cache.fs.Container
 import net.runelite.cache.fs.Store
 import net.runelite.cache.fs.jagex.CompressionType
@@ -25,12 +25,6 @@ class FilestoreSystem(channel: Channel, private val filestore: Store) : ServerSy
      * should only be responsible for informing the pipeline that a request
      * was sent by the client.
      */
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-
-        private var cachedIndexData: ByteArray? = null
-    }
 
     override fun receiveMessage(ctx: ChannelHandlerContext, msg: Any) {
         if (msg is FilestoreRequest) {
@@ -90,5 +84,9 @@ class FilestoreSystem(channel: Channel, private val filestore: Store) : ServerSy
         } else {
             logger.warn("Data is missing from archive. index={}, archive={}", req.index, req.archive)
         }
+    }
+
+    companion object: KLogging() {
+        private var cachedIndexData: ByteArray? = null
     }
 }

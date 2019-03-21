@@ -11,20 +11,6 @@ import gg.rsmod.game.model.region.ChunkCoords
  */
 class Tile {
 
-    companion object {
-        /**
-         * The total amount of height levels that can be used in the game.
-         */
-        const val TOTAL_HEIGHT_LEVELS = 4
-
-        fun fromRotatedHash(packed: Int): Tile {
-            val x = ((packed shr 14) and 0x3FF) shl 3
-            val z = ((packed shr 3) and 0x7FF) shl 3
-            val height = (packed shr 28) and 0x3
-            return Tile(x, z, height)
-        }
-    }
-
     /**
      * A bit-packed integer that holds and represents the [x], [z] and [height] of the tile.
      */
@@ -148,5 +134,19 @@ class Tile {
             return other.coordinate == coordinate
         }
         return false
+    }
+
+    companion object {
+        /**
+         * The total amount of height levels that can be used in the game.
+         */
+        const val TOTAL_HEIGHT_LEVELS = 4
+
+        fun fromRotatedHash(packed: Int): Tile {
+            val x = ((packed shr 14) and 0x3FF) shl 3
+            val z = ((packed shr 3) and 0x7FF) shl 3
+            val height = (packed shr 28) and 0x3
+            return Tile(x, z, height)
+        }
     }
 }

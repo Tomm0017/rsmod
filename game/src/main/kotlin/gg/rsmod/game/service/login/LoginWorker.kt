@@ -7,7 +7,7 @@ import gg.rsmod.net.codec.login.LoginResponse
 import gg.rsmod.net.codec.login.LoginResultType
 import gg.rsmod.util.io.IsaacRandom
 import io.netty.channel.ChannelFutureListener
-import mu.KotlinLogging
+import mu.KLogging
 
 /**
  * A worker for the [LoginService] that is responsible for handling the most
@@ -16,10 +16,6 @@ import mu.KotlinLogging
  * @author Tom <rspsmods@gmail.com>
  */
 class LoginWorker(private val boss: LoginService) : Runnable {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     override fun run() {
         while (true) {
@@ -63,4 +59,6 @@ class LoginWorker(private val boss: LoginService) : Runnable {
             }
         }
     }
+
+    companion object: KLogging()
 }

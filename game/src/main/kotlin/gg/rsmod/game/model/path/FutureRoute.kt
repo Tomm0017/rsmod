@@ -2,7 +2,7 @@ package gg.rsmod.game.model.path
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
 import gg.rsmod.game.model.MovementQueue
-import mu.KotlinLogging
+import mu.KLogging
 import java.util.concurrent.Executors
 
 /**
@@ -21,9 +21,14 @@ import java.util.concurrent.Executors
  */
 class FutureRoute private constructor(val strategy: PathFindingStrategy, val stepType: MovementQueue.StepType) {
 
-    companion object {
+    /**
+     * This flag lets us know if the [FutureRoute.route] has finished.
+     */
+    @Volatile var completed = false
 
-        private val logger = KotlinLogging.logger {  }
+    lateinit var route: Route
+
+    companion object: KLogging() {
 
         /**
          * Future routes are handled on a separate thread. This should be defined
@@ -54,11 +59,4 @@ class FutureRoute private constructor(val strategy: PathFindingStrategy, val ste
             return future
         }
     }
-
-    /**
-     * This flag lets us know if the [FutureRoute.route] has finished.
-     */
-    @Volatile var completed = false
-
-    lateinit var route: Route
 }

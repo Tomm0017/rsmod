@@ -16,13 +16,6 @@ import gg.rsmod.plugins.api.ext.hasPrayerIcon
  */
 class DragonfireFormula(val maxHit: Int, val minHit: Int = 0) : CombatFormula {
 
-    companion object {
-        private val ANTI_DRAGON_SHIELDS = intArrayOf(Items.ANTIDRAGON_SHIELD, Items.ANTIDRAGON_SHIELD_NZ)
-        private val DRAGONFIRE_SHIELDS = intArrayOf(Items.DRAGONFIRE_SHIELD, Items.DRAGONFIRE_SHIELD_11284)
-        private val WYVERN_SHIELDS = intArrayOf(Items.ANCIENT_WYVERN_SHIELD, Items.ANCIENT_WYVERN_SHIELD_21634)
-        private val DRAGONFIRE_WARDS = intArrayOf(Items.DRAGONFIRE_WARD, Items.DRAGONFIRE_WARD_22003)
-    }
-
     override fun getAccuracy(pawn: Pawn, target: Pawn, specialAttackMultiplier: Double): Double {
         return MagicCombatFormula.getAccuracy(pawn, target, specialAttackMultiplier)
     }
@@ -68,5 +61,12 @@ class DragonfireFormula(val maxHit: Int, val minHit: Int = 0) : CombatFormula {
         }
 
         return Math.max(minHit, Math.floor(max).toInt())
+    }
+
+    companion object {
+        private val ANTI_DRAGON_SHIELDS = intArrayOf(Items.ANTIDRAGON_SHIELD, Items.ANTIDRAGON_SHIELD_NZ)
+        private val DRAGONFIRE_SHIELDS = intArrayOf(Items.DRAGONFIRE_SHIELD, Items.DRAGONFIRE_SHIELD_11284)
+        private val WYVERN_SHIELDS = intArrayOf(Items.ANCIENT_WYVERN_SHIELD, Items.ANCIENT_WYVERN_SHIELD_21634)
+        private val DRAGONFIRE_WARDS = intArrayOf(Items.DRAGONFIRE_WARD, Items.DRAGONFIRE_WARD_22003)
     }
 }

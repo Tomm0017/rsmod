@@ -49,20 +49,6 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
                                       val targetWidth: Int, val targetLength: Int, val touchRadius: Int, val projectilePath: Boolean,
                                       val clipFlags: EnumSet<ClipFlag>, val blockedDirections: EnumSet<Direction>) {
 
-    companion object {
-
-        /**
-         * Creates a default walk request.
-         */
-        fun createWalkRequest(pawn: Pawn, x: Int, z: Int, projectile: Boolean): PathRequest = Builder()
-                .setPoints(start = Tile(pawn.tile), end = Tile(x, z, pawn.tile.height))
-                .setSourceSize(width = pawn.getSize(), length =  pawn.getSize())
-                .setTargetSize(width = 0, length = 0)
-                .setProjectilePath(projectile)
-                .clipPathNodes(node = true, link = true)
-                .build()
-    }
-
     enum class ClipFlag {
         /**
          * Clip diagonal tiles.
@@ -238,5 +224,19 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
             }
             return this
         }
+    }
+
+    companion object {
+
+        /**
+         * Creates a default walk request.
+         */
+        fun createWalkRequest(pawn: Pawn, x: Int, z: Int, projectile: Boolean): PathRequest = Builder()
+                .setPoints(start = Tile(pawn.tile), end = Tile(x, z, pawn.tile.height))
+                .setSourceSize(width = pawn.getSize(), length =  pawn.getSize())
+                .setTargetSize(width = 0, length = 0)
+                .setProjectilePath(projectile)
+                .clipPathNodes(node = true, link = true)
+                .build()
     }
 }

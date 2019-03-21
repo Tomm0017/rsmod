@@ -11,7 +11,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
 import it.unimi.dsi.fastutil.bytes.Byte2ByteOpenHashMap
-import mu.KotlinLogging
+import mu.KLogging
 import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.nio.file.Files
@@ -21,10 +21,6 @@ import java.nio.file.Paths
  * @author Tom <rspsmods@gmail.com>
  */
 class ItemMetadataService : Service() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         val path = Paths.get(serviceProperties.getOrDefault("path", "./data/cfg/items.yml"))
@@ -251,8 +247,10 @@ class ItemMetadataService : Service() {
             result = 31 * result + (skillReqs?.contentHashCode() ?: 0)
             return result
         }
-    }
 
+    }
     private data class SkillRequirement(@JsonProperty("skill") val skill: String?,
                                         @JsonProperty("level") val level: Int?)
+
+    companion object: KLogging()
 }

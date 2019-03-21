@@ -17,11 +17,6 @@ import gg.rsmod.game.sync.block.UpdateBlockType
  */
 class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : Pawn(world) {
 
-    companion object {
-        internal const val RESET_PAWN_FACE_DELAY = 25
-        const val DEFAULT_RESPAWN_DELAY = 25
-    }
-
     constructor(id: Int, tile: Tile, world: World) : this(id, world, spawnTile = Tile(tile)) {
         this.tile = tile
     }
@@ -153,4 +148,9 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     fun getDef(): NpcDef = world.definitions.get(NpcDef::class.java, id)
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("id", id).add("name", getDef().name).add("index", index).add("active", active).toString()
+
+    companion object {
+        internal const val RESET_PAWN_FACE_DELAY = 25
+        const val DEFAULT_RESPAWN_DELAY = 25
+    }
 }

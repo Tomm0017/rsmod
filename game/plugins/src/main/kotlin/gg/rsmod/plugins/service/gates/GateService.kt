@@ -8,7 +8,7 @@ import gg.rsmod.game.service.Service
 import gg.rsmod.plugins.api.ext.appendToString
 import gg.rsmod.util.ServerProperties
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import mu.KotlinLogging
+import mu.KLogging
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -16,10 +16,6 @@ import java.nio.file.Paths
  * @author Tom <rspsmods@gmail.com>
  */
 class GateService : Service() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     val gates = ObjectArrayList<GateSet>()
 
@@ -39,4 +35,5 @@ class GateService : Service() {
     override fun terminate(server: Server, world: World) {
     }
 
+    companion object: KLogging()
 }

@@ -8,7 +8,7 @@ import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
-import mu.KotlinLogging
+import mu.KLogging
 import java.math.BigInteger
 import java.util.*
 
@@ -17,13 +17,6 @@ import java.util.*
  */
 class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntArray,
                    private val serverSeed: Long, private val rsaExponent: BigInteger?, private val rsaModulus: BigInteger?) : StatefulFrameDecoder<LoginDecoderState>(LoginDecoderState.HANDSHAKE) {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-
-        private const val LOGIN_OPCODE = 16
-        private const val RECONNECT_OPCODE = 18
-    }
 
     private var payloadLength = -1
 
@@ -199,5 +192,10 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
         val data = ByteArray(readableBytes())
         readBytes(data)
         return Unpooled.wrappedBuffer(Xtea.decipher(xteaKeys, data, 0, data.size))
+    }
+
+    companion object: KLogging() {
+        private const val LOGIN_OPCODE = 16
+        private const val RECONNECT_OPCODE = 18
     }
 }

@@ -14,11 +14,6 @@ import gg.rsmod.net.packet.PacketType
  */
 class NpcSynchronizationTask(private val player: Player, private val worldNpcs: Array<Npc?>) : SynchronizationTask {
 
-    companion object {
-        private const val MAX_LOCAL_NPCS = 255
-        private const val MAX_NPC_ADDITIONS_PER_CYCLE = 40
-    }
-
     private val largeScene = player.hasLargeViewport()
 
     override fun run() {
@@ -111,4 +106,9 @@ class NpcSynchronizationTask(private val player: Player, private val worldNpcs: 
     private fun shouldAdd(npc: Npc): Boolean = npc.isSpawned() && !npc.invisible && isWithinView(npc.tile)
 
     private fun isWithinView(tile: Tile): Boolean = tile.isWithinRadius(player.tile, if (largeScene) Player.LARGE_VIEW_DISTANCE else Player.NORMAL_VIEW_DISTANCE)
+
+    companion object {
+        private const val MAX_LOCAL_NPCS = 255
+        private const val MAX_NPC_ADDITIONS_PER_CYCLE = 40
+    }
 }

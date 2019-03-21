@@ -8,18 +8,6 @@ import kotlin.experimental.or
 
 class CollisionMatrix private constructor(val length: Int, val width: Int, private val matrix: ShortArray) {
 
-    companion object {
-
-        private const val NO_COLLISION: Short = 0
-
-        private const val FULL_COLLISION: Short = 65535.toShort()
-
-        private const val ALLOW_PROJECTILE_COLLISION: Short = 65280.toShort()
-
-        fun createMatrices(count: Int, width: Int, length: Int): Array<CollisionMatrix>
-                = Array(count) { CollisionMatrix(width, length) }
-    }
-
     constructor(width: Int, length: Int) : this(length, width, ShortArray(width * length))
 
     constructor(other: CollisionMatrix) : this(other.length, other.width, other.matrix.copyOf(other.matrix.size))
@@ -95,4 +83,16 @@ class CollisionMatrix private constructor(val length: Int, val width: Int, priva
     private fun indexOf(x: Int, y: Int) = y * width + x
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("matrices", Arrays.toString(matrix)).toString()
+
+    companion object {
+
+        private const val NO_COLLISION: Short = 0
+
+        private const val FULL_COLLISION: Short = 65535.toShort()
+
+        private const val ALLOW_PROJECTILE_COLLISION: Short = 65280.toShort()
+
+        fun createMatrices(count: Int, width: Int, length: Int): Array<CollisionMatrix>
+                = Array(count) { CollisionMatrix(width, length) }
+    }
 }

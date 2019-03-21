@@ -16,30 +16,6 @@ import gg.rsmod.game.model.region.Chunk
  */
 class InstancedMapAllocator {
 
-    companion object {
-
-        /**
-         * 07 identifies instanced maps by having an X-axis of 6400 or above. They
-         * use this for some client scripts, such as a Theatre of Blood cs2 that
-         * will change depending on if you're inside the Theatre (in an instance)
-         * or in the lobby.
-         *
-         * Current stats (as of 17/03/2018):
-         * Area size: 3200x6400
-         * Instance support: 5000 [50 in x-axis * 100 in z-axis]
-         *
-         * [Instance support]: the amount of instances the world can support at a time,
-         * assuming every map is 64x64 in size, which isn't always the case.
-         */
-        private val VALID_AREA = Area(bottomLeftX = 6400, bottomLeftZ = 0, topRightX = 9600, topRightZ = 6400)
-
-        /**
-         * The amount of game cycles that must go by before scanning the active
-         * [maps] for any [InstancedMap] eligible to be de-allocated.
-         */
-        private const val SCAN_MAPS_CYCLES = 25
-    }
-
     /**
      * A list of active [InstancedMap]s.
      */
@@ -240,4 +216,26 @@ class InstancedMapAllocator {
         }
     }
 
+    companion object {
+        /**
+         * 07 identifies instanced maps by having an X-axis of 6400 or above. They
+         * use this for some client scripts, such as a Theatre of Blood cs2 that
+         * will change depending on if you're inside the Theatre (in an instance)
+         * or in the lobby.
+         *
+         * Current stats (as of 17/03/2018):
+         * Area size: 3200x6400
+         * Instance support: 5000 [50 in x-axis * 100 in z-axis]
+         *
+         * [Instance support]: the amount of instances the world can support at a time,
+         * assuming every map is 64x64 in size, which isn't always the case.
+         */
+        private val VALID_AREA = Area(bottomLeftX = 6400, bottomLeftZ = 0, topRightX = 9600, topRightZ = 6400)
+
+        /**
+         * The amount of game cycles that must go by before scanning the active
+         * [maps] for any [InstancedMap] eligible to be de-allocated.
+         */
+        private const val SCAN_MAPS_CYCLES = 25
+    }
 }

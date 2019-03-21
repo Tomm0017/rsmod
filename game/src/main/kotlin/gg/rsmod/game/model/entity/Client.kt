@@ -24,28 +24,11 @@ import io.netty.channel.Channel
  */
 class Client(val channel: Channel, world: World) : Player(world) {
 
-    companion object {
-
-        /**
-         * Constructs a [Client] based on the [LoginRequest].
-         */
-        fun fromRequest(world: World, request: LoginRequest): Client {
-            val client = Client(request.channel, world)
-            client.clientWidth = request.clientWidth
-            client.clientHeight = request.clientHeight
-            client.loginUsername = request.username
-            client.username = request.username
-            client.uuid = request.uuid
-            client.currentXteaKeys = request.xteaKeys
-            return client
-        }
-    }
     /**
      * The [System] that will handle [Message]s, write [Message]s and flush the
      * [Channel].
      */
     lateinit var gameSystem: GameSystem
-
     /**
      * The username that was used to register the [Player]. This username should
      * never be changed through the player's end.
@@ -111,5 +94,22 @@ class Client(val channel: Channel, world: World) : Player(world) {
 
     override fun channelClose() {
         gameSystem.close()
+    }
+
+    companion object {
+
+        /**
+         * Constructs a [Client] based on the [LoginRequest].
+         */
+        fun fromRequest(world: World, request: LoginRequest): Client {
+            val client = Client(request.channel, world)
+            client.clientWidth = request.clientWidth
+            client.clientHeight = request.clientHeight
+            client.loginUsername = request.username
+            client.username = request.username
+            client.uuid = request.uuid
+            client.currentXteaKeys = request.xteaKeys
+            return client
+        }
     }
 }

@@ -12,12 +12,6 @@ import gg.rsmod.game.model.region.ChunkSet
  */
 class CollisionManager(val chunks: ChunkSet, val createChunksIfNeeded: Boolean = true) {
 
-    companion object {
-        const val BLOCKED_TILE = 0x1
-        const val BRIDGE_TILE = 0x2
-        const val ROOF_TILE = 0x4
-    }
-
     fun isClipped(tile: Tile): Boolean = chunks.get(tile, createChunksIfNeeded)!!.isClipped(tile)
 
     fun isBlocked(tile: Tile, direction: Direction, projectile: Boolean): Boolean = chunks.get(tile, createChunksIfNeeded)!!.isBlocked(tile, direction, projectile)
@@ -185,5 +179,11 @@ class CollisionManager(val chunks: ChunkSet, val createChunksIfNeeded: Boolean =
                 flag(type, matrix, localX, localZ, pawns[orientation])
             }
         }
+    }
+
+    companion object {
+        const val BLOCKED_TILE = 0x1
+        const val BRIDGE_TILE = 0x2
+        const val ROOF_TILE = 0x4
     }
 }

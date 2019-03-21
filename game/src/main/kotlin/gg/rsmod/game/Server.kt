@@ -13,7 +13,7 @@ import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
-import mu.KotlinLogging
+import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.net.InetSocketAddress
 import java.nio.file.Files
@@ -28,10 +28,6 @@ import java.util.concurrent.TimeUnit
  * @author Tom <rspsmods@gmail.com>
  */
 class Server {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     /**
      * The properties specific to our API.
@@ -196,4 +192,6 @@ class Server {
     fun getApiName(): String = apiProperties.getOrDefault("org", "RS Mod")
 
     fun getApiSite(): String = apiProperties.getOrDefault("org-site", "rspsmods.com")
+
+    companion object: KLogging()
 }

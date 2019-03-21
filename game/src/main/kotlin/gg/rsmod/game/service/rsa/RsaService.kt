@@ -4,7 +4,7 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import mu.KotlinLogging
+import mu.KLogging
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.io.pem.PemObject
 import org.bouncycastle.util.io.pem.PemReader
@@ -26,30 +26,6 @@ import java.util.*
  * @author Tom <rspsmods@gmail.com>
  */
 class RsaService : Service() {
-
-    companion object {
-
-        private val logger = KotlinLogging.logger {  }
-
-        @JvmStatic
-        fun main(args: Array<String>) {
-            val radix = args[0].toInt()
-            val bitCount = args[1].toInt()
-            val path = args[2]
-
-            val service = RsaService()
-            service.keyPath = Paths.get(path)
-            service.radix = radix
-
-            val directory = service.keyPath.parent.toAbsolutePath()
-            if (!Files.exists(directory)) {
-                Files.createDirectory(directory)
-            }
-
-            logger.info("Generating RSA key pair...")
-            service.createPair(bitCount)
-        }
-    }
 
     private lateinit var keyPath: Path
 
@@ -140,4 +116,26 @@ class RsaService : Service() {
     fun getExponent(): BigInteger = exponent
 
     fun getModulus(): BigInteger = modulus
+
+    companion object: KLogging() {
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val radix = args[0].toInt()
+            val bitCount = args[1].toInt()
+            val path = args[2]
+
+            val service = RsaService()
+            service.keyPath = Paths.get(path)
+            service.radix = radix
+
+            val directory = service.keyPath.parent.toAbsolutePath()
+            if (!Files.exists(directory)) {
+                Files.createDirectory(directory)
+            }
+
+            logger.info("Generating RSA key pair...")
+            service.createPair(bitCount)
+        }
+    }
 }

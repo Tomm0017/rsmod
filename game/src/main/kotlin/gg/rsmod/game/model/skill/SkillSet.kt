@@ -7,53 +7,6 @@ package gg.rsmod.game.model.skill
  */
 class SkillSet(val maxSkills: Int) {
 
-    companion object {
-
-        /**
-         * The maximum amount of xp that can be set on a skill.
-         */
-        const val MAX_XP = 200_000_000
-
-        /**
-         * The maximum level a skill can reach.
-         */
-        private const val MAX_LVL = 99
-
-        /**
-         * The default amount of trainable skills on the game.
-         */
-        const val DEFAULT_SKILL_COUNT = 23
-
-        /**
-         * Gets the level correspondent to the [xp] given.
-         */
-        fun getLevelForXp(xp: Double): Int {
-            for (guess in 1 until XP_TABLE.size) {
-                if (xp < XP_TABLE[guess]) {
-                    return guess
-                }
-            }
-            return MAX_LVL
-        }
-
-        /**
-         * Gets the xp you need to achieve to first reach [level].
-         */
-        fun getXpForLevel(level: Int): Double = XP_TABLE[level - 1].toDouble()
-
-        /**
-         * A table of the amount of xp needed to achieve 126 levels in a skill.
-         * If RS ever adds over 126 for any revision, we can increase this.
-         */
-        private val XP_TABLE = IntArray(126).apply {
-            var points = 0
-            for (level in 1 until size) {
-                points += Math.floor(level + 300 * Math.pow(2.0, level / 7.0)).toInt()
-                set(level, points / 4)
-            }
-        }
-    }
-
     private val skills = arrayListOf<Skill>().apply {
         for (i in 0 until maxSkills) {
             add(Skill(id = i))
@@ -154,4 +107,51 @@ class SkillSet(val maxSkills: Int) {
     fun calculateTotalLevel(): Int = skills.sumBy { skill -> getMaxLevel(skill.id) }
 
     fun calculateTotalXp(): Double = skills.sumByDouble { skill -> getCurrentXp(skill.id) }
+
+    companion object {
+
+        /**
+         * The maximum amount of xp that can be set on a skill.
+         */
+        const val MAX_XP = 200_000_000
+
+        /**
+         * The maximum level a skill can reach.
+         */
+        private const val MAX_LVL = 99
+
+        /**
+         * The default amount of trainable skills on the game.
+         */
+        const val DEFAULT_SKILL_COUNT = 23
+
+        /**
+         * Gets the level correspondent to the [xp] given.
+         */
+        fun getLevelForXp(xp: Double): Int {
+            for (guess in 1 until XP_TABLE.size) {
+                if (xp < XP_TABLE[guess]) {
+                    return guess
+                }
+            }
+            return MAX_LVL
+        }
+
+        /**
+         * Gets the xp you need to achieve to first reach [level].
+         */
+        fun getXpForLevel(level: Int): Double = XP_TABLE[level - 1].toDouble()
+
+        /**
+         * A table of the amount of xp needed to achieve 126 levels in a skill.
+         * If RS ever adds over 126 for any revision, we can increase this.
+         */
+        private val XP_TABLE = IntArray(126).apply {
+            var points = 0
+            for (level in 1 until size) {
+                points += Math.floor(level + 300 * Math.pow(2.0, level / 7.0)).toInt()
+                set(level, points / 4)
+            }
+        }
+    }
 }

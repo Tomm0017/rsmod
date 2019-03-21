@@ -33,25 +33,6 @@ import kotlin.collections.HashMap
  */
 open class Player(world: World) : Pawn(world) {
 
-    companion object {
-        /**
-         * How many tiles a player can 'see' at a time, normally.
-         */
-        const val NORMAL_VIEW_DISTANCE = 15
-
-        /**
-         * How many tiles a player can 'see' at a time when in a 'large' viewport.
-         */
-        const val LARGE_VIEW_DISTANCE = 127
-
-        /**
-         * How many tiles in each direction a player can see at a given time.
-         * This should be as far as players can see entities such as ground items
-         * and objects.
-         */
-        const val TILE_VIEW_DISTANCE = 32
-    }
-
     /**
      * A persistent and unique id. This is <strong>not</strong> the index
      * of our [Player] when registered to the [World], it is a value determined
@@ -530,4 +511,23 @@ open class Player(world: World) : Pawn(world) {
             .add("name", username)
             .add("pid", index)
             .toString()
+
+    companion object {
+        /**
+         * How many tiles a player can 'see' at a time, normally.
+         */
+        const val NORMAL_VIEW_DISTANCE = 15
+
+        /**
+         * How many tiles a player can 'see' at a time when in a 'large' viewport.
+         */
+        const val LARGE_VIEW_DISTANCE = 127
+
+        /**
+         * How many tiles in each direction a player can see at a given time.
+         * This should be as far as players can see entities such as ground items
+         * and objects.
+         */
+        const val TILE_VIEW_DISTANCE = 32
+    }
 }

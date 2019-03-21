@@ -24,10 +24,6 @@ import kotlin.streams.toList
  */
 class PluginPackerController : Initializable {
 
-    companion object {
-        private const val PROPERTY_FILE = "rsmod-packer.properties"
-    }
-
     private var icons: List<Image>? = null
 
     lateinit var primaryStage: Stage
@@ -374,4 +370,8 @@ class PluginPackerController : Initializable {
 
     @FXML
     private lateinit var packPlugin: Button
+
+    companion object {
+        private const val PROPERTY_FILE = "rsmod-packer.properties"
+    }
 }

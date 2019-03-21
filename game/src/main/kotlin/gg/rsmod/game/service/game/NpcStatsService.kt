@@ -7,7 +7,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import mu.KotlinLogging
+import mu.KLogging
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -16,10 +16,6 @@ import java.nio.file.Paths
  * @author Tom <rspsmods@gmail.com>
  */
 class NpcStatsService : Service() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     private val definitions = hashMapOf<Int, NpcCombatDef>()
 
@@ -55,4 +51,6 @@ class NpcStatsService : Service() {
         }
         logger.info("Loaded {} npc combat definitions.", definitions.size)
     }
+
+    companion object: KLogging()
 }

@@ -5,7 +5,7 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.item.SlotItem
-import mu.KotlinLogging
+import mu.KLogging
 
 /**
  * An [ItemContainer] represents a collection of ordered [Item]s.
@@ -13,10 +13,6 @@ import mu.KotlinLogging
  * @author Tom <rspsmods@gmail.com>
  */
 class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Iterable<Item?> {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     constructor(definitions: DefinitionSet, capacity: Int, stackType: ContainerStackType)
             : this(definitions, ContainerKey("", capacity, stackType))
@@ -470,4 +466,6 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
         items[index] = item
         dirty = true
     }
+
+    companion object: KLogging()
 }

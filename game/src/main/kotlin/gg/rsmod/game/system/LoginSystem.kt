@@ -13,10 +13,6 @@ import io.netty.channel.ChannelHandlerContext
  */
 class LoginSystem(channel: Channel, private val world: World) : ServerSystem(channel) {
 
-    companion object {
-        private var loginService: LoginService? = null
-    }
-
     override fun receiveMessage(ctx: ChannelHandlerContext, msg: Any) {
         if (msg is LoginRequest) {
             if (loginService == null) {
@@ -27,5 +23,9 @@ class LoginSystem(channel: Channel, private val world: World) : ServerSystem(cha
     }
 
     override fun terminate() {
+    }
+
+    companion object {
+        private var loginService: LoginService? = null
     }
 }

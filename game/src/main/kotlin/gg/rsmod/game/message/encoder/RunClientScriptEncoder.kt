@@ -2,16 +2,12 @@ package gg.rsmod.game.message.encoder
 
 import gg.rsmod.game.message.MessageEncoder
 import gg.rsmod.game.message.impl.RunClientScriptMessage
-import mu.KotlinLogging
+import mu.KLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 class RunClientScriptEncoder : MessageEncoder<RunClientScriptMessage>() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     override fun extract(message: RunClientScriptMessage, key: String): Number = when (key) {
         "id" -> message.id
@@ -49,4 +45,6 @@ class RunClientScriptEncoder : MessageEncoder<RunClientScriptMessage>() {
         }
         else -> throw Exception("Unhandled value key.")
     }
+
+    companion object: KLogging()
 }

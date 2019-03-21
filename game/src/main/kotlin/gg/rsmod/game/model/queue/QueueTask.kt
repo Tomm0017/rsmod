@@ -4,7 +4,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.coroutine.*
-import mu.KotlinLogging
+import mu.KLogging
 import kotlin.coroutines.*
 
 /**
@@ -14,10 +14,6 @@ import kotlin.coroutines.*
  * @author Tom <rspsmods@gmail.com>
  */
 data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Unit> {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     lateinit var coroutine: Continuation<Unit>
 
@@ -136,4 +132,5 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
         return result
     }
 
+    companion object: KLogging()
 }

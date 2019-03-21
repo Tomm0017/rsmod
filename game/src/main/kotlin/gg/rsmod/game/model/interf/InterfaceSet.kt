@@ -2,7 +2,7 @@ package gg.rsmod.game.model.interf
 
 import gg.rsmod.game.model.entity.Player
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
-import mu.KotlinLogging
+import mu.KLogging
 
 /**
  * Stores visible interfaces.
@@ -10,10 +10,6 @@ import mu.KotlinLogging
  * @author Tom <rspsmods@gmail.com>
  */
 class InterfaceSet(val player: Player) {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     /**
      * A map of currently visible interfaces.
@@ -172,4 +168,6 @@ class InterfaceSet(val player: Player) {
      * -1 if no interface has been attached to [parent] and [child].
      */
     fun getInterfaceAt(parent: Int, child: Int): Int = visible.getOrDefault((parent shl 16) or child, -1)
+
+    companion object: KLogging()
 }

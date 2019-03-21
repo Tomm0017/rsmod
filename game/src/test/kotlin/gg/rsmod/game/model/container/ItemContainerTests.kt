@@ -12,26 +12,6 @@ import kotlin.test.*
  */
 class ItemContainerTests {
 
-    companion object {
-
-        private const val CAPACITY = 28
-
-        private val definitions = DefinitionSet()
-
-        private lateinit var store: Store
-
-        @BeforeClass
-        @JvmStatic
-        fun loadCache() {
-            store = Store(Paths.get("..", "data", "cache").toFile())
-            store.load()
-
-            definitions.loadAll(store)
-
-            assertNotEquals(definitions.getCount(ItemDef::class.java), 0)
-        }
-    }
-
     @Test
     fun createContainer() {
         val container = ItemContainer(definitions, CAPACITY, ContainerStackType.NORMAL)
@@ -142,5 +122,25 @@ class ItemContainerTests {
         assertTrue(result.hasSucceeded())
         assertNotNull(container[0])
         assertEquals(container[0]!!.amount, Int.MAX_VALUE)
+    }
+
+    companion object {
+
+        private const val CAPACITY = 28
+
+        private val definitions = DefinitionSet()
+
+        private lateinit var store: Store
+
+        @BeforeClass
+        @JvmStatic
+        fun loadCache() {
+            store = Store(Paths.get("..", "data", "cache").toFile())
+            store.load()
+
+            definitions.loadAll(store)
+
+            assertNotEquals(definitions.getCount(ItemDef::class.java), 0)
+        }
     }
 }

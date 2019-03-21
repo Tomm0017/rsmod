@@ -30,21 +30,6 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 data class Shop(val name: String, val stockType: StockType, val purchasePolicy: PurchasePolicy,
                 val currency: ShopCurrency, val items: Array<ShopItem?>) {
 
-    companion object {
-        /**
-         * The default amount of items that can be displayed on shops at a time.
-         */
-        const val DEFAULT_STOCK_SIZE = 40
-        /**
-         * The default amount of an item that is resupplied per "resupply tick".
-         */
-        const val DEFAULT_RESUPPLY_AMOUNT = 1
-        /**
-         * The default amount of cycles per "resupply tick".
-         */
-        const val DEFAULT_RESUPPLY_CYCLES = 25
-    }
-
     /**
      * The [gg.rsmod.game.model.entity.Player.uid]s for players who currently have
      * this shop opened on their screen.
@@ -124,5 +109,20 @@ data class Shop(val name: String, val stockType: StockType, val purchasePolicy: 
         result = 31 * result + stockType.hashCode()
         result = 31 * result + items.contentHashCode()
         return result
+    }
+
+    companion object {
+        /**
+         * The default amount of items that can be displayed on shops at a time.
+         */
+        const val DEFAULT_STOCK_SIZE = 40
+        /**
+         * The default amount of an item that is resupplied per "resupply tick".
+         */
+        const val DEFAULT_RESUPPLY_AMOUNT = 1
+        /**
+         * The default amount of cycles per "resupply tick".
+         */
+        const val DEFAULT_RESUPPLY_CYCLES = 25
     }
 }

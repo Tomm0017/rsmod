@@ -1,16 +1,12 @@
 package gg.rsmod.game.sync
 
-import mu.KotlinLogging
+import mu.KLogging
 import java.util.concurrent.Phaser
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 class PhasedSynchronizationTask(private val phaser: Phaser, val task: SynchronizationTask) : SynchronizationTask {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     override fun run() {
         try {
@@ -21,4 +17,6 @@ class PhasedSynchronizationTask(private val phaser: Phaser, val task: Synchroniz
             phaser.arriveAndDeregister()
         }
     }
+
+    companion object: KLogging()
 }

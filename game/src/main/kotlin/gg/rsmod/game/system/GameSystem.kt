@@ -8,7 +8,7 @@ import gg.rsmod.net.packet.GamePacket
 import gg.rsmod.net.packet.GamePacketReader
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext
-import mu.KotlinLogging
+import mu.KLogging
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.BlockingQueue
 
@@ -19,10 +19,6 @@ import java.util.concurrent.BlockingQueue
  * @author Tom <rspsmods@gmail.com>
  */
 class GameSystem(channel: Channel, val client: Client, val service: GameService) : ServerSystem(channel) {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     private val messages: BlockingQueue<MessageHandle> = ArrayBlockingQueue<MessageHandle>(service.maxMessagesPerCycle)
 
@@ -73,4 +69,6 @@ class GameSystem(channel: Channel, val client: Client, val service: GameService)
     }
 
     private data class MessageHandle(val message: Message, val handler: MessageHandler<Message>, val opcode: Int, val length: Int)
+
+    companion object: KLogging()
 }

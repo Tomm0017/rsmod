@@ -5,22 +5,12 @@ import gg.rsmod.net.codec.login.LoginResultType
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
-import mu.KotlinLogging
+import mu.KLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 class FilestoreDecoder(private val serverRevision: Int) : StatefulFrameDecoder<FilestoreDecoderState>(FilestoreDecoderState.REVISION_REQUEST) {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-
-        private const val ARCHIVE_REQUEST_URGENT = 0
-        private const val ARCHIVE_REQUEST_NEUTRAL = 1
-        private const val CLIENT_INIT_GAME = 2
-        private const val CLIENT_LOAD_SCREEN = 3
-        private const val CLIENT_INIT_OPCODE = 6
-    }
 
     override fun decode(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>, state: FilestoreDecoderState) {
         when (state) {
@@ -67,5 +57,13 @@ class FilestoreDecoder(private val serverRevision: Int) : StatefulFrameDecoder<F
                 logger.error("Unhandled opcode: $opcode")
             }
         }
+    }
+
+    companion object: KLogging() {
+        private const val ARCHIVE_REQUEST_URGENT = 0
+        private const val ARCHIVE_REQUEST_NEUTRAL = 1
+        private const val CLIENT_INIT_GAME = 2
+        private const val CLIENT_LOAD_SCREEN = 3
+        private const val CLIENT_INIT_OPCODE = 6
     }
 }

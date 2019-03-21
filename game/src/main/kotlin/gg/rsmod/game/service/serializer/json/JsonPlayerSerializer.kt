@@ -19,7 +19,7 @@ import gg.rsmod.game.service.serializer.PlayerLoadResult
 import gg.rsmod.game.service.serializer.PlayerSerializerService
 import gg.rsmod.net.codec.login.LoginRequest
 import gg.rsmod.util.ServerProperties
-import mu.KotlinLogging
+import mu.KLogging
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -32,10 +32,6 @@ import java.util.*
  * @author Tom <rspsmods@gmail.com>
  */
 class JsonPlayerSerializer : PlayerSerializerService() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     private lateinit var path: Path
 
@@ -174,4 +170,6 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     data class PersistentSkill(@JsonProperty("skill") val skill: Int,
                                @JsonProperty("xp") val xp: Double,
                                @JsonProperty("lvl") val lvl: Int)
+
+    companion object: KLogging()
 }

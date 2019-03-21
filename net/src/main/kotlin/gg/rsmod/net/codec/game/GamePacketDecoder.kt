@@ -8,16 +8,12 @@ import gg.rsmod.util.io.IsaacRandom
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelHandlerContext
-import mu.KotlinLogging
+import mu.KLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 class GamePacketDecoder(private val random: IsaacRandom?, private val packetMetadata: IPacketMetadata) : StatefulFrameDecoder<GameDecoderState>(GameDecoderState.OPCODE) {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     private var opcode = 0
 
@@ -87,4 +83,6 @@ class GamePacketDecoder(private val random: IsaacRandom?, private val packetMeta
             }
         }
     }
+
+    companion object: KLogging()
 }

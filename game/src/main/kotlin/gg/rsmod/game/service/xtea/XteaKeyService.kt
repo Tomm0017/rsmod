@@ -5,7 +5,7 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import mu.KotlinLogging
+import mu.KLogging
 import net.runelite.cache.IndexType
 import org.apache.commons.io.FilenameUtils
 import java.io.FileNotFoundException
@@ -18,10 +18,6 @@ import java.nio.file.Paths
  * @author Tom <rspsmods@gmail.com>
  */
 class XteaKeyService : Service() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     private val keys = hashMapOf<Int, IntArray>()
 
@@ -112,6 +108,7 @@ class XteaKeyService : Service() {
     fun getOrNull(region: Int): IntArray? = keys[region]
 
     private data class XteaFile(val region: Int, val keys: IntArray) {
+
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -123,11 +120,13 @@ class XteaKeyService : Service() {
 
             return true
         }
-
         override fun hashCode(): Int {
             var result = region
             result = 31 * result + keys.contentHashCode()
             return result
         }
+
     }
+
+    companion object: KLogging()
 }

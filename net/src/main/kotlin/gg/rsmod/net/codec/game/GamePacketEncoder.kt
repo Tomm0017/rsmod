@@ -6,17 +6,13 @@ import gg.rsmod.util.io.IsaacRandom
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToByteEncoder
-import mu.KotlinLogging
+import mu.KLogging
 import java.text.DecimalFormat
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 class GamePacketEncoder(private val random: IsaacRandom?) : MessageToByteEncoder<GamePacket>() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     override fun encode(ctx: ChannelHandlerContext, msg: GamePacket, out: ByteBuf) {
         if (msg.type == PacketType.VARIABLE_BYTE && msg.length >= 256) {
@@ -35,5 +31,7 @@ class GamePacketEncoder(private val random: IsaacRandom?) : MessageToByteEncoder
         out.writeBytes(msg.payload)
         msg.payload.release()
     }
+
+    companion object: KLogging()
 
 }

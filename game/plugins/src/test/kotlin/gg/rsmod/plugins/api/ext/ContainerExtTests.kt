@@ -20,26 +20,6 @@ import kotlin.test.assertNull
  */
 class ContainerExtTests {
 
-    companion object {
-        private val definitions = DefinitionSet()
-
-        private lateinit var store: Store
-
-        @BeforeClass
-        @JvmStatic
-        fun loadCache() {
-            val path = Paths.get("./../../data", "cache")
-            check(Files.exists(path)) { "Path does not exist: ${path.toAbsolutePath()}" }
-
-            store = Store(path.toFile())
-            store.load()
-
-            definitions.load(store, ItemDef::class.java)
-
-            assertNotEquals(definitions.getCount(ItemDef::class.java), 0)
-        }
-    }
-
     @Test
     fun `verify that a transfer goes as expected`() {
         val container1 = ItemContainer(definitions, capacity = 28, stackType = ContainerStackType.NORMAL)
@@ -90,5 +70,25 @@ class ContainerExtTests {
 
         assert(container1[0] == item)
         assert(container2.getOccupiedSlotCount() == 0)
+    }
+
+    companion object {
+        private val definitions = DefinitionSet()
+
+        private lateinit var store: Store
+
+        @BeforeClass
+        @JvmStatic
+        fun loadCache() {
+            val path = Paths.get("./../../data", "cache")
+            check(Files.exists(path)) { "Path does not exist: ${path.toAbsolutePath()}" }
+
+            store = Store(path.toFile())
+            store.load()
+
+            definitions.load(store, ItemDef::class.java)
+
+            assertNotEquals(definitions.getCount(ItemDef::class.java), 0)
+        }
     }
 }

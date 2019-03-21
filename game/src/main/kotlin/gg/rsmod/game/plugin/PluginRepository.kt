@@ -18,7 +18,7 @@ import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
-import mu.KotlinLogging
+import mu.KLogging
 import java.net.URLClassLoader
 import java.nio.file.Files
 import java.nio.file.Path
@@ -32,10 +32,6 @@ import java.util.*
  * @author Tom <rspsmods@gmail.com>
  */
 class PluginRepository(val world: World) {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     /**
      * The total amount of plugins.
@@ -898,4 +894,6 @@ class PluginRepository(val world: World) {
             p.executePlugin(plugin)
         }
     }
+
+    companion object: KLogging()
 }

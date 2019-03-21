@@ -13,13 +13,6 @@ import gg.rsmod.game.model.collision.CollisionManager
  */
 abstract class PathFindingStrategy(val collision: CollisionManager) {
 
-    companion object {
-        /**
-         * The maximum distance, in tiles, between the origin and target tiles.
-         */
-        const val MAX_DISTANCE = 20
-    }
-
     /**
      * If the path finder should cancel its search.
      *
@@ -31,4 +24,11 @@ abstract class PathFindingStrategy(val collision: CollisionManager) {
      * Calculate the most appropriate route given a [PathRequest].
      */
     abstract fun calculateRoute(request: PathRequest): Route
+
+    companion object {
+        /**
+         * The maximum distance, in tiles, between the origin and target tiles.
+         */
+        const val MAX_DISTANCE = 20
+    }
 }

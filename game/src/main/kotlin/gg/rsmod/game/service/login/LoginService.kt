@@ -17,7 +17,7 @@ import gg.rsmod.net.codec.game.GamePacketEncoder
 import gg.rsmod.net.codec.login.LoginRequest
 import gg.rsmod.util.ServerProperties
 import gg.rsmod.util.io.IsaacRandom
-import mu.KotlinLogging
+import mu.KLogging
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -27,10 +27,6 @@ import java.util.concurrent.LinkedBlockingQueue
  * @author Tom <rspsmods@gmail.com>
  */
 class LoginService : Service() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     /**
      * The [PlayerSerializerService] implementation that will be used to decode
@@ -93,4 +89,6 @@ class LoginService : Service() {
         client.login()
         client.channel.flush()
     }
+
+    companion object: KLogging()
 }

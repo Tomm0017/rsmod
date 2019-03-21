@@ -6,16 +6,12 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
-import mu.KotlinLogging
+import mu.KLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 class ItemMarketValueService : Service() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-    }
 
     private val values = Int2IntOpenHashMap()
 
@@ -47,4 +43,6 @@ class ItemMarketValueService : Service() {
         }
         return 0
     }
+
+    companion object: KLogging()
 }

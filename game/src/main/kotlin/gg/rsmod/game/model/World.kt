@@ -37,7 +37,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import mu.KotlinLogging
+import mu.KLogging
 import net.runelite.cache.IndexType
 import net.runelite.cache.fs.Store
 import java.io.File
@@ -51,10 +51,6 @@ import java.util.concurrent.TimeUnit
  * @author Tom <rspsmods@gmail.com>
  */
 class World(val server: Server, val gameContext: GameContext, val devContext: DevContext) {
-
-    companion object {
-        val logger = KotlinLogging.logger {  }
-    }
 
     /**
      * The [Store] is responsible for handling the data in our cache.
@@ -609,4 +605,6 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             npcUpdateBlocks.load(properties.extract("npcs"))
         }
     }
+
+    companion object: KLogging()
 }

@@ -11,7 +11,7 @@ import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelInboundHandlerAdapter
 import io.netty.handler.timeout.ReadTimeoutException
 import io.netty.util.AttributeKey
-import mu.KotlinLogging
+import mu.KLogging
 import net.runelite.cache.fs.Store
 
 /**
@@ -22,16 +22,6 @@ import net.runelite.cache.fs.Store
  */
 @ChannelHandler.Sharable
 class GameHandler(private val filestore: Store, private val world: World) : ChannelInboundHandlerAdapter() {
-
-    companion object {
-        private val logger = KotlinLogging.logger {  }
-
-        /**
-         * An [AttributeKey] that stores the current [ServerSystem] that
-         * will intercept messages sent by the [io.netty.channel.Channel].
-         */
-        val SYSTEM_KEY: AttributeKey<ServerSystem> = AttributeKey.valueOf("system")
-    }
 
     override fun channelInactive(ctx: ChannelHandlerContext) {
         val session = ctx.channel().attr(SYSTEM_KEY).andRemove
@@ -69,5 +59,14 @@ class GameHandler(private val filestore: Store, private val world: World) : Chan
             }
         }
         ctx.channel().close()
+    }
+
+    companion object: KLogging() {
+
+        /**
+         * An [AttributeKey] that stores the current [ServerSystem] that
+         * will intercept messages sent by the [io.netty.channel.Channel].
+         */
+        val SYSTEM_KEY: AttributeKey<ServerSystem> = AttributeKey.valueOf("system")
     }
 }

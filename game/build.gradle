@@ -76,8 +76,6 @@ task extractDependencies(type: Copy) {
     into 'build/libs'
 }
 
-build.dependsOn extractDependencies
-
 tasks.register("install") {
     description = 'Install RSMod'
 
@@ -97,3 +95,6 @@ tasks.register("install") {
         }
     }
 }
+
+build.dependsOn extractDependencies
+install.dependsOn build

@@ -25,8 +25,7 @@ a message stating that your key was created. **Do not close the terminal/command
     - In your client, you can find the text ``BigInteger("10001`` which will usually be the
     place where you need to replace both the public keys (the ``"10001"`` key is usually the same)
     - Once you have replaced the keys in the client, you can restart the server and launch your client  
-- Skip to step ``5) Choose your revision`` in ``I want to run the server and begin making my own content``
-and continue from there
+- The server release comes with a cache and XTEA keys you can use. Current revision: ``178``
 
 ### I want to run the server and begin making my own content
 
@@ -75,7 +74,7 @@ https://archive.runestats.com/osrs/
 - Copy the file ``xteas.json`` and place it in the ``xteas`` folder you just created
 
 ##### Troubleshooting
-- *I receive a* ``Revision mismatch for channel`` *when trying to log in*
+- *I receive a* ``Revision mismatch for channel`` *console message when trying to log in*
     - Find the revision of your **client** (*not cache*)
     - Open ``${rsmod-project}/game.yml``
     - Edit the value for ``revision: 178`` to match your client's revision

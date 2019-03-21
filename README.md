@@ -32,6 +32,9 @@ a message stating that your key was created. **Do not close the terminal/command
 ##### 1) Clone/Download the Repository
 - Go to the repository page: https://github.com/Tomm0017/rsmod
 - Clone or download the repository
+- Extract the repository in your desktop (or anywhere else you prefer)
+    - Note: make sure you use ``Extract here`` and *not* ``Extract to rs-mod-master\``, unless
+    you know what you're doing (it can lead to silly mistakes when setting up your project)
 
 ##### 2) Open the project in IntelliJ
 - If you do not have IntelliJ, you can download it from here: https://www.jetbrains.com/idea/download/

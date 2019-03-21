@@ -17,7 +17,7 @@ as fast as possible and log in quick.
 - Open the archive and open the following directory: ``game-${version-number}/bin``
 - If you are running Windows, run the ``game.bat`` file. 
 If you are running Linux or Mac, run the ``game`` file
-- The first time to launch it, you will receive a prompt saying that you do not 
+- The first time you launch it, you will receive a prompt stating that you do not 
 have an RSA private key. Enter ``y`` on your terminal/command prompt and wait for
 a message stating that your key was created. **Do not close the terminal/command prompt** 
 - Once your key is created, you will have to follow the instructions on the terminal/command prompt
@@ -47,9 +47,9 @@ and continue from there
 - On the top-left of the ``Run/Debug Configurations`` window, click on the ``+`` button
 - Select ``Gradle`` from the drop-down menu
 - In the Unnamed Gradle task, you should now fill in the ``Configuration``
-- ``Gradle project``: click the folder button on its right side and select the ``:game`` option
-- ``Tasks``: set value to ``install``
-- ``Arguments``: set value to ```-x test```
+    - ``Gradle project``: click the folder button on its right side and select the ``:game`` option
+    - ``Tasks``: set value to ``install``
+    - ``Arguments``: set value to ```-x test```
 - Now hit the ``Ok`` button
 - Next to the new button that should appear where the ``Add Configuration...`` was previously, 
 there should be a green ``run`` button, click on that and let the installation begin.
@@ -66,11 +66,11 @@ you can run the ``install`` task again.
 ##### 5) Choose your revision
 Now you're ready to start choosing the direction of your server!
 
-- Head to the following archives page and select a revision you want your server to run on:
+- Go to the archives page and select a revision you want your server to run on:
 https://archive.runestats.com/osrs/
 - Download whichever archive you want
 - Open the archive that you downloaded
-- Copy the files in its "cache" and place them in your RS Mod folder ``${rsmod-project}/data/cache``
+- Copy the files in its "cache" folder and place them in your RS Mod folder ``${rsmod-project}/data/cache``
 - Create the folder ``${rsmod-project}/data/xteas/``
 - Copy the file ``xteas.json`` and place it in the ``xteas`` folder you just created
 

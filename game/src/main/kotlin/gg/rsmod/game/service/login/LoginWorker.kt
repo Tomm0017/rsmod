@@ -25,17 +25,16 @@ class LoginWorker(private val boss: LoginService) : Runnable {
         while (true) {
             val request = boss.requests.take()
             try {
-                val client = Client.fromRequest(request.world, request.login)
+                val world = request.world
+
+                val client = Client.fromRequest(world, request.login)
                 val loadResult: PlayerLoadResult = boss.serializer.loadClientData(client, request.login)
 
                 if (loadResult == PlayerLoadResult.LOAD_ACCOUNT || loadResult == PlayerLoadResult.NEW_ACCOUNT) {
                     val decodeRandom = IsaacRandom(request.login.xteaKeys)
                     val encodeRandom = IsaacRandom(IntArray(request.login.xteaKeys.size) { request.login.xteaKeys[it] + 50 })
 
-                    val world = request.world
-                    val service = client.world.getService(GameService::class.java)!!
-
-                    service.submitGameThreadJob {
+                    client.world.getService(GameService::class.java)?.submitGameThreadJob {
                         val loginResult: LoginResultType = when {
                             world.getPlayerForName(client.username) != null -> LoginResultType.ALREADY_ONLINE
                             world.players.count() >= world.players.capacity -> LoginResultType.MAX_PLAYERS

@@ -14,7 +14,7 @@ as fast as possible and log in quick.
 - Go to the repository's release page: https://github.com/Tomm0017/rsmod/releases
 - Download the latest release
 - Extract the archive on your desktop (or anywhere of your preference)
-- Open the archive and open the following directory: ``game-${version-number}/bin``
+- Open the extracted folder and open the following directory: ``game-${version-number}/bin``
 - If you are running Windows, run the ``game.bat`` file. 
 If you are running Linux or Mac, run the ``game`` file
 - The first time you launch it, you will receive a prompt stating that you do not 
@@ -210,10 +210,9 @@ your server and see if it compiles correctly!
     - In the future, we will add a tool to check if any of your JAR plugins are
     no longer compatible with your game module
 #### I would like a feature added to the core game module
-- If you would like a feature added, please contact **rspsmods@gmail.com**
+- If you would like a feature added, you can create a Pull Request on GitHub or contact **rspsmods@gmail.com**
 #### I found a bug, where can I report it?
-- You can report them on our forums https://rspsmods.com or contact us directly 
-through e-mail: **rspsmods@gmail.com**
+- You can report them as Issues on GitHub or contact **rspsmods@gmail.com**
 
 ## Acknowledgments
 

@@ -112,6 +112,8 @@ class InstancedMapAllocator {
         }
     }
 
+    internal val activeMapCount: Int get() = maps.size
+
     internal fun logout(player: Player) {
         val world = player.world
 

@@ -41,7 +41,10 @@ a message stating that your key was created. **Do not close the terminal/command
 - In your IntelliJ window, go to the top-left menu bar and navigate to ``File -> New -> Project from Existing Sources...``
 - Select the RSMod repository which you downloaded on the previous step  
 - In the ``Import Project`` window, select ``Import project from external model`` -> ``Gradle``
-- You can skip the next window, simply hit the ``Finish`` button
+- In the next window you want to select the following and unselect anything else:
+    * Select ``Create separate module per source set``
+    * Select ``Use default gradle wrapper (recommended)``
+    * You can skip the ``Global Gradle settings`` section
 - Give the project a bit of time to create and index its files
 
 ##### 3) Install RSMod

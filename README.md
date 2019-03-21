@@ -74,7 +74,8 @@ and it'll automatically load on the next server startup!
     on an object. We specify the ``obj`` (object id) and the ``option`` which 
     automagically binds our action to said option. If the option is not found
     on the object, it will throw an error when you start the server.
-    2. To use the 'scheduler' we have to wrap the code in ``Player.queue``.
+    2. To use the 'scheduler' we have to wrap the code in ``Player.queue`` 
+    (gives the ability to use the ``wait`` method in this case).
     3. We make our player perform animation ``879``.
     4. Signal the code to wait for 2 **game cycles** (a single game cycle is 600 milliseconds).
     5. After the specified amount of cycles have gone by (in this case, 2 cycles), the rest of

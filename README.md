@@ -14,7 +14,7 @@ as fast as possible and log in quick.
 - Go to the repository's release page: https://github.com/Tomm0017/rsmod/releases
 - Download the latest release
 - Extract the archive on your desktop (or anywhere of your preference)
-- Open the archive and open the following directory: ``game-$version-number/bin``
+- Open the archive and open the following directory: ``game-${version-number}/bin``
 - If you are running Windows, run the ``game.bat`` file. 
 If you are running Linux or Mac, run the ``game`` file
 - The first time to launch it, you will receive a prompt saying that you do not 

@@ -1,5 +1,5 @@
-debug-examines: true
-debug-objects: true
-debug-buttons: true
-debug-items: true
-debug-spells: true
+debug-examines: false
+debug-objects: false
+debug-buttons: false
+debug-items: false
+debug-spells: false

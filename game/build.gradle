@@ -5,6 +5,10 @@ apply from: "$rootDir/gradle/kotlin.gradle"
 description = 'RSMod Game'
 mainClassName = 'gg.rsmod.game.Launcher'
 
+run {
+    workingDir = rootProject.projectDir
+}
+
 dependencies {
     compile project(':util')
     compile project(':net')
@@ -43,19 +47,22 @@ sourceSets {
 }
 
 applicationDistribution.from("$rootDir/data/") {
-    include '**'
-    exclude 'saves/*'
-    exclude '*.example.yml'
     into 'bin/data/'
+
+    include '**'
+
+    exclude 'saves/*'
+    exclude 'rsa/*'
 }
 
 applicationDistribution.from("$rootDir") {
-    include 'plugins/*'
-    include 'game.example.yml'
-    into 'bin/'
-}
+    into 'bin'
 
-apply plugin: 'application'
+    include 'plugins/*'
+
+    include 'game.example.yml'
+    rename 'game.example.yml', 'game.yml'
+}
 
 task extractDependencies(type: Copy) {
 
@@ -85,7 +92,7 @@ tasks.register("install") {
         javaexec {
             classpath = sourceSets.main.runtimeClasspath
             main = "gg.rsmod.game.service.rsa.RsaService"
-            args = [ "16", "2048", "../data/rsa/key.pem" ] // radix, bitcount, rsa pem file
+            args = [ "16", "2048", "./data/rsa/key.pem" ] // radix, bitcount, rsa pem file
         }
     }
 }

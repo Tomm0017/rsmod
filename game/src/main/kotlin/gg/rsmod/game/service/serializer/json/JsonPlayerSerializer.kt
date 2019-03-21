@@ -40,7 +40,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     private lateinit var path: Path
 
     override fun initSerializer(server: Server, world: World, serviceProperties: ServerProperties) {
-        path = Paths.get(serviceProperties.get<String>("path")!!)
+        path = Paths.get(serviceProperties.getOrDefault("path", "./data/saves/"))
         if (!Files.exists(path)) {
             Files.createDirectory(path)
             logger.info("Path does not exist: $path, creating directory...")

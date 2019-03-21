@@ -79,7 +79,7 @@ class Server {
         /**
          * Load the game property file.
          */
-        val initialLaunch = Files.deleteIfExists(Paths.get("../first-launch"))
+        val initialLaunch = Files.deleteIfExists(Paths.get("./first-launch"))
         val gameProperties = ServerProperties()
         val devProperties = ServerProperties()
         gameProperties.loadYaml(gameProps.toFile())
@@ -156,7 +156,7 @@ class Server {
          */
         individualStopwatch.reset().start()
         world.plugins.init(
-                jarPluginsDirectory = gameProperties.getOrDefault("plugin-packed-path", "../plugins"),
+                jarPluginsDirectory = gameProperties.getOrDefault("plugin-packed-path", "./plugins"),
                 analyzeMode = args.any { it == "-analyze" })
         logger.info("Loaded {} plugins in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 

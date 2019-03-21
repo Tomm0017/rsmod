@@ -20,6 +20,7 @@ import java.security.Security
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.security.spec.PKCS8EncodedKeySpec
+import java.util.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -56,9 +57,20 @@ class RsaService : Service() {
         radix = serviceProperties.getOrDefault("radix", 16)
 
         if (!Files.exists(keyPath)) {
-            logger.info("Generating RSA key pair...")
-            createPair(bitCount = serviceProperties.getOrDefault("bit-count", 2048))
-            throw RuntimeException("Private RSA key was not found! Please follow the instructions on console.")
+            val scanner = Scanner(System.`in`)
+            println("Private RSA key was not found in path: $keyPath")
+            println("Would you like to create one? (y/n)")
+
+            val create = scanner.nextLine() in arrayOf("yes", "y", "true")
+            if (create) {
+                logger.info("Generating RSA key pair...")
+                createPair(bitCount = serviceProperties.getOrDefault("bit-count", 2048))
+                println("Please follow the instructions on console and restart the client & server.")
+                scanner.nextLine()
+                System.exit(0)
+            } else {
+                throw RuntimeException("Private RSA key was not found! Please follow the instructions on console.")
+            }
         }
 
         try {
@@ -102,7 +114,7 @@ class RsaService : Service() {
         val publicKey = keyPair.public as RSAPublicKey
 
         println("")
-        println("Place these keys in the client:")
+        println("Place these keys in the client (find BigInteger(\"10001\") in client code):")
         println("--------------------")
         println("public key: " + publicKey.publicExponent.toString(radix))
         println("modulus: " + publicKey.modulus.toString(radix))

@@ -31,26 +31,19 @@ privileges:
 # Game services
 # You can pick and choose which services you want to run.
 services:
-  - class: gg.rsmod.game.service.GameService
-
   - class: gg.rsmod.game.service.serializer.json.JsonPlayerSerializer
-    path: "../data/saves/"
 
   - class: gg.rsmod.game.service.xtea.XteaKeyService
-    path: "../data/xteas/"
 
   - class: gg.rsmod.game.service.game.NpcStatsService
-    path: "../data/cfg/npc-stats.json"
 
   - class: gg.rsmod.game.service.game.ItemMetadataService
-    path: "../data/cfg/items.yml"
 
   - class: gg.rsmod.game.service.game.EntityExamineService
-    path: "../data/cfg/examines"
 
   - class: gg.rsmod.game.service.game.DumpEntityIdService
-    cache-path: "../data/cache/"
-    output-path: "../game/plugins/src/main/kotlin/gg/rsmod/plugins/osrs/api/cfg/"
+    cache-path: "./data/cache/"
+    output-path: "./game/plugins/src/main/kotlin/gg/rsmod/plugins/osrs/api/cfg/"
     dump: false
 
   - class: gg.rsmod.plugins.service.doors.DoorService
@@ -58,7 +51,7 @@ services:
   - class: gg.rsmod.plugins.service.gates.GateService
 
   - class: gg.rsmod.game.service.rsa.RsaService
-    path: "../data/rsa/key.pem"
-    radix: 16
+
+  - class: gg.rsmod.game.service.GameService
 
   - class: gg.rsmod.game.service.login.LoginService

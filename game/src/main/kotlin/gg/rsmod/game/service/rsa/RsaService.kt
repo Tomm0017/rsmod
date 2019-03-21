@@ -4,7 +4,7 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import mu.KLogging
+import mu.KotlinLogging
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.io.pem.PemObject
 import org.bouncycastle.util.io.pem.PemReader
@@ -27,7 +27,9 @@ import java.util.*
  */
 class RsaService : Service() {
 
-    companion object : KLogging() {
+    companion object {
+
+        private val logger = KotlinLogging.logger {  }
 
         @JvmStatic
         fun main(args: Array<String>) {

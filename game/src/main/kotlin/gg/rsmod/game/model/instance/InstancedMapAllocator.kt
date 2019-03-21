@@ -8,16 +8,15 @@ import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.entity.StaticObject
 import gg.rsmod.game.model.region.Chunk
-import mu.KLogging
 
 /**
- * A system responsible for allocating and de-allocating [InstancedMaps].
+ * A system responsible for allocating and de-allocating [InstancedMap]s.
  *
  * @author Tom <rspsmods@gmail.com>
  */
 class InstancedMapAllocator {
 
-    companion object : KLogging() {
+    companion object {
 
         /**
          * 07 identifies instanced maps by having an X-axis of 6400 or above. They

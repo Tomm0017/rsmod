@@ -3,7 +3,7 @@ package gg.rsmod.game.protocol
 import gg.rsmod.game.message.MessageStructureSet
 import gg.rsmod.net.packet.IPacketMetadata
 import gg.rsmod.net.packet.PacketType
-import mu.KLogging
+import mu.KotlinLogging
 
 /**
  * An [IPacketMetadata] implementation that is responsible for exposing
@@ -13,7 +13,9 @@ import mu.KLogging
  */
 class PacketMetadata(private val structures: MessageStructureSet) : IPacketMetadata {
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger {  }
+    }
 
     /**
      * Logging in case of null value should be handled in usage implementation.

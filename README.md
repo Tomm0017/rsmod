@@ -96,6 +96,8 @@ there should be a green ``run`` button, click on that and let the installation b
 ##### Troubleshooting
 - *Where can I get a client?*
     - You can get a client from https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-178-rsmod-release.html
+- *I see a lot of errors in ``.kts`` files with ``on_xxx`` methods*
+    - This is a bug with IntelliJ, closing and re-opening your IntelliJ should fix it
 - *I receive a* ``Revision mismatch for channel`` *console message when trying to log in*
     - Find the revision of your **client** (*not cache*)
     - Open ``${rsmod-project}/game.yml``

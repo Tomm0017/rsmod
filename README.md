@@ -75,7 +75,7 @@ https://archive.runestats.com/osrs/
 - Copy the file ``xteas.json`` and place it in the ``xteas`` folder you just created
 
 ##### Troubleshooting
-- I receive a ``Revision mismatch for channel`` when trying to log in
+- *I receive a* ``Revision mismatch for channel`` *when trying to log in*
     - Find the revision of your **client** (*not cache*)
     - Open ``${rsmod-project}/game.yml``
     - Edit the value for ``revision: 178`` to match your client's revision

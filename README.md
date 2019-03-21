@@ -95,7 +95,7 @@ there should be a green ``run`` button, click on that and let the installation b
 
 ##### Troubleshooting
 - *Where can I get a client?*
-    - You can get a client from 
+    - You can get a client from https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-178-rsmod-release.html
 - *I receive a* ``Revision mismatch for channel`` *console message when trying to log in*
     - Find the revision of your **client** (*not cache*)
     - Open ``${rsmod-project}/game.yml``

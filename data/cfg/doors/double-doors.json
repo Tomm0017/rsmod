@@ -1,0 +1,42 @@
+[
+  {
+    "opened": {
+      "left": 1522,
+      "right": 1525
+    },
+    "closed": {
+      "left": 1521,
+      "right": 1524
+    }
+  },
+  {
+    "opened": {
+      "left": 2547,
+      "right": 2549
+    },
+    "closed": {
+      "left": 2546,
+      "right": 2548
+    }
+  },
+  {
+    "opened": {
+      "left": 25816,
+      "right": 25815
+    },
+    "closed": {
+      "left": 25814,
+      "right": 25813
+    }
+  },
+  {
+    "opened": {
+      "left": 24065,
+      "right": 24066
+    },
+    "closed": {
+      "left": 24059,
+      "right": 24064
+    }
+  }
+]

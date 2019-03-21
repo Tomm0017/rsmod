@@ -82,8 +82,8 @@ tasks.register("install") {
     doLast {
 
         copy {
+            into "${rootProject.projectDir}/"
             from 'game.example.yml'
-            into '.'
             rename 'game.example.yml', 'game.yml'
         }
 

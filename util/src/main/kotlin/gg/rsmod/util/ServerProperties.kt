@@ -36,10 +36,7 @@ class ServerProperties {
     /**
      * Loads a YAML (.yml) file and puts all the found keys & values
      * into the [properties] map.
-     *
-     * @throws Exception if the [properties] map has already been filled.
      */
-    @Throws(Exception::class)
     fun loadYaml(file: File): ServerProperties {
         check(properties.isEmpty())
 
@@ -56,7 +53,6 @@ class ServerProperties {
         return this
     }
 
-    @Throws(Exception::class)
     fun loadMap(data: Map<String, Any>): ServerProperties {
         check(properties.isEmpty())
 

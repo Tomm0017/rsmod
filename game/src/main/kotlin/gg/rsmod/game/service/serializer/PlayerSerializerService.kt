@@ -19,7 +19,6 @@ abstract class PlayerSerializerService : Service() {
 
     private lateinit var startTile: Tile
 
-    @Throws(Exception::class)
     final override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         startTile = Tile(world.gameContext.home)
         initSerializer(server, world, serviceProperties)
@@ -38,7 +37,6 @@ abstract class PlayerSerializerService : Service() {
         client.tile = startTile
     }
 
-    @Throws(Exception::class)
     abstract fun initSerializer(server: Server, world: World, serviceProperties: ServerProperties)
 
     abstract fun loadClientData(client: Client, request: LoginRequest): PlayerLoadResult

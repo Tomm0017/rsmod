@@ -41,7 +41,6 @@ class UpdateBlockSet {
 
     val updateBlocks = EnumMap<UpdateBlockType, UpdateBlockStructure>(UpdateBlockType::class.java)
 
-    @Throws(Exception::class)
     fun load(properties: ServerProperties) {
         check(this.updateOpcode == -1)
         check(this.updateBlockExcessMask == -1)

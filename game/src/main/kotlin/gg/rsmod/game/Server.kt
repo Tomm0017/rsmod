@@ -46,7 +46,6 @@ class Server {
      * Prepares and handles any API related logic that must be handled
      * before the game can be launched properly.
      */
-    @Throws(Exception::class)
     fun startServer(apiProps: Path) {
         Thread.setDefaultUncaughtExceptionHandler { t, e -> logger.error("Uncaught server exception in thread $t!", e) }
         val stopwatch = Stopwatch.createStarted()
@@ -71,7 +70,6 @@ class Server {
      * Due to being decoupled from the API logic that will always be used, you
      * can start multiple servers with different game property files.
      */
-    @Throws(Exception::class)
     fun startGame(filestore: Path, gameProps: Path, packets: Path, blocks: Path, devProps: Path?, args: Array<String>): World {
         val stopwatch = Stopwatch.createStarted()
         val individualStopwatch = Stopwatch.createUnstarted()

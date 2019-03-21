@@ -14,7 +14,6 @@ abstract class Service {
     /**
      * Called when the server is starting up.
      */
-    @Throws(Exception::class)
     abstract fun init(server: Server, world: World, serviceProperties: ServerProperties)
 
     /**

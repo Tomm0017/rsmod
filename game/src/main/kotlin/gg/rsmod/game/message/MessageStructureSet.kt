@@ -34,7 +34,6 @@ class MessageStructureSet {
      * Decodes the [packetStructures] [File]. The format is irrelevant as long
      * as the [structureClasses] is populated with correct data.
      */
-    @Throws(Exception::class)
     fun load(packetStructures: File): MessageStructureSet {
         val properties = ServerProperties().loadYaml(packetStructures)
         load(properties, storeOpcodes = false)

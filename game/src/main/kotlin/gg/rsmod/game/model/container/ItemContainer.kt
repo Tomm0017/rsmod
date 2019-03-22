@@ -460,17 +460,20 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
      */
     fun remove(item: Item, assureFullRemoval: Boolean = false, beginSlot: Int = -1): ItemTransaction = remove(item.id, item.amount, assureFullRemoval, beginSlot)
 
+    /**
+     * Swap slots of items in slot [from] and [to].
+     */
+    fun swap(from: Int, to: Int) {
+        val copy = items[from]
+        set(from, items[to])
+        set(to, copy)
+    }
+
     operator fun get(index: Int): Item? = items[index]
 
     fun set(index: Int, item: Item?) {
         items[index] = item
         dirty = true
-    }
-
-    fun swap(from: Int, to: Int) {
-        val copy = items[from]
-        set(from, items[to])
-        set(to, copy)
     }
 
     companion object: KLogging()

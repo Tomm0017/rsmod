@@ -2,6 +2,8 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpHeldDMessage
+import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
+import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 import gg.rsmod.game.model.entity.Client
 
 /**
@@ -15,13 +17,11 @@ class OpHeldDHandler : MessageHandler<OpHeldDMessage> {
         val srcSlot = message.srcSlot
         val dstSlot = message.dstSlot
 
-        val isInventory = interfaceId == 149 && component == 0
+        log(client, "Swap component item: interfaceId=%d, component=%d, srcSlot=%d, dstSlot=%d", interfaceId, component, srcSlot, dstSlot)
 
-        if (isInventory) {
-            val container = client.inventory
-            if (srcSlot in 0..container.capacity && dstSlot in 0..container.capacity) {
-                container.swap(srcSlot, dstSlot)
-            }
-        }
+        client.attr[INTERACTING_ITEM_SLOT] = srcSlot
+        client.attr[OTHER_ITEM_SLOT_ATTR] = dstSlot
+
+        client.world.plugins.executeComponentItemSwap(client, interfaceId, component)
     }
 }

@@ -162,6 +162,10 @@ class PluginRepository(val world: World) {
      */
     private var skillLevelUps: ((Plugin).() -> Unit)? = null
 
+    private val componentItemSwapPlugins = hashMapOf<Int, Plugin.() -> Unit>()
+
+    private val componentToComponentItemSwapPlugins = hashMapOf<Long, Plugin.() -> Unit>()
+
     /**
      * A map that contains any plugin that will be executed upon entering a new
      * region. The key is the region id and the value is a list of plugins
@@ -534,6 +538,34 @@ class PluginRepository(val world: World) {
 
     fun executeLogout(p: Player) {
         logoutPlugins.forEach { logic -> p.executePlugin(logic) }
+    }
+
+    fun bindComponentItemSwap(interfaceId: Int, component: Int, plugin: Plugin.() -> Unit) {
+        val hash = (interfaceId shl 16) or component
+        componentItemSwapPlugins[hash] = plugin
+    }
+
+    fun executeComponentItemSwap(p: Player, interfaceId: Int, component: Int) {
+        val hash = (interfaceId shl 16) or component
+        componentItemSwapPlugins[hash]?.let { plugin ->
+            p.executePlugin(plugin)
+        }
+    }
+
+    fun bindComponentToComponentItemSwap(srcInterfaceId: Int, srcComponent: Int, dstInterfaceId: Int, dstComponent: Int, plugin: Plugin.() -> Unit) {
+        val srcHash = (srcInterfaceId shl 16) or srcComponent
+        val dstHash = (dstInterfaceId shl 16) or dstComponent
+        val combinedHash = ((srcHash shl 32) or dstHash).toLong()
+        componentToComponentItemSwapPlugins[combinedHash] = plugin
+    }
+
+    fun executeComponentToComponentItemSwap(p: Player, srcInterfaceId: Int, srcComponent: Int, dstInterfaceId: Int, dstComponent: Int) {
+        val srcHash = (srcInterfaceId shl 16) or srcComponent
+        val dstHash = (dstInterfaceId shl 16) or dstComponent
+        val combinedHash = ((srcHash shl 32) or dstHash).toLong()
+        componentToComponentItemSwapPlugins[combinedHash]?.let { plugin ->
+            p.executePlugin(plugin)
+        }
     }
 
     fun bindGlobalNpcSpawn(plugin: (Plugin).() -> Unit) {

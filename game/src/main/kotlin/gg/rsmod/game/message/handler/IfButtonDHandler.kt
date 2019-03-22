@@ -2,6 +2,8 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.IfButtonDMessage
+import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
+import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 import gg.rsmod.game.model.entity.Client
 
 /**
@@ -23,17 +25,11 @@ class IfButtonDHandler : MessageHandler<IfButtonDMessage> {
         val dstInterfaceId = dstComponentHash shr 16
         val dstComponent = dstComponentHash and 0xFFFF
 
-        if (srcInterfaceId == 12 && dstInterfaceId == 12) {
-            val container = client.bank
+        log(client, "Swap component to component item: srcInterface=[%d, %d], srcItem=%d, dstInterface=[%d, %d], dstItem=%d", srcInterfaceId, srcComponent, srcItemId, dstInterfaceId, dstComponent, dstItemId)
 
-            val srcItem = container[srcSlot] ?: return
-            val dstItem = container[dstSlot]
+        client.attr[INTERACTING_ITEM_SLOT] = srcSlot
+        client.attr[OTHER_ITEM_SLOT_ATTR] = dstSlot
 
-            if (srcItem.id != srcItemId || dstItem?.id != dstItemId) {
-                return
-            }
-
-            container.swap(srcSlot, dstSlot)
-        }
+        client.world.plugins.executeComponentToComponentItemSwap(client, srcInterfaceId, srcComponent, dstInterfaceId, dstComponent)
     }
 }

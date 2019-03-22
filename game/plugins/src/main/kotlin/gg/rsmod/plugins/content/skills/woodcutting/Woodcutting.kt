@@ -25,7 +25,7 @@ object Woodcutting {
         }
 
         val logName = p.world.definitions.get(ItemDef::class.java, tree.log).name
-        val axe = AxeType.values.firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && p.inventory.contains(it.item) }!!
+        val axe = AxeType.values.firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && (p.equipment.contains(it.item) || p.inventory.contains(it.item)) }!!
 
         p.filterableMessage("You swing your axe at the tree.")
         while (true) {
@@ -39,12 +39,12 @@ object Woodcutting {
 
             if (p.world.random(100) <= (100 - tree.level)) {
                 p.filterableMessage("You get some ${logName}s.")
+                p.playSound(3600)
                 p.inventory.add(tree.log)
+                p.addXp(Skills.WOODCUTTING, tree.xp)
 
                 if (p.world.random(tree.depleteChance) == 0) {
-                    p.playSound(3600)
                     p.animate(-1)
-                    p.addXp(Skills.WOODCUTTING, tree.xp)
 
                     if (trunkId != -1) {
                         val world = p.world
@@ -69,7 +69,7 @@ object Woodcutting {
             return false
         }
 
-        val axe = AxeType.values.firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && p.inventory.contains(it.item) }
+        val axe = AxeType.values.firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && (p.equipment.contains(it.item) || p.inventory.contains(it.item)) }
         if (axe == null) {
             p.message("You need an axe to chop down this tree.")
             p.message("You do not have an axe which you have the woodcutting level to use.")

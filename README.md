@@ -15,7 +15,7 @@ as fast as possible and log in quick.
 
 ### I want to run the server quickly
 - Go to the repository's release page: [Releases](https://github.com/Tomm0017/rsmod/releases)
-- Download the latest release
+- Download the latest release (note: *not* the source code package)
 - Extract the archive on your desktop (or anywhere of your preference)
 - Open the extracted folder and open the following directory: ``game-${version-number}/bin``
 - If you are running Windows, run the ``game.bat`` file. 
@@ -33,7 +33,7 @@ a message stating that your key was created. **Do not close the terminal/command
 ### I want to run the server and begin making my own content
 
 #### 1) Clone/Download the Repository
-- Go to the repository page: https://github.com/Tomm0017/rsmod
+- Go to the repository page: [RS Mod](https://github.com/Tomm0017/rsmod)
 - Clone or download the repository
 - Extract the repository in your desktop (or anywhere else you prefer)
     - Note: make sure you use ``Extract here`` and *not* ``Extract to rs-mod-master\``, unless
@@ -108,7 +108,9 @@ there should be a green ``run`` button, click on that and let the installation b
     - Find the revision of your **client** (*not cache*)
     - Open ``${rsmod-project}/game.yml``
     - Edit the value for ``revision: 178`` to match your client's revision
-
+- *When following ``2) Open the project in IntelliJ`` my IntelliJ throws the error ``Build model 'org.jetbrains.plugins.gradle.model.ExternalProject'`` for root project 'gg.rsmod'*
+    - This appears to be an issue that can be solved by upgrading your IntelliJ
+    
 ## FAQ
 
 #### One or more of my plugins stopped working

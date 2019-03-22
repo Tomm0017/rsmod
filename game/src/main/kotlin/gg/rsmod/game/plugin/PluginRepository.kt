@@ -297,7 +297,7 @@ class PluginRepository(val world: World) {
      * Initiates and populates all our plugins.
      */
     fun init(jarPluginsDirectory: String, analyzeMode: Boolean) {
-        loadPlugins(jarPluginsDirectory, analyzeMode)
+        loadPlugins(jarPluginsDirectory)
 
         setCombatDefs()
         spawnEntities()
@@ -306,7 +306,7 @@ class PluginRepository(val world: World) {
         setShops()
     }
 
-    internal fun loadPlugins(jarPluginsDirectory: String, analyzeMode: Boolean) {
+    internal fun loadPlugins(jarPluginsDirectory: String) {
         scanPackageForPlugins(world)
         scanJarDirectoryForPlugins(world, Paths.get(jarPluginsDirectory))
     }

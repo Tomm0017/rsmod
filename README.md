@@ -32,14 +32,14 @@ a message stating that your key was created. **Do not close the terminal/command
 
 ### I want to run the server and begin making my own content
 
-##### 1) Clone/Download the Repository
+#### 1) Clone/Download the Repository
 - Go to the repository page: https://github.com/Tomm0017/rsmod
 - Clone or download the repository
 - Extract the repository in your desktop (or anywhere else you prefer)
     - Note: make sure you use ``Extract here`` and *not* ``Extract to rs-mod-master\``, unless
     you know what you're doing (it can lead to silly mistakes when setting up your project)
 
-##### 2) Open the project in IntelliJ
+#### 2) Open the project in IntelliJ
 - If you do not have IntelliJ, you can download it from here: https://www.jetbrains.com/idea/download/
 - In your IntelliJ window, go to the top-left menu bar and navigate to ``File -> New -> Project from Existing Sources...``
 - Select the RSMod repository which you downloaded on the previous step  
@@ -50,7 +50,7 @@ a message stating that your key was created. **Do not close the terminal/command
     * You can skip the ``Global Gradle settings`` section
 - Give the project a bit of time to create and index its files
 
-##### 3) Install RSMod
+#### 3) Install RSMod
 - On the top-right there should be a box ``Add Configuration...``, click on the box
 - On the top-left of the ``Run/Debug Configurations`` window, click on the ``+`` button
 - Select ``Gradle`` from the drop-down menu
@@ -62,7 +62,7 @@ a message stating that your key was created. **Do not close the terminal/command
 - Next to the new button that should appear where the ``Add Configuration...`` was previously, 
 there should be a green ``run`` button, click on that and let the installation begin.
 
-##### 4) RSA key setup
+#### 4) RSA key setup
 RSA is a method to stop man-in-the-middle (MITM) attacks on packets. RS Mod has this method enabled by default,
 no two servers should use the same private key so you must create your own:
 
@@ -71,7 +71,7 @@ no two servers should use the same private key so you must create your own:
 replace it the values with the ones printed on the console. If you missed the console messages
 you can run the ``install`` task again. 
 
-##### 5) Choose your revision
+#### 5) Choose your revision
 Now you're ready to start choosing the direction of your server!
 
 - Go to the archives page and select a revision you want your server to run on:
@@ -82,7 +82,7 @@ https://archive.runestats.com/osrs/
 - Create the folder ``${rsmod-project}/data/xteas/``
 - Copy the file ``xteas.json`` and place it in the ``xteas`` folder you just created
 
-##### 6) Run the Server
+#### 6) Run the Server
 This step is similar to step ``3) Install RSMod``
 
 - On the top-right there should be a box ``Add Configuration...``, click on the box

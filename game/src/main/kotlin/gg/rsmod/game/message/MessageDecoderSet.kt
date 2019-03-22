@@ -45,6 +45,7 @@ class MessageDecoderSet {
 
         put(CloseModalMessage::class.java, CloseModalDecoder(), CloseMainComponentHandler(), structures)
         put(IfButtonMessage::class.java, IfButton1Decoder(), IfButton1Handler(), structures)
+        put(IfButtonDMessage::class.java, IfButtonDDecoder(), IfButtonDHandler(), structures)
 
         put(ResumePauseButtonMessage::class.java, ResumePauseButtonDecoder(), ResumePauseButtonHandler(), structures)
         put(ResumePCountDialogMessage::class.java, ResumePCountDialogDecoder(), ResumePCountDialogHandler(), structures)
@@ -64,6 +65,7 @@ class MessageDecoderSet {
         put(OpHeld4Message::class.java, OpHeld4Decoder(), OpHeld4Handler(), structures)
         put(OpHeld5Message::class.java, OpHeld5Decoder(), OpHeld5Handler(), structures)
         put(OpHeld6Message::class.java, OpHeld6Decoder(), OpHeld6Handler(), structures)
+        put(OpHeldDMessage::class.java, OpHeldDDecoder(), OpHeldDHandler(), structures)
 
         put(OpHeldTMessage::class.java, OpHeldTDecoder(), OpHeldTHandler(), structures)
 

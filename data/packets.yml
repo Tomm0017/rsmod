@@ -426,6 +426,48 @@ out-packets:
 
 in-packets:
 
+  - message: gg.rsmod.game.message.impl.IfButtonDMessage
+    type: FIXED
+    opcode: 57
+    length: 16
+    structure:
+      - name: src_slot
+        sign: UNSIGNED
+        type: SHORT
+        trans: ADD
+      - name: src_item
+        sign: UNSIGNED
+        type: SHORT
+        trans: ADD
+      - name: dst_slot
+        sign: UNSIGNED
+        type: SHORT
+      - name: src_component_hash
+        order: LITTLE
+        type: INT
+      - name: dst_component_hash
+        order: MIDDLE
+        type: INT
+      - name: dst_item
+        sign: UNSIGNED
+        type: SHORT
+
+  - message: gg.rsmod.game.message.impl.OpHeldDMessage
+    type: FIXED
+    opcode: 80
+    length: 9
+    structure:
+      - name: src_slot
+        type: SHORT
+      - name: dst_slot
+        order: LITTLE
+        type: SHORT
+      - name: component_hash
+        type: INT
+      - name: insert_mode
+        type: BYTE
+        trans: NEGATE
+
   - message: gg.rsmod.game.message.impl.OpNpcTMessage
     type: FIXED
     opcode: 86
@@ -1178,12 +1220,6 @@ in-packets:
     length: 3
     ignore: true
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IF_BUTTOND
-    type: FIXED
-    opcode: 57
-    length: 16
-    ignore: true
-
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER3
     type: FIXED
     opcode: 62
@@ -1230,12 +1266,6 @@ in-packets:
     type: VARIABLE_BYTE
     opcode: 77
     length: -1
-    ignore: true
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPHELDD
-    type: FIXED
-    opcode: 80
-    length: 9
     ignore: true
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYERU

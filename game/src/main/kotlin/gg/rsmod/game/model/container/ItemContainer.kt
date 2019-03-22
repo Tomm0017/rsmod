@@ -467,5 +467,11 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
         dirty = true
     }
 
+    fun swap(from: Int, to: Int) {
+        val copy = items[from]
+        set(from, items[to])
+        set(to, copy)
+    }
+
     companion object: KLogging()
 }

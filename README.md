@@ -93,7 +93,7 @@ This step is similar to step ``3) Install RSMod``
 there should be a green ``run`` button, click on that and let the installation begin.
 
 
-##### Troubleshooting
+## Troubleshooting
 - *Where can I get a client?*
     - You can get a client from https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-178-rsmod-release.html
 - *I see a lot of errors in ``.kts`` files with ``on_xxx`` methods*

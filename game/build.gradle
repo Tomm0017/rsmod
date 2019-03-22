@@ -65,7 +65,6 @@ applicationDistribution.from("$rootDir") {
 }
 
 task extractDependencies(type: Copy) {
-
     from(zipTree("build/distributions/game-${project.version}.zip")) {
         include "game-${project.version}/lib/*"
         eachFile {
@@ -96,5 +95,5 @@ tasks.register("install") {
     }
 }
 
-build.dependsOn extractDependencies
+build.finalizedBy extractDependencies
 install.dependsOn build

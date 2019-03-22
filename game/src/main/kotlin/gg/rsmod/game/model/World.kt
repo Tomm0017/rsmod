@@ -16,11 +16,11 @@ import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.instance.InstancedMapAllocator
 import gg.rsmod.game.model.priv.PrivilegeSet
 import gg.rsmod.game.model.queue.QueueTask
-import gg.rsmod.game.model.queue.QueueTaskSystem
+import gg.rsmod.game.model.queue.QueueTaskSet
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.model.region.ChunkSet
 import gg.rsmod.game.model.shop.Shop
-import gg.rsmod.game.model.timer.TimerSystem
+import gg.rsmod.game.model.timer.TimerMap
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.service.GameService
@@ -80,7 +80,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     lateinit var coroutineDispatcher: CoroutineDispatcher
 
-    internal var queues = QueueTaskSystem(headPriority = false)
+    internal var queues = QueueTaskSet(headPriority = false)
 
     internal val registeredContainers = ObjectOpenHashSet<ContainerKey>()
 
@@ -186,9 +186,9 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     /**
      * World timers.
      *
-     * @see TimerSystem
+     * @see TimerMap
      */
-    val timers = TimerSystem()
+    val timers = TimerMap()
 
     /**
      * The multi-combat area [gg.rsmod.game.model.region.Chunk]s.

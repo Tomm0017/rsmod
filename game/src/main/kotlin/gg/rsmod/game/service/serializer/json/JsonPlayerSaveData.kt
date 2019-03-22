@@ -1,6 +1,6 @@
 package gg.rsmod.game.service.serializer.json
 
-import gg.rsmod.game.model.timer.TimerSystem
+import gg.rsmod.game.model.timer.TimerMap
 import gg.rsmod.game.model.varp.Varp
 
 /**
@@ -11,7 +11,7 @@ import gg.rsmod.game.model.varp.Varp
 data class JsonPlayerSaveData(val passwordHash: String, val username: String, val displayName: String,
                               val previousXteas: IntArray, val x: Int, val z: Int, val height: Int, val privilege: Int,
                               val displayMode: Int, val runEnergy: Double, val skills: List<JsonPlayerSerializer.PersistentSkill>,
-                              val attributes: Map<String, Any>, val timers: List<TimerSystem.PersistentTimer>,
+                              val attributes: Map<String, Any>, val timers: List<TimerMap.PersistentTimer>,
                               val itemContainers: List<JsonPlayerSerializer.PersistentContainer>, val varps: List<Varp>) {
 
     override fun equals(other: Any?): Boolean {

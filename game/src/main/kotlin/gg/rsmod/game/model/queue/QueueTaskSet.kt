@@ -17,7 +17,7 @@ import kotlin.coroutines.resume
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class QueueTaskSystem(private val headPriority: Boolean) {
+class QueueTaskSet(private val headPriority: Boolean) {
 
     private val queue: LinkedList<QueueTask> = LinkedList()
 

@@ -1,7 +1,7 @@
 package gg.rsmod.game.model
 
 import gg.rsmod.game.model.attr.AttributeKey
-import gg.rsmod.game.model.attr.AttributeSystem
+import gg.rsmod.game.model.attr.AttributeMap
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -13,7 +13,7 @@ class AttributeTests {
 
     @Test
     fun persistenceTests() {
-        val attributes = AttributeSystem()
+        val attributes = AttributeMap()
 
         val key1 = AttributeKey<String>(persistenceKey = "a_string_attr")
         val key2 = AttributeKey<String>(persistenceKey = "a_string_attr")
@@ -30,7 +30,7 @@ class AttributeTests {
 
     @Test
     fun uniqueTests() {
-        val attributes = AttributeSystem()
+        val attributes = AttributeMap()
 
         val key1 = AttributeKey<String>()
         val key2 = AttributeKey<String>()

@@ -7,7 +7,7 @@ package gg.rsmod.game.model.attr
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class AttributeSystem {
+class AttributeMap {
 
     private var attributes: MutableMap<AttributeKey<*>, Any> = HashMap(0)
 
@@ -18,7 +18,7 @@ class AttributeSystem {
     fun <T> getOrDefault(key: AttributeKey<T>, default: T): T = (attributes[key] as? T) ?: default
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> put(key: AttributeKey<T>, value: T): AttributeSystem {
+    fun <T> put(key: AttributeKey<T>, value: T): AttributeMap {
         attributes[key] = value as Any
         return this
     }

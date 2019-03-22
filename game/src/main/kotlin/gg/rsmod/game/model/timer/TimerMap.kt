@@ -8,13 +8,13 @@ import com.fasterxml.jackson.annotation.JsonProperty
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class TimerSystem {
+class TimerMap {
 
     private var timers: MutableMap<TimerKey, Int> = HashMap(0)
 
     operator fun get(key: TimerKey): Int = timers[key]!!
 
-    operator fun set(key: TimerKey, value: Int): TimerSystem {
+    operator fun set(key: TimerKey, value: Int): TimerMap {
         timers[key] = value
         return this
     }

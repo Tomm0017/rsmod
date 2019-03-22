@@ -3,7 +3,7 @@ package gg.rsmod.game.model.timer
 import com.google.common.base.MoreObjects
 
 /**
- * A key that represents a timer in a [TimerSystem].
+ * A key that represents a timer in a [TimerMap].
  *
  * @param persistenceKey
  * If the timer should persist through player sessions, then this value should

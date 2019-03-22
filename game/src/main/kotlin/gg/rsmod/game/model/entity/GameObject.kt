@@ -6,8 +6,8 @@ import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
-import gg.rsmod.game.model.attr.AttributeSystem
-import gg.rsmod.game.model.timer.TimerSystem
+import gg.rsmod.game.model.attr.AttributeMap
+import gg.rsmod.game.model.timer.TimerMap
 
 /**
  * A [GameObject] is any type of map object that can occupy a tile.
@@ -27,14 +27,14 @@ abstract class GameObject : Entity {
     val settings: Byte
 
     /**
-     * @see [AttributeSystem]
+     * @see [AttributeMap]
      */
-    val attr = AttributeSystem()
+    val attr = AttributeMap()
 
     /**
-     * @see [TimerSystem]
+     * @see [TimerMap]
      */
-    val timers = TimerSystem()
+    val timers = TimerMap()
 
     val type: Int get() = settings.toInt() shr 2
 

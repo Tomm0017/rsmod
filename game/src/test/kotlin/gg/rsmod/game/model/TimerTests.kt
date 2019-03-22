@@ -1,7 +1,7 @@
 package gg.rsmod.game.model
 
 import gg.rsmod.game.model.timer.TimerKey
-import gg.rsmod.game.model.timer.TimerSystem
+import gg.rsmod.game.model.timer.TimerMap
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -13,7 +13,7 @@ class TimerTests {
 
     @Test
     fun persistenceTests() {
-        val timers = TimerSystem()
+        val timers = TimerMap()
 
         val key1 = TimerKey(persistenceKey = "persistent", tickOffline = true)
         val key2 = TimerKey(persistenceKey = "persistent", tickOffline = true)
@@ -30,7 +30,7 @@ class TimerTests {
 
     @Test
     fun uniqueTests() {
-        val timers = TimerSystem()
+        val timers = TimerMap()
 
         val key1 = TimerKey()
         val key2 = TimerKey()

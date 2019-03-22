@@ -93,6 +93,16 @@ on_command("npc", Privilege.ADMIN_POWER) {
     }
 }
 
+on_command("anim", Privilege.ADMIN_POWER) {
+    val p = player
+
+    val args = player.getCommandArgs()
+    tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::anim 1</col>") { values ->
+        val id = values[0].toInt()
+        p.animate(id)
+    }
+}
+
 on_command("obj", Privilege.ADMIN_POWER) {
     val p = player
 

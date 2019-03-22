@@ -3,6 +3,8 @@ plugins {
 }
 
 allprojects {
+    apply plugin: 'idea'
+
     group = 'rsmod'
     version = '0.0.1'
 
@@ -11,6 +13,14 @@ allprojects {
         jcenter()
         maven { url "https://repo.maven.apache.org/maven2" }
         maven { url 'https://jitpack.io' }
+    }
+
+    idea {
+        module {
+            inheritOutputDirs = false
+            outputDir = file("${project.buildDir}/classes/kotlin/main")
+            testOutputDir = file("${project.buildDir}/classes/kotlin/test")
+        }
     }
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {

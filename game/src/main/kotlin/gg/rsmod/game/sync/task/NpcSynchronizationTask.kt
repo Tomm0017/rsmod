@@ -30,13 +30,13 @@ class NpcSynchronizationTask(private val player: Player, private val worldNpcs: 
             segment.encode(if (segment is NpcUpdateBlockSegment) maskBuf else buf)
         }
 
-        if (maskBuf.getBuffer().writerIndex() > 0) {
+        if (maskBuf.byteBuf.writerIndex() > 0) {
             buf.putBits(15, 0x7FFF)
         }
 
         buf.switchToByteAccess()
 
-        buf.putBytes(maskBuf.getBuffer())
+        buf.putBytes(maskBuf.byteBuf)
         player.write(buf.toGamePacket())
     }
 

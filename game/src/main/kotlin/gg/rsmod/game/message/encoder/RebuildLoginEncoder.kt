@@ -31,8 +31,8 @@ class RebuildLoginEncoder : MessageEncoder<RebuildLoginMessage>() {
             }
             buf.switchToByteAccess()
 
-            val gpi = ByteArray(buf.getBuffer().readableBytes())
-            buf.getBuffer().readBytes(gpi)
+            val gpi = ByteArray(buf.byteBuf.readableBytes())
+            buf.byteBuf.readBytes(gpi)
 
             gpi
         }

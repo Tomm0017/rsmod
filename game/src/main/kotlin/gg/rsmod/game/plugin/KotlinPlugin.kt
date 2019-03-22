@@ -227,6 +227,17 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
     fun on_logout(logic: (Plugin).() -> Unit) = r.bindLogout(logic)
 
     /**
+     * Invoke [plugin] when a player hits 0 hp and is starting their death task.
+     */
+    fun on_player_pre_death(plugin: Plugin.() -> Unit) = r.bindPlayerPreDeath(plugin)
+
+    /**
+     * Invoke [plugin] when a player is sent back to their respawn location on
+     * death.
+     */
+    fun on_player_death(plugin: Plugin.() -> Unit) = r.bindPlayerDeath(plugin)
+
+    /**
      * Set the combat logic for [npc] and [others], which will override the [set_combat_logic]
      * logic.
      */

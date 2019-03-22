@@ -44,7 +44,7 @@ class RsaService : Service() {
             println("Private RSA key was not found in path: $keyPath")
             println("Would you like to create one? (y/n)")
 
-            val create = scanner.nextLine() in arrayOf("yes", "y", "true")
+            val create = if (scanner.hasNext()) scanner.nextLine() in arrayOf("yes", "y", "true") else true
             if (create) {
                 logger.info("Generating RSA key pair...")
                 createPair(bitCount = serviceProperties.getOrDefault("bit-count", 2048))

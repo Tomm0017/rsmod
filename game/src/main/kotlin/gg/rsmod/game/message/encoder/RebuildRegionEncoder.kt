@@ -60,7 +60,7 @@ class RebuildRegionEncoder : MessageEncoder<RebuildRegionMessage>() {
             /**
              * Write the bit data.
              */
-            buf.writeBytes(bitBuf.getBuffer())
+            buf.writeBytes(bitBuf.byteBuf)
             /**
              * Write the XTEA keys.
              */

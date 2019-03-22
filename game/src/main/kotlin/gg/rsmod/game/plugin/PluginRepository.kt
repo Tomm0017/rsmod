@@ -16,7 +16,6 @@ import io.github.classgraph.ClassGraph
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
-import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import mu.KLogging
 import java.net.URLClassLoader
@@ -237,7 +236,18 @@ class PluginRepository(val world: World) {
      * A list of plugins that will be invoked when a ground item is picked up
      * by a player.
      */
-    private val globalGroundItemPickUp = ObjectArrayList<(Plugin).() -> Unit>()
+    private val globalGroundItemPickUp = arrayListOf<(Plugin).() -> Unit>()
+
+    /**
+     * A list of plugins that will be invoked when a player hits 0 hp.
+     */
+    private val playerPreDeathPlugins = arrayListOf<Plugin.() -> Unit>()
+
+    /**
+     * A list of plugins that will be invoked when a player dies and is teleported
+     * back to the respawn location (after death animation played out).
+     */
+    private val playerDeathPlugins = arrayListOf<Plugin.() -> Unit>()
 
     /**
      * Temporarily holds the multi-combat area chunks for this [PluginRepository];
@@ -259,20 +269,20 @@ class PluginRepository(val world: World) {
      * Temporarily holds all npc spawns set from plugins for this [PluginRepository].
      * This is then passed onto the [World] and is cleared.
      */
-    internal val npcSpawns = ObjectArrayList<Npc>()
+    internal val npcSpawns = arrayListOf<Npc>()
 
     /**
      * Temporarily holds all object spawns set from plugins for this [PluginRepository].
      * This is then passed onto the [World] and is cleared.
      */
-    internal val objSpawns = ObjectArrayList<DynamicObject>()
+    internal val objSpawns = arrayListOf<DynamicObject>()
 
     /**
      * Temporarily holds all ground item spawns set from plugins for this
      * [PluginRepository].
      * This is then passed onto the [World] and is cleared.
      */
-    internal val itemSpawns = ObjectArrayList<GroundItem>()
+    internal val itemSpawns = arrayListOf<GroundItem>()
 
     /**
      * Temporarily holds all npc combat definitions set from plugins for this
@@ -431,6 +441,22 @@ class PluginRepository(val world: World) {
         val plugin = npcCombatPlugins[n.id] ?: return false
         n.executePlugin(plugin)
         return true
+    }
+
+    fun bindPlayerPreDeath(plugin: Plugin.() -> Unit) {
+        playerPreDeathPlugins.add(plugin)
+    }
+
+    fun executePlayerPreDeath(p: Player) {
+        playerPreDeathPlugins.forEach { plugin -> p.executePlugin(plugin) }
+    }
+
+    fun bindPlayerDeath(plugin: Plugin.() -> Unit) {
+        playerDeathPlugins.add(plugin)
+    }
+
+    fun executePlayerDeath(p: Player) {
+        playerDeathPlugins.forEach { plugin -> p.executePlugin(plugin) }
     }
 
     fun bindSpellOnNpc(parent: Int, child: Int, plugin: (Plugin).() -> Unit) {

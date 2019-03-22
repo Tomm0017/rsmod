@@ -477,7 +477,7 @@ class GamePacketBuilder {
         return GamePacket(opcode, type, buffer)
     }
 
-    fun getBuffer(): ByteBuf = buffer
+    val byteBuf: ByteBuf = buffer
 
     val readableBytes: Int get() = buffer.readableBytes()
 }

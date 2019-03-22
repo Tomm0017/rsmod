@@ -25,7 +25,7 @@ object Mining {
         }
 
         val oreName = p.world.definitions.get(ItemDef::class.java, rock.ore).name
-        val pickaxe = PickAxeType.values().firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && (p.inventory.contains(it.item) || p.equipment.contains(it.item)) }!!
+        val pickaxe = PickAxeType.values().firstOrNull { p.getSkills().getMaxLevel(Skills.MINING) >= it.level && (p.inventory.contains(it.item) || p.equipment.contains(it.item)) }!!
 
         p.filterableMessage("You swing your pickaxe at the rock.")
         while (true) {
@@ -42,7 +42,7 @@ object Mining {
                 p.inventory.add(rock.ore)
 
                 if (p.world.random(rock.depleteChance) == 0) {
-                    p.playSound(3600)
+                    p.playSound(3600) //Todo: Update this id.
                     p.animate(-1)
                     p.addXp(Skills.MINING, rock.xp)
 

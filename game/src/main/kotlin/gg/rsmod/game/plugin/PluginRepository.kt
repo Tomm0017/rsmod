@@ -296,7 +296,7 @@ class PluginRepository(val world: World) {
     /**
      * Initiates and populates all our plugins.
      */
-    fun init(jarPluginsDirectory: String, analyzeMode: Boolean) {
+    fun init(jarPluginsDirectory: String) {
         loadPlugins(jarPluginsDirectory)
 
         setCombatDefs()

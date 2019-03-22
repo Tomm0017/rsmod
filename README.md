@@ -12,7 +12,7 @@ as fast as possible and log in quick.
 
 ### I want to run the server quickly
 - Go to the repository's release page: https://github.com/Tomm0017/rsmod/releases
-- Download the latest release
+- Download the latest release (note: *not* the source code package)
 - Extract the archive on your desktop (or anywhere of your preference)
 - Open the extracted folder and open the following directory: ``game-${version-number}/bin``
 - If you are running Windows, run the ``game.bat`` file. 

@@ -68,8 +68,8 @@ no two servers should use the same private key so you must create your own:
 
 - After the ``install`` task completes, it will print out a message on the IntelliJ console
 - The console message explains that you must find ``BigInteger("10001"`` in your client and
-replace it the values with the ones printed on the console. If you missed the console messages
-you can run the ``install`` task again. 
+replace it and another value near it, with the ones printed on the console. If you missed the 
+console messages you can run the ``install`` task again. 
 
 #### 5) Choose your revision
 Now you're ready to start choosing the direction of your server!

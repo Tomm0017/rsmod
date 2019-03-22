@@ -37,8 +37,8 @@ class UpdateInvFullEncoder : MessageEncoder<UpdateInvFullMessage>() {
                     buf.put(DataType.BYTE, 0)
                 }
             }
-            val data = ByteArray(buf.getBuffer().readableBytes())
-            buf.getBuffer().readBytes(data)
+            val data = ByteArray(buf.byteBuf.readableBytes())
+            buf.byteBuf.readBytes(data)
             data
         }
         else -> throw Exception("Unhandled value key.")

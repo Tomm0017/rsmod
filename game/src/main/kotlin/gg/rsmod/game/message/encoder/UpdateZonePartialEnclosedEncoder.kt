@@ -25,8 +25,8 @@ class UpdateZonePartialEnclosedEncoder : MessageEncoder<UpdateZonePartialEnclose
                 builder.put(DataType.BYTE, groupMessage.id) // Client always read as unsigned byte
                 encoder.encode(groupMessage.message, builder, structure)
             }
-            val payload = ByteArray(builder.getBuffer().readableBytes())
-            builder.getBuffer().readBytes(payload)
+            val payload = ByteArray(builder.byteBuf.readableBytes())
+            builder.byteBuf.readBytes(payload)
             payload
         }
         else -> throw Exception("Unhandled value key.")

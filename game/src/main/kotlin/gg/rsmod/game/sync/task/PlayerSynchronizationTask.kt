@@ -22,7 +22,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             segment.encode(if (segment is PlayerUpdateBlockSegment) maskBuf else buf)
         }
 
-        buf.putBytes(maskBuf.getBuffer())
+        buf.putBytes(maskBuf.byteBuf)
         player.write(buf.toGamePacket())
 
         player.gpiLocalCount = 0

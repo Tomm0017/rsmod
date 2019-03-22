@@ -5,13 +5,16 @@ modify the core game module. People without developing experience can have
 others make plugins for them and simply drop them into the Plugins module 
 and it'll automatically load on the next server startup! 
 
+## Usage
+You can learn how to create plugins here: [RS Mod Wiki](https://github.com/Tomm0017/rsmod/wiki/Creating-Plugins)
+
 ## Installation
 There's two ways to launch RS Mod. One is for users who want to look into the code and 
 possibly create their own content. The other is for users who simply want to run the server
 as fast as possible and log in quick. 
 
 ### I want to run the server quickly
-- Go to the repository's release page: https://github.com/Tomm0017/rsmod/releases
+- Go to the repository's release page: [Releases](https://github.com/Tomm0017/rsmod/releases)
 - Download the latest release
 - Extract the archive on your desktop (or anywhere of your preference)
 - Open the extracted folder and open the following directory: ``game-${version-number}/bin``

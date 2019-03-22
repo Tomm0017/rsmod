@@ -5,7 +5,7 @@ modify the core game module. People without developing experience can have
 others make plugins for them and simply drop them into the Plugins module 
 and it'll automatically load on the next server startup! 
 
-## Configuring The Project
+## Installation
 There's two ways to launch RS Mod. One is for users who want to look into the code and 
 possibly create their own content. The other is for users who simply want to run the server
 as fast as possible and log in quick. 
@@ -98,6 +98,9 @@ there should be a green ``run`` button, click on that and let the installation b
     - You can get a client from https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-178-rsmod-release.html
 - *I see a lot of errors in ``.kts`` files with ``on_xxx`` methods*
     - This is a bug with IntelliJ, closing and re-opening your IntelliJ should fix it
+- *I receive a* ``Bad session id`` *message on the log-in screen*
+    - This means the RSA keys on the client do not match the ones created on the server.
+    You should try to follow the steps in ``4) RSA key setup`` again. 
 - *I receive a* ``Revision mismatch for channel`` *console message when trying to log in*
     - Find the revision of your **client** (*not cache*)
     - Open ``${rsmod-project}/game.yml``

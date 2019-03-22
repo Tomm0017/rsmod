@@ -145,6 +145,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
      * Invoke [logic] when the [option] option is clicked on an [Npc].
      *
      * This method should be used over the option-int variant whenever possible.
+     *
+     * @param lineOfSightDistance
+     * If the npc is behind an object such as a prison cell or bank booth, this
+     * distance should be set. If the npc can be reached normally, you shouldn't
+     * specify this value.
      */
     fun on_npc_option(npc: Int, option: String, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
         val opt = option.toLowerCase()
@@ -329,6 +334,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
      * [gg.rsmod.game.model.entity.GameObject].
      *
      * [on_obj_option] method should be used over this method whenever possible.
+     *
+     * @param lineOfSightDistance
+     * If the npc is behind an object such as a prison cell or bank booth, this
+     * distance should be set. If the npc can be reached normally, you shouldn't
+     * specify this value.
      */
     fun on_obj_option(obj: Int, option: Int, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) = r.bindObject(obj, option, lineOfSightDistance, logic)
 

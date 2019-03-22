@@ -108,6 +108,15 @@ class SkillSet(val maxSkills: Int) {
 
     fun calculateTotalXp(): Double = skills.sumByDouble { skill -> getCurrentXp(skill.id) }
 
+    /**
+     * Restore all skill levels back to normal.
+     */
+    fun restoreAll() {
+        skills.forEach { skill ->
+            setCurrentLevel(skill.id, getMaxLevel(skill.id))
+        }
+    }
+
     companion object {
 
         /**

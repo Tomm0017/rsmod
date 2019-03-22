@@ -7,7 +7,7 @@ val rocks = ImmutableSet.of(
         /**
          * TODO: Complete Rock List
          * [ ] Rune Essence
-         * [ ] Clay
+         * [x] Clay
          * [x] Copper
          * [x] Tin
          * [ ] Blurite
@@ -22,38 +22,30 @@ val rocks = ImmutableSet.of(
          * [ ] Granite
          * [x] Mithril
          * [ ] Lovakite
-         * [ ] Adamantite
-         * [ ] Runite
-         * [ ] Amethyst
+         * [x] Adamantite
+         * [x] Runite
+         * [x] Amethyst
          */
+        Rock(RockType.CLAY, obj = 7454, depletedOre = 7468),
+        Rock(RockType.CLAY, obj = 7487, depletedOre = 7469),
+        Rock(RockType.COPPER, obj = 7453, depletedOre = 7468),
+        Rock(RockType.COPPER, obj = 7484, depletedOre = 7469),
+        Rock(RockType.TIN, obj = 7485, depletedOre = 7468),
+        Rock(RockType.TIN, obj = 7486, depletedOre = 7469),
+        Rock(RockType.IRON, obj = 7455, depletedOre = 7468),
+        Rock(RockType.IRON, obj = 7488, depletedOre = 7469),
+        Rock(RockType.COAL, obj = 7456, depletedOre = 7469),
+        Rock(RockType.COAL, obj = 7489, depletedOre = 7468),
+        Rock(RockType.MITHRIL, obj = 7459, depletedOre = 7468),
+        Rock(RockType.MITHRIL, obj = 7492, depletedOre = 7469),
+        Rock(RockType.ADAMANTITE, obj = 7460, depletedOre = 7469),
+        Rock(RockType.ADAMANTITE, obj = 7493, depletedOre = 7469),
+        Rock(RockType.RUNITE, obj = 7461, depletedOre = 7469),
+        Rock(RockType.RUNITE, obj = 7494, depletedOre = 7469),
+        Rock(RockType.AMETHYST, obj = 30371, depletedOre = 30373),
+        Rock(RockType.AMETHYST, obj = 30372, depletedOre = 30373)
 
-        /**
-         * FIRST SET
-         */
-        Rock(RockType.COPPER, obj = 7453, depletedOre = 0),
-        // 7454
-        Rock(RockType.IRON, obj = 7455, depletedOre = 0),
-        Rock(RockType.COAL, obj = 7456, depletedOre = 0),
-        // 7457
-        // 7458
-        Rock(RockType.MITHRIL, obj = 7459, depletedOre = 0),
-        Rock(RockType.ADAMANTITE, obj = 7460, depletedOre = 0),
-        Rock(RockType.RUNITE, obj = 7461, depletedOre = 0),
 
-        /**
-         * SECOND SET
-         */
-        Rock(RockType.COPPER, obj = 7484, depletedOre = 0),
-        Rock(RockType.TIN, obj = 7485, depletedOre = 0),
-        Rock(RockType.TIN, obj = 7486, depletedOre = 0),
-        // 7487
-        Rock(RockType.IRON, obj = 7488, depletedOre = 0),
-        Rock(RockType.COAL, obj = 7489, depletedOre = 0),
-        // 7490
-        // 7491
-        // 7482
-        Rock(RockType.MITHRIL, obj = 7492, depletedOre = 0),
-        Rock(RockType.ADAMANTITE, obj = 7493, depletedOre = 0)
 )!!
 
 rocks.forEach { rock ->

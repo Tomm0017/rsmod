@@ -23,7 +23,7 @@ class OpHeld5Handler : MessageHandler<OpHeld5Message> {
 
         val item = client.inventory[slot] ?: return
 
-        log(client, "Drop item: item=[%d, %d], slot=%d, parent=%d, child=%d", item.id, item.amount, slot, hash shr 16, hash and 0xFFFF)
+        log(client, "Drop item: item=[%d, %d], slot=%d, interfaceId=%d, component=%d", item.id, item.amount, slot, hash shr 16, hash and 0xFFFF)
 
         client.attr[INTERACTING_ITEM_SLOT] = message.slot
         client.attr[INTERACTING_ITEM_ID] = item.id

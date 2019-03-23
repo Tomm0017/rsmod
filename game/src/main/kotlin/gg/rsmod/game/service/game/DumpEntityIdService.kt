@@ -51,8 +51,10 @@ class DumpEntityIdService : Service() {
         val items = generateWriter("Items.kt")
         for (i in 0 until itemCount) {
             val item = definitions.getNullable(ItemDef::class.java, i) ?: continue
-            if (item.name.isNotBlank()) {
-                val name = namer.name(item.name, i)
+            val rawName = if (item.noteTemplateId > 0) definitions.get(ItemDef::class.java, item.noteLinkId).name + "_NOTED"
+                        else item.name
+            if (rawName.isNotBlank()) {
+                val name = namer.name(rawName, i)
                 write(items, "const val $name = $i")
             }
         }
@@ -86,7 +88,7 @@ class DumpEntityIdService : Service() {
     private fun generateWriter(file: String): PrintWriter {
         val writer = PrintWriter(outputPath!!.resolve(file).toFile())
         writer.println("/* Auto-generated file using ${this::class.java} */")
-        writer.println("package gg.rsmod.plugins.osrs.api.cfg")
+        writer.println("package gg.rsmod.plugins.api.cfg")
         writer.println("")
         writer.println("object ${file.removeSuffix(".kt")} {")
         writer.println("")

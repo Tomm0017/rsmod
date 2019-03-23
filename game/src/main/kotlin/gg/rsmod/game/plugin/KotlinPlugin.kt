@@ -227,6 +227,17 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
     fun on_logout(logic: (Plugin).() -> Unit) = r.bindLogout(logic)
 
     /**
+     * Invoke [plugin] when an item is swapped on the same component.
+     */
+    fun on_component_item_swap(interfaceId: Int, component: Int, plugin: Plugin.() -> Unit) = r.bindComponentItemSwap(interfaceId, component, plugin)
+
+    /**
+     * Invoke [plugin] when an item is swapped between two components.
+     */
+    fun on_component_to_component_item_swap(srcInterfaceId: Int, srcComponent: Int, dstInterfaceId: Int, dstComponent: Int, plugin: Plugin.() -> Unit)
+            = r.bindComponentToComponentItemSwap(srcInterfaceId, srcComponent, dstInterfaceId, dstComponent, plugin)
+
+    /**
      * Invoke [plugin] when a player hits 0 hp and is starting their death task.
      */
     fun on_player_pre_death(plugin: Plugin.() -> Unit) = r.bindPlayerPreDeath(plugin)

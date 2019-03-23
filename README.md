@@ -99,8 +99,6 @@ there should be a green ``run`` button, click on that and let the installation b
 ## Troubleshooting
 - *Where can I get a client?*
     - You can get a client from https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-178-rsmod-release.html
-- *I see a lot of errors in ``.kts`` files with ``on_xxx`` methods*
-    - This is a bug with IntelliJ, closing and re-opening your IntelliJ should fix it
 - *I receive a* ``Bad session id`` *message on the log-in screen*
     - This means the RSA keys on the client do not match the ones created on the server.
     You should try to follow the steps in ``4) RSA key setup`` again. 
@@ -108,7 +106,7 @@ there should be a green ``run`` button, click on that and let the installation b
     - Find the revision of your **client** (*not cache*)
     - Open ``${rsmod-project}/game.yml``
     - Edit the value for ``revision: 178`` to match your client's revision
-- *When following ``2) Open the project in IntelliJ`` my IntelliJ throws the error ``Build model 'org.jetbrains.plugins.gradle.model.ExternalProject'`` for root project 'gg.rsmod'*
+- *When following ``2) Open the project in IntelliJ`` my IntelliJ throws the error ``Build model 'org.jetbrains.plugins.gradle.model.ExternalProject' for root project 'gg.rsmod'``*
     - This appears to be an issue that can be solved by upgrading your IntelliJ
     
 ## FAQ

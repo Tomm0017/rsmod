@@ -412,7 +412,7 @@ open class Player(world: World) : Pawn(world) {
         if (oldXp >= SkillSet.MAX_XP) {
             return
         }
-        val newXp = Math.min(SkillSet.MAX_XP.toDouble(), (oldXp + xp))
+        val newXp = Math.min(SkillSet.MAX_XP.toDouble(), (oldXp + (xp * xpRate)))
         /**
          * Amount of levels that have increased with the addition of [xp].
          */

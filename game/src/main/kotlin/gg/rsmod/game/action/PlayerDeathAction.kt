@@ -18,6 +18,7 @@ object PlayerDeathAction {
     val deathPlugin: Plugin.() -> Unit = {
         val player = ctx as Player
         player.interruptQueues()
+        player.lock()
         player.queue(TaskPriority.STRONG) {
             death(player)
         }
@@ -34,7 +35,6 @@ object PlayerDeathAction {
 
         world.plugins.executePlayerPreDeath(player)
 
-        player.lock()
         wait(2)
         player.animate(deathAnim.id)
         wait(deathAnim.cycleLength + 1)

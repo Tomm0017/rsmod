@@ -11550,7 +11550,6 @@ object Objs {
     const val COMPOST_BIN_20872 = 20872
     const val CAGE_20873 = 20873
     const val DUNGEON_ENTRANCE_20876 = 20876
-    const val DUNGEON_ENTRANCE_20877 = 20877
     const val EXIT_20878 = 20878
     const val LOG_BALANCE_20882 = 20882
     const val LOG_BALANCE_20884 = 20884
@@ -13890,15 +13889,10 @@ object Objs {
     const val FIRE_26186 = 26186
     const val CHEST_26193 = 26193
     const val LEVER_26194 = 26194
-    const val BIRTHDAY_CAKE = 26198
-    const val BIRTHDAY_CAKE_26199 = 26199
-    const val BIRTHDAY_CAKE_26200 = 26200
+    const val BIRTHDAY_CAKE_26198 = 26198
     const val TABLE_26201 = 26201
     const val TABLE_26202 = 26202
     const val TABLE_26203 = 26203
-    const val PRESENT_26204 = 26204
-    const val PRESENT_26205 = 26205
-    const val TABLE_26206 = 26206
     const val LARGE_DOOR_26207 = 26207
     const val WOODEN_BENCH_26210 = 26210
     const val OAK_BENCH_26211 = 26211
@@ -17883,12 +17877,12 @@ object Objs {
     const val POTATO_CACTUS_33746 = 33746
     const val POTATO_CACTUS_33747 = 33747
     const val POTATO_CACTUS_33748 = 33748
-    const val DISEASED_POATO_CACTUS = 33749
-    const val DISEASED_POATO_CACTUS_33750 = 33750
-    const val DISEASED_POATO_CACTUS_33751 = 33751
-    const val DISEASED_POATO_CACTUS_33752 = 33752
-    const val DISEASED_POATO_CACTUS_33753 = 33753
-    const val DISEASED_POATO_CACTUS_33754 = 33754
+    const val DISEASED_POTATO_CACTUS = 33749
+    const val DISEASED_POTATO_CACTUS_33750 = 33750
+    const val DISEASED_POTATO_CACTUS_33751 = 33751
+    const val DISEASED_POTATO_CACTUS_33752 = 33752
+    const val DISEASED_POTATO_CACTUS_33753 = 33753
+    const val DISEASED_POTATO_CACTUS_33754 = 33754
     const val DEAD_POTATO_CACTUS = 33755
     const val DEAD_POTATO_CACTUS_33756 = 33756
     const val DEAD_POTATO_CACTUS_33757 = 33757
@@ -18555,5 +18549,14 @@ object Objs {
     const val GANGPLANK_34668 = 34668
     const val GANGPLANK_34669 = 34669
     const val GANGPLANK_34670 = 34670
+    const val GANGPLANK_34671 = 34671
+    const val GANGPLANK_34672 = 34672
+    const val VERZIK_VITUR_DISPLAY = 34677
+    const val MAKING_FRIENDS_WITH_MY_ARM_DISPLAY = 34681
+    const val FIRE_34682 = 34682
+    const val MAGIC_MIRROR = 34683
+    const val ALCHEMICAL_HYDRA_DISPLAY_34684 = 34684
+    const val ATTAS_PLANT_DISPLAY = 34685
+    const val LEATHER_SHIELDS = 34686
     /* Auto-generated file using class gg.rsmod.game.service.game.DumpEntityIdService */
 }

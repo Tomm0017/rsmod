@@ -2,7 +2,6 @@ package gg.rsmod.plugins.content.items.essencepouch
 
 import com.google.common.collect.ImmutableSet
 import gg.rsmod.game.fs.def.ItemDef
-import gg.rsmod.plugins.api.cfg.Items
 
 /**
  * The set of essence pouch definitions
@@ -116,7 +115,7 @@ fun emptyPouch(player: Player) {
         return
     }
 
-    val removeCount = Math.min(inventory.getFreeSlotCount(), count)
+    val removeCount = Math.min(inventory.freeSlotCount, count)
 
     if (removeCount <= 0) {
         player.message("You do not have any free space in your inventory.")

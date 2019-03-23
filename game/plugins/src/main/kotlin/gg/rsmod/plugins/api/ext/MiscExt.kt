@@ -21,11 +21,8 @@ fun String.parseAmount(): Long = when {
     else -> substring(0, length).toLong()
 }
 
-fun interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int, playerLvl: Int): Int {
-    val value = minChance + (maxChance - minChance) * (playerLvl - minLvl) / (maxLvl - minLvl)
-    println("value=$value")
-    return value
-}
+fun interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int, playerLvl: Int): Int =
+        minChance + (maxChance - minChance) * (playerLvl - minLvl) / (maxLvl - minLvl)
 
 fun World.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int, playerLvl: Int, cap: Int): Boolean =
         random(cap) <= interpolate(minChance, maxChance, minLvl, maxLvl, playerLvl)

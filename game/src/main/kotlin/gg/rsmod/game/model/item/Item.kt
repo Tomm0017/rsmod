@@ -48,7 +48,7 @@ class Item(val id: Int, var amount: Int = 1) {
      */
     fun hasAnyAttr(): Boolean = attr.isNotEmpty()
 
-    fun getAttr(attrib: ItemAttribute): Int? = attr[attrib] ?: -1
+    fun getAttr(attrib: ItemAttribute): Int? = attr[attrib]
 
     fun putAttr(attrib: ItemAttribute, value: Int): Item {
         attr[attrib] = value

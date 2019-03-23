@@ -49,8 +49,8 @@ fun fillPouch(player: Player, pouch: EssencePouch) {
     }
 
     val item = player.getInteractingItem()
-    val containedItem = item.getAttr(ItemAttribute.ATTACHED_ITEM_ID)!!
-    val amount = Math.max(item.getAttr(ItemAttribute.ATTACHED_ITEM_COUNT)!!, 0)
+    val containedItem = item.getAttr(ItemAttribute.ATTACHED_ITEM_ID) ?: -1
+    val amount = Math.max(item.getAttr(ItemAttribute.ATTACHED_ITEM_COUNT) ?: 0, 0)
 
     val def = player.world.definitions.getNullable(ItemDef::class.java, containedItem)
     val inventory = player.inventory
@@ -106,8 +106,8 @@ fun fillPouch(player: Player, pouch: EssencePouch) {
 fun emptyPouch(player: Player) {
     val pouch = player.getInteractingItem()
 
-    val item = pouch.getAttr(ItemAttribute.ATTACHED_ITEM_ID)!!
-    val count = pouch.getAttr(ItemAttribute.ATTACHED_ITEM_COUNT)!!
+    val item = pouch.getAttr(ItemAttribute.ATTACHED_ITEM_ID) ?: -1
+    val count = pouch.getAttr(ItemAttribute.ATTACHED_ITEM_COUNT) ?: 0
     val inventory = player.inventory
 
     if (item != Items.RUNE_ESSENCE && item != Items.PURE_ESSENCE || count <= 0) {
@@ -140,8 +140,8 @@ fun emptyPouch(player: Player) {
 fun checkPouch(player: Player) {
     val pouch = player.getInteractingItem()
 
-    val item = pouch.getAttr(ItemAttribute.ATTACHED_ITEM_ID)!!
-    val count = pouch.getAttr(ItemAttribute.ATTACHED_ITEM_COUNT)!!
+    val item = pouch.getAttr(ItemAttribute.ATTACHED_ITEM_ID) ?: -1
+    val count = pouch.getAttr(ItemAttribute.ATTACHED_ITEM_COUNT) ?: 0
 
     if (item != Items.RUNE_ESSENCE && item != Items.PURE_ESSENCE || count <= 0) {
         player.message("There are no essences in this pouch.")

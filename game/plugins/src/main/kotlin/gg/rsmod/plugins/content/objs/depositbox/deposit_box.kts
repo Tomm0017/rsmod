@@ -67,7 +67,7 @@ fun deposit_item(p: Player, slot: Int, amt: Int) {
 fun deposit_all(p: Player, container: ItemContainer, sound: Int = -1) {
     var any = false
 
-    if (container.isEmpty()) {
+    if (container.isEmpty) {
         p.message("You have nothing to deposit.")
         return
     }

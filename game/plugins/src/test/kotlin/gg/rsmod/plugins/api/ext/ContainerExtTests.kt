@@ -69,7 +69,7 @@ class ContainerExtTests {
         assert(transfer == 0)
 
         assert(container1[0] == item)
-        assert(container2.getOccupiedSlotCount() == 0)
+        assert(container2.occupiedSlotCount == 0)
     }
 
     companion object {

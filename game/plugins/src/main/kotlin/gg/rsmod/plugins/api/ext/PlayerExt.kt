@@ -225,20 +225,20 @@ fun Player.openOverlayInterface(displayMode: DisplayMode) {
 }
 
 fun Player.sendItemContainer(key: Int, container: ItemContainer) {
-    write(UpdateInvFullMessage(containerKey = key, items = container.getRaw()))
+    write(UpdateInvFullMessage(containerKey = key, items = container.rawItems))
 }
 
 fun Player.sendItemContainer(parent: Int, child: Int, container: ItemContainer) {
-    write(UpdateInvFullMessage(parent = parent, child = child, items = container.getRaw()))
+    write(UpdateInvFullMessage(parent = parent, child = child, items = container.rawItems))
 }
 
 fun Player.sendItemContainer(parent: Int, child: Int, key: Int, container: ItemContainer) {
-    write(UpdateInvFullMessage(parent = parent, child = child, containerKey = key, items = container.getRaw()))
+    write(UpdateInvFullMessage(parent = parent, child = child, containerKey = key, items = container.rawItems))
 }
 
 fun Player.updateItemContainer(key: Int, container: ItemContainer) {
     // TODO: UpdateInvPartialMessage
-    write(UpdateInvFullMessage(containerKey = key, items = container.getRaw()))
+    write(UpdateInvFullMessage(containerKey = key, items = container.rawItems))
 }
 
 fun Player.sendRunEnergy(energy: Int) {
@@ -411,7 +411,7 @@ fun Player.calculateDeathContainers(): DeathContainers {
     val keptContainer = ItemContainer(world.definitions, keepAmount, ContainerStackType.NO_STACK)
     val lostContainer = ItemContainer(world.definitions, inventory.capacity + equipment.capacity, ContainerStackType.NORMAL)
 
-    var totalItems = inventory.getRaw().filterNotNull() + equipment.getRaw().filterNotNull()
+    var totalItems = inventory.rawItems.filterNotNull() + equipment.rawItems.filterNotNull()
     val valueService = world.getService(ItemMarketValueService::class.java)
 
     if (valueService != null) {
@@ -421,7 +421,7 @@ fun Player.calculateDeathContainers(): DeathContainers {
     }
 
     totalItems.forEach { item ->
-        if (keepAmount > 0 && !keptContainer.isFull()) {
+        if (keepAmount > 0 && !keptContainer.isFull) {
             val add = keptContainer.add(item, assureFullInsertion = false)
             keepAmount -= add.completed
             if (add.getLeftOver() > 0) {

@@ -143,7 +143,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
         val containers = arrayListOf<PersistentContainer>()
 
         client.containers.forEach { key, container ->
-            if (!container.isEmpty()) {
+            if (!container.isEmpty) {
                 containers.add(PersistentContainer(key.name, container.toMap()))
             }
         }

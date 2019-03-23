@@ -62,7 +62,7 @@ arrayOf(Items.LOOTING_BAG, Items.LOOTING_BAG_22586).forEach { bag ->
 
         player.queue {
             val container = player.containers[CONTAINER_KEY] ?: return@queue
-            val destroy = destroyItem(note = if (container.hasAny()) "If you destroy it, the contents will be lost." else "The bag is empty. Are you sure you want to destroy it?", item = bag, amount = 1)
+            val destroy = destroyItem(note = if (container.hasAny) "If you destroy it, the contents will be lost." else "The bag is empty. Are you sure you want to destroy it?", item = bag, amount = 1)
             if (destroy) {
                 player.inventory.remove(item = bag, amount = 1, beginSlot = slot)
             }
@@ -111,7 +111,7 @@ on_button(interfaceId = 15, component = 10) {
 on_button(interfaceId = 15, component = 5) {
     val container = player.containers[CONTAINER_KEY] ?: return@on_button
     when {
-        container.isEmpty() -> player.message("You have nothing to deposit.")
+        container.isEmpty -> player.message("You have nothing to deposit.")
         bank_all(player, container) -> player.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
         else -> player.message("Bank full.")
     }
@@ -145,7 +145,7 @@ fun store(p: Player, slot: Int, amount: Int) {
 fun store(p: Player, item: Item, amount: Int, beginSlot: Int = -1): Boolean {
     val container = p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(p.world.definitions, CONTAINER_KEY) }
 
-    val transferred = p.inventory.transfer(container, item = Item(item, amount).copyAttr(item), beginSlot = beginSlot)
+    val transferred = p.inventory.transfer(container, item = Item(item, amount).copyAttr(item), beginSlot = beginSlot)?.completed ?: 0
     if (transferred == 0) {
         p.message("The bag's too full.")
         return false
@@ -159,7 +159,7 @@ fun bank(p: Player, slot: Int, amount: Int) {
     val container = p.containers[CONTAINER_KEY] ?: return
     val item = container[slot] ?: return
 
-    val transfer = container.transfer(p.bank, item = Item(item, amount).copyAttr(item), unnote = true)
+    val transfer = container.transfer(p.bank, item = Item(item, amount).copyAttr(item), unnote = true)?.completed ?: 0
     if (transfer == 0) {
         p.message("Bank full.")
         return
@@ -172,7 +172,7 @@ fun bank_all(p: Player, container: ItemContainer): Boolean {
 
     container.forEach { item ->
         if (item != null) {
-            val transfer = container.transfer(p.bank, item = item, unnote = true)
+            val transfer = container.transfer(p.bank, item = item, unnote = true)?.completed ?: 0
             if (transfer != 0) {
                 any = true
             }

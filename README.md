@@ -47,7 +47,8 @@ a message stating that your key was created. **Do not close the terminal/command
 - In the next window you want to select the following and unselect anything else:
     * Select ``Create separate module per source set``
     * Select ``Use default gradle wrapper (recommended)``
-    * You can skip the ``Global Gradle settings`` section
+    * In the ``Global Gradle settings`` section:
+        * If ``Offline work`` is selected, unselect it
 - Give the project a bit of time to create and index its files
 
 #### 3) Install RSMod

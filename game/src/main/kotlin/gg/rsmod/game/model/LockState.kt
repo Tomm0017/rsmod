@@ -19,6 +19,11 @@ enum class LockState {
     DELAY_ACTIONS,
 
     /**
+     * Similar to [FULL], but can interact with items.
+     */
+    FULL_WITH_ITEM_INTERACTION,
+
+    /**
      * Cannot log out or perform various actions such as handling incoming
      * [gg.rsmod.game.message.Message]s.
      */
@@ -55,7 +60,7 @@ enum class LockState {
     }
 
     fun canItemInteract(): Boolean = when (this) {
-        NONE -> true
+        NONE, FULL_WITH_ITEM_INTERACTION -> true
         else -> false
     }
 

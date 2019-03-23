@@ -112,7 +112,7 @@ object EquipAction {
             }
 
             val spaceRequired = unequip.filter { slot -> p.equipment[slot] != null }.size - 1
-            if (p.inventory.getFreeSlotCount() < spaceRequired) {
+            if (p.inventory.freeSlotCount < spaceRequired) {
                 p.message("You don't have enough free inventory space to do that.")
                 return Result.NO_FREE_SPACE
             }

@@ -17,7 +17,7 @@ class Item(val id: Int, var amount: Int = 1) {
         copyAttr(other)
     }
 
-    private var attr: HashMap<ItemAttribute, Int>? = null
+    private var attr = HashMap<ItemAttribute, Int>(0)
 
     /**
      * Returns a <strong>new</strong> [Item] with the noted link as the item id.
@@ -46,16 +46,12 @@ class Item(val id: Int, var amount: Int = 1) {
     /**
      * Returns true if [attr] contains any value.
      */
-    fun hasAnyAttr(): Boolean = attr != null && attr!!.isNotEmpty()
+    fun hasAnyAttr(): Boolean = attr.isNotEmpty()
 
-    fun getAttr(attrib: ItemAttribute): Int? {
-        constructAttrIfNeeded()
-        return attr!![attrib] ?: -1
-    }
+    fun getAttr(attrib: ItemAttribute): Int? = attr[attrib] ?: -1
 
     fun putAttr(attrib: ItemAttribute, value: Int): Item {
-        constructAttrIfNeeded()
-        attr!![attrib] = value
+        attr[attrib] = value
         return this
     }
 
@@ -64,16 +60,9 @@ class Item(val id: Int, var amount: Int = 1) {
      */
     fun copyAttr(other: Item): Item {
         if (other.hasAnyAttr()) {
-            constructAttrIfNeeded()
-            attr!!.putAll(other.attr!!)
+            attr.putAll(other.attr)
         }
         return this
-    }
-
-    private fun constructAttrIfNeeded() {
-        if (attr == null) {
-            attr = hashMapOf()
-        }
     }
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("id", id).add("amount", amount).toString()

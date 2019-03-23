@@ -25,7 +25,7 @@ class Item(val id: Int, var amount: Int = 1) {
      * with the same [Item.id].
      */
     fun toNoted(definitions: DefinitionSet): Item {
-        val def = definitions.get(ItemDef::class.java, id)
+        val def = getDef(definitions)
         return if (def.noteTemplateId == 0 && def.noteLinkId > 0) Item(def.noteLinkId, amount).copyAttr(this) else Item(this).copyAttr(this)
     }
 
@@ -35,9 +35,11 @@ class Item(val id: Int, var amount: Int = 1) {
      * with the same [Item.id].
      */
     fun toUnnoted(definitions: DefinitionSet): Item {
-        val def = definitions.get(ItemDef::class.java, id)
+        val def = getDef(definitions)
         return if (def.noteTemplateId > 0) Item(def.noteLinkId, amount).copyAttr(this) else Item(this).copyAttr(this)
     }
+
+    fun getName(definitions: DefinitionSet): String = toUnnoted(definitions).getDef(definitions).name
 
     fun getDef(definitions: DefinitionSet) = definitions.get(ItemDef::class.java, id)
 

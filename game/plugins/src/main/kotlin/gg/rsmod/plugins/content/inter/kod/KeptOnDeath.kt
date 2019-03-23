@@ -21,6 +21,6 @@ object KeptOnDeath {
         p.sendItemContainer(key = 468, container = lostContainer)
         p.setInterfaceUnderlay(color = -1, transparency = -1)
         p.openInterface(interfaceId = 4, dest = InterfaceDestination.MAIN_SCREEN)
-        p.runClientScript(118, 0, "", keptContainer.getOccupiedSlotCount(), 0, 0, "${DecimalFormat().format(lostContainer.getNetworth(p.world))} gp")
+        p.runClientScript(118, 0, "", keptContainer.occupiedSlotCount, 0, 0, "${DecimalFormat().format(lostContainer.getNetworth(p.world))} gp")
     }
 }

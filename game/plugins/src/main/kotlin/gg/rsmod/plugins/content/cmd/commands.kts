@@ -200,7 +200,7 @@ on_command("item", Privilege.ADMIN_POWER) {
 on_command("food", Privilege.ADMIN_POWER) {
     val p = player
 
-    p.inventory.add(item = Items.MANTA_RAY, amount = p.inventory.getFreeSlotCount())
+    p.inventory.add(item = Items.MANTA_RAY, amount = p.inventory.freeSlotCount)
 }
 
 on_command("varp", Privilege.ADMIN_POWER) {
@@ -226,6 +226,15 @@ on_command("varbit", Privilege.ADMIN_POWER) {
         val oldState = p.getVarbit(varbit)
         p.setVarbit(varbit, state)
         p.message("Set varbit (<col=801700>$varbit</col>) from <col=801700>$oldState</col> to <col=801700>${p.getVarbit(varbit)}</col>")
+    }
+}
+
+on_command("getvarbit", Privilege.ADMIN_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::getvarbit 5451</col>") { values ->
+        val varbit = values[0].toInt()
+        val state = player.getVarbit(varbit)
+        player.message("Get varbit (<col=801700>$varbit</col>): <col=801700>$state</col>")
     }
 }
 

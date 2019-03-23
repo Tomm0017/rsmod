@@ -14,7 +14,7 @@ import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
 fun ItemContainer.getNetworth(world: World): Long {
     val service = world.getService(ItemMarketValueService::class.java)
     var networth = 0L
-    getRaw().forEach { item ->
+    rawItems.forEach { item ->
         if (item != null) {
             val cost = service?.get(item.id) ?: world.definitions.getNullable(ItemDef::class.java, item.id)?.cost ?: 0
             networth += cost * item.amount
@@ -27,9 +27,9 @@ fun ItemContainer.getNetworth(world: World): Long {
  * Transfer [item] from [this] container to [to] container.
  *
  * @return
- * The amount of items that were transferred.
+ * The removal [ItemTransaction].
  */
-fun ItemContainer.transfer(to: ItemContainer, item: Item, beginSlot: Int = -1, note: Boolean = false, unnote: Boolean = false): Int {
+fun ItemContainer.transfer(to: ItemContainer, item: Item, beginSlot: Int = -1, note: Boolean = false, unnote: Boolean = false): ItemTransaction? {
     check(item.amount > 0)
 
     /**
@@ -57,13 +57,13 @@ fun ItemContainer.transfer(to: ItemContainer, item: Item, beginSlot: Int = -1, n
 
     val add = to.add(finalItem.id, finalItem.amount, assureFullInsertion = false)
     if (add.completed == 0) {
-        return 0
+        return null
     }
 
     val remove = remove(item.id, add.completed, assureFullRemoval = true, beginSlot = beginSlot)
     if (remove.completed == 0) {
         add.revert(to)
-        return 0
+        return null
     }
 
     /**
@@ -72,7 +72,7 @@ fun ItemContainer.transfer(to: ItemContainer, item: Item, beginSlot: Int = -1, n
      */
     add.first().item.copyAttr(copy)
 
-    return remove.completed
+    return remove
 }
 
 fun ItemTransaction.revert(from: ItemContainer) {

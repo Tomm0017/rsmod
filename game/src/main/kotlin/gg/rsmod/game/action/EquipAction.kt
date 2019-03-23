@@ -188,6 +188,8 @@ object EquipAction {
             val leftover = Item(item, addition.getLeftOver())
             p.equipment.set(equipmentSlot, leftover)
         }
+
+        p.world.plugins.executeUnequipItem(p, item.id)
         return Result.SUCCESS
     }
 }

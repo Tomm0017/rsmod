@@ -16,11 +16,12 @@ import java.lang.ref.WeakReference
 class OpNpcTHandler : MessageHandler<OpNpcTMessage> {
 
     override fun handle(client: Client, message: OpNpcTMessage) {
-        val npc = client.world.npcs.get(message.npcIndex) ?: return
+        val npc = client.world.npcs[message.npcIndex] ?: return
         val parent = message.componentHash shr 16
         val child = message.componentHash and 0xFFFF
 
         if (!client.lock.canNpcInteract()) {
+            client.message(Entity.YOU_CANT_REACH_THAT)
             return
         }
 

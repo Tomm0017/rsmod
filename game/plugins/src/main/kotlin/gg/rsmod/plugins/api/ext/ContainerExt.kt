@@ -1,3 +1,4 @@
+
 package gg.rsmod.plugins.api.ext
 
 import gg.rsmod.game.fs.def.ItemDef

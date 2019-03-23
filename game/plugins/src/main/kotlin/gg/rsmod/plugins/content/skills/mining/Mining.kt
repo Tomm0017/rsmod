@@ -81,7 +81,7 @@ object Mining {
             return false
         }
 
-        if (p.inventory.isFull()) {
+        if (p.inventory.isFull) {
             p.message("Your inventory is too full to hold any more ore.")
             return false
         }

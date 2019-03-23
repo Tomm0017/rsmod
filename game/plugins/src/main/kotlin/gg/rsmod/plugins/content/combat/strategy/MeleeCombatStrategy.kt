@@ -54,7 +54,7 @@ object MeleeCombatStrategy : CombatStrategy {
         target.hit(damage = damage, delay = 1).addActions(hitActions).setCancelIf { pawn.isDead() }
     }
 
-    fun addCombatXp(player: Player, target: Pawn, damage: Int) {
+    private fun addCombatXp(player: Player, target: Pawn, damage: Int) {
         val modDamage = if (target.getType().isNpc()) Math.min(target.getCurrentHp(), damage) else damage
         val mode = CombatConfigs.getXpMode(player)
         val multiplier = if (target is Npc) Combat.getNpcXpMultiplier(target) else 1.0

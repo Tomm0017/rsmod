@@ -152,10 +152,9 @@ class SkillSet(val maxSkills: Int) {
         fun getXpForLevel(level: Int): Double = XP_TABLE[level - 1].toDouble()
 
         /**
-         * A table of the amount of xp needed to achieve 126 levels in a skill.
-         * If RS ever adds over 126 for any revision, we can increase this.
+         * A table of the amount of xp needed to achieve 99 levels in a skill.
          */
-        private val XP_TABLE = IntArray(126).apply {
+        private val XP_TABLE = IntArray(99).apply {
             var points = 0
             for (level in 1 until size) {
                 points += Math.floor(level + 300 * Math.pow(2.0, level / 7.0)).toInt()

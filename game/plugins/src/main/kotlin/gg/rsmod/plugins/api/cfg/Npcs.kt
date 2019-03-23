@@ -2673,6 +2673,7 @@ object Npcs {
     const val BAT = 2827
     const val DRYAD = 2828
     const val FAIRY_2829 = 2829
+    const val MYSTERIOUS_OLD_MAN = 2830
     const val LIZARD_MAN = 2831
     const val ORC = 2832
     const val TROLL_2833 = 2833
@@ -6173,7 +6174,7 @@ object Npcs {
     const val EVIL_CHICKEN_6739 = 6739
     const val SHADE_6740 = 6740
     const val ZOMBIE_6741 = 6741
-    const val MYSTERIOUS_OLD_MAN = 6742
+    const val MYSTERIOUS_OLD_MAN_6742 = 6742
     const val SERGEANT_DAMIEN_6743 = 6743
     const val FLIPPA_6744 = 6744
     const val LEO = 6745
@@ -7822,5 +7823,7 @@ object Npcs {
     const val ALCHEMICAL_HYDRA_8622 = 8622
     const val KONAR_QUO_MATEN = 8623
     const val TAYLOR = 8629
+    const val VEOS_8630 = 8630
+    const val SEAMAN_MORRIS = 8631
     /* Auto-generated file using class gg.rsmod.game.service.game.DumpEntityIdService */
 }

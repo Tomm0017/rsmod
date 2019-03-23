@@ -24,6 +24,7 @@ class BFSPathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(
         val sourceWidth = request.sourceWidth
         val sourceLength = request.sourceLength
         val projectilePath = request.projectilePath
+        val projectile = projectilePath || request.touchRadius > 1
 
         val clipNode = request.clipFlags.contains(PathRequest.ClipFlag.NODE)
         val clipLink = request.clipFlags.contains(PathRequest.ClipFlag.LINKED_NODE)
@@ -49,7 +50,7 @@ class BFSPathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(
             }
             val head = nodes.poll()
 
-            val inRange = head.tile in validEndTiles && (!projectilePath || collision.raycast(head.tile, end, projectilePath))
+            val inRange = head.tile in validEndTiles && (!projectile || collision.raycast(head.tile, end, projectilePath))
             if (inRange) {
                 tail = head
                 success = true
@@ -187,7 +188,7 @@ class BFSPathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(
         val clipDirections = request.clipFlags.contains(PathRequest.ClipFlag.DIRECTIONS)
         val clipOverlapping = request.clipFlags.contains(PathRequest.ClipFlag.OVERLAP)
 
-        val validTiles = ObjectOpenHashSet<Tile>()
+        val validTiles = hashSetOf<Tile>()
 
         if (targetWidth == 0 && targetLength == 0) {
             validTiles.add(end)

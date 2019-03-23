@@ -145,7 +145,7 @@ fun store(p: Player, slot: Int, amount: Int) {
 fun store(p: Player, item: Item, amount: Int, beginSlot: Int = -1): Boolean {
     val container = p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(p.world.definitions, CONTAINER_KEY) }
 
-    val transferred = p.inventory.transfer(container, item = Item(item, amount).copyAttr(item), beginSlot = beginSlot)
+    val transferred = p.inventory.transfer(container, item = Item(item, amount).copyAttr(item), beginSlot = beginSlot)?.completed ?: 0
     if (transferred == 0) {
         p.message("The bag's too full.")
         return false
@@ -159,7 +159,7 @@ fun bank(p: Player, slot: Int, amount: Int) {
     val container = p.containers[CONTAINER_KEY] ?: return
     val item = container[slot] ?: return
 
-    val transfer = container.transfer(p.bank, item = Item(item, amount).copyAttr(item), unnote = true)
+    val transfer = container.transfer(p.bank, item = Item(item, amount).copyAttr(item), unnote = true)?.completed ?: 0
     if (transfer == 0) {
         p.message("Bank full.")
         return
@@ -172,7 +172,7 @@ fun bank_all(p: Player, container: ItemContainer): Boolean {
 
     container.forEach { item ->
         if (item != null) {
-            val transfer = container.transfer(p.bank, item = item, unnote = true)
+            val transfer = container.transfer(p.bank, item = item, unnote = true)?.completed ?: 0
             if (transfer != 0) {
                 any = true
             }

@@ -219,6 +219,15 @@ on_command("varbit", Privilege.ADMIN_POWER) {
     }
 }
 
+on_command("getvarbit", Privilege.ADMIN_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::getvarbit 5451</col>") { values ->
+        val varbit = values[0].toInt()
+        val state = player.getVarbit(varbit)
+        player.message("Get varbit (<col=801700>$varbit</col>): <col=801700>$state</col>")
+    }
+}
+
 on_command("getvarbits", Privilege.ADMIN_POWER) {
     val p = player
 

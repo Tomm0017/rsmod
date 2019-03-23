@@ -1,5 +1,14 @@
 package gg.rsmod.plugins.content.inter.bank
 
+import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
+import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
+import gg.rsmod.plugins.content.inter.bank.Bank.insert
+import gg.rsmod.plugins.content.inter.bank.Bank.shift
+
+on_interface_open(Bank.BANK_INTERFACE_ID) {
+    player.bank.shift()
+}
+
 on_interface_close(Bank.BANK_INTERFACE_ID) {
     player.closeInterface(dest = InterfaceDestination.TAB_AREA)
 }
@@ -37,7 +46,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 42) {
         val item = from[i] ?: continue
 
         val total = item.amount
-        val deposited = from.transfer(to, item, beginSlot = i, note = false, unnote = true)
+        val deposited = from.transfer(to, item, beginSlot = i, note = false, unnote = true)?.completed ?: 0
         if (total != deposited) {
             // Was not able to deposit the whole stack of [item].
         }
@@ -61,7 +70,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
         val item = from[i] ?: continue
 
         val total = item.amount
-        val deposited = from.transfer(to, item, beginSlot = i, note = false, unnote = true)
+        val deposited = from.transfer(to, item, beginSlot = i, note = false, unnote = true)?.completed ?: 0
         if (total != deposited) {
             // Was not able to deposit the whole stack of [item].
         }
@@ -195,7 +204,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
          * as "withdraw-x" would.
          */
         if (item.amount == 0) {
-            player.bank.set(slot, null)
+            player.bank[slot] = null
             return@p
         }
         this.player.queue {
@@ -211,5 +220,45 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
     amount = Math.max(0, amount)
     if (amount > 0) {
         Bank.withdraw(player, item.id, amount, slot, placehold)
+    }
+}
+
+/**
+ * Swap items in bank inventory interface.
+ */
+on_component_to_component_item_swap(
+        srcInterfaceId = Bank.INV_INTERFACE_ID, srcComponent = Bank.INV_INTERFACE_CHILD,
+        dstInterfaceId = Bank.INV_INTERFACE_ID, dstComponent = Bank.INV_INTERFACE_CHILD) {
+    val srcSlot = player.attr[INTERACTING_ITEM_SLOT]!!
+    val dstSlot = player.attr[OTHER_ITEM_SLOT_ATTR]!!
+
+    val container = player.inventory
+
+    if (srcSlot in 0 until container.capacity && dstSlot in 0 until container.capacity) {
+        container.swap(srcSlot, dstSlot)
+    }
+}
+
+/**
+ * Swap items in main bank tab.
+ */
+on_component_to_component_item_swap(
+        srcInterfaceId = Bank.BANK_INTERFACE_ID, srcComponent = Bank.BANK_MAINTAB_COMPONENT,
+        dstInterfaceId = Bank.BANK_INTERFACE_ID, dstComponent = Bank.BANK_MAINTAB_COMPONENT) {
+    val srcSlot = player.attr[INTERACTING_ITEM_SLOT]!!
+    val dstSlot = player.attr[OTHER_ITEM_SLOT_ATTR]!!
+
+    val container = player.bank
+
+    if (srcSlot in 0 until container.occupiedSlotCount && dstSlot in 0 until container.occupiedSlotCount) {
+        val insertMode = player.getVarbit(Bank.REARRANGE_MODE_VARBIT) == 1
+        if (!insertMode) {
+            container.swap(srcSlot, dstSlot)
+        } else {
+            container.insert(srcSlot, dstSlot)
+        }
+    } else {
+        // Sync the container on the client
+        container.dirty = true
     }
 }

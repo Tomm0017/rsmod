@@ -190,7 +190,7 @@ on_command("item", Privilege.ADMIN_POWER) {
 on_command("food", Privilege.ADMIN_POWER) {
     val p = player
 
-    p.inventory.add(item = Items.MANTA_RAY, amount = p.inventory.getFreeSlotCount())
+    p.inventory.add(item = Items.MANTA_RAY, amount = p.inventory.freeSlotCount)
 }
 
 on_command("varp", Privilege.ADMIN_POWER) {

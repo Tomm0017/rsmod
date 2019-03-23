@@ -263,13 +263,13 @@ open class Player(world: World) : Pawn(world) {
         }
 
         if (inventory.dirty) {
-            write(UpdateInvFullMessage(parent = 149, child = 0, containerKey = 93, items = inventory.getRaw()))
+            write(UpdateInvFullMessage(parent = 149, child = 0, containerKey = 93, items = inventory.rawItems))
             inventory.dirty = false
             calculateWeight = true
         }
 
         if (equipment.dirty) {
-            write(UpdateInvFullMessage(containerKey = 94, items = equipment.getRaw()))
+            write(UpdateInvFullMessage(containerKey = 94, items = equipment.rawItems))
             equipment.dirty = false
             calculateWeight = true
             calculateBonuses = true
@@ -278,7 +278,7 @@ open class Player(world: World) : Pawn(world) {
         }
 
         if (bank.dirty) {
-            write(UpdateInvFullMessage(containerKey = 95, items = bank.getRaw()))
+            write(UpdateInvFullMessage(containerKey = 95, items = bank.rawItems))
             bank.dirty = false
         }
 

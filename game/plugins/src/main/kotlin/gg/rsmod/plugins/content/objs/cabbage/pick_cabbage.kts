@@ -8,7 +8,7 @@ on_obj_option(obj = Objs.CABBAGE_1161, option = "pick", lineOfSightDistance = 0)
     player.queue {
         val route = player.walkTo(this, obj.tile)
         if (route.success) {
-            if (player.inventory.isFull()) {
+            if (player.inventory.isFull) {
                 player.message("You don't have room for this cabbage.")
                 return@queue
             }

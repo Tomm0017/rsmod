@@ -10,7 +10,10 @@ import gg.rsmod.plugins.api.ext.*
  */
 object Bank {
 
+    const val TAB_COUNT = 9
+
     const val BANK_INTERFACE_ID = 12
+    const val BANK_MAINTAB_COMPONENT = 13
     const val INV_INTERFACE_ID = 15
     const val INV_INTERFACE_CHILD = 3
 
@@ -20,6 +23,7 @@ object Bank {
     const val LAST_X_INPUT = 3960
     const val QUANTITY_VARBIT = 6590
     const val SELECTED_TAB_VARBIT = 4150
+    const val TAB0_VARBIT = 4171
 
     /**
      * Visual varbit for the "Bank your loot" tab area interface when storing

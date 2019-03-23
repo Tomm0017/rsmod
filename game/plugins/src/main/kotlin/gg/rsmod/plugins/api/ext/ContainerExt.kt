@@ -14,7 +14,7 @@ import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
 fun ItemContainer.getNetworth(world: World): Long {
     val service = world.getService(ItemMarketValueService::class.java)
     var networth = 0L
-    getRaw().forEach { item ->
+    rawItems.forEach { item ->
         if (item != null) {
             val cost = service?.get(item.id) ?: world.definitions.getNullable(ItemDef::class.java, item.id)?.cost ?: 0
             networth += cost * item.amount

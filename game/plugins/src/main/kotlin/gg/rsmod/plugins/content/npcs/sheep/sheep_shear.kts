@@ -34,7 +34,7 @@ suspend fun shear(it: QueueTask, p: Player, n: Npc) {
     n.forceChat("Baa!")
 
     if (!flee) {
-        if (p.inventory.hasSpace()) {
+        if (p.inventory.hasSpace) {
             p.inventory.add(item = Items.WOOL)
         } else {
             val ground = GroundItem(item = Items.WOOL, amount = 1, tile = Tile(p.tile), owner = p)

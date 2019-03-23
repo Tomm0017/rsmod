@@ -46,7 +46,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 42) {
         }
     }
 
-    if (!any && !from.isEmpty()) {
+    if (!any && !from.isEmpty) {
         p.message("Bank full.")
     }
 }
@@ -70,7 +70,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
         }
     }
 
-    if (!any && !from.isEmpty()) {
+    if (!any && !from.isEmpty) {
         p.message("Bank full.")
     }
 }

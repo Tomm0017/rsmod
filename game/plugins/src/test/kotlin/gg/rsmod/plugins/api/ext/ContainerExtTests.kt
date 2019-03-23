@@ -27,10 +27,10 @@ class ContainerExtTests {
 
         val item = Item(4151)
 
-        assert(container1.transfer(container2, item) == 0)
+        assert((container1.transfer(container2, item)?.completed ?: 0) == 0)
 
         container1.add(item)
-        assert(container1.transfer(container2, item) == 1)
+        assert((container1.transfer(container2, item)?.completed ?: 0) == 1)
     }
 
     @Test
@@ -66,7 +66,7 @@ class ContainerExtTests {
         assertNotNull(container1[0])
 
         val transfer = container1.transfer(container2, container1[0]!!)
-        assert(transfer == 0)
+        assert((transfer?.completed ?: 0) == 0)
 
         assert(container1[0] == item)
         assert(container2.occupiedSlotCount == 0)

@@ -7,6 +7,8 @@ import gg.rsmod.plugins.api.cfg.Objs
 /**
  * @author Triston Plummer ("Dread")
  *
+ * Represents the various Runecrafting altars
+ *
  * @param ruins         An array of object ids that should include the Mysterious Ruins and it's transformed counterpart (when wearing the tiara)
  * @param altar         The object of the Runecrafting altar
  * @param exitPortal    The object id of the altar exit portal
@@ -31,7 +33,7 @@ enum class Altar(val ruins: IntArray? = null, val altar: Int, val exitPortal: In
     ASTRAL(                                                                                 altar = Objs.ALTAR_14911,                                                                                                             rune = Rune.ASTRAL),
     NATURE(ruins = intArrayOf(Objs.MYSTERIOUS_RUINS_14414, Objs.MYSTERIOUS_RUINS_14832),    altar = Objs.ALTAR_14905, exitPortal = Objs.PORTAL_14892, talisman = Items.NATURE_TALISMAN, tiara = Items.NATURE_TIARA, varbit = 615, rune = Rune.NATURE,   entrance = Tile(2400, 4835), exit = Tile(2865, 3022)),
     LAW(ruins = intArrayOf(Objs.MYSTERIOUS_RUINS_14412, Objs.MYSTERIOUS_RUINS_14413),       altar = Objs.ALTAR_14904, exitPortal = Objs.PORTAL_14848, talisman = Items.LAW_TALISMAN,    tiara = Items.LAW_TIARA,    varbit = 614, rune = Rune.LAW,      entrance = Tile(2464, 4819), exit = Tile(2858, 3378)),
-    // Death
+    // TODO: Death
     BLOOD(                                                                                  altar = Objs.BLOOD_ALTAR,                                                                                                             rune = Rune.BLOOD,                                                                        option = "bind"),
     SOUL(                                                                                   altar = Objs.SOUL_ALTAR,                                                                                                              rune = Rune.SOUL,                                                                         option = "bind");
     // TODO: Wrath

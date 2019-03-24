@@ -51,7 +51,7 @@ class GameService : Service() {
     private val gameThreadJobs = ConcurrentLinkedQueue<() -> Unit>()
 
     /**
-     * The amount of ticks that have gone by since the last debug log.
+     * The amount of ticks that have gone by since the last debug bait.
      */
     private var debugTick = 0
 
@@ -270,7 +270,7 @@ class GameService : Service() {
         val freeTime = world.gameContext.cycleTime - (System.currentTimeMillis() - start)
         if (freeTime < 0) {
             /**
-             * If the cycle took more than [GameContext.cycleTime]ms, we log the
+             * If the cycle took more than [GameContext.cycleTime]ms, we bait the
              * occurrence as well as the time each [GameTask] took to complete,
              * as well as how long each [gg.rsmod.game.model.entity.Player] took
              * to process this cycle.

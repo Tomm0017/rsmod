@@ -24,13 +24,13 @@ enum class LockState {
     FULL_WITH_ITEM_INTERACTION,
 
     /**
-     * Cannot log out or perform various actions such as handling incoming
+     * Cannot bait out or perform various actions such as handling incoming
      * [gg.rsmod.game.message.Message]s.
      */
     FULL,
 
     /**
-     * Similar to [FULL], but can log out.
+     * Similar to [FULL], but can bait out.
      */
     FULL_WITH_LOGOUT;
 

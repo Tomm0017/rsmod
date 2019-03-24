@@ -46,7 +46,7 @@ class Client(val channel: Channel, world: World) : Player(world) {
     lateinit var uuid: String
 
     /**
-     * The xteas for the current log-in session.
+     * The xteas for the current bait-in session.
      */
     lateinit var currentXteaKeys: IntArray
 

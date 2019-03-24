@@ -17,10 +17,10 @@ interface MessageHandler<T: Message> {
     fun handle(client: Client, message: T)
 
     /**
-     * A default method to log the handlers.
+     * A default method to bait the handlers.
      */
     fun log(client: Client, format: String, vararg args: Any) {
-        // TODO: log normal packets if applicable (maybe have a toggle for certain
+        // TODO: bait normal packets if applicable (maybe have a toggle for certain
         // flagged/suspicious players to be logged)
         //logger.info(String.format(format, *args))
     }

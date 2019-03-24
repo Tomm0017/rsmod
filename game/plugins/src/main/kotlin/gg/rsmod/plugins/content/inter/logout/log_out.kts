@@ -13,6 +13,6 @@ on_button(interfaceId = 182, component = 8) {
         p.write(LogoutFullMessage())
         p.channelClose()
     } else {
-        p.message("You can't log out until 10 seconds after the end of combat.")
+        p.message("You can't bait out until 10 seconds after the end of combat.")
     }
 }

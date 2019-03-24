@@ -12,11 +12,11 @@ val TAB_INTERFACE_ID = 81
 
 val VALUE_TEXT_COMPONENT = 6
 
-register_container_key(CONTAINER_KEY) // Mark key as needing to be de-serialized on log-in.
+register_container_key(CONTAINER_KEY) // Mark key as needing to be de-serialized on bait-in.
 
 on_login {
     /**
-     * If a player has a looting bag when they log in, we need to send the item
+     * If a player has a looting bag when they bait in, we need to send the item
      * container. If you open a bank before checking/depositing an item
      * in your looting bag, the bag won't have the "view" option on it.
      */

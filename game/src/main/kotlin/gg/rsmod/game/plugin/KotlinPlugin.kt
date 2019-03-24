@@ -217,12 +217,12 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
     fun on_world_init(logic: (Plugin).() -> Unit) = r.bindWorldInit(logic)
 
     /**
-     * Invoke [logic] on player log in.
+     * Invoke [logic] on player bait in.
      */
     fun on_login(logic: (Plugin).() -> Unit) = r.bindLogin(logic)
 
     /**
-     * Invoke [logic] on player log out.
+     * Invoke [logic] on player bait out.
      */
     fun on_logout(logic: (Plugin).() -> Unit) = r.bindLogout(logic)
 

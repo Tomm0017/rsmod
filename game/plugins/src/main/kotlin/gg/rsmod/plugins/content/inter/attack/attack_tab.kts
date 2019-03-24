@@ -3,7 +3,7 @@ package gg.rsmod.plugins.content.inter.attack
 import gg.rsmod.game.model.attr.NEW_ACCOUNT_ATTR
 
 /**
- * First log-in logic (when accounts have just been made).
+ * First bait-in logic (when accounts have just been made).
  */
 on_login {
     val player = player
@@ -59,7 +59,7 @@ on_equip_to_slot(EquipmentType.WEAPON.id) {
 }
 
 /**
- * Disable special attack on log-out.
+ * Disable special attack on bait-out.
  */
 on_logout {
     player.setVarp(AttackTab.SPECIAL_ATTACK_VARP, 0)

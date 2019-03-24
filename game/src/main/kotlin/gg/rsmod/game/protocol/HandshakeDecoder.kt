@@ -47,7 +47,7 @@ class HandshakeDecoder(private val revision: Int, private val cacheCrcs: IntArra
             }
             else -> {
                 /**
-                 * If the handshake type is not handled, we want to log it and
+                 * If the handshake type is not handled, we want to bait it and
                  * make sure we read any bytes from the buffer.
                  */
                 buf.readBytes(buf.readableBytes())

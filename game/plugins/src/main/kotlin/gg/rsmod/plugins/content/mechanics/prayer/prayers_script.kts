@@ -12,7 +12,7 @@ on_player_death {
 }
 
 /**
- * Deactivate all prayers on log out.
+ * Deactivate all prayers on bait out.
  */
 on_logout {
     Prayers.deactivateAll(player)

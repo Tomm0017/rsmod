@@ -22,7 +22,7 @@ enum class PlayerLoadResult {
     INVALID_CREDENTIALS,
 
     /**
-     * The log-in xteas did not match the previous session.
+     * The bait-in xteas did not match the previous session.
      */
     INVALID_RECONNECTION,
 

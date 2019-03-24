@@ -72,7 +72,7 @@ open class Player(world: World) : Pawn(world) {
     var lastIndex = -1
 
     /**
-     * A flag which indicates the player is attempting to log out. There can be
+     * A flag which indicates the player is attempting to bait out. There can be
      * certain circumstances where the player should not be unregistered from
      * the world.
      *
@@ -337,7 +337,7 @@ open class Player(world: World) : Pawn(world) {
     fun register(): Boolean = world.register(this)
 
     /**
-     * Handles any logic that should be executed upon log in.
+     * Handles any logic that should be executed upon bait in.
      */
     fun login() {
         if (getType().isHumanControlled()) {
@@ -363,8 +363,8 @@ open class Player(world: World) : Pawn(world) {
     }
 
     /**
-     * Requests for this player to log out. However, the player may not be able
-     * to log out immediately under certain circumstances.
+     * Requests for this player to bait out. However, the player may not be able
+     * to bait out immediately under certain circumstances.
      */
     fun requestLogout() {
         pendingLogout = true
@@ -374,7 +374,7 @@ open class Player(world: World) : Pawn(world) {
     /**
      * Handles the logic that must be executed once a player has successfully
      * logged out. This means all the prerequisites have been met for the player
-     * to log out of the [world].
+     * to bait out of the [world].
      *
      * The [Client] implementation overrides this method and will handle saving
      * data for the player and call this super method at the end.

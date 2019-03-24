@@ -8,12 +8,12 @@ import com.google.common.base.MoreObjects
  * @param persistenceKey
  * If the timer should persist through player sessions, then this value should
  * be set to a <strong>unique</strong> string/name.
- * In other words, if the timer should be saved on player log out, set this value
+ * In other words, if the timer should be saved on player bait out, set this value
  * to a string that is not used by any other [TimerKey]s.
  *
  * @param tickOffline
  * If the timer should still tick down while a player is offline. The timer does
- * not technically 'tick down' while the player is offline, but when they log in,
+ * not technically 'tick down' while the player is offline, but when they bait in,
  * we calculate the time in between when the timer was saved and the current time.
  *
  * @author Tom <rspsmods@gmail.com>

@@ -140,7 +140,7 @@ object ObjectPathAction {
 
         if (wall) {
             /**
-             * Check if the [pawn] is within interaction distance of the wall.
+             * Check if the pawn is within interaction distance of the wall.
              */
             if (pawn.tile.isWithinRadius(tile, 1)) {
                 val dir = Direction.between(tile, pawn.tile)
@@ -182,6 +182,11 @@ object ObjectPathAction {
         }
 
         val route = pawn.createPathFindingStrategy().calculateRoute(builder.build())
+
+        if (pawn.timers.has(FROZEN_TIMER) && !pawn.tile.sameAs(route.tail)) {
+            return Route(ArrayDeque(), success = false, tail = pawn.tile)
+        }
+
         pawn.walkPath(route.path)
 
         val last = pawn.movementQueue.peekLast()
@@ -191,6 +196,10 @@ object ObjectPathAction {
 
         if (pawn.timers.has(STUN_TIMER)) {
             pawn.stopMovement()
+            return Route(ArrayDeque(), success = false, tail = pawn.tile)
+        }
+
+        if (pawn.timers.has(FROZEN_TIMER) && !pawn.tile.sameAs(route.tail)) {
             return Route(ArrayDeque(), success = false, tail = pawn.tile)
         }
 

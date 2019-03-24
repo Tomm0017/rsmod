@@ -29,6 +29,8 @@ class OpHeld5Handler : MessageHandler<OpHeld5Message> {
         client.attr[INTERACTING_ITEM_ID] = item.id
         client.attr[INTERACTING_ITEM] = WeakReference(item)
 
+        client.resetFacePawn()
+
         if (client.world.plugins.canDropItem(client, item.id)) {
             val remove = client.inventory.remove(item, assureFullRemoval = false, beginSlot = slot)
             if (remove.completed > 0) {

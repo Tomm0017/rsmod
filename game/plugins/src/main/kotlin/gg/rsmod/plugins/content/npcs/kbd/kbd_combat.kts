@@ -38,7 +38,7 @@ suspend fun combat(it: QueueTask) {
         target = npc.getCombatTarget() ?: break
     }
 
-    npc.facePawn(null)
+    npc.resetFacePawn()
     npc.removeCombatTarget()
 }
 

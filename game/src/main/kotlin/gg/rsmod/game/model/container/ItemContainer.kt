@@ -44,7 +44,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
     /**
      * Gets the collection of nullable [Item]s in this container.
      */
-    fun getRaw(): Array<Item?> = items
+    val rawItems: Array<Item?> = items
 
     /**
      * Checks if the container has an [Item] which has the same [Item.id] as
@@ -68,33 +68,39 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
      * Gets the most-left/first index(slot) that is not occupied by an [Item].
      * Defaults to -1 if none is found.
      */
-    fun getNextFreeSlot(): Int = items.indexOfFirst { it == null }
+    val nextFreeSlot: Int get() = items.indexOfFirst { it == null }
 
     /**
      * Calculates the amount of available slots in this container.
      */
-    fun getFreeSlotCount(): Int = items.count { it == null }
+    val freeSlotCount: Int get() = items.count { it == null }
 
     /**
      * Calculates the amount of slots that are occupied in this container.
      */
-    fun getOccupiedSlotCount(): Int = items.count { it != null }
+    val occupiedSlotCount: Int get() = items.count { it != null }
 
-    fun isFull(): Boolean = items.all { it != null }
+    /**
+     * Check if the container is full.
+     */
+    val isFull: Boolean get() = items.all { it != null }
 
-    fun isEmpty(): Boolean = items.none { it != null }
+    /**
+     * Check if the container is completely empty.
+     */
+    val isEmpty: Boolean get() = items.none { it != null }
 
     /**
      * @return
      * true if the container has any item at all which is not null.
      */
-    fun hasAny(): Boolean = items.any { it != null }
+    val hasAny: Boolean get() = items.any { it != null }
 
     /**
      * @return
      * true if the container has any free slot available.
      */
-    fun hasSpace(): Boolean = getNextFreeSlot() != -1
+    val hasSpace: Boolean get() = nextFreeSlot != -1
 
     /**
      * Calculate the total amount of items in this container who's [Item.id]
@@ -233,7 +239,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
          * The amount of free slots in the container.  If there's a placeholder
          * for this item, we don't count it as an occupied slot.
          */
-        val freeSlotCount = getFreeSlotCount() + (if (placehold) 1 else 0)
+        val freeSlotCount = freeSlotCount + (if (placehold) 1 else 0)
 
         /**
          * If the player has no more free slots and either [stack]
@@ -297,7 +303,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
             var stackIndex = if (placehold) placeholderSlot else getItemIndex(itemId = item, skipAttrItems = true)
             if (stackIndex == -1) {
                 if (beginSlot == -1) {
-                    stackIndex = getNextFreeSlot()
+                    stackIndex = nextFreeSlot
                 } else {
                     for (i in beginSlot until capacity) {
                         if (items[i] == null) {
@@ -471,7 +477,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
 
     operator fun get(index: Int): Item? = items[index]
 
-    fun set(index: Int, item: Item?) {
+    operator fun set(index: Int, item: Item?) {
         items[index] = item
         dirty = true
     }

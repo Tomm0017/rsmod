@@ -37,6 +37,11 @@ val FORCE_DISCONNECTION_TIMER = TimerKey()
 val FROZEN_TIMER = TimerKey()
 
 /**
+ * Timer key set when stunned.
+ */
+val STUN_TIMER = TimerKey()
+
+/**
  * Timer key for poison ticks.
  */
 val POISON_TIMER = TimerKey()

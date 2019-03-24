@@ -435,7 +435,7 @@ in-packets:
         sign: UNSIGNED
         type: SHORT
         trans: ADD
-      - name: src_item
+      - name: dst_item
         sign: UNSIGNED
         type: SHORT
         trans: ADD
@@ -448,7 +448,7 @@ in-packets:
       - name: dst_component_hash
         order: MIDDLE
         type: INT
-      - name: dst_item
+      - name: src_item
         sign: UNSIGNED
         type: SHORT
 

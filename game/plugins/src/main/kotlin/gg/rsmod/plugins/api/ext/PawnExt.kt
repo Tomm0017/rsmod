@@ -5,8 +5,10 @@ import gg.rsmod.game.model.attr.*
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
+import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.timer.FROZEN_TIMER
+import gg.rsmod.game.model.timer.STUN_TIMER
 import gg.rsmod.plugins.api.BonusSlot
 import gg.rsmod.plugins.api.HitType
 import gg.rsmod.plugins.api.HitbarType
@@ -64,11 +66,33 @@ fun Pawn.showHitbar(percentage: Int, type: HitbarType) {
     pendingHits.add(Hit.Builder().onlyShowHitbar().setHitbarType(type.id).setHitbarPercentage(percentage).setHitbarMaxPercentage(type.pixelsWide).build())
 }
 
-fun Pawn.freeze(cycles: Int, onFreeze: () -> Unit) {
+fun Pawn.freeze(cycles: Int, onFreeze: () -> Unit): Boolean {
     if (timers.has(FROZEN_TIMER)) {
-        return
+        return false
     }
     stopMovement()
     timers[FROZEN_TIMER] = cycles
     onFreeze()
+    return true
+}
+
+fun Pawn.stun(cycles: Int, onStun: () -> Unit): Boolean {
+    if (timers.has(STUN_TIMER)) {
+        return false
+    }
+    stopMovement()
+    timers[STUN_TIMER] = cycles
+    onStun()
+    return true
+}
+
+fun Pawn.stun(cycles: Int) {
+    stun(cycles) {
+        if (this is Player) {
+            graphic(245, 124)
+            resetInteractions()
+            interruptQueues()
+            message("You have been stunned!")
+        }
+    }
 }

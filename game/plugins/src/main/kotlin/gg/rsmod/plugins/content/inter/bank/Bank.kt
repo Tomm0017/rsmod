@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.content.inter.bank
 
+import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.api.InterfaceDestination
@@ -10,7 +11,10 @@ import gg.rsmod.plugins.api.ext.*
  */
 object Bank {
 
+    const val TAB_COUNT = 9
+
     const val BANK_INTERFACE_ID = 12
+    const val BANK_MAINTAB_COMPONENT = 13
     const val INV_INTERFACE_ID = 15
     const val INV_INTERFACE_CHILD = 3
 
@@ -20,6 +24,7 @@ object Bank {
     const val LAST_X_INPUT = 3960
     const val QUANTITY_VARBIT = 6590
     const val SELECTED_TAB_VARBIT = 4150
+    const val TAB0_VARBIT = 4171
 
     /**
      * Visual varbit for the "Bank your loot" tab area interface when storing
@@ -53,7 +58,8 @@ object Bank {
                 copy.copyAttr(item)
             }
 
-            withdrawn += from.transfer(to, item = copy, beginSlot = i, note = note, unnote = !note)
+            val transfer = from.transfer(to, item = copy, beginSlot = i, note = note, unnote = !note)
+            withdrawn += transfer?.completed ?: 0
 
             if (from[i] == null) {
                 if (placehold || p.getVarbit(ALWAYS_PLACEHOLD_VARBIT) == 1) {
@@ -64,7 +70,7 @@ object Bank {
                      * definition.
                      */
                     if (def.placeholderId > 0) {
-                        p.bank.set(i, Item(def.placeholderId, 0))
+                        p.bank[i] = Item(def.placeholderId, 0)
                     }
                 }
             }
@@ -102,7 +108,11 @@ object Bank {
                 copy.copyAttr(item)
             }
 
-            deposited += from.transfer(to, item = copy, beginSlot = i, note = false, unnote = true)
+            val transfer = from.transfer(to, item = copy, beginSlot = i, note = false, unnote = true)
+
+            if (transfer != null) {
+                deposited += transfer.completed
+            }
         }
 
         if (deposited == 0) {
@@ -128,5 +138,38 @@ object Bank {
         p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 50, range = 0..3, setting = 2)
 
         p.setVarbit(BANK_YOUR_LOOT_VARBIT, 0)
+    }
+
+    fun ItemContainer.shift() {
+        val newItems = Array<Item?>(capacity) { null }
+
+        var index = 0
+        for (i in 0 until capacity) {
+            val item = this[i] ?: continue
+            newItems[index++] = item
+        }
+
+        removeAll()
+
+        for (i in 0 until capacity) {
+            set(i, newItems[i])
+        }
+    }
+
+    fun ItemContainer.insert(from: Int, to: Int) {
+        val fromItem = this[from]!! // Shouldn't be null
+
+        this[from] = null
+
+        if (from < to) {
+            for (i in from until to) {
+                this[i] = this[i + 1]
+            }
+        } else {
+            for (i in from downTo to + 1) {
+                this[i] = this[i - 1]
+            }
+        }
+        this[to] = fromItem
     }
 }

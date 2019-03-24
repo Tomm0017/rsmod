@@ -47,7 +47,8 @@ a message stating that your key was created. **Do not close the terminal/command
 - In the next window you want to select the following and unselect anything else:
     * Select ``Create separate module per source set``
     * Select ``Use default gradle wrapper (recommended)``
-    * You can skip the ``Global Gradle settings`` section
+    * In the ``Global Gradle settings`` section:
+        * If ``Offline work`` is selected, unselect it
 - Give the project a bit of time to create and index its files
 
 #### 3) Install RSMod
@@ -106,8 +107,10 @@ there should be a green ``run`` button, click on that and let the installation b
     - Find the revision of your **client** (*not cache*)
     - Open ``${rsmod-project}/game.yml``
     - Edit the value for ``revision: 178`` to match your client's revision
+- *I receive a* ``error_game_js5connect`` *error on the client console*
+    - You need to launch the server first and *then* the client
 - *When following ``2) Open the project in IntelliJ`` my IntelliJ throws the error ``Build model 'org.jetbrains.plugins.gradle.model.ExternalProject' for root project 'gg.rsmod'``*
-    - This appears to be an issue that can be solved by upgrading your IntelliJ
+    - This appears to be an issue that can be solved by upgrading your IntelliJ    
     
 ## FAQ
 

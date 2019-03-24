@@ -7,6 +7,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.ext.filterableMessage
+import gg.rsmod.plugins.api.ext.interpolate
 import gg.rsmod.plugins.api.ext.playSound
 import gg.rsmod.plugins.api.ext.player
 
@@ -37,7 +38,8 @@ object Woodcutting {
                 break
             }
 
-            if (p.world.random(100) <= (100 - tree.level)) {
+            if (p.world.interpolate(minChance = 60, maxChance = 190, minLvl = 1, maxLvl = 99,
+                            playerLvl = p.getSkills().getCurrentLevel(Skills.WOODCUTTING), cap = 255)) {
                 p.filterableMessage("You get some ${logName}s.")
                 p.playSound(3600)
                 p.inventory.add(tree.log)
@@ -81,7 +83,7 @@ object Woodcutting {
             return false
         }
 
-        if (p.inventory.isFull()) {
+        if (p.inventory.isFull) {
             p.message("Your inventory is too full to hold any more logs.")
             return false
         }

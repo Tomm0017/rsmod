@@ -82,23 +82,24 @@ object MagicCombatStrategy : CombatStrategy {
     }
 
     private fun addCombatXp(player: Player, target: Pawn, damage: Int) {
+        val modDamage = if (target.getType().isNpc()) Math.min(target.getCurrentHp(), damage) else damage
         val mode = CombatConfigs.getXpMode(player)
         val multiplier = if (target is Npc) Combat.getNpcXpMultiplier(target) else 1.0
 
         if (mode == XpMode.MAGIC) {
             val defensive = player.getVarbit(Combat.SELECTED_AUTOCAST_VARBIT) != 0 && player.getVarbit(Combat.DEFENSIVE_MAGIC_CAST_VARBIT) != 0
             if (!defensive) {
-                player.addXp(Skills.MAGIC, damage * 2.0 * multiplier)
-                player.addXp(Skills.HITPOINTS, damage * 1.33 * multiplier)
+                player.addXp(Skills.MAGIC, modDamage * 2.0 * multiplier)
+                player.addXp(Skills.HITPOINTS, modDamage * 1.33 * multiplier)
             } else {
-                player.addXp(Skills.MAGIC, damage * 1.33 * multiplier)
-                player.addXp(Skills.DEFENCE, damage * multiplier)
-                player.addXp(Skills.HITPOINTS, damage * 1.33 * multiplier)
+                player.addXp(Skills.MAGIC, modDamage * 1.33 * multiplier)
+                player.addXp(Skills.DEFENCE, modDamage * multiplier)
+                player.addXp(Skills.HITPOINTS, modDamage * 1.33 * multiplier)
             }
         } else if (mode == XpMode.SHARED) {
-            player.addXp(Skills.MAGIC, damage * 1.33 * multiplier)
-            player.addXp(Skills.DEFENCE, damage * multiplier)
-            player.addXp(Skills.HITPOINTS, damage * 1.33 * multiplier)
+            player.addXp(Skills.MAGIC, modDamage * 1.33 * multiplier)
+            player.addXp(Skills.DEFENCE, modDamage * multiplier)
+            player.addXp(Skills.HITPOINTS, modDamage * 1.33 * multiplier)
         }
     }
 }

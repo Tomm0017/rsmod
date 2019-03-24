@@ -15,6 +15,7 @@ import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
+import gg.rsmod.game.model.timer.STUN_TIMER
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.AabbUtil
 import java.lang.ref.WeakReference
@@ -54,20 +55,23 @@ object PawnPathAction {
         if (!pathFound) {
             pawn.movementQueue.clear()
             if (pawn is Player) {
-                if (!pawn.timers.has(FROZEN_TIMER)) {
+                if (!pawn.timers.has(FROZEN_TIMER) || pawn.timers.has(STUN_TIMER)) {
                     pawn.message(Entity.YOU_CANT_REACH_THAT)
                 } else {
                     pawn.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
                 }
                 pawn.write(SetMapFlagMessage(255, 255))
             }
-            pawn.facePawn(null)
+            pawn.resetFacePawn()
             return
         }
 
         pawn.stopMovement()
 
         if (pawn is Player) {
+            if (pawn.attr[FACING_PAWN_ATTR]?.get() != npc) {
+                return
+            }
             /**
              * If the npc has moved from the time this queue was added to
              * when it was actually invoked, we need to walk towards it again.
@@ -83,7 +87,7 @@ object PawnPathAction {
              */
             pawn.attr[NPC_FACING_US_ATTR]?.get()?.let { other ->
                 if (other.attr[FACING_PAWN_ATTR]?.get() == pawn) {
-                    other.facePawn(null)
+                    other.resetFacePawn()
                     other.timers.remove(RESET_PAWN_FACING_TIMER)
                 }
             }
@@ -98,7 +102,7 @@ object PawnPathAction {
                 npc.facePawn(pawn)
                 npc.timers[RESET_PAWN_FACING_TIMER] = Npc.RESET_PAWN_FACE_DELAY
             }
-            pawn.facePawn(null)
+            pawn.resetFacePawn()
             pawn.faceTile(npc.tile)
 
             val handled = world.plugins.executeNpc(pawn, npcId, opt)
@@ -116,6 +120,15 @@ object PawnPathAction {
         val projectile = interactionRange > 2
 
         val frozen = pawn.timers.has(FROZEN_TIMER)
+        val stunned = pawn.timers.has(STUN_TIMER)
+
+        if (pawn.attr[FACING_PAWN_ATTR]?.get() != target) {
+            return false
+        }
+
+        if (stunned) {
+            return false
+        }
 
         if (frozen) {
             if (overlap(sourceTile, sourceSize, targetTile, targetSize)) {

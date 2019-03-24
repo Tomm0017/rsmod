@@ -8,7 +8,7 @@ Sheep.SHEEP_NPCS.forEach { sheep ->
         on_npc_option(npc = sheep, option = "shear") {
             val npc = player.getInteractingNpc()
 
-            player.facePawn(null)
+            player.resetFacePawn()
             player.faceTile(npc.tile)
             if (!player.inventory.contains(Items.SHEARS)) {
                 player.message("You need a set of shears to do this.")
@@ -34,7 +34,7 @@ suspend fun shear(it: QueueTask, p: Player, n: Npc) {
     n.forceChat("Baa!")
 
     if (!flee) {
-        if (p.inventory.hasSpace()) {
+        if (p.inventory.hasSpace) {
             p.inventory.add(item = Items.WOOL)
         } else {
             val ground = GroundItem(item = Items.WOOL, amount = 1, tile = Tile(p.tile), owner = p)

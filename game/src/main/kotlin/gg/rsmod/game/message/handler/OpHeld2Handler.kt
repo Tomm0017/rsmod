@@ -42,7 +42,7 @@ class OpHeld2Handler : MessageHandler<OpHeld2Message> {
         client.attr[INTERACTING_ITEM] = WeakReference(item)
 
         val result = EquipAction.equip(client, item, message.slot)
-        if (result == EquipAction.Result.UNHANDLED) {
+        if (result == EquipAction.Result.UNHANDLED && client.world.devContext.debugItemActions) {
             client.message("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=2]")
         }
     }

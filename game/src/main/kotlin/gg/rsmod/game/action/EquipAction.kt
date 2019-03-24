@@ -41,6 +41,10 @@ object EquipAction {
     fun equip(p: Player, item: Item, inventorySlot: Int = -1): Result {
         val def = p.world.definitions.get(ItemDef::class.java, item.id)
 
+        // Resets interaction when an item is equipped (or attemped to be).
+        // This logic does not apply to un-equipping items.
+        p.resetFacePawn()
+
         if (def.equipSlot < 0) {
             if (p.world.plugins.executeItem(p, item.id, 2)) {
                 return Result.PLUGIN
@@ -73,9 +77,9 @@ object EquipAction {
                 if (transaction.completed == 0) {
                     return Result.INVALID_ITEM
                 }
-                p.equipment.set(equipSlot, Item(replace.id, transaction.completed + replace.amount))
+                p.equipment[equipSlot] = Item(replace.id, transaction.completed + replace.amount)
             } else {
-                p.equipment.set(equipSlot, Item(replace.id, add + replace.amount))
+                p.equipment[equipSlot] = Item(replace.id, add + replace.amount)
             }
             p.world.plugins.executeEquipSlot(p, equipSlot)
             p.world.plugins.executeEquipItem(p, replace.id)
@@ -112,7 +116,7 @@ object EquipAction {
             }
 
             val spaceRequired = unequip.filter { slot -> p.equipment[slot] != null }.size - 1
-            if (p.inventory.getFreeSlotCount() < spaceRequired) {
+            if (p.inventory.freeSlotCount < spaceRequired) {
                 p.message("You don't have enough free inventory space to do that.")
                 return Result.NO_FREE_SPACE
             }
@@ -159,12 +163,12 @@ object EquipAction {
                      * remove it here!
                      */
                     if (slot != equipSlot) {
-                        p.equipment.set(slot, null)
+                        p.equipment[slot] = null
                     }
                     p.world.plugins.executeUnequipItem(p, equipmentId)
                 }
 
-                p.equipment.set(equipSlot, newEquippedItem)
+                p.equipment[equipSlot] = newEquippedItem
                 p.world.plugins.executeEquipSlot(p, equipSlot)
                 p.world.plugins.executeEquipItem(p, newEquippedItem.id)
             }
@@ -183,11 +187,13 @@ object EquipAction {
         }
 
         if (addition.getLeftOver() == 0) {
-            p.equipment.set(equipmentSlot, null)
+            p.equipment[equipmentSlot] = null
         } else {
             val leftover = Item(item, addition.getLeftOver())
-            p.equipment.set(equipmentSlot, leftover)
+            p.equipment[equipmentSlot] = leftover
         }
+
+        p.world.plugins.executeUnequipItem(p, item.id)
         return Result.SUCCESS
     }
 }

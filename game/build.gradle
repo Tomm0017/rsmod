@@ -82,8 +82,12 @@ tasks.register("install") {
 
         copy {
             into "${rootProject.projectDir}/"
+
             from "${rootProject.projectDir}/game.example.yml"
             rename 'game.example.yml', 'game.yml'
+
+            from "${rootProject.projectDir}/first-launch-template"
+            rename 'first-launch-template', 'first-launch'
         }
 
         javaexec {

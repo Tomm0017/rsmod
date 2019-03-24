@@ -17,7 +17,7 @@ class Item(val id: Int, var amount: Int = 1) {
         copyAttr(other)
     }
 
-    private var attr: HashMap<ItemAttribute, Int>? = null
+    private val attr = HashMap<ItemAttribute, Int>(0)
 
     /**
      * Returns a <strong>new</strong> [Item] with the noted link as the item id.
@@ -25,7 +25,7 @@ class Item(val id: Int, var amount: Int = 1) {
      * with the same [Item.id].
      */
     fun toNoted(definitions: DefinitionSet): Item {
-        val def = definitions.get(ItemDef::class.java, id)
+        val def = getDef(definitions)
         return if (def.noteTemplateId == 0 && def.noteLinkId > 0) Item(def.noteLinkId, amount).copyAttr(this) else Item(this).copyAttr(this)
     }
 
@@ -35,25 +35,23 @@ class Item(val id: Int, var amount: Int = 1) {
      * with the same [Item.id].
      */
     fun toUnnoted(definitions: DefinitionSet): Item {
-        val def = definitions.get(ItemDef::class.java, id)
+        val def = getDef(definitions)
         return if (def.noteTemplateId > 0) Item(def.noteLinkId, amount).copyAttr(this) else Item(this).copyAttr(this)
     }
+
+    fun getName(definitions: DefinitionSet): String = toUnnoted(definitions).getDef(definitions).name
 
     fun getDef(definitions: DefinitionSet) = definitions.get(ItemDef::class.java, id)
 
     /**
      * Returns true if [attr] contains any value.
      */
-    fun hasAnyAttr(): Boolean = attr != null && attr!!.isNotEmpty()
+    fun hasAnyAttr(): Boolean = attr.isNotEmpty()
 
-    fun getAttr(attrib: ItemAttribute): Int? {
-        constructAttrIfNeeded()
-        return attr!![attrib] ?: -1
-    }
+    fun getAttr(attrib: ItemAttribute): Int? = attr[attrib]
 
     fun putAttr(attrib: ItemAttribute, value: Int): Item {
-        constructAttrIfNeeded()
-        attr!![attrib] = value
+        attr[attrib] = value
         return this
     }
 
@@ -62,16 +60,9 @@ class Item(val id: Int, var amount: Int = 1) {
      */
     fun copyAttr(other: Item): Item {
         if (other.hasAnyAttr()) {
-            constructAttrIfNeeded()
-            attr!!.putAll(other.attr!!)
+            attr.putAll(other.attr)
         }
         return this
-    }
-
-    private fun constructAttrIfNeeded() {
-        if (attr == null) {
-            attr = hashMapOf()
-        }
     }
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("id", id).add("amount", amount).toString()

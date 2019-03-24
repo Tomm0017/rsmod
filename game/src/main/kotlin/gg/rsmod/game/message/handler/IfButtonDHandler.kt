@@ -25,11 +25,17 @@ class IfButtonDHandler : MessageHandler<IfButtonDMessage> {
         val dstInterfaceId = dstComponentHash shr 16
         val dstComponent = dstComponentHash and 0xFFFF
 
-        log(client, "Swap component to component item: srcInterface=[%d, %d], srcItem=%d, dstInterface=[%d, %d], dstItem=%d", srcInterfaceId, srcComponent, srcItemId, dstInterfaceId, dstComponent, dstItemId)
+        log(client, "Swap component to component item: srcInterface=[%d, %d], srcItem=%d, dstInterface=[%d, %d], dstItem=%d",
+                srcInterfaceId, srcComponent, srcItemId, dstInterfaceId, dstComponent, dstItemId)
 
         client.attr[INTERACTING_ITEM_SLOT] = srcSlot
         client.attr[OTHER_ITEM_SLOT_ATTR] = dstSlot
 
-        client.world.plugins.executeComponentToComponentItemSwap(client, srcInterfaceId, srcComponent, dstInterfaceId, dstComponent)
+        val swapped = client.world.plugins.executeComponentToComponentItemSwap(
+                client, srcInterfaceId, srcComponent, dstInterfaceId, dstComponent)
+
+        if (!swapped && client.world.devContext.debugButtons) {
+            client.message("Unhandled component to component swap: [fromSlot=$srcSlot, toSlot=$dstSlot, fromItem=$srcItemId, toItem=$dstItemId, fromInterface=[$srcInterfaceId, $srcComponent], toInterface=[$dstInterfaceId, $dstComponent]]")
+        }
     }
 }

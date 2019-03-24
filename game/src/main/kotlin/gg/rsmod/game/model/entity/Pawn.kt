@@ -249,7 +249,7 @@ abstract class Pawn(val world: World) : Entity() {
         timersCopy.forEach { key, time ->
             if (time <= 0) {
                 if (key == RESET_PAWN_FACING_TIMER) {
-                    facePawn(null)
+                    resetFacePawn()
                 } else {
                     world.plugins.executeTimer(this, key)
                 }
@@ -491,21 +491,30 @@ abstract class Pawn(val world: World) : Entity() {
         addBlock(UpdateBlockType.FACE_TILE)
     }
 
-    fun facePawn(pawn: Pawn?) {
+    fun facePawn(pawn: Pawn) {
         blockBuffer.faceDegrees = 0
 
-        val index = if (pawn == null) -1 else if (pawn.getType().isPlayer()) pawn.index + 32768 else pawn.index
+        val index = if (pawn.getType().isPlayer()) pawn.index + 32768 else pawn.index
         if (blockBuffer.facePawnIndex != index) {
             blockBuffer.faceDegrees = 0
             blockBuffer.facePawnIndex = index
             addBlock(UpdateBlockType.FACE_PAWN)
         }
 
-        if (pawn != null) {
-            attr[FACING_PAWN_ATTR] = WeakReference(pawn)
-        } else {
-            attr.remove(FACING_PAWN_ATTR)
+        attr[FACING_PAWN_ATTR] = WeakReference(pawn)
+    }
+
+    fun resetFacePawn() {
+        blockBuffer.faceDegrees = 0
+
+        val index = -1
+        if (blockBuffer.facePawnIndex != index) {
+            blockBuffer.faceDegrees = 0
+            blockBuffer.facePawnIndex = index
+            addBlock(UpdateBlockType.FACE_PAWN)
         }
+
+        attr.remove(FACING_PAWN_ATTR)
     }
 
     /**
@@ -513,7 +522,7 @@ abstract class Pawn(val world: World) : Entity() {
      */
     fun resetInteractions() {
         attr.remove(COMBAT_TARGET_FOCUS_ATTR)
-        facePawn(null)
+        resetFacePawn()
     }
 
     fun queue(priority: TaskPriority = TaskPriority.STANDARD, logic: suspend QueueTask.(CoroutineScope) -> Unit) {

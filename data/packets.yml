@@ -426,7 +426,7 @@ out-packets:
 
 in-packets:
 
-  - message: gg.rsmod.game.message.impl.HeldOnLocMessage
+  - message: gg.rsmod.game.message.impl.OpLocUMessage
     type: FIXED
     opcode: 44
     length: 15

@@ -2,12 +2,10 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.action.ObjectPathAction
 import gg.rsmod.game.message.MessageHandler
-import gg.rsmod.game.message.impl.HeldOnLocMessage
+import gg.rsmod.game.message.impl.OpLocUMessage
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.attr.INTERACTING_ITEM
-import gg.rsmod.game.model.attr.INTERACTING_ITEM_ID
-import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.Entity
@@ -21,9 +19,9 @@ import java.lang.ref.WeakReference
  *
  * Handles the usage of an item on an object
  */
-class HeldOnLocHandler : MessageHandler<HeldOnLocMessage> {
+class OpLocUHandler : MessageHandler<OpLocUMessage> {
 
-    override fun handle(client: Client, message: HeldOnLocMessage) {
+    override fun handle(client: Client, message: OpLocUMessage) {
 
         if (message.slot < 0 || message.slot >= client.inventory.capacity) {
             return

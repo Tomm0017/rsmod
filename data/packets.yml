@@ -426,6 +426,41 @@ out-packets:
 
 in-packets:
 
+  - message: gg.rsmod.game.message.impl.OpLocUMessage
+    type: FIXED
+    opcode: 44
+    length: 15
+    structure:
+      - name: pos_z
+        sign: UNSIGNED
+        type: SHORT
+        order: LITTLE
+        trans: ADD
+      - name: slot
+        sign: UNSIGNED
+        type: SHORT
+        order: LITTLE
+      - name: movement_type
+        sign: UNSIGNED
+        type: BYTE
+        trans: ADD
+      - name: unknown
+        sign: UNSIGNED
+        type: INT
+        order: LITTLE
+      - name: pos_x
+        sign: UNSIGNED
+        type: SHORT
+        order: LITTLE
+        trans: ADD
+      - name: obj
+        sign: UNSIGNED
+        type: SHORT
+      - name: item
+        sign: UNSIGNED
+        type: SHORT
+        order: LITTLE
+
   - message: gg.rsmod.game.message.impl.IfButtonDMessage
     type: FIXED
     opcode: 57
@@ -1159,12 +1194,6 @@ in-packets:
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown
     type: VARIABLE_BYTE
     opcode: 43
-    ignore: true
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPLOCU
-    type: FIXED
-    opcode: 44
-    length: 15
     ignore: true
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown

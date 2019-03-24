@@ -126,6 +126,16 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
     }
 
     /**
+     * Invoke [logic] when an [item] is used on a [gg.rsmod.game.model.entity.GameObject]
+     *
+     * @param obj   The game object id
+     * @param item  The item id
+     */
+    fun item_on_obj(obj: Int, item: Int, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
+        r.bindItemOnObject(obj, item, lineOfSightDistance, logic)
+    }
+
+    /**
      * Invoke [logic] when the [option] option is clicked on a
      * [gg.rsmod.game.model.entity.GameObject].
      *

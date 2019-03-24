@@ -66,14 +66,21 @@ fun Pawn.showHitbar(percentage: Int, type: HitbarType) {
     pendingHits.add(Hit.Builder().onlyShowHitbar().setHitbarType(type.id).setHitbarPercentage(percentage).setHitbarMaxPercentage(type.pixelsWide).build())
 }
 
-fun Pawn.freeze(cycles: Int, onFreeze: () -> Unit): Boolean {
+fun Pawn.freeze(cycles: Int, onFreeze: () -> Unit) {
     if (timers.has(FROZEN_TIMER)) {
-        return false
+        return
     }
     stopMovement()
     timers[FROZEN_TIMER] = cycles
     onFreeze()
-    return true
+}
+
+fun Pawn.freeze(cycles: Int) {
+    freeze(cycles) {
+        if (this is Player) {
+            this.message("You have been frozen.")
+        }
+    }
 }
 
 fun Pawn.stun(cycles: Int, onStun: () -> Unit): Boolean {

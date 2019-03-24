@@ -27,3 +27,7 @@ trees.forEach { tree ->
         }
     }
 }
+
+item_on_obj(obj = Objs.BLOOD_ALTAR, item = Items.PURE_ESSENCE) {
+    player.message("it worked")
+}

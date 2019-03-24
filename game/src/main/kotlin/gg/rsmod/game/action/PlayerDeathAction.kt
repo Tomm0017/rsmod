@@ -35,6 +35,7 @@ object PlayerDeathAction {
 
         world.plugins.executePlayerPreDeath(player)
 
+        player.resetFacePawn()
         wait(2)
         player.animate(deathAnim.id)
         wait(deathAnim.cycleLength + 1)

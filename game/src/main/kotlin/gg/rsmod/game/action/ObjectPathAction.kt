@@ -14,6 +14,8 @@ import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.path.Route
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.TaskPriority
+import gg.rsmod.game.model.timer.FROZEN_TIMER
+import gg.rsmod.game.model.timer.STUN_TIMER
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.AabbUtil
 import gg.rsmod.util.DataConstants
@@ -52,7 +54,11 @@ object ObjectPathAction {
                 }
             } else {
                 player.faceTile(obj.tile)
-                player.message(Entity.YOU_CANT_REACH_THAT)
+                if (player.timers.has(FROZEN_TIMER)) {
+                    player.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+                } else {
+                    player.message(Entity.YOU_CANT_REACH_THAT)
+                }
             }
         }
     }
@@ -179,8 +185,13 @@ object ObjectPathAction {
         pawn.walkPath(route.path)
 
         val last = pawn.movementQueue.peekLast()
-        while (last != null && !pawn.tile.sameAs(last)) {
+        while (last != null && !pawn.tile.sameAs(last) && !pawn.timers.has(FROZEN_TIMER) && !pawn.timers.has(STUN_TIMER) && pawn.lock.canMove()) {
             wait(1)
+        }
+
+        if (pawn.timers.has(STUN_TIMER)) {
+            pawn.stopMovement()
+            return Route(ArrayDeque(), success = false, tail = pawn.tile)
         }
 
         if (wall && !route.success && pawn.tile.isWithinRadius(tile, 1) && Direction.between(tile, pawn.tile) !in blockedWallDirections) {

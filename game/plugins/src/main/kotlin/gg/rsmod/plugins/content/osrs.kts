@@ -77,5 +77,8 @@ on_component_item_swap(interfaceId = 149, component = 0) {
 
     if (srcSlot in 0 until container.capacity && dstSlot in 0 until container.capacity) {
         container.swap(srcSlot, dstSlot)
+    } else {
+        // Sync the container on the client
+        container.dirty = true
     }
 }

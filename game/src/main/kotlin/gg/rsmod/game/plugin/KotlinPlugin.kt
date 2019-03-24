@@ -227,26 +227,37 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
     fun on_logout(logic: (Plugin).() -> Unit) = r.bindLogout(logic)
 
     /**
-     * Invoke [plugin] when an item is swapped on the same component.
+     * Invoked when an item is swapped on the same component.
      */
     fun on_component_item_swap(interfaceId: Int, component: Int, plugin: Plugin.() -> Unit) = r.bindComponentItemSwap(interfaceId, component, plugin)
 
     /**
-     * Invoke [plugin] when an item is swapped between two components.
+     * Invoked when an item is swapped between two components.
      */
     fun on_component_to_component_item_swap(srcInterfaceId: Int, srcComponent: Int, dstInterfaceId: Int, dstComponent: Int, plugin: Plugin.() -> Unit)
             = r.bindComponentToComponentItemSwap(srcInterfaceId, srcComponent, dstInterfaceId, dstComponent, plugin)
 
     /**
-     * Invoke [plugin] when a player hits 0 hp and is starting their death task.
+     * Invoked when a player hits 0 hp and is starting their death task.
      */
     fun on_player_pre_death(plugin: Plugin.() -> Unit) = r.bindPlayerPreDeath(plugin)
 
     /**
-     * Invoke [plugin] when a player is sent back to their respawn location on
+     * Invoked when a player is sent back to their respawn location on
      * death.
      */
     fun on_player_death(plugin: Plugin.() -> Unit) = r.bindPlayerDeath(plugin)
+
+    /**
+     * Invoked when npc with [Npc.id] of [npc] invokes their death task.
+     */
+    fun on_npc_pre_death(npc: Int, plugin: Plugin.() -> Unit) = r.bindNpcPreDeath(npc, plugin)
+
+    /**
+     * Invoked when npc with [Npc.id] of [npc] finishes their death task and
+     * is de-registered from the world.
+     */
+    fun on_npc_death(npc: Int, plugin: Plugin.() -> Unit) = r.bindNpcDeath(npc, plugin)
 
     /**
      * Set the combat logic for [npc] and [others], which will override the [set_combat_logic]

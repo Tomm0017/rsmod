@@ -1,11 +1,11 @@
 package gg.rsmod.plugins.content.items.food
 
 import gg.rsmod.game.fs.def.ItemDef
+import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.timer.ATTACK_DELAY
 import gg.rsmod.game.model.timer.COMBO_FOOD_DELAY
 import gg.rsmod.game.model.timer.FOOD_DELAY
 import gg.rsmod.game.model.timer.POTION_DELAY
-import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.api.EquipmentType
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Items
@@ -50,6 +50,8 @@ object Foods {
         if (heal > 0) {
             p.heal(heal, if (food.overheal) heal else 0)
         }
+
+        p.resetFacePawn()
 
         p.timers[delay] = food.tickDelay
         p.timers[ATTACK_DELAY] = 5

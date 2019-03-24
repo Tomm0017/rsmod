@@ -1,6 +1,8 @@
 package gg.rsmod.plugins.content.objs.depositbox
 
 import com.google.common.collect.ImmutableSet
+import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
+import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 
 val DEPOSIT_INTERFACE_ID = 192
 val DEPOSIT_EQUIPMENT_SFX = 2238
@@ -14,6 +16,10 @@ DEPOSIT_BOXES.forEach { box ->
     on_obj_option(obj = box, option = "deposit") {
         open_deposit_box(player)
     }
+}
+
+on_interface_close(DEPOSIT_INTERFACE_ID) {
+    close_deposit_box(player)
 }
 
 on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 2) {
@@ -42,10 +48,33 @@ on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 6) {
     deposit_all(player, player.equipment, sound = DEPOSIT_EQUIPMENT_SFX)
 }
 
+on_component_to_component_item_swap(
+        srcInterfaceId = DEPOSIT_INTERFACE_ID, srcComponent = 2,
+        dstInterfaceId = DEPOSIT_INTERFACE_ID, dstComponent = 2) {
+    val srcSlot = player.attr[INTERACTING_ITEM_SLOT]!!
+    val dstSlot = player.attr[OTHER_ITEM_SLOT_ATTR]!!
+
+    val container = player.inventory
+
+    if (srcSlot in 0 until container.capacity && dstSlot in 0 until container.capacity) {
+        container.swap(srcSlot, dstSlot)
+    } else {
+        // Sync the container on the client
+        container.dirty = true
+    }
+}
+
 fun open_deposit_box(p: Player) {
     p.setInterfaceUnderlay(color = -1, transparency = -1)
     p.openInterface(interfaceId = DEPOSIT_INTERFACE_ID, dest = InterfaceDestination.MAIN_SCREEN)
     p.setInterfaceEvents(interfaceId = DEPOSIT_INTERFACE_ID, component = 2, range = 0..27, setting = 1180734)
+    p.closeInterface(InterfaceDestination.INVENTORY)
+    p.closeInterface(InterfaceDestination.EQUIPMENT)
+}
+
+fun close_deposit_box(p: Player) {
+    p.openInterface(InterfaceDestination.INVENTORY)
+    p.openInterface(InterfaceDestination.EQUIPMENT)
 }
 
 fun deposit_item(p: Player, slot: Int, amt: Int) {

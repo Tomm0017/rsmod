@@ -254,6 +254,17 @@ class PluginRepository(val world: World) {
     private val playerDeathPlugins = arrayListOf<Plugin.() -> Unit>()
 
     /**
+     * A list of plugins that will be invoked when an npc hits 0 hp.
+     */
+    private val npcPreDeathPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
+
+    /**
+     * A list of plugins that will be invoked when an npc dies
+     * and is de-registered from the world.
+     */
+    private val npcDeathPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
+
+    /**
      * Temporarily holds the multi-combat area chunks for this [PluginRepository];
      * this is then passed onto the [World] and is cleared.
      *
@@ -463,6 +474,26 @@ class PluginRepository(val world: World) {
         playerDeathPlugins.forEach { plugin -> p.executePlugin(plugin) }
     }
 
+    fun bindNpcPreDeath(npc: Int, plugin: Plugin.() -> Unit) {
+        npcPreDeathPlugins[npc] = plugin
+    }
+
+    fun executeNpcPreDeath(npc: Npc) {
+        npcPreDeathPlugins[npc.id]?.let { plugin ->
+            npc.executePlugin(plugin)
+        }
+    }
+
+    fun bindNpcDeath(npc: Int, plugin: Plugin.() -> Unit) {
+        npcDeathPlugins[npc] = plugin
+    }
+
+    fun executeNpcDeath(npc: Npc) {
+        npcDeathPlugins[npc.id]?.let { plugin ->
+            npc.executePlugin(plugin)
+        }
+    }
+
     fun bindSpellOnNpc(parent: Int, child: Int, plugin: (Plugin).() -> Unit) {
         val hash = (parent shl 16) or child
         if (spellOnNpcPlugins.containsKey(hash)) {
@@ -545,11 +576,11 @@ class PluginRepository(val world: World) {
         componentItemSwapPlugins[hash] = plugin
     }
 
-    fun executeComponentItemSwap(p: Player, interfaceId: Int, component: Int) {
+    fun executeComponentItemSwap(p: Player, interfaceId: Int, component: Int): Boolean {
         val hash = (interfaceId shl 16) or component
-        componentItemSwapPlugins[hash]?.let { plugin ->
-            p.executePlugin(plugin)
-        }
+        val plugin = componentItemSwapPlugins[hash] ?: return false
+        p.executePlugin(plugin)
+        return true
     }
 
     fun bindComponentToComponentItemSwap(srcInterfaceId: Int, srcComponent: Int, dstInterfaceId: Int, dstComponent: Int, plugin: Plugin.() -> Unit) {
@@ -559,13 +590,13 @@ class PluginRepository(val world: World) {
         componentToComponentItemSwapPlugins[combinedHash] = plugin
     }
 
-    fun executeComponentToComponentItemSwap(p: Player, srcInterfaceId: Int, srcComponent: Int, dstInterfaceId: Int, dstComponent: Int) {
+    fun executeComponentToComponentItemSwap(p: Player, srcInterfaceId: Int, srcComponent: Int, dstInterfaceId: Int, dstComponent: Int): Boolean {
         val srcHash = (srcInterfaceId shl 16) or srcComponent
         val dstHash = (dstInterfaceId shl 16) or dstComponent
         val combinedHash = ((srcHash shl 32) or dstHash).toLong()
-        componentToComponentItemSwapPlugins[combinedHash]?.let { plugin ->
-            p.executePlugin(plugin)
-        }
+        val plugin = componentToComponentItemSwapPlugins[combinedHash] ?: return false
+        p.executePlugin(plugin)
+        return true
     }
 
     fun bindGlobalNpcSpawn(plugin: (Plugin).() -> Unit) {

@@ -1,12 +1,14 @@
 package gg.rsmod.plugins.api.ext
 
-import gg.rsmod.game.model.World
 import java.text.DecimalFormat
 import java.text.Format
+import java.util.concurrent.ThreadLocalRandom
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
+
+private val RANDOM = ThreadLocalRandom.current()
 
 fun Number.appendToString(string: String): String = "$this $string" + (if (this != 1) "s" else "")
 
@@ -21,8 +23,8 @@ fun String.parseAmount(): Long = when {
     else -> substring(0, length).toLong()
 }
 
-fun interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int, playerLvl: Int): Int =
-        minChance + (maxChance - minChance) * (playerLvl - minLvl) / (maxLvl - minLvl)
+fun Int.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int): Int =
+        minChance + (maxChance - minChance) * (this - minLvl) / (maxLvl - minLvl)
 
-fun World.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int, playerLvl: Int, cap: Int): Boolean =
-        random(cap) <= interpolate(minChance, maxChance, minLvl, maxLvl, playerLvl)
+fun Int.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int, cap: Int): Boolean =
+        RANDOM.nextInt(cap) <= interpolate(minChance, maxChance, minLvl, maxLvl)

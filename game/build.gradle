@@ -52,7 +52,6 @@ applicationDistribution.from("$rootDir/data/") {
     include '**'
 
     exclude 'saves/*'
-    exclude 'rsa/*'
 }
 
 applicationDistribution.from("$rootDir") {

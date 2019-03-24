@@ -28,6 +28,27 @@ enum class Rune(val id: Int, val essence: IntArray = intArrayOf(Items.PURE_ESSEN
     SOUL(id = Items.SOUL_RUNE,      essence = intArrayOf(Items.DARK_ESSENCE_BLOCK),                 level = 90, xp = 29.7),
     WRATH(id = Items.WRATH_RUNE,                                                                    level = 95, xp = 8.0);
 
+    /**
+     * Gets the rune count multiplier for the player's Runecrafting level.
+     * Taken from https://github.com/apollo-rsps/apollo/blob/kotlin-experiments/game/plugin/skills/runecrafting/src/Rune.kt
+     *
+     * @param level The runecrafting level
+     *
+     * @return  The number of runes per essence.
+     */
+    fun getBonusMultiplier(level: Int) : Double = when(this) {
+        AIR -> (Math.floor((level / 11.0)) + 1)
+        MIND -> (Math.floor((level / 14.0)) + 1)
+        WATER -> (Math.floor((level / 19.0)) + 1)
+        EARTH -> (Math.floor((level / 26.0)) + 1)
+        FIRE -> (Math.floor((level / 35.0)) + 1)
+        BODY -> (Math.floor((level / 46.0)) + 1)
+        COSMIC -> (Math.floor((level / 59.0)) + 1)
+        CHAOS -> (Math.floor((level / 74.0)) + 1)
+        NATURE -> (Math.floor((level / 91.0)) + 1)
+        else -> 1.0
+    }
+
     companion object {
         val values = enumValues<Rune>()
     }

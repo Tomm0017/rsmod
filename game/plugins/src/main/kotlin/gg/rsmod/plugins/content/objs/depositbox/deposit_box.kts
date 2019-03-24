@@ -1,6 +1,8 @@
 package gg.rsmod.plugins.content.objs.depositbox
 
 import com.google.common.collect.ImmutableSet
+import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
+import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 
 val DEPOSIT_INTERFACE_ID = 192
 val DEPOSIT_EQUIPMENT_SFX = 2238
@@ -40,6 +42,22 @@ on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 4) {
 on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 6) {
     val player = player
     deposit_all(player, player.equipment, sound = DEPOSIT_EQUIPMENT_SFX)
+}
+
+on_component_to_component_item_swap(
+        srcInterfaceId = 192, srcComponent = 2,
+        dstInterfaceId = 192, dstComponent = 2) {
+    val srcSlot = player.attr[INTERACTING_ITEM_SLOT]!!
+    val dstSlot = player.attr[OTHER_ITEM_SLOT_ATTR]!!
+
+    val container = player.inventory
+
+    if (srcSlot in 0 until container.capacity && dstSlot in 0 until container.capacity) {
+        container.swap(srcSlot, dstSlot)
+    } else {
+        // Sync the container on the client
+        container.dirty = true
+    }
 }
 
 fun open_deposit_box(p: Player) {

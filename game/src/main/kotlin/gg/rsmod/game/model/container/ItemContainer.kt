@@ -182,13 +182,13 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
      * The quantity of the item.
      *
      * @param assureFullInsertion
-     * If [true], we make sure the container can hold [amount] of [item], taking
+     * If true, we make sure the container can hold [amount] of [item], taking
      * into account the item's metadata and the container's [ContainerStackType].
-     * If [false], it will try to fill the container with as many [item]s as it
+     * If false, it will try to fill the container with as many [item]s as it
      * can fit before the container is full.
      *
      * @param forceNoStack
-     * [true] if the item's metadata and container's [stackType] should be ignored,
+     * true if the item's metadata and container's [stackType] should be ignored,
      * and the item should never stack at all. This is useful for items that should
      * not stack, such as degradeable or chargeable items.
      *
@@ -219,30 +219,22 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
         val stack = !forceNoStack && stackType != ContainerStackType.NO_STACK && (def.stackable || stackType == ContainerStackType.STACK)
 
         /**
-         * Check if there's a placeholder in this item container corresponding to
-         * the item id.
-         */
-        val placeholderSlot = if (def.placeholderId > 0) items.indexOfFirst { it?.id == def.placeholderId && it.amount == 0 } else -1
-        val placehold = placeholderSlot != -1
-
-        /**
          * We don't need to calculate the previous amount unless the item is going
          * to stack.
          */
-        val previousAmount = if (stack && !placehold) getItemCount(item) else 0
+        val previousAmount = if (stack) getItemCount(item) else 0
 
         if (previousAmount == Int.MAX_VALUE) {
             return ItemTransaction(amount, 0, emptyList())
         }
 
         /**
-         * The amount of free slots in the container.  If there's a placeholder
-         * for this item, we don't count it as an occupied slot.
+         * The amount of free slots in the container.
          */
-        val freeSlotCount = freeSlotCount + (if (placehold) 1 else 0)
+        val freeSlotCount = freeSlotCount
 
         /**
-         * If the player has no more free slots and either [stack]
+         * If the player has no more free slots and either `stack`
          * is not set or the container does not have [item] at all,
          * the transaction will fail.
          */
@@ -285,7 +277,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
         if (!stack) {
             /**
              * Placeholders only occur in stackable containers, like bank.
-             * No need to do anything with [placeholder].
+             * No need to do anything with placeholder here.
              */
             val startSlot = Math.max(0, beginSlot)
             for (i in startSlot until capacity) {
@@ -300,7 +292,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
                 }
             }
         } else {
-            var stackIndex = if (placehold) placeholderSlot else getItemIndex(itemId = item, skipAttrItems = true)
+            var stackIndex = getItemIndex(itemId = item, skipAttrItems = true)
             if (stackIndex == -1) {
                 if (beginSlot == -1) {
                     stackIndex = nextFreeSlot

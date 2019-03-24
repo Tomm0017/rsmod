@@ -21,7 +21,9 @@ import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.QueueTaskSet
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.model.region.Chunk
+import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
+import gg.rsmod.game.model.timer.STUN_TIMER
 import gg.rsmod.game.model.timer.TimerMap
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.sync.block.UpdateBlockBuffer
@@ -338,6 +340,17 @@ abstract class Pawn(val world: World) : Entity() {
             return
         }
 
+        if (timers.has(FROZEN_TIMER)) {
+            if (this is Player) {
+                message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+            }
+            return
+        }
+
+        if (timers.has(STUN_TIMER)) {
+            return
+        }
+
         movementQueue.clear()
 
         var tail: Tile? = null
@@ -377,6 +390,17 @@ abstract class Pawn(val world: World) : Entity() {
          * Already standing on requested destination.
          */
         if (tile.x == x && tile.z == z) {
+            return
+        }
+
+        if (timers.has(FROZEN_TIMER)) {
+            if (this is Player) {
+                message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+            }
+            return
+        }
+
+        if (timers.has(STUN_TIMER)) {
             return
         }
 

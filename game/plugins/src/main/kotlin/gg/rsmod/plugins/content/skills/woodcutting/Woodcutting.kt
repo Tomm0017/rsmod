@@ -38,8 +38,8 @@ object Woodcutting {
                 break
             }
 
-            if (p.world.interpolate(minChance = 60, maxChance = 190, minLvl = 1, maxLvl = 99,
-                            playerLvl = p.getSkills().getCurrentLevel(Skills.WOODCUTTING), cap = 255)) {
+            val level = p.getSkills().getCurrentLevel(Skills.WOODCUTTING)
+            if (level.interpolate(minChance = 60, maxChance = 190, minLvl = 1, maxLvl = 99, cap = 255)) {
                 p.filterableMessage("You get some ${logName}s.")
                 p.playSound(3600)
                 p.inventory.add(tree.log)

@@ -8,7 +8,7 @@ Sheep.SHEEP_NPCS.forEach { sheep ->
         on_npc_option(npc = sheep, option = "shear") {
             val npc = player.getInteractingNpc()
 
-            player.facePawn(null)
+            player.resetFacePawn()
             player.faceTile(npc.tile)
             if (!player.inventory.contains(Items.SHEARS)) {
                 player.message("You need a set of shears to do this.")

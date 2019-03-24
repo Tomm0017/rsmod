@@ -26,7 +26,7 @@ object NpcDeathAction {
         val respawnDelay = npc.combatDef.respawnDelay
 
         npc.lock()
-        npc.facePawn(null)
+        npc.resetFacePawn()
 
         deathAnimation.forEach { anim ->
             val def = npc.world.definitions.get(AnimDef::class.java, anim)

@@ -254,6 +254,17 @@ class PluginRepository(val world: World) {
     private val playerDeathPlugins = arrayListOf<Plugin.() -> Unit>()
 
     /**
+     * A list of plugins that will be invoked when an npc hits 0 hp.
+     */
+    private val npcPreDeathPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
+
+    /**
+     * A list of plugins that will be invoked when an npc dies
+     * and is de-registered from the world.
+     */
+    private val npcDeathPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
+
+    /**
      * Temporarily holds the multi-combat area chunks for this [PluginRepository];
      * this is then passed onto the [World] and is cleared.
      *
@@ -461,6 +472,26 @@ class PluginRepository(val world: World) {
 
     fun executePlayerDeath(p: Player) {
         playerDeathPlugins.forEach { plugin -> p.executePlugin(plugin) }
+    }
+
+    fun bindNpcPreDeath(npc: Int, plugin: Plugin.() -> Unit) {
+        npcPreDeathPlugins[npc] = plugin
+    }
+
+    fun executeNpcPreDeath(npc: Npc) {
+        npcPreDeathPlugins[npc.id]?.let { plugin ->
+            npc.executePlugin(plugin)
+        }
+    }
+
+    fun bindNpcDeath(npc: Int, plugin: Plugin.() -> Unit) {
+        npcDeathPlugins[npc] = plugin
+    }
+
+    fun executeNpcDeath(npc: Npc) {
+        npcDeathPlugins[npc.id]?.let { plugin ->
+            npc.executePlugin(plugin)
+        }
     }
 
     fun bindSpellOnNpc(parent: Int, child: Int, plugin: (Plugin).() -> Unit) {

@@ -121,6 +121,18 @@ on_button(TAB_INTERFACE_ID, component = 2) {
     player.closeInterface(TAB_INTERFACE_ID)
 }
 
+/**
+ * Register "Deposit loot" button from deposit boxes.
+ */
+on_button(interfaceId = 192, component = 8) {
+    val container = player.containers[CONTAINER_KEY]
+    if (container != null && player.inventory.containsAny(Items.LOOTING_BAG, Items.LOOTING_BAG_22586) && bank_all(player, container)) {
+        player.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
+    } else {
+        player.message("You have nothing to deposit.")
+    }
+}
+
 fun store(p: Player, slot: Int, amount: Int) {
     val item = p.inventory[slot] ?: return
 

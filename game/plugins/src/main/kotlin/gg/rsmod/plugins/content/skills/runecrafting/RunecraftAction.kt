@@ -8,6 +8,7 @@ import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.hasEquipped
 import gg.rsmod.plugins.api.ext.messageBox
+import gg.rsmod.plugins.api.ext.playSound
 import gg.rsmod.plugins.api.ext.player
 
 /**
@@ -33,6 +34,11 @@ object RunecraftAction {
     private val RUNECRAFT_GRAPHIC = Graphic(id = 186, height = 100)
 
     /**
+     * The sound effect played when crafting a const
+     */
+    private const val RUNECRAFT_SOUND = 2710
+
+    /**
      * Handles the pre-crafting action (the animation, graphics, and lock)
      *
      * @param it    The queued action task
@@ -44,6 +50,7 @@ object RunecraftAction {
 
         player.animate(RUNECRAFT_ANIM)
         player.graphic(RUNECRAFT_GRAPHIC)
+        player.playSound(RUNECRAFT_SOUND)
 
         it.wait(RUNECRAFT_WAIT_CYCLE)
 

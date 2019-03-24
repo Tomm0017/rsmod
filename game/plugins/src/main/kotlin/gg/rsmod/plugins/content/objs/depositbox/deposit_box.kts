@@ -45,8 +45,8 @@ on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 6) {
 }
 
 on_component_to_component_item_swap(
-        srcInterfaceId = 192, srcComponent = 2,
-        dstInterfaceId = 192, dstComponent = 2) {
+        srcInterfaceId = DEPOSIT_INTERFACE_ID, srcComponent = 2,
+        dstInterfaceId = DEPOSIT_INTERFACE_ID, dstComponent = 2) {
     val srcSlot = player.attr[INTERACTING_ITEM_SLOT]!!
     val dstSlot = player.attr[OTHER_ITEM_SLOT_ATTR]!!
 

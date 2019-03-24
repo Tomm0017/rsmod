@@ -219,6 +219,12 @@ class PluginRepository(val world: World) {
     private val objectPlugins = hashMapOf<Int, HashMap<Int, (Plugin).() -> Unit>>()
 
     /**
+     * A map that contains items and any objects that they may be used on, and it's
+     * respective plugin logic.
+     */
+    private val itemOnObjectPlugins = hashMapOf<Int, HashMap<Int, (Plugin).() -> Unit>>()
+
+    /**
      * A map that contains npcs and any associated menu-click and its respective
      * plugin logic, if any (would not be in the map if it doesn't have a plugin).
      */
@@ -925,6 +931,30 @@ class PluginRepository(val world: World) {
         if (plugin != null) {
             return p.executePlugin(plugin)
         }
+        return true
+    }
+
+    fun bindItemOnObject(obj: Int, item: Int, lineOfSightDistance: Int = -1, plugin: (Plugin).() -> Unit) {
+        val plugins = itemOnObjectPlugins[item] ?: HashMap()
+        if (plugins.containsKey(obj)) {
+            val error = "Item is already bound to an object plugin: $item [obj=$obj]";
+            logger.error(error)
+            throw IllegalStateException(error)
+        }
+
+        if (lineOfSightDistance != -1) {
+            objInteractionDistancePlugins[obj] = lineOfSightDistance
+        }
+
+        plugins[obj] = plugin
+        itemOnObjectPlugins[item] = plugins
+        pluginCount++
+    }
+
+    fun executeItemOnObject(p: Player, obj: Int, item: Int) : Boolean {
+        val plugins = itemOnObjectPlugins[item] ?: return false
+        val logic = plugins[obj] ?: return false
+        p.executePlugin(logic)
         return true
     }
 

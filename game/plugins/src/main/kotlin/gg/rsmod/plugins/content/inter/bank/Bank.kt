@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.content.inter.bank
 
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
@@ -108,12 +109,7 @@ object Bank {
                 copy.copyAttr(item)
             }
 
-            val def = copy.toUnnoted(p.world.definitions).getDef(p.world.definitions)
-            val placeholderSlot = if (def.placeholderId > 0) to.indexOfFirst { it?.id == def.placeholderId && it.amount == 0 } else -1
-            if (placeholderSlot != -1) {
-                to[placeholderSlot] = null
-            }
-
+            val placeholderSlot = to.removePlaceholder(p.world, copy)
             val transfer = from.transfer(to, item = copy, fromSlot = i, toSlot = placeholderSlot, note = false, unnote = true)
 
             if (transfer != null) {
@@ -144,6 +140,15 @@ object Bank {
         p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 50, range = 0..3, setting = 2)
 
         p.setVarbit(BANK_YOUR_LOOT_VARBIT, 0)
+    }
+
+    fun ItemContainer.removePlaceholder(world: World, item: Item): Int {
+        val def = item.toUnnoted(world.definitions).getDef(world.definitions)
+        val slot = if (def.placeholderId > 0) indexOfFirst { it?.id == def.placeholderId && it.amount == 0 } else -1
+        if (slot != -1) {
+            this[slot] = null
+        }
+        return slot
     }
 
     fun ItemContainer.shift() {

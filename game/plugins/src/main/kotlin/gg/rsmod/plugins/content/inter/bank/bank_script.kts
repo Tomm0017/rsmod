@@ -3,6 +3,7 @@ package gg.rsmod.plugins.content.inter.bank
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 import gg.rsmod.plugins.content.inter.bank.Bank.insert
+import gg.rsmod.plugins.content.inter.bank.Bank.removePlaceholder
 import gg.rsmod.plugins.content.inter.bank.Bank.shift
 
 on_interface_open(Bank.BANK_INTERFACE_ID) {
@@ -46,7 +47,9 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 42) {
         val item = from[i] ?: continue
 
         val total = item.amount
-        val deposited = from.transfer(to, item, fromSlot = i, note = false, unnote = true)?.completed ?: 0
+
+        val placeholderSlot = to.removePlaceholder(p.world, item)
+        val deposited = from.transfer(to, item, fromSlot = i, toSlot = placeholderSlot, note = false, unnote = true)?.completed ?: 0
         if (total != deposited) {
             // Was not able to deposit the whole stack of [item].
         }
@@ -70,7 +73,9 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
         val item = from[i] ?: continue
 
         val total = item.amount
-        val deposited = from.transfer(to, item, fromSlot = i, note = false, unnote = true)?.completed ?: 0
+
+        val placeholderSlot = to.removePlaceholder(p.world, item)
+        val deposited = from.transfer(to, item, fromSlot = i, toSlot = placeholderSlot, note = false, unnote = true)?.completed ?: 0
         if (total != deposited) {
             // Was not able to deposit the whole stack of [item].
         }

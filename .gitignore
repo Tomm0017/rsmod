@@ -3,6 +3,11 @@
 /build/
 /out/
 
+/game/build/
+/game/plugins/build/
+/net/build/
+/util/build/
+
 gradlew
 gradlew.bat
 

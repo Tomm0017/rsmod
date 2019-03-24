@@ -14,16 +14,21 @@ NpcTargetType.values().forEach { npcClass ->
 
                     wait(3)
 
-                    if (player.world.random(100) <= successChance(player.getSkills().getCurrentLevel(Skills.THIEVING), npcClass.lvl)) {
+                    if (player.world.random(100) <= failureChance(player.getSkills().getCurrentLevel(Skills.THIEVING), npcClass.lvl)) {
 
                         player.message("You steal ${npcClass.rewards.size}  ${npcClass.rewards.random()}")
                         val reward = npcClass.rewards[Random.nextInt(npcClass.rewards.size)]
                         player.inventory.add(reward)
                         player.addXp(Skills.THIEVING, npcClass.exp)
                     } else {
-                        player.message("You have been stunned.")
                         player.hit(npcClass.damage.random(), HitType.HIT)
-                        //player.
+                        player.animate(2770)
+                        player.graphic(80)
+                        player.lock()
+                        wait(npcClass.stunTicks)
+                        player.animate(-1)
+                        player.graphic(-1)
+                        player.unlock()
                     }
                 } else {
                     player.message("You need a Thieving level of ${npcClass.lvl} to pickpocket a ${npcClass.npcName}.")

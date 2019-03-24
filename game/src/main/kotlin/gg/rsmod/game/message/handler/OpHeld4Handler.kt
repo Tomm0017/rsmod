@@ -40,7 +40,7 @@ class OpHeld4Handler : MessageHandler<OpHeld4Message> {
         client.attr[INTERACTING_ITEM_ID] = item.id
         client.attr[INTERACTING_ITEM] = WeakReference(item)
 
-        if (!client.world.plugins.executeItem(client, item.id, 4)) {
+        if (!client.world.plugins.executeItem(client, item.id, 4) && client.world.devContext.debugItemActions) {
             client.message("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=4]")
         }
     }

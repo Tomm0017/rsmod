@@ -22,6 +22,9 @@ class OpHeldDHandler : MessageHandler<OpHeldDMessage> {
         client.attr[INTERACTING_ITEM_SLOT] = srcSlot
         client.attr[OTHER_ITEM_SLOT_ATTR] = dstSlot
 
-        client.world.plugins.executeComponentItemSwap(client, interfaceId, component)
+        val swapped = client.world.plugins.executeComponentItemSwap(client, interfaceId, component)
+        if (!swapped && client.world.devContext.debugButtons) {
+            client.message("Unhandled component swap: [interface=$interfaceId, component=$component, fromSlot=$srcSlot, toSlot=$dstSlot]")
+        }
     }
 }

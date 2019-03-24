@@ -545,11 +545,11 @@ class PluginRepository(val world: World) {
         componentItemSwapPlugins[hash] = plugin
     }
 
-    fun executeComponentItemSwap(p: Player, interfaceId: Int, component: Int) {
+    fun executeComponentItemSwap(p: Player, interfaceId: Int, component: Int): Boolean {
         val hash = (interfaceId shl 16) or component
-        componentItemSwapPlugins[hash]?.let { plugin ->
-            p.executePlugin(plugin)
-        }
+        val plugin = componentItemSwapPlugins[hash] ?: return false
+        p.executePlugin(plugin)
+        return true
     }
 
     fun bindComponentToComponentItemSwap(srcInterfaceId: Int, srcComponent: Int, dstInterfaceId: Int, dstComponent: Int, plugin: Plugin.() -> Unit) {
@@ -559,13 +559,13 @@ class PluginRepository(val world: World) {
         componentToComponentItemSwapPlugins[combinedHash] = plugin
     }
 
-    fun executeComponentToComponentItemSwap(p: Player, srcInterfaceId: Int, srcComponent: Int, dstInterfaceId: Int, dstComponent: Int) {
+    fun executeComponentToComponentItemSwap(p: Player, srcInterfaceId: Int, srcComponent: Int, dstInterfaceId: Int, dstComponent: Int): Boolean {
         val srcHash = (srcInterfaceId shl 16) or srcComponent
         val dstHash = (dstInterfaceId shl 16) or dstComponent
         val combinedHash = ((srcHash shl 32) or dstHash).toLong()
-        componentToComponentItemSwapPlugins[combinedHash]?.let { plugin ->
-            p.executePlugin(plugin)
-        }
+        val plugin = componentToComponentItemSwapPlugins[combinedHash] ?: return false
+        p.executePlugin(plugin)
+        return true
     }
 
     fun bindGlobalNpcSpawn(plugin: (Plugin).() -> Unit) {

@@ -18,6 +18,10 @@ DEPOSIT_BOXES.forEach { box ->
     }
 }
 
+on_interface_close(DEPOSIT_INTERFACE_ID) {
+    close_deposit_box(player)
+}
+
 on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 2) {
     val slot = player.getInteractingSlot()
     val opt = player.getInteractingOption()
@@ -64,6 +68,13 @@ fun open_deposit_box(p: Player) {
     p.setInterfaceUnderlay(color = -1, transparency = -1)
     p.openInterface(interfaceId = DEPOSIT_INTERFACE_ID, dest = InterfaceDestination.MAIN_SCREEN)
     p.setInterfaceEvents(interfaceId = DEPOSIT_INTERFACE_ID, component = 2, range = 0..27, setting = 1180734)
+    p.closeInterface(InterfaceDestination.INVENTORY)
+    p.closeInterface(InterfaceDestination.EQUIPMENT)
+}
+
+fun close_deposit_box(p: Player) {
+    p.openInterface(InterfaceDestination.INVENTORY)
+    p.openInterface(InterfaceDestination.EQUIPMENT)
 }
 
 fun deposit_item(p: Player, slot: Int, amt: Int) {

@@ -56,6 +56,6 @@ class OpLoc1Handler : MessageHandler<OpLoc1Message> {
 
         client.attr[INTERACTING_OPT_ATTR] = 1
         client.attr[INTERACTING_OBJ_ATTR] = WeakReference(obj)
-        client.executePlugin(ObjectPathAction.walkPlugin)
+        client.executePlugin(ObjectPathAction.objectInteractPlugin)
     }
 }

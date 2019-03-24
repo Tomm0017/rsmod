@@ -46,7 +46,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 42) {
         val item = from[i] ?: continue
 
         val total = item.amount
-        val deposited = from.transfer(to, item, beginSlot = i, note = false, unnote = true)?.completed ?: 0
+        val deposited = from.transfer(to, item, fromSlot = i, note = false, unnote = true)?.completed ?: 0
         if (total != deposited) {
             // Was not able to deposit the whole stack of [item].
         }
@@ -70,7 +70,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
         val item = from[i] ?: continue
 
         val total = item.amount
-        val deposited = from.transfer(to, item, beginSlot = i, note = false, unnote = true)?.completed ?: 0
+        val deposited = from.transfer(to, item, fromSlot = i, note = false, unnote = true)?.completed ?: 0
         if (total != deposited) {
             // Was not able to deposit the whole stack of [item].
         }

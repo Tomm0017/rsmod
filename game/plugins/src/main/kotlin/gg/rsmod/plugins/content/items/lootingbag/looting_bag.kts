@@ -157,7 +157,7 @@ fun store(p: Player, slot: Int, amount: Int) {
 fun store(p: Player, item: Item, amount: Int, beginSlot: Int = -1): Boolean {
     val container = p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(p.world.definitions, CONTAINER_KEY) }
 
-    val transferred = p.inventory.transfer(container, item = Item(item, amount).copyAttr(item), beginSlot = beginSlot)?.completed ?: 0
+    val transferred = p.inventory.transfer(container, item = Item(item, amount).copyAttr(item), fromSlot = beginSlot)?.completed ?: 0
     if (transferred == 0) {
         p.message("The bag's too full.")
         return false

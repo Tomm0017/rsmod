@@ -58,7 +58,7 @@ object Bank {
                 copy.copyAttr(item)
             }
 
-            val transfer = from.transfer(to, item = copy, beginSlot = i, note = note, unnote = !note)
+            val transfer = from.transfer(to, item = copy, fromSlot = i, note = note, unnote = !note)
             withdrawn += transfer?.completed ?: 0
 
             if (from[i] == null) {
@@ -108,7 +108,13 @@ object Bank {
                 copy.copyAttr(item)
             }
 
-            val transfer = from.transfer(to, item = copy, beginSlot = i, note = false, unnote = true)
+            val def = copy.toUnnoted(p.world.definitions).getDef(p.world.definitions)
+            val placeholderSlot = if (def.placeholderId > 0) to.indexOfFirst { it?.id == def.placeholderId && it.amount == 0 } else -1
+            if (placeholderSlot != -1) {
+                to[placeholderSlot] = null
+            }
+
+            val transfer = from.transfer(to, item = copy, fromSlot = i, toSlot = placeholderSlot, note = false, unnote = true)
 
             if (transfer != null) {
                 deposited += transfer.completed

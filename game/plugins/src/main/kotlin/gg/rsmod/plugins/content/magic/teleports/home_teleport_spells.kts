@@ -19,12 +19,12 @@ HomeTeleport.values.forEach { teleport ->
             return@on_magic_spell_button
         }
         player.queue {
-            homeTeleport(teleport.endTile(world))
+            teleport(teleport.endTile(world))
         }
     }
 }
 
-suspend fun QueueTask.homeTeleport(endTile: Tile) {
+suspend fun QueueTask.teleport(endTile: Tile) {
     wait(2)
     terminateAction = TERMINATE_HOME_TELEPORT_NEUTRAL
     player.animate(4847)

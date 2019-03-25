@@ -18,7 +18,7 @@ HomeTeleport.values.forEach { teleport ->
             player.message("You can't use that teleport at the moment.")
             return@on_magic_spell_button
         }
-        player.queue {
+        player.queue(TaskPriority.STRONG) {
             teleport(teleport.endTile(world))
         }
     }

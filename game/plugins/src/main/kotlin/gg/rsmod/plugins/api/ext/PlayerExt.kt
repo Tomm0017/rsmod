@@ -435,6 +435,8 @@ fun Player.calculateDeathContainers(): DeathContainers {
     return DeathContainers(kept = keptContainer, lost = lostContainer)
 }
 
+fun Player.hasItem(item: Int, amount: Int = 1) : ItemContainer? = containers.values.firstOrNull { container -> container.getItemCount(item) >= amount }
+
 fun Player.isPrivilegeEligible(to: String): Boolean = world.privileges.isEligible(privilege, to)
 
 fun Player.getStrengthBonus(): Int = equipmentBonuses[10]

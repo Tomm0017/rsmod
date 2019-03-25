@@ -18,7 +18,6 @@ import gg.rsmod.plugins.api.cfg.Objs
  * @param entrance      The tile the player is teleported to upon entering the ruins
  * @param exit          The tile the player is teleported to upon exiting the altar
  *
- * TODO: Gather data for the Wrath altar
  */
 enum class Altar(val ruins: IntArray? = null, val altar: Int, val exitPortal: Int? = null, val talisman: Int? = null, val tiara: Int? = null, val varbit: Int = 0, val rune: Rune, val entrance: Tile? = null, val exit: Tile? = null, val option: String = "craft-rune") {
 

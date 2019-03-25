@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.skills.runecrafting
 
-import gg.rsmod.game.fs.def.ItemDef
-
 Tiara.values.forEach { tiara ->
 
     val altar = tiara.altar

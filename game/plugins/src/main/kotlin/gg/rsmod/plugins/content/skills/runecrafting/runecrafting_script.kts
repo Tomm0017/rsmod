@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.skills.runecrafting
 
-import gg.rsmod.game.fs.def.ObjectDef
-
 private val enterOption = "Enter"
 
 Altar.values.forEach { altar ->

@@ -120,7 +120,7 @@ abstract class Pawn(val world: World) : Entity() {
     /**
      * A list of pending [Hit]s.
      */
-    val pendingHits = arrayListOf<Hit>()
+    private val pendingHits = arrayListOf<Hit>()
 
     /**
      * A [DamageMap] to keep track of who has dealt damage to this pawn.
@@ -242,6 +242,10 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
+    fun addHit(hit: Hit) {
+        pendingHits.add(hit)
+    }
+
     /**
      * Handle a single cycle for [timers].
      */
@@ -270,6 +274,9 @@ abstract class Pawn(val world: World) : Entity() {
      * Handle a single cycle for [pendingHits].
      */
     fun hitsCycle() {
+        if (lock == LockState.FULL_WITH_DAMAGE_IMMUNITY && pendingHits.isNotEmpty()) {
+            pendingHits.clear()
+        }
         val hitIterator = pendingHits.iterator()
         iterator@ while (hitIterator.hasNext()) {
             if (isDead()) {

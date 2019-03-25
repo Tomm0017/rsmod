@@ -110,7 +110,7 @@ object MagicSpells {
         }
     }
 
-    fun KotlinPlugin.on_magic_spell_button(name: String, plugin: Plugin.() -> Unit) {
+    fun KotlinPlugin.on_magic_spell_button(name: String, plugin: Plugin.(SpellMetadata) -> Unit) {
         if (!MagicSpells.isLoaded()) {
             MagicSpells.loadSpellRequirements(world)
         }
@@ -119,6 +119,8 @@ object MagicSpells {
         // is not found in cache.
         val spell = metadata.values.first { it.name == name }
 
-        on_button(spell.interfaceId, spell.component, plugin)
+        on_button(spell.interfaceId, spell.component) {
+            plugin(this, spell)
+        }
     }
 }

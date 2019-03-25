@@ -335,14 +335,15 @@ class PluginRepository(val world: World) {
      * Initiates and populates all our plugins.
      */
     fun init(jarPluginsDirectory: String) {
-        setObjectDefs()
+        loadObjectDefs()
+
+        loadPlugins(jarPluginsDirectory)
+
         setCombatDefs()
         spawnEntities()
         setMultiAreas()
         setContainers()
         setShops()
-
-        loadPlugins(jarPluginsDirectory)
     }
 
     internal fun loadPlugins(jarPluginsDirectory: String) {
@@ -396,7 +397,7 @@ class PluginRepository(val world: World) {
         }
     }
 
-    private fun setObjectDefs() {
+    private fun loadObjectDefs() {
         val count = world.definitions.getCount(ObjectDef::class.java)
         for (id in 0 until count) {
             val def = world.definitions.getNullable(ObjectDef::class.java, id)

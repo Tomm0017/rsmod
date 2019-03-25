@@ -417,7 +417,7 @@ out-packets:
       - name: delay
         type: SHORT
 
-  - message: gg.rsmod.game.message.impl.PlaySongMessage
+  - message: gg.rsmod.game.message.impl.MidiSongMessage
     type: FIXED
     opcode: 23
     structure:

@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class PlaySongMessage(val id: Int) : Message
+data class MidiSongMessage(val id: Int) : Message

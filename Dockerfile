@@ -1,9 +1,14 @@
 # If you have folders or files which you wish to persist in between containers,
 # you must set them up as volumes in `docker-compose.yml` and use the command
-# `docker-compose up`.
+# `docker-compose up` to launch the container.
+
+# Use kotlin image to run the server.
 FROM zenika/kotlin:1.3-jdk8
 
+# Define `directory` as '/app/'
 ENV directory /app/
+
+# Set the work directory as ${directory}
 WORKDIR ${directory}
 
 # Copy distribution archive
@@ -15,7 +20,7 @@ RUN unzip -q -o *.zip
 # Delete distribution archive after unzipping
 RUN rm -fv *.zip
 
-# Move distribution files from "game-${version}" to $WORKDIR ["."]
+# Move distribution files from "game-${version}" to ${WORKDIR} ["."]
 RUN mv game*/* .
 
 # Delete "game-${version}" folder as its contents have been moved

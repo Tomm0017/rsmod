@@ -31,4 +31,4 @@ fun Int.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int): I
 fun Int.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int, cap: Int): Boolean =
         RANDOM.nextInt(cap) <= interpolate(minChance, maxChance, minLvl, maxLvl)
 
-fun Area.randomTile(): Tile = Tile(bottomLeftX + RANDOM.nextInt((topRightX - bottomLeftX) + 1), bottomLeftZ + RANDOM.nextInt((topRightZ - bottomLeftZ) + 1))
+val Area.randomTile: Tile get() = Tile(bottomLeftX + RANDOM.nextInt((topRightX - bottomLeftX) + 1), bottomLeftZ + RANDOM.nextInt((topRightZ - bottomLeftZ) + 1))

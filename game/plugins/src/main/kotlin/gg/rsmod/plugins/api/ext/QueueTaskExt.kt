@@ -309,7 +309,6 @@ suspend fun QueueTask.produceItemBox(vararg items: Int, title: String = "What wo
         nameArray[it.index] = "|${def.name}"
     }
 
-    player.sendTempVarbit(5983, 1)
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 270)
     player.runClientScript(2046, 0, "$title${nameArray.joinToString("")}", maxItems, *itemArray)
 

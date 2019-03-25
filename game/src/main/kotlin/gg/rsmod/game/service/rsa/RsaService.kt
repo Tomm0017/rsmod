@@ -48,9 +48,9 @@ class RsaService : Service() {
             if (create) {
                 logger.info("Generating RSA key pair...")
                 createPair(bitCount = serviceProperties.getOrDefault("bit-count", 2048))
-                println("Please follow the instructions on console and restart the client & server.")
-                scanner.nextLine()
-                System.exit(0)
+                println("Please follow the instructions on console and continue once you've done so.")
+                scanner.next()
+                init(server, world, serviceProperties)
             } else {
                 throw RuntimeException("Private RSA key was not found! Please follow the instructions on console.")
             }

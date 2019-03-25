@@ -137,6 +137,17 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
     /**
      * Invoke [logic] when the [option] option is clicked on a
+     * [gg.rsmod.game.model.entity.GameObject] with a specific name
+     */
+    fun on_obj_option(obj: String, option: String, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
+        val name = obj.toLowerCase()
+        val opt = option.toLowerCase()
+
+        r.bindObject(obj = name, option = opt, lineOfSightDistance = lineOfSightDistance, plugin = logic)
+    }
+
+    /**
+     * Invoke [logic] when the [option] option is clicked on a
      * [gg.rsmod.game.model.entity.GameObject].
      *
      * This method should be used over the option-int variant whenever possible.

@@ -3,6 +3,7 @@ package gg.rsmod.game.plugin
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import gg.rsmod.game.fs.def.NpcDef
+import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.COMMAND_ARGS_ATTR
 import gg.rsmod.game.model.attr.COMMAND_ATTR
@@ -299,6 +300,12 @@ class PluginRepository(val world: World) {
     internal val objSpawns = arrayListOf<DynamicObject>()
 
     /**
+     * Temporarily holds all object definitions to be used by plugins.
+     * This is then cleared after all plugins have been loaded.
+     */
+    private val objDefs = HashSet<ObjectDef>()
+
+    /**
      * Temporarily holds all ground item spawns set from plugins for this
      * [PluginRepository].
      * This is then passed onto the [World] and is cleared.
@@ -328,13 +335,14 @@ class PluginRepository(val world: World) {
      * Initiates and populates all our plugins.
      */
     fun init(jarPluginsDirectory: String) {
-        loadPlugins(jarPluginsDirectory)
-
+        setObjectDefs()
         setCombatDefs()
         spawnEntities()
         setMultiAreas()
         setContainers()
         setShops()
+
+        loadPlugins(jarPluginsDirectory)
     }
 
     internal fun loadPlugins(jarPluginsDirectory: String) {
@@ -388,6 +396,14 @@ class PluginRepository(val world: World) {
         }
     }
 
+    private fun setObjectDefs() {
+        val count = world.definitions.getCount(ObjectDef::class.java)
+        for (id in 0 until count) {
+            val def = world.definitions.getNullable(ObjectDef::class.java, id)
+            def?.let { objDefs.add(it) }
+        }
+    }
+
     private fun spawnEntities() {
         npcSpawns.forEach { npc -> world.spawn(npc) }
         npcSpawns.clear()
@@ -397,6 +413,8 @@ class PluginRepository(val world: World) {
 
         itemSpawns.forEach { item -> world.spawn(item) }
         itemSpawns.clear()
+
+        objDefs.clear()
     }
 
     private fun setShops() {
@@ -956,6 +974,19 @@ class PluginRepository(val world: World) {
         val logic = plugins[obj] ?: return false
         p.executePlugin(logic)
         return true
+    }
+
+    fun bindObject(obj: String, option: String, lineOfSightDistance: Int = -1, plugin: (Plugin).() -> Unit) {
+        val name = obj.toLowerCase()
+        val opt = option.toLowerCase()
+
+        objDefs.filter { it.name.toLowerCase() == name }.forEach { def ->
+            val slot = def.options.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
+
+            if (slot != -1) {
+                bindObject(def.id, slot + 1, lineOfSightDistance, plugin)
+            }
+        }
     }
 
     fun bindObject(obj: Int, opt: Int, lineOfSightDistance: Int = -1, plugin: (Plugin).() -> Unit) {

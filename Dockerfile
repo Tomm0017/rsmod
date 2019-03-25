@@ -2,6 +2,11 @@
 # you must set them up as volumes in `docker-compose.yml` and use the command
 # `docker-compose up` to launch the container.
 
+# Note: You will need to run the `build` gradle task at least once on the server
+# before you can run this docker config properly. You will also need to run said
+# task whenever you want the docker image to contain the latest changes in your
+# code.
+
 # Use kotlin image to run the server.
 FROM zenika/kotlin:1.3-jdk8
 

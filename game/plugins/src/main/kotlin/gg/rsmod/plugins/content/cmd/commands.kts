@@ -276,6 +276,17 @@ on_command("clip", Privilege.ADMIN_POWER) {
     }
 }
 
+on_command("animation", Privilege.ADMIN_POWER) {
+    val p = player
+
+    val args = player.getCommandArgs()
+    tryWithUsage(p, args, "Invalid format! Example of proper command <col=801700>::anim 123</col>") { values ->
+        val animation = values[0].toInt()
+        p.animate(animation)
+        p.message("Performing animation <col=801700>$animation</col>")
+    }
+}
+
 fun tryWithUsage(player: Player, args: Array<String>, failMessage: String, tryUnit: Function1<Array<String>, Unit>) {
     try {
         tryUnit.invoke(args)

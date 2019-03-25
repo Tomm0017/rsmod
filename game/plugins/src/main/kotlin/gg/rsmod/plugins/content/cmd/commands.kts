@@ -7,7 +7,7 @@ import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.formula.MagicCombatFormula
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 import gg.rsmod.plugins.content.inter.bank.openBank
-import gg.rsmod.plugins.content.mechanics.spells.SpellRequirements
+import gg.rsmod.plugins.content.magic.SpellRequirements
 import java.text.DecimalFormat
 
 on_command("max") {
@@ -61,6 +61,15 @@ on_command("gfx", Privilege.ADMIN_POWER) {
         val height = if (values.size >= 2) values[1].toInt() else 100
         player.graphic(id, height)
         player.message("Graphic: $id")
+    }
+}
+
+on_command("sound", Privilege.ADMIN_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::sound 1</col>") { values ->
+        val id = values[0].toInt()
+        player.playSound(id)
+        player.message("Sound: $id")
     }
 }
 

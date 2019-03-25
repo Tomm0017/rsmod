@@ -249,6 +249,10 @@ fun Player.playSound(id: Int, volume: Int = 1, delay: Int = 0) {
     write(SynthSoundMessage(sound = id, volume = volume, delay = delay))
 }
 
+fun Player.playSong(id: Int) {
+    write(PlaySongMessage(id))
+}
+
 fun Player.getVarp(id: Int): Int = varps.getState(id)
 
 fun Player.setVarp(id: Int, value: Int) {

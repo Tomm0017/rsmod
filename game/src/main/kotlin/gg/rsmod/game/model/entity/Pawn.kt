@@ -246,6 +246,10 @@ abstract class Pawn(val world: World) : Entity() {
         pendingHits.add(hit)
     }
 
+    fun clearHits() {
+        pendingHits.clear()
+    }
+
     /**
      * Handle a single cycle for [timers].
      */
@@ -274,9 +278,6 @@ abstract class Pawn(val world: World) : Entity() {
      * Handle a single cycle for [pendingHits].
      */
     fun hitsCycle() {
-        if (lock == LockState.FULL_WITH_DAMAGE_IMMUNITY && pendingHits.isNotEmpty()) {
-            pendingHits.clear()
-        }
         val hitIterator = pendingHits.iterator()
         iterator@ while (hitIterator.hasNext()) {
             if (isDead()) {

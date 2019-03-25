@@ -14,6 +14,13 @@ Altar.values.forEach { altar ->
         // The object definition for the Mysterious Ruins
         val def = world.definitions.get(ObjectDef::class.java, ruin)
 
+        // Allow using the talisman on the ruins to enter the altar
+        altar.talisman?.let { talisman ->
+            item_on_obj(obj = ruin, item = talisman) {
+                altar.entrance?.let { player.teleport(it) }
+            }
+        }
+
         // If the object has the 'enter' option, we should check that the varbit is set for the player before teleporting them to the altar
         if (def.options.contains(enterOption)) {
             on_obj_option(obj = ruin, option = enterOption) {
@@ -59,6 +66,33 @@ Altar.values.forEach { altar ->
     if (altar.exitPortal != null && altar.exit != null) {
         on_obj_option(obj = altar.exitPortal, option = "use") {
             player.teleport(altar.exit)
+        }
+    }
+
+    /**
+     * Handle the locate option on a talisman
+     */
+    altar.talisman?.let {
+        on_item_option(item = it, option = "locate") {
+
+            // The tile of the ruins
+            val tile = altar.exit!!
+            val pos = player.tile
+
+            // The direction of the altar
+            val direction : String = when {
+                pos.z > tile.z && pos.x - 1 > tile.x -> "south-west"
+                pos.x < tile.x && pos.z > tile.z -> "south-east"
+                pos.x > tile.x + 1 && pos.z < tile.z -> "north-west"
+                pos.x < tile.x && pos.z < tile.z -> "north-east"
+                pos.z < tile.z -> "north"
+                pos.z > tile.z -> "south"
+                pos.x < tile.x + 1 -> "east"
+                pos.x > tile.x + 1 -> "west"
+                else -> "unknown"
+            }
+
+            player.message("The talisman pulls towards the $direction.")
         }
     }
 }

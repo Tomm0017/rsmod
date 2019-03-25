@@ -33,10 +33,10 @@ enum class Altar(val ruins: IntArray? = null, val altar: Int, val exitPortal: In
     ASTRAL(                                                                                 altar = Objs.ALTAR_14911,                                                                                                             rune = Rune.ASTRAL),
     NATURE(ruins = intArrayOf(Objs.MYSTERIOUS_RUINS_14414, Objs.MYSTERIOUS_RUINS_14832),    altar = Objs.ALTAR_14905, exitPortal = Objs.PORTAL_14892, talisman = Items.NATURE_TALISMAN, tiara = Items.NATURE_TIARA, varbit = 615, rune = Rune.NATURE,   entrance = Tile(2400, 4835), exit = Tile(2865, 3022)),
     LAW(ruins = intArrayOf(Objs.MYSTERIOUS_RUINS_14412, Objs.MYSTERIOUS_RUINS_14413),       altar = Objs.ALTAR_14904, exitPortal = Objs.PORTAL_14848, talisman = Items.LAW_TALISMAN,    tiara = Items.LAW_TIARA,    varbit = 614, rune = Rune.LAW,      entrance = Tile(2464, 4819), exit = Tile(2858, 3378)),
-    // TODO: Death
+    DEATH(ruins = intArrayOf(Objs.MYSTERIOUS_RUINS_14835, Objs.MYSTERIOUS_RUINS_14836),     altar = Objs.ALTAR_14907, exitPortal = Objs.PORTAL_14894, talisman = Items.DEATH_TALISMAN,  tiara = Items.DEATH_TIARA,  varbit = 617, rune = Rune.DEATH,    entrance = Tile(2208, 4830), exit = Tile(1863, 4639)),
     BLOOD(                                                                                  altar = Objs.BLOOD_ALTAR,                                                                                                             rune = Rune.BLOOD,                                                                        option = "bind"),
-    SOUL(                                                                                   altar = Objs.SOUL_ALTAR,                                                                                                              rune = Rune.SOUL,                                                                         option = "bind");
-    // TODO: Wrath
+    SOUL(                                                                                   altar = Objs.SOUL_ALTAR,                                                                                                              rune = Rune.SOUL,                                                                         option = "bind"),
+    WRATH(ruins = intArrayOf(Objs.MYSTERIOUS_RUINS_32489, Objs.MYSTERIOUS_RUINS_32490),     altar = Objs.ALTAR_32492, exitPortal = Objs.PORTAL_32491, talisman = Items.WRATH_TALISMAN,  tiara = Items.WRATH_TIARA,  varbit = 6220,rune = Rune.WRATH,    entrance = Tile(2335, 4826), exit = Tile(2447, 2822));
 
     companion object {
         val values = enumValues<Altar>()

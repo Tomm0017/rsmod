@@ -22,9 +22,8 @@ enum class Tiara(val id: Int, val altar: Altar, val xp: Double) {
     COSMIC(Items.COSMIC_TIARA, Altar.COSMIC, 40.0),
     CHAOS(Items.CHAOS_TIARA, Altar.CHAOS, 42.5),
     NATURE(Items.NATURE_TIARA, Altar.NATURE, 45.0),
-    LAW(Items.LAW_TIARA, Altar.LAW, 47.5),
-    DEATH(Items.DEATH_TIARA, Altar.DEATH, 50.0),
-    WRATH(Items.WRATH_TIARA, Altar.WRATH, 52.5);
+    LAW(Items.LAW_TIARA, Altar.LAW, 47.5);
+    // TODO: Death & Wrath
 
     companion object {
         val values = enumValues<Tiara>()

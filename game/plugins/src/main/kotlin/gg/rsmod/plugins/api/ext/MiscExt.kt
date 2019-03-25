@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.api.ext
 
+import gg.rsmod.game.model.Area
+import gg.rsmod.game.model.Tile
 import java.text.DecimalFormat
 import java.text.Format
 import java.util.concurrent.ThreadLocalRandom
@@ -28,3 +30,5 @@ fun Int.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int): I
 
 fun Int.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int, cap: Int): Boolean =
         RANDOM.nextInt(cap) <= interpolate(minChance, maxChance, minLvl, maxLvl)
+
+fun Area.randomTile(): Tile = Tile(bottomLeftX + RANDOM.nextInt((topRightX - bottomLeftX) + 1), bottomLeftZ + RANDOM.nextInt((topRightZ - bottomLeftZ) + 1))

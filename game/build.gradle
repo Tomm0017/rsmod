@@ -85,7 +85,7 @@ tasks.register("install") {
             from "${rootProject.projectDir}/game.example.yml"
             rename 'game.example.yml', 'game.yml'
 
-            file('first-launch').createNewFile()
+            file("${rootProject.projectDir}/first-launch").createNewFile()
         }
 
         javaexec {

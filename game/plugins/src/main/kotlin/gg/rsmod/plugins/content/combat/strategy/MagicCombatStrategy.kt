@@ -15,7 +15,7 @@ import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
 import gg.rsmod.plugins.content.combat.createProjectile
 import gg.rsmod.plugins.content.combat.formula.MagicCombatFormula
-import gg.rsmod.plugins.content.mechanics.spells.SpellRequirements
+import gg.rsmod.plugins.content.magic.MagicSpells
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -27,8 +27,8 @@ object MagicCombatStrategy : CombatStrategy {
     override fun canAttack(pawn: Pawn, target: Pawn): Boolean {
         if (pawn is Player) {
             val spell = pawn.attr[Combat.CASTING_SPELL]!!
-            val requirements = SpellRequirements.getRequirements(spell.id)
-            if (requirements != null && !SpellRequirements.canCast(pawn, requirements.lvl, requirements.items, requirements.spellbook)) {
+            val requirements = MagicSpells.getRequirements(spell.id)
+            if (requirements != null && !MagicSpells.canCast(pawn, requirements.lvl, requirements.items, requirements.spellbook)) {
                 return false
             }
         }
@@ -59,7 +59,7 @@ object MagicCombatStrategy : CombatStrategy {
             if (spell.castSound != -1) {
                 pawn.playSound(id = spell.castSound, volume = 1, delay = 0)
             }
-            SpellRequirements.getRequirements(spell.id)?.let { requirement -> SpellRequirements.removeRunes(pawn, requirement.items) }
+            MagicSpells.getRequirements(spell.id)?.let { requirement -> MagicSpells.removeRunes(pawn, requirement.items) }
         }
 
         val formula = MagicCombatFormula

@@ -1,10 +1,12 @@
-package gg.rsmod.plugins.content.mechanics.spells
+package gg.rsmod.plugins.content.magic
 
 import gg.rsmod.game.fs.def.EnumDef
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
+import gg.rsmod.game.plugin.KotlinPlugin
+import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.ext.getSpellbook
 import gg.rsmod.plugins.api.ext.getVarbit
@@ -12,9 +14,11 @@ import gg.rsmod.plugins.api.ext.getVarbit
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-object SpellRequirements {
+object MagicSpells {
 
     const val INF_RUNES_VARBIT = 4145
+
+    private val SPELLBOOK_POINTER_ENUM = 1981
 
     private const val SPELL_SPELLBOOK_KEY = 336
     private const val SPELL_RUNE1_ID_KEY = 365
@@ -30,9 +34,13 @@ object SpellRequirements {
     private const val SPELL_LVL_REQ_KEY = 604
     private const val SPELL_TYPE_KEY = 605
 
-    val requirements = hashMapOf<Int, SpellRequirement>()
+    const val COMBAT_SPELL_TYPE = 0
+    const val MISC_SPELL_TYPE = 1
+    const val TELEPORT_SPELL_TYPE = 2
 
-    fun getRequirements(spellId: Int): SpellRequirement? = requirements[spellId]
+    val metadata = hashMapOf<Int, SpellMetadata>()
+
+    fun getRequirements(spellId: Int): SpellMetadata? = metadata[spellId]
 
     fun canCast(p: Player, lvl: Int, items: List<Item>, requiredBook: Int): Boolean {
         if (requiredBook != -1 && p.getSpellbook().id != requiredBook) {
@@ -63,8 +71,10 @@ object SpellRequirements {
         }
     }
 
-    fun loadSpellRequirements(world: World, enumId: Int) {
-        val spellBookEnums = world.definitions.get(EnumDef::class.java, enumId)
+    fun isLoaded(): Boolean = metadata.isNotEmpty()
+
+    fun loadSpellRequirements(world: World) {
+        val spellBookEnums = world.definitions.get(EnumDef::class.java, SPELLBOOK_POINTER_ENUM)
         val spellBooks = spellBookEnums.values.values.map { it as Int }
         spellBooks.forEach { spellBook ->
             val spellBookEnum = world.definitions.get(EnumDef::class.java, spellBook)
@@ -78,11 +88,10 @@ object SpellRequirements {
                 val name = params[SPELL_NAME_KEY] as String
                 val lvl = params[SPELL_LVL_REQ_KEY] as Int
                 val componentHash = params[SPELL_COMPONENT_HASH_KEY] as Int
-                val spellId = params[SPELL_ID_KEY] as Int
-                val combat = (params[SPELL_TYPE_KEY] as Int) == 0 && spellbook in 0..1 // Only standard and ancient spellbooks have combat spells
+                val spellType = params[SPELL_TYPE_KEY] as Int
 
-                val parent = componentHash shr 16
-                val child = componentHash and 0xFFFF
+                val interfaceId = componentHash shr 16
+                val component = componentHash and 0xFFFF
                 val runes = arrayListOf<Item>()
 
                 if (params.containsKey(SPELL_RUNE1_ID_KEY)) {
@@ -95,9 +104,21 @@ object SpellRequirements {
                     runes.add(Item(params[SPELL_RUNE3_ID_KEY] as Int, params[SPELL_RUNE3_AMT_KEY] as Int))
                 }
 
-                val spell = SpellRequirement(parent, child, spellbook, spellId, name, lvl, runes, combat)
-                requirements[spellId] = spell
+                val spell = SpellMetadata(interfaceId, component, item, spellbook, spellType, name, lvl, runes)
+                metadata[item] = spell
             }
         }
+    }
+
+    fun KotlinPlugin.on_magic_spell_button(name: String, plugin: Plugin.() -> Unit) {
+        if (!MagicSpells.isLoaded()) {
+            MagicSpells.loadSpellRequirements(world)
+        }
+
+        // If this line throws an error, it means the spell with said name
+        // is not found in cache.
+        val spell = metadata.values.first { it.name == name }
+
+        on_button(spell.interfaceId, spell.component, plugin)
     }
 }

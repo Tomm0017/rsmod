@@ -7,7 +7,7 @@ import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.formula.MagicCombatFormula
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 import gg.rsmod.plugins.content.inter.bank.openBank
-import gg.rsmod.plugins.content.magic.SpellRequirements
+import gg.rsmod.plugins.content.magic.MagicSpells
 import java.text.DecimalFormat
 
 on_command("max") {
@@ -89,8 +89,8 @@ on_command("infhp", Privilege.ADMIN_POWER) {
 }
 
 on_command("infrunes", Privilege.ADMIN_POWER) {
-    player.toggleVarbit(SpellRequirements.INF_RUNES_VARBIT)
-    player.message("Infinite runes: ${if (player.getVarbit(SpellRequirements.INF_RUNES_VARBIT) != 1) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
+    player.toggleVarbit(MagicSpells.INF_RUNES_VARBIT)
+    player.message("Infinite runes: ${if (player.getVarbit(MagicSpells.INF_RUNES_VARBIT) != 1) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
 }
 
 on_command("invisible", Privilege.ADMIN_POWER) {

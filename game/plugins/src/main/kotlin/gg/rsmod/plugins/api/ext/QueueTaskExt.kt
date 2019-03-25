@@ -294,7 +294,7 @@ suspend fun QueueTask.levelUpMessageBox(skill: Int, levelIncrement: Int) {
     terminateAction!!(this)
 }
 
-suspend fun QueueTask.produceItemBox(vararg items: Int, title: String = "What would you like to make?", logic: (Int, Int) -> Unit) {
+suspend fun QueueTask.produceItemBox(vararg items: Int, title: String = "What would you like to make?", maxItems: Int = player.inventory.capacity, logic: (Int, Int) -> Unit) {
 
     val defs = player.world.definitions
     val itemDefs = items.map { defs.get(ItemDef::class.java, it) }
@@ -311,7 +311,7 @@ suspend fun QueueTask.produceItemBox(vararg items: Int, title: String = "What wo
 
     player.sendTempVarbit(5983, 1)
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 270)
-    player.runClientScript(2046, 0, "$title${nameArray.joinToString("")}", 12, *itemArray)
+    player.runClientScript(2046, 0, "$title${nameArray.joinToString("")}", maxItems, *itemArray)
 
     terminateAction = closeDialog
     waitReturnValue()

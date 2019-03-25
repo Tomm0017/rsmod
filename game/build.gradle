@@ -1,6 +1,4 @@
 apply plugin: 'application'
-apply plugin: 'org.jetbrains.kotlin.jvm'
-apply from: "$rootDir/gradle/kotlin.gradle"
 
 description = 'RSMod Game'
 mainClassName = 'gg.rsmod.game.Launcher'

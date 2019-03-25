@@ -5,6 +5,8 @@ import kotlin.script.experimental.api.defaultImports
 
 object KotlinPluginConfiguration : ScriptCompilationConfiguration({
     defaultImports(
+            "gg.rsmod.game.fs.def.*",
+
             "gg.rsmod.game.model.*",
             "gg.rsmod.game.model.item.*",
             "gg.rsmod.game.model.entity.*",

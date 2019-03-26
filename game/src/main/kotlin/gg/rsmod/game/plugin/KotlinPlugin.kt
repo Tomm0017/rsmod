@@ -182,7 +182,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
      * @param obj   The game object id
      * @param item  The item id
      */
-    fun item_on_obj(obj: Int, item: Int, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
+    fun on_item_on_obj(obj: Int, item: Int, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
         r.bindItemOnObject(obj, item, lineOfSightDistance, logic)
     }
 

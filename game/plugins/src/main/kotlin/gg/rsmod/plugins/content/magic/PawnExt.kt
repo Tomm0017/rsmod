@@ -1,0 +1,58 @@
+package gg.rsmod.plugins.content.magic
+
+import gg.rsmod.game.fs.def.AnimDef
+import gg.rsmod.game.model.LockState
+import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.entity.Pawn
+import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.queue.TaskPriority
+import gg.rsmod.plugins.api.ext.getWildernessLevel
+
+fun Pawn.canTeleport(type: TeleportType): Boolean {
+    val currWildLvl = tile.getWildernessLevel()
+    val wildLvlRestriction = type.wildLvlRestriction
+
+    if (currWildLvl > wildLvlRestriction) {
+        if (this is Player) {
+            message("A mysterious force blocks your teleport spell!")
+            message("You can't use this teleport after level $wildLvlRestriction wilderness.")
+        }
+        return false
+    }
+
+    return true
+}
+
+fun Pawn.teleport(endTile: Tile, type: TeleportType) {
+    queue(TaskPriority.STRONG) {
+        resetInteractions()
+        clearHits()
+
+        lock = LockState.FULL_WITH_DAMAGE_IMMUNITY
+
+        animate(type.animation)
+        type.graphic?.let {
+            graphic(it)
+        }
+
+        wait(type.teleportDelay)
+
+        teleport(endTile)
+
+        type.endAnimation?.let {
+            animate(it)
+        }
+
+        type.endGraphic?.let {
+            graphic(it)
+        }
+
+        type.endAnimation?.let {
+            val def = world.definitions.get(AnimDef::class.java, it)
+            wait(def.cycleLength)
+        }
+
+        animate(-1)
+        unlock()
+    }
+}

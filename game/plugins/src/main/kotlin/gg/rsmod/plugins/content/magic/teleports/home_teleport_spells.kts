@@ -1,6 +1,8 @@
 package gg.rsmod.plugins.content.magic.teleports
 
 import gg.rsmod.plugins.content.magic.MagicSpells.on_magic_spell_button
+import gg.rsmod.plugins.content.magic.TeleportType
+import gg.rsmod.plugins.content.magic.canTeleport
 
 val TERMINATE_HOME_TELEPORT_NEUTRAL: QueueTask.() -> Unit = {
     player.animate(-1)
@@ -13,13 +15,17 @@ val TERMINATE_HOME_TELEPORT_SITTING: QueueTask.() -> Unit = {
 }
 
 HomeTeleport.values.forEach { teleport ->
+
     on_magic_spell_button(teleport.spellName) {
         if (player.hasMoveDestination()) {
             player.message("You can't use that teleport at the moment.")
             return@on_magic_spell_button
         }
-        player.queue(TaskPriority.STRONG) {
-            teleport(teleport.endTile(world))
+
+        if (player.canTeleport(TeleportType.MODERN)) {
+            player.queue(TaskPriority.STRONG) {
+                teleport(teleport.endTile(world))
+            }
         }
     }
 }

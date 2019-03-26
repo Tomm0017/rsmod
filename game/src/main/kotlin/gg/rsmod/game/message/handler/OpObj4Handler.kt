@@ -36,7 +36,7 @@ class OpObj4Handler : MessageHandler<OpObj4Message> {
         val item = chunk.getEntities<GroundItem>(tile, EntityType.GROUND_ITEM).firstOrNull { it.item == message.item && it.canBeViewedBy(client) } ?: return
 
         if (message.movementType == 1 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-            client.teleport(item.tile)
+            client.moveTo(item.tile)
         }
 
         client.closeInterfaceModal()

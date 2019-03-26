@@ -81,7 +81,7 @@ class InstancedMapAllocator {
              */
             world.players.forEach { player ->
                 if (map.area.contains(player.tile)) {
-                    player.teleport(map.exitTile)
+                    player.moveTo(map.exitTile)
                 }
             }
         }
@@ -93,7 +93,7 @@ class InstancedMapAllocator {
         val world = player.world
 
         getMap(player.tile)?.let { map ->
-            player.teleport(map.exitTile)
+            player.moveTo(map.exitTile)
 
             if (map.attr.contains(InstancedMapAttribute.DEALLOCATE_ON_LOGOUT)) {
                 val mapOwner = map.owner!! // If map has this attribute, they should also set an owner.

@@ -37,15 +37,15 @@ class InstancedChunkSet(val regionSize: Int, val values: Map<Int, InstancedChunk
             return InstancedChunkSet(regionSize, chunks)
         }
 
-        fun set(chunkX: Int, chunkZ: Int, height: Int = 0, rotation: Int = 0, copy: Tile): Builder {
+        fun set(chunkX: Int, chunkZ: Int, height: Int = 0, rot: Int = 0, copy: Tile): Builder {
             check(height in 0 until Tile.TOTAL_HEIGHT_LEVELS) { "Height must be in bounds [0-3]" }
-            check(rotation in 0..3) { "Rotation must be in bounds [0-3]" }
+            check(rot in 0..3) { "Rotation must be in bounds [0-3]" }
 
             if (regionSize < (chunkX shr 3) + 1 || regionSize < (chunkZ shr 3) + 1) {
                 regionSize = Math.max((chunkX shr 3) + 1, (chunkZ shr 3) + 1)
             }
 
-            val packed = copy.toRotatedInteger(rotation)
+            val packed = copy.toRotatedInteger(rot)
             val chunk = InstancedChunk(packed)
 
             val coordinates = getCoordinates(chunkX, chunkZ, height)

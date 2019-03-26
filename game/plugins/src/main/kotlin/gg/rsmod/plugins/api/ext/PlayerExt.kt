@@ -249,6 +249,10 @@ fun Player.playSound(id: Int, volume: Int = 1, delay: Int = 0) {
     write(SynthSoundMessage(sound = id, volume = volume, delay = delay))
 }
 
+fun Player.playSong(id: Int) {
+    write(MidiSongMessage(id))
+}
+
 fun Player.getVarp(id: Int): Int = varps.getState(id)
 
 fun Player.setVarp(id: Int, value: Int) {
@@ -434,6 +438,8 @@ fun Player.calculateDeathContainers(): DeathContainers {
 
     return DeathContainers(kept = keptContainer, lost = lostContainer)
 }
+
+fun Player.hasItem(item: Int, amount: Int = 1) : ItemContainer? = containers.values.firstOrNull { container -> container.getItemCount(item) >= amount }
 
 fun Player.isPrivilegeEligible(to: String): Boolean = world.privileges.isEligible(privilege, to)
 

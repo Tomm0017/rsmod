@@ -120,7 +120,7 @@ abstract class Pawn(val world: World) : Entity() {
     /**
      * A list of pending [Hit]s.
      */
-    val pendingHits = arrayListOf<Hit>()
+    private val pendingHits = arrayListOf<Hit>()
 
     /**
      * A [DamageMap] to keep track of who has dealt damage to this pawn.
@@ -240,6 +240,14 @@ abstract class Pawn(val world: World) : Entity() {
         if (getType().isPlayer() || this is Npc && !world.plugins.executeNpcCombat(this)) {
             world.plugins.executeCombat(this)
         }
+    }
+
+    fun addHit(hit: Hit) {
+        pendingHits.add(hit)
+    }
+
+    fun clearHits() {
+        pendingHits.clear()
     }
 
     /**
@@ -461,15 +469,15 @@ abstract class Pawn(val world: World) : Entity() {
         return route
     }
 
-    fun teleport(x: Int, z: Int, height: Int = 0) {
+    fun moveTo(x: Int, z: Int, height: Int = 0) {
         teleport = true
         tile = Tile(x, z, height)
         movementQueue.clear()
         addBlock(UpdateBlockType.MOVEMENT)
     }
 
-    fun teleport(tile: Tile) {
-        teleport(tile.x, tile.z, tile.height)
+    fun moveTo(tile: Tile) {
+        moveTo(tile.x, tile.z, tile.height)
     }
 
     fun animate(id: Int) {

@@ -1,6 +1,3 @@
-apply plugin: 'org.jetbrains.kotlin.jvm'
-apply from: "$rootDir/gradle/kotlin.gradle"
-
 dependencies {
     implementation project(':game')
     implementation project(':net')

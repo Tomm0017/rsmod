@@ -1,0 +1,9 @@
+version: '3.3'
+
+services:
+  rsmod-server:
+    build: .
+    ports:
+      - "43594:43594"
+    volumes:
+      - ./data/saves:/app/bin/data/saves

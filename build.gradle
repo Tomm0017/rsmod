@@ -2,8 +2,13 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.21' apply(false)
 }
 
+apply from: 'gradle/properties.gradle'
+apply from: 'gradle/wrapper.gradle'
+
 allprojects {
     apply plugin: 'idea'
+    apply plugin: 'org.jetbrains.kotlin.jvm'
+    apply from: "$rootDir/gradle/kotlin.gradle"
 
     group = 'rsmod'
     version = '0.0.2'
@@ -29,9 +34,6 @@ allprojects {
         }
     }
 }
-
-apply from: 'gradle/properties.gradle'
-apply from: 'gradle/wrapper.gradle'
 
 task packageServer(type: Zip) {
     archiveFileName = "rsmod.zip"

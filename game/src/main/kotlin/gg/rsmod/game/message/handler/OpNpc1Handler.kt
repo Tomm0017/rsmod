@@ -26,7 +26,7 @@ class OpNpc1Handler : MessageHandler<OpNpc1Message> {
         log(client, "Npc option 1: index=%d, movement=%d, npc=%s", message.index, message.movementType, npc)
 
         if (message.movementType == 1 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-            client.teleport(client.world.findRandomTileAround(npc.tile, 1) ?: npc.tile)
+            client.moveTo(client.world.findRandomTileAround(npc.tile, 1) ?: npc.tile)
         }
 
         client.closeInterfaceModal()

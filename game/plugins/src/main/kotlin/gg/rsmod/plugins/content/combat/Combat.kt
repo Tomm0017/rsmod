@@ -171,6 +171,10 @@ object Combat {
             if (!target.isOnline || target.invisible) {
                 return false
             }
+
+            if (!target.lock.canBeAttacked()) {
+                return false
+            }
         }
 
         if (pvp) {

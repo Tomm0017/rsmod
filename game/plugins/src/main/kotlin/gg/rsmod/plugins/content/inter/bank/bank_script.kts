@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.content.inter.bank
 
+import gg.rsmod.game.action.EquipAction
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 import gg.rsmod.plugins.content.inter.bank.Bank.insert
@@ -81,6 +82,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
         }
         if (deposited > 0) {
             any = true
+            EquipAction.onItemUnequip(p, item.id)
         }
     }
 

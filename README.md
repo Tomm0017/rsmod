@@ -94,7 +94,7 @@ This step is similar to step ``3) Install RSMod``
     - ``Tasks`` set value to ``run``
 - Now hit the ``Ok`` button
 - Next to the new button that should appear where the other configuration was previously, 
-there should be a green ``run`` button, click on that and let the installation begin.
+there should be a green ``run`` button, click on that and the server should begin to run.
 
 
 ## Troubleshooting

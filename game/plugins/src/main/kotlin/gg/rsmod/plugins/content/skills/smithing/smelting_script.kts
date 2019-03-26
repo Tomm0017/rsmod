@@ -1,6 +1,7 @@
 package gg.rsmod.plugins.content.skills.smithing
 
 import com.google.common.collect.ImmutableSet
+import gg.rsmod.plugins.content.skills.smithing.action.SmeltingAction
 import gg.rsmod.plugins.content.skills.smithing.data.Bar
 
 /**

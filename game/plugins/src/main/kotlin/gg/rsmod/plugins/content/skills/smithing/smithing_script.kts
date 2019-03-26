@@ -2,6 +2,7 @@ package gg.rsmod.plugins.content.skills.smithing
 
 import com.google.common.collect.ImmutableSet
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
+import gg.rsmod.plugins.content.skills.smithing.action.SmithingAction
 import gg.rsmod.plugins.content.skills.smithing.data.Bar
 import gg.rsmod.plugins.content.skills.smithing.data.SmithingData
 import gg.rsmod.plugins.content.skills.smithing.data.SmithingMetaData

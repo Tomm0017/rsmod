@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.content.skills.smithing
+package gg.rsmod.plugins.content.skills.smithing.action
 
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef

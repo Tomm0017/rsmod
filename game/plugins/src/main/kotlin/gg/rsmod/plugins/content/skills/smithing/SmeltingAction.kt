@@ -48,6 +48,7 @@ class SmeltingAction(private val defs: DefinitionSet) {
         repeat(maxCount) {
 
             player.animate(SMELT_ANIM)
+            player.playSound(SMELT_SOUND)
             task.wait(ANIMATION_CYCLE)
             player.lock()
             task.wait(ANIMATION_CYCLE)
@@ -104,6 +105,11 @@ class SmeltingAction(private val defs: DefinitionSet) {
          * The animation played when smelting a bar
          */
         const val SMELT_ANIM = 899
+
+        /**
+         * The sound played when smelting a bar
+         */
+        const val SMELT_SOUND = 2725
 
         /**
          * The number of ticks between starting the animation, and locking the player to the action

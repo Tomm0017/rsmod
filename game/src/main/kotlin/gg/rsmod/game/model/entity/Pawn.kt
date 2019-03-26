@@ -43,7 +43,7 @@ abstract class Pawn(val world: World) : Entity() {
     /**
      * The index assigned when this [Pawn] is successfully added to a [PawnList].
      */
-    internal var index = -1
+    var index = -1
 
     /**
      * @see UpdateBlockBuffer

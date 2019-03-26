@@ -9,23 +9,23 @@ val SOUNDAREA_VOLUME = 1
 
 TeleportSpell.values.forEach { teleport ->
     on_magic_spell_button(teleport.spellName) { metadata ->
-        teleport(player, teleport, metadata)
+        player.teleport(teleport, metadata)
     }
 }
 
-fun teleport(player: Player, spell: TeleportSpell, data: SpellMetadata) {
-    if (!MagicSpells.canCast(player, data.lvl, data.items, data.spellbook)) {
+fun Player.teleport(spell: TeleportSpell, data: SpellMetadata) {
+    if (!MagicSpells.canCast(this, data.lvl, data.items, data.spellbook)) {
         return
     }
 
     val type = spell.type
     val endTile = spell.endArea.randomTile
 
-    if (player.canTeleport(type)) {
-        MagicSpells.removeRunes(player, data.items)
-        player.teleport(endTile, type)
-        player.addXp(Skills.MAGIC, spell.xp)
-        world.spawn(AreaSound(player.tile, SOUNDAREA_ID, SOUNDAREA_RADIUS, SOUNDAREA_VOLUME))
+    if (canTeleport(type)) {
+        MagicSpells.removeRunes(this, data.items)
+        teleport(endTile, type)
+        addXp(Skills.MAGIC, spell.xp)
+        world.spawn(AreaSound(tile, SOUNDAREA_ID, SOUNDAREA_RADIUS, SOUNDAREA_VOLUME))
     }
 }
 

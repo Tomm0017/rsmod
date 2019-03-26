@@ -41,7 +41,7 @@ fun Int.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int, ca
  */
 fun TimerMap.getMinutesLeft(key: TimerKey): Int? {
     val cyclesLeft = get(key)
-    val minutes = Math.floor(cyclesLeft / 100.0).toInt()
+    val minutes = (cyclesLeft / 100.0).toInt()
     if (minutes > 0) {
         return minutes
     }

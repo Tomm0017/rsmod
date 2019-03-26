@@ -8,15 +8,13 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.plugins.api.ext.getWildernessLevel
 
-fun Pawn.canTeleport(type: TeleportType): Boolean {
+fun Player.canTeleport(type: TeleportType): Boolean {
     val currWildLvl = tile.getWildernessLevel()
     val wildLvlRestriction = type.wildLvlRestriction
 
     if (currWildLvl > wildLvlRestriction) {
-        if (this is Player) {
-            message("A mysterious force blocks your teleport spell!")
-            message("You can't use this teleport after level $wildLvlRestriction wilderness.")
-        }
+        message("A mysterious force blocks your teleport spell!")
+        message("You can't use this teleport after level $wildLvlRestriction wilderness.")
         return false
     }
 

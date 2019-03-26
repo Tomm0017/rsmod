@@ -18,7 +18,7 @@ open class WeightNodeSet<T> {
 
     private val random = SecureRandom()
 
-    fun add(node: WeightNode<T>): WeightNodeSet<T> {
+    open fun add(node: WeightNode<T>): WeightNodeSet<T> {
         nodes.add(node)
         return this
     }

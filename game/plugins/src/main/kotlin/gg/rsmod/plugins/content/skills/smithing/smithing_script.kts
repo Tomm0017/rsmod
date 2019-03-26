@@ -59,16 +59,16 @@ val standardAnvils = ImmutableSet.of(
 standardAnvils.forEach { anvil ->
 
     // Bind the usage of a hammer on an anvil
-    item_on_obj(obj = anvil, item = Items.HAMMER) {
+    on_item_on_obj(obj = anvil, item = Items.HAMMER) {
         player.message("To smith a metal bar, you can click on the anvil while you have the bar in your inventory.")
     }
 
     // Bind the usage of a bar on anvil
     barIds.forEach { bar ->
-        item_on_obj(obj = anvil, item = bar) {
+        on_item_on_obj(obj = anvil, item = bar) {
 
             // The definition of the bar
-            val def = barDefs[bar] ?: return@item_on_obj
+            val def = barDefs[bar] ?: return@on_item_on_obj
 
             // Check if the player can smith the item
             player.queue(TaskPriority.WEAK) {

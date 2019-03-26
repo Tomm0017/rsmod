@@ -28,7 +28,8 @@ PickpocketInfo.values().forEach { npcClass ->
                             wait(3)
 
                             //determine if the pickpocket was successful or not by "if random number is within success chances"
-                            if (thievLvl.interpolate(55, 95, npcClass.lvl, 99, 100)) {
+                            val cap = if (player.hasEquipped(EquipmentType.GLOVES, Items.GLOVES_OF_SILENCE)) 5 else 0
+                            if (thievLvl.interpolate(55, 95, npcClass.lvl, 99, 100 - cap)) {
 
                                 player.message("...and you succeed!")
                                 val reward = npcClass.rewards.getRandom()

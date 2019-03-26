@@ -152,7 +152,9 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 6
     ),
     ALKHARID_WARRIOR(
-            ids = intArrayOf(Npcs.ALKHARID_WARRIOR, Npcs.WARRIOR_WOMAN_3100),
+            ids = intArrayOf(
+                    Npcs.ALKHARID_WARRIOR, Npcs.WARRIOR_WOMAN_3100
+            ),
             exp = 26.0,
             lvl = 25,
             npcName = "Warrior",
@@ -162,7 +164,9 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     ROGUE(
-            ids = intArrayOf(Npcs.ROGUE_2884),
+            ids = intArrayOf(
+                    Npcs.ROGUE_2884
+            ),
             exp = 35.5,
             lvl = 32,
             npcName = "Rogue",
@@ -209,7 +213,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
     ),
     MASTER_FARMER(
             ids = intArrayOf(
-                    Npcs.MASTER_FARMER_3257, Npcs.MASTER_FARMER_3258
+                    Npcs.MASTER_FARMER_3257, Npcs.MASTER_FARMER_3258, Npcs.MARTIN_THE_MASTER_GARDENER
             ),
             exp = 43.0,
             lvl = 38,
@@ -261,7 +265,9 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     GUARD(
-            ids = intArrayOf(Npcs.GUARD_3094),
+            ids = intArrayOf(
+                    Npcs.GUARD_3094
+            ),
             exp = 46.8,
             lvl = 40,
             npcName = "Guard",
@@ -313,7 +319,6 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
     ),
     KNIGHT(
             ids = intArrayOf(
-                    Npcs.KNIGHT, Npcs.KNIGHT_5793, Npcs.KNIGHT_5929,
                     Npcs.KNIGHT_OF_ARDOUGNE_3108, Npcs.KNIGHT_OF_ARDOUGNE_3111
             ),
             exp = 84.3,
@@ -337,7 +342,9 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     YANILLE_WATCHMAN(
-            ids = intArrayOf(Npcs.WATCHMAN_3251),
+            ids = intArrayOf(
+                    Npcs.WATCHMAN_3251
+            ),
             exp = 137.5,
             lvl = 65,
             npcName = "Watchman",
@@ -349,7 +356,6 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
     ),
     MENAPHITE_THUG(
             ids = intArrayOf(
-                    Npcs.MENAPHITE_THUG_3549,
                     Npcs.MENAPHITE_THUG_3550
             ),
             exp = 137.5,
@@ -362,7 +368,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
     ),
     PALADIN(
             ids = intArrayOf(
-                    Npcs.PALADIN_1144, Npcs.PALADIN_3104, Npcs.PALADIN_3105, Npcs.PALADIN_8150
+                    Npcs.PALADIN_3104, Npcs.PALADIN_3105
             ),
             exp = 151.75,
             lvl = 70,
@@ -375,7 +381,9 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
     ),
     GNOME(
             ids = intArrayOf(
-                    Npcs.GNOME_6094, Npcs.GNOME_6095, Npcs.GNOME_6096
+                    Npcs.GNOME_5130, Npcs.GNOME_CHILD, Npcs.GNOME_CHILD_6078, Npcs.GNOME_CHILD_6079,
+                    Npcs.GNOME_WOMAN, Npcs.GNOME_WOMAN_6087, Npcs.GNOME_6094, Npcs.GNOME_6095, Npcs.GNOME_6096
+
             ),
             exp = 198.5,
             lvl = 75,
@@ -408,7 +416,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
     ),
     ELF(
             ids = intArrayOf(
-                    /*TODO: Find ELF ID*/
+                    Npcs.GOREU, Npcs.YSGAWYN, Npcs.ARVEL, Npcs.MAWRTH, Npcs.KELYN, Npcs.SIGMUND_5322, Npcs.SANDY
             ),
             exp = 353.0,
             lvl = 85,

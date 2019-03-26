@@ -68,17 +68,16 @@ standardAnvils.forEach { anvil ->
         on_item_on_obj(obj = anvil, item = bar) {
 
             // The definition of the bar
-            val def = barDefs[bar] ?: return@on_item_on_obj
+            val def = barDefs[bar]
 
             // Check if the player can smith the item
             player.queue(TaskPriority.WEAK) {
-
                 // The player can't smith the item, do nothing
                 if (!SmithingAction.canSmithBar(this, def))
                     return@queue
 
                 // Open the smithing interface
-                openSmithingInterface(player, def)
+                openSmithingInterface(player, def!!)
             }
         }
     }
@@ -87,7 +86,7 @@ standardAnvils.forEach { anvil ->
     on_obj_option(obj = anvil, option = "smith") {
 
         // The bar to smith
-        val bar = getBar(player) ?: return@on_obj_option
+        val bar = getBar(player)
 
         // Check if the player can smith a bar
         player.queue(TaskPriority.WEAK) {
@@ -97,7 +96,7 @@ standardAnvils.forEach { anvil ->
                 return@queue
 
             // Queue the smithing interface
-            openSmithingInterface(player, bar)
+            openSmithingInterface(player, bar!!)
         }
     }
 }

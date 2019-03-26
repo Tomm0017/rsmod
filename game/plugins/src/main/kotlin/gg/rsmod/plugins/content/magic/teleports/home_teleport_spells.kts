@@ -14,11 +14,26 @@ val TERMINATE_HOME_TELEPORT_SITTING: QueueTask.() -> Unit = {
     player.graphic(-1)
 }
 
+val HOME_TELEPORT_TIMER_ENABLED = true
+val HOME_TELEPORT_TIMER_DELAY = 3000
+val HOME_TELEPORT_TIMER = TimerKey(persistenceKey = "home_teleport_delay")
+
 HomeTeleport.values.forEach { teleport ->
 
     on_magic_spell_button(teleport.spellName) {
         if (player.hasMoveDestination()) {
             player.message("You can't use that teleport at the moment.")
+            return@on_magic_spell_button
+        }
+
+        if (HOME_TELEPORT_TIMER_ENABLED && player.timers.has(HOME_TELEPORT_TIMER)) {
+            val minutes = player.timers.getMinutesLeft(HOME_TELEPORT_TIMER)
+
+            if (minutes != null) {
+                player.message("You need to wait another ${minutes.appendToString("minute")} to cast this spell.")
+            } else {
+                player.message("You need to wait another couple of seconds to cast this spell.")
+            }
             return@on_magic_spell_button
         }
 
@@ -55,6 +70,7 @@ suspend fun QueueTask.teleport(endTile: Tile) {
     wait(2)
     player.animate(-1)
     player.teleport(endTile)
+    player.timers[HOME_TELEPORT_TIMER] = HOME_TELEPORT_TIMER_DELAY
 }
 
 enum class HomeTeleport(val spellName: String, val endTile: World.() -> Tile) {

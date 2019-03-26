@@ -14,17 +14,6 @@ val pouches = ImmutableSet.of(
 )!!
 
 /**
- * A map of numbers to English string literals. I didn't see a library that already offered this
- * that is already a dependency of the game server.
- *
- * TODO: Develop a better solution for expressing this
- */
-val numberLiterals = mapOf(
-        1 to "one", 2 to "two", 3 to "three", 4 to "four", 5 to "five", 6 to "six",
-        7 to "seven", 8 to "eight", 9 to "nine", 10 to "ten", 11 to "eleven", 12 to "twelve"
-)
-
-/**
  * Bind item option events for the various essence pouches
  */
 pouches.forEach { pouch ->
@@ -151,5 +140,5 @@ fun checkPouch(player: Player) {
     val name = player.world.definitions.get(ItemDef::class.java, item).name.toLowerCase()
     val multiple = count > 1
 
-    player.message("There ${if (multiple) "are" else "is"} ${numberLiterals[count]} $name${if (multiple) "s" else ""} in this pouch.")
+    player.message("There ${count.toLiteral()?.pluralPrefix(count)} ${name.pluralSuffix(count)} in this pouch.")
 }

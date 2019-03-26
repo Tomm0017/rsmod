@@ -2,8 +2,8 @@ package gg.rsmod.plugins.content.mechanics.run
 
 import gg.rsmod.game.model.bits.INFINITE_VARS_STORAGE
 import gg.rsmod.game.model.bits.InfiniteVarsType
-import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.plugins.api.EquipmentType
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.ext.hasStorageBit
@@ -23,7 +23,7 @@ object RunEnergy {
      */
     val STAMINA_BOOST = TimerKey("stamina_boost", tickOffline = false)
 
-    const val RUN_ENABLED_VARP = 173
+    private const val RUN_ENABLED_VARP = 173
 
     fun toggle(p: Player) {
         if (p.runEnergy >= 1.0) {

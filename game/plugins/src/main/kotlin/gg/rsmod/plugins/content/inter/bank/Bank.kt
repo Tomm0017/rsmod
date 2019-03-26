@@ -31,7 +31,7 @@ object Bank {
      * Visual varbit for the "Bank your loot" tab area interface when storing
      * items from a looting bag into the bank.
      */
-    const val BANK_YOUR_LOOT_VARBIT = 4139
+    private const val BANK_YOUR_LOOT_VARBIT = 4139
 
     fun withdraw(p: Player, id: Int, amt: Int, slot: Int, placehold: Boolean) {
         var withdrawn = 0

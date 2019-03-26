@@ -31,20 +31,23 @@ private val closeInput: ((QueueTask).() -> Unit) = {
 }
 
 /**
- * Gets the [ctx] as a [Pawn]. If [ctx] is not a [Pawn], a cast exception
- * will be thrown.
+ * Gets the [QueueTask.ctx] as a [Pawn].
+ *
+ * If [QueueTask.ctx] is not a [Pawn], a cast exception will be thrown.
  */
 inline val QueueTask.pawn: Pawn get() = ctx as Pawn
 
 /**
- * Gets the [ctx] as a [Player]. If [ctx] is not a [Player], a cast exception
- * will be thrown.
+ * Gets the [QueueTask.ctx] as a [Player].
+ *
+ * If [QueueTask.ctx] is not a [Pawn], a cast exception will be thrown.
  */
 inline val QueueTask.player: Player get() = ctx as Player
 
 /**
- * Gets the [ctx] as an [Npc]. If [ctx] is not an [Npc], a cast exception
- * will be thrown.
+ * Gets the [QueueTask.ctx] as an [Npc].
+ *
+ * If [QueueTask.ctx] is not a [Pawn], a cast exception will be thrown.
  */
 inline val QueueTask.npc: Npc get() = ctx as Npc
 

@@ -2,13 +2,15 @@ package gg.rsmod.plugins.content.objs.hay
 
 import com.google.common.collect.ImmutableSet
 
-val HAY_OBJECTS = ImmutableSet.of(Objs.HAYSTACK, Objs.HAY_BALES, Objs.HAY_BALES_299)
+val HAY_OBJECTS = ImmutableSet.of(Objs.HAYSTACK, Objs.HAY_BALES, Objs.HAY_BALES_299)!!
 
 HAY_OBJECTS.forEach { hay ->
     on_obj_option(obj = hay, option = "search") {
         val obj = player.getInteractingGameObj()
         val name = obj.getDef(player.world.definitions).name
-        player.queue { search(this, player, name.toLowerCase()) }
+        player.queue {
+            search(this, player, name.toLowerCase())
+        }
     }
 }
 

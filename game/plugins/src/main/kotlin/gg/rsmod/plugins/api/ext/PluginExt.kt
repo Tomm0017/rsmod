@@ -13,19 +13,22 @@ import gg.rsmod.game.plugin.Plugin
  */
 
 /**
- * Gets the [ctx] as a [Pawn]. If [ctx] is not a [Pawn], a cast exception
- * will be thrown.
+ * Gets the [Plugin.ctx] as a [Pawn].
+ *
+ * If [Plugin.ctx] is not a [Pawn], a cast exception will be thrown.
  */
 inline val Plugin.pawn: Pawn get() = ctx as Pawn
 
 /**
- * Gets the [ctx] as a [Player]. If [ctx] is not a [Player], a cast exception
- * will be thrown.
+ * Gets the [Plugin.ctx] as a [Player].
+ *
+ * If [Plugin.ctx] is not a [Player], a cast exception will be thrown.
  */
 inline val Plugin.player: Player get() = ctx as Player
 
 /**
- * Gets the [ctx] as an [Npc]. If [ctx] is not an [Npc], a cast exception
- * will be thrown.
+ * Gets the [Plugin.ctx] as an [Npc].
+ *
+ * If [Plugin.ctx] is not an [Npc], a cast exception will be thrown.
  */
 inline val Plugin.npc: Npc get() = ctx as Npc

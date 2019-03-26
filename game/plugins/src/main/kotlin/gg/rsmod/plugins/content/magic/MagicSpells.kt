@@ -48,7 +48,7 @@ object MagicSpells {
 
     private val metadata = Int2ObjectOpenHashMap<SpellMetadata>()
 
-    fun getRequirements(spellId: Int): SpellMetadata? = metadata[spellId]
+    fun getMetadata(spellId: Int): SpellMetadata? = metadata[spellId]
 
     fun getCombatSpells(): Map<Int, SpellMetadata> = metadata.filter { it.value.spellType == COMBAT_SPELL_TYPE }
 

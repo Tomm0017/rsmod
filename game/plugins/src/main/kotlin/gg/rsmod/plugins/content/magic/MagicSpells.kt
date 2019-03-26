@@ -10,6 +10,7 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.ext.getSpellbook
 import gg.rsmod.plugins.api.ext.getVarbit
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -38,9 +39,11 @@ object MagicSpells {
     const val MISC_SPELL_TYPE = 1
     const val TELEPORT_SPELL_TYPE = 2
 
-    val metadata = hashMapOf<Int, SpellMetadata>()
+    private val metadata = Int2ObjectOpenHashMap<SpellMetadata>()
 
     fun getRequirements(spellId: Int): SpellMetadata? = metadata[spellId]
+
+    fun getCombatSpells(): Map<Int, SpellMetadata> = metadata.filter { it.value.spellType == COMBAT_SPELL_TYPE }
 
     fun canCast(p: Player, lvl: Int, items: List<Item>, requiredBook: Int): Boolean {
         if (requiredBook != -1 && p.getSpellbook().id != requiredBook) {

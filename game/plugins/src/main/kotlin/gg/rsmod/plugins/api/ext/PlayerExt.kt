@@ -166,6 +166,10 @@ fun Player.closeComponent(parent: Int, child: Int) {
     write(IfCloseSubMessage((parent shl 16) or child))
 }
 
+fun Player.closeInputDialog() {
+    write(TriggerOnDialogAbortMessage())
+}
+
 fun Player.getInterfaceAt(dest: InterfaceDestination): Int {
     val displayMode = interfaces.displayMode
     val child = getChildId(dest, displayMode)

@@ -66,7 +66,7 @@ suspend fun QueueTask.options(vararg options: String, title: String = "Select an
     waitReturnValue()
     terminateAction!!(this)
 
-    return requestReturnValue as? Int ?: -1
+    return (requestReturnValue as? ResumePauseButtonMessage)?.slot ?: -1
 }
 
 /**

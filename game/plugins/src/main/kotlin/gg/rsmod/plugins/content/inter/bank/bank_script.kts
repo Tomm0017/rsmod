@@ -13,6 +13,7 @@ on_interface_open(Bank.BANK_INTERFACE_ID) {
 
 on_interface_close(Bank.BANK_INTERFACE_ID) {
     player.closeInterface(dest = InterfaceDestination.TAB_AREA)
+    player.closeInputDialog()
 }
 
 intArrayOf(17, 19).forEachIndexed { index, button ->

@@ -1,6 +1,5 @@
 package gg.rsmod.plugins.content.combat
 
-import gg.rsmod.game.model.World
 import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.CombatStyle
@@ -8,7 +7,6 @@ import gg.rsmod.game.model.combat.XpMode
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.service.game.ItemMetadataService
 import gg.rsmod.plugins.api.EquipmentType
 import gg.rsmod.plugins.api.WeaponType
 import gg.rsmod.plugins.api.cfg.Items
@@ -26,26 +24,27 @@ import gg.rsmod.plugins.content.combat.strategy.RangedCombatStrategy
  */
 object CombatConfigs {
 
-    private var cachedItemStats: ItemMetadataService? = null
-
     private const val PLAYER_DEFAULT_ATTACK_SPEED = 4
 
     private const val MIN_ATTACK_SPEED = 1
 
-    fun getCombatStrategy(pawn: Pawn): CombatStrategy {
+    fun getCombatStrategy(pawn: Pawn): CombatStrategy = when (getCombatClass(pawn)) {
+        CombatClass.MELEE -> MeleeCombatStrategy
+        CombatClass.MAGIC -> MagicCombatStrategy
+        CombatClass.RANGED -> RangedCombatStrategy
+        else -> throw IllegalStateException("Invalid combat class: ${getCombatClass(pawn)} for $pawn")
+    }
+
+    fun getCombatClass(pawn: Pawn): CombatClass {
         if (pawn is Npc) {
-            return when (pawn.combatClass) {
-                CombatClass.MELEE -> MeleeCombatStrategy
-                CombatClass.RANGED -> RangedCombatStrategy
-                CombatClass.MAGIC -> MagicCombatStrategy
-            }
+            return pawn.combatClass
         }
 
         if (pawn is Player) {
             return when {
-                pawn.attr.has(Combat.CASTING_SPELL) -> MagicCombatStrategy
-                pawn.hasWeaponType(WeaponType.BOW, WeaponType.CHINCHOMPA, WeaponType.CROSSBOW, WeaponType.THROWN) -> RangedCombatStrategy
-                else -> MeleeCombatStrategy
+                pawn.attr.has(Combat.CASTING_SPELL) -> CombatClass.MAGIC
+                pawn.hasWeaponType(WeaponType.BOW, WeaponType.CHINCHOMPA, WeaponType.CROSSBOW, WeaponType.THROWN) -> CombatClass.RANGED
+                else -> CombatClass.MELEE
             }
         }
 
@@ -388,12 +387,5 @@ object CombatConfigs {
 
             else -> XpMode.ATTACK
         }
-    }
-
-    private fun getItemStats(world: World): ItemMetadataService? {
-        if (cachedItemStats == null) {
-            cachedItemStats = world.getService(ItemMetadataService::class.java)
-        }
-        return cachedItemStats
     }
 }

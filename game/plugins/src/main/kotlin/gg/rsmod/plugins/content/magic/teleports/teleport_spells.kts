@@ -3,34 +3,44 @@ package gg.rsmod.plugins.content.magic.teleports
 import gg.rsmod.plugins.content.magic.*
 import gg.rsmod.plugins.content.magic.MagicSpells.on_magic_spell_button
 
-val SOUNDAREA_ID = 200
-val SOUNDAREA_RADIUS = 10
-val SOUNDAREA_VOLUME = 1
+private val SOUNDAREA_ID = 200
+private val SOUNDAREA_RADIUS = 10
+private val SOUNDAREA_VOLUME = 1
 
 TeleportSpell.values.forEach { teleport ->
-    on_magic_spell_button(teleport.spellName) { metadata ->
-        player.teleport(teleport, metadata)
+    if (teleport.paramItem == null) {
+        on_magic_spell_button(teleport.spellName) { metadata ->
+            player.teleport(teleport, metadata)
+        }
+    } else {
+        val metadata = MagicSpells.getMetadata(teleport.paramItem)!!
+        on_button(metadata.interfaceId, metadata.component) {
+            player.teleport(teleport, metadata)
+        }
     }
 }
 
-fun Player.teleport(spell: TeleportSpell, data: SpellMetadata) {
+on_magic_spell_button("Respawn Teleport") { metadata ->
+    player.teleport(TeleportType.ARCEUUS, world.gameContext.home, 27.0, metadata)
+}
+
+fun Player.teleport(spell: TeleportSpell, data: SpellMetadata) = teleport(spell.type, spell.endArea.randomTile, spell.xp, data)
+
+fun Player.teleport(type: TeleportType, endTile: Tile, xp: Double, data: SpellMetadata) {
     if (!MagicSpells.canCast(this, data.lvl, data.items, data.spellbook)) {
         return
     }
 
-    val type = spell.type
-    val endTile = spell.endArea.randomTile
-
     if (canTeleport(type)) {
         MagicSpells.removeRunes(this, data.items)
         teleport(endTile, type)
-        addXp(Skills.MAGIC, spell.xp)
+        addXp(Skills.MAGIC, xp)
         world.spawn(AreaSound(tile, SOUNDAREA_ID, SOUNDAREA_RADIUS, SOUNDAREA_VOLUME))
     }
 }
 
 enum class TeleportSpell(val spellName: String, val type: TeleportType, val endArea: Area,
-                         val xp: Double) {
+                         val xp: Double, val paramItem: Int? = null) {
     /**
      * Standard.
      */
@@ -65,7 +75,22 @@ enum class TeleportSpell(val spellName: String, val type: TeleportType, val endA
     BARBARIAN("Barbarian Teleport", TeleportType.LUNAR, Area(2547, 3566, 2549, 3571), 76.0),
     KHAZARD("Khazard Teleport", TeleportType.LUNAR, Area(2652, 3156, 2660, 3159), 80.0),
     CATHERBY("Catherby Teleport", TeleportType.LUNAR, Area(2802, 3432, 2806, 3435), 92.0),
-    ICE_PLATEAU("Ice Plateau Teleport", TeleportType.LUNAR, Area(2979, 3940, 2984, 3946), 96.0)
+    ICE_PLATEAU("Ice Plateau Teleport", TeleportType.LUNAR, Area(2979, 3940, 2984, 3946), 96.0),
+
+    /**
+     * Arceuus.
+     */
+    LUMBRIDGE_GRAVEYARD("Lumbridge Graveyard Teleport", TeleportType.ARCEUUS, Area(3238, 3199, 3240, 3203), 10.0),
+    DRAYNOR_MANOR("Draynor Manor Teleport", TeleportType.ARCEUUS, Area(3107, 3327, 3113, 3330), 16.0),
+    BATTLEFRONT("Battlefront Teleport", TeleportType.ARCEUUS, Area(1342, 3682, 1346, 3685), 19.0),
+    MIND_ALTAR("Mind Altar Teleport", TeleportType.ARCEUUS, Area(2979, 3509, 2980, 3512), 22.0),
+    SALVE_GRAVEYARD("Salve Graveyard Teleport", TeleportType.ARCEUUS, Area(3437, 3467, 3442, 3471), 30.0),
+    FENKENSTRAIN_CASTLE("Fenkenstrain's Castle Teleport", TeleportType.ARCEUUS, Area(3546, 3527, 3549, 3529), 50.0),
+    WEST_ARDOUGNE("West Ardougne Teleport", TeleportType.ARCEUUS, Area(2528, 3304, 2534, 3308), 68.0),
+    HARMONY_ISLAND("Harmony Island Teleport", TeleportType.ARCEUUS, Area(3793, 2857, 3801, 2863), 74.0),
+    CEMETERY("Cemetery Teleport", TeleportType.ARCEUUS, Area(2964, 3760, 2969, 3766), 82.0),
+    BARROWS("Barrows Teleport", TeleportType.ARCEUUS, Area(3563, 3312, 3566, 3315), 90.0),
+    APE_ATOLL_DUNGEON("Ape Atoll Teleport", TeleportType.ARCEUUS, Area(2764, 9102, 2767, 9104), 100.0, paramItem = 20427)
     ;
 
     companion object {

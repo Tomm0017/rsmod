@@ -39,6 +39,10 @@ class Item(val id: Int, var amount: Int = 1) {
         return if (def.noteTemplateId > 0) Item(def.noteLinkId, amount).copyAttr(this) else Item(this).copyAttr(this)
     }
 
+    /**
+     * Get the name of this item. If this item is noted this method will use
+     * its un-noted template and get the name for said template.
+     */
     fun getName(definitions: DefinitionSet): String = toUnnoted(definitions).getDef(definitions).name
 
     fun getDef(definitions: DefinitionSet) = definitions.get(ItemDef::class.java, id)

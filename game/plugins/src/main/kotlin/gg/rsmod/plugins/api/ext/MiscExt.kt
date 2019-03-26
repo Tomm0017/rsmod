@@ -2,6 +2,8 @@ package gg.rsmod.plugins.api.ext
 
 import gg.rsmod.game.model.Area
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.timer.TimerKey
+import gg.rsmod.game.model.timer.TimerMap
 import java.text.DecimalFormat
 import java.text.Format
 import java.util.concurrent.ThreadLocalRandom
@@ -31,4 +33,23 @@ fun Int.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int): I
 fun Int.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int, cap: Int): Boolean =
         RANDOM.nextInt(cap) <= interpolate(minChance, maxChance, minLvl, maxLvl)
 
+/**
+ * Get time left from a [TimerKey], in minutes.
+ *
+ * @return
+ * Null if the minutes left is less than 1 (one). Minutes left in timer key otherwise.
+ */
+fun TimerMap.getMinutesLeft(key: TimerKey): Int? {
+    val cyclesLeft = get(key)
+    val minutes = Math.floor(cyclesLeft / 100.0).toInt()
+    if (minutes > 0) {
+        return minutes
+    }
+    return null
+}
+
+/**
+ * Get a random tile within the bounds of this area. Does <strong>not</strong>
+ * take into account clipped tiles within the area.
+ */
 val Area.randomTile: Tile get() = Tile(bottomLeftX + RANDOM.nextInt((topRightX - bottomLeftX) + 1), bottomLeftZ + RANDOM.nextInt((topRightZ - bottomLeftZ) + 1))

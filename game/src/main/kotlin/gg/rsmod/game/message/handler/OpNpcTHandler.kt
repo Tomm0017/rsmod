@@ -31,7 +31,7 @@ class OpNpcTHandler : MessageHandler<OpNpcTMessage> {
         client.resetInteractions()
 
         if (message.movementType == 1 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-            client.teleport(client.world.findRandomTileAround(npc.tile, 1) ?: npc.tile)
+            client.moveTo(client.world.findRandomTileAround(npc.tile, 1) ?: npc.tile)
         }
 
         client.closeInterfaceModal()

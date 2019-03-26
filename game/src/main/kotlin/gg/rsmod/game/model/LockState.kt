@@ -24,15 +24,20 @@ enum class LockState {
     FULL_WITH_ITEM_INTERACTION,
 
     /**
-     * Cannot log out or perform various actions such as handling incoming
-     * [gg.rsmod.game.message.Message]s.
+     * Similar to [FULL], but removes and gives immunity to damage.
      */
-    FULL,
+    FULL_WITH_DAMAGE_IMMUNITY,
 
     /**
      * Similar to [FULL], but can log out.
      */
-    FULL_WITH_LOGOUT;
+    FULL_WITH_LOGOUT,
+
+    /**
+     * Cannot log out or perform various actions such as handling incoming
+     * [gg.rsmod.game.message.Message]s.
+     */
+    FULL;
 
     fun canLogout(): Boolean = when (this) {
         NONE, FULL_WITH_LOGOUT -> true
@@ -47,6 +52,11 @@ enum class LockState {
     fun canAttack(): Boolean = when (this) {
         NONE -> true
         else -> false
+    }
+
+    fun canBeAttacked(): Boolean = when (this) {
+        FULL_WITH_DAMAGE_IMMUNITY -> false
+        else -> true
     }
 
     fun canDropItems(): Boolean = when (this) {

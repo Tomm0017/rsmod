@@ -1,6 +1,7 @@
 package gg.rsmod.plugins.content.objs.depositbox
 
 import com.google.common.collect.ImmutableSet
+import gg.rsmod.game.action.EquipAction
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 
@@ -39,13 +40,11 @@ on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 2) {
 }
 
 on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 4) {
-    val player = player
-    deposit_all(player, player.inventory)
+    deposit_inv(player)
 }
 
 on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 6) {
-    val player = player
-    deposit_all(player, player.equipment, sound = DEPOSIT_EQUIPMENT_SFX)
+    deposit_equipment(player)
 }
 
 on_component_to_component_item_swap(
@@ -93,7 +92,9 @@ fun deposit_item(p: Player, slot: Int, amt: Int) {
     }
 }
 
-fun deposit_all(p: Player, container: ItemContainer, sound: Int = -1) {
+fun deposit_inv(p: Player) {
+    val container = p.inventory
+
     var any = false
 
     if (container.isEmpty) {
@@ -117,7 +118,38 @@ fun deposit_all(p: Player, container: ItemContainer, sound: Int = -1) {
 
     if (!any) {
         p.message("Bank full.")
-    } else if (sound != -1) {
-        p.playSound(sound)
+    }
+}
+
+fun deposit_equipment(p: Player) {
+    val container = p.equipment
+
+    var any = false
+
+    if (container.isEmpty) {
+        p.message("You have nothing to deposit.")
+        return
+    }
+
+    for (i in 0 until container.capacity) {
+        val item = container[i] ?: continue
+        val add = p.bank.add(item, assureFullInsertion = false)
+        if (add.completed == 0) {
+            continue
+        }
+
+        val remove = container.remove(item.id, add.completed, assureFullRemoval = true)
+        if (remove.hasFailed()) {
+            add.items.forEach { p.bank.remove(it.item, beginSlot = it.slot) }
+        } else {
+            any = true
+            EquipAction.onItemUnequip(p, item.id)
+        }
+    }
+
+    if (!any) {
+        p.message("Bank full.")
+    } else {
+        p.playSound(DEPOSIT_EQUIPMENT_SFX)
     }
 }

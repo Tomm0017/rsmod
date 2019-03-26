@@ -22,7 +22,7 @@ class TeleportHandler : MessageHandler<TeleportMessage> {
         client.resetInteractions()
 
         if (client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-            client.teleport(message.x, message.z, message.height)
+            client.moveTo(message.x, message.z, message.height)
         }
     }
 }

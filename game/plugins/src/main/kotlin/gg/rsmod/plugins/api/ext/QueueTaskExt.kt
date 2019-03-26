@@ -1,6 +1,8 @@
 package gg.rsmod.plugins.api.ext
 
+import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.NpcDef
+import gg.rsmod.game.message.impl.ResumePauseButtonMessage
 import gg.rsmod.game.message.impl.TriggerOnDialogAbortMessage
 import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
 import gg.rsmod.game.model.entity.Npc
@@ -226,7 +228,8 @@ suspend fun QueueTask.destroyItem(title: String = "Are you sure you want to dest
     waitReturnValue()
     terminateAction!!(this)
 
-    return requestReturnValue as? Int == 1
+    val msg = requestReturnValue as? ResumePauseButtonMessage
+    return msg?.slot == 1
 }
 
 suspend fun QueueTask.levelUpMessageBox(skill: Int, levelIncrement: Int) {
@@ -289,4 +292,38 @@ suspend fun QueueTask.levelUpMessageBox(skill: Int, levelIncrement: Int) {
     terminateAction = closeDialog
     waitReturnValue()
     terminateAction!!(this)
+}
+
+suspend fun QueueTask.produceItemBox(vararg items: Int, title: String = "What would you like to make?", maxItems: Int = player.inventory.capacity, logic: Player.(Int, Int) -> Unit) {
+
+    val defs = player.world.definitions
+    val itemDefs = items.map { defs.get(ItemDef::class.java, it) }
+
+    val baseChild = 14
+    val itemArray = Array(10) { -1 }
+    val nameArray = Array(10) { "|" }
+
+    itemDefs.withIndex().forEach {
+        val def = it.value
+        itemArray[it.index] = def.id
+        nameArray[it.index] = "|${def.name}"
+    }
+
+    player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 270)
+    player.runClientScript(2046, 0, "$title${nameArray.joinToString("")}", maxItems, *itemArray)
+
+    terminateAction = closeDialog
+    waitReturnValue()
+    terminateAction!!(this)
+
+    val msg = requestReturnValue as? ResumePauseButtonMessage ?: return
+    val child = msg.child
+
+    if (child < baseChild || child >= baseChild + items.size)
+        return
+
+    val item = items[child - baseChild]
+    val qty = msg.slot
+
+    logic(player, item, qty)
 }

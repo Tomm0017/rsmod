@@ -1,6 +1,4 @@
 apply plugin: 'application'
-apply plugin: 'org.jetbrains.kotlin.jvm'
-apply from: "$rootDir/gradle/kotlin.gradle"
 
 description = 'RSMod Game'
 mainClassName = 'gg.rsmod.game.Launcher'
@@ -52,7 +50,6 @@ applicationDistribution.from("$rootDir/data/") {
     include '**'
 
     exclude 'saves/*'
-    exclude 'rsa/*'
 }
 
 applicationDistribution.from("$rootDir") {
@@ -86,8 +83,7 @@ tasks.register("install") {
             from "${rootProject.projectDir}/game.example.yml"
             rename 'game.example.yml', 'game.yml'
 
-            from "${rootProject.projectDir}/first-launch-template"
-            rename 'first-launch-template', 'first-launch'
+            file("${rootProject.projectDir}/first-launch").createNewFile()
         }
 
         javaexec {

@@ -1,7 +1,7 @@
 /.idea/
 /.gradle/
-/build/
-/out/
+build/
+out/
 
 gradlew
 gradlew.bat

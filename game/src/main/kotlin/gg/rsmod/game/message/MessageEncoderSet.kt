@@ -54,6 +54,7 @@ class MessageEncoderSet {
         put(MapProjAnimEncoder(), MapProjAnimMessage::class.java)
         put(SynthSoundEncoder(), SynthSoundMessage::class.java)
         put(SoundAreaEncoder(), SoundAreaMessage::class.java)
+        put(MidiSongEncoder(), MidiSongMessage::class.java)
         put(OnDialogAbortEncoder(), TriggerOnDialogAbortMessage::class.java)
     }
 

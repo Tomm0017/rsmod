@@ -417,6 +417,15 @@ out-packets:
       - name: delay
         type: SHORT
 
+  - message: gg.rsmod.game.message.impl.MidiSongMessage
+    type: FIXED
+    opcode: 23
+    structure:
+      - name: id
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+
   - message: gg.rsmod.game.message.impl.UpdateRunWeightMessage
     type: FIXED
     opcode: 71

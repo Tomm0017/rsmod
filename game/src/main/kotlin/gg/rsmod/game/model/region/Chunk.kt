@@ -62,7 +62,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         matrices[height] = matrix
     }
 
-    fun copyMatrices(other: Chunk) {
+    private fun copyMatrices(other: Chunk) {
         other.matrices.forEachIndexed { index, matrix ->
             matrices[index] = CollisionMatrix(matrix)
         }

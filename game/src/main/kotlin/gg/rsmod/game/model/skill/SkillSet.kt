@@ -26,6 +26,16 @@ class SkillSet(val maxSkills: Int) {
     var dirty = BooleanArray(maxSkills) { true }
 
     /**
+     * Sum up the max level for all your skills.
+     */
+    val calculateTotalLevel: Int get() = skills.sumBy { skill -> getMaxLevel(skill.id) }
+
+    /**
+     * Sum up the experience for all your skills.
+     */
+    val calculateTotalXp: Double get() = skills.sumByDouble { skill -> getCurrentXp(skill.id) }
+
+    /**
      * Get the [Skill] in [skills] with [skill] as its index
      */
     operator fun get(skill: Int): Skill = skills[skill]
@@ -103,10 +113,6 @@ class SkillSet(val maxSkills: Int) {
             setCurrentLevel(skill = skill, level = newLevel)
         }
     }
-
-    fun calculateTotalLevel(): Int = skills.sumBy { skill -> getMaxLevel(skill.id) }
-
-    fun calculateTotalXp(): Double = skills.sumByDouble { skill -> getCurrentXp(skill.id) }
 
     /**
      * Restore all skill levels back to normal.

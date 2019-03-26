@@ -6,7 +6,7 @@ import gg.rsmod.net.packet.GamePacketBuilder
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class RemoveLocalPlayerSegment(val updateTileHash: Boolean) : SynchronizationSegment {
+class RemoveLocalPlayerSegment(private val updateTileHash: Boolean) : SynchronizationSegment {
 
     override fun encode(buf: GamePacketBuilder) {
         /**

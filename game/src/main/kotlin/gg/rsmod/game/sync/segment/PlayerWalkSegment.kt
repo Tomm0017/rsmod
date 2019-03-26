@@ -14,7 +14,7 @@ class PlayerWalkSegment(private val encodeUpdateBlocks: Boolean, private val run
          */
         buf.putBits(1, 1)
         /**
-         * Does the player need to have their [gg.rsmod.game.sync.UpdateBlockType]
+         * Does the player need to have their [gg.rsmod.game.sync.block.UpdateBlockType]s
          * decoded?
          */
         buf.putBit(encodeUpdateBlocks)

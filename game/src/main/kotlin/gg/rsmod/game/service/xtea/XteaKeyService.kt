@@ -60,19 +60,19 @@ class XteaKeyService : Service() {
             val z = regionId and 0xFF
 
             /**
-             * Check if the region corresponding to the [x] and [z] can be
+             * Check if the region corresponding to the x and z can be
              * found in our cache.
              */
             regionIndex.findArchiveByName("m${x}_$z") ?: continue
             regionIndex.findArchiveByName("l${x}_$z") ?: continue
 
             /**
-             * The region was found in the [regionIndex].
+             * The region was found in the regionIndex.
              */
             totalRegions++
 
             /**
-             * If the XTEA is not found in our [xteaService], we know the keys
+             * If the XTEA is not found in our xteaService, we know the keys
              * are missing.
              */
             if (getOrNull(regionId) == null) {

@@ -10,6 +10,6 @@ import gg.rsmod.game.model.entity.Client
 class OpHeldTHandler : MessageHandler<OpHeldTMessage> {
 
     override fun handle(client: Client, message: OpHeldTMessage) {
-        // TODO: handle
+        // TODO: handle magic on item
     }
 }

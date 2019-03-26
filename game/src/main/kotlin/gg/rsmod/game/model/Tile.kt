@@ -81,7 +81,7 @@ class Tile {
      * Checks if the [other] tile is within the [radius]x[radius] distance of
      * this [Tile].
      *
-     * @return [true]
+     * @return true
      * if the tiles are on the same height and within radius of [radius] tiles.
      */
     fun isWithinRadius(other: Tile, radius: Int): Boolean {

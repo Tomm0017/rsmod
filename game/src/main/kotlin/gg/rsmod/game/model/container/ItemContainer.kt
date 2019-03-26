@@ -417,7 +417,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
          * accurate results.
          *
          * Example: One abyssal whip in slot 0 and another in slot 10, we call [remove]
-         * with [beginSlot] of [5] and [assureFullRemoval] as [true]. Our initial
+         * with [beginSlot] of 5 and [assureFullRemoval] as true. Our initial
          * check to make sure the container has enough of the item will succeed,
          * however the loop would only iterate through items in index 5-[capacity].
          * This would only remove one of the two items if we would not go over the

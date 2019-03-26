@@ -25,15 +25,19 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
         if (newPlayer) {
             mask = mask or blocks.updateBlocks[UpdateBlockType.APPEARANCE]!!.bit
 
-            if (other.blockBuffer.faceDegrees != 0) {
-                mask = mask or blocks.updateBlocks[UpdateBlockType.FACE_TILE]!!.bit
-                forceFaceTile = true
-            } else if (other.blockBuffer.facePawnIndex != -1) {
-                mask = mask or blocks.updateBlocks[UpdateBlockType.FACE_PAWN]!!.bit
-                forceFacePawn = true
-            } else {
-                mask = mask or blocks.updateBlocks[UpdateBlockType.FACE_TILE]!!.bit
-                forceFace = other.tile.step(other.lastFacingDirection)
+            when {
+                other.blockBuffer.faceDegrees != 0 -> {
+                    mask = mask or blocks.updateBlocks[UpdateBlockType.FACE_TILE]!!.bit
+                    forceFaceTile = true
+                }
+                other.blockBuffer.facePawnIndex != -1 -> {
+                    mask = mask or blocks.updateBlocks[UpdateBlockType.FACE_PAWN]!!.bit
+                    forceFacePawn = true
+                }
+                else -> {
+                    mask = mask or blocks.updateBlocks[UpdateBlockType.FACE_TILE]!!.bit
+                    forceFace = other.tile.step(other.lastFacingDirection)
+                }
             }
         }
 

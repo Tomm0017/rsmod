@@ -186,7 +186,7 @@ open class Player(world: World) : Pawn(world) {
     override fun getType(): EntityType = EntityType.PLAYER
 
     /**
-     * Checks if the player is running. We assume that the [Varp] with id of
+     * Checks if the player is running. We assume that the varp with id of
      * [173] is the running state varp.
      */
     override fun isRunning(): Boolean = varps[173].state != 0
@@ -460,7 +460,8 @@ open class Player(world: World) : Pawn(world) {
      * to the list should essentially mean the player is registered to the
      * [world].
      *
-     * @return [true] if the player is registered to a [PawnList].
+     * @return
+     * true if the player is registered to a [PawnList].
      */
     val isOnline: Boolean get() = index > 0
 

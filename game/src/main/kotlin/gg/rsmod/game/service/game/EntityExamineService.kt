@@ -47,11 +47,11 @@ class EntityExamineService : Service() {
 
     fun getObj(id: Int): String = objects[id] ?: "It's a ${world.definitions.get(ObjectDef::class.java, id).name}"
 
-    fun loadNpcs(fileName: String) {
+    private fun loadNpcs(fileName: String) {
         load(fileName, npcs)
     }
 
-    fun loadObjects(fileName: String) {
+    private fun loadObjects(fileName: String) {
         load(fileName, objects)
     }
 

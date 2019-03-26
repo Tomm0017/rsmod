@@ -98,7 +98,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                     client.containers[key]
                 }!!
                 it.items.forEach { slot, item ->
-                    container.set(slot, item)
+                    container[slot] = item
                 }
             }
             data.attributes.forEach { key, value ->

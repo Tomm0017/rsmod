@@ -39,12 +39,12 @@ class CollisionUpdate private constructor(val type: Type, val flags: Object2Obje
             this.flags[tile] = flags
         }
 
-        fun putWall(tile: Tile, impenetrable: Boolean, orientation: Direction) {
+        private fun putWall(tile: Tile, impenetrable: Boolean, orientation: Direction) {
             putTile(tile, impenetrable, orientation)
             putTile(tile.step(orientation), impenetrable, orientation.getOpposite())
         }
 
-        fun putLargeCornerWall(tile: Tile, impenetrable: Boolean, orientation: Direction) {
+        private fun putLargeCornerWall(tile: Tile, impenetrable: Boolean, orientation: Direction) {
             val directions = orientation.getDiagonalComponents()
             putTile(tile, impenetrable, *directions)
 

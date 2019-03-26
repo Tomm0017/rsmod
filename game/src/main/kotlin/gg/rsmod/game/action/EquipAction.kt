@@ -41,7 +41,7 @@ object EquipAction {
     fun equip(p: Player, item: Item, inventorySlot: Int = -1): Result {
         val def = p.world.definitions.get(ItemDef::class.java, item.id)
 
-        // Resets interaction when an item is equipped (or attemped to be).
+        // Resets interaction when an item is equipped.
         // This logic does not apply to un-equipping items.
         p.resetFacePawn()
 

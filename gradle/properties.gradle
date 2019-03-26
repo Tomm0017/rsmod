@@ -18,6 +18,5 @@ ext {
     classGraphVersion = '4.6.12'
     fastUtilVersion = '7.0.7'
     kotlinLoggingVersion = '1.6.22'
-    daggerVersion = '2.21'
     okhttpVersion = '3.13.1'
 }

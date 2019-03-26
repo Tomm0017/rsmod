@@ -7,6 +7,8 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.plugins.api.ext.getWildernessLevel
+import gg.rsmod.plugins.api.ext.playSound
+import gg.rsmod.plugins.api.ext.player
 
 fun Player.canTeleport(type: TeleportType): Boolean {
     val currWildLvl = tile.getWildernessLevel()
@@ -31,6 +33,10 @@ fun Pawn.teleport(endTile: Tile, type: TeleportType) {
         animate(type.animation)
         type.graphic?.let {
             graphic(it)
+        }
+
+        type.sound?.let {
+            player.playSound(it)
         }
 
         wait(type.teleportDelay)

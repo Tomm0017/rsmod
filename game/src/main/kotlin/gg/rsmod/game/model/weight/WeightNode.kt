@@ -12,5 +12,8 @@ import java.util.*
  */
 abstract class WeightNode<T>(val weight: Int) {
 
+    /**
+     * Convert the [WeightNode] to [T].
+     */
     abstract fun convert(random: Random): T
 }

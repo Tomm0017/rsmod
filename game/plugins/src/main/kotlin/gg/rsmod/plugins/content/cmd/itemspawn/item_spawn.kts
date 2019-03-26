@@ -15,6 +15,9 @@ on_command("spawn", Privilege.ADMIN_POWER) {
 
 suspend fun QueueTask.spawn(): Item? {
     val item = searchItemInput("Select an item to spawn:")
+    if (item == -1) {
+        return null
+    }
     val amount = when (options("1", "5", "X", "Max", title = "How many would you like to spawn?")) {
         1 -> 1
         2 -> 5

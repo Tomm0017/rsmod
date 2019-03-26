@@ -27,7 +27,7 @@ object MagicCombatStrategy : CombatStrategy {
     override fun canAttack(pawn: Pawn, target: Pawn): Boolean {
         if (pawn is Player) {
             val spell = pawn.attr[Combat.CASTING_SPELL]!!
-            val requirements = MagicSpells.getRequirements(spell.id)
+            val requirements = MagicSpells.getMetadata(spell.id)
             if (requirements != null && !MagicSpells.canCast(pawn, requirements.lvl, requirements.items, requirements.spellbook)) {
                 return false
             }
@@ -59,7 +59,7 @@ object MagicCombatStrategy : CombatStrategy {
             if (spell.castSound != -1) {
                 pawn.playSound(id = spell.castSound, volume = 1, delay = 0)
             }
-            MagicSpells.getRequirements(spell.id)?.let { requirement -> MagicSpells.removeRunes(pawn, requirement.items) }
+            MagicSpells.getMetadata(spell.id)?.let { requirement -> MagicSpells.removeRunes(pawn, requirement.items) }
         }
 
         val formula = MagicCombatFormula
@@ -72,7 +72,7 @@ object MagicCombatStrategy : CombatStrategy {
             addCombatXp(pawn as Player, target, damage)
         }
 
-        target.hit(damage = damage, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize() / 2)))
+        target.hit(damage = damage, delay = getHitDelay(pawn.getCentreTile(), target.getCentreTile()))
                 .addActions(hitActions).setCancelIf { pawn.isDead() }
     }
 

@@ -18,7 +18,6 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.AabbUtil
 import gg.rsmod.util.DataConstants
 import java.util.*
-import kotlin.math.log
 
 /**
  * This class is responsible for calculating distances and valid interaction
@@ -44,11 +43,12 @@ object ObjectPathAction {
                 client.executePlugin(logic)
             } else {
                 client.faceTile(obj.tile)
-                if (client.timers.has(FROZEN_TIMER)) {
-                    client.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
-                } else {
-                    client.message(Entity.YOU_CANT_REACH_THAT)
+                when {
+                    client.timers.has(FROZEN_TIMER) -> client.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+                    client.timers.has(STUN_TIMER) -> client.message(Entity.YOURE_STUNNED)
+                    else -> client.message(Entity.YOU_CANT_REACH_THAT)
                 }
+                client.write(SetMapFlagMessage(255, 255))
             }
         }
     }

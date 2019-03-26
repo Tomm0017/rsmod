@@ -14,7 +14,7 @@ Altar.values.forEach { altar ->
 
         // Allow using the talisman on the ruins to enter the altar
         altar.talisman?.let { talisman ->
-            item_on_obj(obj = ruin, item = talisman) {
+            on_item_on_obj(obj = ruin, item = talisman) {
                 altar.entrance?.let { player.moveTo(it) }
             }
         }

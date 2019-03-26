@@ -20,12 +20,7 @@ set_combat_logic {
 
 suspend fun cycle(it: QueueTask): Boolean {
     val pawn = it.pawn
-    val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR]?.get()
-
-    if (target == null) {
-        pawn.resetFacePawn()
-        return false
-    }
+    val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR]?.get() ?: return false
 
     if (!pawn.lock.canAttack()) {
         return false
@@ -66,10 +61,10 @@ suspend fun cycle(it: QueueTask): Boolean {
             return true
         }
         if (pawn is Player) {
-            if (!pawn.timers.has(FROZEN_TIMER) || pawn.timers.has(STUN_TIMER)) {
-                pawn.message(Entity.YOU_CANT_REACH_THAT)
-            } else {
-                pawn.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+            when {
+                pawn.timers.has(FROZEN_TIMER) -> pawn.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+                pawn.timers.has(STUN_TIMER) -> pawn.message(Entity.YOURE_STUNNED)
+                else -> pawn.message(Entity.YOU_CANT_REACH_THAT)
             }
             pawn.clearMapFlag()
         }

@@ -13,6 +13,7 @@ on_interface_open(Bank.BANK_INTERFACE_ID) {
 
 on_interface_close(Bank.BANK_INTERFACE_ID) {
     player.closeInterface(dest = InterfaceDestination.TAB_AREA)
+    player.closeInputDialog()
 }
 
 intArrayOf(17, 19).forEachIndexed { index, button ->
@@ -135,7 +136,7 @@ on_button(interfaceId = Bank.INV_INTERFACE_ID, component = Bank.INV_INTERFACE_CH
     if (amount == 0) {
         amount = player.inventory.getItemCount(item.id)
     } else if (amount == -1) {
-        this.player.queue {
+        player.queue(TaskPriority.WEAK) {
             amount = inputInt("How many would you like to bank?")
             if (amount > 0) {
                 player.setVarbit(Bank.LAST_X_INPUT, amount)
@@ -214,7 +215,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
             player.bank[slot] = null
             return@p
         }
-        this.player.queue {
+        player.queue(TaskPriority.WEAK) {
             amount = inputInt("How many would you like to withdraw?")
             if (amount > 0) {
                 player.setVarbit(Bank.LAST_X_INPUT, amount)

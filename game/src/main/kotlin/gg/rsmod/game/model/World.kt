@@ -41,6 +41,7 @@ import mu.KLogging
 import net.runelite.cache.IndexType
 import net.runelite.cache.fs.Store
 import java.io.File
+import java.security.SecureRandom
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -125,7 +126,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * A [Random] implementation used for pseudo-random purposes through-out
      * the game world.
      */
-    private val random: Random = Random()
+    val random: Random = SecureRandom()
 
     /**
      * The amount of game cycles that have gone by since the world was first

@@ -55,10 +55,10 @@ object PawnPathAction {
         if (!pathFound) {
             pawn.movementQueue.clear()
             if (pawn is Player) {
-                if (!pawn.timers.has(FROZEN_TIMER) || pawn.timers.has(STUN_TIMER)) {
-                    pawn.message(Entity.YOU_CANT_REACH_THAT)
-                } else {
-                    pawn.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+                when {
+                    pawn.timers.has(FROZEN_TIMER) -> pawn.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+                    pawn.timers.has(STUN_TIMER) -> pawn.message(Entity.YOURE_STUNNED)
+                    else -> pawn.message(Entity.YOU_CANT_REACH_THAT)
                 }
                 pawn.write(SetMapFlagMessage(255, 255))
             }

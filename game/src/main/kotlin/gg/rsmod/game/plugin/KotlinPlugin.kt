@@ -126,16 +126,6 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
     }
 
     /**
-     * Invoke [logic] when an [item] is used on a [gg.rsmod.game.model.entity.GameObject]
-     *
-     * @param obj   The game object id
-     * @param item  The item id
-     */
-    fun item_on_obj(obj: Int, item: Int, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
-        r.bindItemOnObject(obj, item, lineOfSightDistance, logic)
-    }
-
-    /**
      * Invoke [logic] when the [option] option is clicked on a
      * [gg.rsmod.game.model.entity.GameObject].
      *
@@ -185,6 +175,21 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
 
         r.bindGroundItem(item, slot + 1, logic)
     }
+
+    /**
+     * Invoke [logic] when an [item] is used on a [gg.rsmod.game.model.entity.GameObject]
+     *
+     * @param obj   The game object id
+     * @param item  The item id
+     */
+    fun on_item_on_obj(obj: Int, item: Int, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
+        r.bindItemOnObject(obj, item, lineOfSightDistance, logic)
+    }
+
+    /**
+     * Invoke [plugin] when [item1] is used on [item2] or vise-versa.
+     */
+    fun on_item_on_item(item1: Int, item2: Int, plugin: Plugin.() -> Unit) = r.bindItemOnItem(item1, item2, plugin)
 
     /**
      * Set the logic to execute when [gg.rsmod.game.message.impl.WindowStatusMessage]

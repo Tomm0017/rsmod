@@ -2,9 +2,12 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.MoveGameClickMessage
+import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.entity.Client
+import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.priv.Privilege
+import gg.rsmod.game.model.timer.STUN_TIMER
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -13,6 +16,12 @@ class ClickMapHandler : MessageHandler<MoveGameClickMessage> {
 
     override fun handle(client: Client, message: MoveGameClickMessage) {
         if (!client.lock.canMove()) {
+            return
+        }
+
+        if (client.timers.has(STUN_TIMER)) {
+            client.write(SetMapFlagMessage(255, 255))
+            client.message(Entity.YOURE_STUNNED)
             return
         }
 

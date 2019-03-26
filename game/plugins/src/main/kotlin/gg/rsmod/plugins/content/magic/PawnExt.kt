@@ -12,6 +12,10 @@ fun Player.canTeleport(type: TeleportType): Boolean {
     val currWildLvl = tile.getWildernessLevel()
     val wildLvlRestriction = type.wildLvlRestriction
 
+    if (!lock.canTeleport()) {
+        return false
+    }
+
     if (currWildLvl > wildLvlRestriction) {
         message("A mysterious force blocks your teleport spell!")
         message("You can't use this teleport after level $wildLvlRestriction wilderness.")

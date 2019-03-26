@@ -3,7 +3,6 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpNpc2Message
 import gg.rsmod.game.model.entity.Client
-import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.priv.Privilege
 
 /**
@@ -15,7 +14,6 @@ class OpNpc2Handler : MessageHandler<OpNpc2Message> {
         val npc = client.world.npcs[message.index] ?: return
 
         if (!client.lock.canAttack()) {
-            client.message(Entity.YOU_CANT_REACH_THAT)
             return
         }
 

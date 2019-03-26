@@ -7,7 +7,7 @@ if (!MagicSpells.isLoaded()) {
     MagicSpells.loadSpellRequirements(world)
 }
 
-MagicSpells.metadata.filter { it.value.spellType == MagicSpells.COMBAT_SPELL_TYPE }.forEach { entry ->
+MagicSpells.getCombatSpells().forEach { entry ->
     val requirement = entry.value
     val standard = requirement.spellbook == Spellbook.STANDARD.id
     val ancients = requirement.spellbook == Spellbook.ANCIENT.id

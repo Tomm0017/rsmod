@@ -3,7 +3,6 @@ package gg.rsmod.plugins.api.ext
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.message.impl.ResumePauseButtonMessage
-import gg.rsmod.game.message.impl.TriggerOnDialogAbortMessage
 import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
@@ -28,7 +27,7 @@ private val closeDialog: ((QueueTask).() -> Unit) = {
  * Invoked when input dialog queues are interrupted.
  */
 private val closeInput: ((QueueTask).() -> Unit) = {
-    player.write(TriggerOnDialogAbortMessage())
+    player.closeInputDialog()
 }
 
 /**
@@ -66,7 +65,7 @@ suspend fun QueueTask.options(vararg options: String, title: String = "Select an
     waitReturnValue()
     terminateAction!!(this)
 
-    return requestReturnValue as? Int ?: -1
+    return (requestReturnValue as? ResumePauseButtonMessage)?.slot ?: -1
 }
 
 /**

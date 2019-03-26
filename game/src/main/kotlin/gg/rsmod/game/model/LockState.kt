@@ -98,4 +98,9 @@ enum class LockState {
         DELAY_ACTIONS -> true
         else -> false
     }
+
+    fun canTeleport(): Boolean = when (this) {
+        NONE -> true
+        else -> false
+    }
 }

@@ -225,6 +225,14 @@ class PluginRepository(val world: World) {
     private val itemOnObjectPlugins = hashMapOf<Int, HashMap<Int, (Plugin).() -> Unit>>()
 
     /**
+     * A map that contains item on item plugins.
+     *
+     * Key: (itemId1 << 16) | itemId2
+     * Value: plugin
+     */
+    private val itemOnItemPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
+
+    /**
      * A map that contains npcs and any associated menu-click and its respective
      * plugin logic, if any (would not be in the map if it doesn't have a plugin).
      */
@@ -937,7 +945,7 @@ class PluginRepository(val world: World) {
     fun bindItemOnObject(obj: Int, item: Int, lineOfSightDistance: Int = -1, plugin: (Plugin).() -> Unit) {
         val plugins = itemOnObjectPlugins[item] ?: HashMap()
         if (plugins.containsKey(obj)) {
-            val error = "Item is already bound to an object plugin: $item [obj=$obj]";
+            val error = "Item is already bound to an object plugin: $item [obj=$obj]"
             logger.error(error)
             throw IllegalStateException(error)
         }
@@ -955,6 +963,31 @@ class PluginRepository(val world: World) {
         val plugins = itemOnObjectPlugins[item] ?: return false
         val logic = plugins[obj] ?: return false
         p.executePlugin(logic)
+        return true
+    }
+
+    fun bindItemOnItem(item1: Int, item2: Int, plugin: Plugin.() -> Unit) {
+        val max = Math.min(item1, item2)
+        val min = Math.min(item1, item2)
+
+        val hash = (max shl 16) or min
+
+        if (itemOnItemPlugins.containsKey(hash)) {
+            logger.error { "Item on Item pair is already bound to a plugin: [item1=$item1, item2=$item2]" }
+            throw IllegalStateException("Item on Item pair is already bound to a plugin: [item1=$item1, item2=$item2]")
+        }
+
+        itemOnItemPlugins[hash] = plugin
+        pluginCount++
+    }
+
+    fun executeItemOnItem(p: Player, item1: Int, item2: Int): Boolean {
+        val max = Math.min(item1, item2)
+        val min = Math.min(item1, item2)
+
+        val hash = (max shl 16) or min
+        val plugin = itemOnItemPlugins[hash] ?: return false
+        p.executePlugin(plugin)
         return true
     }
 

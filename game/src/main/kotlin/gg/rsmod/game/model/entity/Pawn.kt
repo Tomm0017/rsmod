@@ -48,22 +48,22 @@ abstract class Pawn(val world: World) : Entity() {
     /**
      * @see UpdateBlockBuffer
      */
-    var blockBuffer = UpdateBlockBuffer()
+    internal var blockBuffer = UpdateBlockBuffer()
 
     /**
      * The 3D [Tile] that this pawn was standing on, in the last game cycle.
      */
-    var lastTile: Tile? = null
+    internal var lastTile: Tile? = null
 
     /**
      * The last tile that was set for the pawn's [gg.rsmod.game.model.region.Chunk].
      */
-    var lastChunkTile: Tile? = null
+    internal var lastChunkTile: Tile? = null
 
     /**
      * Whether or not this pawn can teleported this game cycle.
      */
-    var teleport = false
+    internal var teleport = false
 
     /**
      * @see [MovementQueue]
@@ -73,12 +73,12 @@ abstract class Pawn(val world: World) : Entity() {
     /**
      * The current directions that this pawn is moving.
      */
-    var steps: MovementQueue.StepDirection? = null
+    internal var steps: MovementQueue.StepDirection? = null
 
     /**
      * The last [Direction] this pawn was facing.
      */
-    var lastFacingDirection: Direction = Direction.SOUTH
+    internal var lastFacingDirection: Direction = Direction.SOUTH
 
     /**
      * The current [LockState] which filters what actions this pawn can perform.

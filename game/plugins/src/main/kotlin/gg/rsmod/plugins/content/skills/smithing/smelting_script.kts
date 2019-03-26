@@ -1,6 +1,5 @@
 package gg.rsmod.plugins.content.skills.smithing
 
-import com.google.common.collect.ImmutableSet
 import gg.rsmod.plugins.content.skills.smithing.action.SmeltingAction
 import gg.rsmod.plugins.content.skills.smithing.data.Bar
 
@@ -27,9 +26,9 @@ val smelting = SmeltingAction(world.definitions)
 /**
  * The set of 'standard' furnaces
  */
-val standardFurnaces = ImmutableSet.of(
+val standardFurnaces = setOf(
         Objs.FURNACE_24009
-)!!
+)
 
 /**
  * Handles the smelting of the standard bars

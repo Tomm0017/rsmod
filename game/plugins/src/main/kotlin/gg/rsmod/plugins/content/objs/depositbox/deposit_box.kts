@@ -1,17 +1,17 @@
 package gg.rsmod.plugins.content.objs.depositbox
 
-import com.google.common.collect.ImmutableSet
 import gg.rsmod.game.action.EquipAction
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 
-val DEPOSIT_INTERFACE_ID = 192
-val DEPOSIT_EQUIPMENT_SFX = 2238
+private val DEPOSIT_INTERFACE_ID = 192
+private val DEPOSIT_EQUIPMENT_SFX = 2238
 
-val DEPOSIT_BOXES = ImmutableSet.of(Objs.BANK_DEPOSIT_BOX, Objs.BANK_DEPOSIT_BOX_25937, Objs.BANK_DEPOSIT_BOX_26254,
+private val DEPOSIT_BOXES = setOf(
+        Objs.BANK_DEPOSIT_BOX, Objs.BANK_DEPOSIT_BOX_25937, Objs.BANK_DEPOSIT_BOX_26254,
         Objs.BANK_DEPOSIT_BOX_29103, Objs.BANK_DEPOSIT_BOX_29104, Objs.BANK_DEPOSIT_BOX_29105, Objs.BANK_DEPOSIT_BOX_29106,
         Objs.BANK_DEPOSIT_BOX_29327, Objs.BANK_DEPOSIT_BOX_30268, Objs.BANK_DEPOSIT_BOX_31726, Objs.BANK_DEPOSIT_BOX_32665,
-        Objs.BANK_DEPOSIT_BOX_34344)!!
+        Objs.BANK_DEPOSIT_BOX_34344)
 
 DEPOSIT_BOXES.forEach { box ->
     on_obj_option(obj = box, option = "deposit") {

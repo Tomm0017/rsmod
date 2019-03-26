@@ -1,17 +1,14 @@
 package gg.rsmod.plugins.content.items.essencepouch
 
-import com.google.common.collect.ImmutableSet
-import gg.rsmod.game.fs.def.ItemDef
-
 /**
  * The set of essence pouch definitions
  */
-val pouches = ImmutableSet.of(
+private val pouches = setOf(
         EssencePouch(id = Items.SMALL_POUCH,    levelReq = 1,   capacity = 3),
         EssencePouch(id = Items.MEDIUM_POUCH,   levelReq = 25,  capacity = 6),
         EssencePouch(id = Items.LARGE_POUCH,    levelReq = 50,  capacity = 9),
         EssencePouch(id = Items.GIANT_POUCH,    levelReq = 75,  capacity = 12)
-)!!
+)
 
 /**
  * Bind item option events for the various essence pouches

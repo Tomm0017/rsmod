@@ -1,6 +1,7 @@
 package gg.rsmod.game.model.weight
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
+import java.security.SecureRandom
 import java.util.*
 
 /**
@@ -8,21 +9,23 @@ import java.util.*
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class WeightNodeSet<T> {
+open class WeightNodeSet<T> {
 
     /**
      * All the [WeightNode]s that this set represents.
      */
     private val nodes = ObjectArrayList<WeightNode<T>>()
 
+    private val random = SecureRandom()
+
     fun add(node: WeightNode<T>): WeightNodeSet<T> {
         nodes.add(node)
         return this
     }
 
-    fun getRandom(random: Random): T = getRandomNode(random).value
+    fun getRandom(random: Random = this.random): T = getRandomNode(random).convert(random)
 
-    fun getRandomNode(random: Random): WeightNode<T> {
+    fun getRandomNode(random: Random = this.random): WeightNode<T> {
         val totalWeight = nodes.sumBy { it.weight }
         var randomWeight = random.nextInt(totalWeight + 1)
 

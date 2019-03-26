@@ -97,6 +97,7 @@ suspend fun QueueTask.inputInt(description: String = "Enter amount"): Int {
 suspend fun QueueTask.searchItemInput(message: String): Int {
     player.runClientScript(750, message, 1, -1)
 
+    terminateAction = closeInput
     waitReturnValue()
 
     return requestReturnValue as? Int ?: -1

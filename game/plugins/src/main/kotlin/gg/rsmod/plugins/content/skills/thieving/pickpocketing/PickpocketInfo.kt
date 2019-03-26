@@ -272,7 +272,9 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
     ),
     FREMENNIK_CITIZEN(
             ids = intArrayOf(
-                    /*TODO: Find fremmy citizen id*/
+                    Npcs.AGNAR, Npcs.FREIDIR, Npcs.BORROKAR, Npcs.LANZIG,
+                    Npcs.PONTAK, Npcs.FREYGERD_3942, Npcs.LENSA_3943, Npcs.JENNELLA,
+                    Npcs.SASSILIK_3945, Npcs.INGA
             ),
             exp = 65.0,
             lvl = 45,
@@ -284,7 +286,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
     ),
     BEARDED_POLLNIVIAN_BANDIT(
             ids = intArrayOf(
-                    /*TODO: Find Bearded Pollnivian Bandit ID*/
+                    Npcs.BANDIT_736, Npcs.BANDIT_737
             ),
             exp = 65.0,
             lvl = 45,
@@ -296,7 +298,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
     ),
     DESERT_BANDIT(
             ids = intArrayOf(
-                    /*TODO: Find DESERT Bandit ID*/
+                    Npcs.BANDIT_690, Npcs.BANDIT_695
             ),
             exp = 79.5,
             lvl = 53,
@@ -324,7 +326,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
     ),
     POLLNIVIAN_BANDIT(
             ids = intArrayOf(
-                    /*TODO: Find Pollnivian Bandit ID*/
+                    Npcs.BANDIT_734, Npcs.BANDIT_735
             ),
             exp = 84.3,
             lvl = 55,
@@ -373,7 +375,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
     ),
     GNOME(
             ids = intArrayOf(
-                    
+                    Npcs.GNOME_6094, Npcs.GNOME_6095, Npcs.GNOME_6096
             ),
             exp = 198.5,
             lvl = 75,

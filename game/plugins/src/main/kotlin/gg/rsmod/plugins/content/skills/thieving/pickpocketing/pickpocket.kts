@@ -25,7 +25,9 @@ PickpocketInfo.values().forEach { npcClass ->
                             player.message("You attempt to pickpocket the ${npcClass.npcName}...")
 
                             //wait 3 game cycles
+                            player.lock = LockState.FULL_WITH_ITEM_INTERACTION
                             wait(3)
+                            player.lock = LockState.NONE
 
                             //determine if the pickpocket was successful or not by "if random number is within success chances"
                             val cap = if (player.hasEquipped(EquipmentType.GLOVES, Items.GLOVES_OF_SILENCE)) 5 else 0

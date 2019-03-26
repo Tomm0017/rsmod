@@ -8,6 +8,7 @@ import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.plugin.KotlinPlugin
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.plugins.api.Skills
+import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.getSpellbook
 import gg.rsmod.plugins.api.ext.getVarbit
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
@@ -19,7 +20,7 @@ object MagicSpells {
 
     const val INF_RUNES_VARBIT = 4145
 
-    private val SPELLBOOK_POINTER_ENUM = 1981
+    private const val SPELLBOOK_POINTER_ENUM = 1981
 
     private const val SPELL_SPELLBOOK_KEY = 336
     private const val SPELL_RUNE1_ID_KEY = 365
@@ -35,9 +36,15 @@ object MagicSpells {
     private const val SPELL_LVL_REQ_KEY = 604
     private const val SPELL_TYPE_KEY = 605
 
-    const val COMBAT_SPELL_TYPE = 0
-    const val MISC_SPELL_TYPE = 1
-    const val TELEPORT_SPELL_TYPE = 2
+    private const val COMBAT_SPELL_TYPE = 0
+    private const val MISC_SPELL_TYPE = 1
+    private const val TELEPORT_SPELL_TYPE = 2
+
+    private val STAFF_ITEMS = arrayOf(
+            Items.IBANS_STAFF, Items.IBANS_STAFF_U,
+            Items.SLAYERS_STAFF, Items.SLAYERS_STAFF_E,
+            Items.SARADOMIN_STAFF, Items.GUTHIX_STAFF, Items.ZAMORAK_STAFF
+    )
 
     private val metadata = Int2ObjectOpenHashMap<SpellMetadata>()
 
@@ -67,8 +74,13 @@ object MagicSpells {
 
     fun removeRunes(p: Player, items: List<Item>) {
         if (p.getVarbit(INF_RUNES_VARBIT) == 0) {
-            // TODO: don't remove non-rune items
             for (item in items) {
+                /**
+                 * Do not remove staff item requirements.
+                 */
+                if (item.id in STAFF_ITEMS) {
+                    continue
+                }
                 p.inventory.remove(item)
             }
         }

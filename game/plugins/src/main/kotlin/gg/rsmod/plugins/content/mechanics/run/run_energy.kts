@@ -5,9 +5,8 @@ on_login {
 }
 
 on_timer(RunEnergy.RUN_DRAIN) {
-    val p = player
-    p.timers[RunEnergy.RUN_DRAIN] = 1
-    RunEnergy.drain(p)
+    player.timers[RunEnergy.RUN_DRAIN] = 1
+    RunEnergy.drain(player)
 }
 
 /**

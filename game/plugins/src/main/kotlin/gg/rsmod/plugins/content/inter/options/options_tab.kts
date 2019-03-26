@@ -10,10 +10,8 @@ fun bind_setting(child: Int, plugin: Plugin.() -> Unit) {
 }
 
 on_login {
-    val p = player
-
-    p.setInterfaceEvents(interfaceId = OptionsTab.INTERFACE_ID, component = 106, range = 1..4, setting = 2) // Player option priority
-    p.setInterfaceEvents(interfaceId = OptionsTab.INTERFACE_ID, component = 107, range = 1..4, setting = 2) // Npc option priority
+    player.setInterfaceEvents(interfaceId = OptionsTab.INTERFACE_ID, component = 106, range = 1..4, setting = 2) // Player option priority
+    player.setInterfaceEvents(interfaceId = OptionsTab.INTERFACE_ID, component = 107, range = 1..4, setting = 2) // Npc option priority
 }
 
 /**
@@ -42,25 +40,23 @@ for (offset in 0..3) {
  * Changing display modes (fixed, resizable).
  */
 set_window_status_logic {
-    val p = player
-    val change = p.attr[DISPLAY_MODE_CHANGE_ATTR]
+    val change = player.attr[DISPLAY_MODE_CHANGE_ATTR]
     val mode = when (change) {
-        2 -> if (p.getVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT) == 1) DisplayMode.RESIZABLE_LIST else DisplayMode.RESIZABLE_NORMAL
+        2 -> if (player.getVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT) == 1) DisplayMode.RESIZABLE_LIST else DisplayMode.RESIZABLE_NORMAL
         else -> DisplayMode.FIXED
     }
-    p.toggleDisplayInterface(mode)
+    player.toggleDisplayInterface(mode)
 }
 
 /**
  * Advanced options.
  */
 bind_setting(child = 35) {
-    val p = player
-    if (!p.lock.canInterfaceInteract()) {
+    if (!player.lock.canInterfaceInteract()) {
         return@bind_setting
     }
-    p.setInterfaceUnderlay(color = -1, transparency = -1)
-    p.openInterface(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, dest = InterfaceDestination.MAIN_SCREEN)
+    player.setInterfaceUnderlay(color = -1, transparency = -1)
+    player.openInterface(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, dest = InterfaceDestination.MAIN_SCREEN)
 }
 
 /**
@@ -100,20 +96,18 @@ bind_setting(child = 63) {
  * Toggle split private chat.
  */
 bind_setting(child = 65) {
-    val p = player
-    p.toggleVarp(OSRSGameframe.SPLIT_PRIVATE_VARP)
-    p.runClientScript(83)
+    player.toggleVarp(OSRSGameframe.SPLIT_PRIVATE_VARP)
+    player.runClientScript(83)
 }
 
 /**
  * Hide private messages when chat hidden.
  */
 bind_setting(child = 67) {
-    val p = player
-    if (!p.isClientResizable() || p.getVarp(OSRSGameframe.SPLIT_PRIVATE_VARP) == 0) {
-        p.message("That option is applicable only in resizable mode with 'Split Private Chat' enabled.")
+    if (!player.isClientResizable() || player.getVarp(OSRSGameframe.SPLIT_PRIVATE_VARP) == 0) {
+        player.message("That option is applicable only in resizable mode with 'Split Private Chat' enabled.")
     } else {
-        p.toggleVarbit(OSRSGameframe.HIDE_PM_WHEN_CHAT_HIDDEN_VARBIT)
+        player.toggleVarbit(OSRSGameframe.HIDE_PM_WHEN_CHAT_HIDDEN_VARBIT)
     }
 }
 
@@ -156,13 +150,12 @@ bind_setting(child = 81) {
  * Set hotkey binds.
  */
 bind_setting(child = 83) {
-    val p = player
-    if (!p.lock.canInterfaceInteract()) {
+    if (!player.lock.canInterfaceInteract()) {
         return@bind_setting
     }
-    p.setInterfaceUnderlay(color = -1, transparency = -1)
-    p.setInterfaceEvents(interfaceId = 121, component = 111, range = 0..13, setting = 2)
-    p.openInterface(interfaceId = 121, dest = InterfaceDestination.MAIN_SCREEN)
+    player.setInterfaceUnderlay(color = -1, transparency = -1)
+    player.setInterfaceEvents(interfaceId = 121, component = 111, range = 0..13, setting = 2)
+    player.openInterface(interfaceId = 121, dest = InterfaceDestination.MAIN_SCREEN)
 }
 
 /**

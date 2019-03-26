@@ -23,16 +23,15 @@ on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 12) {
 }
 
 on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 16) {
-    val p = player
-    p.toggleVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT)
+    player.toggleVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT)
 
     /**
      * Close or open the XP drop interface.
      */
-    if (p.getVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT) == 0) {
-        p.openInterface(interfaceId = 160, dest = InterfaceDestination.MINI_MAP)
+    if (player.getVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT) == 0) {
+        player.openInterface(interfaceId = 160, dest = InterfaceDestination.MINI_MAP)
     } else {
-        p.closeInterface(interfaceId = 160)
+        player.closeInterface(interfaceId = 160)
     }
 }
 
@@ -45,13 +44,11 @@ on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 20) {
 }
 
 on_button(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, component = 21) {
-    val p = player
+    player.toggleVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT)
 
-    p.toggleVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT)
-
-    if (p.isClientResizable()) {
+    if (player.isClientResizable()) {
         val mode = if (player.getVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT) == 0) DisplayMode.RESIZABLE_NORMAL else DisplayMode.RESIZABLE_LIST
-        p.toggleDisplayInterface(mode)
+        player.toggleDisplayInterface(mode)
     }
 }
 

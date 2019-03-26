@@ -8,7 +8,6 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.attr.INTERACTING_ITEM
 import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.entity.Client
-import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.priv.Privilege
@@ -39,7 +38,6 @@ class OpLocUHandler : MessageHandler<OpLocUMessage> {
 
         // If the player can't move, do nothing
         if (!client.lock.canMove()) {
-            client.message(Entity.YOU_CANT_REACH_THAT)
             return
         }
 

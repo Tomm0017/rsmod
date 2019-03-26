@@ -6,7 +6,6 @@ import gg.rsmod.game.message.impl.OpNpc3Message
 import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Client
-import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.priv.Privilege
 import java.lang.ref.WeakReference
 
@@ -19,7 +18,6 @@ class OpNpc3Handler : MessageHandler<OpNpc3Message> {
         val npc = client.world.npcs[message.index] ?: return
 
         if (!client.lock.canNpcInteract()) {
-            client.message(Entity.YOU_CANT_REACH_THAT)
             return
         }
 

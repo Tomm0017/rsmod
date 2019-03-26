@@ -91,7 +91,7 @@ class SmeltingAction(private val defs: DefinitionSet) {
             return false
         }
 
-        if (player.getSkills().getMaxLevel(Skills.SMITHING) < bar.level) {
+        if (player.getSkills().getCurrentLevel(Skills.SMITHING) < bar.level) {
             task.messageBox("You need a ${Skills.getSkillName(player.world, Skills.SMITHING)} level of at least ${bar.level} to smelt ${oreNames[bar.primaryOre]}.")
             return false
         }

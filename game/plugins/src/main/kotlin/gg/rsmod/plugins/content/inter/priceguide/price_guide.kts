@@ -5,11 +5,11 @@ on_button(interfaceId = 387, component = 19) {
         return@on_button
     }
     PriceGuide.open(player)
-    player.closeInputDialog()
 }
 
 on_interface_close(interfaceId = PriceGuide.INTERFACE_ID) {
     PriceGuide.close(player)
+    player.closeInputDialog()
 }
 
 on_button(interfaceId = PriceGuide.TAB_INTERFACE_ID, component = 0) {

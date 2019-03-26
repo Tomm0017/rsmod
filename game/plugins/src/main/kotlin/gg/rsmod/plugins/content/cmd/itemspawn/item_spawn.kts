@@ -3,7 +3,7 @@ package gg.rsmod.plugins.content.cmd.itemspawn
 import gg.rsmod.game.model.priv.Privilege
 
 on_command("spawn", Privilege.ADMIN_POWER) {
-    player.queue {
+    player.queue(TaskPriority.STRONG) {
         val item = spawn() ?: return@queue
         if (item.amount > 0) {
             player.message("You have spawned ${item.amount} x ${item.getName(world.definitions)}.")

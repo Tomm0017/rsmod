@@ -512,6 +512,32 @@ in-packets:
         type: BYTE
         trans: NEGATE
 
+  - message: gg.rsmod.game.message.impl.OpHeldUMessage
+    type: FIXED
+    opcode: 63
+    length: 16
+    structure:
+      - name: from_component
+        order: MIDDLE
+        type: INT
+      - name: to_component
+        order: INVERSED_MIDDLE
+        type: INT
+      - name: from_slot
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: from_item
+        order: LITTLE
+        type: SHORT
+      - name: to_slot
+        order: LITTLE
+        type: SHORT
+      - name: to_item
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+
   - message: gg.rsmod.game.message.impl.OpNpcTMessage
     type: FIXED
     opcode: 86
@@ -1262,12 +1288,6 @@ in-packets:
     type: FIXED
     opcode: 62
     length: 3
-    ignore: true
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPHELDU
-    type: FIXED
-    opcode: 63
-    length: 16
     ignore: true
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IF1_BUTTON4

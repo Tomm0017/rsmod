@@ -20,12 +20,7 @@ set_combat_logic {
 
 suspend fun cycle(it: QueueTask): Boolean {
     val pawn = it.pawn
-    val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR]?.get()
-
-    if (target == null) {
-        pawn.resetFacePawn()
-        return false
-    }
+    val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR]?.get() ?: return false
 
     if (!pawn.lock.canAttack()) {
         return false

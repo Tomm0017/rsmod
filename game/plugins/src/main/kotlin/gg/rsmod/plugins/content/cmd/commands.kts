@@ -24,7 +24,7 @@ on_command("empty") {
 
 on_command("home", Privilege.ADMIN_POWER) {
     val home = world.gameContext.home
-    player.teleport(home)
+    player.moveTo(home)
 }
 
 on_command("obank", Privilege.ADMIN_POWER) {
@@ -41,7 +41,7 @@ on_command("tele", Privilege.ADMIN_POWER) {
         val x = values[0].toInt()
         val z = values[1].toInt()
         val height = if (values.size > 2) values[2].toInt() else 0
-        player.teleport(x, z, height)
+        player.moveTo(x, z, height)
     }
 }
 

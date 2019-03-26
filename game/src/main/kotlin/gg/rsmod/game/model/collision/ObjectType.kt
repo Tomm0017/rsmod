@@ -65,7 +65,7 @@ enum class ObjectType(val value: Int, val group: ObjectGroup) {
     INTERACTABLE(10, ObjectGroup.INTERACTABLE_OBJECT),
 
     /**
-     * An [.INTERACTABLE] object, rotated `pi / 2` radians.
+     * An [INTERACTABLE] object, rotated `pi / 2` radians.
      */
     DIAGONAL_INTERACTABLE(11, ObjectGroup.INTERACTABLE_OBJECT),
 

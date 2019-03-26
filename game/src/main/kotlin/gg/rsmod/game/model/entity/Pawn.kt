@@ -469,15 +469,15 @@ abstract class Pawn(val world: World) : Entity() {
         return route
     }
 
-    fun teleport(x: Int, z: Int, height: Int = 0) {
+    fun moveTo(x: Int, z: Int, height: Int = 0) {
         teleport = true
         tile = Tile(x, z, height)
         movementQueue.clear()
         addBlock(UpdateBlockType.MOVEMENT)
     }
 
-    fun teleport(tile: Tile) {
-        teleport(tile.x, tile.z, tile.height)
+    fun moveTo(tile: Tile) {
+        moveTo(tile.x, tile.z, tile.height)
     }
 
     fun animate(id: Int) {

@@ -26,7 +26,7 @@ on_obj_option(Objs.LEVER_26761, "pull") {
         wait(4)
 
         player.animate(-1)
-        player.teleport(3154, 3924)
+        player.moveTo(3154, 3924)
         player.message("... and teleport into the Wilderness.")
         player.unlock()
     }

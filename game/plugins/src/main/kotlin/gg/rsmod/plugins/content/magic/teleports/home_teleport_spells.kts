@@ -69,7 +69,7 @@ suspend fun QueueTask.teleport(endTile: Tile) {
     player.animate(4857)
     wait(2)
     player.animate(-1)
-    player.teleport(endTile)
+    player.moveTo(endTile)
     player.timers[HOME_TELEPORT_TIMER] = HOME_TELEPORT_TIMER_DELAY
 }
 

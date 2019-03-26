@@ -23,7 +23,7 @@ class ClickMapHandler : MessageHandler<MoveGameClickMessage> {
         client.resetInteractions()
 
         if (message.movementType == 2 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-            client.teleport(message.x, message.z, client.tile.height)
+            client.moveTo(message.x, message.z, client.tile.height)
         } else {
             client.walkTo(message.x, message.z, if (message.movementType == 1)
                 MovementQueue.StepType.FORCED_RUN else MovementQueue.StepType.NORMAL)

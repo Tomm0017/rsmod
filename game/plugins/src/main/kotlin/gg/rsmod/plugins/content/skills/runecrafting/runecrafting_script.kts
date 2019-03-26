@@ -15,7 +15,7 @@ Altar.values.forEach { altar ->
         // Allow using the talisman on the ruins to enter the altar
         altar.talisman?.let { talisman ->
             item_on_obj(obj = ruin, item = talisman) {
-                altar.entrance?.let { player.teleport(it) }
+                altar.entrance?.let { player.moveTo(it) }
             }
         }
 
@@ -23,7 +23,7 @@ Altar.values.forEach { altar ->
         if (def.options.contains(enterOption)) {
             on_obj_option(obj = ruin, option = enterOption) {
                 if (player.getVarbit(altar.varbit) == 1) {
-                    altar.entrance?.let { player.teleport(it) }
+                    altar.entrance?.let { player.moveTo(it) }
                 }
             }
         }
@@ -63,7 +63,7 @@ Altar.values.forEach { altar ->
      */
     if (altar.exitPortal != null && altar.exit != null) {
         on_obj_option(obj = altar.exitPortal, option = "use") {
-            player.teleport(altar.exit)
+            player.moveTo(altar.exit)
         }
     }
 

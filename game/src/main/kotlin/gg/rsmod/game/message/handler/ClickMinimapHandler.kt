@@ -23,7 +23,7 @@ class ClickMinimapHandler : MessageHandler<MoveMinimapClickMessage> {
         client.resetInteractions()
 
         if (message.movementType == 2 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-            client.teleport(message.x, message.z)
+            client.moveTo(message.x, message.z)
         } else {
             client.walkTo(message.x, message.z, if (message.movementType == 1)
                 MovementQueue.StepType.FORCED_RUN else MovementQueue.StepType.NORMAL)

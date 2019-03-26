@@ -18,7 +18,6 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.util.AabbUtil
 import gg.rsmod.util.DataConstants
 import java.util.*
-import kotlin.math.log
 
 /**
  * This class is responsible for calculating distances and valid interaction

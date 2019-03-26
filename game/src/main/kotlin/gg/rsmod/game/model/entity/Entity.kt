@@ -22,5 +22,6 @@ abstract class Entity {
         const val NOTHING_INTERESTING_HAPPENS = "Nothing interesting happens."
         const val YOU_CANT_REACH_THAT = "I can't reach that!"
         const val MAGIC_STOPS_YOU_FROM_MOVING = "A magical force stops you from moving."
+        const val YOURE_STUNNED = "You're stunned!"
     }
 }

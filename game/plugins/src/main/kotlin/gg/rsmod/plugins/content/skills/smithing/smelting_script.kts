@@ -38,7 +38,7 @@ val standardFurnaces = ImmutableSet.of(
  * @param item      The item the player is trying to smelt
  * @param amount    The number of bars the player is trying to smelt
  */
-fun standardSmeltItem(player: Player, item: Int, amount: Int) {
+fun smeltItem(player: Player, item: Int, amount: Int = 28) {
     val def = barDefs[item] ?: return
     player.queue { smelting.smelt(this, def, amount) }
 }
@@ -47,7 +47,27 @@ fun standardSmeltItem(player: Player, item: Int, amount: Int) {
  * Handle smelting at any 'standard' furnace
  */
 standardFurnaces.forEach { furnace ->
-    on_obj_option(obj = furnace, option = "smelt") {
-        player.queue { produceItemBox(*standardBarIds, title = "What would you like to smelt?", logic = ::standardSmeltItem) }
+
+    on_obj_option(obj = furnace, option = "smelt") { smeltStandard(player) }
+
+    standardBarIds.forEach { item_on_obj(obj = furnace, item = it) { smeltStandard(player) } }
+
+    item_on_obj(obj = furnace, item = Items.LOVAKITE_ORE) {
+        player.queue { messageBox("This furnace is the wrong temperature for lovakite ore.") }
     }
 }
+
+/**
+ * Opens the proompt to smelt any standard bar
+ *
+ * @param player    The player instance
+ */
+fun smeltStandard(player: Player) {
+    player.queue { produceItemBox(*standardBarIds, title = "What would you like to smelt?", logic = ::smeltItem) }
+}
+
+/**
+ * Handles smelting at the Lovakite furnace
+ */
+on_obj_option(obj = Objs.LOVAKITE_FURNACE, option = "smelt") { smeltItem(player, Items.LOVAKITE_BAR) }
+item_on_obj(obj = Objs.LOVAKITE_FURNACE, item = Items.LOVAKITE_ORE) { smeltItem(player, Items.LOVAKITE_BAR) }

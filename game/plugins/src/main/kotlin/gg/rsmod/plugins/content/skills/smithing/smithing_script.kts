@@ -86,18 +86,8 @@ standardAnvils.forEach { anvil ->
     // Bind the "smith" action on an anvil
     on_obj_option(obj = anvil, option = "smith") {
 
-        // The player's inventory
-        val inventory = player.inventory
-
-        // The last bar that was smithed
-        val lastBar = smithingData.smithableBarsEnum.getInt(player.getVarbit(smithingCurrentBarVarbit))
-
-        // The first bar that the player can smith
-        val bar = if (barDefs.containsKey(lastBar) && inventory.contains(lastBar)) {
-            barDefs[lastBar]
-        } else {
-            inventory.filter { barDefs.containsKey(it?.id) }.map { barDefs[it?.id]!! }.firstOrNull { player.getSkills().getCurrentLevel(Skills.SMITHING) >= it.level }
-        }
+        // The bar to smith
+        val bar = getBar(player) ?: return@on_obj_option
 
         // Check if the player can smith a bar
         player.queue(TaskPriority.WEAK) {
@@ -107,8 +97,29 @@ standardAnvils.forEach { anvil ->
                 return@queue
 
             // Queue the smithing interface
-            openSmithingInterface(player, bar!!)
+            openSmithingInterface(player, bar)
         }
+    }
+}
+
+/**
+ * Gets an available bar to smith for a player
+ *
+ * @param player    The player instance
+ * @return          The bar to smith
+ */
+fun getBar(player: Player) : Bar? {
+
+    // The player's inventory
+    val inventory = player.inventory
+
+    // The last bar that was smithed
+    val lastBar = smithingData.smithableBarsEnum.getInt(player.getVarbit(smithingCurrentBarVarbit))
+
+    return if (barDefs.containsKey(lastBar) && inventory.contains(lastBar)) {
+        barDefs[lastBar]
+    } else {
+        inventory.filter { barDefs.containsKey(it?.id) }.map { barDefs[it?.id]!! }.firstOrNull { player.getSkills().getCurrentLevel(Skills.SMITHING) >= it.level }
     }
 }
 

@@ -1,3 +1,7 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "5.0.0"
+}
+
 apply plugin: 'application'
 
 description = 'RSMod Game'
@@ -44,34 +48,6 @@ sourceSets {
     main.resources.srcDirs = ['src/main/resources']
 }
 
-applicationDistribution.from("$rootDir/data/") {
-    into 'bin/data/'
-
-    include '**'
-
-    exclude 'saves/*'
-}
-
-applicationDistribution.from("$rootDir") {
-    into 'bin'
-
-    include 'plugins/*'
-
-    include 'game.example.yml'
-    rename 'game.example.yml', 'game.yml'
-}
-
-task extractDependencies(type: Copy) {
-    from(zipTree("build/distributions/game-${project.version}.zip")) {
-        include "game-${project.version}/lib/*"
-        eachFile {
-            path = name
-        }
-        includeEmptyDirs = false
-    }
-    into 'build/libs'
-}
-
 tasks.register("install") {
     description = 'Install RSMod'
 
@@ -92,6 +68,62 @@ tasks.register("install") {
             main = "gg.rsmod.game.service.rsa.RsaService"
             args = [ "16", "2048", "./data/rsa/key.pem" ] // radix, bitcount, rsa pem file
         }
+    }
+}
+
+task extractDependencies(type: Copy) {
+    from(zipTree("build/distributions/game-${project.version}.zip")) {
+        include "game-${project.version}/lib/*"
+        eachFile {
+            path = name
+        }
+        includeEmptyDirs = false
+    }
+    into 'build/deps'
+}
+
+applicationDistribution.from("$rootDir/data/") {
+    into 'bin/data/'
+    include '**'
+    exclude 'saves/*'
+}
+
+applicationDistribution.from("$rootDir") {
+    into 'bin'
+
+    include 'plugins/*'
+
+    include 'game.example.yml'
+    rename 'game.example.yml', 'game.yml'
+}
+
+shadowDistZip {
+    from("$rootDir/data/") {
+        into "game-shadow-${project.version}/bin/data/"
+        include '**'
+        exclude 'saves/*'
+    }
+
+    from("$rootDir") {
+        into "game-shadow-${project.version}/bin/"
+        include 'plugins/*'
+        include 'game.example.yml'
+        rename 'game.example.yml', 'game.yml'
+    }
+}
+
+shadowDistTar {
+    from("$rootDir/data/") {
+        into "game-shadow-${project.version}/bin/data/"
+        include '**'
+        exclude 'saves/*'
+    }
+
+    from("$rootDir") {
+        into "game-shadow-${project.version}/bin/"
+        include 'plugins/*'
+        include 'game.example.yml'
+        rename 'game.example.yml', 'game.yml'
     }
 }
 

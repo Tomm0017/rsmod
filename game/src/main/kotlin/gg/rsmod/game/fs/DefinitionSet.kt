@@ -1,5 +1,6 @@
 package gg.rsmod.game.fs
 
+import com.google.common.collect.ImmutableSet
 import gg.rsmod.game.fs.def.*
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
@@ -29,6 +30,11 @@ class DefinitionSet {
      * A [Map] holding all definitions with their [Class] as key.
      */
     private val defs = hashMapOf<Class<out Definition>, Map<Int, *>>()
+
+    /**
+     * A [Map] containing a set of definitions with their [Class] as key
+     */
+    private val definitionSet by lazy { defs.entries.associate { it.key to ImmutableSet.copyOf(it.value.values) } }
 
     private var xteaService: XteaKeyService? = null
 
@@ -126,8 +132,8 @@ class DefinitionSet {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T: Definition> get(type: Class<out T>) : Map<Int, T> {
-        return (defs[type]!!) as Map<Int, T>
+    fun <T: Definition> get(type: Class<out T>) : ImmutableSet<T> {
+        return (definitionSet[type]!!) as ImmutableSet<T>
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -136,8 +142,8 @@ class DefinitionSet {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T: Definition> getNullable(type: Class<out T>) : Map<Int, T?>? {
-        return (defs[type]!!) as Map<Int, T?>
+    fun <T: Definition> getNullable(type: Class<out T>) : ImmutableSet<T?> {
+        return (definitionSet[type]!!) as ImmutableSet<T?>
     }
 
     /**

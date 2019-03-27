@@ -3,6 +3,9 @@ package gg.rsmod.plugins.content.skills.thieving.pickpocketing
 import gg.rsmod.plugins.content.combat.isAttacking
 import gg.rsmod.plugins.content.combat.isBeingAttacked
 
+private val PICKPOCKET_ANIMATION = 881
+private val GLOVES_OF_SILENCE_BONUS = 5
+
 PickpocketInfo.values().forEach { npcClass ->
     npcClass.ids.forEach { npcID ->
         if (!world.definitions.get(NpcDef::class.java, npcID).options.contains("Pickpocket")) {
@@ -13,7 +16,7 @@ PickpocketInfo.values().forEach { npcClass ->
             player.queue {
                 val thievLvl: Int = player.getSkills().getCurrentLevel(Skills.THIEVING)
                 if (thievLvl < npcClass.lvl) {
-                    player.message("You need level ${npcClass.lvl} to pickpocket a ${npcClass.npcName}.")
+                    player.message("You need level ${npcClass.lvl} thieving to pick the ${npcClass.npcName}'s pocket.")
                     return@queue
                 }
                 if (player.isAttacking() || player.isBeingAttacked()) {
@@ -26,7 +29,7 @@ PickpocketInfo.values().forEach { npcClass ->
                 }
 
                 //pickpocketing animation and starting message
-                player.animate(881)
+                player.animate(PICKPOCKET_ANIMATION)
                 player.message("You attempt to pickpocket the ${npcClass.npcName}...")
 
                 //wait 3 game cycles
@@ -35,8 +38,8 @@ PickpocketInfo.values().forEach { npcClass ->
                 player.lock = LockState.NONE
 
                 //determine if the pickpocket was successful or not by "if random number is within success chances"
-                val cap = if (player.hasEquipped(EquipmentType.GLOVES, Items.GLOVES_OF_SILENCE)) 5 else 0
-                if (thievLvl.interpolate(55, 95, npcClass.lvl, 99, 100 - cap)) {
+                val bonus = if (player.hasEquipped(EquipmentType.GLOVES, Items.GLOVES_OF_SILENCE)) GLOVES_OF_SILENCE_BONUS else 0
+                if (thievLvl.interpolate(55, 95, npcClass.lvl, 99, 100 - bonus)) {
 
                     player.message("...and you succeed!")
                     val reward = npcClass.rewards.getRandom()

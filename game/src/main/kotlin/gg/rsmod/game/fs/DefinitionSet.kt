@@ -126,8 +126,18 @@ class DefinitionSet {
     }
 
     @Suppress("UNCHECKED_CAST")
+    fun <T: Definition> get(type: Class<out T>) : Map<Int, T> {
+        return (defs[type]!!) as Map<Int, T>
+    }
+
+    @Suppress("UNCHECKED_CAST")
     fun <T: Definition> getNullable(type: Class<out T>, id: Int): T? {
         return (defs[type]!!)[id] as T?
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T: Definition> getNullable(type: Class<out T>) : Map<Int, T?>? {
+        return (defs[type]!!) as Map<Int, T?>
     }
 
     /**

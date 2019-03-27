@@ -1,10 +1,10 @@
-package gg.rsmod.plugins.content.skills.thieving.pickpocketing
+package gg.rsmod.plugins.content.skills.thieving.pickpocket
 
 import gg.rsmod.plugins.content.combat.isAttacking
 import gg.rsmod.plugins.content.combat.isBeingAttacked
 
-private val PICKPOCKET_ANIMATION = 881
-private val GLOVES_OF_SILENCE_BONUS = 5
+//private val PICKPOCKET_ANIMATION = 881
+//private val GLOVES_OF_SILENCE_BONUS = 5
 
 PickpocketNpcs.values().forEach { npcType ->
     npcType.npcIds.forEach { npcId ->
@@ -27,7 +27,7 @@ PickpocketNpcs.values().forEach { npcType ->
                 }
 
                 //pickpocketing animation and starting message
-                player.animate(PICKPOCKET_ANIMATION)
+                player.animate(881)
                 player.message("You attempt to pickpocket the $npcName...")
 
                 //wait 3 game cycles
@@ -36,7 +36,7 @@ PickpocketNpcs.values().forEach { npcType ->
                 player.lock = LockState.NONE
 
                 //determine if the pickpocket was successful or not by "if random number is within success chances"
-                val bonus = if (player.hasEquipped(EquipmentType.GLOVES, Items.GLOVES_OF_SILENCE)) GLOVES_OF_SILENCE_BONUS else 0
+                val bonus = if (player.hasEquipped(EquipmentType.GLOVES, Items.GLOVES_OF_SILENCE)) 5 else 0
                 if (thievLvl.interpolate(55, 95, npcType.lvl, 99, 100 - bonus)) {
 
                     player.message("...and you succeed!")

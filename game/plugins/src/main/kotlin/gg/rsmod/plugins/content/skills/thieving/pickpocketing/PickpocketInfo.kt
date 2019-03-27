@@ -6,7 +6,7 @@ import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.cfg.Npcs
 
 /**
- * @ids = an array of NPC ids for them to pickpocket
+ * @npcIds = an array of NPC npcIds for them to pickpocket
  * @exp = the amount of experience given per pickpocket
  * @lvl = the level requirement to pickpocket that npc
  * @npcName = the name of the NPC for the chat messages
@@ -14,22 +14,19 @@ import gg.rsmod.plugins.api.cfg.Npcs
  * @damage = damage range when getting stunned
  * @stunTicks = the amount of time that the npc stuns the player for
  */
-enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val npcName: String,
+enum class PickpocketInfo(val npcIds: IntArray, val exp: Double, val lvl: Int, val npcName: String,
                           val rewards: WeightItemSet, val damage: IntRange, val stunTicks: Int) {
     MAN_WOMAN(
-            ids = intArrayOf(
-                    //Man NPC ID's
-                    Npcs.MAN_3078, Npcs.MAN_3079, Npcs.MAN_3080, Npcs.MAN_3081, Npcs.MAN_3082,
-                    Npcs.MAN_1138, Npcs.MAN_3014, Npcs.MAN_3101, Npcs.MAN_3109,
-                    Npcs.MAN_3260, Npcs.MAN_3264, Npcs.MAN_3265, Npcs.MAN_3266, Npcs.MAN_3652,
-                    Npcs.MAN_385, Npcs.MAN_4268, Npcs.MAN_4269, Npcs.MAN_4270, Npcs.MAN_4271,
-                    Npcs.MAN_4272, Npcs.MAN_6776, Npcs.MAN_6987, Npcs.MAN_6988, Npcs.MAN_6989,
-                    Npcs.MAN_7281, Npcs.MAN_7547, Npcs.MAN_7919, Npcs.MAN_7920,
-                    //Woman NPC ID's
-                    Npcs.WOMAN_1130, Npcs.WOMAN_1131, Npcs.WOMAN_1139, Npcs.WOMAN_1140, Npcs.WOMAN_1141,
-                    Npcs.WOMAN_1142, Npcs.WOMAN_3015, Npcs.WOMAN_3083, Npcs.WOMAN_3084, Npcs.WOMAN_3085,
-                    Npcs.WOMAN_3110, Npcs.WOMAN_3267, Npcs.WOMAN_3268, Npcs.WOMAN_4958, Npcs.WOMAN_6990,
-                    Npcs.WOMAN_6991, Npcs.WOMAN_6992, Npcs.WOMAN_7921, Npcs.WOMAN_7922, Npcs.WOMAN
+            npcIds = intArrayOf(
+                    //Man NPC npcIds
+                    Npcs.MAN_3014, Npcs.MAN_3078, Npcs.MAN_3079, Npcs.MAN_3080, Npcs.MAN_3081,
+                    Npcs.MAN_3082, Npcs.MAN_3101, Npcs.MAN_3109, Npcs.MAN_3260, Npcs.MAN_3264,
+                    Npcs.MAN_3265, Npcs.MAN_3266, Npcs.MAN_3652, Npcs.MAN_6987, Npcs.MAN_6988,
+                    Npcs.MAN_6989, Npcs.MAN_7547,
+
+                    //Woman NPC Ids
+                    Npcs.WOMAN_3015, Npcs.WOMAN_3083, Npcs.WOMAN_3084, Npcs.WOMAN_3085, Npcs.WOMAN_3110,
+                    Npcs.WOMAN_3267, Npcs.WOMAN_3268, Npcs.WOMAN_6990, Npcs.WOMAN_6991, Npcs.WOMAN_6992
             ),
             exp = 8.0,
             lvl = 1,
@@ -40,11 +37,8 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     FARMER(
-            ids = intArrayOf(
-                    Npcs.FARMER_3086, Npcs.FARMER_3087, Npcs.FARMER_3088, Npcs.FARMER_3089, Npcs.FARMER_3090,
-                    Npcs.FARMER_3091, Npcs.FARMER_3672, Npcs.FARMER_6947, Npcs.FARMER_6948, Npcs.FARMER_6949,
-                    Npcs.FARMER_6950, Npcs.FARMER_6951, Npcs.FARMER_6952, Npcs.FARMER_6959, Npcs.FARMER_6960,
-                    Npcs.FARMER_6961
+            npcIds = intArrayOf(
+                    Npcs.FARMER_3086, Npcs.FARMER_3087, Npcs.FARMER_3088
             ),
             exp = 14.5,
             lvl = 10,
@@ -56,7 +50,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     HAM_FEMALE(
-            ids = intArrayOf(Npcs.HAM_MEMBER_2541),
+            npcIds = intArrayOf(Npcs.HAM_MEMBER_2541),
             exp = 18.5,
             lvl = 15,
             npcName = "H.A.M. Member",
@@ -104,7 +98,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 6
     ),
     HAM_MALE(
-            ids = intArrayOf(Npcs.HAM_MEMBER),
+            npcIds = intArrayOf(Npcs.HAM_MEMBER),
             exp = 22.5,
             lvl = 20,
             npcName = "H.A.M. Member",
@@ -152,7 +146,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 6
     ),
     ALKHARID_WARRIOR(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.ALKHARID_WARRIOR, Npcs.WARRIOR_WOMAN_3100
             ),
             exp = 26.0,
@@ -164,7 +158,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     ROGUE(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.ROGUE_2884
             ),
             exp = 35.5,
@@ -181,15 +175,12 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     CAVE_GOBLIN(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.CAVE_GOBLIN_2268, Npcs.CAVE_GOBLIN_2269, Npcs.CAVE_GOBLIN_2270, Npcs.CAVE_GOBLIN_2271,
                     Npcs.CAVE_GOBLIN_2272, Npcs.CAVE_GOBLIN_2273, Npcs.CAVE_GOBLIN_2274, Npcs.CAVE_GOBLIN_2275,
                     Npcs.CAVE_GOBLIN_2276, Npcs.CAVE_GOBLIN_2277, Npcs.CAVE_GOBLIN_2278, Npcs.CAVE_GOBLIN_2279,
                     Npcs.CAVE_GOBLIN_2280, Npcs.CAVE_GOBLIN_2281, Npcs.CAVE_GOBLIN_2282, Npcs.CAVE_GOBLIN_2283,
-                    Npcs.CAVE_GOBLIN_2284, Npcs.CAVE_GOBLIN_2285, Npcs.CAVE_GOBLIN_2299, Npcs.CAVE_GOBLIN_2301,
-                    Npcs.CAVE_GOBLIN_5163, Npcs.CAVE_GOBLIN_5164, Npcs.CAVE_GOBLIN_5165, Npcs.CAVE_GOBLIN_5166,
-                    Npcs.CAVE_GOBLIN_5167, Npcs.CAVE_GOBLIN_5168, Npcs.CAVE_GOBLIN_6434, Npcs.CAVE_GOBLIN_6435,
-                    Npcs.CAVE_GOBLIN_6436, Npcs.CAVE_GOBLIN_6437
+                    Npcs.CAVE_GOBLIN_2284, Npcs.CAVE_GOBLIN_2285
             ),
             exp = 40.0,
             lvl = 36,
@@ -212,7 +203,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     MASTER_FARMER(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.MASTER_FARMER_3257, Npcs.MASTER_FARMER_3258, Npcs.MARTIN_THE_MASTER_GARDENER
             ),
             exp = 43.0,
@@ -265,7 +256,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     GUARD(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.GUARD_3094
             ),
             exp = 46.8,
@@ -277,7 +268,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     FREMENNIK_CITIZEN(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.AGNAR, Npcs.FREIDIR, Npcs.BORROKAR, Npcs.LANZIG,
                     Npcs.PONTAK, Npcs.FREYGERD_3942, Npcs.LENSA_3943, Npcs.JENNELLA,
                     Npcs.SASSILIK_3945, Npcs.INGA
@@ -291,7 +282,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     BEARDED_POLLNIVIAN_BANDIT(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.BANDIT_736, Npcs.BANDIT_737
             ),
             exp = 65.0,
@@ -303,7 +294,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     DESERT_BANDIT(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.BANDIT_690, Npcs.BANDIT_695
             ),
             exp = 79.5,
@@ -318,7 +309,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     KNIGHT(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.KNIGHT_OF_ARDOUGNE_3108, Npcs.KNIGHT_OF_ARDOUGNE_3111
             ),
             exp = 84.3,
@@ -330,7 +321,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     POLLNIVIAN_BANDIT(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.BANDIT_734, Npcs.BANDIT_735
             ),
             exp = 84.3,
@@ -342,7 +333,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     YANILLE_WATCHMAN(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.WATCHMAN_3251
             ),
             exp = 137.5,
@@ -355,7 +346,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     MENAPHITE_THUG(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.MENAPHITE_THUG_3550
             ),
             exp = 137.5,
@@ -367,7 +358,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     PALADIN(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.PALADIN_3104, Npcs.PALADIN_3105
             ),
             exp = 151.75,
@@ -380,7 +371,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     GNOME(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.GNOME_5130, Npcs.GNOME_CHILD, Npcs.GNOME_CHILD_6078, Npcs.GNOME_CHILD_6079,
                     Npcs.GNOME_WOMAN, Npcs.GNOME_WOMAN_6087, Npcs.GNOME_6094, Npcs.GNOME_6095, Npcs.GNOME_6096
 
@@ -399,7 +390,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 8
     ),
     HERO(
-            ids = intArrayOf(Npcs.HERO_3106),
+            npcIds = intArrayOf(Npcs.HERO_3106),
             exp = 275.0,
             lvl = 80,
             npcName = "Hero",
@@ -415,7 +406,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 10
     ),
     ELF(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.GOREU, Npcs.YSGAWYN, Npcs.ARVEL, Npcs.MAWRTH, Npcs.KELYN, Npcs.SIGMUND_5322, Npcs.SANDY
             ),
             exp = 353.0,
@@ -433,7 +424,7 @@ enum class PickpocketInfo(val ids: IntArray, val exp: Double, val lvl: Int, val 
             stunTicks = 10
     ),
     TZHAAR_HUR(
-            ids = intArrayOf(
+            npcIds = intArrayOf(
                     Npcs.TZHAARHUR_7682,
                     Npcs.TZHAARHUR_7683,
                     Npcs.TZHAARHUR_7684,

@@ -7,10 +7,7 @@ private val PICKPOCKET_ANIMATION = 881
 private val GLOVES_OF_SILENCE_BONUS = 5
 
 PickpocketInfo.values().forEach { npcClass ->
-    npcClass.ids.forEach { npcID ->
-        if (!world.definitions.get(NpcDef::class.java, npcID).options.contains("Pickpocket")) {
-            return@forEach
-        }
+    npcClass.npcIds.forEach { npcID ->
         on_npc_option(npc = npcID, option = "pickpocket") {
 
             player.queue {

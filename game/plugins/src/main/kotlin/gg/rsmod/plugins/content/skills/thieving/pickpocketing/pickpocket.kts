@@ -51,7 +51,7 @@ PickpocketInfo.values().forEach { npcClass ->
                     player.message("...and you have failed.")
 
                     //damages player for a value in the npc's damage range
-                    player.hit(npcClass.damage.random(), HitType.HIT)
+                    player.hit(npcClass.damage.random())
 
                     //stuns the player then waits til the stun is done to continue
                     player.stun(npcClass.stunTicks)

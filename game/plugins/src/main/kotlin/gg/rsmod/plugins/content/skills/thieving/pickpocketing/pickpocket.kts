@@ -12,8 +12,9 @@ PickpocketNpcs.values().forEach { npcType ->
 
             player.queue {
                 val thievLvl: Int = player.getSkills().getCurrentLevel(Skills.THIEVING)
+                val npcName = if(npcType.npcName == "") world.definitions.get(NpcDef::class.java, npcId).name else npcType.npcName
                 if (thievLvl < npcType.lvl) {
-                    player.message("You need level ${npcType.lvl} thieving to pick the ${npcType.npcName}'s pocket.")
+                    player.message("You need level ${npcType.lvl} thieving to pick the $npcName's pocket.")
                     return@queue
                 }
                 if (player.isAttacking() || player.isBeingAttacked()) {
@@ -27,7 +28,7 @@ PickpocketNpcs.values().forEach { npcType ->
 
                 //pickpocketing animation and starting message
                 player.animate(PICKPOCKET_ANIMATION)
-                player.message("You attempt to pickpocket the ${npcType.npcName}...")
+                player.message("You attempt to pickpocket the $npcName...")
 
                 //wait 3 game cycles
                 player.lock = LockState.FULL_WITH_ITEM_INTERACTION
@@ -39,9 +40,9 @@ PickpocketNpcs.values().forEach { npcType ->
                 if (thievLvl.interpolate(55, 95, npcType.lvl, 99, 100 - bonus)) {
 
                     player.message("...and you succeed!")
-                    val reward = npcType.rewards.getRandom()
+                    val reward = npcType.rewardSet.getRandom()
                     player.inventory.add(reward)
-                    player.addXp(Skills.THIEVING, npcType.exp)
+                    player.addXp(Skills.THIEVING, npcType.experience)
 
                 } else {
                     //if failed, sends relevant messages

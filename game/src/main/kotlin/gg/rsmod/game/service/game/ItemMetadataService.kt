@@ -123,7 +123,6 @@ class ItemMetadataService : Service() {
             }
             "hat" -> {
                 equipSlot = 0
-                equipType = 0
             }
             "cape" -> {
                 equipSlot = 1

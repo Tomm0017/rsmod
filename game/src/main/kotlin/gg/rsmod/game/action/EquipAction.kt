@@ -90,7 +90,7 @@ object EquipAction {
              */
             val unequip = arrayListOf(equipSlot)
 
-            if (equipType != -1) {
+            if (equipType != -1 && equipType != equipSlot) {
                 /**
                  * [gg.rsmod.game.fs.def.ItemDef.equipType] counts as a 'secondary'
                  * equipment slot, which should be unequipped as well.

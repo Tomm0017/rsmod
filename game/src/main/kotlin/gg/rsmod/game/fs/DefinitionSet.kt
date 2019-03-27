@@ -15,6 +15,7 @@ import net.runelite.cache.IndexType
 import net.runelite.cache.definitions.loaders.LocationsLoader
 import net.runelite.cache.definitions.loaders.MapLoader
 import net.runelite.cache.fs.Store
+import java.io.FileNotFoundException
 import java.io.IOException
 
 /**
@@ -87,7 +88,7 @@ class DefinitionSet {
             AnimDef::class.java -> ConfigType.SEQUENCE
             else -> throw IllegalArgumentException("Unhandled class type ${type::class.java}.")
         }
-        val configs = store.getIndex(IndexType.CONFIGS)!!
+        val configs = store.getIndex(IndexType.CONFIGS) ?: throw FileNotFoundException("Cache was not found.")
         val archive = configs.getArchive(configType.id)!!
         val files = archive.getFiles(store.storage.loadArchive(archive)!!).files
 

@@ -47,6 +47,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
         val save = path.resolve(client.loginUsername)
         if (!Files.exists(save)) {
             configureNewPlayer(client, request)
+            client.uid = PlayerUID(client.loginUsername)
             saveClientData(client)
             return PlayerLoadResult.NEW_ACCOUNT
         }

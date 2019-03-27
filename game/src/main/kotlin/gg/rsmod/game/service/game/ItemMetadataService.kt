@@ -121,6 +121,10 @@ class ItemMetadataService : Service() {
                 equipSlot = 0
                 equipType = 8
             }
+            "hat" -> {
+                equipSlot = 0
+                equipType = 0
+            }
             "cape" -> {
                 equipSlot = 1
             }

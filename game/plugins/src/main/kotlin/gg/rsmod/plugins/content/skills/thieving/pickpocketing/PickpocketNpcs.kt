@@ -14,7 +14,7 @@ import gg.rsmod.plugins.api.cfg.Npcs
  * @damage = damage range when getting stunned
  * @stunTicks = the amount of time that the npc stuns the player for
  */
-enum class PickpocketInfo(val npcIds: IntArray, val exp: Double, val lvl: Int, val npcName: String,
+enum class PickpocketNpcs(val npcIds: IntArray, val exp: Double, val lvl: Int, val npcName: String,
                           val rewards: WeightItemSet, val damage: IntRange, val stunTicks: Int) {
     MAN_WOMAN(
             npcIds = intArrayOf(

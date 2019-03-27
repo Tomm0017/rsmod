@@ -6,14 +6,14 @@ import gg.rsmod.plugins.content.combat.isBeingAttacked
 private val PICKPOCKET_ANIMATION = 881
 private val GLOVES_OF_SILENCE_BONUS = 5
 
-PickpocketInfo.values().forEach { npcClass ->
-    npcClass.npcIds.forEach { npcId ->
+PickpocketNpcs.values().forEach { npcType ->
+    npcType.npcIds.forEach { npcId ->
         on_npc_option(npc = npcId, option = "pickpocket") {
 
             player.queue {
                 val thievLvl: Int = player.getSkills().getCurrentLevel(Skills.THIEVING)
-                if (thievLvl < npcClass.lvl) {
-                    player.message("You need level ${npcClass.lvl} thieving to pick the ${npcClass.npcName}'s pocket.")
+                if (thievLvl < npcType.lvl) {
+                    player.message("You need level ${npcType.lvl} thieving to pick the ${npcType.npcName}'s pocket.")
                     return@queue
                 }
                 if (player.isAttacking() || player.isBeingAttacked()) {
@@ -27,7 +27,7 @@ PickpocketInfo.values().forEach { npcClass ->
 
                 //pickpocketing animation and starting message
                 player.animate(PICKPOCKET_ANIMATION)
-                player.message("You attempt to pickpocket the ${npcClass.npcName}...")
+                player.message("You attempt to pickpocket the ${npcType.npcName}...")
 
                 //wait 3 game cycles
                 player.lock = LockState.FULL_WITH_ITEM_INTERACTION
@@ -36,22 +36,22 @@ PickpocketInfo.values().forEach { npcClass ->
 
                 //determine if the pickpocket was successful or not by "if random number is within success chances"
                 val bonus = if (player.hasEquipped(EquipmentType.GLOVES, Items.GLOVES_OF_SILENCE)) GLOVES_OF_SILENCE_BONUS else 0
-                if (thievLvl.interpolate(55, 95, npcClass.lvl, 99, 100 - bonus)) {
+                if (thievLvl.interpolate(55, 95, npcType.lvl, 99, 100 - bonus)) {
 
                     player.message("...and you succeed!")
-                    val reward = npcClass.rewards.getRandom()
+                    val reward = npcType.rewards.getRandom()
                     player.inventory.add(reward)
-                    player.addXp(Skills.THIEVING, npcClass.exp)
+                    player.addXp(Skills.THIEVING, npcType.exp)
 
                 } else {
                     //if failed, sends relevant messages
                     player.message("...and you have failed.")
 
                     //damages player for a value in the npc's damage range
-                    player.hit(npcClass.damage.random())
+                    player.hit(npcType.damage.random())
 
                     //stuns the player then waits til the stun is done to continue
-                    player.stun(npcClass.stunTicks)
+                    player.stun(npcType.stunTicks)
                 }
             }
         }

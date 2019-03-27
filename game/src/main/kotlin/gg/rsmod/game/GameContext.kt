@@ -7,7 +7,6 @@ import gg.rsmod.game.model.Tile
  *
  * @param initialLaunch
  * A flag which indicates whether this game launch is the first ever launch.
- * See [first-launch] file in root directory for more information.
  *
  * @param name
  * The game name.

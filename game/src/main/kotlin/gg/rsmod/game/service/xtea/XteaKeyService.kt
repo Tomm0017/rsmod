@@ -5,11 +5,13 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import mu.KLogging
 import net.runelite.cache.IndexType
 import org.apache.commons.io.FilenameUtils
 import java.io.FileNotFoundException
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 
 /**
@@ -19,34 +21,40 @@ import java.nio.file.Paths
  */
 class XteaKeyService : Service() {
 
-    private val keys = hashMapOf<Int, IntArray>()
+    private val keys = Int2ObjectOpenHashMap<IntArray>()
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         val path = Paths.get(serviceProperties.getOrDefault("path", "./data/xteas/"))
         if (!Files.exists(path)) {
             throw FileNotFoundException("Path does not exist. $path")
         }
-        if (Files.exists(path.resolve("xteas.json"))) {
-            val reader = Files.newBufferedReader(path.resolve("xteas.json"))
-            val xteas = Gson().fromJson(reader, Array<XteaFile>::class.java)
-            reader.close()
-            xteas?.forEach { xtea ->
-                keys[xtea.region] = xtea.keys
-            }
+        val singleFile = path.resolve("xteas.json")
+        if (Files.exists(singleFile)) {
+            loadSingleFile(singleFile)
         } else {
-            Files.list(path).forEach { list ->
-                val region = FilenameUtils.removeExtension(list.fileName.toString()).toInt()
-                val keys = IntArray(4)
-                Files.newBufferedReader(list).useLines { lines ->
-                    lines.forEachIndexed { index, line ->
-                        val key = line.toInt()
-                        keys[index] = key
-                    }
-                }
-                this.keys[region] = keys
-            }
+            loadDirectory(path)
         }
 
+        loadKeys(world)
+    }
+
+    override fun postLoad(server: Server, world: World) {
+    }
+
+    override fun terminate(server: Server, world: World) {
+    }
+
+    fun get(region: Int): IntArray {
+        if (keys[region] == null) {
+            logger.warn("No XTEA keys found for region {}.", region)
+            keys[region] = IntArray(4)
+        }
+        return keys[region]!!
+    }
+
+    fun getOrNull(region: Int): IntArray? = keys[region]
+
+    private fun loadKeys(world: World) {
         /**
          * Get the total amount of valid regions and which keys we are missing.
          */
@@ -88,24 +96,30 @@ class XteaKeyService : Service() {
         val validKeys = totalRegions - missingKeys.size
         logger.info("Loaded {} / {} ({}%) XTEA keys.", validKeys, totalRegions,
                 String.format("%.2f", (validKeys.toDouble() * 100.0) / totalRegions.toDouble()))
-
     }
 
-    override fun postLoad(server: Server, world: World) {
-    }
-
-    override fun terminate(server: Server, world: World) {
-    }
-
-    fun get(region: Int): IntArray {
-        if (keys[region] == null) {
-            logger.warn("No XTEA keys found for region {}.", region)
-            keys[region] = IntArray(4)
+    private fun loadSingleFile(path: Path) {
+        val reader = Files.newBufferedReader(path)
+        val xteas = Gson().fromJson(reader, Array<XteaFile>::class.java)
+        reader.close()
+        xteas?.forEach { xtea ->
+            keys[xtea.region] = xtea.keys
         }
-        return keys[region]!!
     }
 
-    fun getOrNull(region: Int): IntArray? = keys[region]
+    private fun loadDirectory(path: Path) {
+        Files.list(path).forEach { list ->
+            val region = FilenameUtils.removeExtension(list.fileName.toString()).toInt()
+            val keys = IntArray(4)
+            Files.newBufferedReader(list).useLines { lines ->
+                lines.forEachIndexed { index, line ->
+                    val key = line.toInt()
+                    keys[index] = key
+                }
+            }
+            this.keys[region] = keys
+        }
+    }
 
     private data class XteaFile(val region: Int, val keys: IntArray) {
 

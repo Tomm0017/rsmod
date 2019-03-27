@@ -6,6 +6,7 @@ import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 
 private val DEPOSIT_INTERFACE_ID = 192
 private val DEPOSIT_EQUIPMENT_SFX = 2238
+private val DEPOSIT_ANIMATION = 834
 
 private val DEPOSIT_BOXES = setOf(
         Objs.BANK_DEPOSIT_BOX, Objs.BANK_DEPOSIT_BOX_25937, Objs.BANK_DEPOSIT_BOX_26254,
@@ -112,6 +113,8 @@ fun deposit_item(p: Player, slot: Int, amt: Int) {
     if (deposited == 0) {
         p.message("Bank full.")
     }
+
+    p.animate(DEPOSIT_ANIMATION)
 }
 
 fun deposit_inv(player: Player) {

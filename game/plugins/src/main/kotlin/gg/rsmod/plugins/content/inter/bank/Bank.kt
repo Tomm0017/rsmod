@@ -85,13 +85,12 @@ object Bank {
     }
 
     fun deposit(p: Player, id: Int, amt: Int) {
-        var deposited = 0
-
         val from = p.inventory
         val to = p.bank
 
         val amount = Math.min(from.getItemCount(id), amt)
 
+        var deposited = 0
         for (i in 0 until from.capacity) {
             val item = from[i] ?: continue
             if (item.id != id) {

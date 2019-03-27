@@ -49,7 +49,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 42) {
 
         val total = item.amount
 
-        val placeholderSlot = to.removePlaceholder(player.world, item)
+        val placeholderSlot = to.removePlaceholder(world, item)
         val deposited = from.transfer(to, item, fromSlot = i, toSlot = placeholderSlot, note = false, unnote = true)?.completed ?: 0
         if (total != deposited) {
             // Was not able to deposit the whole stack of [item].
@@ -74,7 +74,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
 
         val total = item.amount
 
-        val placeholderSlot = to.removePlaceholder(player.world, item)
+        val placeholderSlot = to.removePlaceholder(world, item)
         val deposited = from.transfer(to, item, fromSlot = i, toSlot = placeholderSlot, note = false, unnote = true)?.completed ?: 0
         if (total != deposited) {
             // Was not able to deposit the whole stack of [item].

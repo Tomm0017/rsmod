@@ -7,8 +7,8 @@ private val PICKPOCKET_ANIMATION = 881
 private val GLOVES_OF_SILENCE_BONUS = 5
 
 PickpocketInfo.values().forEach { npcClass ->
-    npcClass.npcIds.forEach { npcID ->
-        on_npc_option(npc = npcID, option = "pickpocket") {
+    npcClass.npcIds.forEach { npcId ->
+        on_npc_option(npc = npcId, option = "pickpocket") {
 
             player.queue {
                 val thievLvl: Int = player.getSkills().getCurrentLevel(Skills.THIEVING)

@@ -72,6 +72,8 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
      */
     var aggroCheck: ((Npc, Player) -> Boolean)? = null
 
+    val name: String get() = getDef().name
+
     override fun getType(): EntityType = EntityType.NPC
 
     override fun isRunning(): Boolean = false

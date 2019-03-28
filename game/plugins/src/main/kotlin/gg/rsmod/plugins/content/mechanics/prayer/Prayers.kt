@@ -134,7 +134,7 @@ object Prayers {
 
         if (p.getSkills().getCurrentLevel(Skills.PRAYER) == 0) {
             deactivateAll(p)
-            p.message("You have run out of prayer points, you must recharge at an altar.")
+            p.message("You have run out of prayer points, you can recharge at an altar.")
         }
     }
 
@@ -184,7 +184,7 @@ object Prayers {
                 }
                 p.getSkills().getCurrentLevel(Skills.PRAYER) <= 0 -> {
                     p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 0)
-                    p.message("You have run out of prayer points, you must recharge at an altar.")
+                    p.message("You have run out of prayer points, you can recharge at an altar.")
                 }
                 p.getVarp(ACTIVE_PRAYERS_VARP) == quickPrayers -> {
                     /**

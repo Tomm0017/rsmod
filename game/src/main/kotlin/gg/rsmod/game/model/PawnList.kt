@@ -120,7 +120,7 @@ class PawnList<T: Pawn>(private val pawns: Array<T?>) {
      * True if the pawn was registered on our list, false otherwise.
      */
     fun remove(pawn: T): Boolean {
-        /**
+        /*
          * Only able to remove the pawn if it's registered in our array.
          */
         if (pawns[pawn.index] == pawn) {

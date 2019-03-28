@@ -46,7 +46,7 @@ class HandshakeDecoder(private val revision: Int, private val cacheCrcs: IntArra
                 ctx.writeAndFlush(ctx.alloc().buffer(8).writeLong(serverSeed))
             }
             else -> {
-                /**
+                /*
                  * If the handshake type is not handled, we want to log it and
                  * make sure we read any bytes from the buffer.
                  */
@@ -55,7 +55,7 @@ class HandshakeDecoder(private val revision: Int, private val cacheCrcs: IntArra
                 return
             }
         }
-        /**
+        /*
          * This decoder is no longer needed for this context, so we discard it.
          */
         ctx.pipeline().remove(this)

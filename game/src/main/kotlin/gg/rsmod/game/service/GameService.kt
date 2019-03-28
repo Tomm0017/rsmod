@@ -128,7 +128,7 @@ class GameService : Service() {
     }
 
     private fun populateTasks(serviceProperties: ServerProperties) {
-        /**
+        /*
          * Determine which synchronization task we're going to use based on the
          * number of available processors we have been provided, also taking
          * into account the amount of processors the machine has in the first

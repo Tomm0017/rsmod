@@ -97,7 +97,7 @@ class NpcUpdateBlockSegment(private val npc: Npc, private val newAddition: Boole
                 hits.forEach { hit ->
                     val hitmarks = Math.min(2, hit.hitmarks.size)
 
-                    /**
+                    /*
                      * Inform the client of how many hitmarkers to decode.
                      */
                     if (hitmarks == 0) {

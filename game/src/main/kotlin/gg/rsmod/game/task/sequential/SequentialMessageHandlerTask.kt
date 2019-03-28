@@ -16,7 +16,7 @@ class SequentialMessageHandlerTask : GameTask {
         world.players.forEach { p ->
             val start = System.currentTimeMillis()
             p.handleMessages()
-            /**
+            /*
              * Log the time it takes for the task to handle all the player's
              * incoming messages.
              */

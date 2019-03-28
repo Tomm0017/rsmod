@@ -229,7 +229,7 @@ open class Player(world: World) : Pawn(world) {
 
         if (pendingLogout) {
 
-            /**
+            /*
              * If a channel is suddenly inactive (disconnected), we don't to
              * immediately unregister the player. However, we do want to
              * unregister the player abruptly if a certain amount of time
@@ -240,7 +240,7 @@ open class Player(world: World) : Pawn(world) {
                 setDisconnectionTimer = false
             }
 
-            /**
+            /*
              * A player should only be unregistered from the world when they
              * do not have [ACTIVE_COMBAT_TIMER] or its cycles are <= 0, or if
              * their channel has been inactive for a while.
@@ -330,7 +330,7 @@ open class Player(world: World) : Pawn(world) {
      * conditions if any logic may modify other [Pawn]s.
      */
     fun postCycle() {
-        /**
+        /*
          * Flush the channel at the end.
          */
         channelFlush()
@@ -418,12 +418,12 @@ open class Player(world: World) : Pawn(world) {
             return
         }
         val newXp = Math.min(SkillSet.MAX_XP.toDouble(), (oldXp + (xp * xpRate)))
-        /**
+        /*
          * Amount of levels that have increased with the addition of [xp].
          */
         val increment = SkillSet.getLevelForXp(newXp) - SkillSet.getLevelForXp(oldXp)
 
-        /**
+        /*
          * Only increment the 'current' level if it's set at its capped level.
          */
         if (getSkills().getCurrentLevel(skill) == getSkills().getMaxLevel(skill)) {

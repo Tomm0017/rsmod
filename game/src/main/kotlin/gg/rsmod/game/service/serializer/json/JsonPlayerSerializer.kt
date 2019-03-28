@@ -59,7 +59,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             reader.close()
 
             if (!request.reconnecting) {
-                /**
+                /*
                  * If the [request] is not a [LoginRequest.reconnecting] request, we have to
                  * verify the password is correct.
                  */
@@ -67,7 +67,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                     return PlayerLoadResult.INVALID_CREDENTIALS
                 }
             } else {
-                /**
+                /*
                  * If the [request] is a [LoginRequest.reconnecting] request, we
                  * verify that the login xteas match from our previous session.
                  */

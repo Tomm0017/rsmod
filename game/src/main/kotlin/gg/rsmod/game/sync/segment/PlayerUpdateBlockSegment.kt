@@ -217,7 +217,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                 hits.forEach { hit ->
                     val hitmarks = Math.min(2, hit.hitmarks.size)
 
-                    /**
+                    /*
                      * Inform the client of how many hitmarkers to decode.
                      */
                     if (hitmarks == 0) {

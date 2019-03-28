@@ -55,7 +55,7 @@ class XteaKeyService : Service() {
     fun getOrNull(region: Int): IntArray? = keys[region]
 
     private fun loadKeys(world: World) {
-        /**
+        /*
          * Get the total amount of valid regions and which keys we are missing.
          */
         val maxRegions = Short.MAX_VALUE
@@ -67,19 +67,19 @@ class XteaKeyService : Service() {
             val x = regionId shr 8
             val z = regionId and 0xFF
 
-            /**
+            /*
              * Check if the region corresponding to the x and z can be
              * found in our cache.
              */
             regionIndex.findArchiveByName("m${x}_$z") ?: continue
             regionIndex.findArchiveByName("l${x}_$z") ?: continue
 
-            /**
+            /*
              * The region was found in the regionIndex.
              */
             totalRegions++
 
-            /**
+            /*
              * If the XTEA is not found in our xteaService, we know the keys
              * are missing.
              */
@@ -88,7 +88,7 @@ class XteaKeyService : Service() {
             }
         }
 
-        /**
+        /*
          * Set the XTEA service for the [World].
          */
         world.xteaKeyService = this

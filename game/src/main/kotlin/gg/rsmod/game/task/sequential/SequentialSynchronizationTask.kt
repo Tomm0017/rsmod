@@ -27,7 +27,7 @@ class SequentialSynchronizationTask : GameTask {
         }
 
         worldPlayers.forEach { p ->
-            /**
+            /*
              * Non-human [gg.rsmod.game.model.entity.Player]s do not need this
              * to send any synchronization data to their game-client as they do
              * not have one.
@@ -38,7 +38,7 @@ class SequentialSynchronizationTask : GameTask {
         }
 
         worldPlayers.forEach { p ->
-            /**
+            /*
              * Non-human [gg.rsmod.game.model.entity.Player]s do not need this
              * to send any synchronization data to their game-client as they do
              * not have one.

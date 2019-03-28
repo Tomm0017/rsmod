@@ -17,7 +17,7 @@ enum class ProjectileType(val startHeight: Int, val endHeight: Int, val delay: I
         CHINCHOMPA -> distance * 5
         ARROW, BOLT -> Math.max(10, distance * 5)
         JAVELIN -> (distance * 3) + 2
-        /**
+        /*
          * Handled in [gg.rsmod.plugins.content.combat.Combat.getProjectileLifespan].
          */
         MAGIC -> -1

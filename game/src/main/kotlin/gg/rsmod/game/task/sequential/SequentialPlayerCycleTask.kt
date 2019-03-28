@@ -16,7 +16,7 @@ class SequentialPlayerCycleTask : GameTask {
         world.players.forEach { p ->
             val start = System.currentTimeMillis()
             p.cycle()
-            /**
+            /*
              * Log the time it takes for task to handle the player's cycle
              * logic.
              */

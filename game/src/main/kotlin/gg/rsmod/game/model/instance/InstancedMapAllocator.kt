@@ -49,7 +49,7 @@ class InstancedMapAllocator {
         for (x in area.bottomLeftX until area.topRightX step step) {
             for (z in area.bottomLeftZ until area.topRightZ step step) {
 
-                /**
+                /*
                  * If a map is already allocated in [x,z], we move on.
                  */
                 if (maps.any { it.area.contains(x, z) || it.area.contains(x + totalTiles - 1, z + totalTiles - 1) }) {

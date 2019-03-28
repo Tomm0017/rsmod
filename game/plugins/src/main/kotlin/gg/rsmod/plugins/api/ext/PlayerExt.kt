@@ -192,7 +192,7 @@ fun Player.toggleDisplayInterface(newMode: DisplayMode) {
             val toParent = getDisplayComponentId(newMode)
             val toChild = getChildId(pane, newMode)
 
-            /**
+            /*
              * Remove the interfaces from the old display mode's chilren and add
              * them to the new display mode's children.
              */

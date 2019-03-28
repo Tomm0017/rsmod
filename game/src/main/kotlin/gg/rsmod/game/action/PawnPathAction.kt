@@ -28,9 +28,12 @@ object PawnPathAction {
         val other = pawn.attr[INTERACTING_NPC_ATTR]?.get() ?: pawn.attr[INTERACTING_PLAYER_ATTR]?.get()!!
         val opt = pawn.attr[INTERACTING_OPT_ATTR]!!
 
-        // Some interactions only require line-of-sight range, such as npcs
-        // behind cells or booths. This allows for diagonal interaction.
-        // Set to -1 for default interaction range.
+        /*
+         * Some interactions only require line-of-sight range, such as npcs
+         * behind cells or booths. This allows for diagonal interaction.
+         *
+         * Set to null for default interaction range.
+         */
         val lineOfSightRange = if (other is Npc) world.plugins.getNpcInteractionDistance(other.id) else null
 
         pawn.queue(TaskPriority.STANDARD) {
@@ -72,7 +75,7 @@ object PawnPathAction {
             if (pawn.attr[FACING_PAWN_ATTR]?.get() != other) {
                 return
             }
-            /**
+            /*
              * If the npc has moved from the time this queue was added to
              * when it was actually invoked, we need to walk towards it again.
              */
@@ -83,7 +86,7 @@ object PawnPathAction {
 
             if (other is Npc) {
 
-                /**
+                /*
                  * On 07, only one npc can be facing the player at a time,
                  * so if the last pawn that faced the player is still facing
                  * them, then we reset their face target.
@@ -96,7 +99,7 @@ object PawnPathAction {
                 }
                 pawn.attr[NPC_FACING_US_ATTR] = WeakReference(other)
 
-                /**
+                /*
                  * Stop the npc from walking while the player talks to it
                  * for [Npc.RESET_PAWN_FACE_DELAY] cycles.
                  */

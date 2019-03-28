@@ -46,13 +46,13 @@ class Server {
         Thread.setDefaultUncaughtExceptionHandler { t, e -> logger.error("Uncaught server exception in thread $t!", e) }
         val stopwatch = Stopwatch.createStarted()
 
-        /**
+        /*
          * Load the API property file.
          */
         apiProperties.loadYaml(apiProps.toFile())
         logger.info("Preparing ${getApiName()}...")
 
-        /**
+        /*
          * Inform the time it took to load the API related logic.
          */
         logger.info("${getApiName()} loaded up in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms.")
@@ -70,7 +70,7 @@ class Server {
         val stopwatch = Stopwatch.createStarted()
         val individualStopwatch = Stopwatch.createUnstarted()
 
-        /**
+        /*
          * Load the game property file.
          */
         val initialLaunch = Files.deleteIfExists(Paths.get("./first-launch"))
@@ -82,7 +82,7 @@ class Server {
         }
         logger.info("Loaded properties for ${gameProperties.get<String>("name")!!}.")
 
-        /**
+        /*
          * Create a game context for our configurations and services to run.
          */
         val gameContext = GameContext(initialLaunch = initialLaunch,
@@ -105,7 +105,7 @@ class Server {
 
         val world = World(this, gameContext, devContext)
 
-        /**
+        /*
          * Load the file store.
          */
         individualStopwatch.reset().start()
@@ -114,13 +114,13 @@ class Server {
         world.definitions.loadAll(world.filestore)
         logger.info("Loaded filestore from path {} in {}ms.", filestore, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
-        /**
+        /*
          * Load the services required to run the server.
          */
         world.loadServices(this, gameProperties)
         world.init()
 
-        /**
+        /*
          * Load the packets for the game.
          */
         world.getService(type = GameService::class.java)?.let { gameService ->
@@ -131,21 +131,21 @@ class Server {
             logger.info("Loaded message codec and handlers in {}ms.", individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
         }
 
-        /**
+        /*
          * Load the update blocks for the game.
          */
         individualStopwatch.reset().start()
         world.loadUpdateBlocks(blocks.toFile())
         logger.info("Loaded update blocks in {}ms.", individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
-        /**
+        /*
          * Load the privileges for the game.
          */
         individualStopwatch.reset().start()
         world.privileges.load(gameProperties)
         logger.info("Loaded {} privilege levels in {}ms.", world.privileges.size(), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
-        /**
+        /*
          * Load the plugins for game content.
          */
         individualStopwatch.reset().start()
@@ -153,17 +153,17 @@ class Server {
                 jarPluginsDirectory = gameProperties.getOrDefault("plugin-packed-path", "./plugins"))
         logger.info("Loaded {} plugins in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
 
-        /**
+        /*
          * Post load world.
          */
         world.postLoad()
 
-        /**
+        /*
          * Inform the time it took to load up all non-network logic.
          */
         logger.info("${gameProperties.get<String>("name")!!} loaded up in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms.")
 
-        /**
+        /*
          * Binding the network to allow incoming and outgoing connections.
          */
         val rsaService = world.getService(RsaService::class.java)

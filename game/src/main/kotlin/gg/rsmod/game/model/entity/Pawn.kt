@@ -197,8 +197,8 @@ abstract class Pawn(val world: World) : Entity() {
 
     /**
      * Gets the tile the pawn is currently facing towards.
-     * Credits: Kris#1337
      */
+    // Credits: Kris#1337
     fun getFrontFacingTile(target: Tile, offset: Int = 0): Tile {
         val size = (getSize() shr 1)
         val centre = getCentreTile()
@@ -232,7 +232,7 @@ abstract class Pawn(val world: World) : Entity() {
 
         attr[COMBAT_TARGET_FOCUS_ATTR] = WeakReference(target)
 
-        /**
+        /*
          * Players always have the default combat, and npcs will use default
          * combat <strong>unless</strong> they have a custom npc combat plugin
          * bound to their npc id.
@@ -372,7 +372,7 @@ abstract class Pawn(val world: World) : Entity() {
             next = poll
         }
 
-        /**
+        /*
          * If the tail is null (should never be unless we mess with code above), or
          * if the tail is the tile we're standing on, then we don't have to move at all!
          */
@@ -394,7 +394,7 @@ abstract class Pawn(val world: World) : Entity() {
 
     fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
                projectilePath: Boolean = false) {
-        /**
+        /*
          * Already standing on requested destination.
          */
         if (tile.x == x && tile.z == z) {
@@ -416,7 +416,7 @@ abstract class Pawn(val world: World) : Entity() {
         val request = PathRequest.createWalkRequest(this, x, z, projectilePath)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
-        /**
+        /*
          * When using multi-thread path-finding, the [PathRequest.createWalkRequest]
          * must have the [tile] in sync with the game-thread, so we need to make sure
          * that in this cycle, the pawn's [tile] does not change. The easiest way to

@@ -792,13 +792,13 @@ class PluginRepository(val world: World) {
     fun executeEquipItemRequirement(p: Player, item: Int): Boolean {
         val plugin = equipItemRequirementPlugins[item]
         if (plugin != null) {
-            /**
+            /*
              * Plugin returns true if the item can be equipped, false if it
              * should block the item from being equipped.
              */
             return p.executePlugin(plugin)
         }
-        /**
+        /*
          * Should always be able to wear items by default.
          */
         return true

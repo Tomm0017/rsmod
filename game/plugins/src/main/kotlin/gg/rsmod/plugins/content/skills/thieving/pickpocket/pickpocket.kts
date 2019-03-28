@@ -18,9 +18,9 @@ PickpocketNpc.values.forEach { pickpocketNpc ->
 }
 
 suspend fun QueueTask.pickpocket(npcId: Int, npc: PickpocketNpc) {
-    val thievLvl: Int = player.getSkills().getCurrentLevel(Skills.THIEVING)
+    val playerThievingLvl = player.getSkills().getCurrentLevel(Skills.THIEVING)
     val npcName = npc.npcName ?: world.definitions.get(NpcDef::class.java, npcId).name
-    if (thievLvl < npc.reqLevel) {
+    if (playerThievingLvl < npc.reqLevel) {
         player.message("You need level ${npc.reqLevel} thieving to pick the $npcName's pocket.")
         return
     }
@@ -44,7 +44,7 @@ suspend fun QueueTask.pickpocket(npcId: Int, npc: PickpocketNpc) {
 
     //determine if the pickpocket was successful or not by "if random number is within success chances"
     val bonus = if (player.hasEquipped(EquipmentType.GLOVES, Items.GLOVES_OF_SILENCE)) GLOVES_OF_SILENCE_BONUS else 0
-    if (thievLvl.interpolate(55, 95, npc.reqLevel, 99, 100 - bonus)) {
+    if (playerThievingLvl.interpolate(55, 95, npc.reqLevel, 99, 100 - bonus)) {
 
         player.message("...and you succeed!")
         val reward = npc.rewardSet.getRandom()

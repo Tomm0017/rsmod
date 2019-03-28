@@ -15,12 +15,12 @@ private const val VERY_RARE = 1
 /**
  * @npcIds = an array of NPC npcIds for them to pickpocket
  * @experience = the amount of experienceerience given per pickpocket
- * @lvl = the level requirement to pickpocket that npc
+ * @reqLevel = the level requirement to pickpocket that npc
  * @rewards = a weighted set of possible item rewards
  * @damage = damage range when getting stunned
  * @stunTicks = the amount of time that the npc stuns the player for
  */
-enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl: Int, val npcName: String? = null,
+enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLevel: Int, val npcName: String? = null,
                           val rewards: Array<WeightItem>, val damage: IntRange, val stunTicks: Int) {
     MAN_WOMAN(
             npcIds = intArrayOf(
@@ -35,7 +35,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.WOMAN_3267, Npcs.WOMAN_3268, Npcs.WOMAN_6990, Npcs.WOMAN_6991, Npcs.WOMAN_6992
             ),
             experience = 8.0,
-            lvl = 1,
+            reqLevel = 1,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 3, weight = ALWAYS)
             ),
@@ -47,7 +47,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.FARMER_3086, Npcs.FARMER_3087, Npcs.FARMER_3088
             ),
             experience = 14.5,
-            lvl = 10,
+            reqLevel = 10,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 3, weight = COMMON),
                     WeightItem(item = Items.POTATO_SEED, amount = 1, weight = RARE)
@@ -58,7 +58,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
     HAM_FEMALE(
             npcIds = intArrayOf(Npcs.HAM_MEMBER_2541),
             experience = 18.5,
-            lvl = 15,
+            reqLevel = 15,
             rewards = arrayOf(
                     WeightItem(item = Items.BRONZE_ARROW, amount = 1..15, weight = COMMON),
                     WeightItem(item = Items.BRONZE_AXE, amount = 1, weight = COMMON),
@@ -106,7 +106,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
     HAM_MALE(
             npcIds = intArrayOf(Npcs.HAM_MEMBER),
             experience = 22.5,
-            lvl = 20,
+            reqLevel = 20,
             rewards = arrayOf(
                     WeightItem(item = Items.BRONZE_ARROW, amount = 1..15, weight = COMMON),
                     WeightItem(item = Items.BRONZE_AXE, amount = 1, weight = COMMON),
@@ -156,7 +156,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.ALKHARID_WARRIOR, Npcs.WARRIOR_WOMAN_3100
             ),
             experience = 26.0,
-            lvl = 25,
+            reqLevel = 25,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 18, weight = ALWAYS)
             ),
@@ -168,7 +168,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.ROGUE_2884
             ),
             experience = 35.5,
-            lvl = 32,
+            reqLevel = 32,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 25..120, weight = COMMON),
                     WeightItem(item = Items.AIR_RUNE, amount = 8, weight = COMMON),
@@ -189,7 +189,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.CAVE_GOBLIN_2284, Npcs.CAVE_GOBLIN_2285
             ),
             experience = 40.0,
-            lvl = 36,
+            reqLevel = 36,
             rewards = arrayOf(
                     WeightItem(item = Items.BAT_SHISH, amount = 1, weight = COMMON),
                     WeightItem(item = Items.COATED_FROGS_LEGS, amount = 1, weight = COMMON),
@@ -213,7 +213,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.MASTER_FARMER_3257, Npcs.MASTER_FARMER_3258, Npcs.MARTIN_THE_MASTER_GARDENER
             ),
             experience = 43.0,
-            lvl = 38,
+            reqLevel = 38,
             rewards = arrayOf(
                     WeightItem(item = Items.POTATO_SEED, amount = 1..4, weight = COMMON),
                     WeightItem(item = Items.ONION_SEED, amount = 1..3, weight = COMMON),
@@ -266,7 +266,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.GUARD_3094
             ),
             experience = 46.8,
-            lvl = 40,
+            reqLevel = 40,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 30, weight = ALWAYS)
             ),
@@ -280,7 +280,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.SASSILIK_3945, Npcs.INGA
             ),
             experience = 65.0,
-            lvl = 45,
+            reqLevel = 45,
             npcName = "Fremennik",
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 30, weight = ALWAYS)
@@ -293,7 +293,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.BANDIT_736, Npcs.BANDIT_737
             ),
             experience = 65.0,
-            lvl = 45,
+            reqLevel = 45,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 40, weight = ALWAYS)
             ),
@@ -305,7 +305,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.BANDIT_690, Npcs.BANDIT_695
             ),
             experience = 79.5,
-            lvl = 53,
+            reqLevel = 53,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 30, weight = COMMON),
                     WeightItem(item = Items.ANTIPOISON3, amount = 30, weight = COMMON),
@@ -320,7 +320,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.KNIGHT_OF_ARDOUGNE_3108, Npcs.KNIGHT_OF_ARDOUGNE_3111
             ),
             experience = 84.3,
-            lvl = 55,
+            reqLevel = 55,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 50, weight = ALWAYS)
             ),
@@ -332,7 +332,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.BANDIT_734, Npcs.BANDIT_735
             ),
             experience = 84.3,
-            lvl = 55,
+            reqLevel = 55,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 50, weight = ALWAYS)
             ),
@@ -344,7 +344,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.WATCHMAN_3251
             ),
             experience = 137.5,
-            lvl = 65,
+            reqLevel = 65,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 50, weight = UNCOMMON),
                     WeightItem(item = Items.BREAD, amount = 1, weight = COMMON)
@@ -357,7 +357,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.MENAPHITE_THUG_3550
             ),
             experience = 137.5,
-            lvl = 65,
+            reqLevel = 65,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 60, weight = ALWAYS)
             ),
@@ -369,7 +369,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.PALADIN_3104, Npcs.PALADIN_3105
             ),
             experience = 151.75,
-            lvl = 70,
+            reqLevel = 70,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 80, weight = UNCOMMON),
                     WeightItem(item = Items.CHAOS_RUNE, amount = 2, weight = COMMON)
@@ -384,7 +384,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
 
             ),
             experience = 198.5,
-            lvl = 75,
+            reqLevel = 75,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 300, weight = COMMON),
                     WeightItem(item = Items.EARTH_RUNE, amount = 1, weight = COMMON),
@@ -399,7 +399,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
     HERO(
             npcIds = intArrayOf(Npcs.HERO_3106),
             experience = 275.0,
-            lvl = 80,
+            reqLevel = 80,
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 200..300, weight = COMMON),
                     WeightItem(item = Items.DEATH_RUNE, amount = 2, weight = UNCOMMON),
@@ -417,7 +417,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.GOREU, Npcs.YSGAWYN, Npcs.ARVEL, Npcs.MAWRTH, Npcs.KELYN, Npcs.SIGMUND_5322, Npcs.SANDY
             ),
             experience = 353.0,
-            lvl = 85,
+            reqLevel = 85,
             npcName = "Elf",
             rewards = arrayOf(
                     WeightItem(item = Items.COINS_995, amount = 280..350, weight = COMMON),
@@ -441,7 +441,7 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
                     Npcs.TZHAARHUR_7687
             ),
             experience = 103.5,
-            lvl = 90,
+            reqLevel = 90,
             rewards = arrayOf(
                     WeightItem(item = Items.TOKKUL, amount = 3..14, weight = COMMON),
                     WeightItem(item = Items.UNCUT_SAPPHIRE, amount = 1, weight = COMMON),
@@ -457,6 +457,6 @@ enum class PickpocketNpcs(val npcIds: IntArray, val experience: Double, val lvl:
     val rewardSet = WeightItemSet().apply { rewards.forEach { reward -> add(reward) } }
 
     companion object {
-        val values = enumValues<PickpocketNpcs>()
+        val values = enumValues<PickpocketNpc>()
     }
 }

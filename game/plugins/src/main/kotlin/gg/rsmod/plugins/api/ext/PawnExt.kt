@@ -34,6 +34,8 @@ fun Pawn.getInteractingGameObj(): GameObject = attr[INTERACTING_OBJ_ATTR]!!.get(
 
 fun Pawn.getInteractingNpc(): Npc = attr[INTERACTING_NPC_ATTR]!!.get()!!
 
+fun Pawn.getInteractingPlayer() : Player = attr[INTERACTING_PLAYER_ATTR]!!.get()!!
+
 fun Pawn.hasPrayerIcon(icon: PrayerIcon): Boolean = prayerIcon == icon.id
 
 fun Pawn.getBonus(slot: BonusSlot): Int = equipmentBonuses[slot.id]

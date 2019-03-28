@@ -268,6 +268,11 @@ class PluginRepository(val world: World) {
     private val playerDeathPlugins = arrayListOf<Plugin.() -> Unit>()
 
     /**
+     * A map of plugins that are invoked when a player interaction option is executed
+     */
+    private val playerOptionPlugins = hashMapOf<Int, Plugin.() -> Unit>()
+
+    /**
      * A list of plugins that will be invoked when an npc hits 0 hp.
      */
     private val npcPreDeathPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
@@ -478,6 +483,16 @@ class PluginRepository(val world: World) {
 
     fun executePlayerPreDeath(p: Player) {
         playerPreDeathPlugins.forEach { plugin -> p.executePlugin(plugin) }
+    }
+
+    fun bindPlayerOption(option: PlayerOption, plugin: Plugin.() -> Unit) {
+        playerOptionPlugins[option.index] = plugin
+    }
+
+    fun executePlayerOption(player: Player, option: Int) : Boolean {
+        val logic = playerOptionPlugins[option] ?: return false
+        player.executePlugin(logic)
+        return true
     }
 
     fun bindPlayerDeath(plugin: Plugin.() -> Unit) {

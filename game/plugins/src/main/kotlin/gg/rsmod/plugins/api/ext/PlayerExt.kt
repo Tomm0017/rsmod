@@ -305,6 +305,31 @@ fun Player.clearMapFlag() {
     setMapFlag(255, 255)
 }
 
+fun Player.sendOption(option: String, id: Int, leftClick: Boolean = false) {
+    check(id in 1..options.size) { "Option id must range from [1-${options.size}]" }
+    val index = id - 1
+    options[index] = option
+    write(SetOpPlayerMessage(option, index, leftClick))
+}
+
+/**
+ * Checks if the player has an option with the name [option] (case-sensitive).
+ */
+fun Player.hasOption(option: String, id: Int = -1): Boolean {
+    check(id == -1 || id in 1..options.size) { "Option id must range from [1-${options.size}]" }
+    return if (id != -1) options.any { it == option } else options[id - 1] == option
+}
+
+/**
+ * Removes the option with [id] from this player.
+ */
+fun Player.removeOption(id: Int) {
+    check(id in 1..options.size) { "Option id must range from [1-${options.size}]" }
+    val index = id - 1
+    write(SetOpPlayerMessage("null", index, false))
+    options[index] = null
+}
+
 fun Player.getStorageBit(storage: BitStorage, bits: StorageBits): Int = storage.get(this, bits)
 
 fun Player.hasStorageBit(storage: BitStorage, bits: StorageBits): Boolean = storage.get(this, bits) != 0

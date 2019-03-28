@@ -110,7 +110,7 @@ open class Player(world: World) : Pawn(world) {
     /**
      * The options that can be executed on this player
      */
-    private val options = HashSet<PlayerOption>()
+    val options = Array<String?>(10) { null }
 
     /**
      * Flag that indicates whether or not to refresh the shop the player currently
@@ -511,30 +511,6 @@ open class Player(world: World) : Pawn(world) {
      */
     fun message(message: String) {
         write(MessageGameMessage(type = 0, message = message, username = null))
-    }
-
-    /**
-     * Sends a [PlayerOption] to the player
-     *
-     * @param option    The interaction option
-     * @param leftClick If the option should be the left click option
-     */
-    fun sendOption(option: PlayerOption, leftClick: Boolean = false) {
-        options.add(option)
-        write(SetOpPlayerMessage(option.text, option.index, leftClick))
-    }
-
-    /**
-     * Checks if the player has a [PlayerOption]
-     */
-    fun hasOption(option: PlayerOption) = options.contains(option)
-
-    /**
-     * Removes a [PlayerOption] from this player
-     */
-    fun removeOption(option: PlayerOption) {
-        write(SetOpPlayerMessage("null", option.index, false))
-        options.remove(option)
     }
 
     override fun toString(): String = MoreObjects.toStringHelper(this)

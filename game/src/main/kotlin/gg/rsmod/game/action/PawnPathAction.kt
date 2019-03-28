@@ -3,7 +3,10 @@ package gg.rsmod.game.action
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.attr.*
-import gg.rsmod.game.model.entity.*
+import gg.rsmod.game.model.entity.Entity
+import gg.rsmod.game.model.entity.Npc
+import gg.rsmod.game.model.entity.Pawn
+import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.TaskPriority
@@ -25,7 +28,10 @@ object PawnPathAction {
         val other = pawn.attr[INTERACTING_NPC_ATTR]?.get() ?: pawn.attr[INTERACTING_PLAYER_ATTR]?.get()!!
         val opt = pawn.attr[INTERACTING_OPT_ATTR]!!
 
-        val lineOfSightRange = if (other is Npc) world.plugins.getNpcInteractionDistance(other.id) else 1
+        // Some interactions only require line-of-sight range, such as npcs
+        // behind cells or booths. This allows for diagonal interaction.
+        // Set to -1 for default interaction range.
+        val lineOfSightRange = if (other is Npc) world.plugins.getNpcInteractionDistance(other.id) else null
 
         pawn.queue(TaskPriority.STANDARD) {
             terminateAction = {
@@ -108,9 +114,12 @@ object PawnPathAction {
             }
 
             if (other is Player) {
-                val handled = world.plugins.executePlayerOption(pawn, opt)
-                if (!handled) {
-                    pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
+                val option = other.options[opt - 1]
+                if (option != null) {
+                    val handled = world.plugins.executePlayerOption(pawn, option)
+                    if (!handled) {
+                        pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
+                    }
                 }
             }
             pawn.resetFacePawn()

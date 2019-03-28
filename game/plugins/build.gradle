@@ -1,3 +1,7 @@
+plugins {
+    id 'org.jetbrains.dokka'
+}
+
 dependencies {
     implementation project(':game')
     implementation project(':net')
@@ -8,4 +12,13 @@ dependencies {
 
     testCompile group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+}
+
+dokka {
+    for (def pkg : ["gg.rsmod.plugins.api.cfg"]) {
+        packageOptions {
+            prefix = pkg
+            suppress = true
+        }
+    }
 }

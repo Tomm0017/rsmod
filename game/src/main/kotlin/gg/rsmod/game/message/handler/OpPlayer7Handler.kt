@@ -32,6 +32,10 @@ class OpPlayer7Handler : MessageHandler<OpPlayer7Message> {
 
         log(client, "Player option: name=%s, opt=%d", other.username, option)
 
+        client.closeInterfaceModal()
+        client.interruptQueues()
+        client.resetInteractions()
+
         client.attr[INTERACTING_PLAYER_ATTR] = WeakReference(other)
         client.attr[INTERACTING_OPT_ATTR] = option
         client.executePlugin(PawnPathAction.walkPlugin)

@@ -4,9 +4,7 @@ import gg.rsmod.game.action.NpcDeathAction
 import gg.rsmod.game.action.PlayerDeathAction
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.*
-import gg.rsmod.game.model.attr.AttributeMap
-import gg.rsmod.game.model.attr.COMBAT_TARGET_FOCUS_ATTR
-import gg.rsmod.game.model.attr.FACING_PAWN_ATTR
+import gg.rsmod.game.model.attr.*
 import gg.rsmod.game.model.bits.INFINITE_VARS_STORAGE
 import gg.rsmod.game.model.bits.InfiniteVarsType
 import gg.rsmod.game.model.collision.CollisionManager
@@ -554,6 +552,8 @@ abstract class Pawn(val world: World) : Entity() {
      */
     fun resetInteractions() {
         attr.remove(COMBAT_TARGET_FOCUS_ATTR)
+        attr.remove(INTERACTING_NPC_ATTR)
+        attr.remove(INTERACTING_PLAYER_ATTR)
         resetFacePawn()
     }
 

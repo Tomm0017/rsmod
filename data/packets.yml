@@ -7,6 +7,19 @@ out-packets:
     type: FIXED
     opcode: 52
 
+  - message: gg.rsmod.game.message.impl.OpPlayerMessage
+    type: VARIABLE_BYTE
+    opcode: 66
+    structure:
+      - name: left_click
+        type: BYTE
+        trans: ADD
+      - name: index
+        type: BYTE
+        trans: ADD
+      - name: option
+        type: BYTES
+
   - message: gg.rsmod.game.message.impl.SoundAreaMessage
     type: FIXED
     opcode: 12

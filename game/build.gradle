@@ -1,5 +1,6 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "5.0.0"
+    id 'org.jetbrains.dokka' version '0.9.18'
 }
 
 apply plugin: 'application'
@@ -58,6 +59,9 @@ tasks.register("install") {
 
             from "${rootProject.projectDir}/game.example.yml"
             rename 'game.example.yml', 'game.yml'
+
+            from "${rootProject.projectDir}/dev-settings.example.yml"
+            rename 'dev-settings.example.yml', 'dev-settings.yml'
 
             file("${rootProject.projectDir}/first-launch").createNewFile()
         }

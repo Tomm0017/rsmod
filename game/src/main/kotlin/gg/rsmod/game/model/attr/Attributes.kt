@@ -1,10 +1,7 @@
 package gg.rsmod.game.model.attr
 
 import gg.rsmod.game.model.container.ItemTransaction
-import gg.rsmod.game.model.entity.GameObject
-import gg.rsmod.game.model.entity.GroundItem
-import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.model.entity.Pawn
+import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.shop.Shop
 import java.lang.ref.WeakReference
@@ -129,6 +126,11 @@ val INTERACTING_OBJ_ATTR = AttributeKey<WeakReference<out GameObject>>()
  * The [Npc] that was last clicked on.
  */
 val INTERACTING_NPC_ATTR = AttributeKey<WeakReference<Npc>>()
+
+/**
+ * The [Player] that was last clicked on.
+ */
+val INTERACTING_PLAYER_ATTR = AttributeKey<WeakReference<Player>>()
 
 /**
  * The slot of the interacting item in its item container.

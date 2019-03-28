@@ -7,7 +7,7 @@ out-packets:
     type: FIXED
     opcode: 52
 
-  - message: gg.rsmod.game.message.impl.OpPlayerMessage
+  - message: gg.rsmod.game.message.impl.SetOpPlayerMessage
     type: VARIABLE_BYTE
     opcode: 66
     structure:
@@ -1205,11 +1205,18 @@ in-packets:
     length: 8
     ignore: true
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER4
+  - message: gg.rsmod.game.message.impl.OpPlayer4Message
     type: FIXED
     opcode: 27
     length: 3
-    ignore: true
+    structure:
+      - name: index
+        type: SHORT
+        order: LITTLE
+        trans: ADD
+      - name: unknown
+        type: BYTE
+        trans: NEGATE
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IGNORELIST_DEL
     type: VARIABLE_BYTE
@@ -1256,17 +1263,29 @@ in-packets:
     length: 8
     ignore: true
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER1
+  - message: gg.rsmod.game.message.impl.OpPlayer1Message
     type: FIXED
     opcode: 47
     length: 3
-    ignore: true
+    structure:
+      - name: index
+        type: SHORT
+      - name: unknown
+        type: BYTE
+        trans: NEGATE
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER8
+  - message: gg.rsmod.game.message.impl.OpPlayer8Message
     type: FIXED
     opcode: 50
     length: 3
-    ignore: true
+    structure:
+      - name: unknown
+        type: BYTE
+        trans: NEGATE
+      - name: index
+        type: SHORT
+        order: LITTLE
+        trans: ADD
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPOBJ5
     type: FIXED
@@ -1291,17 +1310,28 @@ in-packets:
     length: 9
     ignore: true
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER2
+  - message: gg.rsmod.game.message.impl.OpPlayer2Message
     type: FIXED
     opcode: 56
     length: 3
-    ignore: true
+    structure:
+      - name: unknown
+        type: BYTE
+        trans: SUBTRACT
+      - name: index
+        type: SHORT
+        trans: ADD
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER3
+  - message: gg.rsmod.game.message.impl.OpPlayer3Message
     type: FIXED
     opcode: 62
     length: 3
-    ignore: true
+    structure:
+      - name: index
+        type: SHORT
+        trans: ADD
+      - name: unknown
+        type: BYTE
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IF1_BUTTON4
     type: FIXED
@@ -1327,11 +1357,17 @@ in-packets:
     length: 7
     ignore: true
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER7
+  - message: gg.rsmod.game.message.impl.OpPlayer7Message
     type: FIXED
     opcode: 75
     length: 3
-    ignore: true
+    structure:
+      - name: unknown
+        type: BYTE
+        trans: SUBTRACT
+      - name: index
+        type: SHORT
+        order: LITTLE
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: FRIEND_SETRANK
     type: VARIABLE_BYTE
@@ -1351,11 +1387,17 @@ in-packets:
     length: 16
     ignore: true
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER5
+  - message: gg.rsmod.game.message.impl.OpPlayer5Message
     type: FIXED
     opcode: 83
     length: 3
-    ignore: true
+    structure:
+      - name: unknown
+        type: BYTE
+        trans: SUBTRACT
+      - name: index
+        type: SHORT
+        trans: ADD
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: FRIENDLIST_ADD
     type: VARIABLE_BYTE
@@ -1381,11 +1423,17 @@ in-packets:
     length: 13
     ignore: true
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYER6
+  - message: gg.rsmod.game.message.impl.OpPlayer6Message
     type: FIXED
     opcode: 93
     length: 3
-    ignore: true
+    structure:
+      - name: index
+        type: SHORT
+        trans: ADD
+      - name: unknown
+        type: BYTE
+        trans: SUBTRACT
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: RESUME_P_NAMEDIALOG
     type: VARIABLE_BYTE

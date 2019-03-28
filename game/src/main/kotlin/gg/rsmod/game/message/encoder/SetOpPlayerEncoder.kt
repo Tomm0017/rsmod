@@ -1,14 +1,14 @@
 package gg.rsmod.game.message.encoder
 
 import gg.rsmod.game.message.MessageEncoder
-import gg.rsmod.game.message.impl.OpPlayerMessage
+import gg.rsmod.game.message.impl.SetOpPlayerMessage
 
 /**
  * @author Triston Plummer ("Dread")
  */
-class OpPlayerEncoder : MessageEncoder<OpPlayerMessage>() {
+class SetOpPlayerEncoder : MessageEncoder<SetOpPlayerMessage>() {
 
-    override fun extractBytes(message: OpPlayerMessage, key: String): ByteArray = when (key) {
+    override fun extractBytes(message: SetOpPlayerMessage, key: String): ByteArray = when (key) {
         "option" -> {
             val option = message.option
             val data = ByteArray(option.length + 1)
@@ -19,9 +19,9 @@ class OpPlayerEncoder : MessageEncoder<OpPlayerMessage>() {
         else -> throw Exception("Unhandled value key.")
     }
 
-    override fun extract(message: OpPlayerMessage, key: String): Number = when (key) {
+    override fun extract(message: SetOpPlayerMessage, key: String): Number = when (key) {
         "left_click" -> if (message.leftClick) 1 else 0
-        "index" -> message.index
+        "index" -> message.index + 1
         else -> throw Exception("Unhandled value key.")
     }
 

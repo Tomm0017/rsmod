@@ -38,7 +38,7 @@ class MessageEncoderSet {
         put(RebuildNormalEncoder(), RebuildNormalMessage::class.java)
         put(RebuildRegionEncoder(), RebuildRegionMessage::class.java)
         put(MessageGameEncoder(), MessageGameMessage::class.java)
-        put(OpPlayerEncoder(), OpPlayerMessage::class.java)
+        put(SetOpPlayerEncoder(), SetOpPlayerMessage::class.java)
         put(LogoutFullEncoder(), LogoutFullMessage::class.java)
         put(UpdateStatEncoder(), UpdateStatMessage::class.java)
         put(UpdateRunEnergyEncoder(), UpdateRunEnergyMessage::class.java)

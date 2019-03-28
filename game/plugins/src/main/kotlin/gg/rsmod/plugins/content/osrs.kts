@@ -59,6 +59,10 @@ on_login {
     }
     player.setVarbit(8119, 1) // Has display name
 
+    // Send player interaction options
+    player.sendOption(PlayerOption.FOLLOW)
+    player.sendOption(PlayerOption.TRADE)
+
     /**
      * Game-related logic.
      */

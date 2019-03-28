@@ -9,17 +9,17 @@ import gg.rsmod.game.model.entity.Pawn
  */
 class PawnList<T: Pawn>(private val pawns: Array<T?>) {
 
+    /**
+     * Get the backing array for our pawn list.
+     */
+    val entries: Array<T?> = pawns
+
     val capacity = pawns.size
 
     /**
      * The total count of non-null [Pawn]s in the [pawns] array.
      */
     private var count = 0
-
-    /**
-     * Get the backing array for our pawn list.
-     */
-    fun getRaw(): Array<T?> = pawns
 
     operator fun get(index: Int): T? = pawns[index]
 

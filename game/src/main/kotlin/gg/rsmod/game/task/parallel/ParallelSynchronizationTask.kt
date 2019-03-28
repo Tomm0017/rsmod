@@ -26,7 +26,7 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
         val worldPlayers = world.players
         val playerCount = worldPlayers.count()
         val worldNpcs = world.npcs
-        val rawNpcs = world.npcs.getRaw()
+        val rawNpcs = world.npcs.entries
         val npcCount = worldNpcs.count()
 
         phaser.bulkRegister(playerCount)

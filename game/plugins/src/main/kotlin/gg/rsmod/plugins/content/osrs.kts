@@ -25,7 +25,7 @@ set_menu_open_check {
  * Execute when a player logs in.
  */
 on_login {
-    /**
+    /*
      * Skill-related logic.
      */
     if (player.getSkills().getMaxLevel(Skills.HITPOINTS) < 10) {
@@ -35,7 +35,7 @@ on_login {
     player.sendWeaponComponentInformation()
     player.sendCombatLevelText()
 
-    /**
+    /*
      * Interface-related logic.
      */
     player.openOverlayInterface(player.interfaces.displayMode)
@@ -48,7 +48,7 @@ on_login {
         player.openInterface(pane.interfaceId, pane)
     }
 
-    /**
+    /*
      * Inform the client whether or not we have a display name.
      */
     val displayName = player.username.isNotEmpty()
@@ -64,7 +64,7 @@ on_login {
     player.sendOption("Trade with", 4)
     player.sendOption("Report", 5)
 
-    /**
+    /*
      * Game-related logic.
      */
     player.sendRunEnergy(player.runEnergy.toInt())

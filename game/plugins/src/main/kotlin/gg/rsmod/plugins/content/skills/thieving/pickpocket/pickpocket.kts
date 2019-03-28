@@ -42,9 +42,7 @@ suspend fun QueueTask.pickpocket(npcId: Int, npc: PickpocketNpc) {
     wait(3)
     player.lock = LockState.NONE
 
-    //determine if the pickpocket was successful or not by "if random number is within success chances"
-    val bonus = if (player.hasEquipped(EquipmentType.GLOVES, Items.GLOVES_OF_SILENCE)) GLOVES_OF_SILENCE_BONUS else 0
-    if (playerThievingLvl.interpolate(55, 95, npc.reqLevel, 99, 100 - bonus)) {
+    if (getPickpocketSuccess(playerThievingLvl, npc, player)) {
 
         player.message("...and you succeed!")
         val reward = npc.rewardSet.getRandom()
@@ -61,4 +59,13 @@ suspend fun QueueTask.pickpocket(npcId: Int, npc: PickpocketNpc) {
         //stuns the player then waits til the stun is done to continue
         player.stun(npc.stunTicks)
     }
+}
+
+fun getPickpocketSuccess(playerThievingLvl: Int, npc: PickpocketNpc, player: Player): Boolean{
+
+    //gets whether the player has Gloves of Silence equipped, and gives the 5% bonus if they do
+    val bonus = if (player.hasEquipped(EquipmentType.GLOVES, Items.GLOVES_OF_SILENCE)) GLOVES_OF_SILENCE_BONUS else 0
+
+    //applies the interpolate function. selects a chance from 55% to 95% based on thieving level
+    return playerThievingLvl.interpolate(55, 95, npc.reqLevel, 99, 100 - bonus)
 }

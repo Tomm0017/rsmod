@@ -62,6 +62,7 @@ on_login {
     // Send player interaction options
     player.sendOption(PlayerOption.FOLLOW)
     player.sendOption(PlayerOption.TRADE)
+    player.sendOption(PlayerOption.REPORT)
 
     /**
      * Game-related logic.

@@ -1,8 +1,7 @@
-package gg.rsmod.plugins.content.skills.thieving.pickpocketing
+package gg.rsmod.plugins.content.skills.thieving.pickpocket
 
 import gg.rsmod.plugins.content.combat.isAttacking
 import gg.rsmod.plugins.content.combat.isBeingAttacked
-import gg.rsmod.plugins.content.skills.thieving.pickpocket.PickpocketNpc
 
 private val PICKPOCKET_ANIMATION = 881
 private val GLOVES_OF_SILENCE_BONUS = 5

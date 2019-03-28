@@ -51,7 +51,7 @@ on_login {
     /*
      * Inform the client whether or not we have a display name.
      */
-    val displayName = player.username.isNotEmpty()
+    val displayName = player.username.isNotBlank()
     player.runClientScript(1105, if (displayName) 1 else 0) // Has display name
     player.runClientScript(423, player.username)
     if (player.getVarp(1055) == 0 && displayName) {

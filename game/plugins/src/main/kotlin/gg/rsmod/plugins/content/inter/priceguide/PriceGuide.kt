@@ -29,13 +29,9 @@ object PriceGuide {
 
         p.setInterfaceUnderlay(color = -1, transparency = -1)
         p.openInterface(interfaceId = INTERFACE_ID, dest = InterfaceDestination.MAIN_SCREEN)
-        p.openInterface(interfaceId = TAB_INTERFACE_ID, dest = InterfaceDestination.TAB_AREA)
-
-        update(p)
 
         p.setInterfaceEvents(interfaceId = INTERFACE_ID, component = 2, range = 0..27, setting = 1086)
-        p.runClientScript(149, 15597568, 93, 4, 7, 0, -1, "Add<col=ff9040>", "Add-5<col=ff9040>", "Add-10<col=ff9040>", "Add-All<col=ff9040>", "Add-X<col=ff9040>")
-        p.setInterfaceEvents(interfaceId = TAB_INTERFACE_ID, component = 0, range = 0..27, setting = 1086)
+        p.openInventoryOverlay(TAB_INTERFACE_ID, p.attr[TEMP_INV_CONTAINER]!!, "Add<col=ff9040>", "Add-5<col=ff9040>", "Add-10<col=ff9040>", "Add-All<col=ff9040>", "Add-X<col=ff9040>")
     }
 
     fun close(p: Player) {
@@ -195,7 +191,7 @@ object PriceGuide {
         val invContainer = p.attr[TEMP_INV_CONTAINER] ?: return
 
         p.sendItemContainer(key = 90, container = guideContainer)
-        p.sendItemContainer(key = 93, container = invContainer)
+        p.sendInventoryOverlay(invContainer)
 
         p.setComponentItem(interfaceId = INTERFACE_ID, component = 8, item = -1, amountOrZoom = 1)
 

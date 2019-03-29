@@ -179,6 +179,11 @@ class Server {
         bootstrap.option(ChannelOption.TCP_NODELAY, true).option(ChannelOption.SO_KEEPALIVE, true)
 
         /*
+         * Bind all service networks, if applicable.
+         */
+        world.bindServices(this)
+
+        /*
          * Bind the game port.
          */
         val port = gameProperties.getOrDefault("game-port", 43594)

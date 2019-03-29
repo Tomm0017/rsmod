@@ -19,7 +19,7 @@ import java.nio.file.Paths
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class XteaKeyService : Service() {
+class XteaKeyService : Service {
 
     private val keys = Int2ObjectOpenHashMap<IntArray>()
 
@@ -39,6 +39,9 @@ class XteaKeyService : Service() {
     }
 
     override fun postLoad(server: Server, world: World) {
+    }
+
+    override fun bindNet(server: Server, world: World) {
     }
 
     override fun terminate(server: Server, world: World) {

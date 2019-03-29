@@ -11,7 +11,7 @@ import mu.KLogging
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ItemMarketValueService : Service() {
+class ItemMarketValueService : Service {
 
     private val values = Int2IntOpenHashMap()
 
@@ -31,6 +31,9 @@ class ItemMarketValueService : Service() {
     }
 
     override fun postLoad(server: Server, world: World) {
+    }
+
+    override fun bindNet(server: Server, world: World) {
     }
 
     override fun terminate(server: Server, world: World) {

@@ -15,7 +15,7 @@ import gg.rsmod.util.ServerProperties
  *
  * @author Tom <rspsmods@gmail.com>
  */
-abstract class PlayerSerializerService : Service() {
+abstract class PlayerSerializerService : Service {
 
     private lateinit var startTile: Tile
 

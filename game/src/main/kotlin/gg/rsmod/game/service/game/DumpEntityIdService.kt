@@ -18,7 +18,7 @@ import java.nio.file.Paths
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class DumpEntityIdService : Service() {
+class DumpEntityIdService : Service {
 
     private var dump = false
 
@@ -51,6 +51,9 @@ class DumpEntityIdService : Service() {
         writeItems(definitions, namer)
         writeNpcs(definitions, namer)
         writeObjs(definitions, namer)
+    }
+
+    override fun bindNet(server: Server, world: World) {
     }
 
     override fun terminate(server: Server, world: World) {

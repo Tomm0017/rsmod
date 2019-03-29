@@ -15,7 +15,7 @@ import java.nio.file.Paths
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class DoorService : Service() {
+class DoorService : Service {
 
     val doors = ObjectArrayList<Door>()
 
@@ -39,6 +39,9 @@ class DoorService : Service() {
     }
 
     override fun postLoad(server: Server, world: World) {
+    }
+
+    override fun bindNet(server: Server, world: World) {
     }
 
     override fun terminate(server: Server, world: World) {

@@ -16,12 +16,11 @@ import java.nio.file.Paths
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class EntityExamineService : Service() {
+class EntityExamineService : Service {
 
     private lateinit var path: Path
 
     private lateinit var world: World
-
 
     private val npcs = hashMapOf<Int, String>()
 
@@ -38,6 +37,9 @@ class EntityExamineService : Service() {
     }
 
     override fun postLoad(server: Server, world: World) {
+    }
+
+    override fun bindNet(server: Server, world: World) {
     }
 
     override fun terminate(server: Server, world: World) {

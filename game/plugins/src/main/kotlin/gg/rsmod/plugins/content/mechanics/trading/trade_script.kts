@@ -16,11 +16,11 @@ val TRADE_REQ_STRING = "%s wishes to trade with you."
  * are interacting with has recently sent them a trade request. If so, we should accept the trade request
  * rather than sending out a new request.
  */
-on_player_option(PlayerOption.TRADE) {
+on_player_option(option = "Trade with") {
 
     // The trade partner instance
     val partner = player.getInteractingPlayer()
-    partner.message(TRADE_REQ_STRING.format(player.username), ChatMessageType.TRADE)
+    partner.message(TRADE_REQ_STRING.format(player.username), ChatMessageType.TRADE_REQ)
 
     // The trade session instances
     val playerSession = TradeSession(player, partner, world.definitions)
@@ -36,13 +36,11 @@ on_player_option(PlayerOption.TRADE) {
 }
 
 // Item offer events
-on_button(OVERLAY_INTERFACE, 12) {
+on_button(OVERLAY_INTERFACE, 0) {
     val trade = player.getTradeSession()
     trade?.let {
         val slot = player.getInteractingSlot()
         val opt = player.getInteractingOption()
-
-        println("Slot: $slot, Opt: $opt")
     }
 }
 

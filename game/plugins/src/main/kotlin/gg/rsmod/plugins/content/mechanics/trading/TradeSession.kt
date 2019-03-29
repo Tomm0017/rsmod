@@ -3,6 +3,7 @@ package gg.rsmod.plugins.content.mechanics.trading
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
 import java.lang.ref.WeakReference
@@ -30,9 +31,22 @@ class TradeSession(private val player: Player, private val partner: Player, defi
         // Configure the trade text
         player.setComponentText(TRADE_INTERFACE, 31, "Trading with: ${partner.username}")
 
+        // Bind the container events
+        container.bindItemOffered(this::itemOffered)
+
         // Open the trade screen interfaces
         player.openInterface(TRADE_INTERFACE, InterfaceDestination.MAIN_SCREEN)
         player.openInventoryOverlay(OVERLAY_INTERFACE, player.inventory, "Offer", "Offer-5", "Offer-10", "Offer-All", "Offer-X")
+    }
+
+    /**
+     * An event that gets executed when the [Player] of this trading session
+     * offers an item up for trade
+     *
+     * @param item  The item added to the offer
+     */
+    private fun itemOffered(item: Item) {
+        player.message("You have offered: $item")
     }
 
     /**
@@ -60,17 +74,6 @@ class TradeSession(private val player: Player, private val partner: Player, defi
     companion object {
 
         /**
-         * The id of the script used to initialise the interface overlay options. The 'big' variant of this
-         * script is used as it supports up to eight options rather than five, which is required for the 'examine'
-         * option.
-         *
-         * https://github.com/RuneStar/cs2-scripts/blob/master/scripts/[clientscript,interface_inv_init_big].cs2
-         */
-        val INTERFACE_INV_INIT_BIG = 150
-
-        val INVENTORY_INTERFACE_KEY = 93
-
-        /**
          * The inventory overlay interface
          */
         val OVERLAY_INTERFACE = 336
@@ -80,10 +83,24 @@ class TradeSession(private val player: Player, private val partner: Player, defi
          */
         val TRADE_INTERFACE = 335
 
+        /**
+         * The child id of this player's trade offer
+         */
         val PLAYER_TRADE_CHILD = 33
+
+        /**
+         * The child id of the partner's trade offer
+         */
         val PARTNER_TRADE_CHILD = 34
 
+        /**
+         * The hash of this player's trade offer component
+         */
         val PLAYER_TRADE_HASH = TRADE_INTERFACE.getInterfaceHash() or PLAYER_TRADE_CHILD
+
+        /**
+         * The hash of the partner's trade offer component
+         */
         val PARTNER_TRADE_HASH = TRADE_INTERFACE.getInterfaceHash() or PARTNER_TRADE_CHILD
 
         /**

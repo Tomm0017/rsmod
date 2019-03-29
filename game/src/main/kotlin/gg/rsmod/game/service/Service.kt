@@ -9,21 +9,25 @@ import gg.rsmod.util.ServerProperties
  *
  * @author Tom <rspsmods@gmail.com>
  */
-abstract class Service {
+interface Service {
 
     /**
      * Called when the server is starting up.
      */
-    abstract fun init(server: Server, world: World, serviceProperties: ServerProperties)
+    fun init(server: Server, world: World, serviceProperties: ServerProperties)
 
     /**
      * Called after the server has finished started up.
      */
-    abstract fun postLoad(server: Server, world: World)
+    fun postLoad(server: Server, world: World)
+
+    /**
+     * Called after the server sets its bootstrap's children and parameters.
+     */
+    fun bindNet(server: Server, world: World)
 
     /**
      * Called when the server is shutting off.
      */
-    abstract fun terminate(server: Server, world: World)
-
+    fun terminate(server: Server, world: World)
 }

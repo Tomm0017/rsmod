@@ -25,7 +25,7 @@ import java.util.*
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class RsaService : Service() {
+class RsaService : Service {
 
     private lateinit var keyPath: Path
 
@@ -74,6 +74,9 @@ class RsaService : Service() {
     }
 
     override fun postLoad(server: Server, world: World) {
+    }
+
+    override fun bindNet(server: Server, world: World) {
     }
 
     override fun terminate(server: Server, world: World) {

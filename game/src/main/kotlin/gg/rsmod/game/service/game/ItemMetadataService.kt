@@ -20,7 +20,7 @@ import java.nio.file.Paths
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ItemMetadataService : Service() {
+class ItemMetadataService : Service {
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         val path = Paths.get(serviceProperties.getOrDefault("path", "./data/cfg/items.yml"))
@@ -34,6 +34,9 @@ class ItemMetadataService : Service() {
     }
 
     override fun postLoad(server: Server, world: World) {
+    }
+
+    override fun bindNet(server: Server, world: World) {
     }
 
     override fun terminate(server: Server, world: World) {

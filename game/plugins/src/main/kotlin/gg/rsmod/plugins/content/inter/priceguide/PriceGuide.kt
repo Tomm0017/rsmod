@@ -107,12 +107,10 @@ object PriceGuide {
             any = true
         }
 
-        if (any) {
-            update(p)
-        } else if (anyUntradeables) {
-            p.message("You have items that cannot be traded.")
-        } else {
-            p.message("You have no items that can be checked.")
+        when {
+            any -> update(p)
+            anyUntradeables -> p.message("You have items that cannot be traded.")
+            else -> p.message("You have no items that can be checked.")
         }
     }
 

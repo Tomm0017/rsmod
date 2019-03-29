@@ -62,13 +62,11 @@ val ITEM_PRICES = hashMapOf(
 )
 
 on_interface_open(interfaceId = STORE_INTERFACE_ID) {
-    val player = player
     player.setInterfaceEvents(interfaceId = STORE_INTERFACE_ID, component = 2, range = 0..50, setting = 1086)
     player.runClientScript(23, 11665410, 11665411, 878)
 }
 
 on_button(interfaceId = STORE_INTERFACE_ID, component = 2) {
-    val player = player
     val item = player.getInteractingItemId()
     val opt = player.getInteractingOption()
 

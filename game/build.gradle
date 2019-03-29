@@ -1,3 +1,8 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id 'org.jetbrains.dokka' version '0.9.18'
+}
+
 apply plugin: 'application'
 
 description = 'RSMod Game'
@@ -44,11 +49,46 @@ sourceSets {
     main.resources.srcDirs = ['src/main/resources']
 }
 
+tasks.register("install") {
+    description = 'Install RSMod'
+
+    doLast {
+
+        copy {
+            into "${rootProject.projectDir}/"
+
+            from "${rootProject.projectDir}/game.example.yml"
+            rename 'game.example.yml', 'game.yml'
+
+            from "${rootProject.projectDir}/dev-settings.example.yml"
+            rename 'dev-settings.example.yml', 'dev-settings.yml'
+
+            file("${rootProject.projectDir}/first-launch").createNewFile()
+        }
+
+        javaexec {
+            workingDir = rootProject.projectDir
+            classpath = sourceSets.main.runtimeClasspath
+            main = "gg.rsmod.game.service.rsa.RsaService"
+            args = [ "16", "2048", "./data/rsa/key.pem" ] // radix, bitcount, rsa pem file
+        }
+    }
+}
+
+task extractDependencies(type: Copy) {
+    from(zipTree("build/distributions/game-${project.version}.zip")) {
+        include "game-${project.version}/lib/*"
+        eachFile {
+            path = name
+        }
+        includeEmptyDirs = false
+    }
+    into 'build/deps'
+}
+
 applicationDistribution.from("$rootDir/data/") {
     into 'bin/data/'
-
     include '**'
-
     exclude 'saves/*'
 }
 
@@ -61,37 +101,33 @@ applicationDistribution.from("$rootDir") {
     rename 'game.example.yml', 'game.yml'
 }
 
-task extractDependencies(type: Copy) {
-    from(zipTree("build/distributions/game-${project.version}.zip")) {
-        include "game-${project.version}/lib/*"
-        eachFile {
-            path = name
-        }
-        includeEmptyDirs = false
+shadowDistZip {
+    from("$rootDir/data/") {
+        into "game-shadow-${project.version}/bin/data/"
+        include '**'
+        exclude 'saves/*'
     }
-    into 'build/libs'
+
+    from("$rootDir") {
+        into "game-shadow-${project.version}/bin/"
+        include 'plugins/*'
+        include 'game.example.yml'
+        rename 'game.example.yml', 'game.yml'
+    }
 }
 
-tasks.register("install") {
-    description = 'Install RSMod'
+shadowDistTar {
+    from("$rootDir/data/") {
+        into "game-shadow-${project.version}/bin/data/"
+        include '**'
+        exclude 'saves/*'
+    }
 
-    doLast {
-
-        copy {
-            into "${rootProject.projectDir}/"
-
-            from "${rootProject.projectDir}/game.example.yml"
-            rename 'game.example.yml', 'game.yml'
-
-            file("${rootProject.projectDir}/first-launch").createNewFile()
-        }
-
-        javaexec {
-            workingDir = rootProject.projectDir
-            classpath = sourceSets.main.runtimeClasspath
-            main = "gg.rsmod.game.service.rsa.RsaService"
-            args = [ "16", "2048", "./data/rsa/key.pem" ] // radix, bitcount, rsa pem file
-        }
+    from("$rootDir") {
+        into "game-shadow-${project.version}/bin/"
+        include 'plugins/*'
+        include 'game.example.yml'
+        rename 'game.example.yml', 'game.yml'
     }
 }
 

@@ -62,7 +62,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         matrices[height] = matrix
     }
 
-    fun copyMatrices(other: Chunk) {
+    private fun copyMatrices(other: Chunk) {
         other.matrices.forEachIndexed { index, matrix ->
             matrices[index] = CollisionMatrix(matrix)
         }
@@ -78,14 +78,14 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
     fun isClipped(tile: Tile): Boolean = matrices[tile.height].isClipped(tile.x % CHUNK_SIZE, tile.z % CHUNK_SIZE)
 
     fun addEntity(world: World, entity: Entity, tile: Tile) {
-        /**
+        /*
          * Objects will affect the collision map.
          */
         if (entity.getType().isObject()) {
             world.collision.applyCollision(world.definitions, entity as GameObject, CollisionUpdate.Type.ADD)
         }
 
-        /**
+        /*
          * Transient entities will <strong>not</strong> be registered to one of
          * our [Chunk]'s tiles.
          */
@@ -93,18 +93,18 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
             entities.put(tile, entity)
         }
 
-        /**
+        /*
          * Create an [EntityUpdate] for our local players to receive and view.
          */
         val update = createUpdateFor(entity, spawn = true)
         if (update != null) {
-            /**
+            /*
              * [EntityType.STATIC_OBJECT]s shouldn't be sent to local players
              * for them to view since the client is already aware of them as
              * they are loaded from the game resources (cache).
              */
             if (entity.getType() != EntityType.STATIC_OBJECT) {
-                /**
+                /*
                  * [EntityType]s marked as transient will only be sent to local
                  * players who are currently in the viewport, but will now be
                  * sent to players who enter the region later on.
@@ -112,7 +112,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
                 if (!entity.getType().isTransient()) {
                     updates.add(update)
                 }
-                /**
+                /*
                  * Send the update to all players in viewport.
                  */
                 sendUpdate(world, update)
@@ -121,13 +121,13 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
     }
 
     fun removeEntity(world: World, entity: Entity, tile: Tile) {
-        /**
+        /*
          * Transient entities do not get added to our [Chunk]'s tiles, so no use
          * in trying to remove it.
          */
         check(!entity.getType().isTransient()) { "Transient entities cannot be removed from chunks." }
 
-        /**
+        /*
          * [EntityType]s that are considered objects will be removed from our
          * collision map.
          */
@@ -137,13 +137,13 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
 
         entities.remove(tile, entity)
 
-        /**
+        /*
          * Create an [EntityUpdate] for our local players to receive and view.
          */
         val update = createUpdateFor(entity, spawn = false)
         if (update != null) {
 
-            /**
+            /*
              * If the entity is an [EntityType.STATIC_OBJECT], we want to cache
              * an [EntityUpdate] that will remove the entity when new players come
              * into this [Chunk]'s viewport.
@@ -157,7 +157,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
 
             updates.removeIf { it.entity == entity }
 
-            /**
+            /*
              * Send the update to all players in viewport.
              */
             sendUpdate(world, update)

@@ -31,7 +31,7 @@ object Bank {
      * Visual varbit for the "Bank your loot" tab area interface when storing
      * items from a looting bag into the bank.
      */
-    const val BANK_YOUR_LOOT_VARBIT = 4139
+    private const val BANK_YOUR_LOOT_VARBIT = 4139
 
     fun withdraw(p: Player, id: Int, amt: Int, slot: Int, placehold: Boolean) {
         var withdrawn = 0
@@ -85,13 +85,12 @@ object Bank {
     }
 
     fun deposit(p: Player, id: Int, amt: Int) {
-        var deposited = 0
-
         val from = p.inventory
         val to = p.bank
 
         val amount = Math.min(from.getItemCount(id), amt)
 
+        var deposited = 0
         for (i in 0 until from.capacity) {
             val item = from[i] ?: continue
             if (item.id != id) {

@@ -9,7 +9,7 @@ import gg.rsmod.game.message.MessageStructureSet
 import gg.rsmod.game.model.World
 import gg.rsmod.game.task.ChunkCreationTask
 import gg.rsmod.game.task.GameTask
-import gg.rsmod.game.task.PluginHandlerTask
+import gg.rsmod.game.task.QueueHandlerTask
 import gg.rsmod.game.task.parallel.*
 import gg.rsmod.game.task.sequential.*
 import gg.rsmod.util.ServerProperties
@@ -34,7 +34,7 @@ class GameService : Service() {
     lateinit var world: World
 
     /**
-     * The max amount of incoming [gg.rsmod.game.message.Messages]s that can be
+     * The max amount of incoming [gg.rsmod.game.message.Message]s that can be
      * handled per cycle.
      */
     var maxMessagesPerCycle = 0
@@ -73,26 +73,26 @@ class GameService : Service() {
     private val taskTimes = hashMapOf<Class<GameTask>, Long>()
 
     /**
-     * The amount of time, in milliseconds, that [SequentialPlayerCycleTask] has taken
-     * for each [gg.rsmod.game.model.entity.Player].
+     * The amount of time, in milliseconds, that [SequentialPlayerCycleTask]
+     * has taken for each [gg.rsmod.game.model.entity.Player].
      */
     internal val playerTimes = hashMapOf<String, Long>()
 
     /**
-     * The amount of active [gg.rsmod.game.model.PriorityQueue]s throughout the
-     * [gg.rsmod.game.model.entity.Player]s.
+     * The amount of active [gg.rsmod.game.model.queue.QueueTask]s throughout
+     * the [gg.rsmod.game.model.entity.Player]s.
      */
     internal var totalPlayerQueues = 0
 
     /**
-     * The amount of active [gg.rsmod.game.model.PriorityQueue]s throughout the
-     * [gg.rsmod.game.model.entity.Npc]s.
+     * The amount of active [gg.rsmod.game.model.queue.QueueTask]s throughout
+     * the [gg.rsmod.game.model.entity.Npc]s.
      */
     internal var totalNpcQueues = 0
 
     /**
-     * The amount of active [gg.rsmod.game.model.PriorityQueue]s throughout the
-     * [gg.rsmod.game.model.World].
+     * The amount of active [gg.rsmod.game.model.queue.QueueTask]s throughout
+     * the [gg.rsmod.game.model.World].
      */
     internal var totalWorldQueues = 0
 
@@ -128,7 +128,7 @@ class GameService : Service() {
     }
 
     private fun populateTasks(serviceProperties: ServerProperties) {
-        /**
+        /*
          * Determine which synchronization task we're going to use based on the
          * number of available processors we have been provided, also taking
          * into account the amount of processors the machine has in the first
@@ -141,7 +141,7 @@ class GameService : Service() {
         if (sequentialTasks) {
             tasks.addAll(arrayOf(
                     SequentialMessageHandlerTask(),
-                    PluginHandlerTask(),
+                    QueueHandlerTask(),
                     SequentialPlayerCycleTask(),
                     ChunkCreationTask(),
                     SequentialNpcCycleTask(),
@@ -153,7 +153,7 @@ class GameService : Service() {
             val executor = Executors.newFixedThreadPool(processors, ThreadFactoryBuilder().setNameFormat("game-tasks-thread").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
             tasks.addAll(arrayOf(
                     ParallelMessageHandlerTask(executor),
-                    PluginHandlerTask(),
+                    QueueHandlerTask(),
                     ParallelPlayerCycleTask(executor),
                     ChunkCreationTask(),
                     ParallelNpcCycleTask(executor),
@@ -230,29 +230,29 @@ class GameService : Service() {
             /**
              * Description:
              *
-             * [Cycle time]
+             * Cycle time:
              * the average time it took for a game cycle to
              * complete the last [TICKS_PER_DEBUG_LOG] game cycles.
              *
-             * [Entities]
+             * Entities:
              * The amount of entities in the world.
              * p: players
              * n: npcs
              *
-             * [Map]
+             * Map:
              * The amount of map entities that are currently active.
              * c: chunks [gg.rsmod.game.model.region.Chunk]
              * r: regions
              * i: instanced maps [gg.rsmod.game.model.instance.InstancedMap]
              *
-             * [Queues]
+             * Queues:
              * The amount of plugins that are being executed on this exact
              * game cycle.
              * p: players
              * n: npcs
              * w: world
              *
-             * [Mem Usage]
+             * Mem Usage:
              * Memory usage statistics.
              * U: used memory, in megabytes
              * R: reserved memory, in megabytes

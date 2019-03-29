@@ -17,7 +17,7 @@ abstract class SuspendableCondition {
 }
 
 /**
- * A [SuspendableCondition] that waits for [cycles] amount of cycles before
+ * A [SuspendableCondition] that waits for the given amount of cycles before
  * permitting the coroutine to continue its logic.
  *
  * @param cycles
@@ -40,7 +40,7 @@ class WaitCondition(cycles: Int) : SuspendableCondition() {
  * does not match as well as their x and z coordinates.
  *
  * @param src
- * The tile that must reach [dst] before the condition returns [true].
+ * The tile that must reach [dst] before the condition returns true.
  *
  * @param dst
  * The tile that must be reached by [dst].
@@ -53,7 +53,7 @@ class TileCondition(private val src: Tile, private val dst: Tile) : SuspendableC
 }
 
 /**
- * A [SuspendableCondition] that waits for [predicate] to return [true] before
+ * A [SuspendableCondition] that waits for [predicate] to return true before
  * permitting the coroutine to continue its logic.
  */
 class PredicateCondition(private val predicate: () -> Boolean) : SuspendableCondition() {

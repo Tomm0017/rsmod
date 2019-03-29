@@ -1,6 +1,5 @@
 package gg.rsmod.plugins.content.skills.smithing
 
-import com.google.common.collect.ImmutableSet
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.plugins.content.skills.smithing.action.SmithingAction
 import gg.rsmod.plugins.content.skills.smithing.data.Bar
@@ -47,9 +46,9 @@ val itemCache : HashMap<Bar, HashMap<Int, SmithingMetaData?>> = HashMap()
 /**
  * The set of 'standard' anvils in the game
  */
-val standardAnvils = ImmutableSet.of(
+private val standardAnvils = setOf(
     Objs.ANVIL_2097
-)!!
+)
 
 /**
  * For each anvil, bind the usage of a hammer (it provides information for the player about the smithing skill),

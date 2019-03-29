@@ -41,7 +41,7 @@ object EquipAction {
     fun equip(p: Player, item: Item, inventorySlot: Int = -1): Result {
         val def = p.world.definitions.get(ItemDef::class.java, item.id)
 
-        // Resets interaction when an item is equipped (or attemped to be).
+        // Resets interaction when an item is equipped.
         // This logic does not apply to un-equipping items.
         p.resetFacePawn()
 
@@ -62,7 +62,7 @@ object EquipAction {
         val replace = p.equipment[equipSlot]
         val stackable = def.stackable
 
-        /**
+        /*
          * If [item] is stackable and the player has the item equipped already,
          * we add the amount as much as we can.
          */
@@ -84,14 +84,14 @@ object EquipAction {
             p.world.plugins.executeEquipSlot(p, equipSlot)
             p.world.plugins.executeEquipItem(p, replace.id)
         } else {
-            /**
+            /*
              * A list of equipment slots that should be unequipped when [item] is
              * equipped.
              */
             val unequip = arrayListOf(equipSlot)
 
-            if (equipType != -1) {
-                /**
+            if (equipType != -1 && equipType != equipSlot) {
+                /*
                  * [gg.rsmod.game.fs.def.ItemDef.equipType] counts as a 'secondary'
                  * equipment slot, which should be unequipped as well.
                  *
@@ -101,7 +101,7 @@ object EquipAction {
                 unequip.add(equipType)
             }
 
-            /**
+            /*
              * We check the already-equipped items and see if any of them have an
              * equipment *type* equal to the equipment slot of [item]. This is so
              * that items like shields will make sure 2h swords are unequipped even
@@ -126,7 +126,7 @@ object EquipAction {
             if (inventorySlot == -1 || p.inventory.remove(item.id, item.amount, beginSlot = inventorySlot).hasSucceeded()) {
                 var initialSlot = inventorySlot
 
-                /**
+                /*
                  * If the item being equipped it stackable and replacing an item
                  * already equipped, we want to see if the item being replaced already
                  * occupies a space in the player's inventory - if so we want to add
@@ -147,7 +147,7 @@ object EquipAction {
                     }
                 }
 
-                /**
+                /*
                  * Unequip any overlapping items.
                  */
                 unequip.forEach { slot ->
@@ -158,7 +158,7 @@ object EquipAction {
                     transaction.items.firstOrNull()?.item?.copyAttr(equipment)
                     initialSlot = -1
 
-                    /**
+                    /*
                      * The item in equipSlot will be removed afterwards, so don't
                      * remove it here!
                      */

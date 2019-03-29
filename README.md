@@ -153,7 +153,9 @@ your server and see if it compiles correctly!
 * ##### Polar
     - Helpful lad who shares a lot of OSRS knowledge
     - Useful OSRS archives https://archive.runestats.com/osrs/
-    - Conversations of how to improve RS Mod 
+    - Conversations of how to improve RS Mod
+* ##### Sini
+    - Advice on improving RS Mod's infrastructure
 * ##### Kris
     - Always willing to lend a hand and share some code 
 * ##### Bart and Scu11

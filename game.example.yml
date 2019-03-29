@@ -12,19 +12,19 @@ home-z: 3497
 # Any privilege you want to be represented in-game you define here.
 privileges:
   - id: 0
-    icon: -1
+    icon: 0
     name: "player"
     powers: []
   - id: 1
-    icon: 0
+    icon: 1
     name: "moderator"
     powers: ["mod"]
   - id: 2
-    icon: 1
+    icon: 2
     name: "administrator"
     powers: ["mod", "admin"]
   - id: 3
-    icon: 1
+    icon: 2
     name: "owner"
     powers: ["mod", "dev", "admin", "owner"]
 

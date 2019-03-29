@@ -6,7 +6,6 @@ import gg.rsmod.game.model.attr.NEW_ACCOUNT_ATTR
  * First log-in logic (when accounts have just been made).
  */
 on_login {
-    val player = player
     if (player.attr.getOrDefault(NEW_ACCOUNT_ATTR, false)) {
         AttackTab.setEnergy(player, 100)
     }
@@ -16,39 +15,33 @@ on_login {
  * Attack style buttons
  */
 on_button(interfaceId = 593, component = 3) {
-    val p = player
-    p.setVarp(AttackTab.ATTACK_STYLE_VARP, 0)
+    player.setVarp(AttackTab.ATTACK_STYLE_VARP, 0)
 }
 
 on_button(interfaceId = 593, component = 7) {
-    val p = player
-    p.setVarp(AttackTab.ATTACK_STYLE_VARP, 1)
+    player.setVarp(AttackTab.ATTACK_STYLE_VARP, 1)
 }
 
 on_button(interfaceId = 593, component = 11) {
-    val p = player
-    p.setVarp(AttackTab.ATTACK_STYLE_VARP, 2)
+    player.setVarp(AttackTab.ATTACK_STYLE_VARP, 2)
 }
 
 on_button(interfaceId = 593, component = 15) {
-    val p = player
-    p.setVarp(AttackTab.ATTACK_STYLE_VARP, 3)
+    player.setVarp(AttackTab.ATTACK_STYLE_VARP, 3)
 }
 
 /**
  * Toggle auto-retaliate button.
  */
 on_button(interfaceId = 593, component = 29) {
-    val p = player
-    p.toggleVarp(AttackTab.DISABLE_AUTO_RETALIATE_VARP)
+    player.toggleVarp(AttackTab.DISABLE_AUTO_RETALIATE_VARP)
 }
 
 /**
  * Toggle special attack.
  */
 on_button(interfaceId = 593, component = 35) {
-    val p = player
-    p.toggleVarp(AttackTab.SPECIAL_ATTACK_VARP)
+    player.toggleVarp(AttackTab.SPECIAL_ATTACK_VARP)
 }
 
 /**

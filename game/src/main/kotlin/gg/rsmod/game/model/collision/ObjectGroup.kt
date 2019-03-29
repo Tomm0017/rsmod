@@ -16,8 +16,6 @@
  */
 package gg.rsmod.game.model.collision
 
-import java.util.*
-
 /**
  * The group of an object, which indicates its general class (e.g. if it's a wall, or a floor decoration).
  *
@@ -45,19 +43,4 @@ enum class ObjectGroup(val value: Int) {
      * The ground decoration object group, which may block a tile.
      */
     GROUND_DECORATION(3);
-
-
-    companion object {
-
-        /**
-         * Attempts to find the ObjectGroup with the specified integer value.
-         *
-         * @param value The integer value of the ObjectGroup.
-         * @return The [Optional] possibly containing the ObjectGroup, if found.
-         */
-        fun valueOf(value: Int): Optional<ObjectGroup> {
-            return Optional.ofNullable(values().firstOrNull { it.value == value })
-        }
-    }
-
 }

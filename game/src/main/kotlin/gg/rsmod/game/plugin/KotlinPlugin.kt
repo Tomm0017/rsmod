@@ -253,6 +253,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
             = r.bindComponentToComponentItemSwap(srcInterfaceId, srcComponent, dstInterfaceId, dstComponent, plugin)
 
     /**
+     * Invokes when a player interaction option is executed
+     */
+    fun on_player_option(option: String, plugin: Plugin.() -> Unit) = r.bindPlayerOption(option, plugin)
+
+    /**
      * Invoked when a player hits 0 hp and is starting their death task.
      */
     fun on_player_pre_death(plugin: Plugin.() -> Unit) = r.bindPlayerPreDeath(plugin)

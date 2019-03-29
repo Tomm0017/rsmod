@@ -108,6 +108,11 @@ open class Player(world: World) : Pawn(world) {
     private val skillSet = SkillSet(maxSkills = world.gameContext.skillCount)
 
     /**
+     * The options that can be executed on this player
+     */
+    val options = Array<String?>(10) { null }
+
+    /**
      * Flag that indicates whether or not to refresh the shop the player currently
      * has open.
      */
@@ -186,7 +191,7 @@ open class Player(world: World) : Pawn(world) {
     override fun getType(): EntityType = EntityType.PLAYER
 
     /**
-     * Checks if the player is running. We assume that the [Varp] with id of
+     * Checks if the player is running. We assume that the varp with id of
      * [173] is the running state varp.
      */
     override fun isRunning(): Boolean = varps[173].state != 0
@@ -224,7 +229,7 @@ open class Player(world: World) : Pawn(world) {
 
         if (pendingLogout) {
 
-            /**
+            /*
              * If a channel is suddenly inactive (disconnected), we don't to
              * immediately unregister the player. However, we do want to
              * unregister the player abruptly if a certain amount of time
@@ -235,7 +240,7 @@ open class Player(world: World) : Pawn(world) {
                 setDisconnectionTimer = false
             }
 
-            /**
+            /*
              * A player should only be unregistered from the world when they
              * do not have [ACTIVE_COMBAT_TIMER] or its cycles are <= 0, or if
              * their channel has been inactive for a while.
@@ -325,7 +330,7 @@ open class Player(world: World) : Pawn(world) {
      * conditions if any logic may modify other [Pawn]s.
      */
     fun postCycle() {
-        /**
+        /*
          * Flush the channel at the end.
          */
         channelFlush()
@@ -413,12 +418,12 @@ open class Player(world: World) : Pawn(world) {
             return
         }
         val newXp = Math.min(SkillSet.MAX_XP.toDouble(), (oldXp + (xp * xpRate)))
-        /**
+        /*
          * Amount of levels that have increased with the addition of [xp].
          */
         val increment = SkillSet.getLevelForXp(newXp) - SkillSet.getLevelForXp(oldXp)
 
-        /**
+        /*
          * Only increment the 'current' level if it's set at its capped level.
          */
         if (getSkills().getCurrentLevel(skill) == getSkills().getMaxLevel(skill)) {
@@ -460,7 +465,8 @@ open class Player(world: World) : Pawn(world) {
      * to the list should essentially mean the player is registered to the
      * [world].
      *
-     * @return [true] if the player is registered to a [PawnList].
+     * @return
+     * true if the player is registered to a [PawnList].
      */
     val isOnline: Boolean get() = index > 0
 

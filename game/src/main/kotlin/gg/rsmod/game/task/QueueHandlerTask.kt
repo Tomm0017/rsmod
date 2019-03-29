@@ -4,16 +4,16 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.service.GameService
 
 /**
- * A [GameTask] responsible for executing the [gg.rsmod.game.plugin.Plugin.cycle].
+ * A [GameTask] responsible for going over all the active
+ * [gg.rsmod.game.model.queue.QueueTask]s.
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class PluginHandlerTask : GameTask {
+class QueueHandlerTask : GameTask {
 
     override fun execute(world: World, service: GameService) {
         var playerQueues = 0
         var npcQueues = 0
-        var worldQueues = 0
 
         world.players.forEach { player ->
             player.queues.cycle()
@@ -25,8 +25,8 @@ class PluginHandlerTask : GameTask {
             npcQueues += npc.queues.size
         }
 
+        val worldQueues: Int = world.queues.size
         world.queues.cycle()
-        worldQueues = world.queues.size
 
         service.totalPlayerQueues = playerQueues
         service.totalNpcQueues = npcQueues

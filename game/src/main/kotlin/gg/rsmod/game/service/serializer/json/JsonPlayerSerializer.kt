@@ -47,6 +47,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
         val save = path.resolve(client.loginUsername)
         if (!Files.exists(save)) {
             configureNewPlayer(client, request)
+            client.uid = PlayerUID(client.loginUsername)
             saveClientData(client)
             return PlayerLoadResult.NEW_ACCOUNT
         }
@@ -58,7 +59,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             reader.close()
 
             if (!request.reconnecting) {
-                /**
+                /*
                  * If the [request] is not a [LoginRequest.reconnecting] request, we have to
                  * verify the password is correct.
                  */
@@ -66,7 +67,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                     return PlayerLoadResult.INVALID_CREDENTIALS
                 }
             } else {
-                /**
+                /*
                  * If the [request] is a [LoginRequest.reconnecting] request, we
                  * verify that the login xteas match from our previous session.
                  */
@@ -98,7 +99,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                     client.containers[key]
                 }!!
                 it.items.forEach { slot, item ->
-                    container.set(slot, item)
+                    container[slot] = item
                 }
             }
             data.attributes.forEach { key, value ->

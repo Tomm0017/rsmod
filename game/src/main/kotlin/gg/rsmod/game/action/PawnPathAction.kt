@@ -2,10 +2,7 @@ package gg.rsmod.game.action
 
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.attr.FACING_PAWN_ATTR
-import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
-import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
-import gg.rsmod.game.model.attr.NPC_FACING_US_ATTR
+import gg.rsmod.game.model.attr.*
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
@@ -28,10 +25,16 @@ object PawnPathAction {
     val walkPlugin: Plugin.() -> Unit = {
         val pawn = ctx as Pawn
         val world = pawn.world
-        val npc = pawn.attr[INTERACTING_NPC_ATTR]!!.get()!!
+        val other = pawn.attr[INTERACTING_NPC_ATTR]?.get() ?: pawn.attr[INTERACTING_PLAYER_ATTR]?.get()!!
         val opt = pawn.attr[INTERACTING_OPT_ATTR]!!
-        val npcId = if (pawn is Player) npc.getTransform(pawn) else npc.id
-        val lineOfSightRange = world.plugins.getNpcInteractionDistance(npcId)
+
+        /*
+         * Some interactions only require line-of-sight range, such as npcs
+         * behind cells or booths. This allows for diagonal interaction.
+         *
+         * Set to null for default interaction range.
+         */
+        val lineOfSightRange = if (other is Npc) world.plugins.getNpcInteractionDistance(other.id) else null
 
         pawn.queue(TaskPriority.STANDARD) {
             terminateAction = {
@@ -41,17 +44,17 @@ object PawnPathAction {
                 }
             }
 
-            walk(this, pawn, npc, npcId, opt, lineOfSightRange)
+            walk(this, pawn, other, opt, lineOfSightRange)
         }
     }
 
-    suspend fun walk(it: QueueTask, pawn: Pawn, npc: Npc, npcId: Int, opt: Int, lineOfSightRange: Int?) {
+    private suspend fun walk(it: QueueTask, pawn: Pawn, other: Pawn, opt: Int, lineOfSightRange: Int?) {
         val world = pawn.world
-        val initialTile = Tile(npc.tile)
+        val initialTile = Tile(other.tile)
 
-        pawn.facePawn(npc)
+        pawn.facePawn(other)
 
-        val pathFound = walkTo(it, pawn, npc, interactionRange = lineOfSightRange ?: 1, lineOfSight = lineOfSightRange != null)
+        val pathFound = walkTo(it, pawn, other, interactionRange = lineOfSightRange ?: 1, lineOfSight = lineOfSightRange != null)
         if (!pathFound) {
             pawn.movementQueue.clear()
             if (pawn is Player) {
@@ -69,46 +72,61 @@ object PawnPathAction {
         pawn.stopMovement()
 
         if (pawn is Player) {
-            if (pawn.attr[FACING_PAWN_ATTR]?.get() != npc) {
+            if (pawn.attr[FACING_PAWN_ATTR]?.get() != other) {
                 return
             }
-            /**
+            /*
              * If the npc has moved from the time this queue was added to
              * when it was actually invoked, we need to walk towards it again.
              */
-            if (!npc.tile.sameAs(initialTile)) {
-                walk(it, pawn, npc, npcId, opt, lineOfSightRange)
+            if (!other.tile.sameAs(initialTile)) {
+                walk(it, pawn, other, opt, lineOfSightRange)
                 return
             }
-            /**
-             * On 07, only one npc can be facing the player at a time,
-             * so if the last pawn that faced the player is still facing
-             * them, then we reset their face target.
-             */
-            pawn.attr[NPC_FACING_US_ATTR]?.get()?.let { other ->
-                if (other.attr[FACING_PAWN_ATTR]?.get() == pawn) {
-                    other.resetFacePawn()
-                    other.timers.remove(RESET_PAWN_FACING_TIMER)
+
+            if (other is Npc) {
+
+                /*
+                 * On 07, only one npc can be facing the player at a time,
+                 * so if the last pawn that faced the player is still facing
+                 * them, then we reset their face target.
+                 */
+                pawn.attr[NPC_FACING_US_ATTR]?.get()?.let {
+                    if (it.attr[FACING_PAWN_ATTR]?.get() == pawn) {
+                        it.resetFacePawn()
+                        it.timers.remove(RESET_PAWN_FACING_TIMER)
+                    }
+                }
+                pawn.attr[NPC_FACING_US_ATTR] = WeakReference(other)
+
+                /*
+                 * Stop the npc from walking while the player talks to it
+                 * for [Npc.RESET_PAWN_FACE_DELAY] cycles.
+                 */
+                other.stopMovement()
+                if (other.attr[FACING_PAWN_ATTR]?.get() != pawn) {
+                    other.facePawn(pawn)
+                    other.timers[RESET_PAWN_FACING_TIMER] = Npc.RESET_PAWN_FACE_DELAY
+                }
+
+                val npcId = other.getTransform(pawn)
+                val handled = world.plugins.executeNpc(pawn, npcId, opt)
+                if (!handled) {
+                    pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
                 }
             }
-            pawn.attr[NPC_FACING_US_ATTR] = WeakReference(npc)
 
-            /**
-             * Stop the npc from walking while the player talks to it
-             * for [Npc.RESET_PAWN_FACE_DELAY] cycles.
-             */
-            npc.stopMovement()
-            if (npc.attr[FACING_PAWN_ATTR]?.get() != pawn) {
-                npc.facePawn(pawn)
-                npc.timers[RESET_PAWN_FACING_TIMER] = Npc.RESET_PAWN_FACE_DELAY
+            if (other is Player) {
+                val option = other.options[opt - 1]
+                if (option != null) {
+                    val handled = world.plugins.executePlayerOption(pawn, option)
+                    if (!handled) {
+                        pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
+                    }
+                }
             }
             pawn.resetFacePawn()
-            pawn.faceTile(npc.tile)
-
-            val handled = world.plugins.executeNpc(pawn, npcId, opt)
-            if (!handled) {
-                pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
-            }
+            pawn.faceTile(other.tile)
         }
     }
 
@@ -174,5 +192,4 @@ object PawnPathAction {
 
     private fun bordering(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areBordering(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
 
-    private fun diagonal(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areDiagonal(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
 }

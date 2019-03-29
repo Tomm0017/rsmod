@@ -66,7 +66,7 @@ class LoginService : Service() {
         client.gameSystem = gameSystem
         client.channel.attr(GameHandler.SYSTEM_KEY).set(gameSystem)
 
-        /**
+        /*
          * NOTE(Tom): we should be able to use an parallel task to handle
          * the pipeline work and then schedule for the [client] to log in on the
          * next game cycle after completion. Should benchmark first.

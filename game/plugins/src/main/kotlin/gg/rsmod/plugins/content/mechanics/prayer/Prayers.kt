@@ -134,7 +134,7 @@ object Prayers {
 
         if (p.getSkills().getCurrentLevel(Skills.PRAYER) == 0) {
             deactivateAll(p)
-            p.message("You have run out of prayer points, you must recharge at an altar.")
+            p.message("You have run out of prayer points, you can recharge at an altar.")
         }
     }
 
@@ -177,23 +177,31 @@ object Prayers {
         if (opt == 1) {
             val quickPrayers = p.getVarp(SELECTED_QUICK_PRAYERS_VARP)
 
-            if (quickPrayers == 0) {
-                p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 0)
-                p.message("You haven't selected any quick-prayers.")
-            } else if (p.getSkills().getCurrentLevel(Skills.PRAYER) <= 0) {
-                p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 0)
-                p.message("You have run out of prayer points, you must recharge at an altar.")
-            } else if (p.getVarp(ACTIVE_PRAYERS_VARP) == quickPrayers) {
-                /**
-                 * All active prayers are quick-prayers - so we turn them off.
-                 */
-                p.setVarp(ACTIVE_PRAYERS_VARP, 0)
-                p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 0)
-                setOverhead(p)
-            } else {
-                p.setVarp(ACTIVE_PRAYERS_VARP, quickPrayers)
-                p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 1)
-                setOverhead(p)
+            when {
+                quickPrayers == 0 -> {
+                    p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 0)
+                    p.message("You haven't selected any quick-prayers.")
+                }
+                p.getSkills().getCurrentLevel(Skills.PRAYER) <= 0 -> {
+                    p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 0)
+                    p.message("You have run out of prayer points, you can recharge at an altar.")
+                }
+                p.getVarp(ACTIVE_PRAYERS_VARP) == quickPrayers -> {
+                    /**
+                     * All active prayers are quick-prayers - so we turn them off.
+                     */
+                    /**
+                     * All active prayers are quick-prayers - so we turn them off.
+                     */
+                    p.setVarp(ACTIVE_PRAYERS_VARP, 0)
+                    p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 0)
+                    setOverhead(p)
+                }
+                else -> {
+                    p.setVarp(ACTIVE_PRAYERS_VARP, quickPrayers)
+                    p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 1)
+                    setOverhead(p)
+                }
             }
         } else if (opt == 2) {
             p.setInterfaceEvents(interfaceId = 77, component = 4, from = 0, to = 29, setting = 2)

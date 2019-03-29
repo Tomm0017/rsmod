@@ -1,11 +1,10 @@
 package gg.rsmod.plugins.content.inter.kod
 
 on_button(interfaceId = 387, component = 21) {
-    val p = player
-    if (!p.lock.canInterfaceInteract()) {
+    if (!player.lock.canInterfaceInteract()) {
         return@on_button
     }
-    KeptOnDeath.open(player)
+    KeptOnDeath.open(this.player)
 }
 
 on_interface_close(interfaceId = KeptOnDeath.COMPONENT_ID) {

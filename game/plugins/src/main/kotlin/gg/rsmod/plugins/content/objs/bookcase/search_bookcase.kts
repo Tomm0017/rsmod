@@ -1,12 +1,12 @@
 package gg.rsmod.plugins.content.objs.bookcase
 
-import com.google.common.collect.ImmutableSet
-
-val BOOKCASES = ImmutableSet.of(Objs.BOOKCASE_380, Objs.BOOKCASE_381)
+private val BOOKCASES = setOf(Objs.BOOKCASE_380, Objs.BOOKCASE_381)
 
 BOOKCASES.forEach { case ->
     on_obj_option(obj = case, option = "search") {
-        player.queue { search(this, player) }
+        player.queue {
+            search(this, player)
+        }
     }
 }
 

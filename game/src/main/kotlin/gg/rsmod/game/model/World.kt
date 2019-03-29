@@ -242,7 +242,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             logger.info("World cycle has been reset.")
         }
 
-        /**
+        /*
          * Copy the timers to a mutable map just in case a timer has to modify
          * the [timers] during its execution, which isn't uncommon.
          */
@@ -256,21 +256,21 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             }
         }
 
-        /**
+        /*
          * Tick all timers down by one cycle.
          */
         timers.getTimers().entries.forEach { timer -> timer.setValue(timer.value - 1) }
 
-        /**
+        /*
          * Cycle through ground items to handle any despawn or respawn.
          */
 
-        /**
+        /*
          * Any ground item that should be removed this cycle will be added here.
          */
         val groundItemRemoval = ObjectOpenHashSet<GroundItem>(0)
 
-        /**
+        /*
          * Iterate through our registered [groundItems] and increment their current
          * cycle.
          */
@@ -281,7 +281,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             groundItem.currentCycle++
 
             if (groundItem.isPublic() && groundItem.currentCycle >= gameContext.gItemDespawnDelay) {
-                /**
+                /*
                  * If the ground item is public and its cycle count has reached the
                  * despawn delay set by our game, we add it to our removal queue.
                  */
@@ -299,7 +299,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             }
         }
 
-        /**
+        /*
          * We now remove any ground item that was queued for removal.
          * We also check to see if they should respawn after a set amount
          * of cycles; if so, we append it to our [groundItemQueue] to be
@@ -313,7 +313,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             }
         }
 
-        /**
+        /*
          * Go over our [groundItemQueue] and respawn any ground item that has
          * met the respawn criteria.
          */
@@ -328,12 +328,12 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             }
         }
 
-        /**
+        /*
          * Cycle through shops for their resupply ticks.
          */
         shops.values.forEach { it.cycle(this) }
 
-        /**
+        /*
          * Cycle through instanced maps.
          */
         instanceAllocator.cycle(this)
@@ -366,7 +366,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
             npc.combatDef.bonuses.forEachIndexed { index, bonus -> npc.equipmentBonuses[index] = bonus }
             npc.setCurrentHp(npc.combatDef.hitpoints)
 
-            /**
+            /*
              * Execute npc spawn plugins.
              */
             plugins.executeNpcSpawn(npc)
@@ -478,7 +478,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     fun getPlayerForName(username: String): Player? {
         for (i in 0 until players.capacity) {
-            val player = players.get(i) ?: continue
+            val player = players[i] ?: continue
             if (player.username == username) {
                 return player
             }

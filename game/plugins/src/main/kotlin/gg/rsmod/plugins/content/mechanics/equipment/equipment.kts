@@ -6,22 +6,18 @@ val EQUIP_ITEM_SOUND = 2238
 
 fun bind_unequip(equipment: EquipmentType, child: Int) {
     on_button(interfaceId = 387, component = child) {
-        val p = player
-
-        val result = EquipAction.unequip(p, equipment.id)
+        val result = EquipAction.unequip(player, equipment.id)
         if (equipment == EquipmentType.WEAPON && result == EquipAction.Result.SUCCESS) {
-            p.sendWeaponComponentInformation()
+            player.sendWeaponComponentInformation()
         }
     }
 }
 
 for (equipment in EquipmentType.values) {
     on_equip_to_slot(equipment.id) {
-        val p = player
-
-        p.playSound(EQUIP_ITEM_SOUND)
+        player.playSound(EQUIP_ITEM_SOUND)
         if (equipment == EquipmentType.WEAPON) {
-            p.sendWeaponComponentInformation()
+            player.sendWeaponComponentInformation()
         }
     }
 }

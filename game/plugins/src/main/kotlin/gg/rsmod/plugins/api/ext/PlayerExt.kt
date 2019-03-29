@@ -17,8 +17,23 @@ import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.timer.SKULL_ICON_DURATION_TIMER
 import gg.rsmod.game.sync.block.UpdateBlockType
 import gg.rsmod.plugins.api.*
+import gg.rsmod.plugins.content.mechanics.trading.TradeSession
+import gg.rsmod.plugins.content.mechanics.trading.getInterfaceHash
 import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
 import gg.rsmod.util.BitManipulation
+
+/**
+ * The interface key used by inventory overlays
+ */
+const val INVENTORY_INTERFACE_KEY = 93
+
+/**
+ * The id of the script used to initialise the interface overlay options. The 'big' variant of this script
+ * is used as it supports up to eight options rather than five.
+ *
+ * https://github.com/RuneStar/cs2-scripts/blob/master/scripts/[clientscript,interface_inv_init_big].cs2
+ */
+const val INTERFACE_INV_INIT_BIG = 150
 
 /**
  * A decoupled file that holds extensions and helper functions, related to players,
@@ -243,6 +258,29 @@ fun Player.sendItemContainer(parent: Int, child: Int, key: Int, container: ItemC
 fun Player.updateItemContainer(key: Int, container: ItemContainer) {
     // TODO: UpdateInvPartialMessage
     write(UpdateInvFullMessage(containerKey = key, items = container.rawItems))
+}
+
+/**
+ * Open an inventory overlay interface, with the specified overlay options
+ *
+ * @param component         The interface component to use
+ * @param container         The container to display on the overlay
+ * @param overlayOptions    The options on the overlay interface
+ */
+fun Player.openInventoryOverlay(component: Int, container: ItemContainer, vararg overlayOptions: String) {
+    sendItemContainer(key = INVENTORY_INTERFACE_KEY, container = container)
+    setInterfaceEvents(interfaceId = component, component = 0, range = 0..container.capacity, setting = 1086)
+    runClientScript(INTERFACE_INV_INIT_BIG, (component shl 16), INVENTORY_INTERFACE_KEY, 4, 7, 0, -1, *overlayOptions)
+    openInterface(component, InterfaceDestination.TAB_AREA)
+}
+
+/**
+ * Sends a container to the inventory overlay interface
+ *
+ * @param container The container to display
+ */
+fun Player.sendInventoryOverlay(container: ItemContainer) {
+    sendItemContainer(key = INVENTORY_INTERFACE_KEY, container = container)
 }
 
 fun Player.sendRunEnergy(energy: Int) {

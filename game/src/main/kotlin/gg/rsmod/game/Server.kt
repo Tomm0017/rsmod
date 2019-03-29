@@ -38,6 +38,8 @@ class Server {
 
     private val ioGroup = NioEventLoopGroup(1)
 
+    val bootstrap = ServerBootstrap()
+
     /**
      * Prepares and handles any API related logic that must be handled
      * before the game can be launched properly.
@@ -164,20 +166,23 @@ class Server {
         logger.info("${gameProperties.get<String>("name")!!} loaded up in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms.")
 
         /*
-         * Binding the network to allow incoming and outgoing connections.
+         * Set our bootstrap's groups and parameters.
          */
         val rsaService = world.getService(RsaService::class.java)
-        val serverBootstrap = ServerBootstrap()
         val clientChannelInitializer = ClientChannelInitializer(revision = gameContext.revision,
                 rsaExponent = rsaService?.getExponent(), rsaModulus = rsaService?.getModulus(),
                 filestore = world.filestore, world = world)
-        val port = gameProperties.get<Int>("game-port")!!
 
-        serverBootstrap.group(acceptGroup, ioGroup)
-        serverBootstrap.channel(NioServerSocketChannel::class.java)
-        serverBootstrap.childHandler(clientChannelInitializer)
-        serverBootstrap.option(ChannelOption.TCP_NODELAY, true).option(ChannelOption.SO_KEEPALIVE, true)
-        serverBootstrap.bind(InetSocketAddress(port)).sync().awaitUninterruptibly()
+        bootstrap.group(acceptGroup, ioGroup)
+        bootstrap.channel(NioServerSocketChannel::class.java)
+        bootstrap.childHandler(clientChannelInitializer)
+        bootstrap.option(ChannelOption.TCP_NODELAY, true).option(ChannelOption.SO_KEEPALIVE, true)
+
+        /*
+         * Bind the game port.
+         */
+        val port = gameProperties.getOrDefault("game-port", 43594)
+        bootstrap.bind(InetSocketAddress(port)).sync().awaitUninterruptibly()
         logger.info("Now listening for incoming connections on port $port...")
 
         System.gc()

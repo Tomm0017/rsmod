@@ -10,11 +10,13 @@ class TradeContainer(private val player: Player) {
 
     private val tradeOffer = ItemContainer(player.world.definitions, player.inventory.capacity, ContainerStackType.NORMAL)
     private val inventory = ItemContainer(player.inventory)
+    val capacity = tradeOffer.capacity
 
     private var onItemOffered : ((Item) -> Unit)? = null
 
     fun offer(slot: Int, amount: Int) {
-        val item = player.inventory.get(slot) ?: return
+        val item = inventory[slot] ?: return
+        val offerAmount = Math.min(amount, inventory.getItemCount(item.id))
         onItemOffered?.invoke(item)
     }
 

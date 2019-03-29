@@ -1,9 +1,9 @@
 package gg.rsmod.plugins.content.mechanics.trading
 
-import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.model.attr.AttributeKey
+import gg.rsmod.game.model.container.ContainerStackType
+import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
 import java.lang.ref.WeakReference
@@ -16,12 +16,17 @@ import java.lang.ref.WeakReference
  * @param player    The player this trade session belongs to
  * @param partner   The partner of this trade session
  */
-class TradeSession(private val player: Player, private val partner: Player, definitions: DefinitionSet) {
+class TradeSession(private val player: Player, private val partner: Player) {
+
+    /**
+     * A copy of this player's inventory, so we don't interfere with the player's real inventory unless necessary
+     */
+    val inventory = ItemContainer(player.inventory)
 
     /**
      * The trade container for this trade session, in the current player's context
      */
-    val container = TradeContainer(player)
+    val container = ItemContainer(player.world.definitions, player.inventory.capacity, ContainerStackType.NORMAL)
 
     /**
      * Opens the trade session, and configures the interfaces
@@ -31,22 +36,33 @@ class TradeSession(private val player: Player, private val partner: Player, defi
         // Configure the trade text
         player.setComponentText(TRADE_INTERFACE, 31, "Trading with: ${partner.username}")
 
-        // Bind the container events
-        container.bindItemOffered(this::itemOffered)
-
         // Open the trade screen interfaces
         player.openInterface(TRADE_INTERFACE, InterfaceDestination.MAIN_SCREEN)
         player.openInventoryOverlay(OVERLAY_INTERFACE, player.inventory, "Offer", "Offer-5", "Offer-10", "Offer-All", "Offer-X")
+
+        // Initialise the trade containers
+        initTradeContainers()
     }
 
     /**
-     * An event that gets executed when the [Player] of this trading session
-     * offers an item up for trade
-     *
-     * @param item  The item added to the offer
+     * Refreshes the item containers for both players
      */
-    private fun itemOffered(item: Item) {
-        player.message("You have offered: $item")
+    private fun refresh() {
+        player.sendInventoryOverlay(inventory)
+        player.sendItemContainer(24, container)
+
+        partner.sendItemContainer(23, container)
+    }
+
+    /**
+     * Initialises the trade containers and enables the item container components for the player
+     */
+    private fun initTradeContainers() {
+        player.runClientScript(INTERFACE_INV_INIT_BIG, PLAYER_TRADE_HASH, 24, 4, 7, 0, -1, "Remove", "Remove-5", "Remove-10", "Remove-All", "Remove-X", "Examine")
+        player.setInterfaceEvents(interfaceId = TRADE_INTERFACE, component = PLAYER_TRADE_HASH, range = 0..container.capacity, setting = 1086)
+
+        player.runClientScript(INTERFACE_INV_INIT_BIG, PARTNER_TRADE_HASH, 23, 4, 7, 0, -1, "Examine")
+        player.setInterfaceEvents(interfaceId = TRADE_INTERFACE, component = PARTNER_TRADE_HASH, range = 0..container.capacity, setting = 1086)
     }
 
     /**
@@ -71,6 +87,15 @@ class TradeSession(private val player: Player, private val partner: Player, defi
         }
     }
 
+    fun offer(slot: Int, amount: Int) {
+        val item = inventory[slot]?: return
+
+        inventory.remove(item)
+        container.add(item)
+
+        refresh()
+    }
+
     companion object {
 
         /**
@@ -86,12 +111,12 @@ class TradeSession(private val player: Player, private val partner: Player, defi
         /**
          * The child id of this player's trade offer
          */
-        val PLAYER_TRADE_CHILD = 33
+        val PLAYER_TRADE_CHILD = 25
 
         /**
          * The child id of the partner's trade offer
          */
-        val PARTNER_TRADE_CHILD = 34
+        val PARTNER_TRADE_CHILD = 28
 
         /**
          * The hash of this player's trade offer component

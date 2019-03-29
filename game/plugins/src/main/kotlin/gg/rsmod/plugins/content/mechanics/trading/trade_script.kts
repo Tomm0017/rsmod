@@ -20,11 +20,15 @@ on_player_option(option = "Trade with") {
 
     // The trade partner instance
     val partner = player.getInteractingPlayer()
+
+    // If the player and partner are the same person
+    if (player == partner) return@on_player_option
+
     partner.message(TRADE_REQ_STRING.format(player.username), ChatMessageType.TRADE_REQ)
 
     // The trade session instances
-    val playerSession = TradeSession(player, partner, world.definitions)
-    val partnerSession = TradeSession(partner, player, world.definitions)
+    val playerSession = TradeSession(player, partner)
+    val partnerSession = TradeSession(partner, player)
 
     // Define the session attribute for both players
     player.attr[TRADE_SESSION_ATTR] = WeakReference(playerSession)
@@ -39,8 +43,32 @@ on_player_option(option = "Trade with") {
 on_button(OVERLAY_INTERFACE, 0) {
     val trade = player.getTradeSession()
     trade?.let {
+
+        // The player's inventory
+        val inventory = player.inventory
+
+        // The item slot, and the option that was pressed
         val slot = player.getInteractingSlot()
         val opt = player.getInteractingOption()
+
+        // The item being traded
+        val item = inventory[slot] ?: return@on_button
+
+        // Queue the action, as we might need to access queued dialogue
+        player.queue(TaskPriority.WEAK) {
+
+            // The amount being traded
+            val amount = when (opt) {
+                2 -> 5
+                3 -> 10
+                4 -> inventory.getItemCount(item.id)
+                5 -> inputInt("Enter amount:")
+                else -> 1
+            }
+
+            // Offer the amount to the trade
+            player.getTradeSession()?.offer(slot, amount)
+        }
     }
 }
 

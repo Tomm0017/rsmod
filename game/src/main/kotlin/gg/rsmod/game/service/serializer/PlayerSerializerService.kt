@@ -27,6 +27,9 @@ abstract class PlayerSerializerService : Service {
     override fun postLoad(server: Server, world: World) {
     }
 
+    override fun bindNet(server: Server, world: World) {
+    }
+
     override fun terminate(server: Server, world: World) {
     }
 

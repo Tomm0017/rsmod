@@ -25,9 +25,7 @@ set_menu_open_check {
  * Execute when a player logs in.
  */
 on_login {
-    /**
-     * Skill-related logic.
-     */
+    // Skill-related logic.
     if (player.getSkills().getMaxLevel(Skills.HITPOINTS) < 10) {
         player.getSkills().setBaseLevel(Skills.HITPOINTS, 10)
     }
@@ -35,9 +33,8 @@ on_login {
     player.sendWeaponComponentInformation()
     player.sendCombatLevelText()
 
-    /**
-     * Interface-related logic.
-     */
+
+    // Interface-related logic.
     player.openOverlayInterface(player.interfaces.displayMode)
     InterfaceDestination.values.filter { pane -> pane.interfaceId != -1 }.forEach { pane ->
         if (pane == InterfaceDestination.XP_COUNTER && player.getVarbit(OSRSGameframe.XP_DROPS_VISIBLE_VARBIT) == 0) {
@@ -48,10 +45,8 @@ on_login {
         player.openInterface(pane.interfaceId, pane)
     }
 
-    /**
-     * Inform the client whether or not we have a display name.
-     */
-    val displayName = player.username.isNotEmpty()
+    // Inform the client whether or not we have a display name.
+    val displayName = player.username.isNotBlank()
     player.runClientScript(1105, if (displayName) 1 else 0) // Has display name
     player.runClientScript(423, player.username)
     if (player.getVarp(1055) == 0 && displayName) {
@@ -59,15 +54,18 @@ on_login {
     }
     player.setVarbit(8119, 1) // Has display name
 
-    // Send player interaction options
-    player.sendOption(PlayerOption.FOLLOW)
-    player.sendOption(PlayerOption.TRADE)
+    // Sync attack priority options.
+    player.syncVarp(OSRSGameframe.NPC_ATTACK_PRIORITY_VARP)
+    player.syncVarp(OSRSGameframe.PLAYER_ATTACK_PRIORITY_VARP)
 
-    /**
-     * Game-related logic.
-     */
+    // Send player interaction options.
+    player.sendOption("Follow", 1)
+    player.sendOption("Trade with", 4)
+    player.sendOption("Report", 5)
+
+    // Game-related logic.
     player.sendRunEnergy(player.runEnergy.toInt())
-    player.message("Welcome to ${player.world.gameContext.name}.", ChatMessageType.SERVER)
+    player.message("Welcome to ${player.world.gameContext.name}.", ChatMessageType.GAME_MESSAGE)
 }
 
 /**

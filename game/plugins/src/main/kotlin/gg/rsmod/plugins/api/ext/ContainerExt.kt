@@ -32,24 +32,24 @@ fun ItemContainer.getNetworth(world: World): Long {
 fun ItemContainer.transfer(to: ItemContainer, item: Item, fromSlot: Int = -1, toSlot: Int = -1, note: Boolean = false, unnote: Boolean = false): ItemTransaction? {
     check(item.amount > 0)
 
-    /**
+    /*
      * Get the maximum amount of the item that can be transferred.
      */
     val amount = Math.min(item.amount, getItemCount(item.id))
 
-    /**
+    /*
      * Copy the item with the corrected amount.
      */
     val copy = Item(item, amount)
 
-    /**
+    /*
      * If we're transferring the whole item, make sure to copy its attributes.
      */
     if (amount >= item.amount) {
         copy.copyAttr(item)
     }
 
-    /**
+    /*
      * Turn the initial item into its noted or unnoted form, depending on [note]
      * and [unnote].
      */
@@ -66,7 +66,7 @@ fun ItemContainer.transfer(to: ItemContainer, item: Item, fromSlot: Int = -1, to
         return null
     }
 
-    /**
+    /*
      * The first item added to [to] should copy any attributes that were on
      * the initial copy of [item].
      */

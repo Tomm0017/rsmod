@@ -80,7 +80,7 @@ enum class Direction(val orientationValue: Int, val playerWalkValue: Int, val np
             return fromDeltas(deltaX, deltaZ)
         }
 
-        fun fromDeltas(deltaX: Int, deltaZ: Int): Direction {
+        private fun fromDeltas(deltaX: Int, deltaZ: Int): Direction {
             when (deltaZ) {
                 1 -> when (deltaX) {
                     1 -> return NORTH_EAST

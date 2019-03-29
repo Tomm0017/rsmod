@@ -116,7 +116,7 @@ object ObjectPathAction {
             length = def.width
         }
 
-        /**
+        /*
          * Objects have a clip mask in their [ObjectDef] which can be used
          * to specify any directions that the object can't be 'interacted'
          * from.
@@ -140,7 +140,7 @@ object ObjectPathAction {
             blockDirections.add(Direction.WEST)
         }
 
-        /**
+        /*
          * Wall objects can't be interacted from certain directions due to
          * how they are visually placed in a tile.
          */
@@ -152,7 +152,7 @@ object ObjectPathAction {
             else -> throw IllegalStateException("Invalid object rotation: $rot")
         }
 
-        /**
+        /*
          * Diagonal walls have an extra direction set as 'blocked', this is to
          * avoid the player interacting with the door and having its opened
          * door object be spawned on top of them, which leads to them being
@@ -168,7 +168,7 @@ object ObjectPathAction {
         }
 
         if (wall) {
-            /**
+            /*
              * Check if the pawn is within interaction distance of the wall.
              */
             if (pawn.tile.isWithinRadius(tile, 1)) {
@@ -193,7 +193,7 @@ object ObjectPathAction {
             builder.setTouchRadius(lineOfSightRange)
         }
 
-        /**
+        /*
          * If the object is not a 'diagonal' object, you shouldn't be able to
          * interact with them from diagonal tiles.
          */
@@ -201,7 +201,7 @@ object ObjectPathAction {
             builder.clipDiagonalTiles()
         }
 
-        /**
+        /*
          * If the object is not a wall object, or if we have a line of sight range
          * set for the object, then we shouldn't clip the tiles that overlap the
          * object; otherwise we do clip them.

@@ -21,32 +21,32 @@ object SmithingAction {
     /**
      * The message displayed when trying to smith a bar without the required level
      */
-    const val INSUFFICIENT_LEVEL_BAR = "You need a Smithing level of at least %d to work %ss."
+    private const val INSUFFICIENT_LEVEL_BAR = "You need a Smithing level of at least %d to work %ss."
 
     /**
      * The message displayed when trying to smith an item without the required level
      */
-    const val INSUFFICIENT_LEVEL_ITEM = "You need a Smithing level of %d to make %s."
+    private const val INSUFFICIENT_LEVEL_ITEM = "You need a Smithing level of %d to make %s."
 
     /**
      * The message displayed when trying to smith an item without the correct number of bars
      */
-    const val INSUFFICIENT_BAR_QTY = "You don't have enough %ss to make %s."
+    private const val INSUFFICIENT_BAR_QTY = "You don't have enough %ss to make %s."
 
     /**
      * The message displayed when trying to smith a bar without a hammer
      */
-    const val NO_HAMMER = "You need a hammer to work the metal with."
+    private const val NO_HAMMER = "You need a hammer to work the metal with."
 
     /**
      * The animation played when smithing an item
      */
-    const val SMITHING_ANIM = 898
+    private const val SMITHING_ANIM = 898
 
     /**
      * The sound played when smithing an item
      */
-    const val SMITHING_ANVIL_SOUND = 3771
+    private const val SMITHING_ANVIL_SOUND = 3771
 
     /**
      * Handles the smithing of a bar

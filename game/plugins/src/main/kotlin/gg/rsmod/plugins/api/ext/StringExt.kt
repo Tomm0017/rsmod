@@ -6,7 +6,11 @@ package gg.rsmod.plugins.api.ext
 
 private const val vowels = "aeiou"
 
-fun String.plural(amount: Int): String {
+fun String.pluralPrefix(amount: Int) : String {
+    return if (amount > 1) "are $this" else "is $this"
+}
+
+fun String.pluralSuffix(amount: Int): String {
     if (endsWith('s')) {
         return this
     }

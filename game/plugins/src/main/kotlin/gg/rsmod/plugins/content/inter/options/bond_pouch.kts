@@ -11,12 +11,11 @@ on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 100) {
     [Invoke Script]: [2276, 2]
     [Invoke Script]: [733, 0, 0, 0, 0, 0, 0, 0, 0]
      */
-    val p = player
-    if (!p.lock.canInterfaceInteract()) {
+    if (!player.lock.canInterfaceInteract()) {
         return@on_button
     }
-    p.setInterfaceUnderlay(color = -1, transparency = -1)
-    p.openInterface(interfaceId = 65, dest = InterfaceDestination.MAIN_SCREEN)
-    p.runClientScript(2276, 2)
-    p.runClientScript(733, 0, 0, 0, 0, 0, 0, 0, 0)
+    player.setInterfaceUnderlay(color = -1, transparency = -1)
+    player.openInterface(interfaceId = 65, dest = InterfaceDestination.MAIN_SCREEN)
+    player.runClientScript(2276, 2)
+    player.runClientScript(733, 0, 0, 0, 0, 0, 0, 0, 0)
 }

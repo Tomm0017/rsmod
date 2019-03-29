@@ -7,12 +7,11 @@ import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
  * Logout button.
  */
 on_button(interfaceId = 182, component = 8) {
-    val p = player
-    if (!p.timers.has(ACTIVE_COMBAT_TIMER)) {
-        p.requestLogout()
-        p.write(LogoutFullMessage())
-        p.channelClose()
+    if (!player.timers.has(ACTIVE_COMBAT_TIMER)) {
+        player.requestLogout()
+        player.write(LogoutFullMessage())
+        player.channelClose()
     } else {
-        p.message("You can't log out until 10 seconds after the end of combat.")
+        player.message("You can't log out until 10 seconds after the end of combat.")
     }
 }

@@ -16,7 +16,7 @@ class SequentialSynchronizationTask : GameTask {
     override fun execute(world: World, service: GameService) {
         val worldPlayers = world.players
         val worldNpcs = world.npcs
-        val rawNpcs = world.npcs.getRaw()
+        val rawNpcs = world.npcs.entries
 
         worldPlayers.forEach { p ->
             PlayerPreSynchronizationTask(p).run()
@@ -27,7 +27,7 @@ class SequentialSynchronizationTask : GameTask {
         }
 
         worldPlayers.forEach { p ->
-            /**
+            /*
              * Non-human [gg.rsmod.game.model.entity.Player]s do not need this
              * to send any synchronization data to their game-client as they do
              * not have one.
@@ -38,7 +38,7 @@ class SequentialSynchronizationTask : GameTask {
         }
 
         worldPlayers.forEach { p ->
-            /**
+            /*
              * Non-human [gg.rsmod.game.model.entity.Player]s do not need this
              * to send any synchronization data to their game-client as they do
              * not have one.

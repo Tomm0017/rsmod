@@ -5,17 +5,15 @@ val SUB_SECTION_VARBIT = 4372
 
 SkillGuide.values.forEach { guide ->
     on_button(320, guide.child) {
-        val p = player
-
-        if (!p.lock.canInterfaceInteract()) {
+        if (!player.lock.canInterfaceInteract()) {
             return@on_button
         }
 
-        p.setVarbit(SUB_SECTION_VARBIT, 0)
-        p.setVarbit(SKILL_ID_VARBIT, guide.bit)
-        p.setInterfaceEvents(interfaceId = 214, component = 25, from = -1, to = -1, setting = 0)
-        p.setInterfaceUnderlay(color = -1, transparency = -1)
-        p.openInterface(interfaceId = 214, dest = InterfaceDestination.MAIN_SCREEN)
+        player.setVarbit(SUB_SECTION_VARBIT, 0)
+        player.setVarbit(SKILL_ID_VARBIT, guide.bit)
+        player.setInterfaceEvents(interfaceId = 214, component = 25, from = -1, to = -1, setting = 0)
+        player.setInterfaceUnderlay(color = -1, transparency = -1)
+        player.openInterface(interfaceId = 214, dest = InterfaceDestination.MAIN_SCREEN)
     }
 }
 

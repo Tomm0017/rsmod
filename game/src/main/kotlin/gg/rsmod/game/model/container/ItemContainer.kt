@@ -109,7 +109,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
     fun getItemCount(itemId: Int): Int {
         var amount: Long = 0
 
-        /**
+        /*
          * We could stop the loop once the first matching item is found, if the
          * container has a [stackType] of [ContainerStackType.STACK], or if the
          * item's metadata describes it as a stackable item. However, we won't
@@ -213,12 +213,12 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
     fun add(item: Int, amount: Int = 1, assureFullInsertion: Boolean = true, forceNoStack: Boolean = false, beginSlot: Int = -1): ItemTransaction {
         val def = definitions.get(ItemDef::class.java, item)
 
-        /**
+        /*
          * Should the item stack?
          */
         val stack = !forceNoStack && stackType != ContainerStackType.NO_STACK && (def.stackable || stackType == ContainerStackType.STACK)
 
-        /**
+        /*
          * We don't need to calculate the previous amount unless the item is going
          * to stack.
          */
@@ -228,12 +228,12 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
             return ItemTransaction(amount, 0, emptyList())
         }
 
-        /**
+        /*
          * The amount of free slots in the container.
          */
         val freeSlotCount = freeSlotCount
 
-        /**
+        /*
          * If the player has no more free slots and either `stack`
          * is not set or the container does not have [item] at all,
          * the transaction will fail.
@@ -243,7 +243,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
         }
 
         if (assureFullInsertion) {
-            /**
+            /*
              * If the item will stack, but the previous item stack can't hold
              * [amount] more of the item, the transaction will fail.
              */
@@ -251,7 +251,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
                 return ItemTransaction(amount, 0, emptyList())
             }
 
-            /**
+            /*
              * If the item will not stack and there's less free slots than [amount],
              * the transaction will fail.
              */
@@ -259,7 +259,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
                 return ItemTransaction(amount, 0, emptyList())
             }
         } else {
-            /**
+            /*
              * Even if our caller has stated to not [assureFullInsertion], there's
              * still no reason to have the other logic execute if we know that
              * not even a single [item] item can be added.
@@ -275,7 +275,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
         val added = arrayListOf<SlotItem>()
 
         if (!stack) {
-            /**
+            /*
              * Placeholders only occur in stackable containers, like bank.
              * No need to do anything with placeholder here.
              */
@@ -305,7 +305,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
                     }
                 }
                 if (stackIndex == -1) {
-                    /**
+                    /*
                      * This shouldn't happen as we have already made sure that
                      * at least one item, whether stackable or not, can fit in
                      * our container.
@@ -410,14 +410,14 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
             }
         }
 
-        /**
+        /*
          * If we specified a [beginSlot] to begin the search, but we were not able
          * to remove [amount] of [item] items, then we go over the skipped indices.
          * This is done to ensure that [assureFullRemoval] will always provide
          * accurate results.
          *
          * Example: One abyssal whip in slot 0 and another in slot 10, we call [remove]
-         * with [beginSlot] of [5] and [assureFullRemoval] as [true]. Our initial
+         * with [beginSlot] of 5 and [assureFullRemoval] as true. Our initial
          * check to make sure the container has enough of the item will succeed,
          * however the loop would only iterate through items in index 5-[capacity].
          * This would only remove one of the two items if we would not go over the

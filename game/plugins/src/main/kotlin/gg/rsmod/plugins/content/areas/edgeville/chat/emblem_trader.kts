@@ -29,7 +29,6 @@ arrayOf(Npcs.EMBLEM_TRADER, Npcs.EMBLEM_TRADER_316).forEach { npc ->
         on_npc_option(npc = npc, option = "hide-streaks") {
             player.queue {
                 if (options("Yes", "No", title = "Hide kill streak data?") == 1) {
-                    val player = player
                     hide_killstreak_data(player)
                     player.message("Bounty Hunter kill streak data has now been hidden.")
                 }
@@ -39,7 +38,6 @@ arrayOf(Npcs.EMBLEM_TRADER, Npcs.EMBLEM_TRADER_316).forEach { npc ->
         on_npc_option(npc = npc, option = "show-streaks") {
             player.queue {
                 if (options("Yes", "No", title = "Show kill streak data?") == 1) {
-                    val player = player
                     show_killstreak_data(player)
                     player.message("Bounty Hunter kill streak data has now been activated.")
                 }

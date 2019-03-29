@@ -36,7 +36,7 @@ class GameHandler(private val filestore: Store, private val world: World) : Chan
             if (system != null) {
                 system.receiveMessage(ctx, msg)
             } else if (msg is HandshakeMessage) {
-                /**
+                /*
                  * The [HandshakeMessage] is sent in the [HandshakeDecoder], after the pipelines
                  * have been configured to meet the requirements of the handshake.
                  */

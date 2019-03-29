@@ -15,6 +15,7 @@ import net.runelite.cache.IndexType
 import net.runelite.cache.definitions.loaders.LocationsLoader
 import net.runelite.cache.definitions.loaders.MapLoader
 import net.runelite.cache.fs.Store
+import java.io.FileNotFoundException
 import java.io.IOException
 
 /**
@@ -33,43 +34,43 @@ class DefinitionSet {
     private var xteaService: XteaKeyService? = null
 
     fun loadAll(store: Store) {
-        /**
+        /*
          * Load [AnimDef]s.
          */
         load(store, AnimDef::class.java)
         logger.info("Loaded ${getCount(AnimDef::class.java)} animation definitions.")
 
-        /**
+        /*
          * Load [VarpDef]s.
          */
         load(store, VarpDef::class.java)
         logger.info("Loaded ${getCount(VarpDef::class.java)} varp definitions.")
 
-        /**
+        /*
          * Load [VarbitDef]s.
          */
         load(store, VarbitDef::class.java)
         logger.info("Loaded ${getCount(VarbitDef::class.java)} varbit definitions.")
 
-        /**
+        /*
          * Load [EnumDef]s.
          */
         load(store, EnumDef::class.java)
         logger.info("Loaded ${getCount(EnumDef::class.java)} enum definitions.")
 
-        /**
+        /*
          * Load [NpcDef]s.
          */
         load(store, NpcDef::class.java)
         logger.info("Loaded ${getCount(NpcDef::class.java)} npc definitions.")
 
-        /**
+        /*
          * Load [ItemDef]s.
          */
         load(store, ItemDef::class.java)
         logger.info("Loaded ${getCount(ItemDef::class.java)} item definitions.")
 
-        /**
+        /*
          * Load [ObjectDef]s.
          */
         load(store, ObjectDef::class.java)
@@ -87,7 +88,7 @@ class DefinitionSet {
             AnimDef::class.java -> ConfigType.SEQUENCE
             else -> throw IllegalArgumentException("Unhandled class type ${type::class.java}.")
         }
-        val configs = store.getIndex(IndexType.CONFIGS)!!
+        val configs = store.getIndex(IndexType.CONFIGS) ?: throw FileNotFoundException("Cache was not found.")
         val archive = configs.getArchive(configType.id)!!
         val files = archive.getFiles(store.storage.loadArchive(archive)!!).files
 
@@ -170,7 +171,7 @@ class DefinitionSet {
 
                     if ((tileSetting.toInt() and CollisionManager.BRIDGE_TILE) == CollisionManager.BRIDGE_TILE) {
                         bridges.add(tile)
-                        /**
+                        /*
                          * We don't want the bottom of the bridge to be blocked,
                          * so remove the blocked tile if applicable.
                          */
@@ -180,7 +181,7 @@ class DefinitionSet {
             }
         }
 
-        /**
+        /*
          * Apply the blocked tiles to the collision detection.
          */
         val blockedTileBuilder = CollisionUpdate.Builder()
@@ -192,7 +193,7 @@ class DefinitionSet {
         world.collision.applyUpdate(blockedTileBuilder.build())
 
         if (xteaService == null) {
-            /**
+            /*
              * If we don't have an [XteaKeyService], then we assume we don't
              * need to decrypt the files through xteas. This means the objects
              * from each region has to be decrypted a different way.

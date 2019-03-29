@@ -3,7 +3,10 @@ package gg.rsmod.game.action
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.attr.*
-import gg.rsmod.game.model.entity.*
+import gg.rsmod.game.model.entity.Entity
+import gg.rsmod.game.model.entity.Npc
+import gg.rsmod.game.model.entity.Pawn
+import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.path.PathRequest
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.TaskPriority
@@ -25,7 +28,13 @@ object PawnPathAction {
         val other = pawn.attr[INTERACTING_NPC_ATTR]?.get() ?: pawn.attr[INTERACTING_PLAYER_ATTR]?.get()!!
         val opt = pawn.attr[INTERACTING_OPT_ATTR]!!
 
-        val lineOfSightRange = if (other is Npc) world.plugins.getNpcInteractionDistance(other.id) else 1
+        /*
+         * Some interactions only require line-of-sight range, such as npcs
+         * behind cells or booths. This allows for diagonal interaction.
+         *
+         * Set to null for default interaction range.
+         */
+        val lineOfSightRange = if (other is Npc) world.plugins.getNpcInteractionDistance(other.id) else null
 
         pawn.queue(TaskPriority.STANDARD) {
             terminateAction = {
@@ -66,7 +75,7 @@ object PawnPathAction {
             if (pawn.attr[FACING_PAWN_ATTR]?.get() != other) {
                 return
             }
-            /**
+            /*
              * If the npc has moved from the time this queue was added to
              * when it was actually invoked, we need to walk towards it again.
              */
@@ -77,7 +86,7 @@ object PawnPathAction {
 
             if (other is Npc) {
 
-                /**
+                /*
                  * On 07, only one npc can be facing the player at a time,
                  * so if the last pawn that faced the player is still facing
                  * them, then we reset their face target.
@@ -90,7 +99,7 @@ object PawnPathAction {
                 }
                 pawn.attr[NPC_FACING_US_ATTR] = WeakReference(other)
 
-                /**
+                /*
                  * Stop the npc from walking while the player talks to it
                  * for [Npc.RESET_PAWN_FACE_DELAY] cycles.
                  */
@@ -108,9 +117,12 @@ object PawnPathAction {
             }
 
             if (other is Player) {
-                val handled = world.plugins.executePlayerOption(pawn, opt)
-                if (!handled) {
-                    pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
+                val option = other.options[opt - 1]
+                if (option != null) {
+                    val handled = world.plugins.executePlayerOption(pawn, option)
+                    if (!handled) {
+                        pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
+                    }
                 }
             }
             pawn.resetFacePawn()
@@ -180,5 +192,4 @@ object PawnPathAction {
 
     private fun bordering(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areBordering(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
 
-    private fun diagonal(tile1: Tile, size1: Int, tile2: Tile, size2: Int): Boolean = AabbUtil.areDiagonal(tile1.x, tile1.z, size1, size1, tile2.x, tile2.z, size2, size2)
 }

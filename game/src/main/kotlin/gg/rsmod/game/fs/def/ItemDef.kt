@@ -52,6 +52,9 @@ class ItemDef(override val id: Int) : Definition(id) {
     lateinit var bonuses: IntArray
     lateinit var skillReqs: Byte2ByteOpenHashMap
 
+    val stackable: Boolean get() = stacks || noteTemplateId > 0
+    val noted: Boolean get() = noteTemplateId > 0
+
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {
             1 -> buf.readUnsignedShort()
@@ -125,8 +128,4 @@ class ItemDef(override val id: Int) : Definition(id) {
             249 -> params.putAll(readParams(buf))
         }
     }
-
-    val stackable: Boolean get() = stacks || noteTemplateId > 0
-
-    val noted: Boolean get() = noteTemplateId > 0
 }

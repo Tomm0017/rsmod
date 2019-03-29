@@ -37,9 +37,8 @@ on_login {
 }
 
 on_timer(Prayers.PRAYER_DRAIN) {
-    val p = player
-    p.timers[Prayers.PRAYER_DRAIN] = 1
-    Prayers.drainPrayer(p)
+    player.timers[Prayers.PRAYER_DRAIN] = 1
+    Prayers.drainPrayer(player)
 }
 
 /**

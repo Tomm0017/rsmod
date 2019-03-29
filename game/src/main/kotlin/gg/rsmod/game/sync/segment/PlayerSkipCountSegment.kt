@@ -9,10 +9,11 @@ import gg.rsmod.net.packet.GamePacketBuilder
 class PlayerSkipCountSegment(val count: Int) : SynchronizationSegment {
 
     override fun encode(buf: GamePacketBuilder) {
-        /**
+        /*
          * Signal to the client that the player does not need to be decoded.
          */
         buf.putBits(1, 0)
+
         when {
             count == 0 -> {
                 buf.putBits(2, 0)

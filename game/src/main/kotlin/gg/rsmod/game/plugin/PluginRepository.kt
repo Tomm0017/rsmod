@@ -270,7 +270,7 @@ class PluginRepository(val world: World) {
     /**
      * A map of plugins that are invoked when a player interaction option is executed
      */
-    private val playerOptionPlugins = hashMapOf<Int, Plugin.() -> Unit>()
+    private val playerOptionPlugins = hashMapOf<String, Plugin.() -> Unit>()
 
     /**
      * A list of plugins that will be invoked when an npc hits 0 hp.
@@ -485,11 +485,11 @@ class PluginRepository(val world: World) {
         playerPreDeathPlugins.forEach { plugin -> p.executePlugin(plugin) }
     }
 
-    fun bindPlayerOption(option: PlayerOption, plugin: Plugin.() -> Unit) {
-        playerOptionPlugins[option.index] = plugin
+    fun bindPlayerOption(option: String, plugin: Plugin.() -> Unit) {
+        playerOptionPlugins[option] = plugin
     }
 
-    fun executePlayerOption(player: Player, option: Int) : Boolean {
+    fun executePlayerOption(player: Player, option: String) : Boolean {
         val logic = playerOptionPlugins[option] ?: return false
         player.executePlugin(logic)
         return true
@@ -792,13 +792,13 @@ class PluginRepository(val world: World) {
     fun executeEquipItemRequirement(p: Player, item: Int): Boolean {
         val plugin = equipItemRequirementPlugins[item]
         if (plugin != null) {
-            /**
+            /*
              * Plugin returns true if the item can be equipped, false if it
              * should block the item from being equipped.
              */
             return p.executePlugin(plugin)
         }
-        /**
+        /*
          * Should always be able to wear items by default.
          */
         return true

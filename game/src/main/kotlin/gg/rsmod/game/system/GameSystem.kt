@@ -37,7 +37,7 @@ class GameSystem(channel: Channel, val client: Client, val service: GameService)
             val message = decoder.decode(msg.opcode, service.messageStructures.get(msg.opcode)!!, GamePacketReader(msg))
             messages.add(MessageHandle(message, handler, msg.opcode, msg.payload.readableBytes()))
 
-            /**
+            /*
              * Release the allocated buffer for the [GamePacket].
              */
             msg.payload.release()

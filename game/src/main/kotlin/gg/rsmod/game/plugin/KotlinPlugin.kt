@@ -11,7 +11,6 @@ import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.model.entity.PlayerOption
 import gg.rsmod.game.model.shop.PurchasePolicy
 import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.shop.ShopCurrency
@@ -256,7 +255,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
     /**
      * Invokes when a player interaction option is executed
      */
-    fun on_player_option(option: PlayerOption, plugin: Plugin.() -> Unit) = r.bindPlayerOption(option, plugin)
+    fun on_player_option(option: String, plugin: Plugin.() -> Unit) = r.bindPlayerOption(option, plugin)
 
     /**
      * Invoked when a player hits 0 hp and is starting their death task.

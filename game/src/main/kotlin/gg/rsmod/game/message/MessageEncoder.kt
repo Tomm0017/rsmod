@@ -8,9 +8,6 @@ import gg.rsmod.net.packet.GamePacketBuilder
  * Responsible for encoding [Message]s into [GamePacket]s that can be sent to
  * the client.
  *
- * @param structure The [MessageStructure] that will be used to encode [T] into a
- * [GamePacket].
- *
  * @author Tom <rspsmods@gmail.com>
  */
 abstract class MessageEncoder<T: Message> {

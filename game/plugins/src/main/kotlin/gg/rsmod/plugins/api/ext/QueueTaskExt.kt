@@ -31,20 +31,23 @@ private val closeInput: ((QueueTask).() -> Unit) = {
 }
 
 /**
- * Gets the [ctx] as a [Pawn]. If [ctx] is not a [Pawn], a cast exception
- * will be thrown.
+ * Gets the [QueueTask.ctx] as a [Pawn].
+ *
+ * If [QueueTask.ctx] is not a [Pawn], a cast exception will be thrown.
  */
 inline val QueueTask.pawn: Pawn get() = ctx as Pawn
 
 /**
- * Gets the [ctx] as a [Player]. If [ctx] is not a [Player], a cast exception
- * will be thrown.
+ * Gets the [QueueTask.ctx] as a [Player].
+ *
+ * If [QueueTask.ctx] is not a [Pawn], a cast exception will be thrown.
  */
 inline val QueueTask.player: Player get() = ctx as Player
 
 /**
- * Gets the [ctx] as an [Npc]. If [ctx] is not an [Npc], a cast exception
- * will be thrown.
+ * Gets the [QueueTask.ctx] as an [Npc].
+ *
+ * If [QueueTask.ctx] is not a [Pawn], a cast exception will be thrown.
  */
 inline val QueueTask.npc: Npc get() = ctx as Npc
 
@@ -94,6 +97,7 @@ suspend fun QueueTask.inputInt(description: String = "Enter amount"): Int {
 suspend fun QueueTask.searchItemInput(message: String): Int {
     player.runClientScript(750, message, 1, -1)
 
+    terminateAction = closeInput
     waitReturnValue()
 
     return requestReturnValue as? Int ?: -1
@@ -266,7 +270,7 @@ suspend fun QueueTask.levelUpMessageBox(skill: Int, levelIncrement: Int) {
         val vowel = initialChar == 'a' || initialChar == 'e' || initialChar == 'i' || initialChar == 'o' || initialChar == 'u'
         val levelFormat = if (levelIncrement == 1) (if (vowel) "an" else "a") else "$levelIncrement"
 
-        player.setComponentText(interfaceId = 233, component = 1, text = "<col=000080>Congratulations, you just advanced $levelFormat $skillName ${"level".plural(levelIncrement)}.")
+        player.setComponentText(interfaceId = 233, component = 1, text = "<col=000080>Congratulations, you just advanced $levelFormat $skillName ${"level".pluralSuffix(levelIncrement)}.")
         player.setComponentText(interfaceId = 233, component = 2, text = "Your $skillName level is now ${player.getSkills().getMaxLevel(skill)}.")
         player.setComponentText(interfaceId = 233, component = 3, text = "Click here to continue")
         player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 233)
@@ -279,7 +283,7 @@ suspend fun QueueTask.levelUpMessageBox(skill: Int, levelIncrement: Int) {
 
         player.setComponentItem(interfaceId = 193, component = 1, item = 9951, amountOrZoom = 400)
 
-        player.setComponentText(interfaceId = 193, component = 2, text = "<col=000080>Congratulations, you've just advanced $levelFormat Hunter ${"level".plural(levelIncrement)}." +
+        player.setComponentText(interfaceId = 193, component = 2, text = "<col=000080>Congratulations, you've just advanced $levelFormat Hunter ${"level".pluralSuffix(levelIncrement)}." +
                 "<col=000000><br><br>Your Hunter level is now ${player.getSkills().getMaxLevel(skill)}.")
         player.setComponentText(interfaceId = 193, component = 3, text = "Click here to continue")
         player.setComponentText(interfaceId = 193, component = 4, text = "")
@@ -294,7 +298,6 @@ suspend fun QueueTask.levelUpMessageBox(skill: Int, levelIncrement: Int) {
 }
 
 suspend fun QueueTask.produceItemBox(vararg items: Int, title: String = "What would you like to make?", maxItems: Int = player.inventory.capacity, logic: Player.(Int, Int) -> Unit) {
-
     val defs = player.world.definitions
     val itemDefs = items.map { defs.get(ItemDef::class.java, it) }
 
@@ -308,6 +311,7 @@ suspend fun QueueTask.produceItemBox(vararg items: Int, title: String = "What wo
         nameArray[it.index] = "|${def.name}"
     }
 
+    player.sendTempVarbit(5983, 1)
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 270)
     player.runClientScript(2046, 0, "$title${nameArray.joinToString("")}", maxItems, *itemArray)
 

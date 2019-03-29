@@ -44,19 +44,17 @@ on_button(interfaceId = EquipmentStats.TAB_INTERFACE_ID, component = 0) {
 }
 
 on_button(interfaceId = 387, component = 17) {
-    val p = player
-
-    if (!p.lock.canInterfaceInteract()) {
+    if (!player.lock.canInterfaceInteract()) {
         return@on_button
     }
 
-    p.setInterfaceUnderlay(-1, -1)
-    p.openInterface(interfaceId = EquipmentStats.INTERFACE_ID, dest = InterfaceDestination.MAIN_SCREEN)
-    p.openInterface(interfaceId = EquipmentStats.TAB_INTERFACE_ID, dest = InterfaceDestination.TAB_AREA)
-    p.runClientScript(149, 5570560, 93, 4, 7, 1, -1, "Equip", "", "", "", "")
-    p.setInterfaceEvents(interfaceId = EquipmentStats.TAB_INTERFACE_ID, component = 0, range = 0..27, setting = 1180674)
+    player.setInterfaceUnderlay(-1, -1)
+    player.openInterface(interfaceId = EquipmentStats.INTERFACE_ID, dest = InterfaceDestination.MAIN_SCREEN)
+    player.openInterface(interfaceId = EquipmentStats.TAB_INTERFACE_ID, dest = InterfaceDestination.TAB_AREA)
+    player.runClientScript(149, 5570560, 93, 4, 7, 1, -1, "Equip", "", "", "", "")
+    player.setInterfaceEvents(interfaceId = EquipmentStats.TAB_INTERFACE_ID, component = 0, range = 0..27, setting = 1180674)
 
-    EquipmentStats.sendBonuses(p)
+    EquipmentStats.sendBonuses(player)
 }
 
 on_interface_close(interfaceId = EquipmentStats.INTERFACE_ID) {

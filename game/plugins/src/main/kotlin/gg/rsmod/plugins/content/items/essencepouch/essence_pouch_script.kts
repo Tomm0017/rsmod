@@ -1,27 +1,13 @@
 package gg.rsmod.plugins.content.items.essencepouch
 
-import com.google.common.collect.ImmutableSet
-import gg.rsmod.game.fs.def.ItemDef
-
 /**
  * The set of essence pouch definitions
  */
-val pouches = ImmutableSet.of(
+private val pouches = setOf(
         EssencePouch(id = Items.SMALL_POUCH,    levelReq = 1,   capacity = 3),
         EssencePouch(id = Items.MEDIUM_POUCH,   levelReq = 25,  capacity = 6),
         EssencePouch(id = Items.LARGE_POUCH,    levelReq = 50,  capacity = 9),
         EssencePouch(id = Items.GIANT_POUCH,    levelReq = 75,  capacity = 12)
-)!!
-
-/**
- * A map of numbers to English string literals. I didn't see a library that already offered this
- * that is already a dependency of the game server.
- *
- * TODO: Develop a better solution for expressing this
- */
-val numberLiterals = mapOf(
-        1 to "one", 2 to "two", 3 to "three", 4 to "four", 5 to "five", 6 to "six",
-        7 to "seven", 8 to "eight", 9 to "nine", 10 to "ten", 11 to "eleven", 12 to "twelve"
 )
 
 /**
@@ -151,5 +137,5 @@ fun checkPouch(player: Player) {
     val name = player.world.definitions.get(ItemDef::class.java, item).name.toLowerCase()
     val multiple = count > 1
 
-    player.message("There ${if (multiple) "are" else "is"} ${numberLiterals[count]} $name${if (multiple) "s" else ""} in this pouch.")
+    player.message("There ${count.toLiteral()?.pluralPrefix(count)} ${name.pluralSuffix(count)} in this pouch.")
 }

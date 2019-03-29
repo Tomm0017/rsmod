@@ -8,7 +8,7 @@
 # code.
 
 # Use kotlin image to run the server.
-FROM zenika/kotlin:1.3-jdk8
+FROM zenika/kotlin:1.3-eap-jdk8-alpine
 
 # Define `directory` as '/app/'
 ENV directory /app/

@@ -40,9 +40,8 @@ intArrayOf(28, 30, 32, 34, 36).forEach { quantity ->
 }
 
 on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 42) {
-    val p = player
-    val from = p.inventory
-    val to = p.bank
+    val from = player.inventory
+    val to = player.bank
 
     var any = false
     for (i in 0 until from.capacity) {
@@ -50,7 +49,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 42) {
 
         val total = item.amount
 
-        val placeholderSlot = to.removePlaceholder(p.world, item)
+        val placeholderSlot = to.removePlaceholder(world, item)
         val deposited = from.transfer(to, item, fromSlot = i, toSlot = placeholderSlot, note = false, unnote = true)?.completed ?: 0
         if (total != deposited) {
             // Was not able to deposit the whole stack of [item].
@@ -61,14 +60,13 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 42) {
     }
 
     if (!any && !from.isEmpty) {
-        p.message("Bank full.")
+        player.message("Bank full.")
     }
 }
 
 on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
-    val p = player
-    val from = p.equipment
-    val to = p.bank
+    val from = player.equipment
+    val to = player.bank
 
     var any = false
     for (i in 0 until from.capacity) {
@@ -76,19 +74,19 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
 
         val total = item.amount
 
-        val placeholderSlot = to.removePlaceholder(p.world, item)
+        val placeholderSlot = to.removePlaceholder(world, item)
         val deposited = from.transfer(to, item, fromSlot = i, toSlot = placeholderSlot, note = false, unnote = true)?.completed ?: 0
         if (total != deposited) {
             // Was not able to deposit the whole stack of [item].
         }
         if (deposited > 0) {
             any = true
-            EquipAction.onItemUnequip(p, item.id)
+            EquipAction.onItemUnequip(player, item.id)
         }
     }
 
     if (!any && !from.isEmpty) {
-        p.message("Bank full.")
+        player.message("Bank full.")
     }
 }
 

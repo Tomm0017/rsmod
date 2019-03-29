@@ -1,14 +1,15 @@
 package gg.rsmod.plugins.content.objs.depositbox
 
-import com.google.common.collect.ImmutableSet
 import gg.rsmod.game.action.EquipAction
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 
-val DEPOSIT_INTERFACE_ID = 192
-val DEPOSIT_EQUIPMENT_SFX = 2238
+private val DEPOSIT_INTERFACE_ID = 192
+private val DEPOSIT_EQUIPMENT_SFX = 2238
+private val DEPOSIT_ANIMATION = 834
 
-val DEPOSIT_BOXES = ImmutableSet.of(Objs.BANK_DEPOSIT_BOX, Objs.BANK_DEPOSIT_BOX_25937, Objs.BANK_DEPOSIT_BOX_26254,
+private val DEPOSIT_BOXES = setOf(
+        Objs.BANK_DEPOSIT_BOX, Objs.BANK_DEPOSIT_BOX_25937, Objs.BANK_DEPOSIT_BOX_26254,
         Objs.BANK_DEPOSIT_BOX_29103, Objs.BANK_DEPOSIT_BOX_29104, Objs.BANK_DEPOSIT_BOX_29105, Objs.BANK_DEPOSIT_BOX_29106,
         Objs.BANK_DEPOSIT_BOX_29327, Objs.BANK_DEPOSIT_BOX_30268, Objs.BANK_DEPOSIT_BOX_31726, Objs.BANK_DEPOSIT_BOX_32665,
         Objs.BANK_DEPOSIT_BOX_34344)
@@ -77,79 +78,103 @@ fun close_deposit_box(p: Player) {
 }
 
 fun deposit_item(p: Player, slot: Int, amt: Int) {
-    val item = p.inventory[slot] ?: return
-    val amount = Math.min(p.inventory.getItemCount(item.id), amt)
+    val from = p.inventory
+    val to = p.bank
 
-    val add = p.bank.add(item.id, amount, assureFullInsertion = false)
-    if (add.completed == 0) {
-        p.message("Bank full.")
-        return
-    }
+    val item = from[slot] ?: return
+    val amount = Math.min(from.getItemCount(item.id), amt)
 
-    val remove = p.inventory.remove(item.id, add.completed, assureFullRemoval = true)
-    if (remove.hasFailed()) {
-        add.items.forEach { p.bank.remove(it.item, beginSlot = it.slot) }
-    }
-}
-
-fun deposit_inv(p: Player) {
-    val container = p.inventory
-
-    var any = false
-
-    if (container.isEmpty) {
-        p.message("You have nothing to deposit.")
-        return
-    }
-
-    container.filterNotNull().forEach { item ->
-        val add = p.bank.add(item, assureFullInsertion = false)
-        if (add.completed == 0) {
-            return@forEach
-        }
-
-        val remove = container.remove(item.id, add.completed, assureFullRemoval = true)
-        if (remove.hasFailed()) {
-            add.items.forEach { p.bank.remove(it.item, beginSlot = it.slot) }
-        } else {
-            any = true
-        }
-    }
-
-    if (!any) {
-        p.message("Bank full.")
-    }
-}
-
-fun deposit_equipment(p: Player) {
-    val container = p.equipment
-
-    var any = false
-
-    if (container.isEmpty) {
-        p.message("You have nothing to deposit.")
-        return
-    }
-
-    for (i in 0 until container.capacity) {
-        val item = container[i] ?: continue
-        val add = p.bank.add(item, assureFullInsertion = false)
-        if (add.completed == 0) {
+    var deposited = 0
+    for (i in 0 until from.capacity) {
+        val inv = from[i] ?: continue
+        if (inv.id != item.id) {
             continue
         }
 
-        val remove = container.remove(item.id, add.completed, assureFullRemoval = true)
-        if (remove.hasFailed()) {
-            add.items.forEach { p.bank.remove(it.item, beginSlot = it.slot) }
-        } else {
-            any = true
-            EquipAction.onItemUnequip(p, item.id)
+        if (deposited >= amount) {
+            break
+        }
+
+        val left = amount - deposited
+
+        val copy = Item(inv.id, Math.min(left, inv.amount))
+        if (copy.amount >= inv.amount) {
+            copy.copyAttr(inv)
+        }
+
+        val placeholderSlot = to.removePlaceholder(p.world, copy)
+        val transfer = from.transfer(to, item = copy, fromSlot = i, toSlot = placeholderSlot, note = false, unnote = true)
+
+        if (transfer != null) {
+            deposited += transfer.completed
         }
     }
 
-    if (!any) {
+    if (deposited == 0) {
         p.message("Bank full.")
-    } else {
-        p.playSound(DEPOSIT_EQUIPMENT_SFX)
     }
+
+    p.animate(DEPOSIT_ANIMATION)
+}
+
+fun deposit_inv(player: Player) {
+    val from = player.inventory
+    val to = player.bank
+
+    var any = false
+    for (i in 0 until from.capacity) {
+        val item = from[i] ?: continue
+
+        val total = item.amount
+
+        val placeholderSlot = to.removePlaceholder(world, item)
+        val deposited = from.transfer(to, item, fromSlot = i, toSlot = placeholderSlot, note = false, unnote = true)?.completed ?: 0
+        if (total != deposited) {
+            // Was not able to deposit the whole stack of [item].
+        }
+        if (deposited > 0) {
+            any = true
+        }
+    }
+
+    if (!any && !from.isEmpty) {
+        player.message("Bank full.")
+    }
+}
+
+fun deposit_equipment(player: Player) {
+    val from = player.equipment
+    val to = player.bank
+
+    var any = false
+    for (i in 0 until from.capacity) {
+        val item = from[i] ?: continue
+
+        val total = item.amount
+
+        val placeholderSlot = to.removePlaceholder(world, item)
+        val deposited = from.transfer(to, item, fromSlot = i, toSlot = placeholderSlot, note = false, unnote = true)?.completed ?: 0
+        if (total != deposited) {
+            // Was not able to deposit the whole stack of [item].
+        }
+        if (deposited > 0) {
+            any = true
+            EquipAction.onItemUnequip(player, item.id)
+        }
+    }
+
+    if (!any && !from.isEmpty) {
+        player.message("Bank full.")
+    } else {
+        player.playSound(DEPOSIT_EQUIPMENT_SFX)
+    }
+}
+
+fun ItemContainer.removePlaceholder(world: World, item: Item): Int {
+    val def = item.toUnnoted(world.definitions).getDef(world.definitions)
+    val slot = if (def.placeholderId > 0) indexOfFirst { it?.id == def.placeholderId && it.amount == 0 } else -1
+    if (slot != -1) {
+        this[slot] = null
+    }
+    return slot
 }

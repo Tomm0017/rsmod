@@ -607,5 +607,12 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         }
     }
 
+    /**
+     * Invoke network related logic for all services.
+     */
+    internal fun bindServices(server: Server) {
+        services.forEach { it.bindNet(server, this) }
+    }
+
     companion object: KLogging()
 }

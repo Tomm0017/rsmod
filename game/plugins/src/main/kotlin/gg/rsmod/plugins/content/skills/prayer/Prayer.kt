@@ -19,6 +19,10 @@ object Prayer {
 
     private const val BURY_SOUND = 2738
 
+    private const val ALTAR_ANIM = 713
+
+    private const val ALTAR_BONE_GFX = 624
+
     suspend fun burying(it: QueueTask, bones: Bones) {
         val player = it.player
 
@@ -81,8 +85,8 @@ object Prayer {
                 }
                 chance = 1
             }
-            player.animate(713)
-            player.graphic(id = 624,height = 1,delay =1)
+            player.animate(ALTAR_ANIM)
+            player.graphic(id = ALTAR_BONE_GFX,height = 1,delay =1)
             it.wait(1)
         }
     }

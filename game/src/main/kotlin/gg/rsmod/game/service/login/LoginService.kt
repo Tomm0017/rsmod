@@ -26,7 +26,7 @@ import java.util.concurrent.LinkedBlockingQueue
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class LoginService : Service() {
+class LoginService : Service {
 
     /**
      * The [PlayerSerializerService] implementation that will be used to decode
@@ -50,6 +50,9 @@ class LoginService : Service() {
     }
 
     override fun postLoad(server: Server, world: World) {
+    }
+
+    override fun bindNet(server: Server, world: World) {
     }
 
     override fun terminate(server: Server, world: World) {

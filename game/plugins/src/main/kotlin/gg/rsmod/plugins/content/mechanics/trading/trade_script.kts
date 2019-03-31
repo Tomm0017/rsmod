@@ -40,19 +40,12 @@ on_player_option(option = "Trade with") {
         partner.message(TRADE_REQ_STRING.format(player.username), ChatMessageType.TRADE_REQ)
     } else {
 
-        // If the partner's aren't within interaction distance, walk to the partner
-        player.queue {
+        // Remove the requests
+        player.attr[TRADE_REQUESTS]!!.remove(partner)
+        partner.attr[TRADE_REQUESTS]!!.remove(player)
 
-            // Walk to the partner
-            player.walkTo(this, partner.tile)
-
-            // Remove the requests
-            player.attr[TRADE_REQUESTS]!!.remove(partner)
-            partner.attr[TRADE_REQUESTS]!!.remove(player)
-
-            // Initiate the trade
-            initiate(player, partner)
-        }
+        // Initiate the trade
+        initiate(player, partner)
     }
 }
 

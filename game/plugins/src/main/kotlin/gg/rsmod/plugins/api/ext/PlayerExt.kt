@@ -258,29 +258,6 @@ fun Player.updateItemContainer(key: Int, container: ItemContainer) {
     write(UpdateInvFullMessage(containerKey = key, items = container.rawItems))
 }
 
-/**
- * Open an inventory overlay interface, with the specified overlay options
- *
- * @param component         The interface component to use
- * @param container         The container to display on the overlay
- * @param overlayOptions    The options on the overlay interface
- */
-fun Player.openInventoryOverlay(component: Int, container: ItemContainer, vararg overlayOptions: String) {
-    sendItemContainer(key = INVENTORY_INTERFACE_KEY, container = container)
-    setInterfaceEvents(interfaceId = component, component = 0, range = 0..container.capacity, setting = 1086)
-    runClientScript(INTERFACE_INV_INIT_BIG, (component shl 16), INVENTORY_INTERFACE_KEY, 4, 7, 0, -1, *overlayOptions)
-    openInterface(component, InterfaceDestination.TAB_AREA)
-}
-
-/**
- * Sends a container to the inventory overlay interface
- *
- * @param container The container to display
- */
-fun Player.sendInventoryOverlay(container: ItemContainer) {
-    sendItemContainer(key = INVENTORY_INTERFACE_KEY, container = container)
-}
-
 fun Player.sendRunEnergy(energy: Int) {
     write(UpdateRunEnergyMessage(energy))
 }

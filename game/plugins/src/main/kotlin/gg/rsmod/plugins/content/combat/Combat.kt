@@ -163,7 +163,7 @@ object Combat {
             if (!target.isSpawned()) {
                 return false
             }
-            if (target.def.isAttackable() || target.combatDef.hitpoints <= 0) {
+            if (target.def.isAttackable() || target.combatDef.hitpoints == -1) {
                 (pawn as? Player)?.message("You can't attack this npc.")
                 return false
             }

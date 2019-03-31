@@ -3,6 +3,11 @@ package gg.rsmod.plugins.content.mechanics.trading
 import gg.rsmod.plugins.content.mechanics.trading.impl.TradeSession
 
 /**
+ * Gets the set of trade requests for a [Player]
+ */
+fun Player.getTradeRequests() : HashSet<Player> = attr[TRADE_REQUESTS]!!
+
+/**
  * Initiate the set of trade requests
  */
 on_login { player.attr[TRADE_REQUESTS] = HashSet(REQUEST_CAPACITY) }
@@ -27,13 +32,13 @@ on_player_option(option = "Trade with") {
     }
 
     // The set of players who have requested the player
-    val requests = player.attr[TRADE_REQUESTS]!!
+    val requests = player.getTradeRequests()
 
     // If the partner hasn't recently requested a trade
     if (!requests.contains(partner)) {
 
         // Add the player to the partner's requests
-        partner.attr[TRADE_REQUESTS]!!.add(player)
+        partner.getTradeRequests().add(player)
 
         // Send the trade request
         player.message("Sending trade request...")
@@ -41,8 +46,8 @@ on_player_option(option = "Trade with") {
     } else {
 
         // Remove the requests
-        player.attr[TRADE_REQUESTS]!!.remove(partner)
-        partner.attr[TRADE_REQUESTS]!!.remove(player)
+        player.getTradeRequests().remove(partner)
+        partner.getTradeRequests().remove(player)
 
         // Initiate the trade
         initiate(player, partner)

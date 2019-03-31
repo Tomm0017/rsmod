@@ -23,12 +23,14 @@ suspend fun cycle(it: QueueTask): Boolean {
     val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR]?.get() ?: return false
 
     if (!pawn.lock.canAttack()) {
+        pawn.attr.remove(COMBAT_TARGET_FOCUS_ATTR)
         return false
     }
 
     pawn.facePawn(target)
 
     if (!Combat.canEngage(pawn, target)) {
+        pawn.attr.remove(COMBAT_TARGET_FOCUS_ATTR)
         return false
     }
 

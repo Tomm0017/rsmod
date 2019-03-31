@@ -3,11 +3,6 @@ package gg.rsmod.plugins.content.mechanics.trading
 import gg.rsmod.plugins.content.mechanics.trading.impl.TradeSession
 
 /**
- * Gets the set of trade requests for a [Player]
- */
-fun Player.getTradeRequests() : HashSet<Player> = attr[TRADE_REQUESTS]!!
-
-/**
  * Initiate the set of trade requests
  */
 on_login { player.attr[TRADE_REQUESTS] = HashSet(REQUEST_CAPACITY) }

@@ -20,3 +20,8 @@ fun Player.removeTradeSession() {
     this.attr.remove(TRADE_SESSION_ATTR)
     this.attr.remove(TRADE_ACCEPTED_ATTR)
 }
+
+/**
+ * Gets the set of trade requests for a [Player]
+ */
+fun Player.getTradeRequests() : HashSet<Player> = attr[TRADE_REQUESTS]!!

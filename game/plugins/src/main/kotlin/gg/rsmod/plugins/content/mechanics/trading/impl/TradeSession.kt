@@ -239,7 +239,7 @@ class TradeSession(private val player: Player, private val partner: Player) {
 
         // Send the item containers
         player.sendItemContainer(ACCEPT_CONTAINER_KEY, container)
-        partner.getTradeSession()?.let { player.sendItemContainer(-71000, 0, ACCEPT_CONTAINER_KEY, it.container) }
+        partner.getTradeSession()?.let { player.sendItemContainerOther(ACCEPT_CONTAINER_KEY, it.container) }
 
         // Open the accept screen interface
         player.openInterface(ACCEPT_INTERFACE, InterfaceDestination.MAIN_SCREEN)

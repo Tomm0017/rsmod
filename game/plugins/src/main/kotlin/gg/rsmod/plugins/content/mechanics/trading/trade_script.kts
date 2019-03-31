@@ -1,6 +1,20 @@
 package gg.rsmod.plugins.content.mechanics.trading
 
 import gg.rsmod.plugins.content.mechanics.trading.impl.TradeSession
+import gg.rsmod.plugins.content.mechanics.trading.impl.TradeSession.Companion.ACCEPT_INTERFACE
+import gg.rsmod.plugins.content.mechanics.trading.impl.TradeSession.Companion.OVERLAY_INTERFACE
+import gg.rsmod.plugins.content.mechanics.trading.impl.TradeSession.Companion.PLAYER_TRADE_CHILD
+import gg.rsmod.plugins.content.mechanics.trading.impl.TradeSession.Companion.TRADE_INTERFACE
+
+/**
+ * The number of trade requests
+ */
+val REQUEST_CAPACITY = 10
+
+/**
+ * The message sent when a player requests to trade.
+ */
+val TRADE_REQ_STRING = "%s wishes to trade with you."
 
 /**
  * Initiate the set of trade requests

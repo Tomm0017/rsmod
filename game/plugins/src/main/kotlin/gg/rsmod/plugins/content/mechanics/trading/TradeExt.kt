@@ -1,7 +1,25 @@
 package gg.rsmod.plugins.content.mechanics.trading
 
+import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.content.mechanics.trading.impl.TradeSession
+
+/**
+ * An attribute that represents a trade session between two players
+ */
+val TRADE_SESSION_ATTR = AttributeKey<TradeSession?>()
+
+/**
+ * An attribute that represents if a player has accepted the trade
+ */
+val TRADE_ACCEPTED_ATTR = AttributeKey<Boolean>()
+
+/**
+ * The attribute holding the set of players who have recently requested a trade
+ * with the player
+ */
+val TRADE_REQUESTS = AttributeKey<HashSet<Player>>()
+
 
 /**
  * Gets the [TradeSession] instance for a player

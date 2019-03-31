@@ -8,6 +8,10 @@ import gg.rsmod.game.model.timer.STUN_TIMER
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 
 set_combat_logic {
+    pawn.attr[COMBAT_TARGET_FOCUS_ATTR]?.get()?.let { target ->
+        pawn.facePawn(target)
+    }
+
     pawn.queue {
         while (true) {
             if (!cycle(this)) {
@@ -31,6 +35,7 @@ suspend fun cycle(it: QueueTask): Boolean {
 
     if (!Combat.canEngage(pawn, target)) {
         Combat.reset(pawn)
+        pawn.resetFacePawn()
         return false
     }
 

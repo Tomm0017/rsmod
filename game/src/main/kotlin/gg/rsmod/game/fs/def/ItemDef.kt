@@ -49,8 +49,8 @@ class ItemDef(override val id: Int) : Definition(id) {
     var equipType = 0
     var weaponType = -1
     var renderAnimations: IntArray? = null
+    var skillReqs: Byte2ByteOpenHashMap? = null
     lateinit var bonuses: IntArray
-    lateinit var skillReqs: Byte2ByteOpenHashMap
 
     val stackable: Boolean get() = stacks || noteTemplateId > 0
     val noted: Boolean get() = noteTemplateId > 0

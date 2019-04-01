@@ -70,10 +70,11 @@ class ItemMetadataService : Service {
                     def.equipType = slots.secondary
                 }
                 if (equipment.skillReqs != null) {
-                    def.skillReqs = Byte2ByteOpenHashMap()
+                    val reqs = Byte2ByteOpenHashMap()
                     equipment.skillReqs.filter { it.skill != null }.forEach { req ->
-                        def.skillReqs[getSkillId(req.skill!!)] = req.level!!.toByte()
+                        reqs[getSkillId(req.skill!!)] = req.level!!.toByte()
                     }
+                    def.skillReqs = reqs
                 }
 
                 def.bonuses = intArrayOf(

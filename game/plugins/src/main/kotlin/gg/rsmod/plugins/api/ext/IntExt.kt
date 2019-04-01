@@ -48,8 +48,8 @@ fun Int.toLiteral() : String? {
  */
 fun Int.formatRS2() : String {
     return when {
-        this == Integer.MIN_VALUE -> "-${format()}"
-        this < 0 -> "-${(-this).format()}"
+        this == Integer.MIN_VALUE -> "-${formatRS2()}"
+        this < 0 -> "-${(-this).formatRS2()}"
         this < 100_000 -> "$this"
         this < 10_000_000 -> "${this / 1_000}K"
         else -> "${this / 1_000_000}M"

@@ -100,11 +100,16 @@ class TradeSession(private val player: Player, private val partner: Player) {
         val partnerValue = partner.getTradeSession()?.container?.getValue() ?: 0
 
         // The prefix of each line
-        val prefix = if (partnerValue > containerValue) "<col=FF0000>" else ""
-        
+        val playerPrefix = if (partnerValue > containerValue) "<col=FF0000>" else ""
+        val partnerPrefix = if (containerValue > partnerValue) "<col=FF0000>" else ""
+
+        // The value text displayed on the partner's side
+        val valueText = "%s%s offers:<br>%s(Value: <col=FFFFFF>%s</col>%s coins)"
+
         // Set the value text
         player.setComponentText(TRADE_INTERFACE, 24, "Your offer:<br>(Value: <col=FFFFFF>${containerValue.decimalFormat()}</col> coins)")
-        partner.setComponentText(TRADE_INTERFACE, 27, "$prefix${player.username} offers:<br>$prefix(Value: <col=FFFFFF>${containerValue.decimalFormat()}</col>$prefix coins)")
+        player.setComponentText(TRADE_INTERFACE, 27, valueText.format(partnerPrefix, partner.username, partnerPrefix, partnerValue.decimalFormat(), partnerPrefix))
+        partner.setComponentText(TRADE_INTERFACE, 27, valueText.format(playerPrefix, player.username, playerPrefix, containerValue.decimalFormat(), playerPrefix))
     }
 
     /**

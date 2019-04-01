@@ -57,6 +57,10 @@ class TradeSession(private val player: Player, private val partner: Player) {
         // Ensure the player isn't still marked as having accepted the trade
         player.attr[TRADE_ACCEPTED_ATTR] = false
 
+        // Reset the trade modified varbit
+        player.setVarbit(PLAYER_TRADE_MODIFIED_VARBIT, 0)
+        player.setVarbit(PARTNER_TRADE_MODIFIED_VARBIT, 0)
+
         // Configure the trade text
         player.setComponentText(TRADE_INTERFACE, 31, "Trading with: ${partner.username}")
 
@@ -92,9 +96,15 @@ class TradeSession(private val player: Player, private val partner: Player) {
         partner.runClientScript(UPDATE_PARTNER_ITEM_PRICE_SCRIPT, *values)
 
         // Calculate the trade value
-        val containerValue = values.sum().format()
-        player.setComponentText(TRADE_INTERFACE, 24, "Your offer:<br>(Value: <col=FFFFFF>$containerValue</col> coins)")
-        partner.setComponentText(TRADE_INTERFACE, 27, "${player.username} offers:<br>(Value: <col=FFFFFF>$containerValue</col> coins)")
+        val containerValue = values.sum()
+        val partnerValue = partner.getTradeSession()?.container?.getValue() ?: 0
+
+        // The prefix of each line
+        val prefix = if (partnerValue > containerValue) "<col=FF0000>" else ""
+        
+        // Set the value text
+        player.setComponentText(TRADE_INTERFACE, 24, "Your offer:<br>(Value: <col=FFFFFF>${containerValue.decimalFormat()}</col> coins)")
+        partner.setComponentText(TRADE_INTERFACE, 27, "$prefix${player.username} offers:<br>$prefix(Value: <col=FFFFFF>${containerValue.decimalFormat()}</col>$prefix coins)")
     }
 
     /**
@@ -165,6 +175,15 @@ class TradeSession(private val player: Player, private val partner: Player) {
         if (transaction.hasSucceeded()) {
             inventory.add(item.id, count)
             container.shift()
+
+            player.setVarbit(PLAYER_TRADE_MODIFIED_VARBIT, 1)
+            partner.setVarbit(PARTNER_TRADE_MODIFIED_VARBIT, 1)
+
+            // Loop over the remove items
+            transaction.items.forEach {
+                player.runClientScript(TRADE_MODIFIED_SCRIPT, 0, it.slot)
+                partner.runClientScript(TRADE_MODIFIED_SCRIPT, 1, it.slot)
+            }
         }
 
         refresh()
@@ -365,5 +384,21 @@ class TradeSession(private val player: Player, private val partner: Player) {
          * The container key for this player's trade offer
          */
         const val PLAYER_CONTAINER_KEY = 90
+
+        /**
+         * The varbit that handles the 'Trade modified' text for the player's trade container
+         */
+        const val PLAYER_TRADE_MODIFIED_VARBIT = 4374
+
+        /**
+         * The varbit that handles the 'Trade modified' text for the partner's trade container
+         */
+        const val PARTNER_TRADE_MODIFIED_VARBIT = 4375
+
+        /**
+         * The id of the ClientScript used to display the red exclamation marks when
+         * an item has been removed from the trade container
+         */
+        const val TRADE_MODIFIED_SCRIPT = 765
     }
 }

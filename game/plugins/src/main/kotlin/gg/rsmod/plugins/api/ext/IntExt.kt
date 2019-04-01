@@ -46,7 +46,7 @@ fun Int.toLiteral() : String? {
  * 1_306_000 would return 1306K
  * 13_060_000 would return 13M
  */
-fun Int.format() : String {
+fun Int.formatRS2() : String {
     return when {
         this == Integer.MIN_VALUE -> "-${format()}"
         this < 0 -> "-${(-this).format()}"

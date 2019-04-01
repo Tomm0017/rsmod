@@ -36,3 +36,22 @@ fun Int.toLiteral() : String? {
 
     return literal
 }
+
+/**
+ * Formats a quantity to an amount as it would appear in RuneScape.
+ *
+ * Examples:
+ *
+ * 100_000 would return 100K
+ * 1_306_000 would return 1306K
+ * 13_060_000 would return 13M
+ */
+fun Int.formatRS2() : String {
+    return when {
+        this == Integer.MIN_VALUE -> "-${formatRS2()}"
+        this < 0 -> "-${(-this).formatRS2()}"
+        this < 100_000 -> "$this"
+        this < 10_000_000 -> "${this / 1_000}K"
+        else -> "${this / 1_000_000}M"
+    }
+}

@@ -79,11 +79,11 @@ class TradeSession(private val player: Player, private val partner: Player) {
     private fun refresh() {
 
         // Send the item containers
-        player.sendItemContainer(key = PLAYER_INVENTORY_KEY, container = inventory)
+        player.sendItemContainer(PLAYER_INVENTORY_KEY, inventory)
         player.sendItemContainer(PLAYER_CONTAINER_KEY, container)
 
         // Send this player's container data to their partner
-        partner.sendItemContainer(PARTNER_CONTAINER_KEY, container)
+        partner.sendItemContainerOther(PLAYER_CONTAINER_KEY, container)
         partner.setComponentText(TRADE_INTERFACE, 9, "${player.username} has ${inventory.freeSlotCount} free inventory slots.")
 
         // Send the tooltip values
@@ -101,11 +101,8 @@ class TradeSession(private val player: Player, private val partner: Player) {
      * Initialises the trade containers and enables the item container components for the player
      */
     private fun initTradeContainers() {
-        player.runClientScript(INTERFACE_INV_INIT_BIG, PLAYER_TRADE_HASH, PLAYER_CONTAINER_KEY, 4, 7, 0, -1, "Remove", "Remove-5", "Remove-10", "Remove-All", "Remove-X", "Examine")
         player.setInterfaceEvents(interfaceId = TRADE_INTERFACE, component = PLAYER_TRADE_HASH, range = 0..container.capacity, setting = 1086)
-
-        player.runClientScript(INTERFACE_INV_INIT_BIG, PARTNER_TRADE_HASH, PARTNER_CONTAINER_KEY, 4, 7, 0, -1, "Examine")
-        player.setInterfaceEvents(interfaceId = TRADE_INTERFACE, component = PARTNER_TRADE_HASH, range = 0..container.capacity, setting = 1086)
+        player.setInterfaceEvents(interfaceId = TRADE_INTERFACE, component = PARTNER_TRADE_HASH, range = 0..container.capacity, setting = 1024)
 
         refresh()
     }
@@ -367,11 +364,6 @@ class TradeSession(private val player: Player, private val partner: Player) {
         /**
          * The container key for this player's trade offer
          */
-        const val PLAYER_CONTAINER_KEY = 24
-
-        /**
-         * The container key for the partner's trade offer
-         */
-        const val PARTNER_CONTAINER_KEY = 23
+        const val PLAYER_CONTAINER_KEY = 90
     }
 }

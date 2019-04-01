@@ -7,7 +7,7 @@ import gg.rsmod.plugins.content.mechanics.trading.impl.TradeSession
 /**
  * An attribute that represents a trade session between two players
  */
-val TRADE_SESSION_ATTR = AttributeKey<TradeSession?>()
+val TRADE_SESSION_ATTR = AttributeKey<TradeSession>()
 
 /**
  * An attribute that represents if a player has accepted the trade
@@ -20,6 +20,10 @@ val TRADE_ACCEPTED_ATTR = AttributeKey<Boolean>()
  */
 val TRADE_REQUESTS = AttributeKey<HashSet<Player>>()
 
+/**
+ * If the [Player] has a [TradeSession]
+ */
+fun Player.hasTradeSession() = this.attr.has(TRADE_SESSION_ATTR)
 
 /**
  * Gets the [TradeSession] instance for a player

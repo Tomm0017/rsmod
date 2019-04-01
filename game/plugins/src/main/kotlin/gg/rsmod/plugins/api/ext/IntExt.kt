@@ -38,19 +38,13 @@ fun Int.toLiteral() : String? {
 }
 
 /**
- * Gets the 'interface hash' of a given interface id and
- * child component.
- *
- * @param child     The child component
- */
-fun Int.getInterfaceHash(child: Int = -1) : Int {
-    val value = (this shl 16)
-    if (child != -1) return value or child
-    return value
-}
-
-/**
  * Formats a quantity to an amount as it would appear in RuneScape.
+ *
+ * Examples:
+ *
+ * 100_000 would return 100K
+ * 1_306_000 would return 1306K
+ * 13_060_000 would return 13M
  */
 fun Int.format() : String {
     return when {

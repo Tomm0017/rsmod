@@ -86,8 +86,7 @@ fun initiate(player: Player, partner: Player) {
 
 // Item Offer Event
 on_button(OVERLAY_INTERFACE, 0) {
-    val trade = player.getTradeSession()
-    trade?.let {
+    player.getTradeSession()?.let { trade ->
 
         // The player's inventory
         val inventory = player.inventory
@@ -112,18 +111,17 @@ on_button(OVERLAY_INTERFACE, 0) {
             }
 
             // Offer the amount to the trade
-            player.getTradeSession()?.offer(slot, amount)
+            trade.offer(slot, amount)
         }
     }
 }
 
 // Item Remove Event
 on_button(TRADE_INTERFACE, PLAYER_TRADE_CHILD) {
-    val trade = player.getTradeSession()
-    trade?.let {
+    player.getTradeSession()?.let { trade ->
 
         // The player's trade container
-        val container = it.container
+        val container = trade.container
 
         // The item slot, and the option that was pressed
         val slot = player.getInteractingSlot()
@@ -145,7 +143,7 @@ on_button(TRADE_INTERFACE, PLAYER_TRADE_CHILD) {
             }
 
             // Offer the amount to the trade
-            player.getTradeSession()?.remove(slot, amount)
+            trade.remove(slot, amount)
         }
     }
 }
@@ -160,17 +158,15 @@ on_button(ACCEPT_INTERFACE, 14) { player.getTradeSession()?.decline() }
 
 // Interface close events
 on_interface_close(TRADE_INTERFACE)  {
-    val trade = player.getTradeSession()
 
-    if (trade != null && !player.hasAcceptedTrade()) {
+    if (player.hasTradeSession() && !player.hasAcceptedTrade()) {
         player.getTradeSession()?.decline()
     }
 }
 
 on_interface_close(ACCEPT_INTERFACE) {
-    val trade = player.getTradeSession()
 
-    if (trade != null && !player.hasAcceptedTrade()) {
+    if (player.hasTradeSession() && !player.hasAcceptedTrade()) {
         player.getTradeSession()?.decline()
     }
 }

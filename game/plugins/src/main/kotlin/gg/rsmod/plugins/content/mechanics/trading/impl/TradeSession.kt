@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.content.mechanics.trading.impl
 
+import getInterfaceHash
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Player
@@ -39,9 +40,14 @@ class TradeSession(private val player: Player, private val partner: Player) {
     private var stage : TradeStage = TradeStage.TRADE_SCREEN
 
     /**
-     * An extension function for retrieving the value of an item container from the [ItemMarketValueService]
+     * An extension function for retrieving the value of each item in an [ItemContainer]]
      */
-    private fun ItemContainer.getValue() = sumBy { (priceService?.get(it?.id!!) ?: it?.getDef(player.world.definitions)?.cost ?: 0) * (it?.amount ?: 1) }.format()
+    private fun ItemContainer.getItemValues() : Array<Int> = rawItems.map { if (it == null) 0 else (priceService?.get(it.id) ?: it.getDef(player.world.definitions).cost ?: 0) * it.amount }.toTypedArray()
+
+    /**
+     * An extension function for retrieving the sum of each item's value in an [ItemContainer]
+     */
+    private fun ItemContainer.getValue() = getItemValues().sum()
 
     /**
      * Opens the trade session, and configures the interfaces
@@ -71,6 +77,8 @@ class TradeSession(private val player: Player, private val partner: Player) {
      * Refreshes the item containers for both players
      */
     private fun refresh() {
+
+        // Send the item containers
         player.sendItemContainer(key = PLAYER_INVENTORY_KEY, container = inventory)
         player.sendItemContainer(PLAYER_CONTAINER_KEY, container)
 
@@ -78,9 +86,15 @@ class TradeSession(private val player: Player, private val partner: Player) {
         partner.sendItemContainer(PARTNER_CONTAINER_KEY, container)
         partner.setComponentText(TRADE_INTERFACE, 9, "${player.username} has ${inventory.freeSlotCount} free inventory slots.")
 
+        // Send the tooltip values
+        val values = container.getItemValues()
+        player.runClientScript(UPDATE_PLAYER_ITEM_PRICE_SCRIPT, *values)
+        partner.runClientScript(UPDATE_PARTNER_ITEM_PRICE_SCRIPT, *values)
+
         // Calculate the trade value
-        player.setComponentText(TRADE_INTERFACE, 24, "Your offer:<br>(Value: <col=FFFFFF>${container.getValue()}</col> coins)")
-        partner.setComponentText(TRADE_INTERFACE, 27, "${player.username} offers:<br>(Value: <col=FFFFFF>${container.getValue()}</col> coins)")
+        val containerValue = values.sum().format()
+        player.setComponentText(TRADE_INTERFACE, 24, "Your offer:<br>(Value: <col=FFFFFF>$containerValue</col> coins)")
+        partner.setComponentText(TRADE_INTERFACE, 27, "${player.username} offers:<br>(Value: <col=FFFFFF>$containerValue</col> coins)")
     }
 
     /**
@@ -309,6 +323,16 @@ class TradeSession(private val player: Player, private val partner: Player) {
          * The child id of the partner's trade offer
          */
         private const val PARTNER_TRADE_CHILD = 28
+
+        /**
+         * The script id used to update the item price of each item in the container
+         */
+        private const val UPDATE_PLAYER_ITEM_PRICE_SCRIPT = 1216
+
+        /**
+         * The script id used to update the item price of each item in the partner's container
+         */
+        private const val UPDATE_PARTNER_ITEM_PRICE_SCRIPT = 1217
 
         /**
          * The hash of this player's trade offer component

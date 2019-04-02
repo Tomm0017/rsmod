@@ -125,7 +125,7 @@ class TradeSession(private val player: Player, private val partner: Player) {
     /**
      * Declines the trade session for both players
      */
-    fun decline() {
+    fun decline(forced: Boolean = false) {
         if (partner.getTradeSession() != null) {
 
             // Remove the trade sessions from both players
@@ -133,12 +133,12 @@ class TradeSession(private val player: Player, private val partner: Player) {
             partner.removeTradeSession()
 
             // Inform the player that they've declined the trade, and close the trade window
-            player.message("You declined the trade")
+            if (!forced) player.message("You declined the trade")
             player.closeInterface(InterfaceDestination.MAIN_SCREEN)
             player.closeInterface(OVERLAY_INTERFACE)
 
             // Inform the partner that the player has declined the trade, and close their window
-            partner.message(TRADE_DECLINED_MESSAGE)
+            if (!forced) partner.message(TRADE_DECLINED_MESSAGE)
             partner.closeInterface(InterfaceDestination.MAIN_SCREEN)
             partner.closeInterface(OVERLAY_INTERFACE)
         }
@@ -263,6 +263,14 @@ class TradeSession(private val player: Player, private val partner: Player) {
      */
     private fun openAcceptScreen() {
 
+        // If we don't have enough inventory space for the partner's container
+        if (player.inventory.freeSlotCount < partner.getTradeSession()!!.container.occupiedSlotCount) {
+            player.message("You don't have enough inventory space for this trade.")
+            partner.message("Other player doesn't have enough inventory space for this trade.")
+            decline(forced = true)
+            return
+        }
+
         // Set the trade stage
         stage = TradeStage.ACCEPT_SCREEN
 
@@ -288,6 +296,8 @@ class TradeSession(private val player: Player, private val partner: Player) {
      * sets their inventory to the temporary one operated on during the trade.
      */
     private fun complete() {
+        if (stage != TradeStage.ACCEPT_SCREEN) return
+        stage = TradeStage.COMPLETED
 
         // Assign the trade containers for this player
         val playerInv = player.inventory
@@ -322,6 +332,9 @@ class TradeSession(private val player: Player, private val partner: Player) {
         // Close the trade interface
         player.closeInterface(InterfaceDestination.MAIN_SCREEN)
         player.closeInterface(OVERLAY_INTERFACE)
+
+        // Inform the player that the trade has been accepted
+        player.message("Accepted trade.")
     }
 
     companion object {

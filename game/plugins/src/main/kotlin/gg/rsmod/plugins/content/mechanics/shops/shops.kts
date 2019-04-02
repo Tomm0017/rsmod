@@ -36,7 +36,7 @@ on_button(interfaceId = SHOP_INTERFACE_ID, component = 16) {
         val shopItem = shop.items[slot] ?: return@on_button
 
         when (opt) {
-            1 -> shop.currency.onSellValueMessage(player, shopItem.item)
+            1 -> shop.currency.onSellValueMessage(player, shopItem)
             10 -> player.world.sendExamine(player, shopItem.item, ExamineEntityType.ITEM)
             else -> {
                 val amount = when (opt) {

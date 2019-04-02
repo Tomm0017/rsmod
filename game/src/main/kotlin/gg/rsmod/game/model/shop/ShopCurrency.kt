@@ -13,7 +13,7 @@ interface ShopCurrency {
     /**
      * Called when a player selects the "value" option a [ShopItem].
      */
-    fun onSellValueMessage(p: Player, item: Int)
+    fun onSellValueMessage(p: Player, shopItem: ShopItem)
 
     /**
      * Called when a player selects the "value" option on one of their own

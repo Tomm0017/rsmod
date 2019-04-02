@@ -33,8 +33,8 @@ class ItemDef(override val id: Int) : Definition(id) {
      * When an item is noted, it will set this value.
      */
     var noteTemplateId = 0
-    var placeholderId = 0
-    var placeholderTemplateId = 0
+    var placeholderLink = 0
+    var placeholderTemplate = 0
 
     val params = Int2ObjectOpenHashMap<Any>()
 
@@ -52,8 +52,11 @@ class ItemDef(override val id: Int) : Definition(id) {
     var skillReqs: Byte2ByteOpenHashMap? = null
     lateinit var bonuses: IntArray
 
-    val stackable: Boolean get() = stacks || noteTemplateId > 0
-    val noted: Boolean get() = noteTemplateId > 0
+    val stackable: Boolean
+        get() = stacks || noteTemplateId > 0
+
+    val noted: Boolean
+        get() = noteTemplateId > 0
 
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {
@@ -123,8 +126,8 @@ class ItemDef(override val id: Int) : Definition(id) {
             115 -> teamCape = buf.readUnsignedByte().toInt()
             139 -> buf.readUnsignedShort()
             140 -> buf.readUnsignedShort()
-            148 -> placeholderId = buf.readUnsignedShort()
-            149 -> placeholderTemplateId = buf.readUnsignedShort()
+            148 -> placeholderLink = buf.readUnsignedShort()
+            149 -> placeholderTemplate = buf.readUnsignedShort()
             249 -> params.putAll(readParams(buf))
         }
     }

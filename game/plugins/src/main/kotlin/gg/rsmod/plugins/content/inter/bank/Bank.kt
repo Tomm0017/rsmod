@@ -70,8 +70,8 @@ object Bank {
                      * Make sure the item has a valid placeholder item in its
                      * definition.
                      */
-                    if (def.placeholderId > 0) {
-                        p.bank[i] = Item(def.placeholderId, 0)
+                    if (def.placeholderLink > 0) {
+                        p.bank[i] = Item(def.placeholderLink, 0)
                     }
                 }
             }
@@ -143,7 +143,7 @@ object Bank {
 
     fun ItemContainer.removePlaceholder(world: World, item: Item): Int {
         val def = item.toUnnoted(world.definitions).getDef(world.definitions)
-        val slot = if (def.placeholderId > 0) indexOfFirst { it?.id == def.placeholderId && it.amount == 0 } else -1
+        val slot = if (def.placeholderLink > 0) indexOfFirst { it?.id == def.placeholderLink && it.amount == 0 } else -1
         if (slot != -1) {
             this[slot] = null
         }

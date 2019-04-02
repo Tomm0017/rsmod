@@ -8,6 +8,8 @@ dependencies {
     implementation project(':util')
 
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion
+    compile group: 'io.netty', name: 'netty-all', version: nettyVersion
+
     implementation 'com.google.code.gson:gson:2.8.5'
 
     testCompile group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion

@@ -1,6 +1,7 @@
 package gg.rsmod.game.service.game
 
 import gg.rsmod.game.Server
+import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.fs.def.ObjectDef
@@ -17,7 +18,7 @@ import java.nio.file.Paths
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class DumpEntityIdService : Service() {
+class DumpEntityIdService : Service {
 
     private var dump = false
 
@@ -47,22 +48,36 @@ class DumpEntityIdService : Service() {
         val definitions = world.definitions
         val namer = Namer()
 
-        val itemCount = definitions.getCount(ItemDef::class.java)
+        writeItems(definitions, namer)
+        writeNpcs(definitions, namer)
+        writeObjs(definitions, namer)
+    }
+
+    override fun bindNet(server: Server, world: World) {
+    }
+
+    override fun terminate(server: Server, world: World) {
+    }
+
+    private fun writeItems(definitions: DefinitionSet, namer: Namer) {
+        val count = definitions.getCount(ItemDef::class.java)
         val items = generateWriter("Items.kt")
-        for (i in 0 until itemCount) {
+        for (i in 0 until count) {
             val item = definitions.getNullable(ItemDef::class.java, i) ?: continue
             val rawName = if (item.noteTemplateId > 0) definitions.get(ItemDef::class.java, item.noteLinkId).name + "_NOTED"
-                        else item.name
+            else item.name
             if (rawName.isNotBlank()) {
                 val name = namer.name(rawName, i)
                 write(items, "const val $name = $i")
             }
         }
         endWriter(items)
+    }
 
-        val npcCount = definitions.getCount(NpcDef::class.java)
+    private fun writeNpcs(definitions: DefinitionSet, namer: Namer) {
+        val count = definitions.getCount(NpcDef::class.java)
         val npcs = generateWriter("Npcs.kt")
-        for (i in 0 until npcCount) {
+        for (i in 0 until count) {
             val npc = definitions.getNullable(NpcDef::class.java, i) ?: continue
             val rawName = npc.name.replace("?", "")
             if (rawName.isNotEmpty() && rawName.isNotBlank()) {
@@ -71,10 +86,12 @@ class DumpEntityIdService : Service() {
             }
         }
         endWriter(npcs)
+    }
 
-        val objCount = definitions.getCount(ObjectDef::class.java)
+    private fun writeObjs(definitions: DefinitionSet, namer: Namer) {
+        val count = definitions.getCount(ObjectDef::class.java)
         val objs = generateWriter("Objs.kt")
-        for (i in 0 until objCount) {
+        for (i in 0 until count) {
             val npc = definitions.getNullable(ObjectDef::class.java, i) ?: continue
             val rawName = npc.name.replace("?", "")
             if (rawName.isNotEmpty() && rawName.isNotBlank()) {
@@ -103,9 +120,6 @@ class DumpEntityIdService : Service() {
         writer.println("    /* Auto-generated file using ${this::class.java} */")
         writer.println("}")
         writer.close()
-    }
-
-    override fun terminate(server: Server, world: World) {
     }
 
     companion object: KLogging()

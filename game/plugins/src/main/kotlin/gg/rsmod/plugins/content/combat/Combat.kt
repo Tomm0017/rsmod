@@ -59,8 +59,8 @@ object Combat {
         target.attr[LAST_HIT_BY_ATTR] = WeakReference(pawn)
 
         if (pawn.attr.has(CASTING_SPELL) && pawn is Player && pawn.getVarbit(SELECTED_AUTOCAST_VARBIT) == 0) {
-            pawn.attr.remove(CASTING_SPELL)
             reset(pawn)
+            pawn.attr.remove(CASTING_SPELL)
         }
 
         if (target is Player && target.interfaces.getModal() != -1) {
@@ -163,7 +163,7 @@ object Combat {
             if (!target.isSpawned()) {
                 return false
             }
-            if (target.combatDef.hitpoints == -1) {
+            if (!target.def.isAttackable() || target.combatDef.hitpoints == -1) {
                 (pawn as? Player)?.message("You can't attack this npc.")
                 return false
             }

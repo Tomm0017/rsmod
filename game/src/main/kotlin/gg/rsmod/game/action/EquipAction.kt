@@ -12,6 +12,19 @@ import gg.rsmod.game.model.item.Item
  */
 object EquipAction {
 
+    // Temporary way of loading skill names until we figure out the best solution.
+    //  1) We can have a map of <skill, name> and populate it via plugins
+    //  2) Execute a plugin when skill requirement is not met that will handle
+    //      the messages
+    //  3) Load skill names via external configs which would be used throughout
+    //      the game and plugins module
+    private val SKILL_NAMES = arrayOf(
+            "attack", "defence", "strength", "hitpoints", "ranged", "prayer",
+            "magic", "cooking", "woodcutting", "fletching", "fishing", "firemaking",
+            "crafting", "Smithing", "mining", "herblore", "agility", "thieving",
+            "slayer", "farming", "runecrafting", "hunter", "construction"
+    )
+
     /**
      * All possible results when trying to equip or unequip an item.
      */
@@ -20,18 +33,27 @@ object EquipAction {
          * The item could not be equipped.
          */
         UNHANDLED,
+
         /**
          * The item equip was handled by plugins, i.e a requirement was not met.
          */
         PLUGIN,
+
         /**
          * No free space, either in inventory or equipment, to equip item.
          */
         NO_FREE_SPACE,
+
+        /**
+         * Failed to meet skill requirements.
+         */
+        FAILED_REQUIREMENTS,
+
         /**
          * The item was equipped or unequipped successfully.
          */
         SUCCESS,
+
         /**
          * Item interaction could not be handled.
          */
@@ -40,20 +62,37 @@ object EquipAction {
 
     fun equip(p: Player, item: Item, inventorySlot: Int = -1): Result {
         val def = p.world.definitions.get(ItemDef::class.java, item.id)
+        val plugins = p.world.plugins
 
         // Resets interaction when an item is equipped.
         // This logic does not apply to un-equipping items.
         p.resetFacePawn()
 
         if (def.equipSlot < 0) {
-            if (p.world.plugins.executeItem(p, item.id, 2)) {
+            if (plugins.executeItem(p, item.id, 2)) {
                 return Result.PLUGIN
             }
             return Result.UNHANDLED
         }
 
-        if (!p.world.plugins.executeEquipItemRequirement(p, item.id)) {
+        if (!plugins.executeEquipItemRequirement(p, item.id)) {
             return Result.PLUGIN
+        }
+
+        val levelRequirements = def.skillReqs
+        if (levelRequirements != null) {
+            for (entry in levelRequirements.entries) {
+                val skill = entry.key.toInt()
+                val level = entry.value
+
+                if (p.getSkills().getMaxLevel(skill) < level) {
+                    val skillName = SKILL_NAMES[skill]
+                    val prefix = if ("aeiou".indexOf(Character.toLowerCase(skillName[0])) != -1) "an" else "a"
+                    p.message("You are not high enough level to use this item.")
+                    p.message("You need to have $prefix $skillName level of $level.")
+                    return Result.FAILED_REQUIREMENTS
+                }
+            }
         }
 
         val equipSlot = def.equipSlot
@@ -81,8 +120,8 @@ object EquipAction {
             } else {
                 p.equipment[equipSlot] = Item(replace.id, add + replace.amount)
             }
-            p.world.plugins.executeEquipSlot(p, equipSlot)
-            p.world.plugins.executeEquipItem(p, replace.id)
+            plugins.executeEquipSlot(p, equipSlot)
+            plugins.executeEquipItem(p, replace.id)
         } else {
             /*
              * A list of equipment slots that should be unequipped when [item] is
@@ -169,8 +208,8 @@ object EquipAction {
                 }
 
                 p.equipment[equipSlot] = newEquippedItem
-                p.world.plugins.executeEquipSlot(p, equipSlot)
-                p.world.plugins.executeEquipItem(p, newEquippedItem.id)
+                plugins.executeEquipSlot(p, equipSlot)
+                plugins.executeEquipItem(p, newEquippedItem.id)
             }
         }
         return Result.SUCCESS

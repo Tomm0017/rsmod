@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class GameService : Service() {
+class GameService : Service {
 
     /**
      * The associated world with our current game.
@@ -162,6 +162,9 @@ class GameService : Service() {
             ))
             logger.info("Parallel tasks preference enabled. {} tasks will be handled per cycle.", tasks.size)
         }
+    }
+
+    override fun bindNet(server: Server, world: World) {
     }
 
     /**

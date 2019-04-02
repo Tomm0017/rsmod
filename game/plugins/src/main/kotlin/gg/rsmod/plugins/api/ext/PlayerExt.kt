@@ -21,6 +21,19 @@ import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
 import gg.rsmod.util.BitManipulation
 
 /**
+ * The interface key used by inventory overlays
+ */
+const val INVENTORY_INTERFACE_KEY = 93
+
+/**
+ * The id of the script used to initialise the interface overlay options. The 'big' variant of this script
+ * is used as it supports up to eight options rather than five.
+ *
+ * https://github.com/RuneStar/cs2-scripts/blob/master/scripts/[clientscript,interface_inv_init_big].cs2
+ */
+const val INTERFACE_INV_INIT_BIG = 150
+
+/**
  * A decoupled file that holds extensions and helper functions, related to players,
  * that can be used throughout plugins.
  *
@@ -232,6 +245,20 @@ fun Player.sendItemContainer(key: Int, container: ItemContainer) {
     write(UpdateInvFullMessage(containerKey = key, items = container.rawItems))
 }
 
+/**
+ * Sends a container type referred to as 'invother' in CS2, which is used for displaying a second container with
+ * the same container key. An example of this is the trade accept screen, where the list of items being traded is stored
+ * in container 90 for both the player's container, and the partner's container. A container becomes 'invother' when it's
+ * component hash is less than -70000, which internally translates the container key to (key + 32768). We can achieve this by either
+ * sending a component hash of less than -70000, or by setting the key ourselves. I feel like the latter makes more sense.
+ *
+ * Special thanks to Polar for explaining this concept to me.
+ *
+ * https://github.com/RuneStar/cs2-scripts/blob/a144f1dceb84c3efa2f9e90648419a11ee48e7a2/scripts/script768.cs2
+ */
+fun Player.sendItemContainerOther(key: Int, container: ItemContainer) {
+    write(UpdateInvFullMessage(containerKey = key + 32768, items = container.rawItems))
+}
 fun Player.sendItemContainer(parent: Int, child: Int, container: ItemContainer) {
     write(UpdateInvFullMessage(parent = parent, child = child, items = container.rawItems))
 }

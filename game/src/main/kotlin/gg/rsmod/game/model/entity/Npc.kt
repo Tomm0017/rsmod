@@ -72,7 +72,7 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
      */
     var aggroCheck: ((Npc, Player) -> Boolean)? = null
 
-    val name: String get() = getDef().name
+    val name: String get() = def.name
 
     override fun getType(): EntityType = EntityType.NPC
 
@@ -111,8 +111,6 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
      * [NpcDef.transforms] and [NpcDef.varp]/[NpcDef.varbit].
      */
     fun getTransform(player: Player): Int {
-        val def = getDef()
-
         if (def.varbit != -1) {
             val varbitDef = world.definitions.get(VarbitDef::class.java, def.varbit)
             val state = player.varps.getBit(varbitDef.varp, varbitDef.startBit, varbitDef.endBit)
@@ -147,9 +145,9 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     /**
      * Gets the [NpcDef] corresponding to our [id].
      */
-    fun getDef(): NpcDef = world.definitions.get(NpcDef::class.java, id)
+    val def: NpcDef = world.definitions.get(NpcDef::class.java, id)
 
-    override fun toString(): String = MoreObjects.toStringHelper(this).add("id", id).add("name", getDef().name).add("index", index).add("active", active).toString()
+    override fun toString(): String = MoreObjects.toStringHelper(this).add("id", id).add("name", def.name).add("index", index).add("active", active).toString()
 
     companion object {
         internal const val RESET_PAWN_FACE_DELAY = 25

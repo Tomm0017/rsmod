@@ -20,7 +20,7 @@ import java.nio.file.Paths
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class ItemMetadataService : Service() {
+class ItemMetadataService : Service {
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         val path = Paths.get(serviceProperties.getOrDefault("path", "./data/cfg/items.yml"))
@@ -34,6 +34,9 @@ class ItemMetadataService : Service() {
     }
 
     override fun postLoad(server: Server, world: World) {
+    }
+
+    override fun bindNet(server: Server, world: World) {
     }
 
     override fun terminate(server: Server, world: World) {
@@ -67,10 +70,11 @@ class ItemMetadataService : Service() {
                     def.equipType = slots.secondary
                 }
                 if (equipment.skillReqs != null) {
-                    def.skillReqs = Byte2ByteOpenHashMap()
+                    val reqs = Byte2ByteOpenHashMap()
                     equipment.skillReqs.filter { it.skill != null }.forEach { req ->
-                        def.skillReqs[getSkillId(req.skill!!)] = req.level!!.toByte()
+                        reqs[getSkillId(req.skill!!)] = req.level!!.toByte()
                     }
+                    def.skillReqs = reqs
                 }
 
                 def.bonuses = intArrayOf(

@@ -136,6 +136,12 @@ class Tile {
         return false
     }
 
+    operator fun component1() = x
+
+    operator fun component2() = z
+
+    operator fun component3() = height
+
     companion object {
         /**
          * The total amount of height levels that can be used in the game.

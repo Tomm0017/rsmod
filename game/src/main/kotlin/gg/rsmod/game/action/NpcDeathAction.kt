@@ -39,7 +39,7 @@ object NpcDeathAction {
         deathAnimation.forEach { anim ->
             val def = npc.world.definitions.get(AnimDef::class.java, anim)
             npc.animate(def.id)
-            wait(def.cycleLength)
+            wait(def.cycleLength + 1)
         }
 
         npc.animate(-1)
@@ -48,8 +48,10 @@ object NpcDeathAction {
         world.plugins.executeNpcDeath(npc)
 
         if (npc.respawns) {
-            wait(respawnDelay)
-            world.spawn(Npc(npc.id, npc.spawnTile, world))
+            world.queue {
+                wait(respawnDelay)
+                world.spawn(Npc(npc.id, npc.spawnTile, world))
+            }
         }
     }
 }

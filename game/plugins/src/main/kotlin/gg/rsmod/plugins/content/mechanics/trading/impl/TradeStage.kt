@@ -17,5 +17,10 @@ enum class TradeStage {
      * Represents a trade session that is currently sitting on the accept screen, where
      * players may agree to complete the trade.
      */
-    ACCEPT_SCREEN
+    ACCEPT_SCREEN,
+
+    /**
+     * Represents a trade session that has been completed
+     */
+    COMPLETED
 }

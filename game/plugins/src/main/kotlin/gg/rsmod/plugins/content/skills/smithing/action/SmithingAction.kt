@@ -71,11 +71,9 @@ object SmithingAction {
 
             task.wait(2)
 
-            player.lock()
             player.animate(SMITHING_ANIM)
             player.playSound(SMITHING_ANVIL_SOUND)
             task.wait(3)
-            player.unlock()
 
             if (!canSmith(task, meta)) {
                 player.animate(-1)

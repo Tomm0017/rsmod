@@ -64,6 +64,7 @@ class DumpEntityIdService : Service {
         val items = generateWriter("Items.kt")
         for (i in 0 until count) {
             val item = definitions.getNullable(ItemDef::class.java, i) ?: continue
+            if (item.placeholderTemplateId != 0) continue
             val rawName = if (item.noteTemplateId > 0) definitions.get(ItemDef::class.java, item.noteLinkId).name + "_NOTED"
             else item.name
             if (rawName.isNotBlank()) {

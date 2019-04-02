@@ -14,12 +14,13 @@ import io.netty.channel.ChannelInboundHandlerAdapter
 class WorldListChannelHandler(val list: List<WorldEntry>) : ChannelInboundHandlerAdapter() {
 
     /**
-     * When a connection is established to the [WorldListService], we send the [List] of [WorldEntry]s,
-     * in the form of a HTTP response with the content as the encoded buffer
+     * When a message is received from the client, send the [List] of [WorldEntry]s, in
+     * the form of a HTTP response with the content as the encoded buffer.
      *
-     * @param ctx   The [ChannelHandlerContext] instance.
+     * @param ctx   The channel handler context
+     * @param msg   The inbound message
      */
-    override fun channelActive(ctx: ChannelHandlerContext?) {
+    override fun channelRead(ctx: ChannelHandlerContext?, msg: Any?) {
         ctx?.writeAndFlush(list)
     }
 

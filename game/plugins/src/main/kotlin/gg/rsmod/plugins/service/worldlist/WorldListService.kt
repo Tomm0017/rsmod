@@ -10,6 +10,7 @@ import gg.rsmod.plugins.service.worldlist.io.WorldListChannelHandler
 import gg.rsmod.plugins.service.worldlist.io.WorldListChannelInitializer
 import gg.rsmod.plugins.service.worldlist.model.WorldEntry
 import gg.rsmod.util.ServerProperties
+import io.netty.channel.ChannelFuture
 import mu.KLogging
 import java.nio.file.Files
 import java.nio.file.Path
@@ -30,11 +31,6 @@ class WorldListService : Service {
     private var port : Int = 80
 
     /**
-     * The interval between updating players
-     */
-    private var playerUpdateInterval : Int = 100
-
-    /**
      * The [Path] to the configuration file holding the [WorldEntry] data.
      */
     private lateinit var path : Path
@@ -43,6 +39,11 @@ class WorldListService : Service {
      * The list of [WorldEntry]s.
      */
     @Volatile private lateinit var list : List<WorldEntry>
+
+    /**
+     * The [ChannelFuture] for the network service
+     */
+    private lateinit var channelFuture : ChannelFuture
 
     /**
      * Initialises the [WorldListService] by checking that the world list configuration file exists,
@@ -88,7 +89,8 @@ class WorldListService : Service {
         // Bind the world list network pipeline
         val bootstrap = server.bootstrap.clone()
         bootstrap.childHandler(WorldListChannelInitializer(handler))
-        bootstrap.bind(port).syncUninterruptibly()
+        channelFuture = bootstrap.bind(port).syncUninterruptibly()
+        logger.info("World list service listening on port $port")
     }
 
     /**
@@ -101,6 +103,16 @@ class WorldListService : Service {
         val plugins = world.plugins
         plugins.bindLogin(incrementPlayerCount)
         plugins.bindLogout(decrementPlayerCount)
+    }
+
+    /**
+     * Terminates this [WorldListService]
+     *
+     * @param server    The [Server] instance
+     * @param world     The [World] instance
+     */
+    override fun terminate(server: Server, world: World) {
+        channelFuture.channel().close().syncUninterruptibly()
     }
 
     /**

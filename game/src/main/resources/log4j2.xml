@@ -12,7 +12,6 @@
         <Root level="info">
             <AppenderRef level="error" ref="File"/>
             <AppenderRef level="all" ref="Console"/>
-            <AppenderRef level="all" ref="DiscordLoggingAppender"/>
         </Root>
     </Loggers>
 </Configuration>

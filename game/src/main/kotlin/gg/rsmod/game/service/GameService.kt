@@ -9,9 +9,16 @@ import gg.rsmod.game.message.MessageStructureSet
 import gg.rsmod.game.model.World
 import gg.rsmod.game.task.ChunkCreationTask
 import gg.rsmod.game.task.GameTask
+import gg.rsmod.game.task.MessageHandlerTask
 import gg.rsmod.game.task.QueueHandlerTask
-import gg.rsmod.game.task.parallel.*
-import gg.rsmod.game.task.sequential.*
+import gg.rsmod.game.task.parallel.ParallelNpcCycleTask
+import gg.rsmod.game.task.parallel.ParallelPlayerCycleTask
+import gg.rsmod.game.task.parallel.ParallelPlayerPostCycleTask
+import gg.rsmod.game.task.parallel.ParallelSynchronizationTask
+import gg.rsmod.game.task.sequential.SequentialNpcCycleTask
+import gg.rsmod.game.task.sequential.SequentialPlayerCycleTask
+import gg.rsmod.game.task.sequential.SequentialPlayerPostCycleTask
+import gg.rsmod.game.task.sequential.SequentialSynchronizationTask
 import gg.rsmod.util.ServerProperties
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -140,7 +147,7 @@ class GameService : Service {
 
         if (sequentialTasks) {
             tasks.addAll(arrayOf(
-                    SequentialMessageHandlerTask(),
+                    MessageHandlerTask(),
                     QueueHandlerTask(),
                     SequentialPlayerCycleTask(),
                     ChunkCreationTask(),
@@ -152,7 +159,7 @@ class GameService : Service {
         } else {
             val executor = Executors.newFixedThreadPool(processors, ThreadFactoryBuilder().setNameFormat("game-tasks-thread").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
             tasks.addAll(arrayOf(
-                    ParallelMessageHandlerTask(executor),
+                    MessageHandlerTask(),
                     QueueHandlerTask(),
                     ParallelPlayerCycleTask(executor),
                     ChunkCreationTask(),

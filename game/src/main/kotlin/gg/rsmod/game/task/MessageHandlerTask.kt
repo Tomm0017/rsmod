@@ -1,8 +1,7 @@
-package gg.rsmod.game.task.sequential
+package gg.rsmod.game.task
 
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.GameService
-import gg.rsmod.game.task.GameTask
 
 /**
  * A [GameTask] responsible for handling all incoming
@@ -10,7 +9,7 @@ import gg.rsmod.game.task.GameTask
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class SequentialMessageHandlerTask : GameTask {
+class MessageHandlerTask : GameTask {
 
     override fun execute(world: World, service: GameService) {
         world.players.forEach { p ->

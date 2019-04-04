@@ -3,6 +3,13 @@
 
 out-packets:
 
+  - message: gg.rsmod.game.message.impl.UpdateRebootTimerMessage
+    type: FIXED
+    opcode: 72
+    structure:
+      - name: cycles
+        type: SHORT
+
   - message: gg.rsmod.game.message.impl.TriggerOnDialogAbortMessage
     type: FIXED
     opcode: 52

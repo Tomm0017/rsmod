@@ -57,6 +57,7 @@ class MessageEncoderSet {
         put(SoundAreaEncoder(), SoundAreaMessage::class.java)
         put(MidiSongEncoder(), MidiSongMessage::class.java)
         put(OnDialogAbortEncoder(), TriggerOnDialogAbortMessage::class.java)
+        put(UpdateRebootTimerEncoder(), UpdateRebootTimerMessage::class.java)
     }
 
     private fun <T: Message> put(encoder: MessageEncoder<T>, message: Class<out T>) {

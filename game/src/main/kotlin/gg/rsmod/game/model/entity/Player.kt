@@ -363,6 +363,10 @@ open class Player(world: World) : Pawn(world) {
             write(RebuildLoginMessage(index, tile, tiles, world.xteaKeyService))
         }
 
+        if (world.rebootTimer != -1) {
+            write(UpdateRebootTimerMessage(world.rebootTimer))
+        }
+
         initiated = true
         world.plugins.executeLogin(this)
     }
@@ -384,7 +388,7 @@ open class Player(world: World) : Pawn(world) {
      * The [Client] implementation overrides this method and will handle saving
      * data for the player and call this super method at the end.
      */
-    protected open fun handleLogout() {
+    internal open fun handleLogout() {
         interruptQueues()
         world.instanceAllocator.logout(this)
         world.plugins.executeLogout(this)

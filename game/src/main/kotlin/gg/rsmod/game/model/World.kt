@@ -6,6 +6,8 @@ import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
+import gg.rsmod.game.message.impl.LogoutFullMessage
+import gg.rsmod.game.message.impl.UpdateRebootTimerMessage
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.container.key.BANK_KEY
@@ -215,6 +217,11 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      */
     private val groundItemQueue = ObjectArrayList<GroundItem>()
 
+    /**
+     * The amount of time before a server reboot takes place, in game cycles.
+     */
+    var rebootTimer = -1
+
     internal fun init() {
         getService(GameService::class.java)?.let { service ->
             coroutineDispatcher = service.dispatcher
@@ -337,6 +344,29 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
          * Cycle through instanced maps.
          */
         instanceAllocator.cycle(this)
+
+        if (rebootTimer > 0) {
+            rebootTimer--
+
+            if (rebootTimer == 0) {
+                for (i in 0 until players.capacity) {
+                    players[i]?.let { player ->
+                        player.handleLogout()
+                        player.write(LogoutFullMessage())
+                        player.channelClose()
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Sends the reboot timer to all registered players.
+     */
+    fun sendRebootTimer(cycles: Int = rebootTimer) {
+        players.forEach { p ->
+            p.write(UpdateRebootTimerMessage(cycles))
+        }
     }
 
     fun register(p: Player): Boolean {
@@ -614,5 +644,12 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         services.forEach { it.bindNet(server, this) }
     }
 
-    companion object: KLogging()
+    companion object: KLogging() {
+
+        /**
+         * If the [rebootTimer] is active and is less than this value, we will
+         * begin to reject any log-in.
+         */
+        const val REJECT_LOGIN_REBOOT_THRESHOLD = 50
+    }
 }

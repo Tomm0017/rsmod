@@ -1,5 +1,6 @@
 package gg.rsmod.game.service.login
 
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.serializer.PlayerLoadResult
@@ -32,6 +33,7 @@ class LoginWorker(private val boss: LoginService) : Runnable {
 
                     client.world.getService(GameService::class.java)?.submitGameThreadJob {
                         val loginResult: LoginResultType = when {
+                            world.rebootTimer != -1 && world.rebootTimer < World.REJECT_LOGIN_REBOOT_THRESHOLD -> LoginResultType.SERVER_UPDATE
                             world.getPlayerForName(client.username) != null -> LoginResultType.ALREADY_ONLINE
                             world.players.count() >= world.players.capacity -> LoginResultType.MAX_PLAYERS
                             else -> if (client.register()) LoginResultType.ACCEPTABLE else LoginResultType.COULD_NOT_COMPLETE_LOGIN

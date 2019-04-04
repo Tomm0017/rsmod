@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="warn" packages="com.indovaps">
+<Configuration status="warn" packages="gg.rsmod">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="[%d{HH:mm:ss.SSS} %-5level] %-20.20c{1} | %msg%n"/>
@@ -12,6 +12,7 @@
         <Root level="info">
             <AppenderRef level="error" ref="File"/>
             <AppenderRef level="all" ref="Console"/>
+            <AppenderRef level="all" ref="DiscordLoggingAppender"/>
         </Root>
     </Loggers>
 </Configuration>

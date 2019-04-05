@@ -13,7 +13,7 @@ class ClickWorldMapHandler : MessageHandler<WorldMapClickMessage> {
 
     override fun handle(client: Client, message: WorldMapClickMessage) {
         if (client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-            log(client, "Click world map: %d", Tile.from30BitHash(message.data).toString())
+            log(client, "Click world map: %s", Tile.from30BitHash(message.data).toString())
             client.moveTo(Tile.from30BitHash(message.data))
         }
     }

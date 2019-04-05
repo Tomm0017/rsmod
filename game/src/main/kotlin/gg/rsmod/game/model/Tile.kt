@@ -154,5 +154,12 @@ class Tile {
             val height = (packed shr 28) and 0x3
             return Tile(x, z, height)
         }
+
+        fun from30BitHash(packed: Int): Tile {
+            val x = ((packed shr 14) and 0x3FFF)
+            val z = ((packed) and 0x3FFF)
+            val height = (packed shr 28)
+            return Tile(x, z, height)
+        }
     }
 }

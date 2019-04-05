@@ -12,12 +12,9 @@ import gg.rsmod.game.model.priv.Privilege
 class ClickWorldMapHandler : MessageHandler<WorldMapClickMessage> {
 
     override fun handle(client: Client, message: WorldMapClickMessage) {
-        val x = message.data shr 14 and 0x3FFF
-        val y = message.data and 0x3FFF
-        val z = message.data shr 28
         if (client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-            log(client, "Click world map: x=%d, y=%d, z=%d", x, y, z)
-            client.moveTo(Tile(x, y, z))
+            log(client, "Click world map: %d", Tile.from30BitHash(message.data).toString())
+            client.moveTo(Tile.from30BitHash(message.data))
         }
     }
 }

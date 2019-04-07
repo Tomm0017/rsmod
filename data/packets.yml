@@ -455,7 +455,7 @@ out-packets:
 
 in-packets:
 
-  - message: gg.rsmod.game.message.impl.WorldMapClickMessage
+  - message: gg.rsmod.game.message.impl.ClickWorldMapMessage
     type: FIXED
     opcode: 45
     length: 4

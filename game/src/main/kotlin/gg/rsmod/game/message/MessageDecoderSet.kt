@@ -42,7 +42,7 @@ class MessageDecoderSet {
         put(MoveGameClickMessage::class.java, MoveGameClickDecoder(), ClickMapHandler(), structures)
         put(MoveMinimapClickMessage::class.java, MoveMinimapClickDecoder(), ClickMinimapHandler(), structures)
         put(TeleportMessage::class.java, TeleportDecoder(), TeleportHandler(), structures)
-        put(WorldMapClickMessage::class.java, ClickWorldMapDecoder(), ClickWorldMapHandler(), structures)
+        put(ClickWorldMapMessage::class.java, ClickWorldMapDecoder(), ClickWorldMapHandler(), structures)
 
         put(CloseModalMessage::class.java, CloseModalDecoder(), CloseMainComponentHandler(), structures)
         put(IfButtonMessage::class.java, IfButton1Decoder(), IfButton1Handler(), structures)

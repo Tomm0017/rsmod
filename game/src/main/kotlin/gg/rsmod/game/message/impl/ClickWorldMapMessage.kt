@@ -5,4 +5,4 @@ import gg.rsmod.game.message.Message
 /**
  * @author HolyRSPS <dagreenrs@gmail.com>
  */
-data class WorldMapClickMessage(val data: Int) : Message
+data class ClickWorldMapMessage(val data: Int) : Message

@@ -43,6 +43,6 @@ data class Privilege(val id: Int, val icon: Int, val name: String, val powers: S
         /**
          * The default privilege level.
          */
-        val DEFAULT = Privilege(id = 0, icon = -1, name = "Player", powers = emptySet())
+        val DEFAULT = Privilege(id = 0, icon = 0, name = "Player", powers = emptySet())
     }
 }

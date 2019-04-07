@@ -6197,6 +6197,7 @@ object Npcs {
     const val SPAWN_6768 = 6768
     const val OSTEN = 6769
     const val ARCIS = 6770
+    const val DREW = 6771
     const val LOVADA = 6772
     const val DOOMSAYER = 6773
     const val DOOMSAYER_6774 = 6774
@@ -6206,6 +6207,7 @@ object Npcs {
     const val MAZE_GUARDIAN_6779 = 6779
     const val PILIAR = 6780
     const val SHAYDA = 6781
+    const val FISHING_SPOT_6784 = 6784
     const val HOSA = 6785
     const val HELLRAT_BEHEMOTH = 6793
     const val MONKEY_ARCHER_6794 = 6794
@@ -7825,5 +7827,6 @@ object Npcs {
     const val TAYLOR = 8629
     const val VEOS_8630 = 8630
     const val SEAMAN_MORRIS = 8631
+    const val ALCHEMICAL_HYDRA_8634 = 8634
     /* Auto-generated file using class gg.rsmod.game.service.game.DumpEntityIdService */
 }

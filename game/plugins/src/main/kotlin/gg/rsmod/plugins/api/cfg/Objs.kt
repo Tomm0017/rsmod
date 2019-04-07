@@ -1452,7 +1452,6 @@ object Objs {
     const val DOOR_2627 = 2627
     const val DOOR_2628 = 2628
     const val WALL_2629 = 2629
-    const val FISHING_SPOT_2630 = 2630
     const val DOOR_2631 = 2631
     const val CHEST_2632 = 2632
     const val CHEST_2633 = 2633
@@ -8227,7 +8226,6 @@ object Objs {
     const val MYSTERIOUS_RUINS_14413 = 14413
     const val MYSTERIOUS_RUINS_14414 = 14414
     const val STUDY_DESK_14415 = 14415
-    const val FISHING_SPOT_14428 = 14428
     const val RIFT_14431 = 14431
     const val GAS_BUBBLE = 14434
     const val CAVE_ENTRANCE_14436 = 14436
@@ -13120,8 +13118,9 @@ object Objs {
     const val DISPLAY_CASE_24551 = 24551
     const val SPECIMEN_TABLE_24555 = 24555
     const val SPECIMEN_TABLE_24556 = 24556
-    const val ROCKS_24557 = 24557
-    const val DIG_SITE_SPECIMEN_ROCKS = 24559
+    const val DIG_SITE_SPECIMEN_ROCKS = 24557
+    const val DIG_SITE_SPECIMEN_ROCKS_24558 = 24558
+    const val DIG_SITE_SPECIMEN_ROCKS_24559 = 24559
     const val GATE_24560 = 24560
     const val GATE_24561 = 24561
     const val GAP_24562 = 24562
@@ -13890,9 +13889,11 @@ object Objs {
     const val CHEST_26193 = 26193
     const val LEVER_26194 = 26194
     const val BIRTHDAY_CAKE_26198 = 26198
+    const val GRINDER = 26199
     const val TABLE_26201 = 26201
     const val TABLE_26202 = 26202
     const val TABLE_26203 = 26203
+    const val DOOR_26205 = 26205
     const val LARGE_DOOR_26207 = 26207
     const val WOODEN_BENCH_26210 = 26210
     const val OAK_BENCH_26211 = 26211
@@ -18558,5 +18559,7 @@ object Objs {
     const val ALCHEMICAL_HYDRA_DISPLAY_34684 = 34684
     const val ATTAS_PLANT_DISPLAY = 34685
     const val LEATHER_SHIELDS = 34686
+    const val BRYOPHYTA_DISPLAY = 34687
+    const val BANNER_34688 = 34688
     /* Auto-generated file using class gg.rsmod.game.service.game.DumpEntityIdService */
 }

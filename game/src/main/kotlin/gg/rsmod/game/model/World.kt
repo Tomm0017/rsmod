@@ -385,20 +385,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     fun spawn(npc: Npc): Boolean {
         val added = npcs.add(npc)
         if (added) {
-            var combatDef: NpcCombatDef? = null
-
-            getService(NpcStatsService::class.java)?.let { statService ->
-                combatDef = statService.get(npc.id)
-            }
-
-            npc.combatDef = combatDef ?: NpcCombatDef.DEFAULT
-            npc.respawns = npc.combatDef.respawnDelay > 0
-            npc.combatDef.bonuses.forEachIndexed { index, bonus -> npc.equipmentBonuses[index] = bonus }
-            npc.setCurrentHp(npc.combatDef.hitpoints)
-
-            /*
-             * Execute npc spawn plugins.
-             */
+            setNpcDefaults(npc)
             plugins.executeNpcSpawn(npc)
         }
         return added
@@ -578,6 +565,19 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         } else {
             logger.warn("No examine service found! Could not send examine message to player: ${p.username}.")
         }
+    }
+
+    fun setNpcDefaults(npc: Npc) {
+        var combatDef: NpcCombatDef? = null
+
+        getService(NpcStatsService::class.java)?.let { statService ->
+            combatDef = statService.get(npc.id)
+        }
+
+        npc.combatDef = combatDef ?: NpcCombatDef.DEFAULT
+        npc.respawns = npc.combatDef.respawnDelay > 0
+        npc.combatDef.bonuses.forEachIndexed { index, bonus -> npc.equipmentBonuses[index] = bonus }
+        npc.setCurrentHp(npc.combatDef.hitpoints)
     }
 
     /**

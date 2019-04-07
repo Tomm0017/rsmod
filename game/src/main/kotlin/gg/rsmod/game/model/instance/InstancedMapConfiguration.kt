@@ -69,7 +69,7 @@ class InstancedMapConfiguration private constructor(val exitTile: Tile, val owne
         }
 
         /**
-         * @see bypassObjectChunkBounds
+         * @see InstancedMapConfiguration.bypassObjectChunkBounds
          */
         fun setBypassObjectChunkBounds(bypassObjectChunkBounds: Boolean): Builder {
             this.bypassObjectChunkBounds = bypassObjectChunkBounds

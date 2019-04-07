@@ -158,6 +158,9 @@ fun Player.openInterface(parent: Int, child: Int, interfaceId: Int, type: Int = 
 }
 
 fun Player.closeInterface(interfaceId: Int) {
+    if (interfaceId == interfaces.getModal()) {
+        interfaces.setModal(-1)
+    }
     val hash = interfaces.close(interfaceId)
     if (hash != -1) {
         write(IfCloseSubMessage(hash))

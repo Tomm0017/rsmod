@@ -43,15 +43,26 @@ object NpcDeathAction {
         }
 
         npc.animate(-1)
-        world.remove(npc)
 
         world.plugins.executeNpcDeath(npc)
 
         if (npc.respawns) {
-            world.queue {
-                wait(respawnDelay)
-                world.spawn(Npc(npc.id, npc.spawnTile, world))
-            }
+            npc.invisible = true
+            npc.reset()
+            wait(respawnDelay)
+            npc.invisible = false
+            world.plugins.executeNpcSpawn(npc)
+        } else {
+            world.remove(npc)
         }
+    }
+
+    private fun Npc.reset() {
+        tile = spawnTile
+        setTransmogId(-1)
+
+        attr.clear()
+        timers.clear()
+        world.setNpcDefaults(this)
     }
 }

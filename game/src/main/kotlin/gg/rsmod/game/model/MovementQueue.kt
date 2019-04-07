@@ -17,8 +17,6 @@ class MovementQueue(val pawn: Pawn) {
      */
     private val steps: Deque<Step> = ArrayDeque()
 
-    internal var forcedRun = false
-
     /**
      * If any step is queued.
      */
@@ -27,11 +25,12 @@ class MovementQueue(val pawn: Pawn) {
     /**
      * Get the last tile in our [steps] without removing it.
      */
-    fun peekLast(): Tile? = if (steps.isNotEmpty()) steps.peekLast().tile else null
+    fun peekLast(): Tile? = peekLastStep()?.tile
+
+    fun peekLastStep(): Step? = if (steps.isNotEmpty()) steps.peekLast() else null
 
     fun clear() {
         steps.clear()
-        forcedRun = false
     }
 
     fun addStep(step: Tile, type: StepType) {
@@ -68,10 +67,6 @@ class MovementQueue(val pawn: Pawn) {
                         if (collision.canTraverse(tile, runDirection, projectile = false)) {
                             tile = Tile(next.tile)
                             pawn.lastFacingDirection = runDirection
-
-                            if (next.type == StepType.FORCED_RUN) {
-                                forcedRun = true
-                            }
                         } else {
                             clear()
                             runDirection = null

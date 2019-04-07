@@ -1,7 +1,6 @@
 package gg.rsmod.plugins.service.worldlist
 
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.plugin.Plugin
@@ -36,9 +35,9 @@ class WorldListService : Service {
     private lateinit var path : Path
 
     /**
-     * The list of [WorldEntry]s.
+     * The current app's [WorldEntry].
      */
-    @Volatile private lateinit var list : List<WorldEntry>
+    @Volatile private lateinit var worldEntry : WorldEntry
 
     /**
      * The [ChannelFuture] for the network service
@@ -55,7 +54,7 @@ class WorldListService : Service {
      */
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         port = serviceProperties.getOrDefault("port", 80)
-        path = Paths.get(serviceProperties.getOrDefault("config-path", "./data/cfg/worlds.json"))
+        path = Paths.get(serviceProperties.getOrDefault("config-path", "./data/cfg/world.json"))
 
         // If the world configuration file doesn't exist, spit out a warning and do nothing
         if (!Files.exists(path)) {
@@ -71,7 +70,7 @@ class WorldListService : Service {
      */
     private fun parse() {
         Files.newBufferedReader(path).use { reader ->
-            list = Gson().fromJson<List<WorldEntry>>(reader, object : TypeToken<List<WorldEntry>>() {}.type)
+            worldEntry = Gson().fromJson<WorldEntry>(reader, WorldEntry::class.java)
         }
     }
 
@@ -84,7 +83,7 @@ class WorldListService : Service {
     override fun bindNet(server: Server, world: World) {
 
         // The inbound channel handler for the world list protocol
-        val handler = WorldListChannelHandler(list)
+        val handler = WorldListChannelHandler(listOf(worldEntry))
 
         // Bind the world list network pipeline
         val bootstrap = server.bootstrap.clone()
@@ -119,14 +118,14 @@ class WorldListService : Service {
      * Increments the player count for every entry in the world list
      */
     private val incrementPlayerCount : Plugin.() -> Unit = {
-        list.forEach { it.players++ }
+        worldEntry.players++
     }
 
     /**
      * Decrements the player count for every entry in the world list
      */
     private val decrementPlayerCount : Plugin.() -> Unit = {
-        list.forEach { it.players-- }
+        worldEntry.players--
     }
 
     companion object : KLogging()

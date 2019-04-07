@@ -58,4 +58,4 @@ services:
 
   - class:  gg.rsmod.plugins.service.worldlist.WorldListService
     port: 80
-    config-path: "./data/cfg/worlds.json"
+    config-path: "./data/cfg/world.json"

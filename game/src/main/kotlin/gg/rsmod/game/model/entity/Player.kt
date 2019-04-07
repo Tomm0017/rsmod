@@ -170,13 +170,9 @@ open class Player(world: World) : Pawn(world) {
      */
     internal val localNpcs = ObjectArrayList<Npc>()
 
-    val looks = intArrayOf(9, 14, 109, 26, 33, 36, 42)
-
-    val lookColors = intArrayOf(0, 3, 2, 0, 0)
+    var appearance = Appearance.DEFAULT
 
     var weight = 0.0
-
-    var gender = Gender.MALE
 
     var skullIcon = -1
 

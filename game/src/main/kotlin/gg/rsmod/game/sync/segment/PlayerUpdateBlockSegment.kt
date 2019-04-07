@@ -115,7 +115,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
 
             UpdateBlockType.APPEARANCE -> {
                 val appBuf = GamePacketBuilder()
-                appBuf.put(DataType.BYTE, other.gender.id)
+                appBuf.put(DataType.BYTE, other.appearance.gender.id)
                 appBuf.put(DataType.BYTE, other.skullIcon)
                 appBuf.put(DataType.BYTE, other.prayerIcon)
 
@@ -154,7 +154,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                             if (translation[i] == -1) {
                                 appBuf.put(DataType.BYTE, 0)
                             } else {
-                                appBuf.put(DataType.SHORT, 0x100 + other.looks[translation[i]])
+                                appBuf.put(DataType.SHORT, 0x100 + other.appearance.looks[translation[i]])
                             }
                         }
                     }
@@ -164,7 +164,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                 }
 
                 for (i in 0 until 5) {
-                    val color = Math.max(0, other.lookColors[i])
+                    val color = Math.max(0, other.appearance.colors[i])
                     appBuf.put(DataType.BYTE, color)
                 }
 

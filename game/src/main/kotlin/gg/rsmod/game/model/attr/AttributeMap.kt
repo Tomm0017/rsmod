@@ -33,5 +33,9 @@ class AttributeMap {
 
     fun has(key: AttributeKey<*>): Boolean = attributes.containsKey(key)
 
+    fun clear() {
+        attributes.clear()
+    }
+
     fun toPersistentMap(): Map<String, Any> = attributes.filterKeys { it.persistenceKey != null }.mapKeys { it.key.persistenceKey!! }
 }

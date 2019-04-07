@@ -5,7 +5,6 @@ import gg.rsmod.game.message.impl.UpdateAppearanceMessage
 import gg.rsmod.game.model.Appearance
 import gg.rsmod.game.model.Gender
 import gg.rsmod.game.model.entity.Client
-import gg.rsmod.game.sync.block.UpdateBlockType
 import java.util.*
 
 /**
@@ -19,8 +18,6 @@ class UpdateAppearanceHandler : MessageHandler<UpdateAppearanceMessage> {
         val colors = message.colors
 
         log(client, "Update appearance: gender=%s, appearance=%s, colors=%s", gender.toString(), Arrays.toString(looks), Arrays.toString(colors))
-
-        client.appearance = Appearance(looks, colors, gender)
-        client.addBlock(UpdateBlockType.APPEARANCE)
+        client.queues.submitReturnValue(Appearance(looks, colors, gender))
     }
 }

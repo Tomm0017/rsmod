@@ -3,11 +3,13 @@ package gg.rsmod.plugins.api.ext
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.message.impl.ResumePauseButtonMessage
+import gg.rsmod.game.model.Appearance
 import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.QueueTask
+import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.Skills
 
 /**
@@ -17,17 +19,29 @@ import gg.rsmod.plugins.api.Skills
 const val CHATBOX_CHILD = 561
 
 /**
+ * The id for the appearance interface.
+ */
+const val APPEARANCE_INTERFACE_ID = 269
+
+/**
  * The default action that will occur when interrupting or finishing a dialog.
  */
-private val closeDialog: ((QueueTask).() -> Unit) = {
+private val closeDialog: QueueTask.() -> Unit = {
     player.closeComponent(parent = 162, child = CHATBOX_CHILD)
 }
 
 /**
  * Invoked when input dialog queues are interrupted.
  */
-private val closeInput: ((QueueTask).() -> Unit) = {
+private val closeInput: QueueTask.() -> Unit = {
     player.closeInputDialog()
+}
+
+/**
+ * Invoked when the appearance input is interrupted.
+ */
+private val closeAppearance: QueueTask.() -> Unit = {
+    player.closeInterface(APPEARANCE_INTERFACE_ID)
 }
 
 /**
@@ -233,6 +247,16 @@ suspend fun QueueTask.destroyItem(title: String = "Are you sure you want to dest
 
     val msg = requestReturnValue as? ResumePauseButtonMessage
     return msg?.slot == 1
+}
+
+suspend fun QueueTask.selectAppearance(): Appearance? {
+    player.openInterface(APPEARANCE_INTERFACE_ID, InterfaceDestination.MAIN_SCREEN)
+
+    terminateAction = closeAppearance
+    waitReturnValue()
+    terminateAction?.invoke(this)
+
+    return requestReturnValue as? Appearance
 }
 
 suspend fun QueueTask.levelUpMessageBox(skill: Int, levelIncrement: Int) {

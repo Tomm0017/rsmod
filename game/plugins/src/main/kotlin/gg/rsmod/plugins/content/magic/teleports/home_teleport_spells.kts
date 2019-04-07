@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.magic.teleports
 
+import gg.rsmod.plugins.content.combat.isAttacking
+import gg.rsmod.plugins.content.combat.isBeingAttacked
 import gg.rsmod.plugins.content.magic.MagicSpells.on_magic_spell_button
 import gg.rsmod.plugins.content.magic.TeleportType
 import gg.rsmod.plugins.content.magic.canTeleport
@@ -22,6 +24,9 @@ HomeTeleport.values.forEach { teleport ->
 
     on_magic_spell_button(teleport.spellName) {
         if (player.hasMoveDestination()) {
+            player.message("You can't use that teleport at the moment.")
+            return@on_magic_spell_button
+        } else if (player.isAttacking()) {
             player.message("You can't use that teleport at the moment.")
             return@on_magic_spell_button
         }
@@ -51,26 +56,49 @@ suspend fun QueueTask.teleport(endTile: Tile) {
     player.animate(4847)
     player.graphic(800)
     player.playSound(193)
-    wait(7)
+    if (!wait_and_check_combat(7)) {
+        return
+    }
     terminateAction = TERMINATE_HOME_TELEPORT_SITTING
     player.animate(4850)
     player.playSound(196)
-    wait(6)
+    if (!wait_and_check_combat(6)) {
+        return
+    }
     player.animate(4853)
     player.graphic(802, 0)
     player.playSound(194)
-    wait(4)
+    if (!wait_and_check_combat(4)) {
+        return
+    }
     player.animate(4855)
     player.graphic(803, 0)
     player.playSound(195)
-    wait(3)
+    if (!wait_and_check_combat(3)) {
+        return
+    }
     player.graphic(804)
-    wait(1)
+    if (!wait_and_check_combat(1)) {
+        return
+    }
     player.animate(4857)
-    wait(2)
+    if (!wait_and_check_combat(2)) {
+        return
+    }
     player.animate(-1)
     player.moveTo(endTile)
     player.timers[HOME_TELEPORT_TIMER] = HOME_TELEPORT_TIMER_DELAY
+}
+
+suspend fun QueueTask.wait_and_check_combat(cycles: Int): Boolean {
+    for (i in 0 until cycles) {
+        wait(1)
+        if (player.isBeingAttacked()) {
+            terminate()
+            return false
+        }
+    }
+    return true
 }
 
 enum class HomeTeleport(val spellName: String, val endTile: World.() -> Tile) {

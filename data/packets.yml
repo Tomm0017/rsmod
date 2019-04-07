@@ -455,6 +455,15 @@ out-packets:
 
 in-packets:
 
+  - message: gg.rsmod.game.message.impl.WorldMapClickMessage
+    type: FIXED
+    opcode: 45
+    length: 4
+    structure:
+      - name: data
+        type: INT
+        order: MIDDLE
+
   - message: gg.rsmod.game.message.impl.OpLocUMessage
     type: FIXED
     opcode: 44
@@ -1256,12 +1265,6 @@ in-packets:
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown
     type: VARIABLE_BYTE
     opcode: 43
-    ignore: true
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown
-    type: FIXED
-    opcode: 45
-    length: 4
     ignore: true
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IF1_BUTTON1

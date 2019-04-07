@@ -1099,30 +1099,43 @@ in-packets:
     length: 13
     structure:
       - name: gender
+        sign: UNSIGNED
         type: BYTE
       - name: appearance0
+        sign: UNSIGNED
         type: BYTE
       - name: appearance1
+        sign: UNSIGNED
         type: BYTE
       - name: appearance2
+        sign: UNSIGNED
         type: BYTE
       - name: appearance3
+        sign: UNSIGNED
         type: BYTE
       - name: appearance4
+        sign: UNSIGNED
         type: BYTE
       - name: appearance5
+        sign: UNSIGNED
         type: BYTE
       - name: appearance6
+        sign: UNSIGNED
         type: BYTE
       - name: color0
+        sign: UNSIGNED
         type: BYTE
       - name: color1
+        sign: UNSIGNED
         type: BYTE
       - name: color2
+        sign: UNSIGNED
         type: BYTE
       - name: color3
+        sign: UNSIGNED
         type: BYTE
       - name: color4
+        sign: UNSIGNED
         type: BYTE
 
   - message: gg.rsmod.game.message.impl.NoTimeoutMessage

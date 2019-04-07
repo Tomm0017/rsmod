@@ -194,7 +194,7 @@ open class Player(world: World) : Pawn(world) {
      * Checks if the player is running. We assume that the varp with id of
      * [173] is the running state varp.
      */
-    override fun isRunning(): Boolean = varps[173].state != 0
+    override fun isRunning(): Boolean = varps[173].state != 0 || movementQueue.forcedRun
 
     override fun getSize(): Int = 1
 

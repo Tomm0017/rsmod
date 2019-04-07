@@ -62,7 +62,7 @@ class ItemDef(override val id: Int) : Definition(id) {
      * Whether or not the object is a placeholder.
      */
     val isPlaceholder
-        get() = placeholderTemplate >= 0 && placeholderLink >= 0
+        get() = placeholderTemplate > 0 && placeholderLink > 0
 
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {

@@ -11,7 +11,7 @@ allprojects {
     apply from: "$rootDir/gradle/kotlin.gradle"
 
     group = 'rsmod'
-    version = '0.0.3'
+    version = '0.0.4'
 
     repositories {
         mavenLocal()

@@ -35,6 +35,9 @@ class TimerMap {
 
     fun getTimers(): MutableMap<TimerKey, Int> = timers
 
+    val isNotEmpty: Boolean
+        get() = timers.isNotEmpty()
+
     /**
      * Represents a persistent timer that will be saved through player sessions.
      */

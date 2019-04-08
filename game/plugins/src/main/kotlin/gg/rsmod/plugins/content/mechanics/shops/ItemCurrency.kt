@@ -133,8 +133,8 @@ open class ItemCurrency(private val currencyItem: Int, private val singularCurre
         }
 
         val shopSlot = shop.items.indexOfFirst { it?.item == unnoted }
-        val shopItem = shop.items[shopSlot]
-        val count = if (shopSlot != -1) shopItem?.currentAmount ?: 0 else 0
+        val shopItem = if (shopSlot != -1) shop.items[shopSlot] else null
+        val count = shopItem?.currentAmount ?: 0
 
         val amount = Math.min(Math.min(p.inventory.getItemCount(item.id), amt), Int.MAX_VALUE - count)
 

@@ -3,9 +3,9 @@ package gg.rsmod.util.concurrency
 import mu.KLogging
 import java.util.concurrent.Phaser
 
-class PhasedTask(private val phaser: Phaser, private val task: () -> Unit) : Runnable {
+object PhasedTask : KLogging() {
 
-    override fun run() {
+    fun run(phaser: Phaser, task: () -> Unit) {
         try {
             task()
         } catch (e: Exception) {
@@ -14,6 +14,4 @@ class PhasedTask(private val phaser: Phaser, private val task: () -> Unit) : Run
             phaser.arriveAndDeregister()
         }
     }
-
-    companion object: KLogging()
 }

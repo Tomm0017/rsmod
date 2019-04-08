@@ -31,4 +31,10 @@ data class ShopItem(val item: Int, val amount: Int, val sellPrice: Int? = null, 
      * The current amount of the item that is in stock.
      */
     var currentAmount: Int = amount
+
+    /**
+     * @return True if the item was not in the original shop stock.
+     */
+    val isTemporary: Boolean
+        get() = amount == 0
 }

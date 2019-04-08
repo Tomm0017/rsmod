@@ -41,16 +41,10 @@
   examine: "A man who deals in rugs."
 - id: 20
   examine: "A man who deals in rugs."
-- id: 21
-  examine: "It's a "
 - id: 22
   examine: "A carpet merchant."
 - id: 23
   examine: "Perhaps our oldest relatives?"
-- id: 24
-  examine: "It's a "
-- id: 25
-  examine: "It's a "
 - id: 26
   examine: "Dead man walking."
 - id: 27
@@ -237,8 +231,6 @@
   examine: "A social killer."
 - id: 118
   examine: "The Master of Fire!"
-- id: 119
-  examine: "It's a "
 - id: 120
   examine: "And with its head he came galumphing back."
 - id: 121
@@ -443,24 +435,14 @@
   examine: "Try to damage it!"
 - id: 221
   examine: "He wears a hat to hide the fact that he's bald."
-- id: 222
-  examine: "It's a "
 - id: 223
   examine: "Very neat."
-- id: 224
-  examine: "It's a "
 - id: 225
   examine: "I hope she can find all the ingredients!"
-- id: 226
-  examine: "It's a "
 - id: 227
   examine: "He knows how to buttle."
-- id: 228
-  examine: "It's a "
 - id: 229
   examine: "Blimey, a Demon Butler!"
-- id: 230
-  examine: "It's a "
 - id: 231
   examine: "A social killer."
 - id: 232
@@ -615,8 +597,6 @@
   examine: "He provides new players with useful information."
 - id: 307
   examine: "He looks relieved."
-- id: 308
-  examine: "It's a "
 - id: 309
   examine: "For Mod Reach."
 - id: 310
@@ -647,10 +627,6 @@
   examine: "He's had a fair bit to drink..."
 - id: 323
   examine: "A very strange plant."
-- id: 324
-  examine: "It's a "
-- id: 325
-  examine: "It's a "
 - id: 326
   examine: "Maybe he'll grant me a wish..."
 - id: 327
@@ -767,8 +743,6 @@
   examine: "A man down on his luck."
 - id: 383
   examine: "A man down on his luck."
-- id: 384
-  examine: "It's a "
 - id: 385
   examine: "A well dressed nobleman."
 - id: 386
@@ -847,8 +821,6 @@
   examine: "The slime of evil."
 - id: 423
   examine: "The vacuumed face of evil."
-- id: 424
-  examine: "It's a "
 - id: 425
   examine: "Spawn of Darkness."
 - id: 426
@@ -979,8 +951,6 @@
   examine: "A very small storm!"
 - id: 489
   examine: "A very small storm!"
-- id: 490
-  examine: "It's a "
 - id: 491
   examine: "Looks like a zoo keeper who got overwhelmed by his work."
 - id: 492
@@ -1431,8 +1401,6 @@
   examine: "Not man's best friend."
 - id: 715
   examine: "Not man's best friend."
-- id: 716
-  examine: "It's a "
 - id: 717
   examine: "Highly flammable!"
 - id: 718
@@ -1485,20 +1453,6 @@
   examine: "Trollish."
 - id: 742
   examine: "Trollish."
-- id: 743
-  examine: "It's a "
-- id: 744
-  examine: "It's a "
-- id: 745
-  examine: "It's a "
-- id: 746
-  examine: "It's a "
-- id: 747
-  examine: "It's a "
-- id: 748
-  examine: "It's a "
-- id: 749
-  examine: "It's a "
 - id: 750
   examine: "He's poking his farming patch with my dibber."
 - id: 751
@@ -1521,8 +1475,6 @@
   examine: "A little troll who has no name."
 - id: 760
   examine: "Named after the first thing he tried to eat..."
-- id: 761
-  examine: "It's a "
 - id: 762
   examine: "A mountain-dwelling bird. Cute, but vicious."
 - id: 763
@@ -1632,12 +1584,8 @@
   examine: "Master of the Champions' Guild."
 - id: 815
   examine: "Duke Horacio of Lumbridge."
-- id: 816
-  examine: "It's a "
 - id: 817
   examine: "Roar! A dragon!"
-- id: 818
-  examine: "It's a "
 - id: 819
   examine: "A young sailor."
 - id: 820
@@ -1686,8 +1634,6 @@
   examine: "Killer Gentoo Penguin."
 - id: 842
   examine: "Killer Gentoo Penguin."
-- id: 843
-  examine: "It's a "
 - id: 844
   examine: "A Macaroni penguin."
 - id: 845
@@ -1826,20 +1772,10 @@
   examine: "A summoned demon."
 - id: 912
   examine: "A nasty sand storm."
-- id: 913
-  examine: "It's a "
-- id: 914
-  examine: "It's a "
-- id: 915
-  examine: "It's a "
-- id: 916
-  examine: "It's a "
 - id: 917
   examine: "An animated clay statue."
 - id: 918
   examine: "An animated clay statue."
-- id: 919
-  examine: "It's a "
 - id: 920
   examine: "Eeek! A ghost!"
 - id: 921
@@ -2242,16 +2178,6 @@
   examine: "One of RuneScape's many citizens."
 - id: 1120
   examine: "A master of dream-manipulation."
-- id: 1121
-  examine: "It's a "
-- id: 1122
-  examine: "It's a "
-- id: 1123
-  examine: "It's a "
-- id: 1124
-  examine: "It's a "
-- id: 1125
-  examine: "It's a "
 - id: 1126
   examine: "It's trying to mash you flat! Less examine, more fight!"
 - id: 1127
@@ -2360,8 +2286,6 @@
   examine: "He helps to run the adventurers' shop."
 - id: 1179
   examine: "He provides new players with useful information."
-- id: 1180
-  examine: "It's a "
 - id: 1181
   examine: "He provides new players with useful information."
 - id: 1182
@@ -2388,12 +2312,8 @@
   examine: "An ugly green creature."
 - id: 1193
   examine: "An ugly green creature."
-- id: 1194
-  examine: "It's a "
 - id: 1195
   examine: "An ugly green creature."
-- id: 1196
-  examine: "It's a "
 - id: 1197
   examine: "An ugly green creature."
 - id: 1198
@@ -2479,38 +2399,26 @@
   examine: "All you see is a glimmer of light and the suggestion of shadow."
 - id: 1238
   examine: "Sells gnomish things."
-- id: 1239
-  examine: "It's a "
 - id: 1240
   examine: "Ahhh. Isn't it cute?"
 - id: 1241
   examine: "What is that thing!"
-- id: 1242
-  examine: "It's a "
 - id: 1243
   examine: "Ahhh. Isn't it cute?"
 - id: 1244
   examine: "What is that thing!"
-- id: 1245
-  examine: "It's a "
 - id: 1246
   examine: "Ahhh. Isn't it cute?"
 - id: 1247
   examine: "What is that thing!"
-- id: 1248
-  examine: "It's a "
 - id: 1249
   examine: "Ahhh. Isn't it cute?"
 - id: 1250
   examine: "What is that thing!"
-- id: 1251
-  examine: "It's a "
 - id: 1252
   examine: "Ahhh. Isn't it cute?"
 - id: 1253
   examine: "What is that thing!"
-- id: 1254
-  examine: "It's a "
 - id: 1255
   examine: "Ahhh. Isn't it cute?"
 - id: 1256
@@ -2643,10 +2551,6 @@
   examine: "I could get a beer from him."
 - id: 1320
   examine: "I could get a beer from him."
-- id: 1321
-  examine: "It's a "
-- id: 1322
-  examine: "It's a "
 - id: 1323
   examine: "A dandy canoe man."
 - id: 1324
@@ -2789,8 +2693,6 @@
   examine: "This statue of a king has been 'borrowed' for a while."
 - id: 1393
   examine: "An empty trolley."
-- id: 1394
-  examine: "It's a "
 - id: 1395
   examine: "Somebody should have warned him when he signed up."
 - id: 1396
@@ -2847,16 +2749,8 @@
   examine: "A raccoon."
 - id: 1422
   examine: "An ancient looking gnome."
-- id: 1423
-  examine: "It's a "
-- id: 1424
-  examine: "It's a "
 - id: 1425
   examine: "A rough looking gnome."
-- id: 1426
-  examine: "It's a "
-- id: 1427
-  examine: "It's a "
 - id: 1428
   examine: "Poor guy, he looks frightened."
 - id: 1429
@@ -2899,28 +2793,10 @@
   examine: "Yar! Shiver me timbers!"
 - id: 1448
   examine: "Known for his light-fingered qualities."
-- id: 1449
-  examine: "It's a "
-- id: 1450
-  examine: "It's a "
-- id: 1451
-  examine: "It's a "
-- id: 1452
-  examine: "It's a "
 - id: 1453
   examine: "A seasoned looking Gnome foot soldier."
 - id: 1454
   examine: "A seasoned looking Gnome foot soldier."
-- id: 1455
-  examine: "It's a "
-- id: 1456
-  examine: "It's a "
-- id: 1457
-  examine: "It's a "
-- id: 1458
-  examine: "It's a "
-- id: 1459
-  examine: "It's a "
 - id: 1460
   examine: "An official looking Gnome with small beady eyes."
 - id: 1461
@@ -2983,12 +2859,6 @@
   examine: "A very large, very dangerous, very cold-looking birdy."
 - id: 1490
   examine: "It seems to be protecting the nest."
-- id: 1491
-  examine: "It's a "
-- id: 1492
-  examine: "It's a "
-- id: 1493
-  examine: "It's a "
 - id: 1494
   examine: "A little bigger than usual..."
 - id: 1495
@@ -3227,8 +3097,6 @@
   examine: "He kills in the name of Saradomin."
 - id: 1612
   examine: "He kills in the name of Guthix."
-- id: 1613
-  examine: "It's a "
 - id: 1614
   examine: "A banknote exchange merchant."
 - id: 1615
@@ -3237,8 +3105,6 @@
   examine: "The tribe leader."
 - id: 1617
   examine: "She offers sacrifices to Zulrah on behalf of the tribe."
-- id: 1618
-  examine: "It's a "
 - id: 1619
   examine: "A fully grown feline."
 - id: 1620
@@ -3267,10 +3133,6 @@
   examine: "A friendly not so little pet."
 - id: 1632
   examine: "A hellish not-so-little pet."
-- id: 1633
-  examine: "It's a "
-- id: 1634
-  examine: "It's a "
 - id: 1635
   examine: "An impling baby. Aaah..."
 - id: 1636
@@ -3527,8 +3389,6 @@
   examine: "A squire of balance."
 - id: 1762
   examine: "A squire of balance."
-- id: 1763
-  examine: "It's a "
 - id: 1764
   examine: "A squire of balance."
 - id: 1765
@@ -3625,8 +3485,6 @@
   examine: "He looks a little shifty."
 - id: 1811
   examine: "He looks a little shifty."
-- id: 1812
-  examine: "It's a "
 - id: 1813
   examine: "Loves living in an orchard."
 - id: 1814
@@ -3639,18 +3497,6 @@
   examine: "Perhaps arr oldest piratical relatives?"
 - id: 1818
   examine: "A swarm of vicious sweetflies!"
-- id: 1819
-  examine: "It's a "
-- id: 1820
-  examine: "It's a "
-- id: 1821
-  examine: "It's a "
-- id: 1822
-  examine: "It's a "
-- id: 1823
-  examine: "It's a "
-- id: 1824
-  examine: "It's a "
 - id: 1825
   examine: "A native monkey."
 - id: 1826
@@ -3673,10 +3519,6 @@
   examine: "Gorak by name, Gorak by nature."
 - id: 1835
   examine: "A highly enlightened being."
-- id: 1836
-  examine: "It's a "
-- id: 1837
-  examine: "It's a "
 - id: 1838
   examine: "Quackers."
 - id: 1839
@@ -3717,12 +3559,6 @@
   examine: "A small, green shoot."
 - id: 1857
   examine: "It doesn't look that rare."
-- id: 1858
-  examine: "It's a "
-- id: 1859
-  examine: "It's a "
-- id: 1860
-  examine: "It's a "
 - id: 1861
   examine: "A very angry nymph."
 - id: 1862
@@ -3737,8 +3573,6 @@
   examine: "A very angry nymph."
 - id: 1867
   examine: "Leader of the White Knights."
-- id: 1868
-  examine: "It's a "
 - id: 1869
   examine: "Leader of the White Knights."
 - id: 1870
@@ -3893,8 +3727,6 @@
   examine: "Jatizso's armour merchant."
 - id: 1945
   examine: "A rough-looking chef."
-- id: 1946
-  examine: "It's a "
 - id: 1947
   examine: "A guard on insult duty."
 - id: 1948
@@ -3907,80 +3739,6 @@
   examine: "One of Jatizso's many citizens."
 - id: 1952
   examine: "One of Jatizso's many citizens."
-- id: 1953
-  examine: "It's a "
-- id: 1954
-  examine: "It's a "
-- id: 1955
-  examine: "It's a "
-- id: 1956
-  examine: "It's a "
-- id: 1957
-  examine: "It's a "
-- id: 1958
-  examine: "It's a "
-- id: 1959
-  examine: "It's a "
-- id: 1960
-  examine: "It's a "
-- id: 1961
-  examine: "It's a "
-- id: 1962
-  examine: "It's a "
-- id: 1963
-  examine: "It's a "
-- id: 1964
-  examine: "It's a "
-- id: 1965
-  examine: "It's a "
-- id: 1966
-  examine: "It's a "
-- id: 1967
-  examine: "It's a "
-- id: 1968
-  examine: "It's a "
-- id: 1969
-  examine: "It's a "
-- id: 1970
-  examine: "It's a "
-- id: 1971
-  examine: "It's a "
-- id: 1972
-  examine: "It's a "
-- id: 1973
-  examine: "It's a "
-- id: 1974
-  examine: "It's a "
-- id: 1975
-  examine: "It's a "
-- id: 1976
-  examine: "It's a "
-- id: 1977
-  examine: "It's a "
-- id: 1978
-  examine: "It's a "
-- id: 1979
-  examine: "It's a "
-- id: 1980
-  examine: "It's a "
-- id: 1981
-  examine: "It's a "
-- id: 1982
-  examine: "It's a "
-- id: 1983
-  examine: "It's a "
-- id: 1984
-  examine: "It's a "
-- id: 1985
-  examine: "It's a "
-- id: 1986
-  examine: "It's a "
-- id: 1987
-  examine: "It's a "
-- id: 1988
-  examine: "It's a "
-- id: 1989
-  examine: "It's a "
 - id: 1990
   examine: "A happy, friendly landlady."
 - id: 1991
@@ -3989,12 +3747,6 @@
   examine: "A miner at work."
 - id: 1993
   examine: "A miner at work."
-- id: 1994
-  examine: "It's a "
-- id: 1995
-  examine: "It's a "
-- id: 1996
-  examine: "It's a "
 - id: 1997
   examine: "A bedraggled-looking tramp."
 - id: 1998
@@ -4019,38 +3771,8 @@
   examine: "Lesser, but still pretty big."
 - id: 2008
   examine: "Lesser, but still pretty big."
-- id: 2009
-  examine: "It's a "
-- id: 2010
-  examine: "It's a "
-- id: 2011
-  examine: "It's a "
-- id: 2012
-  examine: "It's a "
-- id: 2013
-  examine: "It's a "
-- id: 2014
-  examine: "It's a "
-- id: 2015
-  examine: "It's a "
-- id: 2016
-  examine: "It's a "
-- id: 2017
-  examine: "It's a "
 - id: 2018
   examine: "Lesser, but still pretty big."
-- id: 2019
-  examine: "It's a "
-- id: 2020
-  examine: "It's a "
-- id: 2021
-  examine: "It's a "
-- id: 2022
-  examine: "It's a "
-- id: 2023
-  examine: "It's a "
-- id: 2024
-  examine: "It's a "
 - id: 2025
   examine: "Big, red, and incredibly evil."
 - id: 2026
@@ -4219,8 +3941,6 @@
   examine: "Ugly, fierce and with a bad attitude."
 - id: 2108
   examine: "A venerable and rich sage."
-- id: 2109
-  examine: "It's a "
 - id: 2110
   examine: "A venerable sage."
 - id: 2111
@@ -4249,8 +3969,6 @@
   examine: "A law enforcer."
 - id: 2123
   examine: "He's guarding the bank."
-- id: 2124
-  examine: "It's a "
 - id: 2125
   examine: "It's a badger."
 - id: 2126
@@ -4463,8 +4181,6 @@
   examine: "The cat belongs to the director of the Red Axe."
 - id: 2230
   examine: "The cat belongs to the director of the Red Axe."
-- id: 2231
-  examine: "It's a "
 - id: 2232
   examine: "A dwarven enforcer."
 - id: 2233
@@ -4867,8 +4583,6 @@
   examine: "A loud, drunk and generally obnoxious dwarf."
 - id: 2431
   examine: "A dwarf minding his own business."
-- id: 2432
-  examine: "It's a "
 - id: 2433
   examine: "His ship miraculously survived the crash into the statue earlier."
 - id: 2434
@@ -4989,8 +4703,6 @@
   examine: "Not man's best friend."
 - id: 2492
   examine: "A popular dwarven delicacy."
-- id: 2493
-  examine: "It's a "
 - id: 2494
   examine: "Very war-like and looking at you!"
 - id: 2495
@@ -5386,8 +5098,6 @@
   examine: "Perhaps this gardener might look after your tree for you."
 - id: 2690
   examine: "A player."
-- id: 2691
-  examine: "It's a "
 - id: 2692
   examine: "Yep. Definitely a chicken."
 - id: 2693
@@ -5872,30 +5582,6 @@
   examine: "Some ore going into the furnace."
 - id: 2933
   examine: "Some ore going into the furnace."
-- id: 2934
-  examine: "It's a "
-- id: 2935
-  examine: "It's a "
-- id: 2936
-  examine: "It's a "
-- id: 2937
-  examine: "It's a "
-- id: 2938
-  examine: "It's a "
-- id: 2939
-  examine: "It's a "
-- id: 2940
-  examine: "It's a "
-- id: 2941
-  examine: "It's a "
-- id: 2942
-  examine: "It's a "
-- id: 2943
-  examine: "It's a "
-- id: 2944
-  examine: "It's a "
-- id: 2945
-  examine: "It's a "
 - id: 2946
   examine: "A huge nail beast. Its nails appear very sharp."
 - id: 2947
@@ -5932,26 +5618,8 @@
   examine: "A spring elemental."
 - id: 2963
   examine: "A spring elemental."
-- id: 2964
-  examine: "It's a "
-- id: 2965
-  examine: "It's a "
-- id: 2966
-  examine: "It's a "
-- id: 2967
-  examine: "It's a "
-- id: 2968
-  examine: "It's a "
-- id: 2969
-  examine: "It's a "
-- id: 2970
-  examine: "It's a "
-- id: 2971
-  examine: "It's a "
 - id: 2972
   examine: "A rather dapper little monkey."
-- id: 2973
-  examine: "It's a "
 - id: 2974
   examine: "He's looking a bit static."
 - id: 2975
@@ -5962,8 +5630,6 @@
   examine: "He speaks no evil."
 - id: 2978
   examine: "A big snake."
-- id: 2979
-  examine: "It's a "
 - id: 2980
   examine: "Neitiznot's Burgher."
 - id: 2981
@@ -5984,10 +5650,6 @@
   examine: "A ghost disciple."
 - id: 2989
   examine: "A trader from across the eastern sea."
-- id: 2990
-  examine: "It's a "
-- id: 2991
-  examine: "It's a "
 - id: 2992
   examine: "It's an undead cow."
 - id: 2993
@@ -6376,12 +6038,6 @@
   examine: "A teeny-tiny horror from the ocean depths..."
 - id: 3185
   examine: "A darkened horror from the ocean depths..."
-- id: 3186
-  examine: "It's a "
-- id: 3187
-  examine: "It's a "
-- id: 3188
-  examine: "It's a "
 - id: 3189
   examine: "Head of the maze."
 - id: 3190
@@ -6398,10 +6054,6 @@
   examine: "I don't think I want to get too close to that!"
 - id: 3196
   examine: "I don't think I want to get too close to that!"
-- id: 3197
-  examine: "It's a "
-- id: 3198
-  examine: "It's a "
 - id: 3199
   examine: "Snake! Snaaaaake!"
 - id: 3200
@@ -6460,12 +6112,6 @@
   examine: "Wilfred, a chip off the old block."
 - id: 3227
   examine: "Ready to teach you about banking."
-- id: 3228
-  examine: "It's a "
-- id: 3229
-  examine: "It's a "
-- id: 3230
-  examine: "It's a "
 - id: 3231
   examine: "Manufacturer of fine leathers."
 - id: 3232
@@ -6588,32 +6234,6 @@
   examine: "Didn't the mage say this procedure was totally safe?"
 - id: 3291
   examine: "Posts things."
-- id: 3292
-  examine: "It's a "
-- id: 3293
-  examine: "It's a "
-- id: 3294
-  examine: "It's a "
-- id: 3295
-  examine: "It's a "
-- id: 3296
-  examine: "It's a "
-- id: 3297
-  examine: "It's a "
-- id: 3298
-  examine: "It's a "
-- id: 3299
-  examine: "It's a "
-- id: 3300
-  examine: "It's a "
-- id: 3301
-  examine: "It's a "
-- id: 3302
-  examine: "It's a "
-- id: 3303
-  examine: "It's a "
-- id: 3304
-  examine: "It's a "
 - id: 3305
   examine: "An expert on all things culinary."
 - id: 3306
@@ -6730,18 +6350,8 @@
   examine: "I wonder if he gets stuck behind fences."
 - id: 3362
   examine: "Litara, a barbarian explorer."
-- id: 3363
-  examine: "It's a "
 - id: 3364
   examine: "He's in control of the coal trucks."
-- id: 3365
-  examine: "It's a "
-- id: 3366
-  examine: "It's a "
-- id: 3367
-  examine: "It's a "
-- id: 3368
-  examine: "It's a "
 - id: 3369
   examine: "A Hardcore Iron Man."
 - id: 3370
@@ -6802,8 +6412,6 @@
   examine: "A rather dapper little monkey."
 - id: 3398
   examine: "An ogre."
-- id: 3399
-  examine: "It's a "
 - id: 3400
   examine: "A demented evil wizard who specialises in food spells."
 - id: 3401
@@ -6978,8 +6586,6 @@
   examine: "An evil human cleric."
 - id: 3486
   examine: "An evil human cleric."
-- id: 3487
-  examine: "It's a "
 - id: 3488
   examine: "A holy man."
 - id: 3489
@@ -7004,8 +6610,6 @@
   examine: "It looks lost."
 - id: 3499
   examine: "Can I hear kittens?"
-- id: 3500
-  examine: "It's a "
 - id: 3501
   examine: "One of Gertrude's sons."
 - id: 3502
@@ -7138,8 +6742,6 @@
   examine: "Could do with gaining a few pounds."
 - id: 3566
   examine: "The hat's a dead give away."
-- id: 3567
-  examine: "It's a "
 - id: 3568
   examine: "He's been trapped here for thousands of years."
 - id: 3569
@@ -7304,8 +6906,6 @@
   examine: "Inspects peoples' packages."
 - id: 3649
   examine: "An old sailor."
-- id: 3650
-  examine: "It's a "
 - id: 3651
   examine: "An old gardener."
 - id: 3652
@@ -7344,8 +6944,6 @@
   examine: "He's in no state to rule a kingdom."
 - id: 3669
   examine: "He's guarding the throne room."
-- id: 3670
-  examine: "It's a "
 - id: 3671
   examine: "Smithy for Sogthorpe."
 - id: 3672
@@ -7660,8 +7258,6 @@
   examine: "A shadowy biped - seems to be covered in fur, with a long snout."
 - id: 3827
   examine: "A shadowy biped - seems to be covered in fur, with a long snout."
-- id: 3828
-  examine: "It's a "
 - id: 3829
   examine: "Looks like it's got fleas!"
 - id: 3830
@@ -7712,14 +7308,10 @@
   examine: "His beard seems to have a life of its own."
 - id: 3853
   examine: "It's a parrot."
-- id: 3854
-  examine: "It's a "
 - id: 3855
   examine: "Either a very fremennikey pirate, or a very piratey fremennik."
 - id: 3856
   examine: "I always wondered what that job description actually meant..."
-- id: 3857
-  examine: "It's a "
 - id: 3858
   examine: "A stickler for hygiene in the kitchen."
 - id: 3859
@@ -7985,14 +7577,6 @@
   examine: "The sheep looks distinctly unwell and has a slight blue tinge."
 - id: 3989
   examine: "The sheep looks distinctly unwell and has a slight yellow tinge."
-- id: 3990
-  examine: "It's a "
-- id: 3991
-  examine: "It's a "
-- id: 3992
-  examine: "It's a "
-- id: 3993
-  examine: "It's a "
 - id: 3994
   examine: "A sad-looking child."
 - id: 3995
@@ -8031,8 +7615,6 @@
   examine: "Bill Teach the pirate."
 - id: 4012
   examine: "Bill Teach the pirate."
-- id: 4013
-  examine: "It's a "
 - id: 4014
   examine: "Bill Teach the pirate."
 - id: 4015
@@ -8231,8 +7813,6 @@
   examine: "A citizen of Burthorpe."
 - id: 4112
   examine: "A pretty young woman with an air of mystery around her."
-- id: 4113
-  examine: "It's a "
 - id: 4114
   examine: "The knight seems to be watching something."
 - id: 4115
@@ -8427,8 +8007,6 @@
   examine: "An awe inspiring combination of a lady, a lion and an eagle."
 - id: 4210
   examine: "He has a dangerous glint in his eye."
-- id: 4211
-  examine: "It's a "
 - id: 4212
   examine: "He looks very tired..."
 - id: 4213
@@ -8599,14 +8177,10 @@
   examine: "A member of the Piscatoris Fishing Colony."
 - id: 4296
   examine: "A member of the Piscatoris Fishing Colony."
-- id: 4297
-  examine: "It's a "
 - id: 4298
   examine: "Carries supplies to the Piscatoris Fishing Colony."
 - id: 4299
   examine: "Carries supplies to the Piscatoris Fishing Colony."
-- id: 4300
-  examine: "It's a "
 - id: 4301
   examine: "It's very slightly blue."
 - id: 4302
@@ -8681,14 +8255,8 @@
   examine: "An officer of the law."
 - id: 4337
   examine: "I object to him!"
-- id: 4338
-  examine: "It's a "
-- id: 4339
-  examine: "It's a "
 - id: 4340
   examine: "King Arthur in disguise."
-- id: 4341
-  examine: "It's a "
 - id: 4342
   examine: "One of the Knights of the Round Table."
 - id: 4343
@@ -8821,12 +8389,8 @@
   examine: "A military man."
 - id: 4407
   examine: "She's watching you."
-- id: 4408
-  examine: "It's a "
 - id: 4409
   examine: "The hat's a dead giveaway."
-- id: 4410
-  examine: "It's a "
 - id: 4411
   examine: "Alice's husband, passed on."
 - id: 4412
@@ -8835,14 +8399,10 @@
   examine: "Alice's husband, passed on."
 - id: 4414
   examine: "Alice's husband, passed on."
-- id: 4415
-  examine: "It's a "
 - id: 4416
   examine: "Its bark is worse than its swipe."
 - id: 4417
   examine: "Its bark is worse than its swipe."
-- id: 4418
-  examine: "It's a "
 - id: 4419
   examine: "Probably tastes like chicken."
 - id: 4420
@@ -8963,8 +8523,6 @@
   examine: "I can see fish swimming in the water."
 - id: 4478
   examine: "A flea infested, pale looking excuse of a man."
-- id: 4479
-  examine: "It's a "
 - id: 4480
   examine: "A flea infested, pale looking excuse of a man."
 - id: 4481
@@ -9019,8 +8577,6 @@
   examine: "What could be worse than an angry, undead fremennik?"
 - id: 4506
   examine: "She has a mark on her head."
-- id: 4507
-  examine: "It's a "
 - id: 4508
   examine: "An eager cave goblin on her first trip to the surface."
 - id: 4509
@@ -9035,8 +8591,6 @@
   examine: "A member of the 'Humans Against Monsters' group."
 - id: 4514
   examine: "A member of the 'Humans Against Monsters' group."
-- id: 4515
-  examine: "It's a "
 - id: 4516
   examine: "A guard for the humans against monster group."
 - id: 4517
@@ -9121,8 +8675,6 @@
   examine: "One of the guardians of Iban."
 - id: 4557
   examine: "One of the guardians of Iban."
-- id: 4558
-  examine: "It's a "
 - id: 4559
   examine: "A dark magic user."
 - id: 4560
@@ -9461,16 +9013,6 @@
   examine: "Not much to look at."
 - id: 4727
   examine: "Not fond of witches."
-- id: 4728
-  examine: "It's a "
-- id: 4729
-  examine: "It's a "
-- id: 4730
-  examine: "It's a "
-- id: 4731
-  examine: "It's a "
-- id: 4732
-  examine: "It's a "
 - id: 4733
   examine: "Dwarvish."
 - id: 4734
@@ -9535,8 +9077,6 @@
   examine: "Needs to be shot with a ranged weapon."
 - id: 4764
   examine: "Needs to be shot with a bow and arrow."
-- id: 4765
-  examine: "It's a "
 - id: 4766
   examine: "He's washing his clothes in the lake."
 - id: 4767
@@ -9575,10 +9115,6 @@
   examine: "There's something fishy about him."
 - id: 4784
   examine: "There's something fishy about him."
-- id: 4785
-  examine: "It's a "
-- id: 4786
-  examine: "It's a "
 - id: 4787
   examine: "A fresh-faced and innocent priest."
 - id: 4788
@@ -9635,8 +9171,6 @@
   examine: "A small ice demon."
 - id: 4814
   examine: "He looks a little piratey."
-- id: 4815
-  examine: "It's a "
 - id: 4816
   examine: "He looks a little piratey."
 - id: 4817
@@ -9883,44 +9417,6 @@
   examine: "A disciple of Zamorak."
 - id: 4938
   examine: "A disciple of Zamorak."
-- id: 4939
-  examine: "It's a "
-- id: 4940
-  examine: "It's a "
-- id: 4941
-  examine: "It's a "
-- id: 4942
-  examine: "It's a "
-- id: 4943
-  examine: "It's a "
-- id: 4944
-  examine: "It's a "
-- id: 4945
-  examine: "It's a "
-- id: 4946
-  examine: "It's a "
-- id: 4947
-  examine: "It's a "
-- id: 4948
-  examine: "It's a "
-- id: 4949
-  examine: "It's a "
-- id: 4950
-  examine: "It's a "
-- id: 4951
-  examine: "It's a "
-- id: 4952
-  examine: "It's a "
-- id: 4953
-  examine: "It's a "
-- id: 4954
-  examine: "It's a "
-- id: 4955
-  examine: "It's a "
-- id: 4956
-  examine: "It's a "
-- id: 4957
-  examine: "It's a "
 - id: 4958
   examine: "One of RuneScape's many citizens."
 - id: 4959
@@ -9947,8 +9443,6 @@
   examine: "It's one of General Khazard's warriors."
 - id: 4970
   examine: "It's one of General Khazard's warriors."
-- id: 4971
-  examine: "It's a "
 - id: 4972
   examine: "It's one of General Khazard's commanders."
 - id: 4973
@@ -9971,18 +9465,12 @@
   examine: "A young sentient tree."
 - id: 4982
   examine: "An ancient sentient tree."
-- id: 4983
-  examine: "It's a "
 - id: 4984
   examine: "A well dressed nobleman."
 - id: 4985
   examine: "A short angry guy."
-- id: 4986
-  examine: "It's a "
 - id: 4987
   examine: "Chronozon the blood demon."
-- id: 4988
-  examine: "It's a "
 - id: 4989
   examine: "It's a bit cyan."
 - id: 4990
@@ -10015,8 +9503,6 @@
   examine: "It's quite blue."
 - id: 5004
   examine: "It's bright blue."
-- id: 5005
-  examine: "It's a "
 - id: 5006
   examine: "Master of imps."
 - id: 5007
@@ -10133,10 +9619,6 @@
   examine: "He looks very scared."
 - id: 5063
   examine: "He looks very scared."
-- id: 5064
-  examine: "It's a "
-- id: 5065
-  examine: "It's a "
 - id: 5066
   examine: "He smells of fish..."
 - id: 5067
@@ -10147,8 +9629,6 @@
   examine: "A very good sailor."
 - id: 5070
   examine: "A very good sailor."
-- id: 5071
-  examine: "It's a "
 - id: 5072
   examine: "A very good sailor."
 - id: 5073
@@ -10371,8 +9851,6 @@
   examine: "A worker on the train link."
 - id: 5182
   examine: "He's digging up cave goblin history!"
-- id: 5183
-  examine: "It's a "
 - id: 5184
   examine: "A cave goblin adventurer."
 - id: 5185
@@ -10459,8 +9937,6 @@
   examine: "A cart with a jig built into it."
 - id: 5226
   examine: "A cart with a jig built into it."
-- id: 5227
-  examine: "It's a "
 - id: 5228
   examine: "Looks vicious!"
 - id: 5229
@@ -10477,8 +9953,6 @@
   examine: "I can see fish swimming in the water."
 - id: 5235
   examine: "He looks like the type of guy who would mind monkeys."
-- id: 5236
-  examine: "It's a "
 - id: 5237
   examine: "It looks just a bit... underfed."
 - id: 5238
@@ -10653,10 +10127,6 @@
   examine: "Advisor to the Duke of Lumbridge."
 - id: 5323
   examine: "Former advisor to the Duke of Lumbridge."
-- id: 5324
-  examine: "It's a "
-- id: 5325
-  examine: "It's a "
 - id: 5326
   examine: "The ruler of the Dorgeshuun"
 - id: 5327
@@ -10769,8 +10239,6 @@
   examine: "Lean and green."
 - id: 5381
   examine: "He looks to be in a world of his own."
-- id: 5382
-  examine: "It's a "
 - id: 5383
   examine: "This guard looks rather drunk and has beer stains down his armour."
 - id: 5384
@@ -10828,8 +10296,6 @@
   examine: "Try to damage it!"
 - id: 5410
   examine: "Try to damage it!"
-- id: 5411
-  examine: "It's a "
 - id: 5412
   examine: "Try to damage it!"
 - id: 5413
@@ -10854,10 +10320,6 @@
   examine: "He changes the shape of wood."
 - id: 5423
   examine: "She has green fingers. (Not literally.)"
-- id: 5424
-  examine: "It's a "
-- id: 5425
-  examine: "It's a "
 - id: 5426
   examine: "Distinctly piratey."
 - id: 5427
@@ -10898,8 +10360,6 @@
   examine: "Swashbuckled his way across the seven seas."
 - id: 5445
   examine: "A well dressed nobleman."
-- id: 5446
-  examine: "It's a "
 - id: 5447
   examine: "He probably hasn't smiled since the Third Age."
 - id: 5448
@@ -10986,30 +10446,14 @@
   examine: "It looks like an animal."
 - id: 5489
   examine: "It looks like an animal."
-- id: 5490
-  examine: "It's a "
 - id: 5491
   examine: "It looks like an animal."
 - id: 5492
   examine: "It looks like an animal."
 - id: 5493
   examine: "It looks like an animal."
-- id: 5494
-  examine: "It's a "
-- id: 5495
-  examine: "It's a "
-- id: 5496
-  examine: "It's a "
-- id: 5497
-  examine: "It's a "
-- id: 5498
-  examine: "It's a "
-- id: 5499
-  examine: "It's a "
 - id: 5500
   examine: "A brightly coloured game bird."
-- id: 5501
-  examine: "It's a "
 - id: 5502
   examine: "A brightly coloured game bird."
 - id: 5503
@@ -11038,8 +10482,6 @@
   examine: "Tries so hard to fit in, but just can't get it right."
 - id: 5515
   examine: "A cute bunny rabbit."
-- id: 5516
-  examine: "It's a "
 - id: 5517
   examine: "He'll smell it later."
 - id: 5518
@@ -11066,8 +10508,6 @@
   examine: "Likes nuts."
 - id: 5529
   examine: "Seems to know a thing or two."
-- id: 5530
-  examine: "It's a "
 - id: 5531
   examine: "It seems to be on a permanent sugar rush."
 - id: 5532
@@ -11334,8 +10774,6 @@
   examine: "He is one, but he's not alright."
 - id: 5663
   examine: "He is one, but he's not alright."
-- id: 5664
-  examine: "It's a "
 - id: 5665
   examine: "He is one, but he's not alright."
 - id: 5666
@@ -11464,16 +10902,6 @@
   examine: "Bright eyes."
 - id: 5728
   examine: "A cheeky little imp."
-- id: 5729
-  examine: "It's a "
-- id: 5730
-  examine: "It's a "
-- id: 5731
-  examine: "It's a "
-- id: 5732
-  examine: "It's a "
-- id: 5733
-  examine: "It's a "
 - id: 5734
   examine: "Insurance investigator extraordinaire."
 - id: 5735
@@ -11704,14 +11132,6 @@
   examine: "They're going to sing to you!"
 - id: 5848
   examine: "A walking thorn bush!"
-- id: 5849
-  examine: "It's a "
-- id: 5850
-  examine: "It's a "
-- id: 5851
-  examine: "It's a "
-- id: 5852
-  examine: "It's a "
 - id: 5853
   examine: "An animated shrub."
 - id: 5854
@@ -11720,24 +11140,12 @@
   examine: "He's been posted here to prevent people entering a dangerous area."
 - id: 5856
   examine: "Likes to cook with mushrooms."
-- id: 5857
-  examine: "It's a "
-- id: 5858
-  examine: "It's a "
-- id: 5859
-  examine: "It's a "
-- id: 5860
-  examine: "It's a "
-- id: 5861
-  examine: "It's a "
 - id: 5862
   examine: "A three-headed gigantic hound. Guardian of the River of Souls."
 - id: 5863
   examine: "A three-headed gigantic hound. Guardian of the River of Souls."
 - id: 5864
   examine: "An old sailor."
-- id: 5865
-  examine: "It's a "
 - id: 5866
   examine: "A three-headed gigantic hound. Guardian of the River of Souls."
 - id: 5867
@@ -11794,30 +11202,10 @@
   examine: "This is not going to hurt... but it might tickle."
 - id: 5893
   examine: "This is not going to hurt... but it might tickle."
-- id: 5894
-  examine: "It's a "
 - id: 5895
   examine: "A portal from this mystical place."
-- id: 5896
-  examine: "It's a "
 - id: 5897
   examine: "A portal from this mystical place."
-- id: 5898
-  examine: "It's a "
-- id: 5899
-  examine: "It's a "
-- id: 5900
-  examine: "It's a "
-- id: 5901
-  examine: "It's a "
-- id: 5902
-  examine: "It's a "
-- id: 5903
-  examine: "It's a "
-- id: 5904
-  examine: "It's a "
-- id: 5905
-  examine: "It's a "
 - id: 5906
   examine: "A young woman running a pet insurance business."
 - id: 5907
@@ -11866,10 +11254,6 @@
   examine: "Looks like he's guarding a trapdoor..."
 - id: 5929
   examine: "He's dying."
-- id: 5930
-  examine: "It's a "
-- id: 5931
-  examine: "It's a "
 - id: 5932
   examine: "I bet it's not made of chocolate..."
 - id: 5933
@@ -11912,8 +11296,6 @@
   examine: "A camel who wants to fly some day."
 - id: 5952
   examine: "A camel who likes to rest."
-- id: 5953
-  examine: "It's a "
 - id: 5954
   examine: "A camel who's come from the south."
 - id: 5955
@@ -12215,34 +11597,6 @@
   examine: "A slithering serpent that likes to hide in the bush."
 - id: 6103
   examine: "A slithering serpent that likes to hide in the bush."
-- id: 6104
-  examine: "It's a "
-- id: 6105
-  examine: "It's a "
-- id: 6106
-  examine: "It's a "
-- id: 6107
-  examine: "It's a "
-- id: 6108
-  examine: "It's a "
-- id: 6109
-  examine: "It's a "
-- id: 6110
-  examine: "It's a "
-- id: 6111
-  examine: "It's a "
-- id: 6112
-  examine: "It's a "
-- id: 6113
-  examine: "It's a "
-- id: 6114
-  examine: "It's a "
-- id: 6115
-  examine: "It's a "
-- id: 6116
-  examine: "It's a "
-- id: 6117
-  examine: "It's a "
 - id: 6118
   examine: "Roar! A dragon!"
 - id: 6119
@@ -12251,344 +11605,16 @@
   examine: "Can you endure long enough?"
 - id: 6121
   examine: "Can you bring yourself to hurt another?"
-- id: 6122
-  examine: "It's a "
-- id: 6123
-  examine: "It's a "
-- id: 6124
-  examine: "It's a "
-- id: 6125
-  examine: "It's a "
-- id: 6126
-  examine: "It's a "
-- id: 6127
-  examine: "It's a "
-- id: 6128
-  examine: "It's a "
-- id: 6129
-  examine: "It's a "
-- id: 6130
-  examine: "It's a "
-- id: 6131
-  examine: "It's a "
-- id: 6132
-  examine: "It's a "
-- id: 6133
-  examine: "It's a "
-- id: 6134
-  examine: "It's a "
-- id: 6135
-  examine: "It's a "
-- id: 6136
-  examine: "It's a "
-- id: 6137
-  examine: "It's a "
-- id: 6138
-  examine: "It's a "
-- id: 6139
-  examine: "It's a "
-- id: 6140
-  examine: "It's a "
-- id: 6141
-  examine: "It's a "
-- id: 6142
-  examine: "It's a "
-- id: 6143
-  examine: "It's a "
-- id: 6144
-  examine: "It's a "
-- id: 6145
-  examine: "It's a "
-- id: 6146
-  examine: "It's a "
-- id: 6147
-  examine: "It's a "
-- id: 6148
-  examine: "It's a "
-- id: 6149
-  examine: "It's a "
-- id: 6150
-  examine: "It's a "
-- id: 6151
-  examine: "It's a "
-- id: 6152
-  examine: "It's a "
-- id: 6153
-  examine: "It's a "
-- id: 6154
-  examine: "It's a "
-- id: 6155
-  examine: "It's a "
-- id: 6156
-  examine: "It's a "
-- id: 6157
-  examine: "It's a "
-- id: 6158
-  examine: "It's a "
-- id: 6159
-  examine: "It's a "
-- id: 6160
-  examine: "It's a "
-- id: 6161
-  examine: "It's a "
-- id: 6162
-  examine: "It's a "
-- id: 6163
-  examine: "It's a "
-- id: 6164
-  examine: "It's a "
-- id: 6165
-  examine: "It's a "
-- id: 6166
-  examine: "It's a "
-- id: 6167
-  examine: "It's a "
-- id: 6168
-  examine: "It's a "
-- id: 6169
-  examine: "It's a "
-- id: 6170
-  examine: "It's a "
-- id: 6171
-  examine: "It's a "
-- id: 6172
-  examine: "It's a "
-- id: 6173
-  examine: "It's a "
-- id: 6174
-  examine: "It's a "
-- id: 6175
-  examine: "It's a "
-- id: 6176
-  examine: "It's a "
 - id: 6177
   examine: "A mature spawn."
-- id: 6178
-  examine: "It's a "
-- id: 6179
-  examine: "It's a "
-- id: 6180
-  examine: "It's a "
-- id: 6181
-  examine: "It's a "
-- id: 6182
-  examine: "It's a "
-- id: 6183
-  examine: "It's a "
-- id: 6184
-  examine: "It's a "
-- id: 6185
-  examine: "It's a "
-- id: 6186
-  examine: "It's a "
-- id: 6187
-  examine: "It's a "
-- id: 6188
-  examine: "It's a "
-- id: 6189
-  examine: "It's a "
-- id: 6190
-  examine: "It's a "
-- id: 6191
-  examine: "It's a "
-- id: 6192
-  examine: "It's a "
-- id: 6193
-  examine: "It's a "
-- id: 6194
-  examine: "It's a "
-- id: 6195
-  examine: "It's a "
-- id: 6196
-  examine: "It's a "
-- id: 6197
-  examine: "It's a "
-- id: 6198
-  examine: "It's a "
-- id: 6199
-  examine: "It's a "
-- id: 6200
-  examine: "It's a "
-- id: 6201
-  examine: "It's a "
-- id: 6202
-  examine: "It's a "
-- id: 6203
-  examine: "It's a "
-- id: 6204
-  examine: "It's a "
-- id: 6205
-  examine: "It's a "
-- id: 6206
-  examine: "It's a "
-- id: 6207
-  examine: "It's a "
-- id: 6208
-  examine: "It's a "
-- id: 6209
-  examine: "It's a "
-- id: 6210
-  examine: "It's a "
-- id: 6211
-  examine: "It's a "
-- id: 6212
-  examine: "It's a "
-- id: 6213
-  examine: "It's a "
-- id: 6214
-  examine: "It's a "
-- id: 6215
-  examine: "It's a "
-- id: 6216
-  examine: "It's a "
-- id: 6217
-  examine: "It's a "
-- id: 6218
-  examine: "It's a "
-- id: 6219
-  examine: "It's a "
-- id: 6220
-  examine: "It's a "
-- id: 6221
-  examine: "It's a "
-- id: 6222
-  examine: "It's a "
-- id: 6223
-  examine: "It's a "
-- id: 6224
-  examine: "It's a "
-- id: 6225
-  examine: "It's a "
-- id: 6226
-  examine: "It's a "
-- id: 6227
-  examine: "It's a "
-- id: 6228
-  examine: "It's a "
-- id: 6229
-  examine: "It's a "
-- id: 6230
-  examine: "It's a "
-- id: 6231
-  examine: "It's a "
-- id: 6232
-  examine: "It's a "
-- id: 6233
-  examine: "It's a "
-- id: 6234
-  examine: "It's a "
-- id: 6235
-  examine: "It's a "
-- id: 6236
-  examine: "It's a "
-- id: 6237
-  examine: "It's a "
-- id: 6238
-  examine: "It's a "
-- id: 6239
-  examine: "It's a "
-- id: 6240
-  examine: "It's a "
-- id: 6241
-  examine: "It's a "
-- id: 6242
-  examine: "It's a "
-- id: 6243
-  examine: "It's a "
-- id: 6244
-  examine: "It's a "
-- id: 6245
-  examine: "It's a "
-- id: 6246
-  examine: "It's a "
-- id: 6247
-  examine: "It's a "
-- id: 6248
-  examine: "It's a "
-- id: 6249
-  examine: "It's a "
-- id: 6250
-  examine: "It's a "
-- id: 6251
-  examine: "It's a "
-- id: 6252
-  examine: "It's a "
-- id: 6253
-  examine: "It's a "
-- id: 6254
-  examine: "It's a "
-- id: 6255
-  examine: "It's a "
-- id: 6256
-  examine: "It's a "
-- id: 6257
-  examine: "It's a "
-- id: 6258
-  examine: "It's a "
-- id: 6259
-  examine: "It's a "
-- id: 6260
-  examine: "It's a "
-- id: 6261
-  examine: "It's a "
-- id: 6262
-  examine: "It's a "
-- id: 6263
-  examine: "It's a "
-- id: 6264
-  examine: "It's a "
-- id: 6265
-  examine: "It's a "
-- id: 6266
-  examine: "It's a "
 - id: 6267
   examine: "A barely visible deadly jungle spider."
-- id: 6268
-  examine: "It's a "
-- id: 6269
-  examine: "It's a "
-- id: 6270
-  examine: "It's a "
 - id: 6271
   examine: "A barely visible deadly jungle spider."
 - id: 6272
   examine: "A flying bloodsucker."
 - id: 6273
   examine: "A swarm of three highly agile mosquitoes."
-- id: 6274
-  examine: "It's a "
-- id: 6275
-  examine: "It's a "
-- id: 6276
-  examine: "It's a "
-- id: 6277
-  examine: "It's a "
-- id: 6278
-  examine: "It's a "
-- id: 6279
-  examine: "It's a "
-- id: 6280
-  examine: "It's a "
-- id: 6281
-  examine: "It's a "
-- id: 6282
-  examine: "It's a "
-- id: 6283
-  examine: "It's a "
-- id: 6284
-  examine: "It's a "
-- id: 6285
-  examine: "It's a "
-- id: 6286
-  examine: "It's a "
-- id: 6287
-  examine: "It's a "
-- id: 6288
-  examine: "It's a "
-- id: 6289
-  examine: "It's a "
-- id: 6290
-  examine: "It's a "
 - id: 6291
   examine: "A walking thorn bush!"
 - id: 6292
@@ -12813,12 +11839,6 @@
   examine: "How did this get in here?"
 - id: 6402
   examine: "A swarm of five highly agile mosquitoes."
-- id: 6403
-  examine: "It's a "
-- id: 6404
-  examine: "It's a "
-- id: 6405
-  examine: "It's a "
 - id: 6406
   examine: "A vicious warrior."
 - id: 6407
@@ -12985,18 +12005,8 @@
   examine: "A more than usually eccentric insurance broker."
 - id: 6485
   examine: "A mistress of the arcane arts - aka finance."
-- id: 6486
-  examine: "It's a "
-- id: 6487
-  examine: "It's a "
 - id: 6488
   examine: "It looks like something's moving under here."
-- id: 6489
-  examine: "It's a "
-- id: 6490
-  examine: "It's a "
-- id: 6491
-  examine: "It's a "
 - id: 6492
   examine: "Graceful avatar of Armadyl."
 - id: 6493
@@ -13027,16 +12037,10 @@
   examine: "pUre A cHaOs of crEatuRe!"
 - id: 6506
   examine: "This is going to hurt..."
-- id: 6507
-  examine: "It's a "
-- id: 6508
-  examine: "It's a "
 - id: 6509
   examine: "A squire of balance."
 - id: 6510
   examine: "A master of the arcane arts - aka finance."
-- id: 6511
-  examine: "It's a "
 - id: 6512
   examine: "He can look after your money."
 - id: 6513
@@ -13053,14 +12057,6 @@
   examine: "A master of the arcane arts - aka finance."
 - id: 6519
   examine: "A master of the arcane arts - aka finance."
-- id: 6520
-  examine: "It's a "
-- id: 6521
-  examine: "It's a "
-- id: 6522
-  examine: "It's a "
-- id: 6523
-  examine: "It's a "
 - id: 6524
   examine: "Has a distinguished air about him."
 - id: 6525
@@ -13069,8 +12065,6 @@
   examine: "Has a faint smell of chemicals about him."
 - id: 6527
   examine: "Seems a jolly chap."
-- id: 6528
-  examine: "It's a "
 - id: 6529
   examine: "Where did that come from?"
 - id: 6530
@@ -13081,66 +12075,10 @@
   examine: "He serves cocktails."
 - id: 6533
   examine: "A family baker, from the North."
-- id: 6534
-  examine: "It's a "
-- id: 6535
-  examine: "It's a "
-- id: 6536
-  examine: "It's a "
-- id: 6537
-  examine: "It's a "
-- id: 6538
-  examine: "It's a "
-- id: 6539
-  examine: "It's a "
-- id: 6540
-  examine: "It's a "
-- id: 6541
-  examine: "It's a "
-- id: 6542
-  examine: "It's a "
-- id: 6543
-  examine: "It's a "
-- id: 6544
-  examine: "It's a "
-- id: 6545
-  examine: "It's a "
-- id: 6546
-  examine: "It's a "
-- id: 6547
-  examine: "It's a "
-- id: 6548
-  examine: "It's a "
-- id: 6549
-  examine: "It's a "
-- id: 6550
-  examine: "It's a "
-- id: 6551
-  examine: "It's a "
-- id: 6552
-  examine: "It's a "
-- id: 6553
-  examine: "It's a "
-- id: 6554
-  examine: "It's a "
-- id: 6555
-  examine: "It's a "
-- id: 6556
-  examine: "It's a "
-- id: 6557
-  examine: "It's a "
-- id: 6558
-  examine: "It's a "
-- id: 6559
-  examine: "It's a "
-- id: 6560
-  examine: "It's a "
 - id: 6561
   examine: "He's guarding the Motherlode Mine."
 - id: 6562
   examine: "He smells a bit."
-- id: 6563
-  examine: "It's a "
 - id: 6564
   examine: "It's getting cleaned in the channel of water."
 - id: 6565
@@ -13159,18 +12097,12 @@
   examine: "Secretly, he'd like to rescue princesses and eat mushrooms."
 - id: 6572
   examine: "He's supporting 3 small children. Very small children."
-- id: 6573
-  examine: "It's a "
 - id: 6574
   examine: "A tree gnome guard."
 - id: 6575
   examine: "Keeps order in Seers bank."
 - id: 6576
   examine: "Keeps order in Seers and Catherby bank."
-- id: 6577
-  examine: "It's a "
-- id: 6578
-  examine: "It's a "
 - id: 6579
   examine: "Keeps the peace... kind of."
 - id: 6580
@@ -13183,8 +12115,6 @@
   examine: "He tries to keep order around here."
 - id: 6584
   examine: "Uri Molotov - shaken, not stirred."
-- id: 6585
-  examine: "It's a "
 - id: 6586
   examine: "Master of all clues."
 - id: 6587
@@ -13195,10 +12125,6 @@
   examine: "The good doctor."
 - id: 6590
   examine: "She runs a little chapel here."
-- id: 6591
-  examine: "It's a "
-- id: 6592
-  examine: "It's a "
 - id: 6593
   examine: "It's dripping with molten lava."
 - id: 6594
@@ -13257,10 +12183,6 @@
   examine: "How the...?"
 - id: 6621
   examine: "Like a pet rock for giants."
-- id: 6622
-  examine: "It's a "
-- id: 6623
-  examine: "It's a "
 - id: 6624
   examine: "A source of energy."
 - id: 6625
@@ -13409,8 +12331,6 @@
   examine: "A friendly little pet."
 - id: 6696
   examine: "Wild and hellish."
-- id: 6697
-  examine: "It's a "
 - id: 6698
   examine: "This ghost guards the gates of Port Phasmatys."
 - id: 6699
@@ -13423,28 +12343,6 @@
   examine: "Being excessively polite by knocking heads with his staff."
 - id: 6703
   examine: "He's a wiz with valuables."
-- id: 6704
-  examine: "It's a "
-- id: 6705
-  examine: "It's a "
-- id: 6706
-  examine: "It's a "
-- id: 6707
-  examine: "It's a "
-- id: 6708
-  examine: "It's a "
-- id: 6709
-  examine: "It's a "
-- id: 6710
-  examine: "It's a "
-- id: 6711
-  examine: "It's a "
-- id: 6712
-  examine: "It's a "
-- id: 6713
-  examine: "It's a "
-- id: 6714
-  examine: "It's a "
 - id: 6715
   examine: "A long-legged bird that likes to fish."
 - id: 6716
@@ -13535,18 +12433,6 @@
   examine: "Fluffy and cute, keep away from fire!"
 - id: 6759
   examine: "Fluffy and cute, keep away from fire!"
-- id: 6760
-  examine: "It's a "
-- id: 6761
-  examine: "It's a "
-- id: 6762
-  examine: "It's a "
-- id: 6763
-  examine: "It's a "
-- id: 6764
-  examine: "It's a "
-- id: 6765
-  examine: "It's a "
 - id: 6766
   examine: "A mystic from a race created during the darker days of Kourend."
 - id: 6767
@@ -13571,52 +12457,26 @@
   examine: "One of RuneScape's many citizens."
 - id: 6777
   examine: "A guardian of the arena."
-- id: 6778
-  examine: "It's a "
 - id: 6779
   examine: "A guardian of the arena."
 - id: 6780
   examine: "Knows a lot about rock."
 - id: 6781
   examine: "Knows a lot about rock."
-- id: 6782
-  examine: "It's a "
-- id: 6783
-  examine: "It's a "
 - id: 6784
   examine: "It's a Fishing spot"
 - id: 6785
   examine: "It's a Hosa"
-- id: 6786
-  examine: "It's a "
-- id: 6787
-  examine: "It's a "
-- id: 6788
-  examine: "It's a "
-- id: 6789
-  examine: "It's a "
-- id: 6790
-  examine: "It's a "
-- id: 6791
-  examine: "It's a "
-- id: 6792
-  examine: "It's a "
 - id: 6793
   examine: "Fat vermin from the underworld."
 - id: 6794
   examine: "A bow wielding ninja monkey... what is he up to?"
-- id: 6795
-  examine: "It's a "
-- id: 6796
-  examine: "It's a "
 - id: 6797
   examine: "She looks rich and dangerous!"
 - id: 6798
   examine: "He's looking a little more dangerous now."
 - id: 6799
   examine: "He doesn't look very dangerous."
-- id: 6800
-  examine: "It's a "
 - id: 6801
   examine: "She doesn't look very dangerous."
 - id: 6802
@@ -13629,14 +12489,6 @@
   examine: "A large ninja monkey wielding two scimitars."
 - id: 6806
   examine: "An aeronautical assistant."
-- id: 6807
-  examine: "It's a "
-- id: 6808
-  examine: "It's a "
-- id: 6809
-  examine: "It's a "
-- id: 6810
-  examine: "It's a "
 - id: 6811
   examine: "Like a guard, except short and hairy."
 - id: 6812
@@ -14159,8 +13011,6 @@
   examine: "A spiritual resident of the Arceuus house."
 - id: 7069
   examine: "He lives on the beach and tends the charcoal burners."
-- id: 7070
-  examine: "It's a "
 - id: 7071
   examine: "He guards the volcanic sulphur mines."
 - id: 7072
@@ -14370,54 +13220,10 @@
   examine: "All you see is a glimmer of light and the suggestion of shadow."
 - id: 7174
   examine: "All you see is a glimmer of light and the suggestion of shadow."
-- id: 7175
-  examine: "It's a "
 - id: 7176
   examine: "A large ninja monkey wielding two scimitars."
-- id: 7177
-  examine: "It's a "
 - id: 7178
   examine: "Up up and away!"
-- id: 7179
-  examine: "It's a "
-- id: 7180
-  examine: "It's a "
-- id: 7181
-  examine: "It's a "
-- id: 7182
-  examine: "It's a "
-- id: 7183
-  examine: "It's a "
-- id: 7184
-  examine: "It's a "
-- id: 7185
-  examine: "It's a "
-- id: 7186
-  examine: "It's a "
-- id: 7187
-  examine: "It's a "
-- id: 7188
-  examine: "It's a "
-- id: 7189
-  examine: "It's a "
-- id: 7190
-  examine: "It's a "
-- id: 7191
-  examine: "It's a "
-- id: 7192
-  examine: "It's a "
-- id: 7193
-  examine: "It's a "
-- id: 7194
-  examine: "It's a "
-- id: 7195
-  examine: "It's a "
-- id: 7196
-  examine: "It's a "
-- id: 7197
-  examine: "It's a "
-- id: 7198
-  examine: "It's a "
 - id: 7199
   examine: "I can see fish swimming in the water."
 - id: 7200
@@ -14440,10 +13246,6 @@
   examine: "A dynamite salesman."
 - id: 7209
   examine: "He doesn't seem pleased to see me."
-- id: 7210
-  examine: "It's a "
-- id: 7211
-  examine: "It's a "
 - id: 7212
   examine: "It doesn't look like tin foil hats are all they're cracked up to be."
 - id: 7213
@@ -14474,16 +13276,6 @@
   examine: "He works on the railroad."
 - id: 7226
   examine: "He works on the railroad."
-- id: 7227
-  examine: "It's a "
-- id: 7228
-  examine: "It's a "
-- id: 7229
-  examine: "It's a "
-- id: 7230
-  examine: "It's a "
-- id: 7231
-  examine: "It's a "
 - id: 7232
   examine: "Tracking down clues all over the world."
 - id: 7233
@@ -14646,22 +13438,12 @@
   examine: "Uri Molotov - shaken, not stirred."
 - id: 7312
   examine: "He's playing both sides!"
-- id: 7313
-  examine: "It's a "
-- id: 7314
-  examine: "It's a "
-- id: 7315
-  examine: "It's a "
 - id: 7316
   examine: "Looks like she's seen her fair share of battle."
 - id: 7317
   examine: "Looks like she's seen her fair share of battle."
 - id: 7318
   examine: "I should probably keep my distance..."
-- id: 7319
-  examine: "It's a "
-- id: 7320
-  examine: "It's a "
 - id: 7321
   examine: "They look absolutely crazy."
 - id: 7322
@@ -14670,10 +13452,6 @@
   examine: "I can see fish swimming in the water."
 - id: 7324
   examine: "A very good sailor."
-- id: 7325
-  examine: "It's a "
-- id: 7326
-  examine: "It's a "
 - id: 7327
   examine: "He wears a hat to hide the fact that he's bald."
 - id: 7328
@@ -14766,8 +13544,6 @@
   examine: "Servant of the sacred flame."
 - id: 7372
   examine: "You should probably be helping them rather than examining them."
-- id: 7373
-  examine: "It's a "
 - id: 7374
   examine: "Kissed by fire."
 - id: 7375
@@ -14879,24 +13655,6 @@
   examine: "A Z.M.I. runecrafter."
 - id: 7427
   examine: "A Z.M.I. runecrafter."
-- id: 7428
-  examine: "It's a "
-- id: 7429
-  examine: "It's a "
-- id: 7430
-  examine: "It's a "
-- id: 7431
-  examine: "It's a "
-- id: 7432
-  examine: "It's a "
-- id: 7433
-  examine: "It's a "
-- id: 7434
-  examine: "It's a "
-- id: 7435
-  examine: "It's a "
-- id: 7436
-  examine: "It's a "
 - id: 7437
   examine: "One of King Sorvott's militia."
 - id: 7438
@@ -14937,10 +13695,6 @@
   examine: "Found somewhere between a rock and a hard place."
 - id: 7456
   examine: "He returns stuff that you've lost, for a price."
-- id: 7457
-  examine: "It's a "
-- id: 7458
-  examine: "It's a "
 - id: 7459
   examine: "I can see fish swimming in the water."
 - id: 7460
@@ -15001,46 +13755,6 @@
   examine: "A disgusting zombie."
 - id: 7488
   examine: "One of the undead."
-- id: 7489
-  examine: "It's a "
-- id: 7490
-  examine: "It's a "
-- id: 7491
-  examine: "It's a "
-- id: 7492
-  examine: "It's a "
-- id: 7493
-  examine: "It's a "
-- id: 7494
-  examine: "It's a "
-- id: 7495
-  examine: "It's a "
-- id: 7496
-  examine: "It's a "
-- id: 7497
-  examine: "It's a "
-- id: 7498
-  examine: "It's a "
-- id: 7499
-  examine: "It's a "
-- id: 7500
-  examine: "It's a "
-- id: 7501
-  examine: "It's a "
-- id: 7502
-  examine: "It's a "
-- id: 7503
-  examine: "It's a "
-- id: 7504
-  examine: "It's a "
-- id: 7505
-  examine: "It's a "
-- id: 7506
-  examine: "It's a "
-- id: 7507
-  examine: "It's a "
-- id: 7508
-  examine: "It's a "
 - id: 7509
   examine: "A dwarven researcher and former boatman."
 - id: 7510
@@ -15138,10 +13852,6 @@
   examine: "Ferocious. It's unnerving."
 - id: 7555
   examine: "The great olm's great manicure."
-- id: 7556
-  examine: "It's a "
-- id: 7557
-  examine: "It's a "
 - id: 7558
   examine: "Magically imbued scorching fire. What could I put it out with?"
 - id: 7559
@@ -15260,12 +13970,6 @@
   examine: "She works on the railroad."
 - id: 7616
   examine: "She works on the railroad."
-- id: 7617
-  examine: "It's a "
-- id: 7618
-  examine: "It's a "
-- id: 7619
-  examine: "It's a "
 - id: 7620
   examine: "Looks like a big ugly dog."
 - id: 7621
@@ -15294,8 +13998,6 @@
   examine: "A killer with a ghostly face."
 - id: 7633
   examine: "She has stirred up quite the storm!"
-- id: 7634
-  examine: "It's a "
 - id: 7635
   examine: "She has stirred up quite the storm!"
 - id: 7636
@@ -15304,8 +14006,6 @@
   examine: "He's on the wrong side of the law."
 - id: 7638
   examine: "What is that in the shadows?"
-- id: 7639
-  examine: "It's a "
 - id: 7640
   examine: "A large ornate mirror."
 - id: 7641
@@ -15336,8 +14036,6 @@
   examine: "She likes dragons. She dresses well, too."
 - id: 7654
   examine: "You probably shouldn't sell him life insurance."
-- id: 7655
-  examine: "It's a "
 - id: 7656
   examine: "Lesser, but still pretty big."
 - id: 7657
@@ -15485,8 +14183,6 @@
   examine: "It looks like there is something that she just can't get out of her head."
 - id: 7728
   examine: "It looks like there is something that she just can't get out of her head."
-- id: 7729
-  examine: "It's a "
 - id: 7730
   examine: "I can see fish rapidly swimming in the water."
 - id: 7731
@@ -15497,8 +14193,6 @@
   examine: "I can see fish rapidly swimming in the water."
 - id: 7734
   examine: "He recruits people into the Wilderness Wars tournament."
-- id: 7735
-  examine: "It's a "
 - id: 7736
   examine: "Found somewhere between a rock and a hard place."
 - id: 7737
@@ -15525,8 +14219,6 @@
   examine: "An old wizard."
 - id: 7748
   examine: "A delicate creature from this strange realm."
-- id: 7749
-  examine: "It's a "
 - id: 7750
   examine: "A very dangerous and armoured foe."
 - id: 7751
@@ -15561,8 +14253,6 @@
   examine: "He can pull ropes and drink rum... That's about it."
 - id: 7766
   examine: "He's here to protect us from... Pirates? Sea creatures? Who knows."
-- id: 7767
-  examine: "It's a "
 - id: 7768
   examine: "This man guards the expedition barge."
 - id: 7769
@@ -15666,66 +14356,6 @@
   examine: "Rargh, I'm a lava monster!"
 - id: 7818
   examine: "A reknowned expert in paleontology and natural history."
-- id: 7819
-  examine: "It's a "
-- id: 7820
-  examine: "It's a "
-- id: 7821
-  examine: "It's a "
-- id: 7822
-  examine: "It's a "
-- id: 7823
-  examine: "It's a "
-- id: 7824
-  examine: "It's a "
-- id: 7825
-  examine: "It's a "
-- id: 7826
-  examine: "It's a "
-- id: 7827
-  examine: "It's a "
-- id: 7828
-  examine: "It's a "
-- id: 7829
-  examine: "It's a "
-- id: 7830
-  examine: "It's a "
-- id: 7831
-  examine: "It's a "
-- id: 7832
-  examine: "It's a "
-- id: 7833
-  examine: "It's a "
-- id: 7834
-  examine: "It's a "
-- id: 7835
-  examine: "It's a "
-- id: 7836
-  examine: "It's a "
-- id: 7837
-  examine: "It's a "
-- id: 7838
-  examine: "It's a "
-- id: 7839
-  examine: "It's a "
-- id: 7840
-  examine: "It's a "
-- id: 7841
-  examine: "It's a "
-- id: 7842
-  examine: "It's a "
-- id: 7843
-  examine: "It's a "
-- id: 7844
-  examine: "It's a "
-- id: 7845
-  examine: "It's a "
-- id: 7846
-  examine: "It's a "
-- id: 7847
-  examine: "It's a "
-- id: 7848
-  examine: "It's a "
 - id: 7849
   examine: "The Guardian of Dusk, he's alive!"
 - id: 7850
@@ -15740,10 +14370,6 @@
   examine: "The Guardian of Dusk, he's alive!"
 - id: 7855
   examine: "The Guardian of Dusk, he's alive!"
-- id: 7856
-  examine: "It's a "
-- id: 7857
-  examine: "It's a "
 - id: 7858
   examine: "A powerful Saradominist Justiciar."
 - id: 7859
@@ -15878,18 +14504,6 @@
   examine: "It looks like her life is a struggle."
 - id: 7924
   examine: "He has an air of authority about him."
-- id: 7925
-  examine: "It's a "
-- id: 7926
-  examine: "It's a "
-- id: 7927
-  examine: "It's a "
-- id: 7928
-  examine: "It's a "
-- id: 7929
-  examine: "It's a "
-- id: 7930
-  examine: "It's a "
 - id: 7931
   examine: "The ghost of a goblin slain long ago."
 - id: 7932
@@ -15914,12 +14528,6 @@
   examine: "A shady and mysterious figure."
 - id: 7942
   examine: "A shady and mysterious figure."
-- id: 7943
-  examine: "It's a "
-- id: 7944
-  examine: "It's a "
-- id: 7945
-  examine: "It's a "
 - id: 7946
   examine: "I can see fish swimming in the water."
 - id: 7947
@@ -15948,14 +14556,8 @@
 - id: 7958
   examine: "The dashing leader of the pirates of Corsair Cove, currently acting as\
     \ a ferryman."
-- id: 7959
-  examine: "It's a "
-- id: 7960
-  examine: "It's a "
 - id: 7961
   examine: "Navigator of the Corsairs."
-- id: 7962
-  examine: "It's a "
 - id: 7963
   examine: "Navigator of the Corsairs."
 - id: 7964
@@ -15966,8 +14568,6 @@
   examine: "A young Corsair."
 - id: 7967
   examine: "A young Corsair."
-- id: 7968
-  examine: "It's a "
 - id: 7969
   examine: "A young ogre boy having a swim."
 - id: 7970
@@ -15976,20 +14576,10 @@
   examine: "The chef for the Corsairs."
 - id: 7972
   examine: "The chef for the Corsairs."
-- id: 7973
-  examine: "It's a "
-- id: 7974
-  examine: "It's a "
 - id: 7975
   examine: "Maybe it's not that scary after all."
 - id: 7976
   examine: "A bad thief. Specifically, bad at thieving. But he's also morally bad."
-- id: 7977
-  examine: "It's a "
-- id: 7978
-  examine: "It's a "
-- id: 7980
-  examine: "It's a "
 - id: 7981
   examine: "Looks like he owns the place."
 - id: 7982
@@ -16014,10 +14604,6 @@
   examine: "Big, ugly and no sense of humour."
 - id: 7992
   examine: "Big, ugly and no sense of humour."
-- id: 7993
-  examine: "It's a "
-- id: 7994
-  examine: "It's a "
 - id: 7995
   examine: "A follower of Zamorak."
 - id: 7996
@@ -16056,16 +14642,6 @@
   examine: "This man guards the expedition barge."
 - id: 8013
   examine: "This man guards the expedition barge."
-- id: 8014
-  examine: "It's a "
-- id: 8015
-  examine: "It's a "
-- id: 8016
-  examine: "It's a "
-- id: 8017
-  examine: "It's a "
-- id: 8018
-  examine: "It's a "
 - id: 8019
   examine: "An important looking gnome."
 - id: 8020
@@ -16092,8 +14668,6 @@
   examine: "Its scales seem to be made of adamantite."
 - id: 8031
   examine: "Its scales seem to be made of runite."
-- id: 8032
-  examine: "It's a "
 - id: 8033
   examine: "Roar! A dragon!"
 - id: 8034
@@ -16246,10 +14820,6 @@
   examine: "A dwarven researcher and former boatman."
 - id: 8108
   examine: "A dwarven researcher and former boatman."
-- id: 8109
-  examine: "It's a "
-- id: 8110
-  examine: "It's a "
 - id: 8111
   examine: "Formerly Robert the Strong, now a cat."
 - id: 8112
@@ -16310,8 +14880,6 @@
   examine: "Even in death he still fights."
 - id: 8140
   examine: "Even in death he still fights."
-- id: 8141
-  examine: "It's a "
 - id: 8142
   examine: "Doesn't look very edible."
 - id: 8143
@@ -16408,12 +14976,6 @@
   examine: "It's a <col=00ffff>Boulder</col>"
 - id: 8189
   examine: "It's a Grave digger"
-- id: 8190
-  examine: "It's a "
-- id: 8191
-  examine: "It's a "
-- id: 8192
-  examine: "It's a "
 - id: 8193
   examine: "It's a James"
 - id: 8194
@@ -16496,8 +15058,6 @@
   examine: "It's a Kael Forshaw"
 - id: 8233
   examine: "It's a Kael Forshaw"
-- id: 8234
-  examine: "It's a "
 - id: 8235
   examine: "It's a Meiyerditch citizen"
 - id: 8236
@@ -16558,10 +15118,6 @@
   examine: "It's a Nylocas Ischyros"
 - id: 8264
   examine: "It's a Nylocas Toxobolos"
-- id: 8265
-  examine: "It's a "
-- id: 8266
-  examine: "It's a "
 - id: 8267
   examine: "It's a Andras"
 - id: 8268
@@ -16644,30 +15200,6 @@
   examine: "It's a Vyrewatch"
 - id: 8307
   examine: "It's a Vyrewatch"
-- id: 8308
-  examine: "It's a "
-- id: 8309
-  examine: "It's a "
-- id: 8310
-  examine: "It's a "
-- id: 8311
-  examine: "It's a "
-- id: 8312
-  examine: "It's a "
-- id: 8313
-  examine: "It's a "
-- id: 8314
-  examine: "It's a "
-- id: 8315
-  examine: "It's a "
-- id: 8316
-  examine: "It's a "
-- id: 8317
-  examine: "It's a "
-- id: 8318
-  examine: "It's a "
-- id: 8319
-  examine: "It's a "
 - id: 8320
   examine: "It's a Meiyerditch citizen"
 - id: 8321
@@ -16744,8 +15276,6 @@
   examine: "It's a Nylocas Vasilias"
 - id: 8357
   examine: "It's a Nylocas Vasilias"
-- id: 8358
-  examine: "It's a "
 - id: 8359
   examine: "It's a Pestilent Bloat"
 - id: 8360
@@ -16788,8 +15318,6 @@
   examine: "It's a <col=00ffff>Collapsing Pillar</col>"
 - id: 8379
   examine: "It's a <col=00ffff>Supporting Pillar</col>"
-- id: 8380
-  examine: "It's a "
 - id: 8381
   examine: "It's a Nylocas Ischyros"
 - id: 8382
@@ -16800,34 +15328,14 @@
   examine: "It's a Nylocas Athanatos"
 - id: 8385
   examine: "It's a Nylocas Matomenos"
-- id: 8386
-  examine: "It's a "
 - id: 8387
   examine: "It's a Sotetseg"
 - id: 8388
   examine: "It's a Sotetseg"
-- id: 8389
-  examine: "It's a "
 - id: 8390
   examine: "It's a Nigel"
 - id: 8391
   examine: "It's a Nigel"
-- id: 8392
-  examine: "It's a "
-- id: 8393
-  examine: "It's a "
-- id: 8394
-  examine: "It's a "
-- id: 8395
-  examine: "It's a "
-- id: 8396
-  examine: "It's a "
-- id: 8397
-  examine: "It's a "
-- id: 8398
-  examine: "It's a "
-- id: 8399
-  examine: "It's a "
 - id: 8400
   examine: "It's a Monk of Zamorak"
 - id: 8401
@@ -16840,50 +15348,24 @@
   examine: "It's a Askeladden"
 - id: 8405
   examine: "It's a Askeladden"
-- id: 8406
-  examine: "It's a "
 - id: 8407
   examine: "It's a Wise Old Man"
-- id: 8408
-  examine: "It's a "
 - id: 8409
   examine: "It's a Wise Old Man"
 - id: 8410
   examine: "It's a Wise Young Man"
 - id: 8411
   examine: "It's a My Arm"
-- id: 8412
-  examine: "It's a "
-- id: 8413
-  examine: "It's a "
-- id: 8414
-  examine: "It's a "
-- id: 8415
-  examine: "It's a "
-- id: 8416
-  examine: "It's a "
-- id: 8417
-  examine: "It's a "
-- id: 8418
-  examine: "It's a "
 - id: 8419
   examine: "It's a Drunken Dwarf's Leg"
-- id: 8420
-  examine: "It's a "
-- id: 8421
-  examine: "It's a "
 - id: 8422
   examine: "It's a Squirrel"
-- id: 8423
-  examine: "It's a "
 - id: 8424
   examine: "It's a Wolfbone"
 - id: 8425
   examine: "It's a Mother"
 - id: 8426
   examine: "It's a Mother"
-- id: 8427
-  examine: "It's a "
 - id: 8428
   examine: "It's a Mother"
 - id: 8429
@@ -16892,30 +15374,18 @@
   examine: "It's a Mother"
 - id: 8431
   examine: "It's a Snowflake"
-- id: 8432
-  examine: "It's a "
-- id: 8433
-  examine: "It's a "
 - id: 8434
   examine: "It's a Odd Mushroom"
 - id: 8435
   examine: "It's a Odd Mushroom"
-- id: 8436
-  examine: "It's a "
-- id: 8437
-  examine: "It's a "
 - id: 8438
   examine: "It's a Don't Know What"
 - id: 8439
   examine: "It's a Don't Know What"
 - id: 8440
   examine: "It's a Don't Know What"
-- id: 8441
-  examine: "It's a "
 - id: 8442
   examine: "It's a Boulder"
-- id: 8443
-  examine: "It's a "
 - id: 8444
   examine: "It's a Root"
 - id: 8445
@@ -16942,32 +15412,16 @@
   examine: "It's a Yellow Snow"
 - id: 8456
   examine: "It's a Butterfly"
-- id: 8457
-  examine: "It's a "
-- id: 8458
-  examine: "It's a "
 - id: 8459
   examine: "It's a Butterfly"
 - id: 8460
   examine: "It's a Odd Stone"
-- id: 8461
-  examine: "It's a "
-- id: 8462
-  examine: "It's a "
 - id: 8463
   examine: "It's a Odd Stone"
 - id: 8464
   examine: "It's a Squirrel"
-- id: 8465
-  examine: "It's a "
-- id: 8466
-  examine: "It's a "
 - id: 8467
   examine: "It's a Squirrel"
-- id: 8468
-  examine: "It's a "
-- id: 8469
-  examine: "It's a "
 - id: 8470
   examine: "It's a Troll"
 - id: 8471
@@ -16982,10 +15436,6 @@
   examine: "It's a Black Guard"
 - id: 8476
   examine: "It's a Black Guard"
-- id: 8477
-  examine: "It's a "
-- id: 8478
-  examine: "It's a "
 - id: 8479
   examine: "It's a Combat Test (maxhit)"
 - id: 8480
@@ -17000,16 +15450,8 @@
   examine: "It's a Veos"
 - id: 8485
   examine: "It's a Eek"
-- id: 8486
-  examine: "It's a "
 - id: 8487
   examine: "It's a Make-over mage"
-- id: 8488
-  examine: "It's a "
-- id: 8489
-  examine: "It's a "
-- id: 8490
-  examine: "It's a "
 - id: 8491
   examine: "It's a The Collector"
 - id: 8492
@@ -17276,23 +15718,11 @@
   examine: "It's a Alchemical Hydra"
 - id: 8623
   examine: "It's a Konar quo Maten"
-- id: 8624
-  examine: "It's a "
-- id: 8625
-  examine: "It's a "
-- id: 8626
-  examine: "It's a "
-- id: 8627
-  examine: "It's a "
-- id: 8628
-  examine: "It's a "
 - id: 8629
   examine: "It's a Taylor"
 - id: 8630
   examine: "It's a Veos"
 - id: 8631
   examine: "It's a Seaman Morris"
-- id: 8632
-  examine: "It's a "
 - id: 8634
   examine: "It's a Alchemical Hydra"

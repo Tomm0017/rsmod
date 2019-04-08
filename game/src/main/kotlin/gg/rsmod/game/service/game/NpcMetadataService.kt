@@ -14,6 +14,7 @@ import gg.rsmod.util.ServerProperties
 import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 
 /**
@@ -21,8 +22,10 @@ import java.nio.file.Paths
  */
 class NpcMetadataService : Service {
 
+    private lateinit var path: Path
+
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
-        val path = Paths.get(serviceProperties.getOrDefault("path", "./data/cfg/npcs.yml"))
+        path = Paths.get(serviceProperties.getOrDefault("path", "./data/cfg/npcs.yml"))
         if (!Files.exists(path)) {
             throw FileNotFoundException("Path does not exist. $path")
         }

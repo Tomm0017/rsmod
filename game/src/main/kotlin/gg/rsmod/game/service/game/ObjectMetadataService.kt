@@ -1,5 +1,6 @@
 package gg.rsmod.game.service.game
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
@@ -46,6 +47,7 @@ class ObjectMetadataService : Service {
     private fun load(definitions: DefinitionSet, reader: BufferedReader) {
         val mapper = ObjectMapper(YAMLFactory())
         mapper.propertyNamingStrategy = PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
 
         val reference = object : TypeReference<List<Metadata>>() {}
         mapper.readValue<List<Metadata>>(reader, reference)?.let { metadataSet ->

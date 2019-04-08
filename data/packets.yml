@@ -643,6 +643,16 @@ in-packets:
         type: SHORT
         trans: ADD
 
+  - message: gg.rsmod.game.message.impl.OpNpc6Message
+    type: FIXED
+    opcode: 30
+    length: 2
+    structure:
+      - name: npc_id
+        sign: UNSIGNED
+        type: SHORT
+        trans: ADD
+
   - message: gg.rsmod.game.message.impl.OpObj1Message
     type: FIXED
     opcode: 5
@@ -1250,12 +1260,6 @@ in-packets:
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IGNORELIST_DEL
     type: VARIABLE_BYTE
     opcode: 28
-    ignore: true
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPNPC6
-    type: FIXED
-    opcode: 30
-    length: 2
     ignore: true
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: IF1_BUTTON5

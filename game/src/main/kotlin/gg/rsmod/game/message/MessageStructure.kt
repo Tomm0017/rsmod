@@ -1,6 +1,7 @@
 package gg.rsmod.game.message
 
 import gg.rsmod.net.packet.PacketType
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap
 
 /**
  * The structure of a [Message].
@@ -25,7 +26,7 @@ import gg.rsmod.net.packet.PacketType
  * @author Tom <rspsmods@gmail.com>
  */
 data class MessageStructure(val type: PacketType, val opcodes: IntArray, val length: Int,
-                            val ignore: Boolean, val values: LinkedHashMap<String, MessageValue>) {
+                            val ignore: Boolean, val values: Object2ObjectLinkedOpenHashMap<String, MessageValue>) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

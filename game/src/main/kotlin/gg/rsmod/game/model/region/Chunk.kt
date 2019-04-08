@@ -13,6 +13,7 @@ import gg.rsmod.game.model.region.update.*
 import gg.rsmod.game.service.GameService
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 
 /**
  * Represents an 8x8 tile in the game map.
@@ -30,7 +31,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
      */
     private val matrices: Array<CollisionMatrix> = CollisionMatrix.createMatrices(Tile.TOTAL_HEIGHT_LEVELS, CHUNK_SIZE, CHUNK_SIZE)
 
-    internal val blockedTiles = hashSetOf<Tile>()
+    internal val blockedTiles = ObjectOpenHashSet<Tile>()
 
     /**
      * The [Entity]s that are currently registered to the [Tile] key. This is
@@ -89,7 +90,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
          * our [Chunk]'s tiles.
          */
         if (!entity.getType().isTransient()) {
-            val list = entities[tile] ?: arrayListOf()
+            val list = entities[tile] ?: ObjectArrayList(1)
             list.add(entity)
             entities[tile] = list
         }
@@ -254,7 +255,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
     @Suppress("UNCHECKED_CAST")
     fun <T> getEntities(vararg types: EntityType): List<T> {
         val tileEntities = entities.values
-        val entities = arrayListOf<Entity>()
+        val entities = ObjectArrayList<Entity>()
 
         tileEntities.forEach {
             entities.addAll(it.filter { entity -> entity.getType() in types })

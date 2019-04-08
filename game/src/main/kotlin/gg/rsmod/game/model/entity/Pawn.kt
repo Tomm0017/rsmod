@@ -253,9 +253,11 @@ abstract class Pawn(val world: World) : Entity() {
      * Handle a single cycle for [timers].
      */
     fun timerCycle() {
-        val timersCopy = timers.getTimers().toMutableMap()
-
-        timersCopy.forEach { key, time ->
+        val iterator = timers.getTimers().iterator()
+        while (iterator.hasNext()) {
+            val entry = iterator.next()
+            val key = entry.key
+            val time = entry.value
             if (time <= 0) {
                 if (key == RESET_PAWN_FACING_TIMER) {
                     resetFacePawn()
@@ -263,7 +265,7 @@ abstract class Pawn(val world: World) : Entity() {
                     world.plugins.executeTimer(this, key)
                 }
                 if (!timers.has(key)) {
-                    timers.remove(key)
+                    iterator.remove()
                 }
             }
         }
@@ -319,7 +321,7 @@ abstract class Pawn(val world: World) : Entity() {
                 hitIterator.remove()
             }
         }
-        if (isDead()) {
+        if (isDead() && pendingHits.isNotEmpty()) {
             pendingHits.clear()
         }
     }

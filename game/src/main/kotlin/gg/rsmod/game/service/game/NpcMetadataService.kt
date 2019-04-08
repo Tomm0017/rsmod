@@ -52,7 +52,7 @@ class NpcMetadataService : Service {
         val reference = object : TypeReference<List<Metadata>>() {}
         mapper.readValue<List<Metadata>>(reader, reference)?.let { metadataSet ->
             metadataSet.forEach { metadata ->
-                val def = definitions.get(NpcDef::class.java, metadata.id)
+                val def = definitions.getNullable(NpcDef::class.java, metadata.id) ?: return@forEach
                 def.examine = metadata.examine
             }
         }

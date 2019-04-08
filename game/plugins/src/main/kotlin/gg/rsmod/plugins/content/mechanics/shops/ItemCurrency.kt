@@ -118,6 +118,14 @@ open class ItemCurrency(private val currencyItem: Int, private val singularCurre
 
         if (add.completed > 0 && shopItem.amount != Int.MAX_VALUE) {
             shop.items[slot]!!.currentAmount -= add.completed
+
+            /*
+             * Check if the item is temporary and should be removed from the shop.
+             */
+            if (shop.items[slot]?.amount == 0 && shop.items[slot]?.isTemporary == true) {
+                shop.items[slot] = null
+            }
+
             shop.refresh(p.world)
         }
     }

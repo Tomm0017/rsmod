@@ -7,7 +7,6 @@ apply plugin: 'application'
 
 description = 'RSMod Game'
 mainClassName = 'gg.rsmod.game.Launcher'
-applicationDefaultJvmArgs = ["-Xms1g"]
 
 run {
     workingDir = rootProject.projectDir

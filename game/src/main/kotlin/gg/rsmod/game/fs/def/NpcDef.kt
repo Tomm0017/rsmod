@@ -31,6 +31,8 @@ class NpcDef(override val id: Int) : Definition(id) {
     var options: Array<String?> = Array(5) { "" }
     var transforms: Array<Int>? = null
 
+    var examine: String? = null
+
     fun isAttackable(): Boolean = combatLevel > 0 && options.any { it == "Attack" }
 
     override fun decode(buf: ByteBuf, opcode: Int) {

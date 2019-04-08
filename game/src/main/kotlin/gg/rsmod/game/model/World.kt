@@ -6,6 +6,7 @@ import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
+import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.message.impl.LogoutFullMessage
 import gg.rsmod.game.message.impl.UpdateRebootTimerMessage
 import gg.rsmod.game.model.collision.CollisionManager
@@ -29,7 +30,6 @@ import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.Service
 import gg.rsmod.game.service.game.EntityExamineService
-import gg.rsmod.game.service.game.NpcStatsService
 import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.game.sync.block.UpdateBlockSet
 import gg.rsmod.util.HuffmanCodec
@@ -553,7 +553,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
         if (service != null) {
             val examine = when (type) {
                 ExamineEntityType.ITEM -> definitions.get(ItemDef::class.java, id).examine
-                ExamineEntityType.NPC -> service.getNpc(id)
+                ExamineEntityType.NPC -> definitions.get(NpcDef::class.java, id).examine
                 ExamineEntityType.OBJECT -> service.getObj(id)
             }
 

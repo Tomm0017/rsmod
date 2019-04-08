@@ -39,6 +39,8 @@ services:
 
   - class: gg.rsmod.game.service.game.ItemMetadataService
 
+  - class: gg.rsmod.game.service.game.NpcMetadataService
+
   - class: gg.rsmod.game.service.game.EntityExamineService
 
   - class: gg.rsmod.game.service.game.DumpEntityIdService

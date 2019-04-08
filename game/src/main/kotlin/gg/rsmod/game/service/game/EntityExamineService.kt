@@ -3,11 +3,11 @@ package gg.rsmod.game.service.game
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import gg.rsmod.game.Server
-import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import java.io.FileNotFoundException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -22,9 +22,7 @@ class EntityExamineService : Service {
 
     private lateinit var world: World
 
-    private val npcs = hashMapOf<Int, String>()
-
-    private val objects = hashMapOf<Int, String>()
+    private val objects = Int2ObjectOpenHashMap<String>()
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         this.path = Paths.get(serviceProperties.getOrDefault("path", "./data/cfg/examines/"))
@@ -32,7 +30,6 @@ class EntityExamineService : Service {
             throw FileNotFoundException("Path not found: ${path.toAbsolutePath()}")
         }
         this.world = world
-        loadNpcs("npcs.json")
         loadObjects("objects.json")
     }
 
@@ -45,13 +42,7 @@ class EntityExamineService : Service {
     override fun terminate(server: Server, world: World) {
     }
 
-    fun getNpc(id: Int): String = npcs[id] ?: "It's a ${world.definitions.get(NpcDef::class.java, id).name}"
-
     fun getObj(id: Int): String = objects[id] ?: "It's a ${world.definitions.get(ObjectDef::class.java, id).name}"
-
-    private fun loadNpcs(fileName: String) {
-        load(fileName, npcs)
-    }
 
     private fun loadObjects(fileName: String) {
         load(fileName, objects)

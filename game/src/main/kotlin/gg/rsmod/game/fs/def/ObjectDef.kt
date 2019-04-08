@@ -25,6 +25,8 @@ class ObjectDef(override val id: Int) : Definition(id) {
     val options: Array<String?> = Array(5) { "" }
     var transforms: Array<Int>? = null
 
+    var examine: String? = null
+
     fun getRotatedWidth(obj: GameObject): Int = when {
         (obj.rot and 0x1) == 1 -> length
         else -> width

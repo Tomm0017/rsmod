@@ -4,6 +4,9 @@ import gg.rsmod.game.model.queue.QueueTaskSet
 import kotlin.coroutines.resume
 
 /**
+ * A [QueueTaskSet] implementation for [gg.rsmod.game.model.World].
+ * All [gg.rsmod.game.model.queue.QueueTask]s are handled every tick.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class WorldQueueTaskSet : QueueTaskSet() {

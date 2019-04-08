@@ -6,6 +6,9 @@ import gg.rsmod.game.model.queue.TaskPriority
 import kotlin.coroutines.resume
 
 /**
+ * A [QueueTaskSet] implementation for [gg.rsmod.game.model.entity.Pawn]s.
+ * Each [gg.rsmod.game.model.queue.QueueTask] is handled one at a time.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 class PawnQueueTaskSet : QueueTaskSet() {

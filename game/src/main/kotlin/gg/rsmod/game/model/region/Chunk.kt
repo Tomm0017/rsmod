@@ -1,7 +1,5 @@
 package gg.rsmod.game.model.region
 
-import com.google.common.collect.HashMultimap
-import com.google.common.collect.Multimap
 import gg.rsmod.game.message.impl.UpdateZonePartialEnclosedMessage
 import gg.rsmod.game.message.impl.UpdateZonePartialFollowsMessage
 import gg.rsmod.game.model.Direction
@@ -13,6 +11,7 @@ import gg.rsmod.game.model.collision.CollisionUpdate
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.region.update.*
 import gg.rsmod.game.service.GameService
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
 /**
@@ -38,7 +37,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
      * not used for [gg.rsmod.game.model.entity.Pawn], but rather [Entity]s
      * that do not regularly change [Tile]s.
      */
-    private lateinit var entities: Multimap<Tile, Entity>
+    private lateinit var entities: MutableMap<Tile, MutableList<Entity>>
 
     /**
      * A list of [EntityUpdate]s that will be sent to players who have just entered
@@ -52,7 +51,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
      * @see updates
      */
     fun createEntityContainers() {
-        entities = HashMultimap.create()
+        entities = Object2ObjectOpenHashMap()
         updates = ObjectArrayList()
     }
 
@@ -90,7 +89,9 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
          * our [Chunk]'s tiles.
          */
         if (!entity.getType().isTransient()) {
-            entities.put(tile, entity)
+            val list = entities[tile] ?: arrayListOf()
+            list.add(entity)
+            entities[tile] = list
         }
 
         /*
@@ -135,7 +136,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
             world.collision.applyCollision(world.definitions, entity as GameObject, CollisionUpdate.Type.REMOVE)
         }
 
-        entities.remove(tile, entity)
+        entities[tile]?.remove(entity)
 
         /*
          * Create an [EntityUpdate] for our local players to receive and view.
@@ -251,10 +252,19 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getEntities(vararg types: EntityType): List<T> = entities.values().filter { it.getType() in types } as List<T>
+    fun <T> getEntities(vararg types: EntityType): List<T> {
+        val tileEntities = entities.values
+        val entities = arrayListOf<Entity>()
+
+        tileEntities.forEach {
+            entities.addAll(it.filter { entity -> entity.getType() in types })
+        }
+
+        return entities as List<T>
+    }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getEntities(tile: Tile, vararg types: EntityType): List<T> = entities.get(tile).filter { it.getType() in types } as List<T>
+    fun <T> getEntities(tile: Tile, vararg types: EntityType): List<T> = entities[tile]?.filter { it.getType() in types } as? List<T> ?: emptyList()
 
     companion object {
         /**

@@ -1,5 +1,7 @@
 package gg.rsmod.game.service.game
 
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
@@ -42,9 +44,11 @@ class NpcMetadataService : Service {
     private fun load(definitions: DefinitionSet, reader: BufferedReader) {
         val mapper = ObjectMapper(YAMLFactory())
         mapper.propertyNamingStrategy = PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
 
-        mapper.readValue(reader, Array<Metadata?>::class.java)?.let { metadataSet ->
-            metadataSet.filterNotNull().forEach { metadata ->
+        val reference = object : TypeReference<List<Metadata>>() {}
+        mapper.readValue<List<Metadata>>(reader, reference)?.let { metadataSet ->
+            metadataSet.forEach { metadata ->
                 val def = definitions.get(NpcDef::class.java, metadata.id)
                 def.examine = metadata.examine
             }

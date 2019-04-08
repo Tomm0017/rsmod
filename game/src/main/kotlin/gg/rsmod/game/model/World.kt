@@ -30,7 +30,6 @@ import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.plugin.PluginRepository
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.Service
-import gg.rsmod.game.service.game.EntityExamineService
 import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.game.sync.block.UpdateBlockSet
 import gg.rsmod.util.HuffmanCodec
@@ -553,22 +552,17 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     }
 
     fun sendExamine(p: Player, id: Int, type: ExamineEntityType) {
-        val service = getService(EntityExamineService::class.java)
-        if (service != null) {
-            val examine = when (type) {
-                ExamineEntityType.ITEM -> definitions.get(ItemDef::class.java, id).examine
-                ExamineEntityType.NPC -> definitions.get(NpcDef::class.java, id).examine
-                ExamineEntityType.OBJECT -> definitions.get(ObjectDef::class.java, id).examine
-            }
+        val examine = when (type) {
+            ExamineEntityType.ITEM -> definitions.get(ItemDef::class.java, id).examine
+            ExamineEntityType.NPC -> definitions.get(NpcDef::class.java, id).examine
+            ExamineEntityType.OBJECT -> definitions.get(ObjectDef::class.java, id).examine
+        }
 
-            if (examine != null) {
-                val extension = if (devContext.debugExamines) " ($id)" else ""
-                p.message(examine + extension)
-            } else {
-                logger.warn { "No examine info found for entity [$type, $id]" }
-            }
+        if (examine != null) {
+            val extension = if (devContext.debugExamines) " ($id)" else ""
+            p.message(examine + extension)
         } else {
-            logger.warn("No examine service found! Could not send examine message to player: ${p.username}.")
+            logger.warn { "No examine info found for entity [$type, $id]" }
         }
     }
 

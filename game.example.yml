@@ -39,7 +39,7 @@ services:
 
   - class: gg.rsmod.game.service.game.NpcMetadataService
 
-  - class: gg.rsmod.game.service.game.EntityExamineService
+  - class: gg.rsmod.game.service.game.ObjectMetadataService
 
   - class: gg.rsmod.game.service.game.DumpEntityIdService
     cache-path: "./data/cache/"

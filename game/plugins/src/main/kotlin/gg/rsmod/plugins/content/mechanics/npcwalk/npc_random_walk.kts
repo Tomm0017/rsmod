@@ -6,31 +6,31 @@ val SEARCH_FOR_PATH_TIMER = TimerKey()
 val SEARCH_FOR_PATH_DELAY = 15..30
 
 on_global_npc_spawn {
-    val npc = npc
     if (npc.walkRadius > 0) {
         npc.timers[SEARCH_FOR_PATH_TIMER] = npc.world.random(SEARCH_FOR_PATH_DELAY)
     }
 }
 
 on_timer(SEARCH_FOR_PATH_TIMER) {
-    val npc = npc
-    val facing = npc.attr[FACING_PAWN_ATTR]?.get()
-
-    /**
-     * The npc is not facing a player, so it can walk.
-     */
-    if (facing == null) {
-        val rx = npc.world.random(-npc.walkRadius..npc.walkRadius)
-        val rz = npc.world.random(-npc.walkRadius..npc.walkRadius)
-
-        val start = npc.spawnTile
-        val dest = start.transform(rx, rz)
+    if (npc.isActive()) {
+        val facing = npc.attr[FACING_PAWN_ATTR]?.get()
 
         /**
-         * Only walk to destination if the chunk has previously been created.
+         * The npc is not facing a player, so it can walk.
          */
-        if (npc.world.collision.chunks.get(dest, createIfNeeded = false) != null) {
-            npc.walkTo(dest)
+        if (facing == null) {
+            val rx = npc.world.random(-npc.walkRadius..npc.walkRadius)
+            val rz = npc.world.random(-npc.walkRadius..npc.walkRadius)
+
+            val start = npc.spawnTile
+            val dest = start.transform(rx, rz)
+
+            /**
+             * Only walk to destination if the chunk has previously been created.
+             */
+            if (npc.world.collision.chunks.get(dest, createIfNeeded = false) != null) {
+                npc.walkTo(dest)
+            }
         }
     }
 

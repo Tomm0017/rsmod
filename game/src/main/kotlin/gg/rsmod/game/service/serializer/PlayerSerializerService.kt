@@ -1,6 +1,5 @@
 package gg.rsmod.game.service.serializer
 
-import com.lambdaworks.crypto.SCryptUtil
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
@@ -9,6 +8,7 @@ import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.Service
 import gg.rsmod.net.codec.login.LoginRequest
 import gg.rsmod.util.ServerProperties
+import org.mindrot.jbcrypt.BCrypt
 
 /**
  * A [Service] that is responsible for encoding and decoding player data.
@@ -36,7 +36,7 @@ abstract class PlayerSerializerService : Service {
     fun configureNewPlayer(client: Client, request: LoginRequest) {
         client.attr.put(NEW_ACCOUNT_ATTR, true)
 
-        client.passwordHash = SCryptUtil.scrypt(request.password, 16384, 8, 1)
+        client.passwordHash = BCrypt.hashpw(request.password, BCrypt.gensalt(16))
         client.tile = startTile
     }
 

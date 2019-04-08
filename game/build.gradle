@@ -34,7 +34,7 @@ dependencies {
     compile group: 'io.github.classgraph', name: 'classgraph', version: classGraphVersion
     compile group: 'it.unimi.dsi', name: 'fastutil', version: fastUtilVersion
 
-    implementation group: 'com.lambdaworks', name: 'scrypt', version: scryptVersion
+    implementation group: 'org.mindrot', name: 'jbcrypt', version: bcryptVersion
     implementation group: 'io.netty', name: 'netty-all', version: nettyVersion
     implementation group: 'com.google.guava', name: 'guava', version: guavaVersion
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: bouncycastleVersion

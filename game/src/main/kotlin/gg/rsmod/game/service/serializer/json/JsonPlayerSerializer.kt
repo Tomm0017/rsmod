@@ -3,7 +3,6 @@ package gg.rsmod.game.service.serializer.json
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.lambdaworks.crypto.SCryptUtil
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.PlayerUID
 import gg.rsmod.game.model.Tile
@@ -20,6 +19,7 @@ import gg.rsmod.game.service.serializer.PlayerSerializerService
 import gg.rsmod.net.codec.login.LoginRequest
 import gg.rsmod.util.ServerProperties
 import mu.KLogging
+import org.mindrot.jbcrypt.BCrypt
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -63,7 +63,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                  * If the [request] is not a [LoginRequest.reconnecting] request, we have to
                  * verify the password is correct.
                  */
-                if (!SCryptUtil.check(request.password, data.passwordHash)) {
+                if (!BCrypt.checkpw(request.password, data.passwordHash)) {
                     return PlayerLoadResult.INVALID_CREDENTIALS
                 }
             } else {

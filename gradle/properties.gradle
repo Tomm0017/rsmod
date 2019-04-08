@@ -8,7 +8,7 @@ ext {
     reflectionsVersion = '0.9.11'
     runeliteVersion = 'runelite-parent-1.5.2.1'
     commonsIoVersion = '2.4'
-    scryptVersion = '1.4.0'
+    bcryptVersion = '0.4'
     bouncycastleVersion = '1.54'
     z4jVersion = '1.3.2'
     jsoupVersion = '1.11.2'

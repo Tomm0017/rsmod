@@ -217,7 +217,7 @@ object PlayerSynchronizationTask : SynchronizationTask<Player> {
                     continue
                 }
                 val next = if (nextIndex < player.world.players.capacity) player.world.players[nextIndex] else null
-                if (next != null && shouldAdd(player, next) || next?.tile?.asTileHashMultiplier != player.gpiTileHashMultipliers[nextIndex]) {
+                if (next != null && (shouldAdd(player, next) || next.tile.asTileHashMultiplier != player.gpiTileHashMultipliers[nextIndex])) {
                     break
                 }
                 skipCount++

@@ -1,8 +1,12 @@
 package gg.rsmod.game.task.parallel
 
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.service.GameService
+import gg.rsmod.game.sync.SynchronizationTask
+import gg.rsmod.game.sync.task.*
 import gg.rsmod.game.task.GameTask
+import mu.KLogging
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Phaser
 
@@ -21,33 +25,35 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
     private val phaser = Phaser(1)
 
     override fun execute(world: World, service: GameService) {
-        /*val worldPlayers = world.players
+        val worldPlayers = world.players
         val playerCount = worldPlayers.count()
         val worldNpcs = world.npcs
         val rawNpcs = world.npcs.entries
         val npcCount = worldNpcs.count()
 
+        val npcSync = NpcSynchronizationTask(rawNpcs)
+
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
-            executor.submit(PhasedSynchronizationTask(phaser, PlayerPreSynchronizationTask(p)))
+            submit(phaser, executor, p, PlayerPreSynchronizationTask)
         }
         phaser.arriveAndAwaitAdvance()
 
         phaser.bulkRegister(npcCount)
         worldNpcs.forEach { n ->
-            executor.submit(PhasedSynchronizationTask(phaser, NpcPreSynchronizationTask(n)))
+            submit(phaser, executor, n, NpcPreSynchronizationTask)
         }
         phaser.arriveAndAwaitAdvance()
 
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
-            *//*
+            /*
              * Non-human [gg.rsmod.game.model.entity.Player]s do not need this
              * to send any synchronization data to their game-client as they do
              * not have one.
-             *//*
+             */
             if (p.getType().isHumanControlled() && p.initiated) {
-                executor.submit(PhasedSynchronizationTask(phaser, PlayerSynchronizationTask(p)))
+                submit(phaser, executor, p, PlayerSynchronizationTask)
             } else {
                 phaser.arriveAndDeregister()
             }
@@ -56,13 +62,13 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
 
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
-            *//*
+            /*
              * Non-human [gg.rsmod.game.model.entity.Player]s do not need this
              * to send any synchronization data to their game-client as they do
              * not have one.
-             *//*
+             */
             if (p.getType().isHumanControlled() && p.initiated) {
-                executor.submit(PhasedSynchronizationTask(phaser, NpcSynchronizationTask(p, rawNpcs)))
+                submit(phaser, executor, p, npcSync)
             } else {
                 phaser.arriveAndDeregister()
             }
@@ -71,15 +77,28 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
 
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
-            executor.submit(PhasedSynchronizationTask(phaser, PlayerPostSynchronizationTask(p)))
+            submit(phaser, executor, p, PlayerPostSynchronizationTask)
         }
         phaser.arriveAndAwaitAdvance()
 
         phaser.bulkRegister(npcCount)
         worldNpcs.forEach { n ->
-            executor.submit(PhasedSynchronizationTask(phaser, NpcPostSynchronizationTask(n)))
+            submit(phaser, executor, n, NpcPostSynchronizationTask)
         }
-        phaser.arriveAndAwaitAdvance()*/
+        phaser.arriveAndAwaitAdvance()
     }
 
+    private fun <T: Pawn> submit(phaser: Phaser, executor: ExecutorService, pawn: T, task: SynchronizationTask<T>) {
+        executor.submit {
+            try {
+                task.run(pawn)
+            } catch (e: Exception) {
+                logger.error(e) { "Error with task ${this::class.java.simpleName} for $pawn." }
+            } finally {
+                phaser.arriveAndDeregister()
+            }
+        }
+    }
+
+    companion object: KLogging()
 }

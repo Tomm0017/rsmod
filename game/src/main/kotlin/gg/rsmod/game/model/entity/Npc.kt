@@ -99,7 +99,9 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     }
 
     override fun cycle() {
-        timerCycle()
+        if (timers.isNotEmpty) {
+            timerCycle()
+        }
         hitsCycle()
     }
 

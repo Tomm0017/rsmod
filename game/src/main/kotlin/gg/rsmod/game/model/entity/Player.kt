@@ -294,7 +294,9 @@ open class Player(world: World) : Pawn(world) {
             calculateWeightAndBonus(weight = calculateWeight, bonuses = calculateBonuses)
         }
 
-        timerCycle()
+        if (timers.isNotEmpty) {
+            timerCycle()
+        }
 
         hitsCycle()
 

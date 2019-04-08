@@ -34,6 +34,7 @@ import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.game.sync.block.UpdateBlockSet
 import gg.rsmod.util.HuffmanCodec
 import gg.rsmod.util.ServerProperties
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
@@ -193,6 +194,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
      * @see TimerMap
      */
     val timers = TimerMap()
+
+    val npcStats = Int2ObjectOpenHashMap<NpcCombatDef>()
 
     /**
      * The multi-combat area [gg.rsmod.game.model.region.Chunk]s.
@@ -569,13 +572,8 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     }
 
     fun setNpcDefaults(npc: Npc) {
-        var combatDef: NpcCombatDef? = null
-
-        getService(NpcStatsService::class.java)?.let { statService ->
-            combatDef = statService.get(npc.id)
-        }
-
-        npc.combatDef = combatDef ?: NpcCombatDef.DEFAULT
+        val combatDef = npcStats[npc.id] ?: NpcCombatDef.DEFAULT
+        npc.combatDef = combatDef
         npc.respawns = npc.combatDef.respawnDelay > 0
         npc.combatDef.bonuses.forEachIndexed { index, bonus -> npc.equipmentBonuses[index] = bonus }
         npc.setCurrentHp(npc.combatDef.hitpoints)

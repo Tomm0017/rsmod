@@ -35,8 +35,6 @@ services:
 
   - class: gg.rsmod.game.service.xtea.XteaKeyService
 
-  - class: gg.rsmod.game.service.game.NpcStatsService
-
   - class: gg.rsmod.game.service.game.ItemMetadataService
 
   - class: gg.rsmod.game.service.game.NpcMetadataService

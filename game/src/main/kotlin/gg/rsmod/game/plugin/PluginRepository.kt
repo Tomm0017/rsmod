@@ -11,7 +11,6 @@ import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.timer.TimerKey
-import gg.rsmod.game.service.game.NpcStatsService
 import io.github.classgraph.ClassGraph
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
@@ -392,12 +391,11 @@ class PluginRepository(val world: World) {
     }
 
     private fun setCombatDefs() {
-        val service = world.getService(NpcStatsService::class.java) ?: return
         npcCombatDefs.forEach { npc, def ->
-            if (service.get(npc) != null) {
+            if (world.npcStats[npc] != null) {
                 logger.warn { "Npc $npc (${world.definitions.get(NpcDef::class.java, npc).name}) has a set combat definition but has been overwritten by a plugin." }
             }
-            service.set(npc, def)
+            world.npcStats[npc] = def
         }
     }
 

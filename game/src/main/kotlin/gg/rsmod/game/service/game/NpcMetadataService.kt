@@ -43,13 +43,13 @@ class NpcMetadataService : Service {
         val mapper = ObjectMapper(YAMLFactory())
         mapper.propertyNamingStrategy = PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
 
-        mapper.readValue(reader, Array<Metadata>::class.java)?.let { metadataSet ->
-            metadataSet.forEach { metadata ->
+        mapper.readValue(reader, Array<Metadata?>::class.java)?.let { metadataSet ->
+            metadataSet.filterNotNull().forEach { metadata ->
                 val def = definitions.get(NpcDef::class.java, metadata.id)
                 def.examine = metadata.examine
             }
         }
     }
 
-    private data class Metadata(val id: Int, val examine: String?)
+    private data class Metadata(val id: Int = -1, val examine: String? = null)
 }

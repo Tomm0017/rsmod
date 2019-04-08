@@ -55,7 +55,3 @@ services:
   - class: gg.rsmod.game.service.GameService
 
   - class: gg.rsmod.game.service.login.LoginService
-
-  - class:  gg.rsmod.plugins.service.worldlist.WorldListService
-    port: 80
-    config-path: "./data/cfg/world.json"

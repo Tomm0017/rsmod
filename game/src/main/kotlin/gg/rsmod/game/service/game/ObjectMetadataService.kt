@@ -11,6 +11,8 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
 import java.io.BufferedReader
+import java.io.FileNotFoundException
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -23,13 +25,13 @@ class ObjectMetadataService : Service {
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         path = Paths.get(serviceProperties.getOrDefault("path", "./data/cfg/objs.yml"))
-        /*if (!Files.exists(path)) {
+        if (!Files.exists(path)) {
             throw FileNotFoundException("Path does not exist. $path")
         }
 
         Files.newBufferedReader(path).use { reader ->
             load(world.definitions, reader)
-        }*/
+        }
     }
 
     override fun postLoad(server: Server, world: World) {

@@ -1,7 +1,6 @@
 package gg.rsmod.game.service
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
-import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
 import gg.rsmod.game.message.MessageDecoderSet
 import gg.rsmod.game.message.MessageEncoderSet
@@ -20,6 +19,7 @@ import gg.rsmod.game.task.sequential.SequentialPlayerCycleTask
 import gg.rsmod.game.task.sequential.SequentialPlayerPostCycleTask
 import gg.rsmod.game.task.sequential.SequentialSynchronizationTask
 import gg.rsmod.util.ServerProperties
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
 import mu.KLogging
@@ -49,7 +49,11 @@ class GameService : Service {
     /**
      * The scheduler for our game cycle logic as well as coroutine dispatcher.
      */
-    private val executor: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(ThreadFactoryBuilder().setNameFormat("game-context").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
+    private val executor: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
+            ThreadFactoryBuilder()
+                    .setNameFormat("game-context")
+                    .setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }
+                    .build())
 
     /**
      * A list of jobs that will be executed on the next cycle after being
@@ -77,13 +81,13 @@ class GameService : Service {
      * The amount of time, in milliseconds, that each [GameTask] has taken away
      * from the game cycle.
      */
-    private val taskTimes = hashMapOf<Class<GameTask>, Long>()
+    private val taskTimes = Object2LongOpenHashMap<Class<GameTask>>()
 
     /**
      * The amount of time, in milliseconds, that [SequentialPlayerCycleTask]
      * has taken for each [gg.rsmod.game.model.entity.Player].
      */
-    internal val playerTimes = hashMapOf<String, Long>()
+    internal val playerTimes = Object2LongOpenHashMap<String>()
 
     /**
      * The amount of active [gg.rsmod.game.model.queue.QueueTask]s throughout
@@ -187,13 +191,13 @@ class GameService : Service {
         }
         val start = System.currentTimeMillis()
 
-        /**
+        /*
          * Clear the time it has taken to complete [GameTask]s from last cycle.
          */
         taskTimes.clear()
         playerTimes.clear()
 
-        /**
+        /*
          * Execute any logic jobs that were submitted.
          */
         gameThreadJobs.forEach { job ->
@@ -203,12 +207,12 @@ class GameService : Service {
                 logger.error("Error executing game-thread job.", e)
             }
         }
-        /**
+        /*
          * Reset the logic jobs as they have been completed.
          */
         gameThreadJobs.clear()
 
-        /**
+        /*
          * Go over the [tasks] and execute their logic. Log the time it took
          * each [GameTask] to complete. Some of the tasks may also calculate
          * their time for each player so that we can have the amount of time,
@@ -226,7 +230,7 @@ class GameService : Service {
 
         world.cycle()
 
-        /**
+        /*
          * Calculate the time, in milliseconds, it took for this cycle to complete
          * and add it to [cycleTime].
          */
@@ -237,7 +241,7 @@ class GameService : Service {
             val totalMemory = Runtime.getRuntime().totalMemory()
             val maxMemory = Runtime.getRuntime().maxMemory()
 
-            /**
+            /*
              * Description:
              *
              * Cycle time:
@@ -279,7 +283,7 @@ class GameService : Service {
 
         val freeTime = world.gameContext.cycleTime - (System.currentTimeMillis() - start)
         if (freeTime < 0) {
-            /**
+            /*
              * If the cycle took more than [GameContext.cycleTime]ms, we log the
              * occurrence as well as the time each [GameTask] took to complete,
              * as well as how long each [gg.rsmod.game.model.entity.Player] took

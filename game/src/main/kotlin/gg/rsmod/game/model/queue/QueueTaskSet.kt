@@ -1,29 +1,22 @@
 package gg.rsmod.game.model.queue
 
-import gg.rsmod.game.model.entity.Player
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import java.util.*
 import kotlin.coroutines.createCoroutine
-import kotlin.coroutines.resume
 
 /**
  * A system responsible for task coroutine logic.
  *
- * @param headPriority
- * If true, the last inserted [QueueTask] takes priority and trailing [QueueTask]s are not
- * taken into account until said task is finished.
- * If false, all [QueueTask]s in [queue] will invoke [QueueTask.cycle].
- *
  * @author Tom <rspsmods@gmail.com>
  */
-class QueueTaskSet(private val headPriority: Boolean) {
+abstract class QueueTaskSet {
 
-    private val queue: LinkedList<QueueTask> = LinkedList()
+    protected val queue: LinkedList<QueueTask> = LinkedList()
 
     val size: Int get() = queue.size
 
-    private fun hasMenuOpen(player: Player): Boolean = player.world.plugins.isMenuOpened(player)
+    abstract fun cycle()
 
     fun queue(ctx: Any, dispatcher: CoroutineDispatcher, priority: TaskPriority, block: suspend QueueTask.(CoroutineScope) -> Unit) {
         val task = QueueTask(ctx, priority)
@@ -36,59 +29,6 @@ class QueueTaskSet(private val headPriority: Boolean) {
         }
 
         queue.addFirst(task)
-    }
-
-    fun cycle() {
-        if (headPriority) {
-            while (true) {
-                val task = queue.peekFirst() ?: break
-
-                if (task.priority == TaskPriority.STANDARD && task.ctx is Player && hasMenuOpen(task.ctx)) {
-                    break
-                }
-
-                if (!task.invoked) {
-                    task.invoked = true
-                    task.coroutine.resume(Unit)
-                }
-
-                task.cycle()
-
-                if (!task.suspended()) {
-                    /*
-                     * Task is no longer in a suspended state, which means its job is
-                     * complete.
-                     */
-                    queue.remove(task)
-                    /*
-                     * Since this plugin is complete, let's handle any upcoming
-                     * plugin now instead of waiting until next cycle.
-                     */
-                    continue
-                }
-                break
-            }
-        } else {
-            val iterator = queue.iterator()
-            while (iterator.hasNext()) {
-                val task = iterator.next()
-
-                if (!task.invoked) {
-                    task.invoked = true
-                    task.coroutine.resume(Unit)
-                }
-
-                task.cycle()
-
-                if (!task.suspended()) {
-                    /*
-                     * Plugin is no longer in a suspended state, which means its job is
-                     * complete.
-                     */
-                    iterator.remove()
-                }
-            }
-        }
     }
 
     /**

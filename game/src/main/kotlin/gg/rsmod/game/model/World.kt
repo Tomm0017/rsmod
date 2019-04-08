@@ -20,6 +20,7 @@ import gg.rsmod.game.model.priv.PrivilegeSet
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.QueueTaskSet
 import gg.rsmod.game.model.queue.TaskPriority
+import gg.rsmod.game.model.queue.impl.WorldQueueTaskSet
 import gg.rsmod.game.model.region.ChunkSet
 import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.timer.TimerMap
@@ -83,7 +84,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
 
     lateinit var coroutineDispatcher: CoroutineDispatcher
 
-    internal var queues = QueueTaskSet(headPriority = false)
+    internal var queues: QueueTaskSet = WorldQueueTaskSet()
 
     internal val registeredContainers = ObjectOpenHashSet<ContainerKey>()
 

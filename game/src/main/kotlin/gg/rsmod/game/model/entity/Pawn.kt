@@ -18,6 +18,7 @@ import gg.rsmod.game.model.path.strategy.SimplePathFindingStrategy
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.QueueTaskSet
 import gg.rsmod.game.model.queue.TaskPriority
+import gg.rsmod.game.model.queue.impl.PawnQueueTaskSet
 import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
@@ -97,7 +98,7 @@ abstract class Pawn(val world: World) : Entity() {
      */
     val timers = TimerMap()
 
-    internal val queues = QueueTaskSet(headPriority = true)
+    internal val queues: QueueTaskSet = PawnQueueTaskSet()
 
     /**
      * The equipment bonus for the pawn.

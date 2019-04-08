@@ -11,7 +11,7 @@ import java.util.*
  */
 class DamageMap {
 
-    private val map = WeakHashMap<Pawn, DamageStack>()
+    private val map = WeakHashMap<Pawn, DamageStack>(0)
 
     operator fun get(pawn: Pawn): DamageStack? = map[pawn]
 

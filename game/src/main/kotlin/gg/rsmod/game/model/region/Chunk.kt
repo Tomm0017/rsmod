@@ -31,7 +31,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
      */
     private val matrices: Array<CollisionMatrix> = CollisionMatrix.createMatrices(Tile.TOTAL_HEIGHT_LEVELS, CHUNK_SIZE, CHUNK_SIZE)
 
-    internal val blockedTiles: MutableSet<Tile> = hashSetOf()
+    internal val blockedTiles = hashSetOf<Tile>()
 
     /**
      * The [Entity]s that are currently registered to the [Tile] key. This is

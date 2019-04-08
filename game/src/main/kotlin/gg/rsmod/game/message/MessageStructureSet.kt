@@ -3,6 +3,7 @@ package gg.rsmod.game.message
 import gg.rsmod.game.message.impl.IgnoreMessage
 import gg.rsmod.net.packet.*
 import gg.rsmod.util.ServerProperties
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import java.io.File
 import java.util.ArrayList
 import kotlin.collections.LinkedHashMap
@@ -19,7 +20,7 @@ class MessageStructureSet {
     /**
      * The [MessageStructure]s stored respectively to their [Class].
      */
-    private val structureClasses = hashMapOf<Class<*>, MessageStructure>()
+    private val structureClasses = Object2ObjectOpenHashMap<Class<*>, MessageStructure>()
 
     /**
      * The [MessageStructure]s stored respectively to their opcode.

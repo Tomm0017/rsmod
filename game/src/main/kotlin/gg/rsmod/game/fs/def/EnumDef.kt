@@ -3,6 +3,7 @@ package gg.rsmod.game.fs.def
 import gg.rsmod.game.fs.Definition
 import gg.rsmod.util.io.BufferUtils.readString
 import io.netty.buffer.ByteBuf
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -17,7 +18,7 @@ class EnumDef(override val id: Int) : Definition(id) {
 
     var defaultString = ""
 
-    val values = hashMapOf<Int, Any>()
+    val values = Int2ObjectOpenHashMap<Any>()
 
     override fun decode(buf: ByteBuf, opcode: Int) {
         when (opcode) {

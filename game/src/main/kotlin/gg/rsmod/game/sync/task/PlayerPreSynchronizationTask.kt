@@ -2,8 +2,8 @@ package gg.rsmod.game.sync.task
 
 import gg.rsmod.game.message.impl.RebuildNormalMessage
 import gg.rsmod.game.message.impl.RebuildRegionMessage
-import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.Coordinate
+import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.region.Chunk
 import gg.rsmod.game.sync.SynchronizationTask
@@ -11,28 +11,28 @@ import gg.rsmod.game.sync.SynchronizationTask
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class PlayerPreSynchronizationTask(val player: Player) : SynchronizationTask {
+object PlayerPreSynchronizationTask : SynchronizationTask<Player> {
 
-    override fun run() {
-        player.handleFutureRoute()
-        player.movementQueue.cycle()
+    override fun run(pawn: Player) {
+        pawn.handleFutureRoute()
+        pawn.movementQueue.cycle()
 
-        val last = player.lastKnownRegionBase
-        val current = player.tile
+        val last = pawn.lastKnownRegionBase
+        val current = pawn.tile
 
         if (last == null || shouldRebuildRegion(last, current)) {
             val regionX = ((current.x shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
             val regionZ = ((current.z shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
 
-            player.lastKnownRegionBase = Coordinate(regionX, regionZ, current.height)
+            pawn.lastKnownRegionBase = Coordinate(regionX, regionZ, current.height)
 
-            val xteaService = player.world.xteaKeyService
-            val instance = player.world.instanceAllocator.getMap(current)
+            val xteaService = pawn.world.xteaKeyService
+            val instance = pawn.world.instanceAllocator.getMap(current)
             val rebuildMessage = when {
-                instance != null -> RebuildRegionMessage(current.x shr 3, current.z shr 3, 1, instance.getCoordinates(player.tile), xteaService)
+                instance != null -> RebuildRegionMessage(current.x shr 3, current.z shr 3, 1, instance.getCoordinates(pawn.tile), xteaService)
                 else -> RebuildNormalMessage(current.x shr 3, current.z shr 3, xteaService)
             }
-            player.write(rebuildMessage)
+            pawn.write(rebuildMessage)
         }
     }
 

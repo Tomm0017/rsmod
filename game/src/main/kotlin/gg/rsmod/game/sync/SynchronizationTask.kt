@@ -1,11 +1,13 @@
 package gg.rsmod.game.sync
 
+import gg.rsmod.game.model.entity.Pawn
+
 /**
  * A task in any pawn synchronization process.
  *
  * @author Tom <rspsmods@gmail.com>
  */
-interface SynchronizationTask : Runnable {
+interface SynchronizationTask<T: Pawn> {
 
-    override fun run()
+    fun run(pawn: T)
 }

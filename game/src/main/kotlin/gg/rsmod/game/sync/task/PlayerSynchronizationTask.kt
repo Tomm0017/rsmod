@@ -11,57 +11,61 @@ import gg.rsmod.util.Misc
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
+object PlayerSynchronizationTask : SynchronizationTask<Player> {
 
-    override fun run() {
-        val buf = GamePacketBuilder(player.world.playerUpdateBlocks.updateOpcode, PacketType.VARIABLE_SHORT)
+    private const val MAX_LOCAL_PLAYERS = 255
+
+    private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 40
+
+    override fun run(pawn: Player) {
+        val buf = GamePacketBuilder(pawn.world.playerUpdateBlocks.updateOpcode, PacketType.VARIABLE_SHORT)
         val maskBuf = GamePacketBuilder()
 
-        val segments = getSegments()
+        val segments = getSegments(pawn)
         for (segment in segments) {
             segment.encode(if (segment is PlayerUpdateBlockSegment) maskBuf else buf)
         }
 
         buf.putBytes(maskBuf.byteBuf)
-        player.write(buf.toGamePacket())
+        pawn.write(buf.toGamePacket())
 
-        player.gpiLocalCount = 0
-        player.gpiExternalCount = 0
+        pawn.gpiLocalCount = 0
+        pawn.gpiExternalCount = 0
         for (i in 1 until 2048) {
-            if (player.gpiLocalPlayers[i] != null) {
-                player.gpiLocalIndexes[player.gpiLocalCount++] = i
+            if (pawn.gpiLocalPlayers[i] != null) {
+                pawn.gpiLocalIndexes[pawn.gpiLocalCount++] = i
             } else {
-                player.gpiExternalIndexes[player.gpiExternalCount++] = i
+                pawn.gpiExternalIndexes[pawn.gpiExternalCount++] = i
             }
-            player.gpiInactivityFlags[i] = player.gpiInactivityFlags[i] shr 1
+            pawn.gpiInactivityFlags[i] = pawn.gpiInactivityFlags[i] shr 1
         }
     }
 
-    private fun getSegments(): List<SynchronizationSegment> {
+    private fun getSegments(player: Player): List<SynchronizationSegment> {
         val segments = arrayListOf<SynchronizationSegment>()
 
         segments.add(SetBitAccessSegment())
-        addLocalSegments(true, segments)
+        addLocalSegments(player, true, segments)
         segments.add(SetByteAccessSegment())
 
         segments.add(SetBitAccessSegment())
-        addLocalSegments(false, segments)
+        addLocalSegments(player, false, segments)
         segments.add(SetByteAccessSegment())
 
         var added = 0
 
         segments.add(SetBitAccessSegment())
-        added += addExternalSegments(true, added, segments)
+        added += addExternalSegments(player, true, added, segments)
         segments.add(SetByteAccessSegment())
 
         segments.add(SetBitAccessSegment())
-        added += addExternalSegments(false, added, segments)
+        added += addExternalSegments(player, false, added, segments)
         segments.add(SetByteAccessSegment())
 
         return segments
     }
 
-    private fun addLocalSegments(initial: Boolean, segments: MutableList<SynchronizationSegment>) {
+    private fun addLocalSegments(player: Player, initial: Boolean, segments: MutableList<SynchronizationSegment>) {
         var skipCount = 0
 
         for (i in 0 until player.gpiLocalCount) {
@@ -83,7 +87,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                 continue
             }
 
-            if (local != player && (local == null || shouldRemove(local))) {
+            if (local != player && (local == null || shouldRemove(player, local))) {
                 val lastTileHash = player.gpiTileHashMultipliers[index]
                 val currTileHash = local?.tile?.asTileHashMultiplier ?: 0
                 val updateTileHash = lastTileHash != currTileHash
@@ -140,7 +144,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                     if (skipNext) {
                         continue
                     }
-                    if (next == null || next.blockBuffer.isDirty() || next.teleport || next.steps != null || next != player && shouldRemove(next)) {
+                    if (next == null || next.blockBuffer.isDirty() || next.teleport || next.steps != null || next != player && shouldRemove(player, next)) {
                         break
                     }
                     skipCount++
@@ -160,7 +164,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
      * The total amount of external players that were added to the local player
      * list.
      */
-    private fun addExternalSegments(initial: Boolean, previouslyAdded: Int, segments: MutableList<SynchronizationSegment>): Int {
+    private fun addExternalSegments(player: Player, initial: Boolean, previouslyAdded: Int, segments: MutableList<SynchronizationSegment>): Int {
         var skipCount = 0
         var added = previouslyAdded
 
@@ -185,7 +189,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
             val nonLocal = if (index < player.world.players.capacity) player.world.players[index] else null
 
             if (nonLocal != null && added < MAX_PLAYER_ADDITIONS_PER_CYCLE && player.gpiLocalCount + added < MAX_LOCAL_PLAYERS
-                    && shouldAdd(nonLocal)) {
+                    && shouldAdd(player, nonLocal)) {
 
                 val oldTileHash = player.gpiTileHashMultipliers[index]
                 val currTileHash = nonLocal.tile.asTileHashMultiplier
@@ -213,7 +217,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
                     continue
                 }
                 val next = if (nextIndex < player.world.players.capacity) player.world.players[nextIndex] else null
-                if (next != null && shouldAdd(next) || next?.tile?.asTileHashMultiplier != player.gpiTileHashMultipliers[nextIndex]) {
+                if (next != null && shouldAdd(player, next) || next?.tile?.asTileHashMultiplier != player.gpiTileHashMultipliers[nextIndex]) {
                     break
                 }
                 skipCount++
@@ -229,12 +233,7 @@ class PlayerSynchronizationTask(val player: Player) : SynchronizationTask {
         return added
     }
 
-    private fun shouldAdd(other: Player): Boolean = !other.invisible && other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) && other != player
+    private fun shouldAdd(player: Player, other: Player): Boolean = !other.invisible && other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE) && other != player
 
-    private fun shouldRemove(other: Player): Boolean = !other.isOnline || other.invisible || !other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE)
-
-    companion object {
-        private const val MAX_LOCAL_PLAYERS = 255
-        private const val MAX_PLAYER_ADDITIONS_PER_CYCLE = 40
-    }
+    private fun shouldRemove(player: Player, other: Player): Boolean = !other.isOnline || other.invisible || !other.tile.isWithinRadius(player.tile, Player.NORMAL_VIEW_DISTANCE)
 }

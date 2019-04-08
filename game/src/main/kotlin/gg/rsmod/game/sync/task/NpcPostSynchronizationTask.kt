@@ -7,12 +7,15 @@ import gg.rsmod.game.sync.SynchronizationTask
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class NpcPostSynchronizationTask(val npc: Npc) : SynchronizationTask {
+object NpcPostSynchronizationTask : SynchronizationTask<Npc> {
 
-    override fun run() {
-        npc.teleport = false
-        npc.lastTile = Tile(npc.tile)
-        npc.steps = null
-        npc.blockBuffer.clean()
+    override fun run(pawn: Npc) {
+        val moved = pawn.lastTile == null || pawn.lastTile?.sameAs(pawn.tile) != true
+        if (moved) {
+            pawn.lastTile = Tile(pawn.tile)
+        }
+        pawn.teleport = false
+        pawn.steps = null
+        pawn.blockBuffer.clean()
     }
 }

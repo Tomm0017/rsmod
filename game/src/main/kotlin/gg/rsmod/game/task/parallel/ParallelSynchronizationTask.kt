@@ -2,8 +2,6 @@ package gg.rsmod.game.task.parallel
 
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.GameService
-import gg.rsmod.game.sync.PhasedSynchronizationTask
-import gg.rsmod.game.sync.task.*
 import gg.rsmod.game.task.GameTask
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Phaser
@@ -23,7 +21,7 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
     private val phaser = Phaser(1)
 
     override fun execute(world: World, service: GameService) {
-        val worldPlayers = world.players
+        /*val worldPlayers = world.players
         val playerCount = worldPlayers.count()
         val worldNpcs = world.npcs
         val rawNpcs = world.npcs.entries
@@ -43,11 +41,11 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
 
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
-            /*
+            *//*
              * Non-human [gg.rsmod.game.model.entity.Player]s do not need this
              * to send any synchronization data to their game-client as they do
              * not have one.
-             */
+             *//*
             if (p.getType().isHumanControlled() && p.initiated) {
                 executor.submit(PhasedSynchronizationTask(phaser, PlayerSynchronizationTask(p)))
             } else {
@@ -58,11 +56,11 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
 
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
-            /*
+            *//*
              * Non-human [gg.rsmod.game.model.entity.Player]s do not need this
              * to send any synchronization data to their game-client as they do
              * not have one.
-             */
+             *//*
             if (p.getType().isHumanControlled() && p.initiated) {
                 executor.submit(PhasedSynchronizationTask(phaser, NpcSynchronizationTask(p, rawNpcs)))
             } else {
@@ -81,7 +79,7 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
         worldNpcs.forEach { n ->
             executor.submit(PhasedSynchronizationTask(phaser, NpcPostSynchronizationTask(n)))
         }
-        phaser.arriveAndAwaitAdvance()
+        phaser.arriveAndAwaitAdvance()*/
     }
 
 }

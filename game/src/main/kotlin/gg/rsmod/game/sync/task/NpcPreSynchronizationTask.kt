@@ -6,9 +6,9 @@ import gg.rsmod.game.sync.SynchronizationTask
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class NpcPreSynchronizationTask(val npc: Npc) : SynchronizationTask {
+object NpcPreSynchronizationTask : SynchronizationTask<Npc> {
 
-    override fun run() {
-        npc.movementQueue.cycle()
+    override fun run(pawn: Npc) {
+        pawn.movementQueue.cycle()
     }
 }

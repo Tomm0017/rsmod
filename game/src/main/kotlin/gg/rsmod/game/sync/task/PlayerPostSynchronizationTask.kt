@@ -9,33 +9,36 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class PlayerPostSynchronizationTask(val player: Player) : SynchronizationTask {
+object PlayerPostSynchronizationTask : SynchronizationTask<Player> {
 
-    override fun run() {
-        val oldTile = player.lastTile
+    override fun run(pawn: Player) {
+        val oldTile = pawn.lastTile
+        val moved = oldTile == null || !oldTile.sameAs(pawn.tile)
 
-        player.teleport = false
-        player.lastTile = Tile(player.tile)
-        player.steps = null
-        player.blockBuffer.clean()
+        if (moved) {
+            pawn.lastTile = Tile(pawn.tile)
+        }
+        pawn.teleport = false
+        pawn.steps = null
+        pawn.blockBuffer.clean()
 
-        val oldChunk = if (oldTile != null) player.world.chunks.get(oldTile.chunkCoords, createIfNeeded = false) else null
-        val newChunk = player.world.chunks.get(player.tile.chunkCoords, createIfNeeded = false)
+        val oldChunk = if (oldTile != null) pawn.world.chunks.get(oldTile.chunkCoords, createIfNeeded = false) else null
+        val newChunk = pawn.world.chunks.get(pawn.tile.chunkCoords, createIfNeeded = false)
         if (oldChunk != newChunk && newChunk != null) {
-            player.world.getService(GameService::class.java)?.let { service ->
+            pawn.world.getService(GameService::class.java)?.let { service ->
                 val oldSurroundings = oldChunk?.coords?.getSurroundingCoords() ?: ObjectOpenHashSet()
                 val newSurroundings = newChunk.coords.getSurroundingCoords()
                 newSurroundings.removeAll(oldSurroundings)
 
                 newSurroundings.forEach { coords ->
-                    val chunk = player.world.chunks.get(coords, createIfNeeded = false) ?: return@forEach
-                    chunk.sendUpdates(player, service)
+                    val chunk = pawn.world.chunks.get(coords, createIfNeeded = false) ?: return@forEach
+                    chunk.sendUpdates(pawn, service)
                 }
             }
             if (oldChunk != null) {
-                player.world.plugins.executeChunkExit(player, oldChunk.hashCode())
+                pawn.world.plugins.executeChunkExit(pawn, oldChunk.hashCode())
             }
-            player.world.plugins.executeChunkEnter(player, newChunk.hashCode())
+            pawn.world.plugins.executeChunkEnter(pawn, newChunk.hashCode())
         }
     }
 }

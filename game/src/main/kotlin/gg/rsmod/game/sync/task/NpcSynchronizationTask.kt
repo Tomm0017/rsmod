@@ -12,20 +12,20 @@ import gg.rsmod.net.packet.PacketType
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class NpcSynchronizationTask(private val player: Player, private val worldNpcs: Array<Npc?>) : SynchronizationTask {
+class NpcSynchronizationTask(private val worldNpcs: Array<Npc?>) : SynchronizationTask<Player> {
 
-    private val largeScene = player.hasLargeViewport()
+    override fun run(pawn: Player) {
+        val largeScene = pawn.hasLargeViewport()
 
-    override fun run() {
-        val opcode = if (!largeScene) player.world.npcUpdateBlocks.updateOpcode
-                        else player.world.npcUpdateBlocks.largeSceneUpdateOpcode
+        val opcode = if (!largeScene) pawn.world.npcUpdateBlocks.updateOpcode
+                        else pawn.world.npcUpdateBlocks.largeSceneUpdateOpcode
 
         val buf = GamePacketBuilder(opcode, PacketType.VARIABLE_SHORT)
         val maskBuf = GamePacketBuilder()
 
         buf.switchToBitAccess()
 
-        val segments = getSegments()
+        val segments = getSegments(pawn)
         segments.forEach { segment ->
             segment.encode(if (segment is NpcUpdateBlockSegment) maskBuf else buf)
         }
@@ -37,10 +37,10 @@ class NpcSynchronizationTask(private val player: Player, private val worldNpcs: 
         buf.switchToByteAccess()
 
         buf.putBytes(maskBuf.byteBuf)
-        player.write(buf.toGamePacket())
+        pawn.write(buf.toGamePacket())
     }
 
-    private fun getSegments(): List<SynchronizationSegment> {
+    private fun getSegments(player: Player): List<SynchronizationSegment> {
         val segments = arrayListOf<SynchronizationSegment>()
 
         val localNpcs = player.localNpcs
@@ -49,7 +49,7 @@ class NpcSynchronizationTask(private val player: Player, private val worldNpcs: 
         segments.add(NpcCountSegment(localNpcs.size))
         while (iterator.hasNext()) {
             val npc = iterator.next()
-            if (shouldRemove(npc)) {
+            if (shouldRemove(player, npc)) {
                 segments.add(RemoveLocalNpcSegment())
                 iterator.remove()
                 continue
@@ -84,12 +84,12 @@ class NpcSynchronizationTask(private val player: Player, private val worldNpcs: 
                 break
             }
 
-            if (npc == null || !shouldAdd(npc) || player.localNpcs.contains(npc)) {
+            if (npc == null || !shouldAdd(player, npc) || player.localNpcs.contains(npc)) {
                 continue
             }
 
             val requiresBlockUpdate = npc.blockBuffer.isDirty()
-            segments.add(AddLocalNpcSegment(player, npc, requiresBlockUpdate, largeScene))
+            segments.add(AddLocalNpcSegment(player, npc, requiresBlockUpdate, player.hasLargeViewport()))
             if (requiresBlockUpdate) {
                 segments.add(NpcUpdateBlockSegment(npc, true))
             }
@@ -101,11 +101,11 @@ class NpcSynchronizationTask(private val player: Player, private val worldNpcs: 
         return segments
     }
 
-    private fun shouldRemove(npc: Npc): Boolean = !npc.isSpawned() || npc.invisible || !isWithinView(npc.tile)
+    private fun shouldRemove(player: Player, npc: Npc): Boolean = !npc.isSpawned() || npc.invisible || !isWithinView(player, npc.tile)
 
-    private fun shouldAdd(npc: Npc): Boolean = npc.isSpawned() && !npc.invisible && isWithinView(npc.tile)
+    private fun shouldAdd(player: Player, npc: Npc): Boolean = npc.isSpawned() && !npc.invisible && isWithinView(player, npc.tile)
 
-    private fun isWithinView(tile: Tile): Boolean = tile.isWithinRadius(player.tile, if (largeScene) Player.LARGE_VIEW_DISTANCE else Player.NORMAL_VIEW_DISTANCE)
+    private fun isWithinView(player: Player, tile: Tile): Boolean = tile.isWithinRadius(player.tile, if (player.hasLargeViewport()) Player.LARGE_VIEW_DISTANCE else Player.NORMAL_VIEW_DISTANCE)
 
     companion object {
         private const val MAX_LOCAL_NPCS = 255

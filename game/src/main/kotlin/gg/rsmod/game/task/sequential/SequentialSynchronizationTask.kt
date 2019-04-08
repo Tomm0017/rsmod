@@ -17,23 +17,15 @@ class SequentialSynchronizationTask : GameTask {
         val worldPlayers = world.players
         val worldNpcs = world.npcs
         val rawNpcs = world.npcs.entries
+        val npcSync = NpcSynchronizationTask(rawNpcs)
 
         worldPlayers.forEach { p ->
-            PlayerPreSynchronizationTask(p).run()
+            PlayerPreSynchronizationTask.run(p)
         }
 
-        worldNpcs.forEach { n ->
-            NpcPreSynchronizationTask(n).run()
-        }
-
-        worldPlayers.forEach { p ->
-            /*
-             * Non-human [gg.rsmod.game.model.entity.Player]s do not need this
-             * to send any synchronization data to their game-client as they do
-             * not have one.
-             */
-            if (p.getType().isHumanControlled() && p.initiated) {
-                PlayerSynchronizationTask(p).run()
+        for (n in worldNpcs.entries) {
+            if (n != null) {
+                NpcPreSynchronizationTask.run(n)
             }
         }
 
@@ -44,16 +36,29 @@ class SequentialSynchronizationTask : GameTask {
              * not have one.
              */
             if (p.getType().isHumanControlled() && p.initiated) {
-                NpcSynchronizationTask(p, rawNpcs).run()
+                PlayerSynchronizationTask.run(p)
             }
         }
 
         worldPlayers.forEach { p ->
-            PlayerPostSynchronizationTask(p).run()
+            /*
+             * Non-human [gg.rsmod.game.model.entity.Player]s do not need this
+             * to send any synchronization data to their game-client as they do
+             * not have one.
+             */
+            if (p.getType().isHumanControlled() && p.initiated) {
+                npcSync.run(p)
+            }
         }
 
-        worldNpcs.forEach { n ->
-            NpcPostSynchronizationTask(n).run()
+        worldPlayers.forEach { p ->
+            PlayerPostSynchronizationTask.run(p)
+        }
+
+        for (n in worldNpcs.entries) {
+            if (n != null) {
+                NpcPostSynchronizationTask.run(n)
+            }
         }
     }
 }

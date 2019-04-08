@@ -10,7 +10,9 @@ import gg.rsmod.game.sync.SynchronizationTask
 object NpcPostSynchronizationTask : SynchronizationTask<Npc> {
 
     override fun run(pawn: Npc) {
-        val moved = pawn.lastTile == null || pawn.lastTile?.sameAs(pawn.tile) != true
+        val oldTile = pawn.lastTile
+        val moved = oldTile == null || !oldTile.sameAs(pawn.tile)
+
         if (moved) {
             pawn.lastTile = Tile(pawn.tile)
         }

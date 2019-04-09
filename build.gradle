@@ -25,6 +25,8 @@ allprojects {
         compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
         compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion
         compile "io.github.microutils:kotlin-logging:$kloggingVersion"
+
+        implementation group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
         implementation group: 'io.netty', name: 'netty-all', version: nettyVersion
     }
 

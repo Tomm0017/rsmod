@@ -9,7 +9,6 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.5'
 
-    testCompile group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 }
 

@@ -2,6 +2,4 @@ description = 'RSMod Net'
 
 dependencies {
     compile project(':util')
-
-    implementation group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
 }

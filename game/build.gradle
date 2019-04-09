@@ -30,7 +30,6 @@ dependencies {
 
     implementation group: 'org.mindrot', name: 'jbcrypt', version: bcryptVersion
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: bouncycastleVersion
-    implementation group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
 
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     testImplementation group: 'junit', name: 'junit', version: junitVersion

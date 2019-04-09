@@ -18,20 +18,20 @@ dependencies {
 
     runtimeClasspath project(":game:plugins")
 
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-scripting-common', version: kotlinVersion
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-script-runtime', version: kotlinVersion
+    compile "org.jetbrains.kotlin:kotlin-scripting-common:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-script-runtime:$kotlinVersion"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kcoroutineVersion"
 
-    compile group: 'org.reflections', name: 'reflections', version: reflectionsVersion
-    compile group: 'commons-io', name: 'commons-io', version: commonsIoVersion
+    compile "org.reflections:reflections:$reflectionsVersion"
+    compile "commons-io:commons-io:$commonsIoVersion"
 
-    compile group: 'io.github.classgraph', name: 'classgraph', version: classGraphVersion
-    compile group: 'it.unimi.dsi', name: 'fastutil', version: fastUtilVersion
+    compile "io.github.classgraph:classgraph:$classGraphVersion"
+    compile "it.unimi.dsi:fastutil:$fastUtilVersion"
 
-    implementation group: 'org.mindrot', name: 'jbcrypt', version: bcryptVersion
-    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: bouncycastleVersion
+    implementation "org.mindrot:jbcrypt:$bcryptVersion"
+    implementation "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
 
-    testImplementation group: 'junit', name: 'junit', version: junitVersion
+    testImplementation "junit:junit:$junitVersion"
 }
 
 sourceSets {

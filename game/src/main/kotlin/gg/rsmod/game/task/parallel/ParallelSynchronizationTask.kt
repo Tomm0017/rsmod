@@ -89,7 +89,7 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
     }
 
     private fun <T: Pawn> submit(phaser: Phaser, executor: ExecutorService, pawn: T, task: SynchronizationTask<T>) {
-        executor.submit {
+        executor.execute {
             try {
                 task.run(pawn)
             } catch (e: Exception) {

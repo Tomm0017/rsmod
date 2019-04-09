@@ -25,7 +25,7 @@ class ParallelPlayerPostCycleTask(private val executor: ExecutorService) : GameT
 
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
-            executor.submit {
+            executor.execute {
                 PhasedTask.run(phaser) {
                     p.postCycle()
                 }

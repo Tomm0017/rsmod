@@ -161,7 +161,11 @@ class GameService : Service {
             ))
             logger.info("Sequential tasks preference enabled. {} tasks will be handled per cycle.", tasks.size)
         } else {
-            val executor = Executors.newFixedThreadPool(processors, ThreadFactoryBuilder().setNameFormat("game-tasks-thread").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
+            val executor = Executors.newFixedThreadPool(processors, ThreadFactoryBuilder()
+                    .setNameFormat("game-task-thread")
+                    .setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }
+                    .build())
+
             tasks.addAll(arrayOf(
                     MessageHandlerTask(),
                     QueueHandlerTask(),

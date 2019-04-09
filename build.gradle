@@ -26,8 +26,11 @@ allprojects {
         compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion
         compile "io.github.microutils:kotlin-logging:$kloggingVersion"
 
+        implementation "com.google.code.gson:gson:$gsonVersion"
         implementation group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
         implementation group: 'io.netty', name: 'netty-all', version: nettyVersion
+
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     }
 
     idea {

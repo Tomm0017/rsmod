@@ -6,10 +6,6 @@ dependencies {
     implementation project(':game')
     implementation project(':net')
     implementation project(':util')
-
-    implementation 'com.google.code.gson:gson:2.8.5'
-
-    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 }
 
 dokka {

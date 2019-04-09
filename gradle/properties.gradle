@@ -4,7 +4,7 @@ ext {
     kotlinVersion = '1.3.11'
     kcoroutineVersion = '1.1.0'
     nettyVersion = '4.0.34.Final'
-    guavaVersion = '19.0'
+    gsonVersion = '2.8.5'
     yamlVersion = '2.5.0'
     reflectionsVersion = '0.9.11'
     runeliteVersion = 'runelite-parent-1.5.2.1'

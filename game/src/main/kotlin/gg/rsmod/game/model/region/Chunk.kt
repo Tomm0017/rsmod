@@ -253,16 +253,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getEntities(vararg types: EntityType): List<T> {
-        val tileEntities = entities.values
-        val entities = ObjectArrayList<Entity>()
-
-        tileEntities.forEach {
-            entities.addAll(it.filter { entity -> entity.getType() in types })
-        }
-
-        return entities as List<T>
-    }
+    fun <T> getEntities(vararg types: EntityType): List<T> = entities.values.flatten().filter { it.getType() in types } as List<T>
 
     @Suppress("UNCHECKED_CAST")
     fun <T> getEntities(tile: Tile, vararg types: EntityType): List<T> = entities[tile]?.filter { it.getType() in types } as? List<T> ?: emptyList()

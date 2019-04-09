@@ -3,9 +3,5 @@ description = 'RSMod Net'
 dependencies {
     compile project(':util')
 
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8'
-
-    implementation group: 'io.netty', name: 'netty-all', version: nettyVersion
-    implementation group: 'com.google.guava', name: 'guava', version: guavaVersion
     implementation group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
 }

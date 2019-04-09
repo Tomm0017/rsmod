@@ -18,10 +18,9 @@ dependencies {
 
     runtimeClasspath project(":game:plugins")
 
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-scripting-common', version: kotlinVersion
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-script-runtime', version: kotlinVersion
-    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0'
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kcoroutineVersion"
 
     compile group: 'org.reflections', name: 'reflections', version: reflectionsVersion
     compile group: 'commons-io', name: 'commons-io', version: commonsIoVersion
@@ -30,8 +29,6 @@ dependencies {
     compile group: 'it.unimi.dsi', name: 'fastutil', version: fastUtilVersion
 
     implementation group: 'org.mindrot', name: 'jbcrypt', version: bcryptVersion
-    implementation group: 'io.netty', name: 'netty-all', version: nettyVersion
-    implementation group: 'com.google.guava', name: 'guava', version: guavaVersion
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: bouncycastleVersion
     implementation group: 'com.github.runelite.runelite', name: 'cache', version: runeliteVersion
 

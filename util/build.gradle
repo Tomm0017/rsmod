@@ -1,8 +1,6 @@
 description = 'RSMod Utilities'
 
 dependencies {
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8'
-    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: yamlVersion
 
-    implementation group: 'io.netty', name: 'netty-all', version: nettyVersion
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: yamlVersion
 }

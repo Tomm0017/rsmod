@@ -21,9 +21,11 @@ allprojects {
     }
 
     dependencies {
+        compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion
         compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
         compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion
         compile "io.github.microutils:kotlin-logging:$kloggingVersion"
+        implementation group: 'io.netty', name: 'netty-all', version: nettyVersion
     }
 
     idea {

@@ -2,6 +2,7 @@ ext {
     jvmVersion = '1.8'
     junitVersion = '4.12'
     kotlinVersion = '1.3.11'
+    kcoroutineVersion = '1.1.0'
     nettyVersion = '4.0.34.Final'
     guavaVersion = '19.0'
     yamlVersion = '2.5.0'

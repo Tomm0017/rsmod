@@ -16,7 +16,7 @@ fun bind_unequip(equipment: EquipmentType, child: Int) {
             }
             10 -> {
                 val item = player.equipment[equipment.id] ?: return@on_button
-                player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+                world.sendExamine(player, item.id, ExamineEntityType.ITEM)
             }
         }
     }

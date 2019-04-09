@@ -17,7 +17,7 @@ ENV directory /app/
 WORKDIR ${directory}
 
 # Copy distribution archive
-ADD game/build/distributions/*.zip .
+ADD game/build/distributions/game-shadow-*.zip .
 
 # Unzip distribution archive
 RUN unzip -q -o *.zip

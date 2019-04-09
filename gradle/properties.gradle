@@ -14,9 +14,10 @@ ext {
     jsoupVersion = '1.11.2'
     xzVersion = '1.8'
     cliVersion = '1.4'
-    log4jVersion = '2.8.2'
+    slf4jVersion = '1.7.25'
+    log4jVersion = '2.11.2'
+    kloggingVersion = '1.5.9'
     classGraphVersion = '4.6.12'
     fastUtilVersion = '7.0.7'
-    kotlinLoggingVersion = '1.6.22'
     okhttpVersion = '3.13.1'
 }

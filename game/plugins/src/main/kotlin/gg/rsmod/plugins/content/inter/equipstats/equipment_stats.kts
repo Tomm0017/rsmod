@@ -12,12 +12,12 @@ fun bind_unequip(equipment: EquipmentType, child: Int) {
             EquipmentStats.sendBonuses(player)
         } else if (opt == 10) {
             val item = player.equipment[equipment.id] ?: return@on_button
-            player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+            world.sendExamine(player, item.id, ExamineEntityType.ITEM)
         } else {
             val item = player.equipment[equipment.id] ?: return@on_button
-            if (!player.world.plugins.executeItem(player, item.id, opt)) {
+            if (!world.plugins.executeItem(player, item.id, opt)) {
                 val slot = player.getInteractingSlot()
-                if (player.world.devContext.debugButtons) {
+                if (world.devContext.debugButtons) {
                     player.message("Unhandled button action: [parent=84, child=$child, option=$opt, slot=$slot, item=${item.id}]")
                 }
             }
@@ -39,7 +39,7 @@ on_button(interfaceId = EquipmentStats.TAB_INTERFACE_ID, component = 0) {
             player.message("You can't equip that.")
         }
     } else if (opt == 10) {
-        player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+        world.sendExamine(player, item.id, ExamineEntityType.ITEM)
     }
 }
 

@@ -10,7 +10,7 @@ on_obj_option(Objs.LEVER_26761, "pull") {
         player.message("You pull the lever...")
         wait(1)
 
-        player.world.queue {
+        world.queue {
             val pulled = DynamicObject(obj, 88)
             world.remove(obj)
             world.spawn(pulled)

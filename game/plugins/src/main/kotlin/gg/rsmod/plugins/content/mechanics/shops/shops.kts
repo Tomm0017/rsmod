@@ -37,7 +37,7 @@ on_button(interfaceId = SHOP_INTERFACE_ID, component = 16) {
 
         when (opt) {
             1 -> shop.currency.onSellValueMessage(player, shopItem)
-            10 -> player.world.sendExamine(player, shopItem.item, ExamineEntityType.ITEM)
+            10 -> world.sendExamine(player, shopItem.item, ExamineEntityType.ITEM)
             else -> {
                 val amount = when (opt) {
                     2 -> BUY_OPTS[0]
@@ -60,7 +60,7 @@ on_button(interfaceId = INV_INTERFACE_ID, component = 0) {
 
         when (opt) {
             1 -> shop.currency.onBuyValueMessage(player, shop, item.id)
-            10 -> player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+            10 -> world.sendExamine(player, item.id, ExamineEntityType.ITEM)
             else -> {
                 val amount = when (opt) {
                     2 -> SELL_OPTS[0]

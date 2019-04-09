@@ -20,7 +20,7 @@ on_login {
      * in your looting bag, the bag won't have the "view" option on it.
      */
     if (player.inventory.containsAny(Items.LOOTING_BAG, Items.LOOTING_BAG_22586)) {
-        val container = player.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(player.world.definitions, CONTAINER_KEY) }
+        val container = player.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(world.definitions, CONTAINER_KEY) }
         player.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
     }
 }
@@ -78,13 +78,13 @@ on_button(interfaceId = TAB_INTERFACE_ID, component = 5) {
         3 -> store(player, slot = slot, amount = Int.MAX_VALUE)
         4 -> player.queue { store(player, slot = slot, amount = inputInt()) }
         5 -> {
-            val container = player.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(player.world.definitions, CONTAINER_KEY) }
+            val container = player.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(world.definitions, CONTAINER_KEY) }
             val item = container[slot] ?: return@on_button
-            player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+            world.sendExamine(player, item.id, ExamineEntityType.ITEM)
         }
         9 -> {
             val item = player.inventory[slot] ?: return@on_button
-            player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+            world.sendExamine(player, item.id, ExamineEntityType.ITEM)
         }
     }
 }
@@ -102,7 +102,7 @@ on_button(interfaceId = 15, component = 10) {
         4 -> player.queue { bank(player, slot = slot, amount = inputInt()) }
         10 -> {
             val item = player.containers[CONTAINER_KEY]?.get(slot) ?: return@on_button
-            player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+            world.sendExamine(player, item.id, ExamineEntityType.ITEM)
         }
     }
 }
@@ -140,7 +140,7 @@ fun store(p: Player, slot: Int, amount: Int) {
         return
     }
 
-    if (!item.toUnnoted(p.world.definitions).getDef(p.world.definitions).tradeable) {
+    if (!item.toUnnoted(world.definitions).getDef(world.definitions).tradeable) {
         p.message("Only tradeable items can be put in the bag.")
         return
     }
@@ -154,7 +154,7 @@ fun store(p: Player, slot: Int, amount: Int) {
 }
 
 fun store(p: Player, item: Item, amount: Int, beginSlot: Int = -1): Boolean {
-    val container = p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(p.world.definitions, CONTAINER_KEY) }
+    val container = p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(world.definitions, CONTAINER_KEY) }
 
     val transferred = p.inventory.transfer(container, item = Item(item, amount).copyAttr(item), fromSlot = beginSlot)?.completed ?: 0
     if (transferred == 0) {
@@ -162,7 +162,7 @@ fun store(p: Player, item: Item, amount: Int, beginSlot: Int = -1): Boolean {
         return false
     }
     p.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
-    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = VALUE_TEXT_COMPONENT, text = "Bag value: ${p.inventory.getNetworth(p.world).decimalFormat()} coins")
+    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = VALUE_TEXT_COMPONENT, text = "Bag value: ${p.inventory.getNetworth(world).decimalFormat()} coins")
     return true
 }
 
@@ -222,7 +222,7 @@ fun settings(p: Player) {
 }
 
 fun check(p: Player) {
-    val container = p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(p.world.definitions, CONTAINER_KEY) }
+    val container = p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(world.definitions, CONTAINER_KEY) }
 
     p.runClientScript(149, 81 shl 16 or 5, LOOTING_BAG_CONTAINER_ID, 4, 7, 0, -1, "", "", "", "", "Examine")
     p.openInterface(dest = InterfaceDestination.TAB_AREA, interfaceId = TAB_INTERFACE_ID)
@@ -230,8 +230,8 @@ fun check(p: Player) {
 
     p.runClientScript(495, "Looting bag", 0)
     p.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
-    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = VALUE_TEXT_COMPONENT, text = "Value: ${container.getNetworth(p.world).decimalFormat()} coins")
-    p.runClientScript(1235, LOOTING_BAG_CONTAINER_ID, *get_item_prices(p.world, container))
+    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = VALUE_TEXT_COMPONENT, text = "Value: ${container.getNetworth(world).decimalFormat()} coins")
+    p.runClientScript(1235, LOOTING_BAG_CONTAINER_ID, *get_item_prices(world, container))
 
     set_queue(p)
 }
@@ -240,8 +240,8 @@ fun deposit(p: Player) {
     p.openInterface(dest = InterfaceDestination.TAB_AREA, interfaceId = TAB_INTERFACE_ID)
     p.setInterfaceEvents(interfaceId = TAB_INTERFACE_ID, component = 5, range = 0..27, setting = 542)
     p.runClientScript(495, "Add to bag", 1)
-    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = VALUE_TEXT_COMPONENT, text = "Bag value: ${p.inventory.getNetworth(p.world).decimalFormat()} coins")
-    p.runClientScript(1235, INV_CONTAINER_KEY, *get_item_prices(p.world, p.inventory))
+    p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = VALUE_TEXT_COMPONENT, text = "Bag value: ${p.inventory.getNetworth(world).decimalFormat()} coins")
+    p.runClientScript(1235, INV_CONTAINER_KEY, *get_item_prices(world, p.inventory))
 
     set_queue(p)
 }

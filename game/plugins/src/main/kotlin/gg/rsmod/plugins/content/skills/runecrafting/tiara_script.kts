@@ -21,8 +21,8 @@ Tiara.values.forEach { tiara ->
  */
 fun createTiara(player: Player, talisman: Int, def: Tiara) {
 
-    val tiaraDef = player.world.definitions.get(ItemDef::class.java, Items.TIARA)
-    val talismanDef = player.world.definitions.get(ItemDef::class.java, talisman)
+    val tiaraDef = world.definitions.get(ItemDef::class.java, Items.TIARA)
+    val talismanDef = world.definitions.get(ItemDef::class.java, talisman)
     val inventory = player.inventory
 
     if (!inventory.contains(tiaraDef.id)) {

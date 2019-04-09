@@ -12,12 +12,12 @@ on_obj_option(obj = Objs.CABBAGE_1161, option = "pick", lineOfSightDistance = 0)
                 player.message("You don't have room for this cabbage.")
                 return@queue
             }
-            if (obj.isSpawned(player.world)) {
-                val item = if (player.world.percentChance(5.0)) Items.CABBAGE_SEED else Items.CABBAGE
+            if (obj.isSpawned(world)) {
+                val item = if (world.percentChance(5.0)) Items.CABBAGE_SEED else Items.CABBAGE
                 player.animate(827)
                 player.inventory.add(item = item)
-                player.world.remove(obj)
-                player.world.queue {
+                world.remove(obj)
+                world.queue {
                     wait(RESPAWN_DELAY)
                     world.spawn(DynamicObject(obj))
                 }

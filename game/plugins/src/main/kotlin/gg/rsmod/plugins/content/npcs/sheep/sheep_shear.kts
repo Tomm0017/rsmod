@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.npcs.sheep
 
-import gg.rsmod.game.fs.def.NpcDef
-
 Sheep.SHEEP_NPCS.forEach { sheep ->
     if (world.definitions.get(NpcDef::class.java, sheep).options.contains("Shear")) {
 
@@ -20,7 +18,7 @@ Sheep.SHEEP_NPCS.forEach { sheep ->
 }
 
 suspend fun shear(it: QueueTask, p: Player, n: Npc) {
-    val flee = n.world.percentChance(15.0)
+    val flee = world.percentChance(15.0)
 
     p.lock()
     p.animate(893)
@@ -38,7 +36,7 @@ suspend fun shear(it: QueueTask, p: Player, n: Npc) {
             p.inventory.add(item = Items.WOOL)
         } else {
             val ground = GroundItem(item = Items.WOOL, amount = 1, tile = Tile(p.tile), owner = p)
-            p.world.spawn(ground)
+            world.spawn(ground)
         }
         p.message("You get some wool.")
         n.queue { transmog_sheep(this, n) }
@@ -48,8 +46,8 @@ suspend fun shear(it: QueueTask, p: Player, n: Npc) {
 }
 
 fun flee(n: Npc) {
-    val rx = n.world.random(-n.walkRadius..n.walkRadius)
-    val rz = n.world.random(-n.walkRadius..n.walkRadius)
+    val rx = world.random(-n.walkRadius..n.walkRadius)
+    val rz = world.random(-n.walkRadius..n.walkRadius)
 
     val start = n.spawnTile
     val dest = start.transform(rx, rz)

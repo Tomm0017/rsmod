@@ -6,7 +6,7 @@ private val HAY_OBJECTS = setOf(
 HAY_OBJECTS.forEach { hay ->
     on_obj_option(obj = hay, option = "search") {
         val obj = player.getInteractingGameObj()
-        val name = obj.getDef(player.world.definitions).name
+        val name = obj.getDef(world.definitions).name
         player.queue {
             search(this, player, name.toLowerCase())
         }
@@ -19,11 +19,11 @@ suspend fun search(it: QueueTask, p: Player, obj: String) {
     p.animate(827)
     it.wait(3)
     p.unlock()
-    when (p.world.random(100)) {
+    when (world.random(100)) {
         0 -> {
             val add = p.inventory.add(item = Items.NEEDLE)
             if (add.hasFailed()) {
-                p.world.spawn(GroundItem(item = Items.NEEDLE, amount = 1, tile = Tile(p.tile), owner = p))
+                world.spawn(GroundItem(item = Items.NEEDLE, amount = 1, tile = Tile(p.tile), owner = p))
             }
             it.chatPlayer("Wow! A needle!<br>Now what are the chances of finding that?")
         }

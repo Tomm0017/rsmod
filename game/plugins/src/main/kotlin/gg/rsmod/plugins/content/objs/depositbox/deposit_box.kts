@@ -34,7 +34,7 @@ on_button(interfaceId = DEPOSIT_INTERFACE_ID, component = 2) {
         5 -> deposit_item(player, slot, Int.MAX_VALUE)
         10 -> {
             player.inventory[slot]?.let { item ->
-                player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+                world.sendExamine(player, item.id, ExamineEntityType.ITEM)
             }
         }
     }
@@ -102,7 +102,7 @@ fun deposit_item(p: Player, slot: Int, amt: Int) {
             copy.copyAttr(inv)
         }
 
-        val placeholderSlot = to.removePlaceholder(p.world, copy)
+        val placeholderSlot = to.removePlaceholder(world, copy)
         val transfer = from.transfer(to, item = copy, fromSlot = i, toSlot = placeholderSlot, note = false, unnote = true)
 
         if (transfer != null) {

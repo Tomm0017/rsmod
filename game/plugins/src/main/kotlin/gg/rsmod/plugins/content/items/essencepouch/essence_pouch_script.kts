@@ -30,7 +30,7 @@ pouches.forEach { pouch ->
 fun fillPouch(player: Player, pouch: EssencePouch) {
 
     if (player.getSkills().getMaxLevel(Skills.RUNECRAFTING) < pouch.levelReq) {
-        player.message("This pouch requires level ${pouch.levelReq} ${Skills.getSkillName(player.world, Skills.RUNECRAFTING)} to use.")
+        player.message("This pouch requires level ${pouch.levelReq} ${Skills.getSkillName(world, Skills.RUNECRAFTING)} to use.")
         return
     }
 
@@ -38,7 +38,7 @@ fun fillPouch(player: Player, pouch: EssencePouch) {
     val containedItem = item.getAttr(ItemAttribute.ATTACHED_ITEM_ID) ?: -1
     val amount = Math.max(item.getAttr(ItemAttribute.ATTACHED_ITEM_COUNT) ?: 0, 0)
 
-    val def = player.world.definitions.getNullable(ItemDef::class.java, containedItem)
+    val def = world.definitions.getNullable(ItemDef::class.java, containedItem)
     val inventory = player.inventory
     val freeSpace = pouch.capacity - amount
 
@@ -134,7 +134,7 @@ fun checkPouch(player: Player) {
         return
     }
 
-    val name = player.world.definitions.get(ItemDef::class.java, item).name.toLowerCase()
+    val name = world.definitions.get(ItemDef::class.java, item).name.toLowerCase()
     val multiple = count > 1
 
     player.message("There ${count.toLiteral()?.pluralPrefix(count)} ${name.pluralSuffix(count)} in this pouch.")

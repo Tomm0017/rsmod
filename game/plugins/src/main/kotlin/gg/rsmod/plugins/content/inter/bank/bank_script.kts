@@ -5,7 +5,6 @@ import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 import gg.rsmod.plugins.content.inter.bank.Bank.insert
 import gg.rsmod.plugins.content.inter.bank.Bank.removePlaceholder
-import gg.rsmod.plugins.content.inter.bank.Bank.shift
 
 on_interface_open(Bank.BANK_INTERFACE_ID) {
     player.bank.shift()
@@ -96,7 +95,7 @@ on_button(interfaceId = Bank.INV_INTERFACE_ID, component = Bank.INV_INTERFACE_CH
     val item = player.inventory[slot] ?: return@p
 
     if (opt == 10) {
-        player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+        world.sendExamine(player, item.id, ExamineEntityType.ITEM)
         return@p
     }
 
@@ -153,7 +152,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 13) p@ {
     val item = player.bank[slot] ?: return@p
 
     if (opt == 10) {
-        player.world.sendExamine(player, item.id, ExamineEntityType.ITEM)
+        world.sendExamine(player, item.id, ExamineEntityType.ITEM)
         return@p
     }
 

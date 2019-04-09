@@ -19,16 +19,13 @@ on_global_npc_spawn {
 }
 
 on_timer(AGGRO_CHECK_TIMER) {
-    val npc = npc
-
-    if ((!npc.isAttacking() || npc.tile.isMulti(npc.world)) && npc.lock.canAttack() && npc.isActive()) {
+    if ((!npc.isAttacking() || npc.tile.isMulti(world)) && npc.lock.canAttack() && npc.isActive()) {
         checkRadius(npc)
     }
     npc.timers[AGGRO_CHECK_TIMER] = npc.combatDef.aggroTargetDelay
 }
 
 fun checkRadius(npc: Npc) {
-    val world = npc.world
     val radius = npc.combatDef.aggressiveRadius
 
     mainLoop@

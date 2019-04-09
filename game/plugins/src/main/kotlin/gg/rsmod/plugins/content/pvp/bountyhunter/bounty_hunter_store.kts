@@ -73,19 +73,19 @@ on_button(interfaceId = STORE_INTERFACE_ID, component = 2) {
     val price = ITEM_PRICES[item] ?: return@on_button
 
     when (opt) {
-        1 -> player.message("${Item(item).getName(player.world.definitions)} costs ${DecimalFormat().format(price)} points.")
+        1 -> player.message("${Item(item).getName(world.definitions)} costs ${DecimalFormat().format(price)} points.")
         2 -> buy_item(player, item, 1)
         3 -> buy_item(player, item, 5)
         4 -> buy_item(player, item, 10)
         5 -> buy_item(player, item, 50)
-        10 -> player.world.sendExamine(player, item, ExamineEntityType.ITEM)
+        10 -> world.sendExamine(player, item, ExamineEntityType.ITEM)
         else -> return@on_button
     }
 }
 
 fun buy_item(p: Player, item: Int, amt: Int) {
     val price = ITEM_PRICES[item] ?: return
-    val name = Item(item).getName(p.world.definitions)
+    val name = Item(item).getName(world.definitions)
 
     var amount = amt
     while (amount-- > 0) {

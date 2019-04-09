@@ -4,12 +4,12 @@ import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.plugins.content.inter.emotes.EmotesTab
 
 on_login {
-    if (player.world.gameContext.initialLaunch) {
-        player.world.gameContext.initialLaunch = false
+    if (world.gameContext.initialLaunch) {
+        world.gameContext.initialLaunch = false
 
-        player.privilege = player.world.privileges.get(Privilege.OWNER_POWER)
-                ?: player.world.privileges.get(Privilege.ADMIN_POWER)
-                ?: player.world.privileges.get(Privilege.DEV_POWER)
+        player.privilege = world.privileges.get(Privilege.OWNER_POWER)
+                ?: world.privileges.get(Privilege.ADMIN_POWER)
+                ?: world.privileges.get(Privilege.DEV_POWER)
                 ?: Privilege.DEFAULT
 
         EmotesTab.unlockAll(player)
@@ -18,8 +18,8 @@ on_login {
 }
 
 suspend fun dialog(it: QueueTask) {
-    val api = it.player.world.server.getApiName()
-    val site = it.player.world.server.getApiSite()
+    val api = world.server.getApiName()
+    val site = world.server.getApiSite()
 
     it.player.graphic(id = 1388, height = 124)
     it.doubleItemMessageBox("<u=801700><col=801700>Welcome to $api</col></u><br><br>Welcome to your new server, ${it.player.username}!", item1 = 11863, item2 = 11847)

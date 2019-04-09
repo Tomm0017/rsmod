@@ -4,7 +4,7 @@ on_button(interfaceId = 387, component = 21) {
     if (!player.lock.canInterfaceInteract()) {
         return@on_button
     }
-    KeptOnDeath.open(this.player)
+    KeptOnDeath.open(player, world)
 }
 
 on_interface_close(interfaceId = KeptOnDeath.COMPONENT_ID) {

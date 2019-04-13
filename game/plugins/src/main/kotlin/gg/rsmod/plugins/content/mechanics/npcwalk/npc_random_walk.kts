@@ -15,7 +15,7 @@ on_timer(SEARCH_FOR_PATH_TIMER) {
     if (npc.isActive()) {
         val facing = npc.attr[FACING_PAWN_ATTR]?.get()
 
-        /**
+        /*
          * The npc is not facing a player, so it can walk.
          */
         if (facing == null) {
@@ -25,7 +25,7 @@ on_timer(SEARCH_FOR_PATH_TIMER) {
             val start = npc.spawnTile
             val dest = start.transform(rx, rz)
 
-            /**
+            /*
              * Only walk to destination if the chunk has previously been created.
              */
             if (world.collision.chunks.get(dest, createIfNeeded = false) != null) {

@@ -20,7 +20,7 @@ MagicSpells.getCombatSpells().forEach { entry ->
                 player.attr[Combat.CASTING_SPELL] = combatSpell
                 player.attack(npc)
             } else {
-                /**
+                /*
                  * The spell is not defined in [CombatSpell].
                  */
                 if (world.devContext.debugMagicSpells) {

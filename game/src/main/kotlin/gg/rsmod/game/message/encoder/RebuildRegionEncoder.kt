@@ -53,15 +53,15 @@ class RebuildRegionEncoder : MessageEncoder<RebuildRegionMessage>() {
 
             val buf = Unpooled.buffer(Short.SIZE_BYTES + bitBuf.readableBytes + xteaBuffer.readableBytes())
 
-            /**
+            /*
              * Write the XTEA key count.
              */
             buf.writeShort(xteaCount)
-            /**
+            /*
              * Write the bit data.
              */
             buf.writeBytes(bitBuf.byteBuf)
-            /**
+            /*
              * Write the XTEA keys.
              */
             buf.writeBytes(xteaBuffer)

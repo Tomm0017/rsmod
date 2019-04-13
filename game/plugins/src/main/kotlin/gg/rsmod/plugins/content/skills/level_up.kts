@@ -7,7 +7,7 @@ set_level_up_logic {
     val skill = player.attr[LEVEL_UP_SKILL_ID]!!
     val increment = player.attr[LEVEL_UP_INCREMENT]!!
 
-    /**
+    /*
      * Calculate the combat level for the player if they leveled up a combat
      * skill.
      */
@@ -15,7 +15,7 @@ set_level_up_logic {
         player.calculateAndSetCombatLevel()
     }
 
-    /**
+    /*
      * Show the level-up chatbox interface.
      */
     player.queue {

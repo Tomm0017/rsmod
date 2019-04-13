@@ -38,7 +38,7 @@ object MagicCombatStrategy : CombatStrategy {
     override fun attack(pawn: Pawn, target: Pawn) {
         val world = pawn.world
 
-        /**
+        /*
          * A list of actions that will be executed upon this hit dealing damage
          * to the [target].
          */

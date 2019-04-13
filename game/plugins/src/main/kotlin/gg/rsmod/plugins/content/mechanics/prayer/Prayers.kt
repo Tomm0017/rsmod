@@ -187,10 +187,7 @@ object Prayers {
                     p.message("You have run out of prayer points, you can recharge at an altar.")
                 }
                 p.getVarp(ACTIVE_PRAYERS_VARP) == quickPrayers -> {
-                    /**
-                     * All active prayers are quick-prayers - so we turn them off.
-                     */
-                    /**
+                    /*
                      * All active prayers are quick-prayers - so we turn them off.
                      */
                     p.setVarp(ACTIVE_PRAYERS_VARP, 0)

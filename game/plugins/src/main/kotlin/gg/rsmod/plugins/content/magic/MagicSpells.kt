@@ -75,7 +75,7 @@ object MagicSpells {
     fun removeRunes(p: Player, items: List<Item>) {
         if (p.getVarbit(INF_RUNES_VARBIT) == 0) {
             for (item in items) {
-                /**
+                /*
                  * Do not remove staff item requirements.
                  */
                 if (item.id in STAFF_ITEMS) {

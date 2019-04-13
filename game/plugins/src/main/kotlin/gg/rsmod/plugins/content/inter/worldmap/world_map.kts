@@ -28,7 +28,7 @@ on_button(interfaceId = WorldMap.INTERFACE_ID, component = 37) {
 
 on_timer(WorldMap.UPDATE_TIMER) {
     if (player.isInterfaceVisible(WorldMap.INTERFACE_ID)) {
-        /**
+        /*
          * Only send the world when the last tile recorded is not the same as
          * the current one being stood on, so we're not needlessly sending the
          * script every cycle.

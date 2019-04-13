@@ -87,7 +87,7 @@ object RangedCombatStrategy : CombatStrategy {
 
         val animation = CombatConfigs.getAttackAnimation(pawn)
 
-        /**
+        /*
          * A list of actions that will be executed upon this hit dealing damage
          * to the [target].
          */
@@ -96,7 +96,7 @@ object RangedCombatStrategy : CombatStrategy {
 
         if (pawn is Player) {
 
-            /**
+            /*
              * Get the [EquipmentType] for the ranged weapon you're using.
              */
             val ammoSlot = when {
@@ -106,7 +106,7 @@ object RangedCombatStrategy : CombatStrategy {
 
             val ammo = pawn.getEquipment(ammoSlot)
 
-            /**
+            /*
              * Create a projectile based on ammo.
              */
             val ammoProjectile = if (ammo != null) RangedProjectile.values.firstOrNull { ammo.id in it.items } else null
@@ -117,7 +117,7 @@ object RangedCombatStrategy : CombatStrategy {
                 world.spawn(projectile)
             }
 
-            /**
+            /*
              * Remove or drop ammo if applicable.
              */
             if (ammo != null && (ammoProjectile == null || !ammoProjectile.breakOnImpact())) {

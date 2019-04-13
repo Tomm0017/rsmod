@@ -31,9 +31,6 @@ on_player_option(option = "Trade with") {
     // The trade partner instance
     val partner = player.getInteractingPlayer()
 
-    // If the player and partner are the same person
-    if (player == partner) return@on_player_option
-
     // If the player is already in a trade
     if (partner.getTradeSession() != null || partner.isLocked()) {
         player.message("Other player is busy at the moment.")

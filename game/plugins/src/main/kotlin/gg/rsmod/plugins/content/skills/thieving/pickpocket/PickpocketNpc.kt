@@ -13,15 +13,15 @@ private const val RARE = 8
 private const val VERY_RARE = 1
 
 /**
- * @npcIds = an array of NPC npcIds for them to pickpocket
- * @experience = the amount of experienceerience given per pickpocket
- * @reqLevel = the level requirement to pickpocket that npc
- * @rewards = a weighted set of possible item rewards
- * @damage = damage range when getting stunned
- * @stunTicks = the amount of time that the npc stuns the player for
+ * @property npcIds an array of NPC npcIds for them to pickpocket
+ * @property experience the amount of experienceerience given per pickpocket
+ * @property reqLevel the level requirement to pickpocket that npc
+ * @property rewards a weighted set of possible item rewards
+ * @property damage damage range when getting stunned
+ * @property stunTicks the amount of time that the npc stuns the player for
  */
 enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLevel: Int, val npcName: String? = null,
-                          val rewards: Array<WeightItem>, val damage: IntRange, val stunTicks: Int) {
+                         val rewards: Array<WeightItem>, val damage: IntRange, val stunTicks: Int) {
     MAN_WOMAN(
             npcIds = intArrayOf(
                     //Man NPC npcIds

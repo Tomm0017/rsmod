@@ -26,7 +26,7 @@ class OpPlayer3Handler : MessageHandler<OpPlayer3Message> {
 
         val other = client.world.players[index] ?: return
 
-        if (other.options[optionIndex] == null) {
+        if (other.options[optionIndex] == null || other == client) {
             return
         }
 

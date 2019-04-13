@@ -21,7 +21,6 @@ import java.lang.ref.WeakReference
 class OpLocUHandler : MessageHandler<OpLocUMessage> {
 
     override fun handle(client: Client, message: OpLocUMessage) {
-
         if (message.slot < 0 || message.slot >= client.inventory.capacity) {
             return
         }

@@ -19,14 +19,7 @@ import java.lang.ref.WeakReference
 class OpLoc4Handler : MessageHandler<OpLoc4Message> {
 
     override fun handle(client: Client, message: OpLoc4Message) {
-        /**
-         * If player can't move, we don't do anything.
-         */
-        if (!client.lock.canMove()) {
-            return
-        }
-
-        /**
+        /*
          * If tile is too far away, don't process it.
          */
         val tile = Tile(message.x, message.z, client.tile.height)
@@ -34,7 +27,14 @@ class OpLoc4Handler : MessageHandler<OpLoc4Message> {
             return
         }
 
-        /**
+        /*
+         * If player can't move, we don't do anything.
+         */
+        if (!client.lock.canMove()) {
+            return
+        }
+
+        /*
          * Get the region chunk that the object would belong to.
          */
         val chunk = client.world.chunks.getOrCreate(tile)

@@ -434,9 +434,9 @@ class PluginRepository(val world: World) {
      */
     fun getPluginCount(): Int = pluginCount
 
-    fun getNpcInteractionDistance(npc: Int): Int? = npcInteractionDistancePlugins[npc]
+    fun getNpcInteractionDistance(npc: Int): Int? = npcInteractionDistancePlugins.getOrDefault(npc, null)
 
-    fun getObjInteractionDistance(obj: Int): Int? = objInteractionDistancePlugins[obj]
+    fun getObjInteractionDistance(obj: Int): Int? = objInteractionDistancePlugins.getOrDefault(obj, null)
 
     fun bindWorldInit(plugin: Plugin.() -> Unit) {
         worldInitPlugins.add(plugin)

@@ -27,6 +27,10 @@ class OpObj3Handler : MessageHandler<OpObj3Message> {
             return
         }
 
+        if (!client.lock.canGroundItemInteract()) {
+            return
+        }
+
         log(client, "Ground Item action 3: item=%d, x=%d, z=%d, movement=%d", message.item, message.x, message.z, message.movementType)
 
         /**

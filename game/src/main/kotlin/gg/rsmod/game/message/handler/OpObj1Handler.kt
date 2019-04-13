@@ -19,7 +19,7 @@ import java.lang.ref.WeakReference
 class OpObj1Handler : MessageHandler<OpObj1Message> {
 
     override fun handle(client: Client, message: OpObj1Message) {
-        /**
+        /*
          * If tile is too far away, don't process it.
          */
         val tile = Tile(message.x, message.z, client.tile.height)
@@ -27,9 +27,13 @@ class OpObj1Handler : MessageHandler<OpObj1Message> {
             return
         }
 
+        if (!client.lock.canGroundItemInteract()) {
+            return
+        }
+
         log(client, "Ground Item action 1: item=%d, x=%d, z=%d, movement=%d", message.item, message.x, message.z, message.movementType)
 
-        /**
+        /*
          * Get the region chunk that the object would belong to.
          */
         val chunk = client.world.chunks.getOrCreate(tile)

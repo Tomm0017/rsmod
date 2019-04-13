@@ -28,7 +28,7 @@ a message stating that your key was created. **Do not close the terminal/command
     - In your client, you can find the text ``BigInteger("10001`` which will usually be the
     place where you need to replace both the public keys (the ``"10001"`` key is usually the same)
     - Once you have replaced the keys in the client, you can restart the server and launch your client  
-- The server release comes with a cache and XTEA keys you can use. Current revision: ``178``
+- The server release comes with a cache and XTEA keys you can use. Current revision: ``179``
 
 ### I want to run the server and begin making my own content
 
@@ -99,14 +99,14 @@ there should be a green ``run`` button, click on that and the server should begi
 
 ## Troubleshooting
 - *Where can I get a client?*
-    - You can get a client from https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-178-rsmod-release.html
+    - You can get a client from https://www.rune-server.ee/runescape-development/rs2-server/downloads/684206-179-rsmod-release.html
 - *I receive a* ``Bad session id`` *message on the log-in screen*
     - This means the RSA keys on the client do not match the ones created on the server.
     You should try to follow the steps in ``4) RSA key setup`` again. 
 - *I receive a* ``Revision mismatch for channel`` *console message when trying to log in*
     - Find the revision of your **client** (*not cache*)
     - Open ``${rsmod-project}/game.yml``
-    - Edit the value for ``revision: 178`` to match your client's revision
+    - Edit the value for ``revision: 179`` to match your client's revision
 - *I receive a* ``error_game_js5connect`` *error on the client console*
     - You need to launch the server first and *then* the client
 - *When following ``2) Open the project in IntelliJ`` my IntelliJ throws the error ``Build model 'org.jetbrains.plugins.gradle.model.ExternalProject' for root project 'gg.rsmod'``*

@@ -133,14 +133,14 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     }
 
     /**
-     * @see active
+     * @see [Npc.active]
      */
     fun setActive(active: Boolean) {
         this.active = active
     }
 
     /**
-     * @see active
+     * @see [Npc.active]
      */
     fun isActive(): Boolean = active
 

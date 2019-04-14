@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.items.prayerscrolls
 
+import gg.rsmod.plugins.content.mechanics.prayer.Prayers
+
 on_item_option(Items.DEXTEROUS_PRAYER_SCROLL, "read") {
     player.queue {
         player.animate(id = 7403)
@@ -8,7 +10,7 @@ on_item_option(Items.DEXTEROUS_PRAYER_SCROLL, "read") {
             1 -> {
                 if (player.inventory.contains(Items.DEXTEROUS_PRAYER_SCROLL)) {
                     player.inventory.remove(item = Items.DEXTEROUS_PRAYER_SCROLL)
-                    player.setVarbit(id = 5451, value = 1)
+                    player.setVarbit(id = Prayers.RIGOUR_UNLOCK_VARBIT, value = 1)
                     itemMessageBox("You study the scroll and learn a new prayer: <col=8B0000>Rigour</col>", item = Items.DEXTEROUS_PRAYER_SCROLL)
                 }
             }
@@ -27,7 +29,7 @@ on_item_option(Items.ARCANE_PRAYER_SCROLL, "read") {
             1 -> {
                 if (player.inventory.contains(Items.ARCANE_PRAYER_SCROLL)) {
                     player.inventory.remove(item = Items.ARCANE_PRAYER_SCROLL)
-                    player.setVarbit(id = 5452, value = 1)
+                    player.setVarbit(id = Prayers.AUGURY_UNLOCK_VARBIT, value = 1)
                     itemMessageBox("You study the scroll and learn a new prayer: <col=8B0000>Augury</col>", item = Items.ARCANE_PRAYER_SCROLL)
                 }
             }
@@ -46,7 +48,7 @@ on_item_option(Items.TORN_PRAYER_SCROLL, "read") {
             1 -> {
                 if (player.inventory.contains(Items.TORN_PRAYER_SCROLL)) {
                     player.inventory.remove(item = Items.TORN_PRAYER_SCROLL)
-                    player.setVarbit(id = 5453, value = 1)
+                    player.setVarbit(id = Prayers.PRESERVE_UNLOCK_VARBIT, value = 1)
                     itemMessageBox("You study the scroll and learn a new prayer: <col=8B0000>Preserve</col>", item = Items.TORN_PRAYER_SCROLL)
                 }
             }

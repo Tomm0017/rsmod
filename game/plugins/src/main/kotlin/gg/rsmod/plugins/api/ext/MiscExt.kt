@@ -8,10 +8,6 @@ import java.text.DecimalFormat
 import java.text.Format
 import java.util.concurrent.ThreadLocalRandom
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 private val RANDOM = ThreadLocalRandom.current()
 
 fun Number.appendToString(string: String): String = "$this $string" + (if (this != 1) "s" else "")

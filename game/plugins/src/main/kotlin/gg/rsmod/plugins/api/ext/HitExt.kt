@@ -2,10 +2,6 @@ package gg.rsmod.plugins.api.ext
 
 import gg.rsmod.game.model.combat.PawnHit
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 fun PawnHit.landed(): Boolean = landed
 
 fun PawnHit.blocked(): Boolean = !landed

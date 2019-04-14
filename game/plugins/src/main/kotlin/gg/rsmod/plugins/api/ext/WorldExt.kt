@@ -5,10 +5,6 @@ import gg.rsmod.game.model.collision.ObjectType
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GameObject
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 fun World.openDoor(obj: GameObject, opened: Int = obj.id + 1, invertRot: Boolean = false, invertTransform: Boolean = false): GameObject {
     val oldRot = obj.rot
     val newRot = Math.abs((oldRot + (if (invertRot) -1 else 1)) and 0x3)

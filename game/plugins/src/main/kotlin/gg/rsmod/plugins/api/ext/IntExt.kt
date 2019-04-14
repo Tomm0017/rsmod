@@ -1,10 +1,6 @@
 package gg.rsmod.plugins.api.ext
 
 /**
- * @author Triston Plummer ("Dread")
- */
-
-/**
  * A map of numbers to English string literals
  */
 private val numberLiterals = hashMapOf(

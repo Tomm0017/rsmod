@@ -1,9 +1,5 @@
 package gg.rsmod.plugins.api.ext
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 private const val vowels = "aeiou"
 
 fun String.pluralPrefix(amount: Int) : String {

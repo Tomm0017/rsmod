@@ -14,10 +14,6 @@ import gg.rsmod.plugins.api.HitType
 import gg.rsmod.plugins.api.HitbarType
 import gg.rsmod.plugins.api.PrayerIcon
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 fun Pawn.getCommandArgs(): Array<String> = attr[COMMAND_ARGS_ATTR]!!
 
 fun Pawn.getInteractingSlot(): Int = attr[INTERACTING_SLOT_ATTR]!!

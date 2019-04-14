@@ -7,10 +7,6 @@ import gg.rsmod.game.model.container.ItemTransaction
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
-
 fun ItemContainer.getNetworth(world: World): Long {
     val service = world.getService(ItemMarketValueService::class.java)
     var networth = 0L

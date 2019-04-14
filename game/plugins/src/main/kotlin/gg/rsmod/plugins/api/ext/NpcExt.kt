@@ -8,9 +8,6 @@ import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Projectile
 
-/**
- * @author Tom <rspsmods@gmail.com>
- */
 fun Npc.prepareAttack(combatClass: CombatClass, combatStyle: CombatStyle, attackStyle: AttackStyle) {
     this.combatClass = combatClass
     this.combatStyle = combatStyle

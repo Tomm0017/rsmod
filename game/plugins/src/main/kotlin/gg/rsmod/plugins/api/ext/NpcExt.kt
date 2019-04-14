@@ -20,7 +20,7 @@ fun Npc.createProjectile(target: Pawn, gfx: Int, startHeight: Int, endHeight: In
     val builder = Projectile.Builder()
             .setTiles(start = start, target = target)
             .setGfx(gfx = gfx)
-            .setHeights(startHeight = startHeight, endHeight = if (endHeight != -1) endHeight else endHeight)
+            .setHeights(startHeight = startHeight, endHeight = endHeight)
             .setSlope(angle = angle, steepness = if (steepness == -1) Math.min(255, ((getSize() shr 1) + 1) * 32) else steepness)
             .setTimes(delay = delay, lifespan = if (lifespan == -1) (delay + (world.collision.raycastTiles(start, target.getCentreTile()) * 5)) else lifespan)
 
@@ -31,7 +31,7 @@ fun Npc.createProjectile(target: Tile, gfx: Int, startHeight: Int, endHeight: In
     val builder = Projectile.Builder()
             .setTiles(start = getFrontFacingTile(target), target = target)
             .setGfx(gfx = gfx)
-            .setHeights(startHeight = startHeight, endHeight = if (endHeight != -1) endHeight else endHeight)
+            .setHeights(startHeight = startHeight, endHeight = endHeight)
             .setSlope(angle = angle, steepness = Math.min(255, ((getSize() shr 1) + 1) * 32))
             .setTimes(delay = delay, lifespan = lifespan)
 

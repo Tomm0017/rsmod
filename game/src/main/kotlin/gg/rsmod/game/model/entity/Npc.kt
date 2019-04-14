@@ -74,6 +74,11 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
 
     val name: String get() = def.name
 
+    /**
+     * Gets the [NpcDef] corresponding to our [id].
+     */
+    val def: NpcDef = world.definitions.get(NpcDef::class.java, id)
+
     override fun getType(): EntityType = EntityType.NPC
 
     override fun isRunning(): Boolean = false
@@ -144,12 +149,7 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
      */
     fun isSpawned(): Boolean = index > 0
 
-    /**
-     * Gets the [NpcDef] corresponding to our [id].
-     */
-    val def: NpcDef = world.definitions.get(NpcDef::class.java, id)
-
-    override fun toString(): String = MoreObjects.toStringHelper(this).add("id", id).add("name", def.name).add("index", index).add("active", active).toString()
+    override fun toString(): String = MoreObjects.toStringHelper(this).add("id", id).add("name", name).add("index", index).add("active", active).toString()
 
     companion object {
         internal const val RESET_PAWN_FACE_DELAY = 25

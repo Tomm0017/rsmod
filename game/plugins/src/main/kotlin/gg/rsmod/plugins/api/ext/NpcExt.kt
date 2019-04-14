@@ -11,7 +11,7 @@ import gg.rsmod.game.model.entity.Projectile
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-fun Npc.prepareAtttack(combatClass: CombatClass, combatStyle: CombatStyle, attackStyle: AttackStyle) {
+fun Npc.prepareAttack(combatClass: CombatClass, combatStyle: CombatStyle, attackStyle: AttackStyle) {
     this.combatClass = combatClass
     this.combatStyle = combatStyle
     this.attackStyle = attackStyle

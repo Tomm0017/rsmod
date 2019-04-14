@@ -45,11 +45,11 @@ suspend fun combat(it: QueueTask) {
 fun melee_attack(npc: Npc, target: Pawn) {
     if (world.chance(1, 2)) {
         // Headbutt attack
-        npc.prepareAtttack(CombatClass.MELEE, CombatStyle.STAB, AttackStyle.ACCURATE)
+        npc.prepareAttack(CombatClass.MELEE, CombatStyle.STAB, AttackStyle.ACCURATE)
         npc.animate(91)
     } else {
         // Claw attack
-        npc.prepareAtttack(CombatClass.MELEE, CombatStyle.SLASH, AttackStyle.AGGRESSIVE)
+        npc.prepareAttack(CombatClass.MELEE, CombatStyle.SLASH, AttackStyle.AGGRESSIVE)
         npc.animate(80)
     }
     if (MeleeCombatFormula.getAccuracy(npc, target) >= world.randomDouble()) {
@@ -61,7 +61,7 @@ fun melee_attack(npc: Npc, target: Pawn) {
 
 fun fire_attack(npc: Npc, target: Pawn) {
     val projectile = npc.createProjectile(target, gfx = 393, startHeight = 43, endHeight = 31, delay = 51, angle = 15, steepness = 127)
-    npc.prepareAtttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
+    npc.prepareAttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
     npc.animate(81)
     world.spawn(projectile)
     npc.dealHit(target = target, formula = DragonfireFormula(maxHit = 65), delay = RangedCombatStrategy.getHitDelay(npc.getFrontFacingTile(target), target.getCentreTile()) - 1)
@@ -69,7 +69,7 @@ fun fire_attack(npc: Npc, target: Pawn) {
 
 fun poison_attack(npc: Npc, target: Pawn) {
     val projectile = npc.createProjectile(target, gfx = 394, startHeight = 43, endHeight = 31, delay = 51, angle = 15, steepness = 127)
-    npc.prepareAtttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
+    npc.prepareAttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
     npc.animate(82)
     world.spawn(projectile)
     val hit = npc.dealHit(target = target, formula = DragonfireFormula(maxHit = 65, minHit = 10), delay = RangedCombatStrategy.getHitDelay(npc.getFrontFacingTile(target), target.getCentreTile()) - 1) {
@@ -88,7 +88,7 @@ fun poison_attack(npc: Npc, target: Pawn) {
 
 fun freeze_attack(npc: Npc, target: Pawn) {
     val projectile = npc.createProjectile(target, gfx = 395, startHeight = 43, endHeight = 31, delay = 51, angle = 15, steepness = 127)
-    npc.prepareAtttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
+    npc.prepareAttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
     npc.animate(83)
     world.spawn(projectile)
     val hit = npc.dealHit(target = target, formula = DragonfireFormula(maxHit = 65, minHit = 10), delay = RangedCombatStrategy.getHitDelay(npc.getFrontFacingTile(target), target.getCentreTile()) - 1) {
@@ -107,7 +107,7 @@ fun freeze_attack(npc: Npc, target: Pawn) {
 
 fun shock_attack(npc: Npc, target: Pawn) {
     val projectile = npc.createProjectile(target, gfx = 396, startHeight = 43, endHeight = 31, delay = 51, angle = 15, steepness = 127)
-    npc.prepareAtttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
+    npc.prepareAttack(CombatClass.MAGIC, CombatStyle.MAGIC, AttackStyle.ACCURATE)
     npc.animate(84)
     world.spawn(projectile)
     val hit = npc.dealHit(target = target, formula = DragonfireFormula(maxHit = 65, minHit = 12), delay = RangedCombatStrategy.getHitDelay(npc.getFrontFacingTile(target), target.getCentreTile()) - 1) {

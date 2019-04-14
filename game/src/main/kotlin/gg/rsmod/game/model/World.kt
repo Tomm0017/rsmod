@@ -567,7 +567,7 @@ class World(val server: Server, val gameContext: GameContext, val devContext: De
     }
 
     fun setNpcDefaults(npc: Npc) {
-        val combatDef = npcStats[npc.id] ?: NpcCombatDef.DEFAULT
+        val combatDef = npcStats.getOrDefault(npc.id, null) ?: NpcCombatDef.DEFAULT
         npc.combatDef = combatDef
         npc.respawns = npc.combatDef.respawnDelay > 0
         npc.combatDef.bonuses.forEachIndexed { index, bonus -> npc.equipmentBonuses[index] = bonus }

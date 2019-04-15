@@ -1,5 +1,6 @@
 package gg.rsmod.game.plugin
 
+import gg.rsmod.game.Server
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.fs.def.ObjectDef
@@ -28,7 +29,7 @@ import kotlin.script.experimental.annotations.KotlinScript
         fileExtension = "kts",
         compilationConfiguration = KotlinPluginConfiguration::class
 )
-abstract class KotlinPlugin(private val r: PluginRepository, val world: World) {
+abstract class KotlinPlugin(private val r: PluginRepository, val world: World, val server: Server) {
 
     /**
      * Set the [gg.rsmod.game.model.region.ChunkCoords] with [chunk] as its

@@ -2,6 +2,7 @@ package gg.rsmod.game.plugin
 
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
+import gg.rsmod.game.Server
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.COMMAND_ARGS_ATTR
@@ -339,8 +340,8 @@ class PluginRepository(val world: World) {
     /**
      * Initiates and populates all our plugins.
      */
-    fun init(jarPluginsDirectory: String) {
-        loadPlugins(jarPluginsDirectory)
+    fun init(server: Server, jarPluginsDirectory: String) {
+        loadPlugins(server, jarPluginsDirectory)
 
         setCombatDefs()
         spawnEntities()
@@ -349,34 +350,34 @@ class PluginRepository(val world: World) {
         setShops()
     }
 
-    internal fun loadPlugins(jarPluginsDirectory: String) {
-        scanPackageForPlugins(world)
-        scanJarDirectoryForPlugins(world, Paths.get(jarPluginsDirectory))
+    internal fun loadPlugins(server: Server, jarPluginsDirectory: String) {
+        scanPackageForPlugins(server, world)
+        scanJarDirectoryForPlugins(server, world, Paths.get(jarPluginsDirectory))
     }
 
-    fun scanPackageForPlugins(world: World) {
+    fun scanPackageForPlugins(server: Server, world: World) {
         ClassGraph().enableAllInfo().whitelistModules().scan().use { result ->
             val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
             plugins.forEach { p ->
                 val pluginClass = p.loadClass(KotlinPlugin::class.java)
-                val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java)
-                constructor.newInstance(this, world)
+                val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java, Server::class.java)
+                constructor.newInstance(this, world, server)
             }
         }
     }
 
-    fun scanJarDirectoryForPlugins(world: World, directory: Path) {
+    fun scanJarDirectoryForPlugins(server: Server, world: World, directory: Path) {
         if (Files.exists(directory)) {
             Files.walk(directory).forEach { path ->
                 if (!path.fileName.toString().endsWith(".jar")) {
                     return@forEach
                 }
-                scanJarForPlugins(world, path)
+                scanJarForPlugins(server, world, path)
             }
         }
     }
 
-    fun scanJarForPlugins(world: World, path: Path) {
+    fun scanJarForPlugins(server: Server, world: World, path: Path) {
         val urls = arrayOf(path.toFile().toURI().toURL())
         val classLoader = URLClassLoader(urls, PluginRepository::class.java.classLoader)
 
@@ -384,8 +385,8 @@ class PluginRepository(val world: World) {
             val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
             plugins.forEach { p ->
                 val pluginClass = p.loadClass(KotlinPlugin::class.java)
-                val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java)
-                constructor.newInstance(this, world)
+                val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java, Server::class.java)
+                constructor.newInstance(this, world, server)
             }
         }
     }

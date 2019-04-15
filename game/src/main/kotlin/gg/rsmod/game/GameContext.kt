@@ -25,7 +25,9 @@ import gg.rsmod.game.model.Tile
  * will start off.
  *
  * @param skillCount
- * The max amount of skills in our game.
+ * The max amount of skills for players.
+ *
+ * @property npcStatCount the stat count for npcs.
  *
  * @param runEnergy
  * If players' run energy will be deducted whilst running.
@@ -41,5 +43,5 @@ import gg.rsmod.game.model.Tile
  */
 data class GameContext(var initialLaunch: Boolean, val name: String, val revision: Int,
                        val cycleTime: Int, val playerLimit: Int, val home: Tile,
-                       val skillCount: Int, val runEnergy: Boolean, val gItemPublicDelay: Int,
-                       val gItemDespawnDelay: Int)
+                       val skillCount: Int, val npcStatCount: Int, val runEnergy: Boolean,
+                       val gItemPublicDelay: Int, val gItemDespawnDelay: Int)

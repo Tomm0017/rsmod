@@ -10,6 +10,7 @@ import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.CombatStyle
 import gg.rsmod.game.model.combat.NpcCombatDef
+import gg.rsmod.game.model.skill.SkillSet
 import gg.rsmod.game.sync.block.UpdateBlockType
 
 /**
@@ -66,6 +67,18 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
      * The [CombatStyle] the npc will use on its next attack.
      */
     var combatStyle = CombatStyle.STAB
+
+    /**
+     * The combat stats for this npc. Currently consists of:
+     *
+     * Hitpoints
+     * Attack
+     * Strength
+     * Defence
+     * Magic
+     * Ranged
+     */
+    private val skillSet = SkillSet(maxSkills = world.gameContext.npcStatCount)
 
     /**
      * Check if the npc will be aggressive towards the parameter player.
@@ -131,6 +144,8 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
 
         return id
     }
+
+    fun getSkills(): SkillSet = skillSet
 
     /**
      * @see [Npc.active]

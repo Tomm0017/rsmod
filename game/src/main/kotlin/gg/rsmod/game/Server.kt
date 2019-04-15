@@ -94,6 +94,7 @@ class Server {
                 playerLimit = gameProperties.getOrDefault("max-players", 2048),
                 home = Tile(gameProperties.get<Int>("home-x")!!, gameProperties.get<Int>("home-z")!!, gameProperties.getOrDefault("home-height", 0)),
                 skillCount = gameProperties.getOrDefault("skill-count", SkillSet.DEFAULT_SKILL_COUNT),
+                npcStatCount = gameProperties.getOrDefault("npc-stat-count", SkillSet.DEFAULT_NPC_STAT_COUNT),
                 runEnergy = gameProperties.getOrDefault("run-energy", true),
                 gItemPublicDelay = gameProperties.getOrDefault("gitem-public-spawn-delay", GroundItem.DEFAULT_PUBLIC_SPAWN_CYCLES),
                 gItemDespawnDelay = gameProperties.getOrDefault("gitem-despawn-delay", GroundItem.DEFAULT_DESPAWN_CYCLES))

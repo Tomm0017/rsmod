@@ -417,7 +417,7 @@ fun Player.sendWorldMapTile() {
 }
 
 fun Player.sendCombatLevelText() {
-    setComponentText(593, 2, "Combat Lvl: ${getSkills().combatLevel}")
+    setComponentText(593, 2, "Combat Lvl: $combatLevel")
 }
 
 fun Player.sendWeaponComponentInformation() {
@@ -441,7 +441,7 @@ fun Player.sendWeaponComponentInformation() {
 }
 
 fun Player.calculateAndSetCombatLevel(): Boolean {
-    val old = getSkills().combatLevel
+    val old = combatLevel
 
     val attack = getSkills().getMaxLevel(Skills.ATTACK)
     val defence = getSkills().getMaxLevel(Skills.DEFENCE)
@@ -453,11 +453,11 @@ fun Player.calculateAndSetCombatLevel(): Boolean {
 
     val base = Ints.max(strength + attack, magic * 2, ranged * 2)
 
-    getSkills().combatLevel = ((base * 1.3 + defence + hitpoints + prayer / 2) / 4).toInt()
+    combatLevel = ((base * 1.3 + defence + hitpoints + prayer / 2) / 4).toInt()
 
-    val changed = getSkills().combatLevel != old
+    val changed = combatLevel != old
     if (changed) {
-        runClientScript(389, getSkills().combatLevel)
+        runClientScript(389, combatLevel)
         sendCombatLevelText()
         return true
     }

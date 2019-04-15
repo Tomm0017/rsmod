@@ -178,6 +178,12 @@ open class Player(world: World) : Pawn(world) {
 
     var runEnergy = 100.0
 
+    /**
+     * The current combat level. This must be set externally by a login plugin
+     * that is used on whatever revision you want.
+     */
+    var combatLevel = 3
+
     var gameMode = 0
 
     var xpRate = 1.0

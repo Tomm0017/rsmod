@@ -7,8 +7,7 @@ val AGGRO_CHECK_TIMER = TimerKey()
 val defaultAggressiveness: (Npc, Player) -> Boolean = boolean@ { n, p ->
     // TODO: check if player has been in area for more than 10-20 minutes
     val npcLvl = n.def.combatLevel
-    val playerLvl = p.getSkills().combatLevel
-    return@boolean playerLvl < npcLvl * 2
+    return@boolean p.combatLevel < npcLvl * 2
 }
 
 on_global_npc_spawn {

@@ -10,12 +10,6 @@ class SkillSet(val maxSkills: Int) {
     private val skills = Array(maxSkills) { index -> Skill(index) }
 
     /**
-     * The current combat level. This must be set externally by a login plugin
-     * that is used on whatever revision you want.
-     */
-    var combatLevel = 3
-
-    /**
      * A flag which indicates if the skill's level and xp need to be sent to
      * the client on the next cycle.
      */

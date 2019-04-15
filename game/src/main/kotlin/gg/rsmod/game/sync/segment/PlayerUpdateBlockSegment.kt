@@ -193,7 +193,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                 }
 
                 appBuf.putString(other.username)
-                appBuf.put(DataType.BYTE, other.getSkills().combatLevel)
+                appBuf.put(DataType.BYTE, other.combatLevel)
                 appBuf.put(DataType.SHORT, 0)
                 appBuf.put(DataType.BYTE, 0)
 

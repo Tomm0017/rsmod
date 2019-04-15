@@ -20,6 +20,7 @@ import gg.rsmod.game.model.queue.QueueTaskSet
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.model.queue.impl.PawnQueueTaskSet
 import gg.rsmod.game.model.region.Chunk
+import gg.rsmod.game.model.skill.SkillSet
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
 import gg.rsmod.game.model.timer.STUN_TIMER
@@ -145,6 +146,8 @@ abstract class Pawn(val world: World) : Entity() {
     fun isDead(): Boolean = getCurrentHp() == 0
 
     fun isAlive(): Boolean = !isDead()
+
+    abstract fun getSkills(): SkillSet
 
     abstract fun isRunning(): Boolean
 

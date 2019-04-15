@@ -14,6 +14,7 @@ import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.timer.ATTACK_DELAY
 import gg.rsmod.plugins.api.BonusSlot
+import gg.rsmod.plugins.api.NpcSkills
 import gg.rsmod.plugins.api.ProjectileType
 import gg.rsmod.plugins.api.WeaponType
 import gg.rsmod.plugins.api.ext.*
@@ -86,8 +87,14 @@ object Combat {
     }
 
     fun getNpcXpMultiplier(npc: Npc): Double {
-        val def = npc.combatDef
-        val averageLvl = Math.floor((def.attackLvl + def.strengthLvl + def.defenceLvl + def.hitpoints) / 4.0)
+        val skills = npc.getSkills()
+
+        val attackLvl = skills.getMaxLevel(NpcSkills.ATTACK)
+        val strengthLvl = skills.getMaxLevel(NpcSkills.STRENGTH)
+        val defenceLvl = skills.getMaxLevel(NpcSkills.DEFENCE)
+        val hitpoints = skills.getMaxLevel(NpcSkills.HITPOINTS)
+
+        val averageLvl = Math.floor((attackLvl + strengthLvl + defenceLvl + hitpoints) / 4.0)
         val averageDefBonus = Math.floor((npc.getBonus(BonusSlot.DEFENCE_STAB) + npc.getBonus(BonusSlot.DEFENCE_SLASH) + npc.getBonus(BonusSlot.DEFENCE_CRUSH)) / 3.0)
         return 1.0 + Math.floor(averageLvl * (averageDefBonus + npc.getStrengthBonus() + npc.getAttackBonus()) / 5120.0) / 40.0
     }

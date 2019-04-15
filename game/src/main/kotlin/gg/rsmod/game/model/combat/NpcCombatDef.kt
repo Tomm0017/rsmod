@@ -6,8 +6,7 @@ package gg.rsmod.game.model.combat
  * @author Tom <rspsmods@gmail.com>
  */
 class NpcCombatDef private constructor(
-        val hitpoints: Int, val attackLvl: Int, val strengthLvl: Int, val defenceLvl: Int,
-        val magicLvl: Int, val rangedLvl: Int, val attackSpeed: Int, val attackAnimation: Int,
+        val hitpoints: Int, val attackSpeed: Int, val attackAnimation: Int,
         val blockAnimation: Int, val deathAnimation: List<Int>, val respawnDelay: Int,
         val aggressiveRadius: Int, val aggroTargetDelay: Int, val poisonChance: Double,
         val poisonImmunity: Boolean, val venomImmunity: Boolean, val slayerReq: Int, val slayerXp: Double,
@@ -53,10 +52,13 @@ class NpcCombatDef private constructor(
         private const val RANGED_BONUS = 12
         private const val MAGIC_BONUS = 13
 
-        val DEFAULT = NpcCombatDef(hitpoints = DEFAULT_HITPOINTS, attackLvl = 1, strengthLvl = 1, defenceLvl = 1, magicLvl = 1, rangedLvl = 1,
-                attackSpeed = DEFAULT_ATTACK_SPEED, aggressiveRadius = 0, aggroTargetDelay = 0, attackAnimation = 422, blockAnimation = 424, deathAnimation = listOf(836),
-                respawnDelay = DEFAULT_RESPAWN_DELAY, poisonChance = 0.0, poisonImmunity = false, venomImmunity = false, slayerReq = 1, slayerXp = 0.0,
-                bonuses = IntArray(14) { 0 })
+        val DEFAULT = NpcCombatDef(
+                hitpoints = DEFAULT_HITPOINTS, attackSpeed = DEFAULT_ATTACK_SPEED,
+                aggressiveRadius = 0, aggroTargetDelay = 0, attackAnimation = 422,
+                blockAnimation = 424, deathAnimation = listOf(836),
+                respawnDelay = DEFAULT_RESPAWN_DELAY, poisonChance = 0.0,
+                poisonImmunity = false, venomImmunity = false, slayerReq = 1,
+                slayerXp = 0.0, bonuses = IntArray(14) { 0 })
     }
 
     class Builder {
@@ -156,9 +158,11 @@ class NpcCombatDef private constructor(
                 slayerXp = 0.0
             }
 
-            return NpcCombatDef(hitpoints = hitpoints, attackLvl = attackLvl, strengthLvl = strengthLvl, defenceLvl = defenceLvl, magicLvl = magicLvl, rangedLvl = rangedLvl,
-                    attackSpeed = attackSpeed, aggressiveRadius = aggressiveRadius, aggroTargetDelay = aggroTargetDelay, attackAnimation = attackAnimation, blockAnimation = blockAnimation,
-                    deathAnimation = deathAnimation, respawnDelay = respawnDelay, poisonChance = poisonChance, poisonImmunity = poisonImmunity, venomImmunity = venomImmunity,
+            return NpcCombatDef(
+                    hitpoints = hitpoints, attackSpeed = attackSpeed, aggressiveRadius = aggressiveRadius,
+                    aggroTargetDelay = aggroTargetDelay, attackAnimation = attackAnimation,
+                    blockAnimation = blockAnimation, deathAnimation = deathAnimation, respawnDelay = respawnDelay,
+                    poisonChance = poisonChance, poisonImmunity = poisonImmunity, venomImmunity = venomImmunity,
                     slayerReq = slayerReq, slayerXp = slayerXp, bonuses = bonuses.copyOf())
         }
 

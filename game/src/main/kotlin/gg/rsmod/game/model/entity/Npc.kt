@@ -69,14 +69,7 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     var combatStyle = CombatStyle.STAB
 
     /**
-     * The combat stats for this npc. Currently consists of:
-     *
-     * Hitpoints
-     * Attack
-     * Strength
-     * Defence
-     * Magic
-     * Ranged
+     * The combat stats for this npc.
      */
     private val skillSet = SkillSet(maxSkills = world.gameContext.npcStatCount)
 
@@ -93,6 +86,8 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     val def: NpcDef = world.definitions.get(NpcDef::class.java, id)
 
     override fun getType(): EntityType = EntityType.NPC
+
+    override fun getSkills(): SkillSet = skillSet
 
     override fun isRunning(): Boolean = false
 
@@ -144,8 +139,6 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
 
         return id
     }
-
-    fun getSkills(): SkillSet = skillSet
 
     /**
      * @see [Npc.active]

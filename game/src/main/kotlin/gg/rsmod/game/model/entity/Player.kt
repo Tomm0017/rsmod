@@ -188,9 +188,9 @@ open class Player(world: World) : Pawn(world) {
 
     var xpRate = 1.0
 
-    fun getSkills(): SkillSet = skillSet
-
     override fun getType(): EntityType = EntityType.PLAYER
+
+    override fun getSkills(): SkillSet = skillSet
 
     /**
      * Checks if the player is running. We assume that the varp with id of

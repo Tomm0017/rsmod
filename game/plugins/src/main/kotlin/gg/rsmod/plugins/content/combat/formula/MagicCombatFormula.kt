@@ -204,13 +204,13 @@ object MagicCombatFormula : CombatFormula {
     }
 
     private fun getEffectiveAttackLevel(npc: Npc): Double {
-        var effectiveLevel = npc.combatDef.magicLvl.toDouble()
+        var effectiveLevel = npc.getSkills().getCurrentLevel(NpcSkills.MAGIC).toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }
 
     private fun getEffectiveDefenceLevel(npc: Npc): Double {
-        var effectiveLevel = npc.combatDef.defenceLvl.toDouble()
+        var effectiveLevel = npc.getSkills().getCurrentLevel(NpcSkills.DEFENCE).toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }

@@ -12,10 +12,6 @@ import gg.rsmod.game.message.impl.LogoutFullMessage
 import gg.rsmod.game.message.impl.UpdateRebootTimerMessage
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.combat.NpcCombatDef
-import gg.rsmod.game.model.container.key.BANK_KEY
-import gg.rsmod.game.model.container.key.ContainerKey
-import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
-import gg.rsmod.game.model.container.key.INVENTORY_KEY
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.instance.InstancedMapAllocator
 import gg.rsmod.game.model.priv.PrivilegeSet
@@ -83,8 +79,6 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
     lateinit var coroutineDispatcher: CoroutineDispatcher
 
     internal var queues: QueueTaskSet = WorldQueueTaskSet()
-
-    internal val registeredContainers = ObjectOpenHashSet<ContainerKey>()
 
     val players = PawnList(arrayOfNulls<Player>(gameContext.playerLimit))
 
@@ -213,10 +207,6 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
      */
     internal fun postLoad() {
         plugins.executeWorldInit(this)
-
-        arrayOf(INVENTORY_KEY, EQUIPMENT_KEY, BANK_KEY).forEach { key ->
-            registeredContainers.add(key)
-        }
     }
 
     /**

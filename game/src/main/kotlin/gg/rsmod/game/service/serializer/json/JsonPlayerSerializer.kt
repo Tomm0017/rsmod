@@ -89,7 +89,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                 client.getSkills().setCurrentLevel(skill.skill, skill.lvl)
             }
             data.itemContainers.forEach {
-                val key = world.registeredContainers.firstOrNull { other -> other.name == it.name }
+                val key = world.plugins.containerKeys.firstOrNull { other -> other.name == it.name }
                 if (key == null) {
                     logger.error { "Container was found in serialized data, but is not registered to our World. [key=${it.name}]" }
                     return@forEach

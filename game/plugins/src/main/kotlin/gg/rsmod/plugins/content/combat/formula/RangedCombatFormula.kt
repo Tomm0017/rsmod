@@ -87,7 +87,11 @@ object RangedCombatFormula : CombatFormula {
                 player.hasEquipped(EquipmentType.WEAPON, Items.TWISTED_BOW) -> {
                     // TODO: cap inside Chambers of Xeric is 350
                     val cap = 250.0
-                    val magic = target.getSkills().getCurrentLevel(Skills.MAGIC)
+                    val magic = when (target) {
+                        is Player -> target.getSkills().getCurrentLevel(Skills.MAGIC)
+                        is Npc -> target.currentMagicLvl
+                        else -> throw IllegalStateException("Invalid pawn type. [$target]")
+                    }
                     val modifier = Math.min(cap, 250.0 + (((magic * 3.0) - 14.0) / 100.0) - (Math.pow((((magic * 3.0) / 10.0) - 140.0), 2.0) / 100.0))
                     modifier
                 }
@@ -134,7 +138,11 @@ object RangedCombatFormula : CombatFormula {
                 player.hasEquipped(EquipmentType.WEAPON, Items.TWISTED_BOW) -> {
                     // TODO: cap inside Chambers of Xeric is 250
                     val cap = 140.0
-                    val magic = target.getSkills().getCurrentLevel(Skills.MAGIC)
+                    val magic = when (target) {
+                        is Player -> target.getSkills().getCurrentLevel(Skills.MAGIC)
+                        is Npc -> target.currentMagicLvl
+                        else -> throw IllegalStateException("Invalid pawn type. [$target]")
+                    }
                     val modifier = Math.min(cap, 140.0 + (((magic * 3.0) - 10.0) / 100.0) - (Math.pow((((magic * 3.0) / 10.0) - 100.0), 2.0) / 100.0))
                     modifier
                 }
@@ -232,19 +240,19 @@ object RangedCombatFormula : CombatFormula {
     }
 
     private fun getEffectiveRangedLevel(npc: Npc): Double {
-        var effectiveLevel = npc.getSkills().getCurrentLevel(NpcSkills.RANGED).toDouble()
+        var effectiveLevel = npc.currentRangedLvl.toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }
 
     private fun getEffectiveAttackLevel(npc: Npc): Double {
-        var effectiveLevel = npc.getSkills().getCurrentLevel(NpcSkills.RANGED).toDouble()
+        var effectiveLevel = npc.currentRangedLvl.toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }
 
     private fun getEffectiveDefenceLevel(npc: Npc): Double {
-        var effectiveLevel = npc.getSkills().getCurrentLevel(NpcSkills.DEFENCE).toDouble()
+        var effectiveLevel = npc.currentDefenceLvl.toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }

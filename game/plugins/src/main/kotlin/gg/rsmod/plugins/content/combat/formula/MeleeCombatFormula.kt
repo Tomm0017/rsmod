@@ -5,7 +5,10 @@ import gg.rsmod.game.model.combat.CombatStyle
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.api.*
+import gg.rsmod.plugins.api.BonusSlot
+import gg.rsmod.plugins.api.EquipmentType
+import gg.rsmod.plugins.api.PrayerIcon
+import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.getBonus
 import gg.rsmod.plugins.api.ext.getStrengthBonus
@@ -217,19 +220,19 @@ object MeleeCombatFormula : CombatFormula {
     }
 
     private fun getEffectiveStrengthLevel(npc: Npc): Double {
-        var effectiveLevel = npc.getSkills().getCurrentLevel(NpcSkills.STRENGTH).toDouble()
+        var effectiveLevel = npc.currentStrengthLvl.toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }
 
     private fun getEffectiveAttackLevel(npc: Npc): Double {
-        var effectiveLevel = npc.getSkills().getCurrentLevel(NpcSkills.ATTACK).toDouble()
+        var effectiveLevel = npc.currentAttackLvl.toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }
 
     private fun getEffectiveDefenceLevel(npc: Npc): Double {
-        var effectiveLevel = npc.getSkills().getCurrentLevel(NpcSkills.DEFENCE).toDouble()
+        var effectiveLevel = npc.currentDefenceLvl.toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }

@@ -10,7 +10,6 @@ import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.CombatStyle
 import gg.rsmod.game.model.combat.NpcCombatDef
-import gg.rsmod.game.model.skill.SkillSet
 import gg.rsmod.game.sync.block.UpdateBlockType
 
 /**
@@ -69,9 +68,33 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     var combatStyle = CombatStyle.STAB
 
     /**
-     * The combat stats for this npc.
+     * The current attack level for our npc. This value can be changed at any
+     * point.
      */
-    private val skillSet = SkillSet(maxSkills = world.gameContext.npcStatCount)
+    var currentAttackLvl = 1
+
+    var currentStrengthLvl = 1
+
+    var currentDefenceLvl = 1
+
+    var currentMagicLvl = 1
+
+    var currentRangedLvl = 1
+
+    val maxAttackLvl: Int
+        get() = combatDef.attackLvl
+
+    val maxStrengthLvl: Int
+        get() = combatDef.strengthLvl
+
+    val maxDefenceLvl: Int
+        get() = combatDef.defenceLvl
+
+    val maxMagicLvl: Int
+        get() = combatDef.magicLvl
+
+    val maxRangedLvl: Int
+        get() = combatDef.rangedLvl
 
     /**
      * Check if the npc will be aggressive towards the parameter player.
@@ -86,8 +109,6 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     val def: NpcDef = world.definitions.get(NpcDef::class.java, id)
 
     override fun getType(): EntityType = EntityType.NPC
-
-    override fun getSkills(): SkillSet = skillSet
 
     override fun isRunning(): Boolean = false
 

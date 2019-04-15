@@ -7,11 +7,7 @@ package gg.rsmod.game.model.skill
  */
 class SkillSet(val maxSkills: Int) {
 
-    private val skills = arrayListOf<Skill>().apply {
-        for (i in 0 until maxSkills) {
-            add(Skill(id = i))
-        }
-    }
+    private val skills = Array(maxSkills) { index -> Skill(index) }
 
     /**
      * The current combat level. This must be set externally by a login plugin

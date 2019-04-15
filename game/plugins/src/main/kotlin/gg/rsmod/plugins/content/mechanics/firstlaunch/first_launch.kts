@@ -18,8 +18,8 @@ on_login {
 }
 
 suspend fun dialog(it: QueueTask) {
-    val api = world.server.getApiName()
-    val site = world.server.getApiSite()
+    val api = server.getApiName()
+    val site = server.getApiSite()
 
     it.player.graphic(id = 1388, height = 124)
     it.doubleItemMessageBox("<u=801700><col=801700>Welcome to $api</col></u><br><br>Welcome to your new server, ${it.player.username}!", item1 = 11863, item2 = 11847)

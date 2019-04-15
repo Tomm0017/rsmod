@@ -55,7 +55,7 @@ import java.util.concurrent.TimeUnit
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class World(val server: Server, val gameContext: GameContext, val devContext: DevContext) {
+class World(val gameContext: GameContext, val devContext: DevContext) {
 
     /**
      * The [Store] is responsible for handling the data in our cache.

@@ -106,7 +106,7 @@ class Server {
                 debugItemActions = devProperties.getOrDefault("debug-items", false),
                 debugMagicSpells = devProperties.getOrDefault("debug-spells", false))
 
-        val world = World(this, gameContext, devContext)
+        val world = World(gameContext, devContext)
 
         /*
          * Load the file store.

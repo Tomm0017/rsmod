@@ -5,10 +5,9 @@ package gg.rsmod.plugins.api
  */
 object NpcSkills {
 
-    const val HITPOINTS = 0
-    const val ATTACK = 1
-    const val STRENGTH = 2
-    const val DEFENCE = 3
-    const val MAGIC = 4
-    const val RANGED = 5
+    const val ATTACK = 0
+    const val STRENGTH = 1
+    const val DEFENCE = 2
+    const val MAGIC = 3
+    const val RANGED = 4
 }

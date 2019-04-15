@@ -441,7 +441,7 @@ abstract class Pawn(val world: World) : Entity() {
 
     suspend fun walkTo(it: QueueTask, x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
                        projectilePath: Boolean = false): Route {
-        /**
+        /*
          * Already standing on requested destination.
          */
         if (tile.x == x && tile.z == z) {

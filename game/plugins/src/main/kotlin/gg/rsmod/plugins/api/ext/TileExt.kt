@@ -6,7 +6,7 @@ import gg.rsmod.game.model.World
 fun Tile.isMulti(world: World): Boolean {
     val region = regionId
     val chunk = chunkCoords.hashCode()
-    return world.multiCombatChunks.contains(chunk) || world.multiCombatRegions.contains(region)
+    return world.getMultiCombatChunks().contains(chunk) || world.getMultiCombatRegions().contains(region)
 }
 
 fun Tile.getWildernessLevel(): Int {

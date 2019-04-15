@@ -3,7 +3,6 @@ package gg.rsmod.game.plugin
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import gg.rsmod.game.Server
-import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.COMMAND_ARGS_ATTR
 import gg.rsmod.game.model.attr.COMMAND_ATTR
@@ -284,17 +283,11 @@ class PluginRepository(val world: World) {
     private val npcDeathPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
 
     /**
-     * Temporarily holds the multi-combat area chunks for this [PluginRepository];
-     * this is then passed onto the [World] and is cleared.
-     *
      * The int value is calculated via [gg.rsmod.game.model.region.ChunkCoords.hashCode].
      */
     internal val multiCombatChunks = IntOpenHashSet()
 
     /**
-     * Temporarily holds the multi-combat area regions for this [PluginRepository].
-     * This is then passed onto the [World] and is cleared.
-     *
      * The int value is calculated via [gg.rsmod.game.model.Tile.regionId].
      */
     internal val multiCombatRegions = IntOpenHashSet()
@@ -318,11 +311,6 @@ class PluginRepository(val world: World) {
      */
     internal val itemSpawns = arrayListOf<GroundItem>()
 
-    /**
-     * Temporarily holds all npc combat definitions set from plugins for this
-     * [PluginRepository].
-     * This is then passed onto the [World] and is cleared.
-     */
     internal val npcCombatDefs = Int2ObjectOpenHashMap<NpcCombatDef>()
 
     /**
@@ -342,12 +330,7 @@ class PluginRepository(val world: World) {
      */
     fun init(server: Server, jarPluginsDirectory: String) {
         loadPlugins(server, jarPluginsDirectory)
-
-        setCombatDefs()
         spawnEntities()
-        setMultiAreas()
-        setContainers()
-        setShops()
     }
 
     internal fun loadPlugins(server: Server, jarPluginsDirectory: String) {
@@ -391,15 +374,6 @@ class PluginRepository(val world: World) {
         }
     }
 
-    private fun setCombatDefs() {
-        npcCombatDefs.forEach { npc, def ->
-            if (world.npcStats[npc] != null) {
-                logger.warn { "Npc $npc (${world.definitions.get(NpcDef::class.java, npc).name}) has a set combat definition but has been overwritten by a plugin." }
-            }
-            world.npcStats[npc] = def
-        }
-    }
-
     private fun spawnEntities() {
         npcSpawns.forEach { npc -> world.spawn(npc) }
         npcSpawns.clear()
@@ -409,25 +383,6 @@ class PluginRepository(val world: World) {
 
         itemSpawns.forEach { item -> world.spawn(item) }
         itemSpawns.clear()
-    }
-
-    private fun setShops() {
-        shops.forEach { name, shop -> world.shops[name] = shop }
-        shops.clear()
-    }
-
-    private fun setMultiAreas() {
-        world.multiCombatChunks.clear()
-        world.multiCombatRegions.clear()
-        world.multiCombatChunks.addAll(multiCombatChunks)
-        world.multiCombatRegions.addAll(multiCombatRegions)
-        multiCombatChunks.clear()
-        multiCombatRegions.clear()
-    }
-
-    private fun setContainers() {
-        world.registeredContainers.addAll(containerKeys)
-        containerKeys.clear()
     }
 
     /**

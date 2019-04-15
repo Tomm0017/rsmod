@@ -41,7 +41,7 @@ const val INTERFACE_INV_INIT_BIG = 150
  */
 
 fun Player.openShop(shop: String) {
-    val s = world.shops[shop]
+    val s = world.getShop(shop)
     if (s != null) {
         attr[CURRENT_SHOP_ATTR] = s
         shopDirty = true

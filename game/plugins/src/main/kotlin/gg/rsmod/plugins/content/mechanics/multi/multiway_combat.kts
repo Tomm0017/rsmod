@@ -3,7 +3,7 @@ package gg.rsmod.plugins.content.mechanics.multi
 val MULTIWAY_VARBIT = 4605
 
 on_world_init {
-    world.multiCombatRegions.forEach { region ->
+    world.getMultiCombatRegions().forEach { region ->
         on_enter_region(region) {
             player.setVarbit(MULTIWAY_VARBIT, 1)
         }
@@ -13,7 +13,7 @@ on_world_init {
         }
     }
 
-    world.multiCombatChunks.forEach { chunk ->
+    world.getMultiCombatChunks().forEach { chunk ->
         on_enter_chunk(chunk) {
             player.setVarbit(MULTIWAY_VARBIT, 1)
         }

@@ -18,6 +18,7 @@ import io.github.classgraph.ClassGraph
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import mu.KLogging
@@ -166,7 +167,7 @@ class PluginRepository(val world: World) {
 
     private val componentItemSwapPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
 
-    private val componentToComponentItemSwapPlugins = hashMapOf<Long, Plugin.() -> Unit>()
+    private val componentToComponentItemSwapPlugins = Long2ObjectOpenHashMap<Plugin.() -> Unit>()
 
     /**
      * A map that contains any plugin that will be executed upon entering a new

@@ -33,13 +33,6 @@ const val INVENTORY_INTERFACE_KEY = 93
  */
 const val INTERFACE_INV_INIT_BIG = 150
 
-/**
- * A decoupled file that holds extensions and helper functions, related to players,
- * that can be used throughout plugins.
- *
- * @author Tom <rspsmods@gmail.com>
- */
-
 fun Player.openShop(shop: String) {
     val s = world.getShop(shop)
     if (s != null) {

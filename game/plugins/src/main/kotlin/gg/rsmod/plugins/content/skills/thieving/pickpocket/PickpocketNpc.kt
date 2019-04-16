@@ -32,7 +32,7 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
 
                     //Woman NPC Ids
                     Npcs.WOMAN_3015, Npcs.WOMAN_3083, Npcs.WOMAN_3084, Npcs.WOMAN_3085, Npcs.WOMAN_3110,
-                    Npcs.WOMAN_3267, Npcs.WOMAN_3268, Npcs.WOMAN_6990, Npcs.WOMAN_6991, Npcs.WOMAN_6992
+                    Npcs.WOMAN_3268, Npcs.WOMAN_6990, Npcs.WOMAN_6991, Npcs.WOMAN_6992
             ),
             experience = 8.0,
             reqLevel = 1,

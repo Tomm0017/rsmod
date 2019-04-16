@@ -34,7 +34,7 @@ class PrivilegeSet : Iterable<Privilege> {
             }
             definitions.add(Privilege(id = id, icon = icon, name = name.toLowerCase(), powers = powers))
         }
-        values = arrayListOf()
+        values = mutableListOf()
         values.addAll(definitions)
     }
 

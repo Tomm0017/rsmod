@@ -30,9 +30,9 @@ object Prayers {
     //const val INF_PRAY_VARBIT = 5314
     private const val QUICK_PRAYERS_ACTIVE_VARBIT = 4103
     private const val KING_RANSOMS_QUEST_VARBIT = 3909 // Used for chivalry/piety prayer.
-    private const val RIGOUR_UNLOCK_VARBIT = 5451
-    private const val AUGURY_UNLOCK_VARBIT = 5452
-    private const val PRESERVE_UNLOCK_VARBIT = 5453
+    const val RIGOUR_UNLOCK_VARBIT = 5451
+    const val AUGURY_UNLOCK_VARBIT = 5452
+    const val PRESERVE_UNLOCK_VARBIT = 5453
 
     fun disableOverheads(p: Player, cycles: Int) {
         p.timers[DISABLE_OVERHEADS] = cycles

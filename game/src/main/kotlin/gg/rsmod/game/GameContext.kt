@@ -5,39 +5,34 @@ import gg.rsmod.game.model.Tile
 /**
  * Holds vital information that the game needs in order to run (properly).
  *
- * @param initialLaunch
- * A flag which indicates whether this game launch is the first ever launch.
+ * @param initialLaunch a flag which indicates whether this game launch is
+ * the first ever launch.
  *
- * @param name
- * The game name.
+ * @param name the game name.
  *
  * @param revision
  * The cache revision the server is currently loading.
  *
- * @param cycleTime
- * The time, in milliseconds, in between each full game cycle/tick.
+ * @param cycleTime the time, in milliseconds, in between each full game
+ * cycle/tick.
  *
- * @param playerLimit
- * The max amount of players that can be online in the world at once.
+ * @param playerLimit the max amount of players that can be online in the
+ * world at once.
  *
- * @param home
- * The [Tile] that will be used as the home area and tile where new players
- * will start off.
+ * @param home the [Tile] that will be used as the home area and tile where
+ * new players will start off.
  *
- * @param skillCount
- * The max amount of skills for players.
+ * @param skillCount the max amount of skills for players.
  *
- * @property npcStatCount the stat count for npcs.
+ * @param npcStatCount the stat count for npcs.
  *
- * @param runEnergy
- * If players' run energy will be deducted whilst running.
+ * @param runEnergy if players' run energy will be deducted whilst running.
  *
- * @param gItemPublicDelay
- * The amount of cycles for a [gg.rsmod.game.model.entity.GroundItem] to become
- * public if it's owned by a player.
+ * @param gItemPublicDelay the amount of cycles for a [gg.rsmod.game.model.entity.GroundItem]
+ * to become public if it's owned by a player.
  *
- * @param gItemDespawnDelay
- * The amount of cycles for a [gg.rsmod.game.model.entity.GroundItem] to despawn.
+ * @param gItemDespawnDelay the amount of cycles for a [gg.rsmod.game.model.entity.GroundItem]
+ * to despawn.
  *
  * @author Tom <rspsmods@gmail.com>
  */

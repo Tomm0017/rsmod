@@ -6,6 +6,7 @@ import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.model.timer.TimerMap
 import java.text.DecimalFormat
 import java.text.Format
+import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 
 private val RANDOM = ThreadLocalRandom.current()
@@ -43,6 +44,18 @@ fun TimerMap.getMinutesLeft(key: TimerKey): Int? {
     }
     return null
 }
+
+/**
+ * Create an empty [EnumSet] of type [T].
+ */
+inline fun <reified T: Enum<T>> enumSetOf() = EnumSet.noneOf(T::class.java)
+
+/**
+ * Create an [EnumSet] made up of [values].
+ *
+ * @param values the default values stored in our set.
+ */
+inline fun <reified T: Enum<T>> enumSetOf(vararg values: T) = EnumSet.noneOf(T::class.java).apply { addAll(values) }
 
 /**
  * Get a random tile within the bounds of this area. Does <strong>not</strong>

@@ -1,6 +1,7 @@
 package gg.rsmod.game.action
 
 import gg.rsmod.game.fs.def.AnimDef
+import gg.rsmod.game.model.LockState
 import gg.rsmod.game.model.attr.KILLER_ATTR
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.queue.QueueTask
@@ -58,6 +59,7 @@ object NpcDeathAction {
     }
 
     private fun Npc.reset() {
+        lock = LockState.NONE
         tile = spawnTile
         setTransmogId(-1)
 

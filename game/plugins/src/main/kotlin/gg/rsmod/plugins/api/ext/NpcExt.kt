@@ -44,6 +44,11 @@ fun Npc.createProjectile(target: Tile, gfx: Int, startHeight: Int, endHeight: In
     return builder.build()
 }
 
+/**
+ * Check if npc belongs to any of the species specified.
+ *
+ * @return true if [Npc.species] contains [species] or any value in [others].
+ */
 fun Npc.isSpecies(species: NpcSpecies, vararg others: NpcSpecies): Boolean = this.species.contains(species) || this.species.any { others.contains(it) }
 
 fun Npc.getAttackBonus(): Int = equipmentBonuses[NPC_ATTACK_BONUS_INDEX]

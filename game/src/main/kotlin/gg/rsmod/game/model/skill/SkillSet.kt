@@ -128,11 +128,18 @@ class SkillSet(val maxSkills: Int) {
     fun incrementCurrentLevel(skill: Int, value: Int, capped: Boolean) = alterCurrentLevel(skill, value, if (capped) value else 0)
 
     /**
+     * Set [skill] level to [getMaxLevel].
+     */
+    fun restore(skill: Int) {
+        setCurrentLevel(skill, getMaxLevel(skill))
+    }
+
+    /**
      * Restore all skill levels back to normal.
      */
     fun restoreAll() {
         skills.forEach { skill ->
-            setCurrentLevel(skill.id, getMaxLevel(skill.id))
+            restore(skill.id)
         }
     }
 

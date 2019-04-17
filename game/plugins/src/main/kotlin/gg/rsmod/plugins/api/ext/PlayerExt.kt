@@ -471,9 +471,9 @@ fun Player.calculateDeathContainers(): DeathContainers {
     val valueService = world.getService(ItemMarketValueService::class.java)
 
     if (valueService != null) {
-        totalItems = totalItems.sortedByDescending { valueService.get(it.id) }
+        totalItems = totalItems.sortedWith(compareBy({ valueService.get(it.id) }, { it.id }))
     } else {
-        totalItems = totalItems.sortedByDescending { world.definitions.getNullable(ItemDef::class.java, it.id)?.cost ?: 0 }
+        totalItems = totalItems.sortedWith(compareBy({ world.definitions.get(ItemDef::class.java, it.id).cost }, { it.id }))
     }
 
     totalItems.forEach { item ->
@@ -491,7 +491,9 @@ fun Player.calculateDeathContainers(): DeathContainers {
     return DeathContainers(kept = keptContainer, lost = lostContainer)
 }
 
-fun Player.hasItem(item: Int, amount: Int = 1) : ItemContainer? = containers.values.firstOrNull { container -> container.getItemCount(item) >= amount }
+// Note: this does not take ground items, that may belong to the player, into
+// account.
+fun Player.hasItem(item: Int, amount: Int = 1): ItemContainer? = containers.values.firstOrNull { container -> container.getItemCount(item) >= amount }
 
 fun Player.isPrivilegeEligible(to: String): Boolean = world.privileges.isEligible(privilege, to)
 

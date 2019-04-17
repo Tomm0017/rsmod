@@ -32,6 +32,8 @@ object NpcCombatDsl {
 
             combatBuilder.setAttackSpeed(builder.attackSpeed)
             combatBuilder.setRespawnDelay(builder.respawnDelay)
+            combatBuilder.setPoisonChance(builder.poisonChance)
+            combatBuilder.setVenomChance(builder.venomChance)
         }
 
         fun aggro(init: AggressivenessBuilder.() -> Unit) {
@@ -100,6 +102,20 @@ object NpcCombatDsl {
          * If npc should not respawn, this value should be set to 0.
          */
         var respawnDelay = -1
+
+        /**
+         * The chance of inflicting poison on damage. Value should vary from
+         * 0 to 100 where 0 means the npc will never inflict poison and 100
+         * meaning the npc will always inflict poison on damage.
+         */
+        var poisonChance = -1.0
+
+        /**
+         * The chance of inflicting venom on damage. Value should vary from
+         * 0 to 100 where 0 means the npc will never inflict venom and 100
+         * meaning the npc will always inflict venom on damage.
+         */
+        var venomChance = -1.0
     }
 
     @CombatDslMarker

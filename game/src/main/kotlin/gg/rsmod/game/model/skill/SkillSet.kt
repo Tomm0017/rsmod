@@ -106,21 +106,21 @@ class SkillSet(val maxSkills: Int) {
      *
      * @param skill the skill level to alter.
      *
-     * @param value the amount of levels which to decrease from [skill], as a positive.
-     * number.
+     * @param value the amount of levels which to decrease from [skill], as a
+     * positive number.
      *
      * @param capped if true, the [skill] level cannot decrease further than
      * [getMaxLevel] - [value].
      */
-    fun decrementCurrentLevel(skill: Int, value: Int, capped: Boolean) = alterCurrentLevel(skill, value, if (capped) -value else 0)
+    fun decrementCurrentLevel(skill: Int, value: Int, capped: Boolean) = alterCurrentLevel(skill, -value, if (capped) -value else 0)
 
     /**
      * Increase the level of [skill].
      *
      * @param skill the skill level to alter.
      *
-     * @param value the amount of levels which to increase from [skill], as a positive.
-     * number.
+     * @param value the amount of levels which to increase from [skill], as a
+     * positive number.
      *
      * @param capped if true, the [skill] level cannot increase further than
      * [getMaxLevel] + [value].

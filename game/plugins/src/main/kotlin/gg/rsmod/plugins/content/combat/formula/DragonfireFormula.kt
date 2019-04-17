@@ -6,10 +6,12 @@ import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.api.EquipmentType
+import gg.rsmod.plugins.api.NpcSpecies
 import gg.rsmod.plugins.api.PrayerIcon
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.hasEquipped
 import gg.rsmod.plugins.api.ext.hasPrayerIcon
+import gg.rsmod.plugins.api.ext.isSpecies
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -37,8 +39,8 @@ class DragonfireFormula(val maxHit: Int, val minHit: Int = 0) : CombatFormula {
             }
 
             if (pawn is Npc) {
-                val basicDragon = pawn.combatDef.isBasicDragon()
-                val brutalDragon = pawn.combatDef.isBrutalDragon()
+                val basicDragon = pawn.isSpecies(NpcSpecies.BASIC_DRAGON)
+                val brutalDragon = pawn.isSpecies(NpcSpecies.BRUTAL_DRAGON)
 
                 if (magicProtection && basicDragon) {
                     max *= 0.35

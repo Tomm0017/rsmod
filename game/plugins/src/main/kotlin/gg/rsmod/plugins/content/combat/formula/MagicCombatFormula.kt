@@ -97,7 +97,7 @@ object MagicCombatFormula : CombatFormula {
                     // TODO: check if on slayer task and target is slayer task
                     hit *= 1.15
                     hit = Math.floor(hit)
-                } else if (pawn.hasEquipped(EquipmentType.AMULET, Items.SALVE_AMULETEI) && target.combatDef.isUndead()) {
+                } else if (pawn.hasEquipped(EquipmentType.AMULET, Items.SALVE_AMULETEI) && target.isSpecies(NpcSpecies.UNDEAD)) {
                     hit *= 1.20
                     hit = Math.floor(hit)
                 }
@@ -204,13 +204,13 @@ object MagicCombatFormula : CombatFormula {
     }
 
     private fun getEffectiveAttackLevel(npc: Npc): Double {
-        var effectiveLevel = npc.maxMagicLvl.toDouble()
+        var effectiveLevel = npc.stats.getCurrentLevel(NpcSkills.MAGIC).toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }
 
     private fun getEffectiveDefenceLevel(npc: Npc): Double {
-        var effectiveLevel = npc.maxDefenceLvl.toDouble()
+        var effectiveLevel = npc.stats.getCurrentLevel(NpcSkills.DEFENCE).toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }

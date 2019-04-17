@@ -7,6 +7,7 @@ import gg.rsmod.game.model.combat.CombatStyle
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Projectile
+import gg.rsmod.plugins.api.NpcSpecies
 
 fun Npc.prepareAttack(combatClass: CombatClass, combatStyle: CombatStyle, attackStyle: AttackStyle) {
     this.combatClass = combatClass
@@ -37,6 +38,8 @@ fun Npc.createProjectile(target: Tile, gfx: Int, startHeight: Int, endHeight: In
 
     return builder.build()
 }
+
+fun Npc.isSpecies(species: NpcSpecies, vararg others: NpcSpecies): Boolean = this.species.contains(species) || this.species.any { others.contains(it) }
 
 fun Npc.getAttackBonus(): Int = equipmentBonuses[10]
 

@@ -545,11 +545,10 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
         npc.respawns = combatDef.respawnDelay > 0
 
         npc.setCurrentHp(npc.combatDef.hitpoints)
-        npc.currentAttackLvl = combatDef.attackLvl
-        npc.currentDefenceLvl = combatDef.defenceLvl
-        npc.currentStrengthLvl = combatDef.strengthLvl
-        npc.currentMagicLvl = combatDef.magicLvl
-        npc.currentRangedLvl = combatDef.rangedLvl
+        combatDef.stats.forEachIndexed { index, level ->
+            npc.stats.setMaxLevel(index, level)
+            npc.stats.setCurrentLevel(index, level)
+        }
     }
 
     /**

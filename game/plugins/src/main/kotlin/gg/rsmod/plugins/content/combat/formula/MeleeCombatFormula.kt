@@ -5,15 +5,9 @@ import gg.rsmod.game.model.combat.CombatStyle
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.plugins.api.BonusSlot
-import gg.rsmod.plugins.api.EquipmentType
-import gg.rsmod.plugins.api.PrayerIcon
-import gg.rsmod.plugins.api.Skills
+import gg.rsmod.plugins.api.*
 import gg.rsmod.plugins.api.cfg.Items
-import gg.rsmod.plugins.api.ext.getBonus
-import gg.rsmod.plugins.api.ext.getStrengthBonus
-import gg.rsmod.plugins.api.ext.hasEquipped
-import gg.rsmod.plugins.api.ext.hasPrayerIcon
+import gg.rsmod.plugins.api.ext.*
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
 import gg.rsmod.plugins.content.mechanics.prayer.Prayer
@@ -220,19 +214,19 @@ object MeleeCombatFormula : CombatFormula {
     }
 
     private fun getEffectiveStrengthLevel(npc: Npc): Double {
-        var effectiveLevel = npc.currentStrengthLvl.toDouble()
+        var effectiveLevel = npc.stats.getCurrentLevel(NpcSkills.STRENGTH).toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }
 
     private fun getEffectiveAttackLevel(npc: Npc): Double {
-        var effectiveLevel = npc.currentAttackLvl.toDouble()
+        var effectiveLevel = npc.stats.getCurrentLevel(NpcSkills.ATTACK).toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }
 
     private fun getEffectiveDefenceLevel(npc: Npc): Double {
-        var effectiveLevel = npc.currentDefenceLvl.toDouble()
+        var effectiveLevel = npc.stats.getCurrentLevel(NpcSkills.DEFENCE).toDouble()
         effectiveLevel += 8
         return effectiveLevel
     }
@@ -302,28 +296,28 @@ object MeleeCombatFormula : CombatFormula {
 
     private fun isDemon(pawn: Pawn): Boolean {
         if (pawn.getType().isNpc()) {
-            return (pawn as Npc).combatDef.isDemon()
+            return (pawn as Npc).isSpecies(NpcSpecies.DEMON)
         }
         return false
     }
 
     private fun isShade(pawn: Pawn): Boolean {
         if (pawn.getType().isNpc()) {
-            return (pawn as Npc).combatDef.isShade()
+            return (pawn as Npc).isSpecies(NpcSpecies.SHADE)
         }
         return false
     }
 
     private fun isKalphite(pawn: Pawn): Boolean {
         if (pawn.getType().isNpc()) {
-            return (pawn as Npc).combatDef.isKalphite()
+            return (pawn as Npc).isSpecies(NpcSpecies.KALPHITE)
         }
         return false
     }
 
     private fun isScarab(pawn: Pawn): Boolean {
         if (pawn.getType().isNpc()) {
-            return (pawn as Npc).combatDef.isScarab()
+            return (pawn as Npc).isSpecies(NpcSpecies.SCARAB)
         }
         return false
     }

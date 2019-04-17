@@ -1,25 +1,26 @@
 package gg.rsmod.plugins.content.npcs.kbd
 
-import gg.rsmod.game.model.combat.NpcCombatDef
-
 set_multi_combat_region(region = 9033)
 
 spawn_npc(Npcs.KING_BLACK_DRAGON, x = 2274, z = 4698, walkRadius = 5)
 
-set_combat_def(Npcs.KING_BLACK_DRAGON, NpcCombatDef.Builder()
+set_combat_def(Npcs.KING_BLACK_DRAGON, NpcCombatBuilder()
         .setHitpoints(240)
+        .setRespawnDelay(50)
         .setAttackSpeed(3)
         .setDeathAnimation(92)
-        .setBlockAnimation(89)
-        .setAggressiveRadius(16)
+        .setDefaultBlockAnimation(89)
+        .setAggroRadius(16)
         .setFindAggroTargetDelay(1)
         .setSlayerXp(258.0)
-        .setAttackLvl(240)
-        .setStrengthLvl(240)
-        .setMagicLvl(240)
+        .setAttackLevel(240)
+        .setStrengthLevel(240)
+        .setDefenceLevel(240)
+        .setMagicLevel(240)
         .setDefenceStabBonus(70)
         .setDefenceSlashBonus(90)
         .setDefenceCrushBonus(90)
         .setDefenceMagicBonus(80)
         .setDefenceRangedBonus(70)
+        .addSpecies(NpcSpecies.DRAGON)
         .build())

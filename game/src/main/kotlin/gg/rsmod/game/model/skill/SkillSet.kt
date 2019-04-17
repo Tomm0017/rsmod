@@ -131,11 +131,6 @@ class SkillSet(val maxSkills: Int) {
         const val DEFAULT_SKILL_COUNT = 23
 
         /**
-         * The default count of stats for npcs.
-         */
-        const val DEFAULT_NPC_STAT_COUNT = 5
-
-        /**
          * Gets the level correspondent to the [xp] given.
          */
         fun getLevelForXp(xp: Double): Int {

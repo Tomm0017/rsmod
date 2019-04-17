@@ -470,10 +470,10 @@ fun Player.calculateDeathContainers(): DeathContainers {
     var totalItems = inventory.rawItems.filterNotNull() + equipment.rawItems.filterNotNull()
     val valueService = world.getService(ItemMarketValueService::class.java)
 
-    if (valueService != null) {
-        totalItems = totalItems.sortedWith(compareBy({ valueService.get(it.id) }, { it.id }))
+    totalItems = if (valueService != null) {
+        totalItems.sortedBy { it.id }.sortedWith(compareByDescending { valueService.get(it.id) })
     } else {
-        totalItems = totalItems.sortedWith(compareBy({ world.definitions.get(ItemDef::class.java, it.id).cost }, { it.id }))
+        totalItems.sortedBy { it.id }.sortedWith(compareByDescending { world.definitions.get(ItemDef::class.java, it.id).cost })
     }
 
     totalItems.forEach { item ->

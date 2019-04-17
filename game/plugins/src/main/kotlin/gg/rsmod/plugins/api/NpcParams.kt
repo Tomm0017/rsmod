@@ -52,7 +52,7 @@ class NpcCombatBuilder {
 
     private var aggroTargetDelay = -1
 
-    private var inflictPoisonChance = -1.0
+    private var inflictToxinChance = -1.0
 
     private var poisonImmunity = false
 
@@ -75,14 +75,14 @@ class NpcCombatBuilder {
         stats.forEachIndexed { index, level ->
             stats[index] = Math.max(1, level)
         }
-        inflictPoisonChance = Math.max(0.0, inflictPoisonChance)
+        inflictToxinChance = Math.max(0.0, inflictToxinChance)
         slayerReq = Math.max(1, slayerReq)
         slayerXp = Math.max(0.0, slayerXp)
 
         return NpcCombatDef(
                 maxHealth, stats.toList(), attackSpeed, defaultAttackAnim,
                 defaultBlockAnim, deathAnimList, respawnDelay, aggroRadius,
-                aggroTargetDelay, inflictPoisonChance, poisonImmunity,
+                aggroTargetDelay, inflictToxinChance, poisonImmunity,
                 venomImmunity, slayerReq, slayerXp, bonuses.toList(),
                 speciesSet)
     }
@@ -191,8 +191,8 @@ class NpcCombatBuilder {
     }
 
     fun setInflictPoisonChance(chance: Double): NpcCombatBuilder {
-        check(inflictPoisonChance == -1.0) { "Inflict poison chance already set." }
-        inflictPoisonChance = chance
+        check(inflictToxinChance == -1.0) { "Inflict poison chance already set." }
+        inflictToxinChance = chance
         return this
     }
 

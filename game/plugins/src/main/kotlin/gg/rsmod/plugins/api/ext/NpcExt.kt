@@ -9,6 +9,11 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Projectile
 import gg.rsmod.plugins.api.NpcSpecies
 
+const val NPC_ATTACK_BONUS_INDEX = 10
+const val NPC_STRENGTH_BONUS_INDEX = 11
+const val NPC_RANGED_STRENGTH_BONUS_INDEX = 12
+const val NPC_MAGIC_DAMAGE_BONUS_INDEX = 13
+
 fun Npc.prepareAttack(combatClass: CombatClass, combatStyle: CombatStyle, attackStyle: AttackStyle) {
     this.combatClass = combatClass
     this.combatStyle = combatStyle
@@ -41,10 +46,10 @@ fun Npc.createProjectile(target: Tile, gfx: Int, startHeight: Int, endHeight: In
 
 fun Npc.isSpecies(species: NpcSpecies, vararg others: NpcSpecies): Boolean = this.species.contains(species) || this.species.any { others.contains(it) }
 
-fun Npc.getAttackBonus(): Int = equipmentBonuses[10]
+fun Npc.getAttackBonus(): Int = equipmentBonuses[NPC_ATTACK_BONUS_INDEX]
 
-fun Npc.getStrengthBonus(): Int = equipmentBonuses[11]
+fun Npc.getStrengthBonus(): Int = equipmentBonuses[NPC_STRENGTH_BONUS_INDEX]
 
-fun Npc.getRangedStrengthBonus(): Int = equipmentBonuses[12]
+fun Npc.getRangedStrengthBonus(): Int = equipmentBonuses[NPC_RANGED_STRENGTH_BONUS_INDEX]
 
-fun Npc.getMagicDamageBonus(): Int = equipmentBonuses[13]
+fun Npc.getMagicDamageBonus(): Int = equipmentBonuses[NPC_MAGIC_DAMAGE_BONUS_INDEX]

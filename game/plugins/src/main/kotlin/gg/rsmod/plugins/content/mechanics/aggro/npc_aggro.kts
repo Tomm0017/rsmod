@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.content.mechanics.aggro
 
+import gg.rsmod.plugins.content.combat.getCombatTarget
 import gg.rsmod.plugins.content.combat.isAttacking
 
 val AGGRO_CHECK_TIMER = TimerKey()
@@ -44,7 +45,9 @@ fun checkRadius(npc: Npc) {
             }
 
             val target = targets.random()
-            npc.attack(target)
+            if (npc.getCombatTarget() != target) {
+                npc.attack(target)
+            }
             break@mainLoop
         }
     }

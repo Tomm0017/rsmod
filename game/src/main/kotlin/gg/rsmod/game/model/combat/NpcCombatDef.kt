@@ -13,16 +13,21 @@ class NpcCombatDef(
         val bonuses: List<Int>, val species: Set<Any>) {
 
     companion object {
+
         private const val DEFAULT_HITPOINTS = 10
         private const val DEFAULT_ATTACK_SPEED = 4
         private const val DEFAULT_RESPAWN_DELAY = 25
+        private const val DEFAULT_ATTACK_ANIMATION = 422
+        private const val DEFAULT_BLOCK_ANIMATION = 424
+        private const val DEFAULT_DEATH_ANIMATION = 836
 
         val DEFAULT = NpcCombatDef(
                 hitpoints = DEFAULT_HITPOINTS, stats = listOf(1, 1, 1, 1, 1),
                 attackSpeed = DEFAULT_ATTACK_SPEED, aggressiveRadius = 0,
-                aggroTargetDelay = 0, attackAnimation = 422, blockAnimation = 424,
-                deathAnimation = listOf(836), respawnDelay = DEFAULT_RESPAWN_DELAY,
-                poisonChance = 0.0, poisonImmunity = false, venomImmunity = false,
-                slayerReq = 1, slayerXp = 0.0, bonuses = emptyList(), species = emptySet())
+                aggroTargetDelay = 0, attackAnimation = DEFAULT_ATTACK_ANIMATION,
+                blockAnimation = DEFAULT_BLOCK_ANIMATION, deathAnimation = listOf(DEFAULT_DEATH_ANIMATION),
+                respawnDelay = DEFAULT_RESPAWN_DELAY, poisonChance = 0.0,
+                poisonImmunity = false, venomImmunity = false, slayerReq = 1,
+                slayerXp = 0.0, bonuses = emptyList(), species = emptySet())
     }
 }

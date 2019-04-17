@@ -206,7 +206,15 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
          * from [99] to [102].
          */
         fun alterCurrentLevel(skill: Int, value: Int, capValue: Int = 0) {
-            val newLevel = Math.max(0, Math.min(getCurrentLevel(skill) + value, getMaxLevel(skill) + capValue))
+            check(capValue == 0 || capValue < 0 && value < 0 || capValue > 0 && value >= 0) {
+                "Cap value and alter value must always be the same signum (+ or -)."
+            }
+            val altered = when {
+                capValue > 0 -> Math.min(getCurrentLevel(skill) + value, getMaxLevel(skill) + capValue)
+                capValue < 0 -> Math.max(getCurrentLevel(skill) + value, getMaxLevel(skill) + capValue)
+                else -> getCurrentLevel(skill) + value
+            }
+            val newLevel = Math.max(0, altered)
             val curLevel = getCurrentLevel(skill)
 
             if (newLevel != curLevel) {
@@ -219,21 +227,21 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
          *
          * @param skill the skill level to alter.
          *
-         * @param value the amount of levels which to decrease from [skill], as a positive
-         * number.
+         * @param value the amount of levels which to decrease from [skill], as a
+         * positive number.
          *
          * @param capped if true, the [skill] level cannot decrease further than
          * [getMaxLevel] - [value].
          */
-        fun decrementCurrentLevel(skill: Int, value: Int, capped: Boolean) = alterCurrentLevel(skill, value, if (capped) -value else 0)
+        fun decrementCurrentLevel(skill: Int, value: Int, capped: Boolean) = alterCurrentLevel(skill, -value, if (capped) -value else 0)
 
         /**
          * Increase the level of [skill].
          *
          * @param skill the skill level to alter.
          *
-         * @param value the amount of levels which to increase from [skill], as a positive.
-         * number.
+         * @param value the amount of levels which to increase from [skill], as a
+         * positive number.
          *
          * @param capped if true, the [skill] level cannot increase further than
          * [getMaxLevel] + [value].

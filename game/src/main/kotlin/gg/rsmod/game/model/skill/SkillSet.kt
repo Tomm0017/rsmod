@@ -93,7 +93,15 @@ class SkillSet(val maxSkills: Int) {
      * has is [99], that means that the level can be altered from [99] to [102].
      */
     fun alterCurrentLevel(skill: Int, value: Int, capValue: Int = 0) {
-        val newLevel = Math.max(0, Math.min(getCurrentLevel(skill) + value, getMaxLevel(skill) + capValue))
+        check(capValue == 0 || capValue < 0 && value < 0 || capValue > 0 && value >= 0) {
+            "Cap value and alter value must always be the same signum (+ or -)."
+        }
+        val altered = when {
+            capValue > 0 -> Math.min(getCurrentLevel(skill) + value, getMaxLevel(skill) + capValue)
+            capValue < 0 -> Math.max(getCurrentLevel(skill) + value, getMaxLevel(skill) + capValue)
+            else -> getCurrentLevel(skill) + value
+        }
+        val newLevel = Math.max(0, altered)
         val curLevel = getCurrentLevel(skill)
 
         if (newLevel != curLevel) {

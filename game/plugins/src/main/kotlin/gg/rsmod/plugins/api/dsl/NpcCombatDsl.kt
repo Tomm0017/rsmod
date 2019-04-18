@@ -284,7 +284,7 @@ object NpcCombatDsl {
 
         var death: Int = 0
             set(value) {
-                check(deathList.isEmpty()) { "Death animation already set. Use 'death { }` to set multiple animations instead." }
+                check(deathList.isEmpty()) { "Death animation already set. Use `death { }` to set multiple animations instead." }
                 deathList.add(value)
             }
 

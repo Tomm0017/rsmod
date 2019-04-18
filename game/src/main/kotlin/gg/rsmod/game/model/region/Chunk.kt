@@ -155,9 +155,9 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
              */
             if (entity.getType() == EntityType.STATIC_OBJECT) {
                 updates.add(update)
+            } else {
+                updates.removeIf { it.entity == entity }
             }
-
-            updates.removeIf { it.entity == entity }
 
             /*
              * Send the update to all players in viewport.

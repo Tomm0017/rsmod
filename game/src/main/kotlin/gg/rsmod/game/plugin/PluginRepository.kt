@@ -3,6 +3,7 @@ package gg.rsmod.game.plugin
 import com.google.common.collect.HashMultimap
 import com.google.common.collect.Multimap
 import gg.rsmod.game.Server
+import gg.rsmod.game.event.Event
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.COMMAND_ARGS_ATTR
 import gg.rsmod.game.model.attr.COMMAND_ATTR
@@ -20,6 +21,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
+import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import mu.KLogging
 import java.net.URLClassLoader
@@ -287,6 +289,11 @@ class PluginRepository(val world: World) {
     private val npcDeathPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
 
     /**
+     * A map of plugins that occur when an [Event] is triggered.
+     */
+    private val eventPlugins = Object2ObjectOpenHashMap<Class<out Event>, MutableList<Plugin.(Event) -> Unit>>()
+
+    /**
      * The int value is calculated via [gg.rsmod.game.model.region.ChunkCoords.hashCode].
      */
     internal val multiCombatChunks = IntOpenHashSet()
@@ -541,6 +548,27 @@ class PluginRepository(val world: World) {
     }
 
     fun isMenuOpened(p: Player): Boolean = if (isMenuOpenedPlugin != null) p.executePlugin(isMenuOpenedPlugin!!) else false
+
+    fun <T: Event> bindEvent(event: Class<T>, plugin: Plugin.(Event) -> Unit) {
+        val plugins = eventPlugins[event]
+        if (plugins != null) {
+            plugins.add(plugin)
+        } else {
+            val newList = ObjectArrayList<Plugin.(Event) -> Unit>(1)
+            newList.add(plugin)
+            eventPlugins[event] = newList
+        }
+
+        pluginCount++
+    }
+
+    fun <T: Event> executeEvent(p: Player, event: T) {
+        eventPlugins[event::class.java]?.forEach { plugin ->
+            p.executePlugin {
+                plugin.invoke(this, event)
+            }
+        }
+    }
 
     fun bindLogin(plugin: Plugin.() -> Unit) {
         loginPlugins.add(plugin)

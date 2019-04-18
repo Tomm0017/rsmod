@@ -1,6 +1,7 @@
 package gg.rsmod.game.plugin
 
 import gg.rsmod.game.Server
+import gg.rsmod.game.event.Event
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.fs.def.ObjectDef
@@ -231,6 +232,12 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      * Invoke [logic] when [World.postLoad] is handled.
      */
     fun on_world_init(logic: (Plugin).() -> Unit) = r.bindWorldInit(logic)
+
+    /**
+     * Invoke [logic] when an [Event] is triggered.
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun <T: Event> on_event(event: Class<out T>, logic: Plugin.(T) -> Unit) = r.bindEvent(event, logic as Plugin.(Event) -> Unit)
 
     /**
      * Invoke [logic] on player log in.

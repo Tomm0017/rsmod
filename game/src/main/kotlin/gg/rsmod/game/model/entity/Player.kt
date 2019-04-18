@@ -190,7 +190,7 @@ open class Player(world: World) : Pawn(world) {
 
     fun getSkills(): SkillSet = skillSet
 
-    override fun getType(): EntityType = EntityType.PLAYER
+    override val entityType: EntityType = EntityType.PLAYER
 
     /**
      * Checks if the player is running. We assume that the varp with id of
@@ -349,7 +349,7 @@ open class Player(world: World) : Pawn(world) {
      * Handles any logic that should be executed upon log in.
      */
     fun login() {
-        if (getType().isHumanControlled()) {
+        if (entityType.isHumanControlled()) {
             gpiLocalPlayers[index] = this
             gpiLocalIndexes[gpiLocalCount++] = index
 

@@ -61,7 +61,7 @@ suspend fun cycle(it: QueueTask): Boolean {
 
     if (!pathFound) {
         pawn.stopMovement()
-        if (pawn.getType().isNpc()) {
+        if (pawn.entityType.isNpc()) {
             /**
              * Npcs will keep trying to find a path to engage in combat.
              */

@@ -13,7 +13,7 @@ class MapProjAnimUpdate(override val type: EntityUpdateType,
                         override val entity: Projectile) : EntityUpdate<Projectile>(type, entity) {
 
     override fun toMessage(): Message = if (entity.targetPawn != null) {
-        val targetIndex = if (entity.targetPawn.getType().isNpc()) entity.targetPawn.index + 1 else -(entity.targetPawn.index + 1)
+        val targetIndex = if (entity.targetPawn.entityType.isNpc()) entity.targetPawn.index + 1 else -(entity.targetPawn.index + 1)
         MapProjAnimMessage(
                 start = ((entity.tile.x and 0x7) shl 4) or (entity.tile.z and 0x7),
                 pawnTargetIndex = targetIndex, offsetX = entity.targetTile.x - entity.tile.x, offsetZ = entity.targetTile.z - entity.tile.z,

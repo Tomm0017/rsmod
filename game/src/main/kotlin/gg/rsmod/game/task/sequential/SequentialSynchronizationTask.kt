@@ -35,7 +35,7 @@ class SequentialSynchronizationTask : GameTask {
              * to send any synchronization data to their game-client as they do
              * not have one.
              */
-            if (p.getType().isHumanControlled() && p.initiated) {
+            if (p.entityType.isHumanControlled() && p.initiated) {
                 PlayerSynchronizationTask.run(p)
             }
         }
@@ -46,7 +46,7 @@ class SequentialSynchronizationTask : GameTask {
              * to send any synchronization data to their game-client as they do
              * not have one.
              */
-            if (p.getType().isHumanControlled() && p.initiated) {
+            if (p.entityType.isHumanControlled() && p.initiated) {
                 npcSync.run(p)
             }
         }

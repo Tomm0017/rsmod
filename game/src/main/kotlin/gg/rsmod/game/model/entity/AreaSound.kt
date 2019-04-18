@@ -15,5 +15,5 @@ class AreaSound private constructor(val id: Int, val radius: Int, val volume: In
         this.tile = tile
     }
 
-    override fun getType(): EntityType = EntityType.AREA_SOUND
+    override val entityType: EntityType = EntityType.AREA_SOUND
 }

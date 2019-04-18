@@ -42,7 +42,7 @@ class Projectile private constructor(val targetPawn: Pawn?, val targetTile: Tile
                                      val gfx: Int, val startHeight: Int, val endHeight: Int,
                                      val steepness: Int, val angle: Int, val delay: Int, val lifespan: Int) : Entity() {
 
-    override fun getType(): EntityType = EntityType.PROJECTILE
+    override val entityType: EntityType = EntityType.PROJECTILE
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("start", tile).add("targetPawn", targetPawn)
             .add("targetTile", targetTile).add("gfx", gfx).add("startHeight", startHeight)

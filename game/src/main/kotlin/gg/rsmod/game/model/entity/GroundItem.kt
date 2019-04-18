@@ -28,7 +28,7 @@ class GroundItem private constructor(val item: Int, var amount: Int, internal va
 
     internal var respawnCycles = -1
 
-    override fun getType(): EntityType = EntityType.GROUND_ITEM
+    override val entityType: EntityType = EntityType.GROUND_ITEM
 
     fun isOwnedBy(p: Player): Boolean = ownerUID != null && p.uid.value == ownerUID!!.value
 

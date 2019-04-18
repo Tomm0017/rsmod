@@ -14,5 +14,5 @@ class DynamicObject(id: Int, type: Int, rot: Int, tile: Tile) : GameObject(id, t
 
     constructor(other: GameObject, id: Int) : this(id, other.type, other.rot, Tile(other.tile))
 
-    override fun getType(): EntityType = EntityType.DYNAMIC_OBJECT
+    override val entityType: EntityType = EntityType.DYNAMIC_OBJECT
 }

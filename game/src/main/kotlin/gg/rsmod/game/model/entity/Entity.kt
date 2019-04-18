@@ -16,7 +16,7 @@ abstract class Entity {
      */
     lateinit var tile: Tile
 
-    abstract fun getType(): EntityType
+    abstract val entityType: EntityType
 
     companion object {
         const val NOTHING_INTERESTING_HAPPENS = "Nothing interesting happens."

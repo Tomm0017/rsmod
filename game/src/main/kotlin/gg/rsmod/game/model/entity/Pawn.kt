@@ -236,7 +236,7 @@ abstract class Pawn(val world: World) : Entity() {
          * combat <strong>unless</strong> they have a custom npc combat plugin
          * bound to their npc id.
          */
-        if (getType().isPlayer() || this is Npc && !world.plugins.executeNpcCombat(this)) {
+        if (entityType.isPlayer() || this is Npc && !world.plugins.executeNpcCombat(this)) {
             world.plugins.executeCombat(this)
         }
     }
@@ -315,7 +315,7 @@ abstract class Pawn(val world: World) : Entity() {
                         if (getCurrentHp() <= 0) {
                             hit.actions.forEach { action -> action() }
                             interruptQueues()
-                            if (getType().isPlayer()) {
+                            if (entityType.isPlayer()) {
                                 executePlugin(PlayerDeathAction.deathPlugin)
                             } else {
                                 executePlugin(NpcDeathAction.deathPlugin)
@@ -511,7 +511,7 @@ abstract class Pawn(val world: World) : Entity() {
     }
 
     fun faceTile(face: Tile, width: Int = 1, length: Int = 1) {
-        if (getType().isPlayer()) {
+        if (entityType.isPlayer()) {
             val srcX = tile.x * 64
             val srcZ = tile.z * 64
             val dstX = face.x * 64
@@ -524,7 +524,7 @@ abstract class Pawn(val world: World) : Entity() {
             degreesZ += (Math.floor(length / 2.0)) * 32
 
             blockBuffer.faceDegrees = (Math.atan2(degreesX, degreesZ) * 325.949).toInt() and 0x7ff
-        } else if (getType().isNpc()) {
+        } else if (entityType.isNpc()) {
             blockBuffer.faceDegrees = (face.x shl 16) or face.z
         }
 
@@ -535,7 +535,7 @@ abstract class Pawn(val world: World) : Entity() {
     fun facePawn(pawn: Pawn) {
         blockBuffer.faceDegrees = 0
 
-        val index = if (pawn.getType().isPlayer()) pawn.index + 32768 else pawn.index
+        val index = if (pawn.entityType.isPlayer()) pawn.index + 32768 else pawn.index
         if (blockBuffer.facePawnIndex != index) {
             blockBuffer.faceDegrees = 0
             blockBuffer.facePawnIndex = index
@@ -594,6 +594,6 @@ abstract class Pawn(val world: World) : Entity() {
         } else {
             world.collision
         }
-        return if (getType().isPlayer()) BFSPathFindingStrategy(collision) else SimplePathFindingStrategy(collision)
+        return if (entityType.isPlayer()) BFSPathFindingStrategy(collision) else SimplePathFindingStrategy(collision)
     }
 }

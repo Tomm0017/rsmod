@@ -22,9 +22,9 @@ class DamageMap {
 
     /**
      * Get all [DamageStack]s dealt by [Pawn]s whom meets the criteria
-     * [Pawn.getType] == [type].
+     * [Pawn.entityType] == [type].
      */
-    fun getAll(type: EntityType, timeFrameMs: Long? = null): Collection<DamageStack> = map.filter { it.key.getType() == type && (timeFrameMs == null || System.currentTimeMillis() - it.value.lastHit < timeFrameMs) }.values
+    fun getAll(type: EntityType, timeFrameMs: Long? = null): Collection<DamageStack> = map.filter { it.key.entityType == type && (timeFrameMs == null || System.currentTimeMillis() - it.value.lastHit < timeFrameMs) }.values
 
     /**
      * Get the total damage from a [pawn].
@@ -41,9 +41,9 @@ class DamageMap {
 
     /**
      * Gets the most damage dealt by a [Pawn] in our map whom meets the criteria
-     * [Pawn.getType] == [type].
+     * [Pawn.entityType] == [type].
      */
-    fun getMostDamage(type: EntityType, timeFrameMs: Long? = null): Pawn? = map.filter { it.key.getType() == type && (timeFrameMs == null || System.currentTimeMillis() - it.value.lastHit < timeFrameMs) }.maxBy { it.value.totalDamage }?.key
+    fun getMostDamage(type: EntityType, timeFrameMs: Long? = null): Pawn? = map.filter { it.key.entityType == type && (timeFrameMs == null || System.currentTimeMillis() - it.value.lastHit < timeFrameMs) }.maxBy { it.value.totalDamage }?.key
 
     data class DamageStack(val totalDamage: Int, val lastHit: Long)
 }

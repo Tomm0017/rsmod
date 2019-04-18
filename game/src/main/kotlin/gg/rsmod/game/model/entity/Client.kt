@@ -69,7 +69,7 @@ class Client(val channel: Channel, world: World) : Player(world) {
 
     var cameraYaw = 0
 
-    override fun getType(): EntityType = EntityType.CLIENT
+    override val entityType: EntityType = EntityType.CLIENT
 
     override fun handleLogout() {
         super.handleLogout()

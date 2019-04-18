@@ -11,5 +11,5 @@ import gg.rsmod.game.model.Tile
  */
 class StaticObject(id: Int, type: Int, rot: Int, tile: Tile) : GameObject(id, type, rot, tile) {
 
-    override fun getType(): EntityType = EntityType.STATIC_OBJECT
+    override val entityType: EntityType = EntityType.STATIC_OBJECT
 }

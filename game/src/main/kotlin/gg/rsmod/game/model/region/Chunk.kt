@@ -81,7 +81,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         /*
          * Objects will affect the collision map.
          */
-        if (entity.getType().isObject()) {
+        if (entity.entityType.isObject()) {
             world.collision.applyCollision(world.definitions, entity as GameObject, CollisionUpdate.Type.ADD)
         }
 
@@ -89,7 +89,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
          * Transient entities will <strong>not</strong> be registered to one of
          * our [Chunk]'s tiles.
          */
-        if (!entity.getType().isTransient()) {
+        if (!entity.entityType.isTransient()) {
             val list = entities[tile] ?: ObjectArrayList(1)
             list.add(entity)
             entities[tile] = list
@@ -105,13 +105,13 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
              * for them to view since the client is already aware of them as
              * they are loaded from the game resources (cache).
              */
-            if (entity.getType() != EntityType.STATIC_OBJECT) {
+            if (entity.entityType != EntityType.STATIC_OBJECT) {
                 /*
                  * [EntityType]s marked as transient will only be sent to local
                  * players who are currently in the viewport, but will now be
                  * sent to players who enter the region later on.
                  */
-                if (!entity.getType().isTransient()) {
+                if (!entity.entityType.isTransient()) {
                     updates.add(update)
                 }
                 /*
@@ -127,13 +127,13 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
          * Transient entities do not get added to our [Chunk]'s tiles, so no use
          * in trying to remove it.
          */
-        check(!entity.getType().isTransient()) { "Transient entities cannot be removed from chunks." }
+        check(!entity.entityType.isTransient()) { "Transient entities cannot be removed from chunks." }
 
         /*
          * [EntityType]s that are considered objects will be removed from our
          * collision map.
          */
-        if (entity.getType().isObject()) {
+        if (entity.entityType.isObject()) {
             world.collision.applyCollision(world.definitions, entity as GameObject, CollisionUpdate.Type.REMOVE)
         }
 
@@ -153,7 +153,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
              * This is done because the client will always load [EntityType.STATIC_OBJECT]
              * through the game resources and have to be removed manually by our server.
              */
-            if (entity.getType() == EntityType.STATIC_OBJECT) {
+            if (entity.entityType == EntityType.STATIC_OBJECT) {
                 updates.add(update)
             } else {
                 updates.removeIf { it.entity == entity }
@@ -228,14 +228,14 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         if (p.tile.height != entity.tile.height) {
             return false
         }
-        if (entity.getType().isGroundItem()) {
+        if (entity.entityType.isGroundItem()) {
             val item = entity as GroundItem
             return item.isPublic() || item.isOwnedBy(p)
         }
         return true
     }
 
-    private fun <T: Entity> createUpdateFor(entity: T, spawn: Boolean): EntityUpdate<*>? = when (entity.getType()) {
+    private fun <T: Entity> createUpdateFor(entity: T, spawn: Boolean): EntityUpdate<*>? = when (entity.entityType) {
         EntityType.DYNAMIC_OBJECT, EntityType.STATIC_OBJECT ->
             if (spawn) LocAddChangeUpdate(EntityUpdateType.SPAWN_OBJECT, entity as GameObject)
             else LocDelUpdate(EntityUpdateType.REMOVE_OBJECT, entity as GameObject)
@@ -246,20 +246,20 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
 
         EntityType.PROJECTILE ->
             if (spawn) MapProjAnimUpdate(EntityUpdateType.SPAWN_PROJECTILE, entity as Projectile)
-            else throw RuntimeException("${entity.getType()} can only be spawned, not removed!")
+            else throw RuntimeException("${entity.entityType} can only be spawned, not removed!")
 
         EntityType.AREA_SOUND ->
             if (spawn) SoundAreaUpdate(EntityUpdateType.PLAY_TILE_SOUND, entity as AreaSound)
-            else throw RuntimeException("${entity.getType()} can only be spawned, not removed!")
+            else throw RuntimeException("${entity.entityType} can only be spawned, not removed!")
 
         else -> null
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getEntities(vararg types: EntityType): List<T> = entities.values.flatten().filter { it.getType() in types } as List<T>
+    fun <T> getEntities(vararg types: EntityType): List<T> = entities.values.flatten().filter { it.entityType in types } as List<T>
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> getEntities(tile: Tile, vararg types: EntityType): List<T> = entities[tile]?.filter { it.getType() in types } as? List<T> ?: emptyList()
+    fun <T> getEntities(tile: Tile, vararg types: EntityType): List<T> = entities[tile]?.filter { it.entityType in types } as? List<T> ?: emptyList()
 
     companion object {
         /**

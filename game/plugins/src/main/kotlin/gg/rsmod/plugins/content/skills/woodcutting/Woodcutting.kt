@@ -6,10 +6,7 @@ import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.api.Skills
-import gg.rsmod.plugins.api.ext.filterableMessage
-import gg.rsmod.plugins.api.ext.interpolate
-import gg.rsmod.plugins.api.ext.playSound
-import gg.rsmod.plugins.api.ext.player
+import gg.rsmod.plugins.api.ext.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -40,7 +37,7 @@ object Woodcutting {
 
             val level = p.getSkills().getCurrentLevel(Skills.WOODCUTTING)
             if (level.interpolate(minChance = 60, maxChance = 190, minLvl = 1, maxLvl = 99, cap = 255)) {
-                p.filterableMessage("You get some ${logName}s.")
+                p.filterableMessage("You get some ${logName.pluralSuffix(1)}.")
                 p.playSound(3600)
                 p.inventory.add(tree.log)
                 p.addXp(Skills.WOODCUTTING, tree.xp)

@@ -78,7 +78,7 @@ object Combat {
         val blockAnimation = CombatConfigs.getBlockAnimation(target)
         target.animate(blockAnimation)
 
-        if (target is Npc) {
+        if (target.getType().isNpc()) {
             if (!target.attr.has(COMBAT_TARGET_FOCUS_ATTR) || target.attr[COMBAT_TARGET_FOCUS_ATTR]!!.get() != pawn) {
                 target.attack(pawn)
             }

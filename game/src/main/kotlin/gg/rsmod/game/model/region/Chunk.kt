@@ -225,6 +225,9 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
      * Checks to see if player [p] is able to view [entity].
      */
     private fun canBeViewed(p: Player, entity: Entity): Boolean {
+        if (p.tile.height != entity.tile.height) {
+            return false
+        }
         if (entity.getType().isGroundItem()) {
             val item = entity as GroundItem
             return item.isPublic() || item.isOwnedBy(p)

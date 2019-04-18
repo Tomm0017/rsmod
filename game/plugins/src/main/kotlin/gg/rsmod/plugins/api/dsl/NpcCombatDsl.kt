@@ -263,7 +263,6 @@ object NpcCombatDsl {
 
     @CombatDslMarker
     class SlayerBuilder {
-
         /**
          * The Slayer level requirement needed to kill the npc.
          */

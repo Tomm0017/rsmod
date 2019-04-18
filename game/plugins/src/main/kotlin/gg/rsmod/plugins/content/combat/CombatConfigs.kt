@@ -28,6 +28,31 @@ object CombatConfigs {
 
     private const val MIN_ATTACK_SPEED = 1
 
+    private val DEFENDERS = intArrayOf(
+            Items.BRONZE_DEFENDER, Items.IRON_DEFENDER, Items.STEEL_DEFENDER,
+            Items.MITHRIL_DEFENDER, Items.BLACK_DEFENDER, Items.ADAMANT_DEFENDER,
+            Items.RUNE_DEFENDER, Items.DRAGON_DEFENDER, Items.DRAGON_DEFENDER_T,
+            Items.AVERNIC_DEFENDER
+    )
+
+    private val BOOKS = intArrayOf(
+            Items.HOLY_BOOK, Items.BOOK_OF_BALANCE, Items.UNHOLY_BOOK,
+            Items.BOOK_OF_LAW, Items.BOOK_OF_WAR, Items.BOOK_OF_DARKNESS,
+            Items.MAGES_BOOK, Items.TOME_OF_FIRE, Items.TOME_OF_FIRE_EMPTY
+    )
+
+    private val BOXING_GLOVES = intArrayOf(
+            Items.BOXING_GLOVES, Items.BOXING_GLOVES_7673, Items.BEACH_BOXING_GLOVES,
+            Items.BEACH_BOXING_GLOVES_11706
+    )
+
+    private val GODSWORDS = intArrayOf(
+            Items.ARMADYL_GODSWORD, Items.ARMADYL_GODSWORD_OR,
+            Items.BANDOS_GODSWORD, Items.BANDOS_GODSWORD_OR,
+            Items.SARADOMIN_GODSWORD, Items.SARADOMIN_GODSWORD_OR,
+            Items.ZAMORAK_GODSWORD, Items.ZAMORAK_GODSWORD_OR
+    )
+
     fun getCombatStrategy(pawn: Pawn): CombatStrategy = when (getCombatClass(pawn)) {
         CombatClass.MELEE -> MeleeCombatStrategy
         CombatClass.MAGIC -> MagicCombatStrategy
@@ -92,6 +117,41 @@ object CombatConfigs {
                 pawn.hasWeaponType(WeaponType.SPEAR) || pawn.hasWeaponType(WeaponType.HALBERD) -> if (style == 1) 440 else if (style == 2) 429 else 428
                 pawn.hasWeaponType(WeaponType.CLAWS) -> 393
                 else -> if (style == 1) 423 else 422
+            }
+        }
+
+        throw IllegalArgumentException("Invalid pawn type.")
+    }
+
+    fun getBlockAnimation(pawn: Pawn): Int {
+        if (pawn is Npc) {
+            return pawn.combatDef.blockAnimation
+        }
+
+        if (pawn is Player) {
+            return when {
+                pawn.hasEquipped(EquipmentType.SHIELD, *BOOKS) -> 420
+                pawn.hasEquipped(EquipmentType.WEAPON, Items.SLED_4084) -> 1466
+                pawn.hasEquipped(EquipmentType.WEAPON, Items.EASTER_BASKET) -> 1834
+                pawn.hasEquipped(EquipmentType.SHIELD, *DEFENDERS) -> 4177
+                pawn.getEquipment(EquipmentType.SHIELD) != null -> 1156 // If wearing any shield, this animation is used
+
+                pawn.hasEquipped(EquipmentType.WEAPON, *BOXING_GLOVES) -> 3679
+                pawn.hasEquipped(EquipmentType.WEAPON, *GODSWORDS) -> 7056
+                pawn.hasEquipped(EquipmentType.WEAPON, Items.LIGHT_BALLISTA, Items.HEAVY_BALLISTA) -> 7219
+                pawn.hasEquipped(EquipmentType.WEAPON, Items.ZAMORAKIAN_SPEAR) -> 1709
+
+                pawn.hasWeaponType(WeaponType.DAGGER) -> 378
+                pawn.hasWeaponType(WeaponType.LONG_SWORD) -> 388
+                pawn.hasWeaponType(WeaponType.PICKAXE, WeaponType.CLAWS) -> 397
+                pawn.hasWeaponType(WeaponType.MACE) -> 403
+                pawn.hasWeaponType(WeaponType.TWO_HANDED) -> 410
+                pawn.hasWeaponType(WeaponType.MAGIC_STAFF) -> 420
+                pawn.hasWeaponType(WeaponType.BOW) -> 424
+                pawn.hasWeaponType(WeaponType.SPEAR, WeaponType.HALBERD) -> 430
+                pawn.hasWeaponType(WeaponType.WHIP) -> 1659
+                pawn.hasWeaponType(WeaponType.BULWARK) -> 7512
+                else -> 424
             }
         }
 

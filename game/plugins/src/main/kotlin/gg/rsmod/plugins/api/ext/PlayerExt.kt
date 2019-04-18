@@ -54,7 +54,7 @@ fun Player.message(message: String, type: ChatMessageType = ChatMessageType.CONS
 }
 
 fun Player.filterableMessage(message: String) {
-    write(MessageGameMessage(type = ChatMessageType.FILTERED.id, message = message, username = null))
+    write(MessageGameMessage(type = ChatMessageType.SPAM.id, message = message, username = null))
 }
 
 fun Player.runClientScript(id: Int, vararg args: Any) {

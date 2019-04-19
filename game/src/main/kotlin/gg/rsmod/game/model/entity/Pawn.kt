@@ -2,6 +2,7 @@ package gg.rsmod.game.model.entity
 
 import gg.rsmod.game.action.NpcDeathAction
 import gg.rsmod.game.action.PlayerDeathAction
+import gg.rsmod.game.event.Event
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.attr.*
@@ -585,6 +586,10 @@ abstract class Pawn(val world: World) : Entity() {
     fun <T> executePlugin(logic: Plugin.() -> T): T {
         val plugin = Plugin(this)
         return logic(plugin)
+    }
+
+    fun triggerEvent(event: Event) {
+        world.plugins.executeEvent(this, event)
     }
 
     internal fun createPathFindingStrategy(copyChunks: Boolean = false): PathFindingStrategy {

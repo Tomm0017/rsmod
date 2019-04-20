@@ -67,5 +67,4 @@ class OpLocUHandler : MessageHandler<OpLocUMessage> {
 
         client.executePlugin(ObjectPathAction.itemOnObjectPlugin)
     }
-
 }

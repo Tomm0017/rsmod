@@ -127,5 +127,5 @@ class DumpEntityIdService : Service {
         writer.close()
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

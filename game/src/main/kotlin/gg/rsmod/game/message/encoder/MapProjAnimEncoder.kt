@@ -24,5 +24,4 @@ class MapProjAnimEncoder : MessageEncoder<MapProjAnimMessage>() {
     }
 
     override fun extractBytes(message: MapProjAnimMessage, key: String): ByteArray = throw Exception("Unhandled value key.")
-
 }

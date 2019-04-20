@@ -36,5 +36,5 @@ class PacketMetadata(private val structures: MessageStructureSet) : IPacketMetad
         return structure.ignore
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

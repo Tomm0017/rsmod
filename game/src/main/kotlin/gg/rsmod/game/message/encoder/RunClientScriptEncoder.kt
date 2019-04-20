@@ -46,5 +46,5 @@ class RunClientScriptEncoder : MessageEncoder<RunClientScriptMessage>() {
         else -> throw Exception("Unhandled value key.")
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

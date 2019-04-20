@@ -10,6 +10,5 @@ import gg.rsmod.game.model.entity.Client
 class EventKeyboardHandler : MessageHandler<EventKeyboardMessage> {
 
     override fun handle(client: Client, message: EventKeyboardMessage) {
-
     }
 }

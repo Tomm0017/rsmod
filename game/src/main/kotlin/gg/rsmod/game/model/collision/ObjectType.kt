@@ -77,5 +77,4 @@ enum class ObjectType(val value: Int, val group: ObjectGroup) {
     companion object {
         val values = enumValues<ObjectType>()
     }
-
 }

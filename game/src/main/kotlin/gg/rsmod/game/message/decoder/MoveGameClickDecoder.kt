@@ -15,5 +15,4 @@ class MoveGameClickDecoder : MessageDecoder<MoveGameClickMessage>() {
 
         return MoveGameClickMessage(x, z, type)
     }
-
 }

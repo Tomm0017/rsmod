@@ -88,7 +88,7 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
         phaser.arriveAndAwaitAdvance()
     }
 
-    private fun <T: Pawn> submit(phaser: Phaser, executor: ExecutorService, pawn: T, task: SynchronizationTask<T>) {
+    private fun <T : Pawn> submit(phaser: Phaser, executor: ExecutorService, pawn: T, task: SynchronizationTask<T>) {
         executor.execute {
             try {
                 task.run(pawn)
@@ -100,5 +100,5 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
         }
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

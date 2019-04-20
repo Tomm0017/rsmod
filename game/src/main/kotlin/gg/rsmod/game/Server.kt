@@ -205,5 +205,5 @@ class Server {
 
     fun getApiSite(): String = apiProperties.getOrDefault("org-site", "rspsmods.com")
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

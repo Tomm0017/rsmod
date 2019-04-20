@@ -7,7 +7,7 @@ import gg.rsmod.game.model.entity.Pawn
  *
  * @author Tom <rspsmods@gmail.com>
  */
-interface SynchronizationTask<T: Pawn> {
+interface SynchronizationTask<T : Pawn> {
 
     fun run(pawn: T)
 }

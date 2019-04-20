@@ -16,5 +16,4 @@ class OpObj3Decoder : MessageDecoder<OpObj3Message>() {
 
         return OpObj3Message(item, x, z, movementType)
     }
-
 }

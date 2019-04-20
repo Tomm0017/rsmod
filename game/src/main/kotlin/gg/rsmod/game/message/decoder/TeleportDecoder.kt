@@ -15,5 +15,4 @@ class TeleportDecoder : MessageDecoder<TeleportMessage>() {
         val height = values["height"]!!.toInt()
         return TeleportMessage(unknown, x, z, height)
     }
-
 }

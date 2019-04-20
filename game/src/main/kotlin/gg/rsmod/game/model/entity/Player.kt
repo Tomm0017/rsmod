@@ -96,9 +96,9 @@ open class Player(world: World) : Pawn(world) {
      * A map that contains all the [ItemContainer]s a player can have.
      */
     val containers = HashMap<ContainerKey, ItemContainer>().apply {
-        put(INVENTORY_KEY,  inventory)
-        put(EQUIPMENT_KEY,  equipment)
-        put(BANK_KEY,       bank)
+        put(INVENTORY_KEY, inventory)
+        put(EQUIPMENT_KEY, equipment)
+        put(BANK_KEY, bank)
     }
 
     val interfaces by lazy { InterfaceSet(this) }
@@ -483,7 +483,6 @@ open class Player(world: World) : Pawn(world) {
      * handled unless the [Player] is controlled by a [Client] user.
      */
     open fun handleMessages() {
-
     }
 
     /**
@@ -491,11 +490,9 @@ open class Player(world: World) : Pawn(world) {
      * be handled unless the [Player] is controlled by a [Client] user.
      */
     open fun write(vararg messages: Message) {
-
     }
 
     open fun write(vararg messages: Any) {
-
     }
 
     /**
@@ -503,7 +500,6 @@ open class Player(world: World) : Pawn(world) {
      * the [Player] is controlled by a [Client] user.
      */
     open fun channelFlush() {
-
     }
 
     /**
@@ -511,7 +507,6 @@ open class Player(world: World) : Pawn(world) {
      * the [Player] is controlled by a [Client] user.
      */
     open fun channelClose() {
-
     }
 
     /**

@@ -89,7 +89,6 @@ object ObjectPathAction {
                 }
             }
         }
-
     }
 
     private suspend fun QueueTask.walkTo(obj: GameObject, lineOfSightRange: Int?): Route {

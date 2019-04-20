@@ -84,5 +84,5 @@ class GamePacketDecoder(private val random: IsaacRandom?, private val packetMeta
         }
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

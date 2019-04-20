@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference
 
 /**
  * This class is responsible for moving towards a [GroundItem].
- * 
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 object GroundItemPathAction {

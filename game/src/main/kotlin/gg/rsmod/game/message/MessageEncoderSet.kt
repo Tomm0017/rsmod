@@ -60,12 +60,12 @@ class MessageEncoderSet {
         put(UpdateRebootTimerEncoder(), UpdateRebootTimerMessage::class.java)
     }
 
-    private fun <T: Message> put(encoder: MessageEncoder<T>, message: Class<out T>) {
+    private fun <T : Message> put(encoder: MessageEncoder<T>, message: Class<out T>) {
         encoders[message] = encoder
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T: Message> get(type: Class<out T>): MessageEncoder<Message>? {
+    fun <T : Message> get(type: Class<out T>): MessageEncoder<Message>? {
         return encoders[type] as? MessageEncoder<Message>
     }
 }

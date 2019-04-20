@@ -172,5 +172,5 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                                @JsonProperty("xp") val xp: Double,
                                @JsonProperty("lvl") val lvl: Int)
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

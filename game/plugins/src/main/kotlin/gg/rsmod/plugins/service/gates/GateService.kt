@@ -38,5 +38,5 @@ class GateService : Service {
     override fun terminate(server: Server, world: World) {
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

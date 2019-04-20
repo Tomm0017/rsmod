@@ -8,7 +8,7 @@ import gg.rsmod.game.model.entity.Client
  *
  * @author Tom <rspsmods@gmail.com>
  */
-interface MessageHandler<T: Message> {
+interface MessageHandler<T : Message> {
 
     /**
      * Handles the [message] on the game-thread with the ability to read and write

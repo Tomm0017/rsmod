@@ -299,7 +299,7 @@ class GameService : Service {
         }
     }
 
-    companion object: KLogging() {
+    companion object : KLogging() {
 
         /**
          * The amount of ticks that must go by for debug info to be logged.

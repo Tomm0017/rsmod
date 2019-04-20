@@ -132,5 +132,5 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
         return result
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

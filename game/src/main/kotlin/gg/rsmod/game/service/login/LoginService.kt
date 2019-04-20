@@ -93,5 +93,5 @@ class LoginService : Service {
         client.channel.flush()
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

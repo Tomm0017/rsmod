@@ -62,5 +62,5 @@ class HandshakeDecoder(private val revision: Int, private val cacheCrcs: IntArra
         out.add(HandshakeMessage(handshake.id))
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

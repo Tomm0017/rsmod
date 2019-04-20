@@ -75,6 +75,13 @@ task extractDependencies(type: Copy) {
     into 'build/deps'
 }
 
+task ktlint(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
+    args "src/**/*.kt"
+}
+
 applicationDistribution.from("$rootDir/data/") {
     into 'bin/data/'
     include '**'

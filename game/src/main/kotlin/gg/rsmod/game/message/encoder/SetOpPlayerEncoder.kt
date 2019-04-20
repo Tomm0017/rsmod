@@ -24,5 +24,4 @@ class SetOpPlayerEncoder : MessageEncoder<SetOpPlayerMessage>() {
         "index" -> message.index + 1
         else -> throw Exception("Unhandled value key.")
     }
-
 }

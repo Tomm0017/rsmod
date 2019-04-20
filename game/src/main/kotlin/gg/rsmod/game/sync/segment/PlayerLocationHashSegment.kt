@@ -31,22 +31,25 @@ class PlayerLocationHashSegment(private val lastHash: Int, private val currHash:
             val direction: Int
             val dx = currX - lastX
             val dy = currZ - lastZ
-            if (dx == -1 && dy == -1)
+
+            if (dx == -1 && dy == -1) {
                 direction = 0
-            else if (dx == 1 && dy == -1)
+            } else if (dx == 1 && dy == -1) {
                 direction = 2
-            else if (dx == -1 && dy == 1)
+            } else if (dx == -1 && dy == 1) {
                 direction = 5
-            else if (dx == 1 && dy == 1)
+            } else if (dx == 1 && dy == 1) {
                 direction = 7
-            else if (dy == -1)
+            } else if (dy == -1) {
                 direction = 1
-            else if (dx == -1)
+            } else if (dx == -1) {
                 direction = 3
-            else if (dx == 1)
+            } else if (dx == 1) {
                 direction = 4
-            else
+            } else {
                 direction = 6
+            }
+
             buf.putBits(2, 2)
             buf.putBits(2, diffH)
             buf.putBits(3, direction)

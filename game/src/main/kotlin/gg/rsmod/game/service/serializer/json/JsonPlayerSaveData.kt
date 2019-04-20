@@ -57,5 +57,4 @@ data class JsonPlayerSaveData(val passwordHash: String, val username: String, va
         result = 31 * result + varps.hashCode()
         return result
     }
-
 }

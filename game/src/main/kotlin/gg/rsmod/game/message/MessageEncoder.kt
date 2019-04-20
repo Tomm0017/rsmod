@@ -10,7 +10,7 @@ import gg.rsmod.net.packet.GamePacketBuilder
  *
  * @author Tom <rspsmods@gmail.com>
  */
-abstract class MessageEncoder<T: Message> {
+abstract class MessageEncoder<T : Message> {
 
     /**
      * Writes data from the [message] into [builder] based on the [structure].

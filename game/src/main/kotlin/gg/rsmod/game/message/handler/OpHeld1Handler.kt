@@ -44,5 +44,4 @@ class OpHeld1Handler : MessageHandler<OpHeld1Message> {
             client.message("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=1]")
         }
     }
-
 }

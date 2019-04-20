@@ -12,5 +12,4 @@ class OpLoc6Decoder : MessageDecoder<OpLoc6Message>() {
         val id = values["id"]!!.toInt()
         return OpLoc6Message(id)
     }
-
 }

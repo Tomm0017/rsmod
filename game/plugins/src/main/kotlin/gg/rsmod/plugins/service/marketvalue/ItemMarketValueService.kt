@@ -47,5 +47,5 @@ class ItemMarketValueService : Service {
         return 0
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

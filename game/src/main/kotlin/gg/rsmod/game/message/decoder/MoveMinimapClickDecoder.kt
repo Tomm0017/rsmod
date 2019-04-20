@@ -15,5 +15,4 @@ class MoveMinimapClickDecoder : MessageDecoder<MoveMinimapClickMessage>() {
 
         return MoveMinimapClickMessage(x, z, type)
     }
-
 }

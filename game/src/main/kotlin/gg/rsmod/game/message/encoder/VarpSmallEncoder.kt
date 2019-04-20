@@ -17,5 +17,4 @@ class VarpSmallEncoder : MessageEncoder<VarpSmallMessage>() {
     }
 
     override fun extractBytes(message: VarpSmallMessage, key: String): ByteArray = throw Exception("Unhandled value key.")
-
 }

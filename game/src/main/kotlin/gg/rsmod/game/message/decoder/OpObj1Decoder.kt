@@ -15,5 +15,4 @@ class OpObj1Decoder : MessageDecoder<OpObj1Message>() {
         val movementType = values["movement_type"]!!.toInt()
         return OpObj1Message(item, x, z, movementType)
     }
-
 }

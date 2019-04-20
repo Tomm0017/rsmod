@@ -456,7 +456,7 @@ class PluginRepository(val world: World) {
         playerOptionPlugins[option] = plugin
     }
 
-    fun executePlayerOption(player: Player, option: String) : Boolean {
+    fun executePlayerOption(player: Player, option: String): Boolean {
         val logic = playerOptionPlugins[option] ?: return false
         player.executePlugin(logic)
         return true
@@ -549,7 +549,7 @@ class PluginRepository(val world: World) {
 
     fun isMenuOpened(p: Player): Boolean = if (isMenuOpenedPlugin != null) p.executePlugin(isMenuOpenedPlugin!!) else false
 
-    fun <T: Event> bindEvent(event: Class<T>, plugin: Plugin.(Event) -> Unit) {
+    fun <T : Event> bindEvent(event: Class<T>, plugin: Plugin.(Event) -> Unit) {
         val plugins = eventPlugins[event]
         if (plugins != null) {
             plugins.add(plugin)
@@ -562,7 +562,7 @@ class PluginRepository(val world: World) {
         pluginCount++
     }
 
-    fun <T: Event> executeEvent(p: Pawn, event: T) {
+    fun <T : Event> executeEvent(p: Pawn, event: T) {
         eventPlugins[event::class.java]?.forEach { plugin ->
             p.executePlugin {
                 plugin.invoke(this, event)
@@ -962,7 +962,7 @@ class PluginRepository(val world: World) {
         pluginCount++
     }
 
-    fun executeItemOnObject(p: Player, obj: Int, item: Int) : Boolean {
+    fun executeItemOnObject(p: Player, obj: Int, item: Int): Boolean {
         val plugins = itemOnObjectPlugins[item] ?: return false
         val logic = plugins[obj] ?: return false
         p.executePlugin(logic)
@@ -1050,5 +1050,5 @@ class PluginRepository(val world: World) {
         }
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

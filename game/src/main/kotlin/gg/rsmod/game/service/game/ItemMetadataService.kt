@@ -254,10 +254,10 @@ class ItemMetadataService : Service {
             result = 31 * result + (skillReqs?.contentHashCode() ?: 0)
             return result
         }
-
     }
+
     private data class SkillRequirement(@JsonProperty("skill") val skill: String?,
                                         @JsonProperty("level") val level: Int?)
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

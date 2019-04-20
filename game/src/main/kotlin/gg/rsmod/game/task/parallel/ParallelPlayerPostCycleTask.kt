@@ -33,5 +33,4 @@ class ParallelPlayerPostCycleTask(private val executor: ExecutorService) : GameT
         }
         phaser.arriveAndAwaitAdvance()
     }
-
 }

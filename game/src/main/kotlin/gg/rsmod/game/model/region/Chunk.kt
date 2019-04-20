@@ -235,7 +235,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         return true
     }
 
-    private fun <T: Entity> createUpdateFor(entity: T, spawn: Boolean): EntityUpdate<*>? = when (entity.entityType) {
+    private fun <T : Entity> createUpdateFor(entity: T, spawn: Boolean): EntityUpdate<*>? = when (entity.entityType) {
         EntityType.DYNAMIC_OBJECT, EntityType.STATIC_OBJECT ->
             if (spawn) LocAddChangeUpdate(EntityUpdateType.SPAWN_OBJECT, entity as GameObject)
             else LocDelUpdate(EntityUpdateType.REMOVE_OBJECT, entity as GameObject)

@@ -9,6 +9,6 @@ import gg.rsmod.net.packet.GamePacketBuilder
 class NpcNoMovementSegment : SynchronizationSegment {
 
     override fun encode(buf: GamePacketBuilder) {
-       buf.putBits(2, 0)
+        buf.putBits(2, 0)
     }
 }

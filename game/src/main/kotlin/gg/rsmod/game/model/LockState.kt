@@ -74,7 +74,7 @@ enum class LockState {
         else -> false
     }
 
-    fun canPlayerInteract() : Boolean = when (this) {
+    fun canPlayerInteract(): Boolean = when (this) {
         NONE -> true
         else -> false
     }

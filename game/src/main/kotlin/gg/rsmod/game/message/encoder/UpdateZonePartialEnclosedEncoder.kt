@@ -31,5 +31,4 @@ class UpdateZonePartialEnclosedEncoder : MessageEncoder<UpdateZonePartialEnclose
         }
         else -> throw Exception("Unhandled value key.")
     }
-
 }

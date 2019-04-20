@@ -40,5 +40,4 @@ class OpPlayer4Handler : MessageHandler<OpPlayer4Message> {
         client.attr[INTERACTING_OPT_ATTR] = option
         client.executePlugin(PawnPathAction.walkPlugin)
     }
-
 }

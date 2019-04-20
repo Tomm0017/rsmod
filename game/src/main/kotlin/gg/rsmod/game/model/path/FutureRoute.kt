@@ -28,7 +28,7 @@ class FutureRoute private constructor(val strategy: PathFindingStrategy, val ste
 
     lateinit var route: Route
 
-    companion object: KLogging() {
+    companion object : KLogging() {
 
         /**
          * Future routes are handled on a separate thread. This should be defined

@@ -103,5 +103,4 @@ class CollisionUpdate private constructor(val type: Type, val flags: Object2Obje
             return isWall || isRoof || isSolidInteractable || isSolidFloorDecoration
         }
     }
-
 }

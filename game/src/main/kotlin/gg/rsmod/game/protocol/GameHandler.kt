@@ -61,7 +61,7 @@ class GameHandler(private val filestore: Store, private val world: World) : Chan
         ctx.channel().close()
     }
 
-    companion object: KLogging() {
+    companion object : KLogging() {
 
         /**
          * An [AttributeKey] that stores the current [ServerSystem] that

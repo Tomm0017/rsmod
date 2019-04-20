@@ -91,7 +91,7 @@ object RangedCombatStrategy : CombatStrategy {
          * A list of actions that will be executed upon this hit dealing damage
          * to the [target].
          */
-        val hitActions = arrayListOf<Function0<Unit>>()
+        val hitActions = mutableListOf<Function0<Unit>>()
         hitActions.add { Combat.postDamage(pawn, target) }
 
         if (pawn is Player) {

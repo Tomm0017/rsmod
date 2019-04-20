@@ -86,7 +86,7 @@ class FilestoreSystem(channel: Channel, private val filestore: Store) : ServerSy
         }
     }
 
-    companion object: KLogging() {
+    companion object : KLogging() {
         private var cachedIndexData: ByteArray? = null
     }
 }

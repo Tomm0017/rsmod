@@ -40,5 +40,5 @@ class GameMessageEncoder(private val encoders: MessageEncoderSet, private val st
         out.add(builder.toGamePacket())
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

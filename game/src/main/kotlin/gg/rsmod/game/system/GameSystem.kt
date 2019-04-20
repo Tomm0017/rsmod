@@ -70,5 +70,5 @@ class GameSystem(channel: Channel, val client: Client, val service: GameService)
 
     private data class MessageHandle(val message: Message, val handler: MessageHandler<Message>, val opcode: Int, val length: Int)
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

@@ -51,5 +51,4 @@ data class MessageStructure(val type: PacketType, val opcodes: IntArray, val len
         result = 31 * result + values.hashCode()
         return result
     }
-
 }

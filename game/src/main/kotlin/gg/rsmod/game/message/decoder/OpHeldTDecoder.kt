@@ -16,5 +16,4 @@ class OpHeldTDecoder : MessageDecoder<OpHeldTMessage>() {
         val itemId = values["item_id"]!!.toInt()
         return OpHeldTMessage(fromComponentHash, toComponentHash, spellSlot, itemSlot, itemId)
     }
-
 }

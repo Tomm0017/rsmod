@@ -42,7 +42,7 @@ object MagicCombatStrategy : CombatStrategy {
          * A list of actions that will be executed upon this hit dealing damage
          * to the [target].
          */
-        val hitActions = arrayListOf<() -> Unit>()
+        val hitActions = mutableListOf<() -> Unit>()
         hitActions.add { Combat.postDamage(pawn, target) }
 
         val spell = pawn.attr[Combat.CASTING_SPELL]!!

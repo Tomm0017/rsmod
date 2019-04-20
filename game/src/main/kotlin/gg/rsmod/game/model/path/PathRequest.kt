@@ -233,7 +233,7 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
          */
         fun createWalkRequest(pawn: Pawn, x: Int, z: Int, projectile: Boolean): PathRequest = Builder()
                 .setPoints(start = Tile(pawn.tile), end = Tile(x, z, pawn.tile.height))
-                .setSourceSize(width = pawn.getSize(), length =  pawn.getSize())
+                .setSourceSize(width = pawn.getSize(), length = pawn.getSize())
                 .setTargetSize(width = 0, length = 0)
                 .setProjectilePath(projectile)
                 .clipPathNodes(node = true, link = true)

@@ -59,7 +59,7 @@ class FilestoreDecoder(private val serverRevision: Int) : StatefulFrameDecoder<F
         }
     }
 
-    companion object: KLogging() {
+    companion object : KLogging() {
         private const val ARCHIVE_REQUEST_URGENT = 0
         private const val ARCHIVE_REQUEST_NEUTRAL = 1
         private const val CLIENT_INIT_GAME = 2

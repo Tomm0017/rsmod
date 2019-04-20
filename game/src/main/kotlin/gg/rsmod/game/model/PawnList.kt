@@ -7,7 +7,7 @@ import gg.rsmod.game.model.entity.Pawn
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class PawnList<T: Pawn>(private val pawns: Array<T?>) {
+class PawnList<T : Pawn>(private val pawns: Array<T?>) {
 
     /**
      * Get the backing array for our pawn list.

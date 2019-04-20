@@ -32,6 +32,6 @@ class MessagePublicDecoder : MessageDecoder<MessagePublicMessage>() {
         val data = ByteArray(reader.readableBytes)
         reader.getBytes(data)
 
-        return MessagePublicMessage(type,  color, effect, length, data)
+        return MessagePublicMessage(type, color, effect, length, data)
     }
 }

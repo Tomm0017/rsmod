@@ -32,6 +32,6 @@ class GamePacketEncoder(private val random: IsaacRandom?) : MessageToByteEncoder
         msg.payload.release()
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 
 }

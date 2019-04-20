@@ -107,7 +107,7 @@ object MagicSpells {
 
                 val interfaceId = componentHash shr 16
                 val component = componentHash and 0xFFFF
-                val runes = arrayListOf<Item>()
+                val runes = mutableListOf<Item>()
 
                 if (params.containsKey(SPELL_RUNE1_ID_KEY)) {
                     runes.add(Item(params[SPELL_RUNE1_ID_KEY] as Int, params[SPELL_RUNE1_AMT_KEY] as Int))

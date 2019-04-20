@@ -113,14 +113,13 @@ class RsaService : Service {
         } catch (e: Exception) {
             logger.error(e) { "Failed to write private key to ${keyPath.toAbsolutePath()}" }
         }
-
     }
 
     fun getExponent(): BigInteger = exponent
 
     fun getModulus(): BigInteger = modulus
 
-    companion object: KLogging() {
+    companion object : KLogging() {
 
         @JvmStatic
         fun main(args: Array<String>) {

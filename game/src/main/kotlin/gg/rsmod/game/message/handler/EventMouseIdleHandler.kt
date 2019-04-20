@@ -10,6 +10,5 @@ import gg.rsmod.game.model.entity.Client
 class EventMouseIdleHandler : MessageHandler<EventMouseIdleMessage> {
 
     override fun handle(client: Client, message: EventMouseIdleMessage) {
-
     }
 }

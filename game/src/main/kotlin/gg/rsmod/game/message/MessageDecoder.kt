@@ -10,7 +10,7 @@ import gg.rsmod.net.packet.GamePacketReader
  *
  * @author Tom <rspsmods@gmail.com>
  */
-abstract class MessageDecoder<T: Message> {
+abstract class MessageDecoder<T : Message> {
 
     /**
      * Decodes the [structure] into value [Map]s that can then be used to create

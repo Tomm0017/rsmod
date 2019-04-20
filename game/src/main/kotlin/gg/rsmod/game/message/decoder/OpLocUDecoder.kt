@@ -20,5 +20,4 @@ class OpLocUDecoder : MessageDecoder<OpLocUMessage>() {
 
         return OpLocUMessage(x = x, z = z, slot = slot, item = item, obj = obj, movementType = movementType)
     }
-
 }

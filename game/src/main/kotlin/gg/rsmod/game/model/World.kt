@@ -338,6 +338,12 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
         }
     }
 
+    fun runNonBlockingTask(task: CoroutineScope.() -> Unit) {
+    }
+
+    fun runBlockingTask(task: CoroutineScope.() -> Unit) {
+    }
+
     fun register(p: Player): Boolean {
         val registered = players.add(p)
         if (registered) {
@@ -492,14 +498,14 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
     }
 
     fun percentChance(chance: Double): Boolean {
-        check(chance in 0.0 .. 100.0) { "Chance must be within range of [0.0 - 100.0]" }
+        check(chance in 0.0..100.0) { "Chance must be within range of [0.0 - 100.0]" }
         return random.nextDouble() <= (chance / 100.0)
     }
 
     fun findRandomTileAround(centre: Tile, radius: Int, centreWidth: Int = 0, centreLength: Int = 0): Tile? {
-        val tiles = arrayListOf<Tile>()
-        for (x in -radius .. radius) {
-            for (z in -radius .. radius) {
+        val tiles = mutableListOf<Tile>()
+        for (x in -radius..radius) {
+            for (z in -radius..radius) {
                 if (x in 0 until centreWidth && z in 0 until centreLength) {
                     continue
                 }
@@ -558,7 +564,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
      * When [searchSubclasses] is false: the service class must be equal to the [type].
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T: Service> getService(type: Class<out T>, searchSubclasses: Boolean = false): T? {
+    fun <T : Service> getService(type: Class<out T>, searchSubclasses: Boolean = false): T? {
         if (searchSubclasses) {
             return services.firstOrNull { type.isAssignableFrom(it::class.java) } as T?
         }
@@ -615,7 +621,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
         services.forEach { it.bindNet(server, this) }
     }
 
-    companion object: KLogging() {
+    companion object : KLogging() {
 
         /**
          * If the [rebootTimer] is active and is less than this value, we will

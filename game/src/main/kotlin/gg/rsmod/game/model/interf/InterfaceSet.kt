@@ -169,5 +169,5 @@ class InterfaceSet(val player: Player) {
      */
     fun getInterfaceAt(parent: Int, child: Int): Int = visible.getOrDefault((parent shl 16) or child, -1)
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

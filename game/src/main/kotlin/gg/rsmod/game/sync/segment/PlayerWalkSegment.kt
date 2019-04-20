@@ -27,5 +27,4 @@ class PlayerWalkSegment(private val encodeUpdateBlocks: Boolean, private val run
          */
         buf.putBits(if (running) 4 else 3, direction)
     }
-
 }

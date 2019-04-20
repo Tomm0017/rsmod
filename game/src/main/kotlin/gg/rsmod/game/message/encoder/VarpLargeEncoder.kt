@@ -1,8 +1,8 @@
 package gg.rsmod.game.message.encoder
 
 import gg.rsmod.game.message.MessageEncoder
-import gg.rsmod.game.message.impl.VarpSmallMessage
 import gg.rsmod.game.message.impl.VarpLargeMessage
+import gg.rsmod.game.message.impl.VarpSmallMessage
 
 /**
  * Responsible for extracting values from the [VarpSmallMessage] based on keys.
@@ -18,5 +18,4 @@ class VarpLargeEncoder : MessageEncoder<VarpLargeMessage>() {
     }
 
     override fun extractBytes(message: VarpLargeMessage, key: String): ByteArray = throw Exception("Unhandled value key.")
-
 }

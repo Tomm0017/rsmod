@@ -6,7 +6,7 @@ import gg.rsmod.game.model.item.Item
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class UpdateInvFullMessage constructor(val items: Array<Item?>, val componentHash: Int, val containerKey: Int): Message{
+class UpdateInvFullMessage constructor(val items: Array<Item?>, val componentHash: Int, val containerKey: Int) : Message {
 
     constructor(parent: Int, child: Int, containerKey: Int, items: Array<Item?>) : this(items, (parent shl 16) or child, containerKey)
 

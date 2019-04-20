@@ -142,8 +142,7 @@ class XteaKeyService : Service {
             result = 31 * result + keys.contentHashCode()
             return result
         }
-
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

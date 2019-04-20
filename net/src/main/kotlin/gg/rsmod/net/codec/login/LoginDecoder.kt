@@ -194,7 +194,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
         return Unpooled.wrappedBuffer(Xtea.decipher(xteaKeys, data, 0, data.size))
     }
 
-    companion object: KLogging() {
+    companion object : KLogging() {
         private const val LOGIN_OPCODE = 16
         private const val RECONNECT_OPCODE = 18
     }

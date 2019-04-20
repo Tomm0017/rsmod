@@ -19,5 +19,4 @@ class SequentialPlayerPostCycleTask : GameTask {
             p.postCycle()
         }
     }
-
 }

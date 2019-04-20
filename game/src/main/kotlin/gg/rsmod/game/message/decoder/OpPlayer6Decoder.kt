@@ -12,5 +12,4 @@ class OpPlayer6Decoder : MessageDecoder<OpPlayer6Message>() {
         val index = values["index"]!!.toInt()
         return OpPlayer6Message(index)
     }
-
 }

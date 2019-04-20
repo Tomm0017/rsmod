@@ -79,7 +79,7 @@ class DefinitionSet {
         logger.info("Loaded ${getCount(ObjectDef::class.java)} object definitions.")
     }
 
-    fun <T: Definition> load(store: Store, type: Class<out T>) {
+    fun <T : Definition> load(store: Store, type: Class<out T>) {
         val configType: ConfigType = when (type) {
             VarpDef::class.java -> ConfigType.VARPLAYER
             VarbitDef::class.java -> ConfigType.VARBIT
@@ -103,7 +103,7 @@ class DefinitionSet {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T: Definition> createDefinition(type: Class<out T>, id: Int, data: ByteArray): T {
+    fun <T : Definition> createDefinition(type: Class<out T>, id: Int, data: ByteArray): T {
         val def: Definition = when (type) {
             VarpDef::class.java -> VarpDef(id)
             VarbitDef::class.java -> VarbitDef(id)
@@ -124,12 +124,12 @@ class DefinitionSet {
     fun getCount(type: Class<*>) = defs[type]!!.size
 
     @Suppress("UNCHECKED_CAST")
-    fun <T: Definition> get(type: Class<out T>, id: Int): T {
+    fun <T : Definition> get(type: Class<out T>, id: Int): T {
         return (defs[type]!!)[id] as T
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T: Definition> getNullable(type: Class<out T>, id: Int): T? {
+    fun <T : Definition> getNullable(type: Class<out T>, id: Int): T? {
         return (defs[type]!!)[id] as T?
     }
 
@@ -227,5 +227,5 @@ class DefinitionSet {
         }
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

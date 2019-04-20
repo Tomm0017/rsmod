@@ -62,5 +62,5 @@ class LoginWorker(private val boss: LoginService) : Runnable {
         }
     }
 
-    companion object: KLogging()
+    companion object : KLogging()
 }

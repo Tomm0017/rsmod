@@ -26,6 +26,7 @@ allprojects {
         compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
         compile "io.github.microutils:kotlin-logging:$kloggingVersion"
 
+        implementation "org.mindrot:jbcrypt:$bcryptVersion"
         implementation "com.google.code.gson:gson:$gsonVersion"
         implementation "com.github.runelite.runelite:cache:$runeliteVersion"
         implementation "io.netty:netty-all:$nettyVersion"

@@ -562,7 +562,7 @@ class PluginRepository(val world: World) {
         pluginCount++
     }
 
-    fun <T: Event> executeEvent(p: Player, event: T) {
+    fun <T: Event> executeEvent(p: Pawn, event: T) {
         eventPlugins[event::class.java]?.forEach { plugin ->
             p.executePlugin {
                 plugin.invoke(this, event)

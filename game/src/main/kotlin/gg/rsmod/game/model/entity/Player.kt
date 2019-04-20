@@ -1,7 +1,6 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
-import gg.rsmod.game.event.Event
 import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.*
@@ -398,10 +397,6 @@ open class Player(world: World) : Pawn(world) {
         world.instanceAllocator.logout(this)
         world.plugins.executeLogout(this)
         world.unregister(this)
-    }
-
-    fun triggerEvent(event: Event) {
-        world.plugins.executeEvent(this, event)
     }
 
     /**

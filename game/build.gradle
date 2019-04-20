@@ -28,7 +28,6 @@ dependencies {
     compile "io.github.classgraph:classgraph:$classGraphVersion"
     compile "it.unimi.dsi:fastutil:$fastUtilVersion"
 
-    implementation "org.mindrot:jbcrypt:$bcryptVersion"
     implementation "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
 
     testImplementation "junit:junit:$junitVersion"

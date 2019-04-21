@@ -399,7 +399,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     /**
      * Invoke [logic] when the the option in index [option] is clicked on an inventory item.
      *
-     * [on_item_option] method should be used over this method whenever possible.
+     * String option method should be used over this method whenever possible.
      */
     fun on_item_option(item: Int, option: Int, logic: (Plugin).() -> Unit) = r.bindItem(item, option, logic)
 
@@ -407,7 +407,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      * Invoke [logic] when the the option in index [option] is clicked on a
      * [gg.rsmod.game.model.entity.GameObject].
      *
-     * [on_obj_option] method should be used over this method whenever possible.
+     * String option method should be used over this method whenever possible.
      *
      * @param lineOfSightDistance
      * If the npc is behind an object such as a prison cell or bank booth, this
@@ -419,14 +419,14 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     /**
      * Invoke [logic] when the the option in index [option] is clicked on an [Npc].
      *
-     * [on_npc_option] method should be used over this method whenever possible.
+     * String option method should be used over this method whenever possible.
      */
     fun on_npc_option(npc: Int, option: Int, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) = r.bindNpc(npc, option, lineOfSightDistance, logic)
 
     /**
      * Invoke [logic] when the the option in index [option] is clicked on a [GroundItem].
      *
-     * [on_ground_item_option] method should be used over this method whenever possible.
+     * String option method should be used over this method whenever possible.
      */
     fun on_ground_item_option(item: Int, option: Int, logic: (Plugin).() -> Unit) = r.bindGroundItem(item, option, logic)
 

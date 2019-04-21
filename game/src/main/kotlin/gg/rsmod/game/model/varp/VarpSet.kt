@@ -10,7 +10,7 @@ import it.unimi.dsi.fastutil.shorts.ShortOpenHashSet
  */
 class VarpSet(val maxVarps: Int) {
 
-    private val varps = arrayListOf<Varp>().apply {
+    private val varps = mutableListOf<Varp>().apply {
         for (i in 0 until maxVarps) {
             add(Varp(id = i, state = 0))
         }

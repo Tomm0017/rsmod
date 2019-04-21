@@ -19,7 +19,7 @@ class InstancedMapAllocator {
     /**
      * A list of active [InstancedMap]s.
      */
-    private val maps = arrayListOf<InstancedMap>()
+    private val maps = mutableListOf<InstancedMap>()
 
     /**
      * The current cycles that keep track of how long before our allocated

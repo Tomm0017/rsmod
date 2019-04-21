@@ -3,7 +3,16 @@ package gg.rsmod.game.sync.task
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.SynchronizationTask
-import gg.rsmod.game.sync.segment.*
+import gg.rsmod.game.sync.segment.AddLocalPlayerSegment
+import gg.rsmod.game.sync.segment.PlayerLocationHashSegment
+import gg.rsmod.game.sync.segment.PlayerSkipCountSegment
+import gg.rsmod.game.sync.segment.PlayerTeleportSegment
+import gg.rsmod.game.sync.segment.PlayerUpdateBlockSegment
+import gg.rsmod.game.sync.segment.PlayerWalkSegment
+import gg.rsmod.game.sync.segment.RemoveLocalPlayerSegment
+import gg.rsmod.game.sync.segment.SetBitAccessSegment
+import gg.rsmod.game.sync.segment.SetByteAccessSegment
+import gg.rsmod.game.sync.segment.SignalPlayerUpdateBlockSegment
 import gg.rsmod.net.packet.GamePacketBuilder
 import gg.rsmod.net.packet.PacketType
 import gg.rsmod.util.Misc
@@ -42,7 +51,7 @@ object PlayerSynchronizationTask : SynchronizationTask<Player> {
     }
 
     private fun getSegments(player: Player): List<SynchronizationSegment> {
-        val segments = arrayListOf<SynchronizationSegment>()
+        val segments = mutableListOf<SynchronizationSegment>()
 
         segments.add(SetBitAccessSegment())
         addLocalSegments(player, true, segments)

@@ -23,7 +23,7 @@ class UpdateBlockBuffer {
     var graphicHeight = 0
     var graphicDelay = 0
 
-    val hits = arrayListOf<Hit>()
+    val hits = mutableListOf<Hit>()
 
     fun isDirty(): Boolean = mask != 0
 

@@ -12,7 +12,11 @@ import gg.rsmod.game.model.container.key.BANK_KEY
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
 import gg.rsmod.game.model.container.key.INVENTORY_KEY
-import gg.rsmod.game.model.entity.*
+import gg.rsmod.game.model.entity.DynamicObject
+import gg.rsmod.game.model.entity.GroundItem
+import gg.rsmod.game.model.entity.Npc
+import gg.rsmod.game.model.entity.Pawn
+import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.timer.TimerKey
 import io.github.classgraph.ClassGraph
@@ -45,7 +49,7 @@ class PluginRepository(val world: World) {
     /**
      * Plugins that get executed when the world is initialised.
      */
-    private val worldInitPlugins = arrayListOf<Plugin.() -> Unit>()
+    private val worldInitPlugins = mutableListOf<Plugin.() -> Unit>()
 
     /**
      * The plugin that will executed when changing display modes.
@@ -70,18 +74,18 @@ class PluginRepository(val world: World) {
     /**
      * A list of plugins that will be executed upon login.
      */
-    private val loginPlugins = arrayListOf<Plugin.() -> Unit>()
+    private val loginPlugins = mutableListOf<Plugin.() -> Unit>()
 
     /**
      * A list of plugins that will be executed upon logout.
      */
-    private val logoutPlugins = arrayListOf<Plugin.() -> Unit>()
+    private val logoutPlugins = mutableListOf<Plugin.() -> Unit>()
 
     /**
      * A list of plugins that will be executed upon an [gg.rsmod.game.model.entity.Npc]
      * being spawned into the world. Use sparingly.
      */
-    private val globalNpcSpawnPlugins = arrayListOf<Plugin.() -> Unit>()
+    private val globalNpcSpawnPlugins = mutableListOf<Plugin.() -> Unit>()
 
     /**
      * A list of plugins that will be executed upon an [gg.rsmod.game.model.entity.Npc]
@@ -259,18 +263,18 @@ class PluginRepository(val world: World) {
      * A list of plugins that will be invoked when a ground item is picked up
      * by a player.
      */
-    private val globalGroundItemPickUp = arrayListOf<Plugin.() -> Unit>()
+    private val globalGroundItemPickUp = mutableListOf<Plugin.() -> Unit>()
 
     /**
      * A list of plugins that will be invoked when a player hits 0 hp.
      */
-    private val playerPreDeathPlugins = arrayListOf<Plugin.() -> Unit>()
+    private val playerPreDeathPlugins = mutableListOf<Plugin.() -> Unit>()
 
     /**
      * A list of plugins that will be invoked when a player dies and is teleported
      * back to the respawn location (after death animation played out).
      */
-    private val playerDeathPlugins = arrayListOf<Plugin.() -> Unit>()
+    private val playerDeathPlugins = mutableListOf<Plugin.() -> Unit>()
 
     /**
      * A map of plugins that are invoked when a player interaction option is executed
@@ -307,20 +311,20 @@ class PluginRepository(val world: World) {
      * Temporarily holds all npc spawns set from plugins for this [PluginRepository].
      * This is then passed onto the [World] and is cleared.
      */
-    internal val npcSpawns = arrayListOf<Npc>()
+    internal val npcSpawns = mutableListOf<Npc>()
 
     /**
      * Temporarily holds all object spawns set from plugins for this [PluginRepository].
      * This is then passed onto the [World] and is cleared.
      */
-    internal val objSpawns = arrayListOf<DynamicObject>()
+    internal val objSpawns = mutableListOf<DynamicObject>()
 
     /**
      * Temporarily holds all ground item spawns set from plugins for this
      * [PluginRepository].
      * This is then passed onto the [World] and is cleared.
      */
-    internal val itemSpawns = arrayListOf<GroundItem>()
+    internal val itemSpawns = mutableListOf<GroundItem>()
 
     internal val npcCombatDefs = Int2ObjectOpenHashMap<NpcCombatDef>()
 

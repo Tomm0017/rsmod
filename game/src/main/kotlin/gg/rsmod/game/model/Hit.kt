@@ -72,7 +72,7 @@ class Hit private constructor(val hitmarks: List<Hitmark>, val hitbar: Hitbar?, 
 
     class Builder {
 
-        private val hitmarks = arrayListOf<Hitmark>()
+        private val hitmarks = mutableListOf<Hitmark>()
 
         private var onlyShowHitbar = false
 

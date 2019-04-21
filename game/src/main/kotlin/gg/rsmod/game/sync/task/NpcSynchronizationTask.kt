@@ -5,7 +5,14 @@ import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.SynchronizationTask
-import gg.rsmod.game.sync.segment.*
+import gg.rsmod.game.sync.segment.AddLocalNpcSegment
+import gg.rsmod.game.sync.segment.NpcCountSegment
+import gg.rsmod.game.sync.segment.NpcNoMovementSegment
+import gg.rsmod.game.sync.segment.NpcSkipSegment
+import gg.rsmod.game.sync.segment.NpcTeleportSegment
+import gg.rsmod.game.sync.segment.NpcUpdateBlockSegment
+import gg.rsmod.game.sync.segment.NpcWalkSegment
+import gg.rsmod.game.sync.segment.RemoveLocalNpcSegment
 import gg.rsmod.net.packet.GamePacketBuilder
 import gg.rsmod.net.packet.PacketType
 
@@ -41,7 +48,7 @@ class NpcSynchronizationTask(private val worldNpcs: Array<Npc?>) : Synchronizati
     }
 
     private fun getSegments(player: Player): List<SynchronizationSegment> {
-        val segments = arrayListOf<SynchronizationSegment>()
+        val segments = mutableListOf<SynchronizationSegment>()
 
         val localNpcs = player.localNpcs
         val iterator = localNpcs.iterator()

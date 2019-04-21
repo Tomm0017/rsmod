@@ -272,7 +272,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
         }
 
         var completed = 0
-        val added = arrayListOf<SlotItem>()
+        val added = mutableListOf<SlotItem>()
 
         if (!stack) {
             /*
@@ -386,7 +386,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
         }
 
         var totalRemoved = 0
-        val removed = arrayListOf<SlotItem>()
+        val removed = mutableListOf<SlotItem>()
 
         val skippedIndices = if (beginSlot != -1) 0 until beginSlot else null
 

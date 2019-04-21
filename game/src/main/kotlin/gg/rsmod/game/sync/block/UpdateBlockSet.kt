@@ -6,7 +6,9 @@ import gg.rsmod.net.packet.DataSignature
 import gg.rsmod.net.packet.DataTransformation
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.util.ServerProperties
-import java.util.*
+import java.util.ArrayList
+import java.util.EnumMap
+import java.util.LinkedHashMap
 
 /**
  * A set of [UpdateBlockType] information that is required to encode its respective
@@ -37,7 +39,7 @@ class UpdateBlockSet {
      * The order in which [UpdateBlockType]s must be handled in the synchronization
      * process.
      */
-    val updateBlockOrder = arrayListOf<UpdateBlockType>()
+    val updateBlockOrder = mutableListOf<UpdateBlockType>()
 
     val updateBlocks = EnumMap<UpdateBlockType, UpdateBlockStructure>(UpdateBlockType::class.java)
 
@@ -65,7 +67,7 @@ class UpdateBlockSet {
             val values = packet as LinkedHashMap<*, *>
             val blockType = (values["block"] as String).toUpperCase()
             val bit = if (values.containsKey("bit")) Integer.decode(values["bit"] as String) else -1
-            val structureValues = arrayListOf<MessageValue>()
+            val structureValues = mutableListOf<MessageValue>()
 
             if (values.containsKey("structure")) {
                 val structures = values["structure"] as ArrayList<*>

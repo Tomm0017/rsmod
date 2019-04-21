@@ -24,7 +24,7 @@ class RunClientScriptEncoder : MessageEncoder<RunClientScriptMessage>() {
             String(types).toByteArray()
         }
         "args" -> {
-            val args = arrayListOf<Byte>()
+            val args = mutableListOf<Byte>()
             for (i in message.args.size - 1 downTo 0) {
                 val value = message.args[i]
                 when (value) {

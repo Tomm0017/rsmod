@@ -63,7 +63,7 @@ class XteaKeyService : Service {
          */
         val maxRegions = Short.MAX_VALUE
         var totalRegions = 0
-        val missingKeys = arrayListOf<Int>()
+        val missingKeys = mutableListOf<Int>()
 
         val regionIndex = world.filestore.getIndex(IndexType.MAPS)
         for (regionId in 0 until maxRegions) {

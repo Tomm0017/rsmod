@@ -258,7 +258,7 @@ on_command("getvarbits", Privilege.ADMIN_POWER) {
     val args = player.getCommandArgs()
     tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::getvarbits 83</col>") { values ->
         val varp = values[0].toInt()
-        val varbits = arrayListOf<VarbitDef>()
+        val varbits = mutableListOf<VarbitDef>()
         val totalVarbits = world.definitions.getCount(VarbitDef::class.java)
         for (i in 0 until totalVarbits) {
             val varbit = world.definitions.getNullable(VarbitDef::class.java, i)

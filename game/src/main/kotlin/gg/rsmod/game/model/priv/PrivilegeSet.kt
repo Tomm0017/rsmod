@@ -1,7 +1,8 @@
 package gg.rsmod.game.model.priv
 
 import gg.rsmod.util.ServerProperties
-import java.util.*
+import java.util.ArrayList
+import java.util.LinkedHashMap
 
 /**
  * Stores all the [Privilege]s that were specified on the game's
@@ -20,7 +21,7 @@ class PrivilegeSet : Iterable<Privilege> {
 
     fun load(properties: ServerProperties) {
         val privilegeDefinitions = properties.get<ArrayList<*>>("privileges")!!
-        val definitions = arrayListOf<Privilege>()
+        val definitions = mutableListOf<Privilege>()
         privilegeDefinitions.forEach { struct ->
             val values = struct as LinkedHashMap<*, *>
             val id = values["id"] as Int

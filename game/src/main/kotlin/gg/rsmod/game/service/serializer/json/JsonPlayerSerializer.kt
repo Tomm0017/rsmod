@@ -23,7 +23,7 @@ import org.mindrot.jbcrypt.BCrypt
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
+import java.util.Arrays
 
 /**
  * A [PlayerSerializerService] implementation that decodes and encodes player
@@ -141,7 +141,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     }
 
     private fun getContainers(client: Client): List<PersistentContainer> {
-        val containers = arrayListOf<PersistentContainer>()
+        val containers = mutableListOf<PersistentContainer>()
 
         client.containers.forEach { key, container ->
             if (!container.isEmpty) {
@@ -153,7 +153,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
     }
 
     private fun getSkills(client: Client): List<PersistentSkill> {
-        val skills = arrayListOf<PersistentSkill>()
+        val skills = mutableListOf<PersistentSkill>()
 
         for (i in 0 until client.getSkills().maxSkills) {
             val xp = client.getSkills().getCurrentXp(i)

@@ -336,7 +336,7 @@ class PluginRepository(val world: World) {
     /**
      * Holds all container keys set from plugins for this [PluginRepository].
      */
-    internal val containerKeys = ObjectOpenHashSet<ContainerKey>().apply {
+    val containerKeys = ObjectOpenHashSet<ContainerKey>().apply {
         add(INVENTORY_KEY)
         add(EQUIPMENT_KEY)
         add(BANK_KEY)

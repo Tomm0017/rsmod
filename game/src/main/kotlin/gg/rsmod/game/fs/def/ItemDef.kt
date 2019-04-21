@@ -17,6 +17,7 @@ class ItemDef(override val id: Int) : Definition(id) {
     var members = false
     val groundMenu = Array<String?>(5) { null }
     val inventoryMenu = Array<String?>(5) { null }
+    val equipmentMenu = Array<String?>(8) { null }
     /**
      * The item can be traded through the grand exchange.
      */
@@ -134,7 +135,15 @@ class ItemDef(override val id: Int) : Definition(id) {
             140 -> buf.readUnsignedShort()
             148 -> placeholderLink = buf.readUnsignedShort()
             149 -> placeholderTemplate = buf.readUnsignedShort()
-            249 -> params.putAll(readParams(buf))
+            249 -> {
+                params.putAll(readParams(buf))
+
+                for (i in 0 until 8) {
+                    val paramId = 451 + i
+                    val option = params.get(paramId) as? String ?: continue
+                    equipmentMenu[i] = option
+                }
+            }
         }
     }
 }

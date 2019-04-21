@@ -128,6 +128,20 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     }
 
     /**
+     * Invoke [logic] when the [option] option is clicked on an equipment
+     * [gg.rsmod.game.model.item.Item].
+     */
+    fun on_equipment_option(item: Int, option: String, logic: (Plugin).() -> Unit) {
+        val opt = option.toLowerCase()
+        val def = world.definitions.get(ItemDef::class.java, item)
+        val slot = def.equipmentMenu.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
+
+        check(slot != -1) { "Option \"$option\" not found for item equipment $item [options=${def.equipmentMenu.filterNotNull().filter { it.isNotBlank() }}]" }
+
+        r.bindEquipmentOption(item, slot + 1, logic)
+    }
+
+    /**
      * Invoke [logic] when the [option] option is clicked on a
      * [gg.rsmod.game.model.entity.GameObject].
      *

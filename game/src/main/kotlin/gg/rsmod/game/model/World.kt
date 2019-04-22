@@ -346,12 +346,6 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
         }
     }
 
-    fun runNonBlockingTask(task: CoroutineScope.() -> Unit) {
-    }
-
-    fun runBlockingTask(task: CoroutineScope.() -> Unit) {
-    }
-
     fun register(p: Player): Boolean {
         val registered = players.add(p)
         if (registered) {

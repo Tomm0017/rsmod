@@ -3,6 +3,7 @@ package gg.rsmod.game.model.item
 import com.google.common.base.MoreObjects
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
+import java.util.EnumMap
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -17,7 +18,7 @@ class Item(val id: Int, var amount: Int = 1) {
         copyAttr(other)
     }
 
-    val attr = HashMap<ItemAttribute, Int>(0)
+    val attr = EnumMap<ItemAttribute, Int>(ItemAttribute::class.java)
 
     /**
      * Returns a <strong>new</strong> [Item] with the noted link as the item id.

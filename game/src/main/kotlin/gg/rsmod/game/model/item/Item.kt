@@ -17,7 +17,7 @@ class Item(val id: Int, var amount: Int = 1) {
         copyAttr(other)
     }
 
-    private val attr = HashMap<ItemAttribute, Int>(0)
+    val attr = HashMap<ItemAttribute, Int>(0)
 
     /**
      * Returns a <strong>new</strong> [Item] with the noted link as the item id.

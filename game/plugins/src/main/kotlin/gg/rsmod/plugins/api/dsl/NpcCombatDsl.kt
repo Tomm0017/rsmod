@@ -46,7 +46,7 @@ object NpcCombatDsl {
 
             combatBuilder.setAggroRadius(builder.radius)
             combatBuilder.setFindAggroTargetDelay(builder.searchDelay)
-            combatBuilder.setAlwaysAggro(builder.permanentAggro)
+            combatBuilder.setAggroTimer(builder.aggroTimer)
         }
 
         fun stats(init: StatsBuilder.() -> Unit) {
@@ -137,10 +137,18 @@ object NpcCombatDsl {
         var searchDelay = -1
 
         /**
-         * This flag indicates whether or not the npc will always remain
-         * aggressive.
+         * The time, in cycles, in which the npc will be aggressive to
+         * nearby targets.
          */
-        var permanentAggro = false
+        var aggroTimer = -1
+
+        fun alwaysAggro() {
+            aggroTimer = Int.MAX_VALUE
+        }
+
+        fun neverAggro() {
+            aggroTimer = Int.MIN_VALUE
+        }
     }
 
     @CombatDslMarker

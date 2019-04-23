@@ -52,7 +52,7 @@ class NpcCombatBuilder {
 
     private var aggroTargetDelay = -1
 
-    private var alwaysAggro = false
+    private var aggroTimer = -1
 
     private var poisonChance = -1.0
 
@@ -87,7 +87,7 @@ class NpcCombatBuilder {
         return NpcCombatDef(
                 maxHealth, stats.toList(), attackSpeed, defaultAttackAnim,
                 defaultBlockAnim, deathAnimList, respawnDelay, aggroRadius,
-                aggroTargetDelay, alwaysAggro, poisonChance, venomChance,
+                aggroTargetDelay, aggroTimer, poisonChance, venomChance,
                 poisonImmunity, venomImmunity, slayerReq, slayerXp,
                 bonuses.toList(), speciesSet)
     }
@@ -195,9 +195,9 @@ class NpcCombatBuilder {
         return this
     }
 
-    fun setAlwaysAggro(permanent: Boolean): NpcCombatBuilder {
-        check(!alwaysAggro) { "Always aggressive flag already set." }
-        alwaysAggro = permanent
+    fun setAggroTimer(timer: Int): NpcCombatBuilder {
+        check(aggroTimer == -1) { "Aggro timer already set.." }
+        aggroTimer = timer
         return this
     }
 

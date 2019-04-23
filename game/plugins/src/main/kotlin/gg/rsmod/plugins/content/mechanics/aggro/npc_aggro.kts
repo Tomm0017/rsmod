@@ -11,7 +11,11 @@ val defaultAggressiveness: (Npc, Player) -> Boolean = boolean@ { n, p ->
     } else if (n.combatDef.aggressiveTimer == Int.MIN_VALUE) {
         return@boolean false
     }
-    // TODO: check if player has been in area for more than 10-20 minutes
+
+    if (Math.abs(world.currentCycle - p.lastMapBuildTime) < n.combatDef.aggressiveTimer) {
+        return@boolean false
+    }
+
     val npcLvl = n.def.combatLevel
     return@boolean p.combatLevel <= npcLvl * 2
 }

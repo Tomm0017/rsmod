@@ -249,6 +249,11 @@ class PluginRepository(val world: World) {
     private val itemOnItemPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
 
     /**
+     * A map that contains magic spell on item plugins.
+     */
+    private val spellOnItemPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
+
+    /**
      * A map that contains npcs and any associated menu-click and its respective
      * plugin logic, if any (would not be in the map if it doesn't have a plugin).
      */
@@ -1078,6 +1083,22 @@ class PluginRepository(val world: World) {
 
         val hash = (max shl 16) or min
         val plugin = itemOnItemPlugins[hash] ?: return false
+        p.executePlugin(plugin)
+        return true
+    }
+
+    fun bindSpellOnItem(spell: Int, plugin: Plugin.() -> Unit) {
+        if (spellOnItemPlugins.containsKey(spell)) {
+            val exception = RuntimeException("Spell on item already bound to a plugin: $spell")
+            logger.error(exception) {}
+            throw exception
+        }
+        spellOnItemPlugins[spell] = plugin
+        pluginCount++
+    }
+
+    fun executeSpellOnItem(p: Player, spell: Int): Boolean {
+        val plugin = spellOnItemPlugins[spell] ?: return false
         p.executePlugin(plugin)
         return true
     }

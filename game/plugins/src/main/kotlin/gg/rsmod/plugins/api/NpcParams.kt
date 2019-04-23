@@ -200,7 +200,7 @@ class NpcCombatBuilder {
     }
 
     fun setAggroTimer(timer: Int): NpcCombatBuilder {
-        check(aggroTimer == -1) { "Aggro timer already set.." }
+        check(aggroTimer == -1) { "Aggro timer already set." }
         aggroTimer = timer
         return this
     }

@@ -7,18 +7,17 @@ import gg.rsmod.game.plugin.PluginMetadata
  */
 class PluginMetadataBuilder {
 
-    private lateinit var name: String
+    private var name: String? = null
 
     private var propertyFileName: String? = null
 
-    private val authors = mutableSetOf<String>()
+    private var description: String? = null
 
-    private var description: String = ""
+    private val authors = mutableSetOf<String>()
 
     private val properties = mutableMapOf<String, Any>()
 
     fun build(): PluginMetadata {
-        check(::name.isInitialized) { "Plugin name not set." }
         return PluginMetadata(propertyFileName, name, description, authors, properties.toMap())
     }
 
@@ -33,7 +32,7 @@ class PluginMetadataBuilder {
     }
 
     fun setDescription(description: String): PluginMetadataBuilder {
-        check(this.description.isEmpty()) { "Description already set." }
+        check(this.description == null) { "Description already set." }
         this.description = description
         return this
     }

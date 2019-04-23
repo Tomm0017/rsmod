@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class PluginMetadata(
         @Transient val propertyFileName: String?,
-        @JsonProperty("name") val name: String,
-        @JsonProperty("description") val description: String,
+        @JsonProperty("name") val name: String?,
+        @JsonProperty("description") val description: String?,
         @JsonProperty("authors") val authors: Set<String>,
         @JsonProperty("properties") val properties: Map<String, Any>)

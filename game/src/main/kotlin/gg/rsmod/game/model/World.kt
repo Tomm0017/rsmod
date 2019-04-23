@@ -82,7 +82,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
      * A collection of our [Service]s specified in our game [ServerProperties]
      * files.
      */
-    private val services = mutableListOf<Service>()
+    internal val services = mutableListOf<Service>()
 
     lateinit var coroutineDispatcher: CoroutineDispatcher
 
@@ -571,13 +571,6 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
             return services.firstOrNull { type.isAssignableFrom(it::class.java) } as T?
         }
         return services.firstOrNull { it::class.java == type } as T?
-    }
-
-    /**
-     * Add [service] to available world services.
-     */
-    internal fun <T : Service> addService(service: T) {
-        services.add(service)
     }
 
     /**

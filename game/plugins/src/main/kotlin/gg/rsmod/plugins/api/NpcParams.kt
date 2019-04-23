@@ -84,6 +84,10 @@ class NpcCombatBuilder {
         slayerReq = Math.max(1, slayerReq)
         slayerXp = Math.max(0.0, slayerXp)
 
+        if (aggroTimer == -1) {
+            aggroTimer = DEFAULT_AGGRO_TIMER
+        }
+
         return NpcCombatDef(
                 maxHealth, stats.toList(), attackSpeed, defaultAttackAnim,
                 defaultBlockAnim, deathAnimList, respawnDelay, aggroRadius,
@@ -332,5 +336,6 @@ class NpcCombatBuilder {
 
     companion object {
         private const val BONUS_COUNT = 14
+        private const val DEFAULT_AGGRO_TIMER = 1000 // 10 minutes
     }
 }

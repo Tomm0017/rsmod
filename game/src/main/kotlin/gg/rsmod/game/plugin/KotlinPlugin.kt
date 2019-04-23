@@ -484,6 +484,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     fun on_ground_item_option(item: Int, option: Int, logic: (Plugin).() -> Unit) = r.bindGroundItem(item, option, logic)
 
     /**
+     * Invoke [plugin] when a spell is used on an item.
+     */
+    fun on_spell_on_item(fromInterface: Int, fromComponent: Int, toInterface: Int, toComponent: Int, plugin: Plugin.() -> Unit) = r.bindSpellOnItem((fromInterface shl 16) or fromComponent, (toInterface shl 16) or toComponent, plugin)
+
+    /**
      * Returns true if the item can be dropped on the floor via the 'drop' menu
      * option - return false otherwise.
      */

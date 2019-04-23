@@ -63,8 +63,10 @@ class LoginService : Service {
         requests.offer(serviceRequest)
     }
 
-    fun successfulLogin(client: Client, encodeRandom: IsaacRandom, decodeRandom: IsaacRandom) {
-        val gameSystem = GameSystem(channel = client.channel, client = client, service = client.world.getService(GameService::class.java)!!)
+    fun successfulLogin(client: Client, world: World, encodeRandom: IsaacRandom, decodeRandom: IsaacRandom) {
+        val gameSystem = GameSystem(
+                channel = client.channel, world = world, client = client,
+                service = client.world.getService(GameService::class.java)!!)
 
         client.gameSystem = gameSystem
         client.channel.attr(GameHandler.SYSTEM_KEY).set(gameSystem)

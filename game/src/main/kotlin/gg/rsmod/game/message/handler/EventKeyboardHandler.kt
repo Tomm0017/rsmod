@@ -2,6 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.EventKeyboardMessage
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 
 /**
@@ -9,6 +10,6 @@ import gg.rsmod.game.model.entity.Client
  */
 class EventKeyboardHandler : MessageHandler<EventKeyboardMessage> {
 
-    override fun handle(client: Client, message: EventKeyboardMessage) {
+    override fun handle(client: Client, world: World, message: EventKeyboardMessage) {
     }
 }

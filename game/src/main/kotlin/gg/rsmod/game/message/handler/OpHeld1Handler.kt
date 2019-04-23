@@ -2,6 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpHeld1Message
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.INTERACTING_ITEM
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_ID
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
@@ -13,7 +14,7 @@ import java.lang.ref.WeakReference
  */
 class OpHeld1Handler : MessageHandler<OpHeld1Message> {
 
-    override fun handle(client: Client, message: OpHeld1Message) {
+    override fun handle(client: Client, world: World, message: OpHeld1Message) {
         @Suppress("unused")
         val componentParent = message.componentHash shr 16
         @Suppress("unused")
@@ -40,7 +41,7 @@ class OpHeld1Handler : MessageHandler<OpHeld1Message> {
         client.attr[INTERACTING_ITEM_ID] = item.id
         client.attr[INTERACTING_ITEM] = WeakReference(item)
 
-        if (!client.world.plugins.executeItem(client, item.id, 1) && client.world.devContext.debugItemActions) {
+        if (!world.plugins.executeItem(client, item.id, 1) && world.devContext.debugItemActions) {
             client.message("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=1]")
         }
     }

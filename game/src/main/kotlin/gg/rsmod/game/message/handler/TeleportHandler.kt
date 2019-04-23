@@ -2,6 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.TeleportMessage
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.priv.Privilege
 
@@ -10,7 +11,7 @@ import gg.rsmod.game.model.priv.Privilege
  */
 class TeleportHandler : MessageHandler<TeleportMessage> {
 
-    override fun handle(client: Client, message: TeleportMessage) {
+    override fun handle(client: Client, world: World, message: TeleportMessage) {
         if (!client.lock.canMove()) {
             return
         }
@@ -21,7 +22,7 @@ class TeleportHandler : MessageHandler<TeleportMessage> {
         client.interruptQueues()
         client.resetInteractions()
 
-        if (client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
+        if (world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
             client.moveTo(message.x, message.z, message.height)
         }
     }

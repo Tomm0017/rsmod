@@ -2,6 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.CloseModalMessage
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 
 /**
@@ -9,7 +10,7 @@ import gg.rsmod.game.model.entity.Client
  */
 class CloseMainComponentHandler : MessageHandler<CloseModalMessage> {
 
-    override fun handle(client: Client, message: CloseModalMessage) {
+    override fun handle(client: Client, world: World, message: CloseModalMessage) {
         client.closeInterfaceModal()
     }
 }

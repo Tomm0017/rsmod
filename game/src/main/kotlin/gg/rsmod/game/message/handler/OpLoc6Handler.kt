@@ -3,6 +3,7 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpLoc6Message
 import gg.rsmod.game.model.ExamineEntityType
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 
 /**
@@ -10,8 +11,7 @@ import gg.rsmod.game.model.entity.Client
  */
 class OpLoc6Handler : MessageHandler<OpLoc6Message> {
 
-    override fun handle(client: Client, message: OpLoc6Message) {
-        val id = message.id
-        client.world.sendExamine(client, id, ExamineEntityType.OBJECT)
+    override fun handle(client: Client, world: World, message: OpLoc6Message) {
+        world.sendExamine(client, message.id, ExamineEntityType.OBJECT)
     }
 }

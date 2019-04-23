@@ -2,6 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.IfButtonMessage
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_ID
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_SLOT_ATTR
@@ -12,7 +13,7 @@ import gg.rsmod.game.model.entity.Client
  */
 class IfButton1Handler : MessageHandler<IfButtonMessage> {
 
-    override fun handle(client: Client, message: IfButtonMessage) {
+    override fun handle(client: Client, world: World, message: IfButtonMessage) {
         val interfaceId = message.hash shr 16
         val component = message.hash and 0xFFFF
         val option = message.option + 1
@@ -27,11 +28,11 @@ class IfButton1Handler : MessageHandler<IfButtonMessage> {
         client.attr[INTERACTING_ITEM_ID] = message.item
         client.attr[INTERACTING_SLOT_ATTR] = message.slot
 
-        if (client.world.plugins.executeButton(client, interfaceId, component)) {
+        if (world.plugins.executeButton(client, interfaceId, component)) {
             return
         }
 
-        if (client.world.devContext.debugButtons) {
+        if (world.devContext.debugButtons) {
             client.message("Unhandled button action: [component=[$interfaceId, $component], option=$option, slot=${message.slot}, item=${message.item}]")
         }
     }

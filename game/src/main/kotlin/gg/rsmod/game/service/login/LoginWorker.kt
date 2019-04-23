@@ -31,7 +31,7 @@ class LoginWorker(private val boss: LoginService) : Runnable {
                     val decodeRandom = IsaacRandom(request.login.xteaKeys)
                     val encodeRandom = IsaacRandom(IntArray(request.login.xteaKeys.size) { request.login.xteaKeys[it] + 50 })
 
-                    client.world.getService(GameService::class.java)?.submitGameThreadJob {
+                    world.getService(GameService::class.java)?.submitGameThreadJob {
                         val loginResult: LoginResultType = when {
                             world.rebootTimer != -1 && world.rebootTimer < World.REJECT_LOGIN_REBOOT_THRESHOLD -> LoginResultType.SERVER_UPDATE
                             world.getPlayerForName(client.username) != null -> LoginResultType.ALREADY_ONLINE
@@ -40,7 +40,7 @@ class LoginWorker(private val boss: LoginService) : Runnable {
                         }
                         if (loginResult == LoginResultType.ACCEPTABLE) {
                             client.channel.write(LoginResponse(index = client.index, privilege = client.privilege.id))
-                            boss.successfulLogin(client, encodeRandom, decodeRandom)
+                            boss.successfulLogin(client, world, encodeRandom, decodeRandom)
                         } else {
                             request.login.channel.writeAndFlush(loginResult).addListener(ChannelFutureListener.CLOSE)
                             logger.info("User '{}' login denied with code {}.", client.username, loginResult)

@@ -4,6 +4,7 @@ import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.MoveMinimapClickMessage
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.MovementQueue
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.priv.Privilege
@@ -14,7 +15,7 @@ import gg.rsmod.game.model.timer.STUN_TIMER
  */
 class ClickMinimapHandler : MessageHandler<MoveMinimapClickMessage> {
 
-    override fun handle(client: Client, message: MoveMinimapClickMessage) {
+    override fun handle(client: Client, world: World, message: MoveMinimapClickMessage) {
         if (!client.lock.canMove()) {
             return
         }
@@ -31,7 +32,7 @@ class ClickMinimapHandler : MessageHandler<MoveMinimapClickMessage> {
         client.interruptQueues()
         client.resetInteractions()
 
-        if (message.movementType == 2 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
+        if (message.movementType == 2 && world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
             client.moveTo(message.x, message.z, client.tile.height)
         } else {
             client.walkTo(message.x, message.z, if (message.movementType == 1)

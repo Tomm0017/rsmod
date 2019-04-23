@@ -5,6 +5,7 @@ import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpObj4Message
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.INTERACTING_GROUNDITEM_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Client
@@ -18,7 +19,7 @@ import java.lang.ref.WeakReference
  */
 class OpObj4Handler : MessageHandler<OpObj4Message> {
 
-    override fun handle(client: Client, message: OpObj4Message) {
+    override fun handle(client: Client, world: World, message: OpObj4Message) {
         /*
          * If tile is too far away, don't process it.
          */
@@ -36,10 +37,10 @@ class OpObj4Handler : MessageHandler<OpObj4Message> {
         /*
          * Get the region chunk that the object would belong to.
          */
-        val chunk = client.world.chunks.getOrCreate(tile)
+        val chunk = world.chunks.getOrCreate(tile)
         val item = chunk.getEntities<GroundItem>(tile, EntityType.GROUND_ITEM).firstOrNull { it.item == message.item && it.canBeViewedBy(client) } ?: return
 
-        if (message.movementType == 1 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
+        if (message.movementType == 1 && world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
             client.moveTo(item.tile)
         }
 

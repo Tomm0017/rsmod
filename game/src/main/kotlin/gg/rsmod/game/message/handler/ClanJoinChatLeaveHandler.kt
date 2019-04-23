@@ -2,6 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.ClanJoinChatLeaveChatMessage
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 
 /**
@@ -9,7 +10,7 @@ import gg.rsmod.game.model.entity.Client
  */
 class ClanJoinChatLeaveHandler : MessageHandler<ClanJoinChatLeaveChatMessage> {
 
-    override fun handle(client: Client, message: ClanJoinChatLeaveChatMessage) {
+    override fun handle(client: Client, world: World, message: ClanJoinChatLeaveChatMessage) {
         throw RuntimeException("Unhandled.")
     }
 }

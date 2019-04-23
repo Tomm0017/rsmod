@@ -2,6 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.DetectModifiedClientMessage
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 
 /**
@@ -9,7 +10,7 @@ import gg.rsmod.game.model.entity.Client
  */
 class DetectModifiedClientHandler : MessageHandler<DetectModifiedClientMessage> {
 
-    override fun handle(client: Client, message: DetectModifiedClientMessage) {
+    override fun handle(client: Client, world: World, message: DetectModifiedClientMessage) {
         log(client, "Detected modified client for player %s (%s).", client.username, client.channel)
     }
 }

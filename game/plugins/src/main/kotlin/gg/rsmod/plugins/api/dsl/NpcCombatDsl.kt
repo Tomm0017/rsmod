@@ -142,6 +142,17 @@ object NpcCombatDsl {
          */
         var aggroTimer = -1
 
+        /**
+         * The time, in minutes, in which the npc will be aggressive to
+         * nearby targets. This property is simply an alias for [aggroTimer]
+         * and will set [aggroTimer] accordingly.
+         */
+        var aggroMinutes: Int = -1
+            set(value) {
+                aggroTimer * 1000
+                field = value
+            }
+
         fun alwaysAggro() {
             aggroTimer = Int.MAX_VALUE
         }

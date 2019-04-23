@@ -52,6 +52,8 @@ class NpcCombatBuilder {
 
     private var aggroTargetDelay = -1
 
+    private var alwaysAggro = false
+
     private var poisonChance = -1.0
 
     private var venomChance = -1.0
@@ -85,9 +87,9 @@ class NpcCombatBuilder {
         return NpcCombatDef(
                 maxHealth, stats.toList(), attackSpeed, defaultAttackAnim,
                 defaultBlockAnim, deathAnimList, respawnDelay, aggroRadius,
-                aggroTargetDelay, poisonChance, venomChance, poisonImmunity,
-                venomImmunity, slayerReq, slayerXp, bonuses.toList(),
-                speciesSet)
+                aggroTargetDelay, alwaysAggro, poisonChance, venomChance,
+                poisonImmunity, venomImmunity, slayerReq, slayerXp,
+                bonuses.toList(), speciesSet)
     }
 
     fun setHitpoints(health: Int): NpcCombatBuilder {
@@ -190,6 +192,12 @@ class NpcCombatBuilder {
     fun setFindAggroTargetDelay(delay: Int): NpcCombatBuilder {
         check(aggroTargetDelay == -1) { "Aggro target delay already set." }
         aggroTargetDelay = delay
+        return this
+    }
+
+    fun setAlwaysAggro(permanent: Boolean): NpcCombatBuilder {
+        check(!alwaysAggro) { "Always aggressive flag already set." }
+        alwaysAggro = permanent
         return this
     }
 

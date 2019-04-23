@@ -4,6 +4,25 @@ import gg.rsmod.game.plugin.KotlinPlugin
 import gg.rsmod.game.plugin.PluginMetadata
 import gg.rsmod.plugins.api.PluginMetadataBuilder
 
+/**
+ * Load metadata for [this] plugin.
+ *
+ * Usage example:
+ * ```
+ * load_metadata {
+ *     propertyFileName = "my_example" // Required so that the properties can be edited
+ *
+ *     author = "Tomm" // Optional, can remove completely
+ *     name = "My Example Plugin" // Optional, can remove completely
+ *     description = "Short example plugin" // Optional, can remove completely
+ *
+ *     properties(
+ *         "my_property" to 50
+ *     )
+ * }
+ * fun getMyProperty(): Int = getProperty<Int>("my_property") // Will return value 50
+ * ```
+ */
 fun KotlinPlugin.load_metadata(init: PluginMetadataDsl.Builder.() -> Unit) {
     val builder = PluginMetadataDsl.Builder()
     init(builder)

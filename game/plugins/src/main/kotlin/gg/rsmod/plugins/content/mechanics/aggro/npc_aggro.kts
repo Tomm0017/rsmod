@@ -6,6 +6,9 @@ import gg.rsmod.plugins.content.combat.isAttacking
 val AGGRO_CHECK_TIMER = TimerKey()
 
 val defaultAggressiveness: (Npc, Player) -> Boolean = boolean@ { n, p ->
+    if (n.combatDef.alwaysAggressive) {
+        return@boolean true
+    }
     // TODO: check if player has been in area for more than 10-20 minutes
     val npcLvl = n.def.combatLevel
     return@boolean p.combatLevel < npcLvl * 2

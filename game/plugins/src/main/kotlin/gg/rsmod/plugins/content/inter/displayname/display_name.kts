@@ -1,5 +1,10 @@
 package gg.rsmod.plugins.content.inter.displayname
 
+/**
+ * A plugin for changing display name.
+ *
+ * @author HolyRSPS <dagreenrs@gmail.com>
+ */
 on_button(interfaceId = 261, component = 75) {
     player.queue {
         player.openInterface(interfaceId = 589, dest = InterfaceDestination.TAB_AREA)

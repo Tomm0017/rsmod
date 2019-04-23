@@ -70,6 +70,10 @@ class Client(val channel: Channel, world: World) : Player(world) {
 
     var cameraYaw = 0
 
+    /**
+     * A flag which indicates that the client will have their incoming packets
+     * ([gg.rsmod.game.message.Message]s) logged.
+     */
     var logPackets = false
 
     override val entityType: EntityType = EntityType.CLIENT

@@ -12,7 +12,7 @@ val defaultAggressiveness: (Npc, Player) -> Boolean = boolean@ { n, p ->
         return@boolean false
     }
 
-    if (Math.abs(world.currentCycle - p.lastMapBuildTime) < n.combatDef.aggressiveTimer) {
+    if (Math.abs(world.currentCycle - p.lastMapBuildTime) > n.combatDef.aggressiveTimer) {
         return@boolean false
     }
 

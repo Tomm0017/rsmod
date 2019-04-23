@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.service.gates
+package gg.rsmod.plugins.content.mechanics.gates
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

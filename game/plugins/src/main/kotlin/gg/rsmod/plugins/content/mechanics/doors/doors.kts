@@ -1,9 +1,6 @@
 package gg.rsmod.plugins.content.mechanics.doors
 
 import gg.rsmod.game.model.collision.ObjectType
-import gg.rsmod.plugins.service.doors.DoorService
-import gg.rsmod.plugins.service.doors.DoorStickState
-import gg.rsmod.plugins.service.doors.DoubleDoorSet
 
 val CLOSE_DOOR_SFX = 60
 val STUCK_DOOR_SFX = 61
@@ -11,19 +8,40 @@ val OPEN_DOOR_SFX = 62
 
 val STICK_STATE = AttributeKey<DoorStickState>()
 
-/**
- * The amount of times a door can be opened or closed before it gets "stuck".
- */
-val CHANGES_BEFORE_STICK = 5
+val CHANGES_BEFORE_STICK_TAG = "opens_before_stick"
+val RESET_STICK_DELAY_TAG = "reset_stuck_doors_delay"
 
 /**
- * The amount of cycles that must go by before a door becomes "unstuck".
+ * The amount of times a door can be opened or closed before it gets
+ * "stuck".
  */
-val RESET_STICK_DELAY = 25
+val changesBeforeStick: Int
+    get() = getProperty<Int>(CHANGES_BEFORE_STICK_TAG)!!
+
+/**
+ * The amount of cycles that must go by before a door becomes
+ * "unstuck".
+ */
+val resetStickDelay: Int
+    get() = getProperty<Int>(RESET_STICK_DELAY_TAG)!!
+
+load_metadata {
+    propertyFileName = "doors"
+
+    author = "Tomm"
+    name = "General Doors"
+    description = "Handle the opening and closing of general doors."
+
+    properties(
+            CHANGES_BEFORE_STICK_TAG to 5,
+            RESET_STICK_DELAY_TAG to 25
+    )
+}
+
+load_service(DoorService())
 
 on_world_init {
-    world.getService(DoorService::class.java)?.let { service ->
-
+    world.getService(DoorService::class.java)!!.let { service ->
         service.doors.forEach { door ->
             on_obj_option(obj = door.opened, option = "close") {
                 val obj = player.getInteractingGameObj()
@@ -131,7 +149,7 @@ fun copy_stick_vars(from: GameObject, to: GameObject) {
 
 fun add_stick_var(world: World, obj: GameObject) {
     var currentChanges = get_stick_changes(obj)
-    if (obj.attr.has(STICK_STATE) && Math.abs(world.currentCycle - obj.attr[STICK_STATE]!!.lastChangeCycle) >= RESET_STICK_DELAY) {
+    if (obj.attr.has(STICK_STATE) && Math.abs(world.currentCycle - obj.attr[STICK_STATE]!!.lastChangeCycle) >= resetStickDelay) {
         currentChanges = 0
     }
     obj.attr[STICK_STATE] = DoorStickState(currentChanges + 1, world.currentCycle)
@@ -140,8 +158,8 @@ fun add_stick_var(world: World, obj: GameObject) {
 fun get_stick_changes(obj: GameObject): Int = obj.attr[STICK_STATE]?.changeCount ?: 0
 
 fun is_stuck(world: World, obj: GameObject): Boolean {
-    val stuck = get_stick_changes(obj) >= CHANGES_BEFORE_STICK
-    if (stuck && Math.abs(world.currentCycle - obj.attr[STICK_STATE]!!.lastChangeCycle) >= RESET_STICK_DELAY) {
+    val stuck = get_stick_changes(obj) >= changesBeforeStick
+    if (stuck && Math.abs(world.currentCycle - obj.attr[STICK_STATE]!!.lastChangeCycle) >= resetStickDelay) {
         obj.attr.remove(STICK_STATE)
         return false
     }

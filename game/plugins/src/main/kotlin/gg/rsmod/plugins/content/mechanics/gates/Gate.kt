@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.service.gates
+package gg.rsmod.plugins.content.mechanics.gates
 
 /**
  * @author Tom <rspsmods@gmail.com>

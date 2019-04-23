@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.service.doors
+package gg.rsmod.plugins.content.mechanics.doors
 
 /**
  * @author Tom <rspsmods@gmail.com>

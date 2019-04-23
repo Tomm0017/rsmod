@@ -5,7 +5,11 @@ import gg.rsmod.plugins.api.BonusSlot
 import gg.rsmod.plugins.api.NpcCombatBuilder
 import gg.rsmod.plugins.api.NpcSkills
 import gg.rsmod.plugins.api.NpcSpecies
-import gg.rsmod.plugins.api.ext.*
+import gg.rsmod.plugins.api.ext.NPC_ATTACK_BONUS_INDEX
+import gg.rsmod.plugins.api.ext.NPC_MAGIC_DAMAGE_BONUS_INDEX
+import gg.rsmod.plugins.api.ext.NPC_RANGED_STRENGTH_BONUS_INDEX
+import gg.rsmod.plugins.api.ext.NPC_STRENGTH_BONUS_INDEX
+import gg.rsmod.plugins.api.ext.enumSetOf
 
 fun KotlinPlugin.set_combat_def(npc: Int, init: NpcCombatDsl.Builder.() -> Unit) {
     val builder = NpcCombatDsl.Builder()
@@ -42,6 +46,7 @@ object NpcCombatDsl {
 
             combatBuilder.setAggroRadius(builder.radius)
             combatBuilder.setFindAggroTargetDelay(builder.searchDelay)
+            combatBuilder.setAggroTimer(builder.aggroTimer)
         }
 
         fun stats(init: StatsBuilder.() -> Unit) {
@@ -130,6 +135,31 @@ object NpcCombatDsl {
          * targets.
          */
         var searchDelay = -1
+
+        /**
+         * The time, in cycles, in which the npc will be aggressive to
+         * nearby targets.
+         */
+        var aggroTimer = -1
+
+        /**
+         * The time, in minutes, in which the npc will be aggressive to
+         * nearby targets. This property is simply an alias for [aggroTimer]
+         * and will set [aggroTimer] accordingly.
+         */
+        var aggroMinutes: Int = -1
+            set(value) {
+                aggroTimer * 1000
+                field = value
+            }
+
+        fun alwaysAggro() {
+            aggroTimer = Int.MAX_VALUE
+        }
+
+        fun neverAggro() {
+            aggroTimer = Int.MIN_VALUE
+        }
     }
 
     @CombatDslMarker

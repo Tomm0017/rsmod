@@ -52,6 +52,8 @@ class NpcCombatBuilder {
 
     private var aggroTargetDelay = -1
 
+    private var aggroTimer = -1
+
     private var poisonChance = -1.0
 
     private var venomChance = -1.0
@@ -82,12 +84,16 @@ class NpcCombatBuilder {
         slayerReq = Math.max(1, slayerReq)
         slayerXp = Math.max(0.0, slayerXp)
 
+        if (aggroTimer == -1) {
+            aggroTimer = DEFAULT_AGGRO_TIMER
+        }
+
         return NpcCombatDef(
                 maxHealth, stats.toList(), attackSpeed, defaultAttackAnim,
                 defaultBlockAnim, deathAnimList, respawnDelay, aggroRadius,
-                aggroTargetDelay, poisonChance, venomChance, poisonImmunity,
-                venomImmunity, slayerReq, slayerXp, bonuses.toList(),
-                speciesSet)
+                aggroTargetDelay, aggroTimer, poisonChance, venomChance,
+                poisonImmunity, venomImmunity, slayerReq, slayerXp,
+                bonuses.toList(), speciesSet)
     }
 
     fun setHitpoints(health: Int): NpcCombatBuilder {
@@ -190,6 +196,12 @@ class NpcCombatBuilder {
     fun setFindAggroTargetDelay(delay: Int): NpcCombatBuilder {
         check(aggroTargetDelay == -1) { "Aggro target delay already set." }
         aggroTargetDelay = delay
+        return this
+    }
+
+    fun setAggroTimer(timer: Int): NpcCombatBuilder {
+        check(aggroTimer == -1) { "Aggro timer already set.." }
+        aggroTimer = timer
         return this
     }
 
@@ -324,5 +336,6 @@ class NpcCombatBuilder {
 
     companion object {
         private const val BONUS_COUNT = 14
+        private const val DEFAULT_AGGRO_TIMER = 1000 // 10 minutes
     }
 }

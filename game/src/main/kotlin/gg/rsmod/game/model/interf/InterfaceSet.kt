@@ -1,6 +1,6 @@
 package gg.rsmod.game.model.interf
 
-import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.interf.listener.InterfaceListener
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import mu.KLogging
 
@@ -9,7 +9,7 @@ import mu.KLogging
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class InterfaceSet(val player: Player) {
+class InterfaceSet(private val listener: InterfaceListener) {
 
     /**
      * A map of currently visible interfaces.
@@ -57,8 +57,7 @@ class InterfaceSet(val player: Player) {
             closeByHash(hash)
         }
         visible[hash] = interfaceId
-        // TODO(Tom): remove player val and start using listeners instead.
-        player.world.plugins.executeInterfaceOpen(player, interfaceId)
+        listener.onInterfaceOpen(interfaceId)
     }
 
     /**
@@ -115,8 +114,7 @@ class InterfaceSet(val player: Player) {
     private fun closeByHash(hash: Int): Int {
         val found = visible.remove(hash)
         if (found != visible.defaultReturnValue()) {
-            // TODO(Tom): remove player val and start using listeners instead.
-            player.world.plugins.executeInterfaceClose(player, found)
+            listener.onInterfaceClose(found)
             return found
         }
         logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)

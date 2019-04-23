@@ -1183,10 +1183,9 @@ in-packets:
     ignore: true
 
   - message: gg.rsmod.game.message.impl.MapBuildCompleteMessage
-    type: FIXED # Don't currently have a need to handle this message
+    type: FIXED
     opcode: 76
     length: 0
-    ignore: true
 
   - message: gg.rsmod.game.message.impl.EventAppletFocusMessage
     type: FIXED

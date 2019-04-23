@@ -1,5 +1,6 @@
 package gg.rsmod.game.plugin
 
+import com.google.gson.GsonBuilder
 import gg.rsmod.game.Server
 import gg.rsmod.game.event.Event
 import gg.rsmod.game.fs.def.ItemDef
@@ -18,7 +19,11 @@ import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.shop.ShopCurrency
 import gg.rsmod.game.model.shop.StockType
 import gg.rsmod.game.model.timer.TimerKey
+import gg.rsmod.game.service.Service
+import java.nio.file.Files
+import java.nio.file.Paths
 import kotlin.script.experimental.annotations.KotlinScript
+
 
 /**
  * Represents a KotlinScript plugin.
@@ -31,6 +36,55 @@ import kotlin.script.experimental.annotations.KotlinScript
         compilationConfiguration = KotlinPluginConfiguration::class
 )
 abstract class KotlinPlugin(private val r: PluginRepository, val world: World, val server: Server) {
+
+    /**
+     * A map of properties that will be copied from the [PluginMetadata] and
+     * exposed to the plugin.
+     */
+    private lateinit var properties: MutableMap<String, Any>
+
+    /**
+     * Get property associated with [key] casted as [T].
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun <T> getProperty(key: String): T? = properties[key] as? T?
+
+    /**
+     * Set the [PluginMetadata] for this plugin.
+     */
+    fun load_metadata(metadata: PluginMetadata) {
+        checkNotNull(metadata.propertyFileName) { "Property file name must be set in order to load metadata." }
+
+        val file = METADATA_PATH.resolve("${metadata.propertyFileName}.json")
+        val gson = GsonBuilder()
+                .setPrettyPrinting()
+                .disableHtmlEscaping()
+                .create()
+
+        if (!Files.exists(file)) {
+            Files.createDirectories(METADATA_PATH)
+            Files.newBufferedWriter(file).use { writer ->
+                gson.toJson(metadata, PluginMetadata::class.java, writer)
+            }
+        }
+
+        Files.newBufferedReader(file).use { reader ->
+            val data = gson.fromJson(reader, PluginMetadata::class.java)
+            if (data.properties.isNotEmpty()) {
+                properties = mutableMapOf()
+                data.properties.forEach { key, value ->
+                    properties[key] = if (value is Double) value.toInt() else value
+                }
+            }
+        }
+    }
+
+    /**
+     * Load [service] on plugin start-up.
+     */
+    fun load_service(service: Service) {
+        r.services.add(service)
+    }
 
     /**
      * Set the [gg.rsmod.game.model.region.ChunkCoords] with [chunk] as its
@@ -435,4 +489,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      * option - return false otherwise.
      */
     fun can_drop_item(item: Int, plugin: (Plugin).() -> Boolean) = r.bindCanItemDrop(item, plugin)
+
+    companion object {
+        private val METADATA_PATH = Paths.get("./plugins", "configs")
+    }
 }

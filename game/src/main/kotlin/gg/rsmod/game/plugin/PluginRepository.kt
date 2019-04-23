@@ -19,6 +19,8 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.timer.TimerKey
+import gg.rsmod.game.service.Service
+import gg.rsmod.util.ServerProperties
 import io.github.classgraph.ClassGraph
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
@@ -338,6 +340,8 @@ class PluginRepository(val world: World) {
      */
     internal val shops = Object2ObjectOpenHashMap<String, Shop>()
 
+    internal val services = mutableListOf<Service>()
+
     /**
      * Holds all container keys set from plugins for this [PluginRepository].
      */
@@ -350,17 +354,18 @@ class PluginRepository(val world: World) {
     /**
      * Initiates and populates all our plugins.
      */
-    fun init(server: Server, jarPluginsDirectory: String) {
+    fun init(server: Server, world: World, jarPluginsDirectory: String) {
         loadPlugins(server, jarPluginsDirectory)
+        loadServices(server, world)
         spawnEntities()
     }
 
-    internal fun loadPlugins(server: Server, jarPluginsDirectory: String) {
+    private fun loadPlugins(server: Server, jarPluginsDirectory: String) {
         scanPackageForPlugins(server, world)
         scanJarDirectoryForPlugins(server, world, Paths.get(jarPluginsDirectory))
     }
 
-    fun scanPackageForPlugins(server: Server, world: World) {
+    private fun scanPackageForPlugins(server: Server, world: World) {
         ClassGraph().enableAllInfo().whitelistModules().scan().use { result ->
             val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
             plugins.forEach { p ->
@@ -371,7 +376,7 @@ class PluginRepository(val world: World) {
         }
     }
 
-    fun scanJarDirectoryForPlugins(server: Server, world: World, directory: Path) {
+    private fun scanJarDirectoryForPlugins(server: Server, world: World, directory: Path) {
         if (Files.exists(directory)) {
             Files.walk(directory).forEach { path ->
                 if (!path.fileName.toString().endsWith(".jar")) {
@@ -382,7 +387,7 @@ class PluginRepository(val world: World) {
         }
     }
 
-    fun scanJarForPlugins(server: Server, world: World, path: Path) {
+    private fun scanJarForPlugins(server: Server, world: World, path: Path) {
         val urls = arrayOf(path.toFile().toURI().toURL())
         val classLoader = URLClassLoader(urls, PluginRepository::class.java.classLoader)
 
@@ -393,6 +398,17 @@ class PluginRepository(val world: World) {
                 val constructor = pluginClass.getConstructor(PluginRepository::class.java, World::class.java, Server::class.java)
                 constructor.newInstance(this, world, server)
             }
+        }
+    }
+
+    private fun loadServices(server: Server, world: World) {
+        services.forEach { service ->
+            service.init(server, world, ServerProperties())
+            world.addService(service)
+        }
+
+        services.forEach { service ->
+            service.postLoad(server, world)
         }
     }
 

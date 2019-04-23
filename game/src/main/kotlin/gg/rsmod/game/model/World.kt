@@ -574,6 +574,13 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
     }
 
     /**
+     * Add [service] to available world services.
+     */
+    internal fun <T : Service> addService(service: T) {
+        services.add(service)
+    }
+
+    /**
      * Loads all the services listed on our game properties file.
      */
     internal fun loadServices(server: Server, gameProperties: ServerProperties) {

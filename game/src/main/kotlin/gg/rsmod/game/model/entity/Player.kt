@@ -3,8 +3,22 @@ package gg.rsmod.game.model.entity
 import com.google.common.base.MoreObjects
 import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
-import gg.rsmod.game.message.impl.*
-import gg.rsmod.game.model.*
+import gg.rsmod.game.message.impl.MessageGameMessage
+import gg.rsmod.game.message.impl.RebuildLoginMessage
+import gg.rsmod.game.message.impl.UpdateInvFullMessage
+import gg.rsmod.game.message.impl.UpdateRebootTimerMessage
+import gg.rsmod.game.message.impl.UpdateRunWeightMessage
+import gg.rsmod.game.message.impl.UpdateStatMessage
+import gg.rsmod.game.message.impl.VarpLargeMessage
+import gg.rsmod.game.message.impl.VarpSmallMessage
+import gg.rsmod.game.model.Appearance
+import gg.rsmod.game.model.Coordinate
+import gg.rsmod.game.model.EntityType
+import gg.rsmod.game.model.MovementQueue
+import gg.rsmod.game.model.PawnList
+import gg.rsmod.game.model.PlayerUID
+import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
 import gg.rsmod.game.model.attr.LEVEL_UP_INCREMENT
 import gg.rsmod.game.model.attr.LEVEL_UP_OLD_XP
@@ -15,6 +29,7 @@ import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
 import gg.rsmod.game.model.container.key.INVENTORY_KEY
 import gg.rsmod.game.model.interf.InterfaceSet
+import gg.rsmod.game.model.interf.listener.PlayerInterfaceListener
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.game.model.skill.SkillSet
@@ -23,8 +38,7 @@ import gg.rsmod.game.model.timer.FORCE_DISCONNECTION_TIMER
 import gg.rsmod.game.model.varp.VarpSet
 import gg.rsmod.game.sync.block.UpdateBlockType
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import java.util.*
-import kotlin.collections.HashMap
+import java.util.Arrays
 
 /**
  * A [Pawn] that represents a player.
@@ -101,7 +115,7 @@ open class Player(world: World) : Pawn(world) {
         put(BANK_KEY, bank)
     }
 
-    val interfaces by lazy { InterfaceSet(this) }
+    val interfaces by lazy { InterfaceSet(PlayerInterfaceListener(this, world.plugins)) }
 
     val varps = VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java))
 

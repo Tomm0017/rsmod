@@ -1,5 +1,6 @@
 package gg.rsmod.game.model.entity
 
+import com.google.common.base.MoreObjects
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.World
@@ -69,6 +70,8 @@ class Client(val channel: Channel, world: World) : Player(world) {
 
     var cameraYaw = 0
 
+    var logPackets = false
+
     override val entityType: EntityType = EntityType.CLIENT
 
     override fun handleLogout() {
@@ -95,6 +98,12 @@ class Client(val channel: Channel, world: World) : Player(world) {
     override fun channelClose() {
         gameSystem.close()
     }
+
+    override fun toString(): String = MoreObjects.toStringHelper(this)
+            .add("login_username", loginUsername)
+            .add("username", username)
+            .add("channel", channel)
+            .toString()
 
     companion object {
 

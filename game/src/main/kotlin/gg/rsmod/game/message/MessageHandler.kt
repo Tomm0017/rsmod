@@ -1,6 +1,8 @@
 package gg.rsmod.game.message
 
 import gg.rsmod.game.model.entity.Client
+import gg.rsmod.game.service.log.LoggerService
+import mu.KLogging
 
 /**
  * A [MessageHandler] is responsible for executing [Message] logic on the
@@ -20,8 +22,16 @@ interface MessageHandler<T : Message> {
      * A default method to log the handlers.
      */
     fun log(client: Client, format: String, vararg args: Any) {
-        // TODO: log normal packets if applicable (maybe have a toggle for certain
-        // flagged/suspicious players to be logged)
-        // logger.info(String.format(format, *args))
+        if (client.logPackets) {
+            val message = String.format(format, *args)
+            val logService = client.world.getService(LoggerService::class.java, searchSubclasses = true)
+            if (logService != null) {
+                logService.info("$client: $message")
+            } else {
+                logger.trace(message)
+            }
+        }
     }
+
+    companion object : KLogging()
 }

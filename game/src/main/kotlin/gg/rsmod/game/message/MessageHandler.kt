@@ -26,7 +26,7 @@ interface MessageHandler<T : Message> {
             val message = String.format(format, *args)
             val logService = client.world.getService(LoggerService::class.java, searchSubclasses = true)
             if (logService != null) {
-                logService.info("$client: $message")
+                logService.logPacket(client, message)
             } else {
                 logger.trace(message)
             }

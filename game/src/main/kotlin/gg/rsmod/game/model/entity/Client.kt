@@ -66,8 +66,14 @@ class Client(val channel: Channel, world: World) : Player(world) {
      */
     var clientHeight = 503
 
+    /**
+     * The pitch of the camera in the client's game UI.
+     */
     var cameraPitch = 0
 
+    /**
+     * The yaw of the camera in the client's game UI.
+     */
     var cameraYaw = 0
 
     /**

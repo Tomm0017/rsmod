@@ -16,7 +16,7 @@ class OpHeldUHandler : MessageHandler<OpHeldUMessage> {
         val fromSlot = message.fromSlot
         val fromItemId = message.fromItem
 
-        val toComponentHash = message.fromComponentHash
+        val toComponentHash = message.toComponentHash
         val toInterfaceId = toComponentHash shr 16
         val toComponent = toComponentHash and 0xFFFF
         val toSlot = message.toSlot

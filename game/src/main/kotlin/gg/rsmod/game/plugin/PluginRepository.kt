@@ -333,6 +333,9 @@ class PluginRepository(val world: World) {
      */
     internal val itemSpawns = mutableListOf<GroundItem>()
 
+    /**
+     * A map of [NpcCombatDef]s that have been set by [KotlinPlugin]s.
+     */
     internal val npcCombatDefs = Int2ObjectOpenHashMap<NpcCombatDef>()
 
     /**
@@ -340,6 +343,9 @@ class PluginRepository(val world: World) {
      */
     internal val shops = Object2ObjectOpenHashMap<String, Shop>()
 
+    /**
+     * A list of [Service]s that have been requested for loading by a [KotlinPlugin].
+     */
     internal val services = mutableListOf<Service>()
 
     /**
@@ -360,11 +366,17 @@ class PluginRepository(val world: World) {
         spawnEntities()
     }
 
+    /**
+     * Locate and load all [KotlinPlugin]s.
+     */
     private fun loadPlugins(server: Server, jarPluginsDirectory: String) {
         scanPackageForPlugins(server, world)
         scanJarDirectoryForPlugins(server, world, Paths.get(jarPluginsDirectory))
     }
 
+    /**
+     * Scan our local package to find any and all [KotlinPlugin]s.
+     */
     private fun scanPackageForPlugins(server: Server, world: World) {
         ClassGraph().enableAllInfo().whitelistModules().scan().use { result ->
             val plugins = result.getSubclasses(KotlinPlugin::class.java.name).directOnly()
@@ -376,6 +388,9 @@ class PluginRepository(val world: World) {
         }
     }
 
+    /**
+     * Scan directory for any JAR file which may contain plugins.
+     */
     private fun scanJarDirectoryForPlugins(server: Server, world: World, directory: Path) {
         if (Files.exists(directory)) {
             Files.walk(directory).forEach { path ->
@@ -387,6 +402,10 @@ class PluginRepository(val world: World) {
         }
     }
 
+    /**
+     * Scan JAR located in [path] for any and all valid [KotlinPlugin]s and
+     * initialise them.
+     */
     private fun scanJarForPlugins(server: Server, world: World, path: Path) {
         val urls = arrayOf(path.toFile().toURI().toURL())
         val classLoader = URLClassLoader(urls, PluginRepository::class.java.classLoader)
@@ -401,10 +420,13 @@ class PluginRepository(val world: World) {
         }
     }
 
+    /**
+     * Load and initialise [Service]s given to us by [KotlinPlugin]s.
+     */
     private fun loadServices(server: Server, world: World) {
         services.forEach { service ->
             service.init(server, world, ServerProperties())
-            world.addService(service)
+            world.services.add(service)
         }
 
         services.forEach { service ->
@@ -412,15 +434,39 @@ class PluginRepository(val world: World) {
         }
     }
 
+    /**
+     * Spawn any and all [gg.rsmod.game.model.entity.Entity]s given to us by
+     * [KotlinPlugin]s.
+     */
     private fun spawnEntities() {
         npcSpawns.forEach { npc -> world.spawn(npc) }
-        npcSpawns.clear()
-
         objSpawns.forEach { obj -> world.spawn(obj) }
-        objSpawns.clear()
-
         itemSpawns.forEach { item -> world.spawn(item) }
-        itemSpawns.clear()
+    }
+
+    /**
+     * Gracefully terminate this repository.
+     */
+    fun terminate() {
+        npcSpawns.forEach { npc ->
+            if (npc.isSpawned()) {
+                world.remove(npc)
+            }
+        }
+
+        objSpawns.forEach { obj ->
+            if (obj.isSpawned(world)) {
+                world.remove(obj)
+            }
+        }
+
+        itemSpawns.forEach { item ->
+            if (item.isSpawned(world)) {
+                world.remove(item)
+            }
+        }
+
+        world.services.removeAll(services)
     }
 
     /**

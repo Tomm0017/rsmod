@@ -12,30 +12,31 @@ import gg.rsmod.game.model.entity.Client
 class IfButtonDHandler : MessageHandler<IfButtonDMessage> {
 
     override fun handle(client: Client, message: IfButtonDMessage) {
-        val srcComponentHash = message.srcComponentHash
-        val srcSlot = message.srcSlot
-        val srcItemId = message.srcItem
+        val fromComponentHash = message.srcComponentHash
+        val fromSlot = message.srcSlot
+        val fromItemId = message.srcItem
 
-        val dstComponentHash = message.dstComponentHash
-        val dstSlot = message.dstSlot
-        val dstItemId = message.dstItem
+        val toComponentHash = message.dstComponentHash
+        val toSlot = message.dstSlot
+        val toItemId = message.dstItem
 
-        val srcInterfaceId = srcComponentHash shr 16
-        val srcComponent = srcComponentHash and 0xFFFF
-        val dstInterfaceId = dstComponentHash shr 16
-        val dstComponent = dstComponentHash and 0xFFFF
+        val fromInterfaceId = fromComponentHash shr 16
+        val fromComponent = fromComponentHash and 0xFFFF
+        val toInterfaceId = toComponentHash shr 16
+        val toComponent = toComponentHash and 0xFFFF
 
-        log(client, "Swap component to component item: srcInterface=[%d, %d], srcItem=%d, dstInterface=[%d, %d], dstItem=%d",
-                srcInterfaceId, srcComponent, srcItemId, dstInterfaceId, dstComponent, dstItemId)
+        log(client, "Swap component to component item: src_component=[%d, %d], dst_component=[%d, %d], src_item=%d, dst_item=%d",
+                fromInterfaceId, fromComponent, toInterfaceId, toComponent, fromItemId, toItemId)
 
-        client.attr[INTERACTING_ITEM_SLOT] = srcSlot
-        client.attr[OTHER_ITEM_SLOT_ATTR] = dstSlot
+        client.attr[INTERACTING_ITEM_SLOT] = fromSlot
+        client.attr[OTHER_ITEM_SLOT_ATTR] = toSlot
 
         val swapped = client.world.plugins.executeComponentToComponentItemSwap(
-                client, srcInterfaceId, srcComponent, dstInterfaceId, dstComponent)
+                client, fromInterfaceId, fromComponent, toInterfaceId, toComponent)
 
         if (!swapped && client.world.devContext.debugButtons) {
-            client.message("Unhandled component to component swap: [fromSlot=$srcSlot, toSlot=$dstSlot, fromItem=$srcItemId, toItem=$dstItemId, fromInterface=[$srcInterfaceId, $srcComponent], toInterface=[$dstInterfaceId, $dstComponent]]")
+            client.message("Unhandled component to component swap: [from_item=$fromItemId, to_item=$toItemId, from_slot=$fromSlot, to_slot=$toSlot, " +
+                    "from_component=[$fromInterfaceId, $fromComponent], to_component=[$toInterfaceId, $toComponent]]")
         }
     }
 }

@@ -14,17 +14,17 @@ class OpHeldDHandler : MessageHandler<OpHeldDMessage> {
     override fun handle(client: Client, message: OpHeldDMessage) {
         val interfaceId = message.componentHash shr 16
         val component = message.componentHash and 0xFFFF
-        val srcSlot = message.srcSlot
-        val dstSlot = message.dstSlot
+        val fromSlot = message.srcSlot
+        val toSlot = message.dstSlot
 
-        log(client, "Swap component item: interfaceId=%d, component=%d, srcSlot=%d, dstSlot=%d", interfaceId, component, srcSlot, dstSlot)
+        log(client, "Swap component item: component=[%d, %d], src_slot=%d, dst_slot=%d", interfaceId, component, fromSlot, toSlot)
 
-        client.attr[INTERACTING_ITEM_SLOT] = srcSlot
-        client.attr[OTHER_ITEM_SLOT_ATTR] = dstSlot
+        client.attr[INTERACTING_ITEM_SLOT] = fromSlot
+        client.attr[OTHER_ITEM_SLOT_ATTR] = toSlot
 
         val swapped = client.world.plugins.executeComponentItemSwap(client, interfaceId, component)
         if (!swapped && client.world.devContext.debugButtons) {
-            client.message("Unhandled component swap: [interface=$interfaceId, component=$component, fromSlot=$srcSlot, toSlot=$dstSlot]")
+            client.message("Unhandled component swap: [component=[$interfaceId, $component], from_slot=$fromSlot, to_slot=$toSlot]")
         }
     }
 }

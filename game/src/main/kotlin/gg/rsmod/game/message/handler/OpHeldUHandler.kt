@@ -33,10 +33,13 @@ class OpHeldUHandler : MessageHandler<OpHeldUMessage> {
             return
         }
 
+        log(client, "Item on item: from_component=[%d,%d], to_component=[%d,%d], from_item=%d, from_slot=%d, to_item=%d, to_slot=%d",
+                fromInterfaceId, fromComponent, toInterfaceId, toComponent, fromItem.id, fromSlot, toItem.id, toSlot)
+
         val handled = client.world.plugins.executeItemOnItem(client, fromItem.id, toItem.id)
         if (!handled && client.world.devContext.debugItemActions) {
-            client.message("Unhandled item on item: [fromItem=${fromItem.id}, toItem=${toItem.id}, fromSlot=$fromSlot, toSlot=$toSlot, " +
-                    "fromComponent=[$fromInterfaceId, $fromComponent], toComponent=[$toInterfaceId, $toComponent]]")
+            client.message("Unhandled item on item: [from_item=${fromItem.id}, to_item=${toItem.id}, from_slot=$fromSlot, to_slot=$toSlot, " +
+                    "from_component=[$fromInterfaceId, $fromComponent], to_component=[$toInterfaceId, $toComponent]]")
         }
     }
 }

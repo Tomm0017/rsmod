@@ -10,7 +10,7 @@ import gg.rsmod.game.model.entity.Client
 class ResumePauseButtonHandler : MessageHandler<ResumePauseButtonMessage> {
 
     override fun handle(client: Client, message: ResumePauseButtonMessage) {
-        log(client, "Continue dialog: interface=%d, component=%d, slot=%d", message.parent, message.child, message.slot)
+        log(client, "Continue dialog: component=[%d, %d], slot=%d", message.interfaceId, message.component, message.slot)
         client.queues.submitReturnValue(message)
     }
 }

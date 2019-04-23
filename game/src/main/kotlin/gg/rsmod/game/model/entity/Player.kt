@@ -202,6 +202,14 @@ open class Player(world: World) : Pawn(world) {
 
     var xpRate = 1.0
 
+    /**
+     * The last cycle that this client has received the MAP_BUILD_COMPLETE
+     * message. This value is set to [World.currentCycle].
+     *
+     * @see [gg.rsmod.game.message.handler.MapBuildCompleteHandler]
+     */
+    var lastMapBuildTime = 0
+
     fun getSkills(): SkillSet = skillSet
 
     override val entityType: EntityType = EntityType.PLAYER

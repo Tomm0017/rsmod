@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
  *
  * @param propertyFileName the file name that will store the metadata. This should
  * be the <strong>file-name</strong>, not the full path and not including the
- * extension.
+ * extension. This name should be unique enough so that no two plugins would
+ * ever share the same name, otherwise there may be conflicting issues.
  *
  * @param name the name of our plugin. There are no restrictions to what you can
  * name a plugin.

@@ -37,9 +37,9 @@ class OpHeld4Handler : MessageHandler<OpHeld4Message> {
         log(client, "Item action 4: id=%d, slot=%d, component=(%d, %d), inventory=(%d, %d)",
                 message.item, message.slot, interfaceId, component, item.id, item.amount)
 
-        client.attr[INTERACTING_ITEM_SLOT] = message.slot
-        client.attr[INTERACTING_ITEM_ID] = item.id
         client.attr[INTERACTING_ITEM] = WeakReference(item)
+        client.attr[INTERACTING_ITEM_ID] = item.id
+        client.attr[INTERACTING_ITEM_SLOT] = message.slot
 
         if (!world.plugins.executeItem(client, item.id, 4) && world.devContext.debugItemActions) {
             client.message("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=4]")

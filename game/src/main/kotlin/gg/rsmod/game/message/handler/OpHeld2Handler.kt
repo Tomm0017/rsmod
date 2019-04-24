@@ -38,9 +38,9 @@ class OpHeld2Handler : MessageHandler<OpHeld2Message> {
         log(client, "Item action 2: id=%d, slot=%d, component=(%d, %d), inventory=(%d, %d)",
                 message.item, message.slot, interfaceId, component, item.id, item.amount)
 
-        client.attr[INTERACTING_ITEM_SLOT] = message.slot
-        client.attr[INTERACTING_ITEM_ID] = item.id
         client.attr[INTERACTING_ITEM] = WeakReference(item)
+        client.attr[INTERACTING_ITEM_ID] = item.id
+        client.attr[INTERACTING_ITEM_SLOT] = message.slot
 
         val result = EquipAction.equip(client, item, message.slot)
         if (result == EquipAction.Result.UNHANDLED && world.devContext.debugItemActions) {

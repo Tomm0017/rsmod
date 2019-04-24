@@ -5,6 +5,7 @@ import gg.rsmod.game.message.impl.MessagePublicMessage
 import gg.rsmod.game.model.ChatMessage
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
+import gg.rsmod.game.service.log.LoggerService
 import gg.rsmod.game.sync.block.UpdateBlockType
 
 /**
@@ -24,6 +25,6 @@ class MessagePublicHandler : MessageHandler<MessagePublicMessage> {
 
         client.blockBuffer.publicChat = ChatMessage(unpacked, client.privilege.icon, type, effect, color)
         client.addBlock(UpdateBlockType.PUBLIC_CHAT)
-
+        world.getService(LoggerService::class.java, searchSubclasses = true)?.logPublicChat(client, unpacked)
     }
 }

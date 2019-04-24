@@ -22,7 +22,7 @@ class IfButton1Handler : MessageHandler<IfButtonMessage> {
             return
         }
 
-        log(client, "Click button: component=[%d, %d], option=%d, slot=%d, item=%d", interfaceId, component, option, message.slot, message.item)
+        log(client, "Click button: component=[%d:%d], option=%d, slot=%d, item=%d", interfaceId, component, option, message.slot, message.item)
 
         client.attr[INTERACTING_OPT_ATTR] = option
         client.attr[INTERACTING_ITEM_ID] = message.item

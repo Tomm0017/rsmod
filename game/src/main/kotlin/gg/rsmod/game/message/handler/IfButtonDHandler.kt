@@ -26,7 +26,7 @@ class IfButtonDHandler : MessageHandler<IfButtonDMessage> {
         val toInterfaceId = toComponentHash shr 16
         val toComponent = toComponentHash and 0xFFFF
 
-        log(client, "Swap component to component item: src_component=[%d, %d], dst_component=[%d, %d], src_item=%d, dst_item=%d",
+        log(client, "Swap component to component item: src_component=[%d:%d], dst_component=[%d:%d], src_item=%d, dst_item=%d",
                 fromInterfaceId, fromComponent, toInterfaceId, toComponent, fromItemId, toItemId)
 
         client.attr[INTERACTING_ITEM_SLOT] = fromSlot

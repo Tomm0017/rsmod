@@ -3,6 +3,7 @@ package gg.rsmod.game.service.log
 import gg.rsmod.game.event.Event
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.Npc
+import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.service.Service
@@ -36,5 +37,5 @@ interface LoggerService : Service {
 
     fun logPlayerKill(killer: Player, killed: Player)
 
-    fun logEvent(player: Player, event: Event)
+    fun logEvent(pawn: Pawn, event: Event)
 }

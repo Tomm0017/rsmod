@@ -255,12 +255,13 @@ fun Player.sendItemContainer(key: Int, container: ItemContainer) {
 fun Player.sendItemContainerOther(key: Int, container: ItemContainer) {
     write(UpdateInvFullMessage(containerKey = key + 32768, items = container.rawItems))
 }
+
 fun Player.sendItemContainer(parent: Int, child: Int, container: ItemContainer) {
-    write(UpdateInvFullMessage(parent = parent, child = child, items = container.rawItems))
+    write(UpdateInvFullMessage(interfaceId = parent, component = child, items = container.rawItems))
 }
 
 fun Player.sendItemContainer(parent: Int, child: Int, key: Int, container: ItemContainer) {
-    write(UpdateInvFullMessage(parent = parent, child = child, containerKey = key, items = container.rawItems))
+    write(UpdateInvFullMessage(interfaceId = parent, component = child, containerKey = key, items = container.rawItems))
 }
 
 fun Player.updateItemContainer(key: Int, container: ItemContainer) {

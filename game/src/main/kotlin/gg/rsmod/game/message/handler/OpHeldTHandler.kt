@@ -47,7 +47,7 @@ class OpHeldTHandler : MessageHandler<OpHeldTMessage> {
         val handled = world.plugins.executeSpellOnItem(client, fromComponentHash, toComponentHash)
         if (!handled && world.devContext.debugMagicSpells) {
             client.message("Unhandled spell on item: [item=[${item.id}, ${item.amount}], slot=$itemSlot, unknown=$unknown " +
-                    "from_component=[$fromInterfaceId, $fromComponent], to_component=[$toInterfaceId, $toComponent]]")
+                    "from_component=[$fromInterfaceId:$fromComponent], to_component=[$toInterfaceId:$toComponent]]")
         }
     }
 }

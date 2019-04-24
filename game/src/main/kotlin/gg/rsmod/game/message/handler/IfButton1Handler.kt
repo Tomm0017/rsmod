@@ -33,7 +33,7 @@ class IfButton1Handler : MessageHandler<IfButtonMessage> {
         }
 
         if (world.devContext.debugButtons) {
-            client.message("Unhandled button action: [component=[$interfaceId, $component], option=$option, slot=${message.slot}, item=${message.item}]")
+            client.message("Unhandled button action: [component=[$interfaceId:$component], option=$option, slot=${message.slot}, item=${message.item}]")
         }
     }
 }

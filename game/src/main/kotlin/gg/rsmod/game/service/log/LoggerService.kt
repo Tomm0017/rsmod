@@ -30,7 +30,7 @@ interface LoggerService : Service {
 
     fun logItemDrop(player: Player, item: Item, slot: Int)
 
-    fun logItemPickUp(player: Player, item: Item, slot: Int)
+    fun logItemPickUp(player: Player, item: Item)
 
     fun logNpcKill(player: Player, npc: Npc)
 

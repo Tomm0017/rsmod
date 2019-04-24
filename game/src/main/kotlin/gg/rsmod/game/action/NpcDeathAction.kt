@@ -4,9 +4,11 @@ import gg.rsmod.game.fs.def.AnimDef
 import gg.rsmod.game.model.LockState
 import gg.rsmod.game.model.attr.KILLER_ATTR
 import gg.rsmod.game.model.entity.Npc
+import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.game.service.log.LoggerService
 import java.lang.ref.WeakReference
 
 /**
@@ -30,6 +32,9 @@ object NpcDeathAction {
         val respawnDelay = npc.combatDef.respawnDelay
 
         npc.damageMap.getMostDamage()?.let { killer ->
+            if (killer is Player) {
+                world.getService(LoggerService::class.java, searchSubclasses = true)?.logNpcKill(killer, npc)
+            }
             npc.attr[KILLER_ATTR] = WeakReference(killer)
         }
 

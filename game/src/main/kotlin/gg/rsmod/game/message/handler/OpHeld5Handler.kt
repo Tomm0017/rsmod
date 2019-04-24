@@ -8,6 +8,8 @@ import gg.rsmod.game.model.attr.INTERACTING_ITEM_ID
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.GroundItem
+import gg.rsmod.game.model.item.Item
+import gg.rsmod.game.service.log.LoggerService
 import java.lang.ref.WeakReference
 
 /**
@@ -26,9 +28,9 @@ class OpHeld5Handler : MessageHandler<OpHeld5Message> {
 
         log(client, "Drop item: item=[%d, %d], slot=%d, interfaceId=%d, component=%d", item.id, item.amount, slot, hash shr 16, hash and 0xFFFF)
 
-        client.attr[INTERACTING_ITEM_SLOT] = message.slot
-        client.attr[INTERACTING_ITEM_ID] = item.id
         client.attr[INTERACTING_ITEM] = WeakReference(item)
+        client.attr[INTERACTING_ITEM_ID] = item.id
+        client.attr[INTERACTING_ITEM_SLOT] = slot
 
         client.resetFacePawn()
 
@@ -37,6 +39,7 @@ class OpHeld5Handler : MessageHandler<OpHeld5Message> {
             if (remove.completed > 0) {
                 val floor = GroundItem(item.id, remove.completed, client.tile, client)
                 world.spawn(floor)
+                world.getService(LoggerService::class.java, searchSubclasses = true)?.logItemDrop(client, Item(item.id, remove.completed), slot)
             }
         }
     }

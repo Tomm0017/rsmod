@@ -36,6 +36,7 @@ import gg.rsmod.game.model.skill.SkillSet
 import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.timer.FORCE_DISCONNECTION_TIMER
 import gg.rsmod.game.model.varp.VarpSet
+import gg.rsmod.game.service.log.LoggerService
 import gg.rsmod.game.sync.block.UpdateBlockType
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import java.util.Arrays
@@ -387,6 +388,7 @@ open class Player(world: World) : Pawn(world) {
             System.arraycopy(gpiTileHashMultipliers, 0, tiles, 0, tiles.size)
 
             write(RebuildLoginMessage(index, tile, tiles, world.xteaKeyService))
+            world.getService(LoggerService::class.java, searchSubclasses = true)?.logLogin(this)
         }
 
         if (world.rebootTimer != -1) {

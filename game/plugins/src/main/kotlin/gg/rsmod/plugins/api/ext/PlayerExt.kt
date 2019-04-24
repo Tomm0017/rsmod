@@ -264,9 +264,8 @@ fun Player.sendItemContainer(parent: Int, child: Int, key: Int, container: ItemC
     write(UpdateInvFullMessage(interfaceId = parent, component = child, containerKey = key, items = container.rawItems))
 }
 
-fun Player.updateItemContainer(key: Int, container: ItemContainer) {
-    // TODO: UpdateInvPartialMessage
-    write(UpdateInvFullMessage(containerKey = key, items = container.rawItems))
+fun Player.updateItemContainer(key: Int, oldItems: Array<Item?>, newItems: Array<Item?>) {
+    write(UpdateInvPartialMessage(containerKey = key, oldItems = oldItems, newItems = newItems))
 }
 
 fun Player.sendRunEnergy(energy: Int) {

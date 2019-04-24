@@ -37,6 +37,7 @@ import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
 import gg.rsmod.game.model.timer.STUN_TIMER
 import gg.rsmod.game.model.timer.TimerMap
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.game.service.log.LoggerService
 import gg.rsmod.game.sync.block.UpdateBlockBuffer
 import gg.rsmod.game.sync.block.UpdateBlockType
 import kotlinx.coroutines.CoroutineScope
@@ -602,6 +603,7 @@ abstract class Pawn(val world: World) : Entity() {
 
     fun triggerEvent(event: Event) {
         world.plugins.executeEvent(this, event)
+        world.getService(LoggerService::class.java, searchSubclasses = true)?.logEvent(this, event)
     }
 
     internal fun createPathFindingStrategy(copyChunks: Boolean = false): PathFindingStrategy {

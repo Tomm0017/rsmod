@@ -1,5 +1,6 @@
 package gg.rsmod.game.message
 
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.log.LoggerService
 import mu.KLogging
@@ -16,7 +17,7 @@ interface MessageHandler<T : Message> {
      * Handles the [message] on the game-thread with the ability to read and write
      * to the [Client].
      */
-    fun handle(client: Client, message: T)
+    fun handle(client: Client, world: World, message: T)
 
     /**
      * A default method to log the handlers.
@@ -26,7 +27,7 @@ interface MessageHandler<T : Message> {
             val message = String.format(format, *args)
             val logService = client.world.getService(LoggerService::class.java, searchSubclasses = true)
             if (logService != null) {
-                logService.info("$client: $message")
+                logService.logPacket(client, message)
             } else {
                 logger.trace(message)
             }

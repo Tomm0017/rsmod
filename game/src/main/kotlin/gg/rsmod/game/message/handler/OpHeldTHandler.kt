@@ -2,6 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpHeldTMessage
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.INTERACTING_ITEM
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_ID
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
@@ -13,7 +14,7 @@ import java.lang.ref.WeakReference
  */
 class OpHeldTHandler : MessageHandler<OpHeldTMessage> {
 
-    override fun handle(client: Client, message: OpHeldTMessage) {
+    override fun handle(client: Client, world: World, message: OpHeldTMessage) {
         val fromComponentHash = message.fromComponentHash
         val fromInterfaceId = fromComponentHash shr 16
         val fromComponent = fromComponentHash and 0xFFFF
@@ -43,8 +44,8 @@ class OpHeldTHandler : MessageHandler<OpHeldTMessage> {
         client.attr[INTERACTING_ITEM_ID] = itemId
         client.attr[INTERACTING_ITEM_SLOT] = itemSlot
 
-        val handled = client.world.plugins.executeSpellOnItem(client, fromComponentHash, toComponentHash)
-        if (!handled && client.world.devContext.debugMagicSpells) {
+        val handled = world.plugins.executeSpellOnItem(client, fromComponentHash, toComponentHash)
+        if (!handled && world.devContext.debugMagicSpells) {
             client.message("Unhandled spell on item: [item=[${item.id}, ${item.amount}], slot=$itemSlot, unknown=$unknown " +
                     "from_component=[$fromInterfaceId, $fromComponent], to_component=[$toInterfaceId, $toComponent]]")
         }

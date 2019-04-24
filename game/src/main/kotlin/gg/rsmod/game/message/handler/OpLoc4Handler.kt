@@ -5,6 +5,7 @@ import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpLoc4Message
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Client
@@ -18,7 +19,7 @@ import java.lang.ref.WeakReference
  */
 class OpLoc4Handler : MessageHandler<OpLoc4Message> {
 
-    override fun handle(client: Client, message: OpLoc4Message) {
+    override fun handle(client: Client, world: World, message: OpLoc4Message) {
         /*
          * If tile is too far away, don't process it.
          */
@@ -37,7 +38,7 @@ class OpLoc4Handler : MessageHandler<OpLoc4Message> {
         /*
          * Get the region chunk that the object would belong to.
          */
-        val chunk = client.world.chunks.getOrCreate(tile)
+        val chunk = world.chunks.getOrCreate(tile)
         val obj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.id == message.id } ?: return
 
         log(client, "Object action 4: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
@@ -47,9 +48,9 @@ class OpLoc4Handler : MessageHandler<OpLoc4Message> {
         client.interruptQueues()
         client.resetInteractions()
 
-        if (message.movementType == 1 && client.world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-            val def = obj.getDef(client.world.definitions)
-            client.moveTo(client.world.findRandomTileAround(obj.tile, radius = 1, centreWidth = def.width, centreLength = def.length) ?: obj.tile)
+        if (message.movementType == 1 && world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
+            val def = obj.getDef(world.definitions)
+            client.moveTo(world.findRandomTileAround(obj.tile, radius = 1, centreWidth = def.width, centreLength = def.length) ?: obj.tile)
         }
 
         client.attr[INTERACTING_OPT_ATTR] = 4

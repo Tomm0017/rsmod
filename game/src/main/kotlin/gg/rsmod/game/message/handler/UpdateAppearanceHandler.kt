@@ -4,15 +4,16 @@ import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.UpdateAppearanceMessage
 import gg.rsmod.game.model.Appearance
 import gg.rsmod.game.model.Gender
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
-import java.util.*
+import java.util.Arrays
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 class UpdateAppearanceHandler : MessageHandler<UpdateAppearanceMessage> {
 
-    override fun handle(client: Client, message: UpdateAppearanceMessage) {
+    override fun handle(client: Client, world: World, message: UpdateAppearanceMessage) {
         val gender = if (message.gender == 1) Gender.FEMALE else Gender.MALE
         val looks = message.appearance
         val colors = message.colors

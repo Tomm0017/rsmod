@@ -2,6 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpHeldDMessage
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 import gg.rsmod.game.model.entity.Client
@@ -11,7 +12,7 @@ import gg.rsmod.game.model.entity.Client
  */
 class OpHeldDHandler : MessageHandler<OpHeldDMessage> {
 
-    override fun handle(client: Client, message: OpHeldDMessage) {
+    override fun handle(client: Client, world: World, message: OpHeldDMessage) {
         val interfaceId = message.componentHash shr 16
         val component = message.componentHash and 0xFFFF
         val fromSlot = message.srcSlot
@@ -22,8 +23,8 @@ class OpHeldDHandler : MessageHandler<OpHeldDMessage> {
         client.attr[INTERACTING_ITEM_SLOT] = fromSlot
         client.attr[OTHER_ITEM_SLOT_ATTR] = toSlot
 
-        val swapped = client.world.plugins.executeComponentItemSwap(client, interfaceId, component)
-        if (!swapped && client.world.devContext.debugButtons) {
+        val swapped = world.plugins.executeComponentItemSwap(client, interfaceId, component)
+        if (!swapped && world.devContext.debugButtons) {
             client.message("Unhandled component swap: [component=[$interfaceId, $component], from_slot=$fromSlot, to_slot=$toSlot]")
         }
     }

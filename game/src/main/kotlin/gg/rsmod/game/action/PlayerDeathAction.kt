@@ -6,6 +6,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.game.service.log.LoggerService
 import java.lang.ref.WeakReference
 
 /**
@@ -29,6 +30,9 @@ object PlayerDeathAction {
         val instancedMap = world.instanceAllocator.getMap(player.tile)
 
         player.damageMap.getMostDamage()?.let { killer ->
+            if (killer is Player) {
+                world.getService(LoggerService::class.java, searchSubclasses = true)?.logPlayerKill(killer, player)
+            }
             player.attr[KILLER_ATTR] = WeakReference(killer)
         }
 

@@ -3,6 +3,7 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.action.PawnPathAction
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpPlayer1Message
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_PLAYER_ATTR
 import gg.rsmod.game.model.entity.Client
@@ -13,7 +14,7 @@ import java.lang.ref.WeakReference
  */
 class OpPlayer1Handler : MessageHandler<OpPlayer1Message> {
 
-    override fun handle(client: Client, message: OpPlayer1Message) {
+    override fun handle(client: Client, world: World, message: OpPlayer1Message) {
         val index = message.index
         // The interaction option id.
         val option = 1
@@ -24,7 +25,7 @@ class OpPlayer1Handler : MessageHandler<OpPlayer1Message> {
             return
         }
 
-        val other = client.world.players[index] ?: return
+        val other = world.players[index] ?: return
 
         if (other.options[optionIndex] == null || other == client) {
             return

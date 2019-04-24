@@ -2,6 +2,7 @@ package gg.rsmod.game.system
 
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.MessageHandler
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.GameService
 import gg.rsmod.net.packet.GamePacket
@@ -18,7 +19,7 @@ import java.util.concurrent.BlockingQueue
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class GameSystem(channel: Channel, val client: Client, val service: GameService) : ServerSystem(channel) {
+class GameSystem(channel: Channel, val world: World, val client: Client, val service: GameService) : ServerSystem(channel) {
 
     private val messages: BlockingQueue<MessageHandle> = ArrayBlockingQueue<MessageHandle>(service.maxMessagesPerCycle)
 
@@ -52,7 +53,7 @@ class GameSystem(channel: Channel, val client: Client, val service: GameService)
     fun handleMessages() {
         for (i in 0 until service.maxMessagesPerCycle) {
             val next = messages.poll() ?: break
-            next.handler.handle(client, next.message)
+            next.handler.handle(client, world, next.message)
         }
     }
 

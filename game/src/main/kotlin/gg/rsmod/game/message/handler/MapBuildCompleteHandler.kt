@@ -2,6 +2,7 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.MapBuildCompleteMessage
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 
 /**
@@ -9,7 +10,7 @@ import gg.rsmod.game.model.entity.Client
  */
 class MapBuildCompleteHandler : MessageHandler<MapBuildCompleteMessage> {
 
-    override fun handle(client: Client, message: MapBuildCompleteMessage) {
-        client.lastMapBuildTime = client.world.currentCycle
+    override fun handle(client: Client, world: World, message: MapBuildCompleteMessage) {
+        client.lastMapBuildTime = world.currentCycle
     }
 }

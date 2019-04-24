@@ -3,6 +3,7 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.action.EquipAction
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpHeld2Message
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.INTERACTING_ITEM
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_ID
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
@@ -14,7 +15,7 @@ import java.lang.ref.WeakReference
  */
 class OpHeld2Handler : MessageHandler<OpHeld2Message> {
 
-    override fun handle(client: Client, message: OpHeld2Message) {
+    override fun handle(client: Client, world: World, message: OpHeld2Message) {
         @Suppress("unused")
         val interfaceId = message.componentHash shr 16
         @Suppress("unused")
@@ -37,12 +38,12 @@ class OpHeld2Handler : MessageHandler<OpHeld2Message> {
         log(client, "Item action 2: id=%d, slot=%d, component=(%d, %d), inventory=(%d, %d)",
                 message.item, message.slot, interfaceId, component, item.id, item.amount)
 
-        client.attr[INTERACTING_ITEM_SLOT] = message.slot
-        client.attr[INTERACTING_ITEM_ID] = item.id
         client.attr[INTERACTING_ITEM] = WeakReference(item)
+        client.attr[INTERACTING_ITEM_ID] = item.id
+        client.attr[INTERACTING_ITEM_SLOT] = message.slot
 
         val result = EquipAction.equip(client, item, message.slot)
-        if (result == EquipAction.Result.UNHANDLED && client.world.devContext.debugItemActions) {
+        if (result == EquipAction.Result.UNHANDLED && world.devContext.debugItemActions) {
             client.message("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=2]")
         }
     }

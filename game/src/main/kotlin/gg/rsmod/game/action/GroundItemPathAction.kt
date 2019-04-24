@@ -8,9 +8,11 @@ import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.plugin.Plugin
+import gg.rsmod.game.service.log.LoggerService
 import java.lang.ref.WeakReference
 
 /**
@@ -78,6 +80,7 @@ object GroundItemPathAction {
 
             p.attr[GROUNDITEM_PICKUP_TRANSACTION] = WeakReference(add)
             p.world.plugins.executeGlobalGroundItemPickUp(p)
+            p.world.getService(LoggerService::class.java, searchSubclasses = true)?.logItemPickUp(p, Item(item.item, add.completed))
         } else {
             p.attr[INTERACTING_GROUNDITEM_ATTR] = WeakReference(item)
             p.world.plugins.executeGroundItem(p, item.item, opt)

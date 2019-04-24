@@ -1,12 +1,5 @@
 package gg.rsmod.plugins.content.mechanics.prayer
 
-on_player_pre_death {
-    val retribution = player.hasPrayerIcon(PrayerIcon.RETRIBUTION)
-    if (retribution) {
-        // TODO: handle retribution
-    }
-}
-
 on_player_death {
     Prayers.deactivateAll(player)
 }

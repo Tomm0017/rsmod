@@ -23,7 +23,7 @@ class UpdateInvFullEncoder : MessageEncoder<UpdateInvFullMessage>() {
             val buf = GamePacketBuilder()
             message.items.forEach { item ->
                 /**
-                 * TODO(Tom): this can change per revision, so figure out a way
+                 * NOTE(Tom): this can change per revision, so figure out a way
                  * to externalize the structure.
                  */
                 if (item != null) {

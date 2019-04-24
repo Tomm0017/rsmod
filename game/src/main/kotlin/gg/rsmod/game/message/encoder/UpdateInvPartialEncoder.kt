@@ -2,7 +2,6 @@ package gg.rsmod.game.message.encoder
 
 import gg.rsmod.game.message.MessageEncoder
 import gg.rsmod.game.message.impl.UpdateInvPartialMessage
-import gg.rsmod.net.packet.DataOrder
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
 
@@ -37,12 +36,12 @@ class UpdateInvPartialEncoder : MessageEncoder<UpdateInvPartialMessage>() {
                 val amountMatch = oldItem?.amount == newItem?.amount
 
                 if (!idMatch || !amountMatch) {
-                    buf.put(DataType.SMART, i)
+                    buf.putSmart(i)
                     if (newItem != null) {
                         buf.put(DataType.SHORT, newItem.id + 1)
                         buf.put(DataType.BYTE, Math.min(255, newItem.amount))
                         if (newItem.amount >= 255) {
-                            buf.put(DataType.INT, DataOrder.INVERSED_MIDDLE, newItem.amount)
+                            buf.put(DataType.INT, newItem.amount)
                         }
                     } else {
                         buf.put(DataType.SHORT, 0)

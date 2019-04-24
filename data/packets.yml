@@ -426,6 +426,17 @@ out-packets:
       - name: items
         type: BYTES
 
+  - message: gg.rsmod.game.message.impl.UpdateInvPartialMessage
+    type: VARIABLE_SHORT
+    opcode: 44
+    structure:
+      - name: component_hash
+        type: INT
+      - name: container_key
+        type: SHORT
+      - name: items
+        type: BYTES
+
   - message: gg.rsmod.game.message.impl.SynthSoundMessage
     type: FIXED
     opcode: 65

@@ -112,11 +112,13 @@ class GamePacketBuilder {
      * @throws IllegalArgumentException If the type, order, or transformation is unknown.
      */
     fun put(type: DataType, order: DataOrder, transformation: DataTransformation, value: Number) {
+        check(type != DataType.SMART) { "Use `putSmart` instead." }
+
         checkByteAccess()
         val longValue = value.toLong()
         val length = type.bytes
-        if (order == DataOrder.BIG) {
-            for (i in length - 1 downTo 0) {
+        when (order) {
+            DataOrder.BIG -> for (i in length - 1 downTo 0) {
                 if (i == 0 && transformation != DataTransformation.NONE) {
                     if (transformation == DataTransformation.ADD) {
                         buffer.writeByte((longValue + 128).toByte().toInt())
@@ -131,8 +133,7 @@ class GamePacketBuilder {
                     buffer.writeByte((longValue shr i * 8).toByte().toInt())
                 }
             }
-        } else if (order == DataOrder.LITTLE) {
-            for (i in 0 until length) {
+            DataOrder.LITTLE -> for (i in 0 until length) {
                 if (i == 0 && transformation != DataTransformation.NONE) {
                     if (transformation == DataTransformation.ADD) {
                         buffer.writeByte((longValue + 128).toByte().toInt())
@@ -147,26 +148,27 @@ class GamePacketBuilder {
                     buffer.writeByte((longValue shr i * 8).toByte().toInt())
                 }
             }
-        } else if (order == DataOrder.MIDDLE) {
-            Preconditions.checkArgument(transformation == DataTransformation.NONE, "Middle endian cannot be transformed.")
+            DataOrder.MIDDLE -> {
+                Preconditions.checkArgument(transformation == DataTransformation.NONE, "Middle endian cannot be transformed.")
 
-            Preconditions.checkArgument(type == DataType.INT, "Middle endian can only be used with an integer.")
+                Preconditions.checkArgument(type == DataType.INT, "Middle endian can only be used with an integer.")
 
-            buffer.writeByte((longValue shr 8).toByte().toInt())
-            buffer.writeByte(longValue.toByte().toInt())
-            buffer.writeByte((longValue shr 24).toByte().toInt())
-            buffer.writeByte((longValue shr 16).toByte().toInt())
-        } else if (order == DataOrder.INVERSED_MIDDLE) {
-            Preconditions.checkArgument(transformation == DataTransformation.NONE, "Inversed middle endian cannot be transformed.")
+                buffer.writeByte((longValue shr 8).toByte().toInt())
+                buffer.writeByte(longValue.toByte().toInt())
+                buffer.writeByte((longValue shr 24).toByte().toInt())
+                buffer.writeByte((longValue shr 16).toByte().toInt())
+            }
+            DataOrder.INVERSED_MIDDLE -> {
+                Preconditions.checkArgument(transformation == DataTransformation.NONE, "Inversed middle endian cannot be transformed.")
 
-            Preconditions.checkArgument(type == DataType.INT, "Inversed middle endian can only be used with an integer.")
+                Preconditions.checkArgument(type == DataType.INT, "Inversed middle endian can only be used with an integer.")
 
-            buffer.writeByte((longValue shr 16).toByte().toInt())
-            buffer.writeByte((longValue shr 24).toByte().toInt())
-            buffer.writeByte(longValue.toByte().toInt())
-            buffer.writeByte((longValue shr 8).toByte().toInt())
-        } else {
-            throw IllegalArgumentException("Unknown order.")
+                buffer.writeByte((longValue shr 16).toByte().toInt())
+                buffer.writeByte((longValue shr 24).toByte().toInt())
+                buffer.writeByte(longValue.toByte().toInt())
+                buffer.writeByte((longValue shr 8).toByte().toInt())
+            }
+            else -> throw IllegalArgumentException("Unknown order.")
         }
     }
 

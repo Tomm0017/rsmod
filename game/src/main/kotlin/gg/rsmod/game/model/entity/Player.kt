@@ -3,22 +3,8 @@ package gg.rsmod.game.model.entity
 import com.google.common.base.MoreObjects
 import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
-import gg.rsmod.game.message.impl.MessageGameMessage
-import gg.rsmod.game.message.impl.RebuildLoginMessage
-import gg.rsmod.game.message.impl.UpdateInvFullMessage
-import gg.rsmod.game.message.impl.UpdateRebootTimerMessage
-import gg.rsmod.game.message.impl.UpdateRunWeightMessage
-import gg.rsmod.game.message.impl.UpdateStatMessage
-import gg.rsmod.game.message.impl.VarpLargeMessage
-import gg.rsmod.game.message.impl.VarpSmallMessage
-import gg.rsmod.game.model.Appearance
-import gg.rsmod.game.model.Coordinate
-import gg.rsmod.game.model.EntityType
-import gg.rsmod.game.model.MovementQueue
-import gg.rsmod.game.model.PawnList
-import gg.rsmod.game.model.PlayerUID
-import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.World
+import gg.rsmod.game.message.impl.*
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
 import gg.rsmod.game.model.attr.LEVEL_UP_INCREMENT
 import gg.rsmod.game.model.attr.LEVEL_UP_OLD_XP
@@ -293,7 +279,7 @@ open class Player(world: World) : Pawn(world) {
         }
 
         if (inventory.dirty) {
-            write(UpdateInvFullMessage(parent = 149, child = 0, containerKey = 93, items = inventory.rawItems))
+            write(UpdateInvFullMessage(interfaceId = 149, component = 0, containerKey = 93, items = inventory.rawItems))
             inventory.dirty = false
             calculateWeight = true
         }

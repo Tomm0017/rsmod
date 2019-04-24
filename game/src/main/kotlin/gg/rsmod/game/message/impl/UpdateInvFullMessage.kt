@@ -8,9 +8,9 @@ import gg.rsmod.game.model.item.Item
  */
 class UpdateInvFullMessage constructor(val items: Array<Item?>, val componentHash: Int, val containerKey: Int) : Message {
 
-    constructor(parent: Int, child: Int, containerKey: Int, items: Array<Item?>) : this(items, (parent shl 16) or child, containerKey)
+    constructor(interfaceId: Int, component: Int, containerKey: Int, items: Array<Item?>) : this(items, (interfaceId shl 16) or component, containerKey)
 
-    constructor(parent: Int, child: Int, items: Array<Item?>) : this(items, (parent shl 16) or child, 0)
+    constructor(interfaceId: Int, component: Int, items: Array<Item?>) : this(items, (interfaceId shl 16) or component, 0)
 
     constructor(containerKey: Int, items: Array<Item?>) : this(items, -1, containerKey)
 }

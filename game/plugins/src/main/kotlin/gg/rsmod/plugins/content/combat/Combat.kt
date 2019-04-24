@@ -13,19 +13,8 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.timer.ATTACK_DELAY
-import gg.rsmod.plugins.api.BonusSlot
-import gg.rsmod.plugins.api.NpcSkills
-import gg.rsmod.plugins.api.ProjectileType
-import gg.rsmod.plugins.api.Skills
-import gg.rsmod.plugins.api.WeaponType
-import gg.rsmod.plugins.api.ext.closeInterface
-import gg.rsmod.plugins.api.ext.getAttackBonus
-import gg.rsmod.plugins.api.ext.getAttackStyle
-import gg.rsmod.plugins.api.ext.getBonus
-import gg.rsmod.plugins.api.ext.getStrengthBonus
-import gg.rsmod.plugins.api.ext.getVarbit
-import gg.rsmod.plugins.api.ext.getVarp
-import gg.rsmod.plugins.api.ext.hasWeaponType
+import gg.rsmod.plugins.api.*
+import gg.rsmod.plugins.api.ext.*
 import gg.rsmod.plugins.content.combat.strategy.CombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.MagicCombatStrategy
 import gg.rsmod.plugins.content.combat.strategy.MeleeCombatStrategy
@@ -155,7 +144,6 @@ object Combat {
         }
 
         val pvp = pawn.entityType.isPlayer() && target.entityType.isPlayer()
-        val pvm = pawn.entityType.isPlayer() && target.entityType.isNpc()
 
         if (pawn is Player) {
             if (!pawn.isOnline) {

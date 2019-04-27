@@ -1,25 +1,8 @@
 package gg.rsmod.plugins.content
 
+import gg.rsmod.game.event.impl.ShopContainerUpdateEvent
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
-
-/**
- * Closing main modal for players.
- */
-set_modal_close_logic {
-    val modal = player.interfaces.getModal()
-    if (modal != -1) {
-        player.closeInterface(modal)
-        player.interfaces.setModal(-1)
-    }
-}
-
-/**
- * Check if the player has a menu opened.
- */
-set_menu_open_check {
-    player.getInterfaceAt(dest = InterfaceDestination.MAIN_SCREEN) != -1
-}
 
 /**
  * Execute when a player logs in.
@@ -69,6 +52,24 @@ on_login {
 }
 
 /**
+ * Closing main modal for players.
+ */
+set_modal_close_logic {
+    val modal = player.interfaces.getModal()
+    if (modal != -1) {
+        player.closeInterface(modal)
+        player.interfaces.setModal(-1)
+    }
+}
+
+/**
+ * Check if the player has a menu opened.
+ */
+set_menu_open_check {
+    player.getInterfaceAt(dest = InterfaceDestination.MAIN_SCREEN) != -1
+}
+
+/**
  * Logic for swapping items in inventory.
  */
 on_component_item_swap(interfaceId = 149, component = 0) {
@@ -83,4 +84,32 @@ on_component_item_swap(interfaceId = 149, component = 0) {
         // Sync the container on the client
         container.dirty = true
     }
+}
+
+on_container_refresh(INVENTORY_KEY) { oldContainer, newContainer ->
+    if (oldContainer != null) {
+        player.updateItemContainer(interfaceId = 149, component = 0, key = 93, oldItems = oldContainer.rawItems, newItems = newContainer.rawItems)
+    } else {
+        player.sendItemContainer(interfaceId = 149, component = 0, key = 93, container = newContainer)
+    }
+}
+
+on_container_refresh(EQUIPMENT_KEY) { oldContainer, newContainer ->
+    if (oldContainer != null) {
+        player.updateItemContainer(key = 94, oldItems = oldContainer.rawItems, newItems = newContainer.rawItems)
+    } else {
+        player.sendItemContainer(key = 94, container = newContainer)
+    }
+}
+
+on_container_refresh(BANK_KEY) { oldContainer, newContainer ->
+    if (oldContainer != null) {
+        player.updateItemContainer(key = 95, oldItems = oldContainer.rawItems, newItems = newContainer.rawItems)
+    } else {
+        player.sendItemContainer(key = 95, container = newContainer)
+    }
+}
+
+on_event(ShopContainerUpdateEvent::class.java) { event ->
+    player.sendItemContainer(key = 13, items = event.items)
 }

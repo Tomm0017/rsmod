@@ -10,6 +10,7 @@ import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.combat.NpcCombatDef
+import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GroundItem
@@ -163,6 +164,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
         ground.respawnCycles = respawnCycles
         r.itemSpawns.add(ground)
     }
+
+    fun on_container_refresh(key: ContainerKey, plugin: Plugin.(ItemContainer?, ItemContainer) -> Unit) = r.bindItemContainerRefresh(key, plugin)
 
     /**
      * Invoke [logic] when the [option] option is clicked on an inventory

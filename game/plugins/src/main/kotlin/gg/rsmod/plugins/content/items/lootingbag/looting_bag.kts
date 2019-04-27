@@ -5,7 +5,7 @@ import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
 
 val CONTAINER_KEY = ContainerKey("looting_bag", capacity = 28, stackType = ContainerStackType.NORMAL)
-val LOOTING_BAG_CONTAINER_ID = 516
+val LOOTING_BAG_CONTAINER_KEY = 516
 val INV_CONTAINER_KEY = 93
 val TAB_INTERFACE_ID = 81
 
@@ -13,15 +13,22 @@ val VALUE_TEXT_COMPONENT = 6
 
 register_container_key(CONTAINER_KEY) // Mark key as needing to be de-serialized on log-in.
 
+on_container_refresh(CONTAINER_KEY) { oldContainer, newContainer ->
+    if (oldContainer != null) {
+        player.updateItemContainer(key = LOOTING_BAG_CONTAINER_KEY, oldItems = oldContainer.rawItems, newItems = newContainer.rawItems)
+    } else {
+        player.sendItemContainer(key = LOOTING_BAG_CONTAINER_KEY, container = newContainer)
+    }
+}
+
 on_login {
-    /**
+    /*
      * If a player has a looting bag when they log in, we need to send the item
      * container. If you open a bank before checking/depositing an item
      * in your looting bag, the bag won't have the "view" option on it.
      */
     if (player.inventory.containsAny(Items.LOOTING_BAG, Items.LOOTING_BAG_22586)) {
-        val container = player.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(world.definitions, CONTAINER_KEY) }
-        player.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
+        player.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(world.definitions, CONTAINER_KEY) }
     }
 }
 
@@ -111,7 +118,7 @@ on_button(interfaceId = 15, component = 5) {
     val container = player.containers[CONTAINER_KEY] ?: return@on_button
     when {
         container.isEmpty -> player.message("You have nothing to deposit.")
-        bank_all(player, container) -> player.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
+        bank_all(player, container) -> {}
         else -> player.message("Bank full.")
     }
 }
@@ -125,9 +132,8 @@ on_button(TAB_INTERFACE_ID, component = 2) {
  */
 on_button(interfaceId = 192, component = 8) {
     val container = player.containers[CONTAINER_KEY]
-    if (container != null && player.inventory.containsAny(Items.LOOTING_BAG, Items.LOOTING_BAG_22586) && bank_all(player, container)) {
-        player.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
-    } else {
+    val bankedAny = container != null && player.inventory.containsAny(Items.LOOTING_BAG, Items.LOOTING_BAG_22586) && bank_all(player, container)
+    if (!bankedAny) {
         player.message("You have nothing to deposit.")
     }
 }
@@ -161,7 +167,6 @@ fun store(p: Player, item: Item, amount: Int, beginSlot: Int = -1): Boolean {
         p.message("The bag's too full.")
         return false
     }
-    p.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
     p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = VALUE_TEXT_COMPONENT, text = "Bag value: ${p.inventory.getNetworth(world).decimalFormat()} coins")
     return true
 }
@@ -175,7 +180,6 @@ fun bank(p: Player, slot: Int, amount: Int) {
         p.message("Bank full.")
         return
     }
-    p.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
 }
 
 fun bank_all(p: Player, container: ItemContainer): Boolean {
@@ -224,14 +228,13 @@ fun settings(p: Player) {
 fun check(p: Player) {
     val container = p.containers.computeIfAbsent(CONTAINER_KEY) { ItemContainer(world.definitions, CONTAINER_KEY) }
 
-    p.runClientScript(149, 81 shl 16 or 5, LOOTING_BAG_CONTAINER_ID, 4, 7, 0, -1, "", "", "", "", "Examine")
+    p.runClientScript(149, 81 shl 16 or 5, LOOTING_BAG_CONTAINER_KEY, 4, 7, 0, -1, "", "", "", "", "Examine")
     p.openInterface(dest = InterfaceDestination.TAB_AREA, interfaceId = TAB_INTERFACE_ID)
     p.setInterfaceEvents(interfaceId = TAB_INTERFACE_ID, component = 5, range = 0..27, setting = 32)
 
     p.runClientScript(495, "Looting bag", 0)
-    p.sendItemContainer(LOOTING_BAG_CONTAINER_ID, container)
     p.setComponentText(interfaceId = TAB_INTERFACE_ID, component = VALUE_TEXT_COMPONENT, text = "Value: ${container.getNetworth(world).decimalFormat()} coins")
-    p.runClientScript(1235, LOOTING_BAG_CONTAINER_ID, *get_item_prices(world, container))
+    p.runClientScript(1235, LOOTING_BAG_CONTAINER_KEY, *get_item_prices(world, container))
 
     set_queue(p)
 }

@@ -1,6 +1,7 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
+import gg.rsmod.game.event.impl.ShopContainerUpdateEvent
 import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.*
@@ -14,6 +15,9 @@ import gg.rsmod.game.model.container.key.BANK_KEY
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
 import gg.rsmod.game.model.container.key.INVENTORY_KEY
+import gg.rsmod.game.model.container.listener.AppearanceContainerListener
+import gg.rsmod.game.model.container.listener.BonusContainerListener
+import gg.rsmod.game.model.container.listener.WeightContainerListener
 import gg.rsmod.game.model.interf.InterfaceSet
 import gg.rsmod.game.model.interf.listener.PlayerInterfaceListener
 import gg.rsmod.game.model.item.Item
@@ -87,9 +91,9 @@ open class Player(world: World) : Pawn(world) {
      */
     @Volatile private var setDisconnectionTimer = false
 
-    val inventory = ItemContainer(world.definitions, INVENTORY_KEY)
+    val inventory = ItemContainer(world.definitions, INVENTORY_KEY, WeightContainerListener)
 
-    val equipment = ItemContainer(world.definitions, EQUIPMENT_KEY)
+    val equipment = ItemContainer(world.definitions, EQUIPMENT_KEY, AppearanceContainerListener, WeightContainerListener, BonusContainerListener)
 
     val bank = ItemContainer(world.definitions, BANK_KEY)
 
@@ -101,6 +105,12 @@ open class Player(world: World) : Pawn(world) {
         put(EQUIPMENT_KEY, equipment)
         put(BANK_KEY, bank)
     }
+
+    /**
+     * A map of the latest [ItemContainer] written to our client, if any associated
+     * with respective [ContainerKey].
+     */
+    private val cachedContainers = hashMapOf<ContainerKey, ItemContainer>()
 
     val interfaces by lazy { InterfaceSet(PlayerInterfaceListener(this, world.plugins)) }
 
@@ -235,9 +245,6 @@ open class Player(world: World) : Pawn(world) {
      * conditions if any logic may modify other [Pawn]s.
      */
     override fun cycle() {
-        var calculateWeight = false
-        var calculateBonuses = false
-
         if (pendingLogout) {
 
             /*
@@ -278,35 +285,21 @@ open class Player(world: World) : Pawn(world) {
             world.plugins.executeRegionEnter(this, tile.regionId)
         }
 
-        if (inventory.dirty) {
-            write(UpdateInvFullMessage(interfaceId = 149, component = 0, containerKey = 93, items = inventory.rawItems))
-            inventory.dirty = false
-            calculateWeight = true
-        }
-
-        if (equipment.dirty) {
-            write(UpdateInvFullMessage(containerKey = 94, items = equipment.rawItems))
-            equipment.dirty = false
-            calculateWeight = true
-            calculateBonuses = true
-
-            addBlock(UpdateBlockType.APPEARANCE)
-        }
-
-        if (bank.dirty) {
-            write(UpdateInvFullMessage(containerKey = 95, items = bank.rawItems))
-            bank.dirty = false
+        containers.values.forEach { container ->
+            if (container.dirty) {
+                container.dirty = false
+                container.listeners.forEach { it.clean(this) }
+                world.plugins.executeItemContainerRefresh(this, cachedContainers[container.key], container)
+                cachedContainers[container.key] = ItemContainer(container)
+            }
         }
 
         if (shopDirty) {
             attr[CURRENT_SHOP_ATTR]?.let { shop ->
-                write(UpdateInvFullMessage(containerKey = 13, items = shop.items.map { if (it != null) Item(it.item, it.currentAmount) else null }.toTypedArray()))
+                val items = shop.items.map { if (it != null) Item(it.item, it.currentAmount) else null }.toTypedArray()
+                triggerEvent(ShopContainerUpdateEvent(items))
             }
             shopDirty = false
-        }
-
-        if (calculateWeight || calculateBonuses) {
-            calculateWeightAndBonus(weight = calculateWeight, bonuses = calculateBonuses)
         }
 
         if (timers.isNotEmpty) {
@@ -409,24 +402,19 @@ open class Player(world: World) : Pawn(world) {
         world.unregister(this)
     }
 
-    /**
-     * Calculate the current weight and equipment bonuses for the player.
-     */
-    fun calculateWeightAndBonus(weight: Boolean, bonuses: Boolean = true) {
-        if (weight) {
-            val inventoryWeight = inventory.filterNotNull().sumByDouble { it.getDef(world.definitions).weight }
-            val equipmentWeight = equipment.filterNotNull().sumByDouble { it.getDef(world.definitions).weight }
-            this.weight = inventoryWeight + equipmentWeight
-            write(UpdateRunWeightMessage(this.weight.toInt()))
-        }
+    fun calculateWeight() {
+        val inventoryWeight = inventory.filterNotNull().sumByDouble { it.getDef(world.definitions).weight }
+        val equipmentWeight = equipment.filterNotNull().sumByDouble { it.getDef(world.definitions).weight }
+        this.weight = inventoryWeight + equipmentWeight
+        write(UpdateRunWeightMessage(this.weight.toInt()))
+    }
 
-        if (bonuses) {
-            Arrays.fill(equipmentBonuses, 0)
-            for (i in 0 until equipment.capacity) {
-                val item = equipment[i] ?: continue
-                val def = item.getDef(world.definitions)
-                def.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
-            }
+    fun calculateBonuses() {
+        Arrays.fill(equipmentBonuses, 0)
+        for (i in 0 until equipment.capacity) {
+            val item = equipment[i] ?: continue
+            val def = item.getDef(world.definitions)
+            def.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
         }
     }
 

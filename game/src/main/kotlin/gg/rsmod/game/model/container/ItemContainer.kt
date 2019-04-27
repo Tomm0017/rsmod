@@ -3,6 +3,7 @@ package gg.rsmod.game.model.container
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.container.key.ContainerKey
+import gg.rsmod.game.model.container.listener.ItemContainerListener
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.item.SlotItem
 import mu.KLogging
@@ -12,7 +13,9 @@ import mu.KLogging
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Iterable<Item?> {
+class ItemContainer(
+        val definitions: DefinitionSet, val key: ContainerKey,
+        vararg val listeners: ItemContainerListener) : Iterable<Item?> {
 
     constructor(definitions: DefinitionSet, capacity: Int, stackType: ContainerStackType)
             : this(definitions, ContainerKey("", capacity, stackType))

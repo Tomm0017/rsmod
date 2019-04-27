@@ -8,15 +8,12 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.COMMAND_ARGS_ATTR
 import gg.rsmod.game.model.attr.COMMAND_ATTR
 import gg.rsmod.game.model.combat.NpcCombatDef
+import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.container.key.BANK_KEY
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
 import gg.rsmod.game.model.container.key.INVENTORY_KEY
-import gg.rsmod.game.model.entity.DynamicObject
-import gg.rsmod.game.model.entity.GroundItem
-import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.model.entity.Pawn
-import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.service.Service
@@ -72,6 +69,8 @@ class PluginRepository(val world: World) {
      * priority should wait before executing.
      */
     private var isMenuOpenedPlugin: (Plugin.() -> Boolean)? = null
+
+    private val updateItemContainerPlugins = hashMapOf<ContainerKey, Plugin.(ItemContainer?, ItemContainer) -> Unit>()
 
     /**
      * A list of plugins that will be executed upon login.
@@ -647,6 +646,24 @@ class PluginRepository(val world: World) {
                 plugin.invoke(this, event)
             }
         }
+    }
+
+    fun bindItemContainerRefresh(key: ContainerKey, plugin: Plugin.(ItemContainer?, ItemContainer) -> Unit) {
+        if (updateItemContainerPlugins.containsKey(key)) {
+            val error = RuntimeException("Item container already bound to a plugin: $key")
+            logger.error(error) {}
+            throw error
+        }
+        updateItemContainerPlugins[key] = plugin
+        pluginCount++
+    }
+
+    fun executeItemContainerRefresh(player: Player, oldContainer: ItemContainer?, container: ItemContainer): Boolean {
+        val plugin = updateItemContainerPlugins[container.key] ?: return false
+        player.executePlugin {
+            plugin(this, oldContainer, container)
+        }
+        return true
     }
 
     fun bindLogin(plugin: Plugin.() -> Unit) {

@@ -305,8 +305,12 @@ open class Player(world: World) : Pawn(world) {
             shopDirty = false
         }
 
-        if (calculateWeight || calculateBonuses) {
-            calculateWeightAndBonus(weight = calculateWeight, bonuses = calculateBonuses)
+        if (calculateWeight) {
+            calculateWeight()
+        }
+
+        if (calculateBonuses) {
+            calculateBonuses()
         }
 
         if (timers.isNotEmpty) {
@@ -409,24 +413,19 @@ open class Player(world: World) : Pawn(world) {
         world.unregister(this)
     }
 
-    /**
-     * Calculate the current weight and equipment bonuses for the player.
-     */
-    fun calculateWeightAndBonus(weight: Boolean, bonuses: Boolean = true) {
-        if (weight) {
-            val inventoryWeight = inventory.filterNotNull().sumByDouble { it.getDef(world.definitions).weight }
-            val equipmentWeight = equipment.filterNotNull().sumByDouble { it.getDef(world.definitions).weight }
-            this.weight = inventoryWeight + equipmentWeight
-            write(UpdateRunWeightMessage(this.weight.toInt()))
-        }
+    fun calculateWeight() {
+        val inventoryWeight = inventory.filterNotNull().sumByDouble { it.getDef(world.definitions).weight }
+        val equipmentWeight = equipment.filterNotNull().sumByDouble { it.getDef(world.definitions).weight }
+        this.weight = inventoryWeight + equipmentWeight
+        write(UpdateRunWeightMessage(this.weight.toInt()))
+    }
 
-        if (bonuses) {
-            Arrays.fill(equipmentBonuses, 0)
-            for (i in 0 until equipment.capacity) {
-                val item = equipment[i] ?: continue
-                val def = item.getDef(world.definitions)
-                def.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
-            }
+    fun calculateBonuses() {
+        Arrays.fill(equipmentBonuses, 0)
+        for (i in 0 until equipment.capacity) {
+            val item = equipment[i] ?: continue
+            val def = item.getDef(world.definitions)
+            def.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
         }
     }
 

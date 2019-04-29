@@ -31,7 +31,7 @@ import kotlin.script.experimental.annotations.KotlinScript
  */
 @KotlinScript(
         displayName = "Kotlin Plugin",
-        fileExtension = "kts",
+        fileExtension = "plugin.kts",
         compilationConfiguration = KotlinPluginConfiguration::class
 )
 abstract class KotlinPlugin(private val r: PluginRepository, val world: World, val server: Server) {

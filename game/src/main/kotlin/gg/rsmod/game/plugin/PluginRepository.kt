@@ -1062,7 +1062,7 @@ class PluginRepository(val world: World) {
     }
 
     fun bindItemOnItem(item1: Int, item2: Int, plugin: Plugin.() -> Unit) {
-        val max = Math.min(item1, item2)
+        val max = Math.max(item1, item2)
         val min = Math.min(item1, item2)
 
         val hash = (max shl 16) or min
@@ -1077,7 +1077,7 @@ class PluginRepository(val world: World) {
     }
 
     fun executeItemOnItem(p: Player, item1: Int, item2: Int): Boolean {
-        val max = Math.min(item1, item2)
+        val max = Math.max(item1, item2)
         val min = Math.min(item1, item2)
 
         val hash = (max shl 16) or min

@@ -44,6 +44,7 @@ class MessageEncoderSet {
         put(UpdateRunEnergyEncoder(), UpdateRunEnergyMessage::class.java)
         put(SetMapFlagEncoder(), SetMapFlagMessage::class.java)
         put(UpdateInvFullEncoder(), UpdateInvFullMessage::class.java)
+        put(UpdateInvPartialEncoder(), UpdateInvPartialMessage::class.java)
         put(UpdateZonePartialFollowsEncoder(), UpdateZonePartialFollowsMessage::class.java)
         put(LodAddChangeEncoder(), LocAddChangeMessage::class.java)
         put(LocDelEncoder(), LocDelMessage::class.java)

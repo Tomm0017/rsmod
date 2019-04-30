@@ -20,12 +20,14 @@ class UpdateInvFullEncoder : MessageEncoder<UpdateInvFullMessage>() {
 
     override fun extractBytes(message: UpdateInvFullMessage, key: String): ByteArray = when (key) {
         "items" -> {
+
+            /**
+             * NOTE(Tom): this can change per revision, so figure out a way
+             * to externalize the structure.
+             */
+
             val buf = GamePacketBuilder()
             message.items.forEach { item ->
-                /**
-                 * TODO(Tom): this can change per revision, so figure out a way
-                 * to externalize the structure.
-                 */
                 if (item != null) {
                     buf.put(DataType.SHORT, item.id + 1)
                     buf.put(DataType.BYTE, Math.min(255, item.amount))

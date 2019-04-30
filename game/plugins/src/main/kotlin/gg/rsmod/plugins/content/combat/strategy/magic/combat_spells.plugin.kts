@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.content.combat.strategy.magic
 
+import gg.rsmod.plugins.api.Spellbook
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.magic.MagicSpells
 

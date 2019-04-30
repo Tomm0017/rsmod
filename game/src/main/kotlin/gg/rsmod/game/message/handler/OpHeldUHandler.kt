@@ -40,7 +40,7 @@ class OpHeldUHandler : MessageHandler<OpHeldUMessage> {
         val handled = world.plugins.executeItemOnItem(client, fromItem.id, toItem.id)
         if (!handled && world.devContext.debugItemActions) {
             client.message("Unhandled item on item: [from_item=${fromItem.id}, to_item=${toItem.id}, from_slot=$fromSlot, to_slot=$toSlot, " +
-                    "from_component=[$fromInterfaceId, $fromComponent], to_component=[$toInterfaceId, $toComponent]]")
+                    "from_component=[$fromInterfaceId:$fromComponent], to_component=[$toInterfaceId:$toComponent]]")
         }
     }
 }

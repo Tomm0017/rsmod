@@ -237,8 +237,34 @@ fun Player.openOverlayInterface(displayMode: DisplayMode) {
     write(IfOpenTopMessage(component))
 }
 
-fun Player.sendItemContainer(key: Int, container: ItemContainer) {
-    write(UpdateInvFullMessage(containerKey = key, items = container.rawItems))
+fun Player.sendItemContainer(key: Int, items: Array<Item?>) {
+    write(UpdateInvFullMessage(containerKey = key, items = items))
+}
+
+fun Player.sendItemContainer(interfaceId: Int, component: Int, items: Array<Item?>) {
+    write(UpdateInvFullMessage(interfaceId = interfaceId, component = component, items = items))
+}
+
+fun Player.sendItemContainer(interfaceId: Int, component: Int, key: Int, items: Array<Item?>) {
+    write(UpdateInvFullMessage(interfaceId = interfaceId, component = component, containerKey = key, items = items))
+}
+
+fun Player.sendItemContainer(key: Int, container: ItemContainer) = sendItemContainer(key, container.rawItems)
+
+fun Player.sendItemContainer(interfaceId: Int, component: Int, container: ItemContainer) = sendItemContainer(interfaceId, component, container.rawItems)
+
+fun Player.sendItemContainer(interfaceId: Int, component: Int, key: Int, container: ItemContainer) = sendItemContainer(interfaceId, component, key, container.rawItems)
+
+fun Player.updateItemContainer(interfaceId: Int, component: Int, oldItems: Array<Item?>, newItems: Array<Item?>) {
+    write(UpdateInvPartialMessage(interfaceId = interfaceId, component = component, oldItems = oldItems, newItems = newItems))
+}
+
+fun Player.updateItemContainer(interfaceId: Int, component: Int, key: Int, oldItems: Array<Item?>, newItems: Array<Item?>) {
+    write(UpdateInvPartialMessage(interfaceId = interfaceId, component = component, containerKey = key, oldItems = oldItems, newItems = newItems))
+}
+
+fun Player.updateItemContainer(key: Int, oldItems: Array<Item?>, newItems: Array<Item?>) {
+    write(UpdateInvPartialMessage(containerKey = key, oldItems = oldItems, newItems = newItems))
 }
 
 /**
@@ -254,18 +280,6 @@ fun Player.sendItemContainer(key: Int, container: ItemContainer) {
  */
 fun Player.sendItemContainerOther(key: Int, container: ItemContainer) {
     write(UpdateInvFullMessage(containerKey = key + 32768, items = container.rawItems))
-}
-fun Player.sendItemContainer(parent: Int, child: Int, container: ItemContainer) {
-    write(UpdateInvFullMessage(parent = parent, child = child, items = container.rawItems))
-}
-
-fun Player.sendItemContainer(parent: Int, child: Int, key: Int, container: ItemContainer) {
-    write(UpdateInvFullMessage(parent = parent, child = child, containerKey = key, items = container.rawItems))
-}
-
-fun Player.updateItemContainer(key: Int, container: ItemContainer) {
-    // TODO: UpdateInvPartialMessage
-    write(UpdateInvFullMessage(containerKey = key, items = container.rawItems))
 }
 
 fun Player.sendRunEnergy(energy: Int) {

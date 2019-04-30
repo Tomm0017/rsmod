@@ -2,6 +2,7 @@ package gg.rsmod.game.task
 
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.service.GameService
 
 /**
@@ -15,20 +16,37 @@ class ChunkCreationTask : GameTask {
 
     override fun execute(world: World, service: GameService) {
         world.players.forEach { p ->
+            p.changeChunks(world, createChunkIfNeeded = true)
+        }
 
-            if (p.lastChunkTile == null || !p.tile.sameAs(p.lastChunkTile!!)) {
-
-                if (p.lastChunkTile != null) {
-                    val tile = p.lastChunkTile!!
-                    val oldChunk = world.chunks.get(tile.chunkCoords, createIfNeeded = false)
-                    oldChunk?.removeEntity(world, p, tile)
-                }
-
-                val newChunk = world.chunks.get(p.tile.chunkCoords, createIfNeeded = true)!!
-                newChunk.addEntity(world, p, p.tile)
-
-                p.lastChunkTile = Tile(p.tile)
+        world.npcs.forEach { npc ->
+            if (npc.isActive()) {
+                npc.changeChunks(world, createChunkIfNeeded = CREATE_CHUNK_FOR_NPC)
             }
         }
+    }
+
+    private fun <T : Pawn> T.changeChunks(world: World, createChunkIfNeeded: Boolean) {
+        val lastTile = lastChunkTile
+        val sameTile = lastTile?.sameAs(tile) ?: false
+
+        if (sameTile) {
+            return
+        }
+
+        if (lastTile != null) {
+            world.chunks.get(lastTile)?.removeEntity(world, this, lastTile)
+        }
+
+        world.chunks.get(tile, createIfNeeded = createChunkIfNeeded)?.addEntity(world, this, tile)
+        lastChunkTile = Tile(tile)
+    }
+
+    companion object {
+        /**
+         * Flag that specifies if [gg.rsmod.game.model.region.Chunk] should be
+         * created if an npc is on it and it doesn't already exist.
+         */
+        private const val CREATE_CHUNK_FOR_NPC = false
     }
 }

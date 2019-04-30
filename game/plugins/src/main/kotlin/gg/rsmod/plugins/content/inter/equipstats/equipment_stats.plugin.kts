@@ -2,13 +2,13 @@ package gg.rsmod.plugins.content.inter.equipstats
 
 import gg.rsmod.game.action.EquipAction
 
-fun bind_unequip(equipment: EquipmentType, child: Int) {
-    on_button(interfaceId = EquipmentStats.INTERFACE_ID, component = child) {
+fun bind_unequip(equipment: EquipmentType, component: Int) {
+    on_button(interfaceId = EquipmentStats.INTERFACE_ID, component = component) {
         val opt = player.getInteractingOption()
 
         if (opt == 1) {
             EquipAction.unequip(player, equipment.id)
-            player.calculateWeightAndBonus(weight = false, bonuses = true)
+            player.calculateBonuses()
             EquipmentStats.sendBonuses(player)
         } else if (opt == 10) {
             val item = player.equipment[equipment.id] ?: return@on_button
@@ -18,7 +18,7 @@ fun bind_unequip(equipment: EquipmentType, child: Int) {
             if (!world.plugins.executeItem(player, item.id, opt)) {
                 val slot = player.getInteractingSlot()
                 if (world.devContext.debugButtons) {
-                    player.message("Unhandled button action: [parent=84, child=$child, option=$opt, slot=$slot, item=${item.id}]")
+                    player.message("Unhandled button action: [component=[${EquipmentStats.INTERFACE_ID}:$component], option=$opt, slot=$slot, item=${item.id}]")
                 }
             }
         }
@@ -33,7 +33,7 @@ on_button(interfaceId = EquipmentStats.TAB_INTERFACE_ID, component = 0) {
     if (opt == 1) {
         val result = EquipAction.equip(player, item, inventorySlot = slot)
         if (result == EquipAction.Result.SUCCESS) {
-            player.calculateWeightAndBonus(weight = false, bonuses = true)
+            player.calculateBonuses()
             EquipmentStats.sendBonuses(player)
         } else if (result == EquipAction.Result.UNHANDLED) {
             player.message("You can't equip that.")
@@ -61,14 +61,14 @@ on_interface_close(interfaceId = EquipmentStats.INTERFACE_ID) {
     player.closeInterface(interfaceId = EquipmentStats.TAB_INTERFACE_ID)
 }
 
-bind_unequip(EquipmentType.HEAD, child = 11)
-bind_unequip(EquipmentType.CAPE, child = 12)
-bind_unequip(EquipmentType.AMULET, child = 13)
-bind_unequip(EquipmentType.AMMO, child = 21)
-bind_unequip(EquipmentType.WEAPON, child = 14)
-bind_unequip(EquipmentType.CHEST, child = 15)
-bind_unequip(EquipmentType.SHIELD, child = 16)
-bind_unequip(EquipmentType.LEGS, child = 17)
-bind_unequip(EquipmentType.GLOVES, child = 18)
-bind_unequip(EquipmentType.BOOTS, child = 19)
-bind_unequip(EquipmentType.RING, child = 20)
+bind_unequip(EquipmentType.HEAD, component = 11)
+bind_unequip(EquipmentType.CAPE, component = 12)
+bind_unequip(EquipmentType.AMULET, component = 13)
+bind_unequip(EquipmentType.AMMO, component = 21)
+bind_unequip(EquipmentType.WEAPON, component = 14)
+bind_unequip(EquipmentType.CHEST, component = 15)
+bind_unequip(EquipmentType.SHIELD, component = 16)
+bind_unequip(EquipmentType.LEGS, component = 17)
+bind_unequip(EquipmentType.GLOVES, component = 18)
+bind_unequip(EquipmentType.BOOTS, component = 19)
+bind_unequip(EquipmentType.RING, component = 20)

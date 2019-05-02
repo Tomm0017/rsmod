@@ -1,6 +1,5 @@
 package gg.rsmod.plugins.content.combat.strategy
 
-import gg.rsmod.game.model.Hit
 import gg.rsmod.game.model.combat.XpMode
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
@@ -8,9 +7,9 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.WeaponType
 import gg.rsmod.plugins.api.ext.hasWeaponType
-import gg.rsmod.plugins.api.ext.hit
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
+import gg.rsmod.plugins.content.combat.dealHit
 import gg.rsmod.plugins.content.combat.formula.MeleeCombatFormula
 
 /**
@@ -32,14 +31,6 @@ object MeleeCombatStrategy : CombatStrategy {
 
     override fun attack(pawn: Pawn, target: Pawn) {
         val world = pawn.world
-        /*
-         * A list of actions that will be executed upon this hit dealing damage
-         * to the [target].
-         */
-        val hitActions = mutableListOf<Hit.() -> Unit>()
-        hitActions.add {
-            Combat.postDamage(pawn, target)
-        }
 
         val animation = CombatConfigs.getAttackAnimation(pawn)
         pawn.animate(animation)
@@ -54,7 +45,7 @@ object MeleeCombatStrategy : CombatStrategy {
             addCombatXp(pawn as Player, target, damage)
         }
 
-        target.hit(damage = damage, delay = 1).addActions(hitActions).setCancelIf { pawn.isDead() }
+        pawn.dealHit(target = target, maxHit = maxHit, landHit = landHit, delay = 1)
     }
 
     private fun addCombatXp(player: Player, target: Pawn, damage: Int) {

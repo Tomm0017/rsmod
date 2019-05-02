@@ -1,8 +1,8 @@
 package gg.rsmod.plugins.content.combat.strategy
 
-import gg.rsmod.game.model.Hit
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.combat.AttackStyle
+import gg.rsmod.game.model.combat.PawnHit
 import gg.rsmod.game.model.combat.XpMode
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
@@ -15,10 +15,10 @@ import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.getEquipment
 import gg.rsmod.plugins.api.ext.hasEquipped
 import gg.rsmod.plugins.api.ext.hasWeaponType
-import gg.rsmod.plugins.api.ext.hit
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
 import gg.rsmod.plugins.content.combat.createProjectile
+import gg.rsmod.plugins.content.combat.dealHit
 import gg.rsmod.plugins.content.combat.formula.RangedCombatFormula
 import gg.rsmod.plugins.content.combat.strategy.ranged.RangedProjectile
 import gg.rsmod.plugins.content.combat.strategy.ranged.ammo.Darts
@@ -92,10 +92,7 @@ object RangedCombatStrategy : CombatStrategy {
          * A list of actions that will be executed upon this hit dealing damage
          * to the [target].
          */
-        val hitActions = mutableListOf<Hit.() -> Unit>()
-        hitActions.add {
-            Combat.postDamage(pawn, target)
-        }
+        var ammoDropAction: ((PawnHit).() -> Unit) = {}
 
         if (pawn is Player) {
 
@@ -137,7 +134,7 @@ object RangedCombatStrategy : CombatStrategy {
                     pawn.equipment.remove(ammo.id, amount)
                 }
                 if (dropAmmo) {
-                    hitActions.add { world.spawn(GroundItem(ammo.id, amount, target.tile, pawn)) }
+                    ammoDropAction = { world.spawn(GroundItem(ammo.id, amount, target.tile, pawn)) }
                 }
             }
         }
@@ -153,8 +150,8 @@ object RangedCombatStrategy : CombatStrategy {
             addCombatXp(pawn as Player, target, damage)
         }
 
-        target.hit(damage = damage, delay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize() / 2)))
-                .addActions(hitActions).setCancelIf { pawn.isDead() }
+        val hitDelay = getHitDelay(pawn.getCentreTile(), target.tile.transform(target.getSize() / 2, target.getSize() / 2))
+        pawn.dealHit(target = target, maxHit = maxHit, landHit = landHit, delay = hitDelay, onHit = ammoDropAction)
     }
 
     fun getHitDelay(start: Tile, target: Tile): Int {

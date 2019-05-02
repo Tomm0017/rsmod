@@ -124,6 +124,12 @@ class DefinitionSet {
     fun getCount(type: Class<*>) = defs[type]!!.size
 
     @Suppress("UNCHECKED_CAST")
+    fun <T : Definition> forEach(type: Class<out T>, action: T.() -> Unit) {
+        val definitions = defs[type]!! as Map<Int, T>
+        definitions.values.forEach(action)
+    }
+
+    @Suppress("UNCHECKED_CAST")
     fun <T : Definition> get(type: Class<out T>, id: Int): T {
         return (defs[type]!!)[id] as T
     }

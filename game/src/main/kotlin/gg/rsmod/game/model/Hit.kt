@@ -2,7 +2,6 @@ package gg.rsmod.game.model
 
 import gg.rsmod.game.model.Hit.Hitbar
 import gg.rsmod.game.model.Hit.Hitmark
-import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
 /**
  * Represents a hit that can be dealt. A hit can deal multiple damage splats
@@ -34,7 +33,7 @@ class Hit private constructor(val hitmarks: List<Hitmark>, val hitbar: Hitbar?, 
      * circumstances, such as if the entity dies before this hit deals
      * damage or if the hit is cancelled.
      */
-    internal val actions = ObjectArrayList<() -> Unit>()
+    internal val actions = mutableListOf<Hit.() -> Unit>()
 
     /**
      * Predicate that determines if this hit should be cancelled, such as if the
@@ -45,7 +44,7 @@ class Hit private constructor(val hitmarks: List<Hitmark>, val hitbar: Hitbar?, 
     /**
      * @see actions
      */
-    fun addAction(action: () -> Unit): Hit {
+    fun addAction(action: Hit.() -> Unit): Hit {
         actions.add(action)
         return this
     }
@@ -53,7 +52,7 @@ class Hit private constructor(val hitmarks: List<Hitmark>, val hitbar: Hitbar?, 
     /**
      * @see actions
      */
-    fun addActions(actions: Collection<() -> Unit>): Hit {
+    fun addActions(actions: Collection<Hit.() -> Unit>): Hit {
         this.actions.addAll(actions)
         return this
     }

@@ -8,6 +8,7 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Projectile
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
+import gg.rsmod.plugins.api.HitType
 import gg.rsmod.plugins.api.ProjectileType
 import gg.rsmod.plugins.api.ext.hit
 import gg.rsmod.plugins.content.combat.formula.CombatFormula
@@ -40,15 +41,30 @@ fun Pawn.dealHit(target: Pawn, formula: CombatFormula, delay: Int, onHit: (PawnH
     val accuracy = formula.getAccuracy(this, target)
     val maxHit = formula.getMaxHit(this, target)
     val landHit = accuracy >= world.randomDouble()
+    return dealHit(target, maxHit, landHit, delay, onHit)
+}
 
+fun Pawn.dealHit(target: Pawn, maxHit: Int, landHit: Boolean, delay: Int, onHit: (PawnHit) -> Unit = {}): PawnHit {
     val hit = if (landHit) {
         target.hit(damage = world.random(maxHit), delay = delay)
     } else {
-        target.hit(damage = 0, delay = delay)
+        target.hit(damage = 0, type = HitType.BLOCK, delay = delay)
     }
 
     val pawnHit = PawnHit(hit, landHit)
-    hit.addAction { onHit(pawnHit) }.addAction { Combat.postDamage(this, target) }.setCancelIf { this.isDead() }
+
+    hit.setCancelIf { isDead() }
+    hit.addAction { onHit(pawnHit) }
+    hit.addAction {
+        val pawn = this@dealHit
+        Combat.postDamage(pawn, target)
+    }
+    if (landHit) {
+        hit.addAction {
+            val pawn = this@dealHit
+            target.damageMap.add(pawn, hit.hitmarks.sumBy { it.damage })
+        }
+    }
     return pawnHit
 }
 

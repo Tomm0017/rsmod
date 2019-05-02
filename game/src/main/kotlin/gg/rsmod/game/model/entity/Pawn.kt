@@ -4,19 +4,8 @@ import gg.rsmod.game.action.NpcDeathAction
 import gg.rsmod.game.action.PlayerDeathAction
 import gg.rsmod.game.event.Event
 import gg.rsmod.game.message.impl.SetMapFlagMessage
-import gg.rsmod.game.model.Direction
-import gg.rsmod.game.model.Graphic
-import gg.rsmod.game.model.Hit
-import gg.rsmod.game.model.LockState
-import gg.rsmod.game.model.MovementQueue
-import gg.rsmod.game.model.PawnList
-import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.World
-import gg.rsmod.game.model.attr.AttributeMap
-import gg.rsmod.game.model.attr.COMBAT_TARGET_FOCUS_ATTR
-import gg.rsmod.game.model.attr.FACING_PAWN_ATTR
-import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
-import gg.rsmod.game.model.attr.INTERACTING_PLAYER_ATTR
+import gg.rsmod.game.model.*
+import gg.rsmod.game.model.attr.*
 import gg.rsmod.game.model.bits.INFINITE_VARS_STORAGE
 import gg.rsmod.game.model.bits.InfiniteVarsType
 import gg.rsmod.game.model.collision.CollisionManager
@@ -327,7 +316,7 @@ abstract class Pawn(val world: World) : Entity() {
                          * terminate all queues and begin the death logic.
                          */
                         if (getCurrentHp() <= 0) {
-                            hit.actions.forEach { action -> action() }
+                            hit.actions.forEach { action -> action(hit) }
                             interruptQueues()
                             if (entityType.isPlayer()) {
                                 executePlugin(PlayerDeathAction.deathPlugin)
@@ -338,7 +327,7 @@ abstract class Pawn(val world: World) : Entity() {
                             break@iterator
                         }
                     }
-                    hit.actions.forEach { action -> action() }
+                    hit.actions.forEach { action -> action(hit) }
                 }
                 hitIterator.remove()
             }

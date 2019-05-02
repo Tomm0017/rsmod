@@ -1,5 +1,1 @@
 description = 'RSMod Utilities'
-
-dependencies {
-    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$yamlVersion"
-}

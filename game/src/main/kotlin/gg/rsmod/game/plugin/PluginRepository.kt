@@ -12,11 +12,7 @@ import gg.rsmod.game.model.container.key.BANK_KEY
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
 import gg.rsmod.game.model.container.key.INVENTORY_KEY
-import gg.rsmod.game.model.entity.DynamicObject
-import gg.rsmod.game.model.entity.GroundItem
-import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.model.entity.Pawn
-import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.service.Service
@@ -1066,7 +1062,7 @@ class PluginRepository(val world: World) {
     }
 
     fun bindItemOnItem(item1: Int, item2: Int, plugin: Plugin.() -> Unit) {
-        val max = Math.min(item1, item2)
+        val max = Math.max(item1, item2)
         val min = Math.min(item1, item2)
 
         val hash = (max shl 16) or min
@@ -1081,7 +1077,7 @@ class PluginRepository(val world: World) {
     }
 
     fun executeItemOnItem(p: Player, item1: Int, item2: Int): Boolean {
-        val max = Math.min(item1, item2)
+        val max = Math.max(item1, item2)
         val min = Math.min(item1, item2)
 
         val hash = (max shl 16) or min

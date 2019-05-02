@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.content.combat.strategy
 
+import gg.rsmod.game.model.Hit
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.combat.XpMode
@@ -91,8 +92,10 @@ object RangedCombatStrategy : CombatStrategy {
          * A list of actions that will be executed upon this hit dealing damage
          * to the [target].
          */
-        val hitActions = mutableListOf<Function0<Unit>>()
-        hitActions.add { Combat.postDamage(pawn, target) }
+        val hitActions = mutableListOf<Hit.() -> Unit>()
+        hitActions.add {
+            Combat.postDamage(pawn, target)
+        }
 
         if (pawn is Player) {
 

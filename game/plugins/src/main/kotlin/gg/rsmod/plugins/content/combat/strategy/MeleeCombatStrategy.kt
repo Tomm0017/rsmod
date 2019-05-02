@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.content.combat.strategy
 
+import gg.rsmod.game.model.Hit
 import gg.rsmod.game.model.combat.XpMode
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
@@ -35,8 +36,10 @@ object MeleeCombatStrategy : CombatStrategy {
          * A list of actions that will be executed upon this hit dealing damage
          * to the [target].
          */
-        val hitActions = mutableListOf<Function0<Unit>>()
-        hitActions.add { Combat.postDamage(pawn, target) }
+        val hitActions = mutableListOf<Hit.() -> Unit>()
+        hitActions.add {
+            Combat.postDamage(pawn, target)
+        }
 
         val animation = CombatConfigs.getAttackAnimation(pawn)
         pawn.animate(animation)

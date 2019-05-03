@@ -11,19 +11,19 @@ val RING_OF_DUELING = arrayOf(
 
 RING_OF_DUELING.forEach { duel ->
     on_equipment_option(duel, option = "Duel Arena") {
-        player.queue {
+        player.queue(TaskPriority.STRONG) {
             teleport(Tile(x = 3308, z = 3234, height = 0)) //Coordinates of duel arena
         }
     }
 
     on_equipment_option(duel, option = "Castle Wars") {
-        player.queue {
+        player.queue(TaskPriority.STRONG) {
             teleport(Tile(x = 2440, z = 3089, height = 0)) //Coordinates of castle wars
         }
     }
 
     on_equipment_option(duel, option = "Clan Wars") {
-        player.queue {
+        player.queue(TaskPriority.STRONG) {
             teleport(Tile(x = 3370, z = 3161, height = 0)) //Coordinates of clan wars
         }
     }

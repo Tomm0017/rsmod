@@ -31,7 +31,7 @@ RING_OF_DUELING.forEach { duel ->
 
 fun QueueTask.teleport(tile : Tile) {
     if (player.canTeleport(TeleportType.MODERN)) {
-        if (player.hasEquipped(EquipmentType.AMULET, *RING_OF_DUELING)) {
+        if (player.hasEquipped(EquipmentType.RING, *RING_OF_DUELING)) {
             world.spawn(AreaSound(tile, id = 200, radius = 10, volume = 1))
             player.teleport(tile, TeleportType.MODERN)
             val delete = player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1)

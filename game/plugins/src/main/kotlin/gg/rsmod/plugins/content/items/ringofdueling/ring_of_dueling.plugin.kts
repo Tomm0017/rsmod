@@ -3,7 +3,7 @@ package gg.rsmod.plugins.content.items.ringofdueling
 import gg.rsmod.plugins.content.magic.TeleportType
 import gg.rsmod.plugins.content.magic.canTeleport
 
-val RING_OF_DUELING = arrayOf(
+val RING_OF_DUELING = intArrayOf(
         Items.RING_OF_DUELING8, Items.RING_OF_DUELING7, Items.RING_OF_DUELING6,
         Items.RING_OF_DUELING5, Items.RING_OF_DUELING4, Items.RING_OF_DUELING3,
         Items.RING_OF_DUELING2, Items.RING_OF_DUELING1
@@ -34,13 +34,15 @@ fun QueueTask.teleport(tile : Tile) {
         world.spawn(AreaSound(tile, id = 200, radius = 10, volume = 1))
         player.teleport(tile, TeleportType.MODERN)
         val delete = player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1)
-        if (delete) {
-            player.equipment.remove(Items.RING_OF_DUELING1)
-            player.message("<col=7f007f>Your ring of dueling crumbles to dust.</col>")
-            return
+        if (player.hasEquipped(EquipmentType.AMULET, *RING_OF_DUELING)) {
+            if (delete) {
+                player.equipment.remove(Items.RING_OF_DUELING1)
+                player.message("<col=7f007f>Your ring of dueling crumbles to dust.</col>")
+                return
+            }
+            player.message(message(player))
+            player.equipment[EquipmentType.RING.id] = Item(set(player))
         }
-        player.message(message(player))
-        player.equipment[EquipmentType.RING.id] = Item(set(player))
     }
 }
 

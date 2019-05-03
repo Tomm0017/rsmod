@@ -2,7 +2,7 @@ package gg.rsmod.plugins.content.items.amuletofglory
 
 import gg.rsmod.plugins.content.magic.TeleportType
 
-val GLORY = arrayOf(
+val GLORY = intArrayOf(
         Items.AMULET_OF_GLORY1, Items.AMULET_OF_GLORY2, Items.AMULET_OF_GLORY3,
         Items.AMULET_OF_GLORY4, Items.AMULET_OF_GLORY5, Items.AMULET_OF_GLORY6
 )
@@ -28,7 +28,7 @@ GLORY.forEach { glory ->
 
     on_equipment_option(glory, option = "Al kharid") {
         player.queue(TaskPriority.STRONG) {
-            teleport(Tile(x = 3292, z = 3165, height = 0)) //Coordinates of draynor village
+            teleport(Tile(x = 3292, z = 3165, height = 0)) //Coordinates of al kharid
         }
     }
 }
@@ -36,9 +36,11 @@ GLORY.forEach { glory ->
 fun QueueTask.teleport(tile : Tile) {
     if (player.canTeleport()) {
         world.spawn(AreaSound(tile, id = 200, radius = 10, volume = 1))
-        player.teleport(tile, TeleportType.MODERN)
-        player.equipment[EquipmentType.AMULET.id] = Item(set(player))
-        player.message(message(player))
+        if (player.hasEquipped(EquipmentType.AMULET, *GLORY)) {
+            player.equipment[EquipmentType.AMULET.id] = Item(set(player))
+            player.message(message(player))
+            player.teleport(tile, TeleportType.MODERN)
+        }
     }
 }
 

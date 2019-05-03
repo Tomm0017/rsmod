@@ -39,8 +39,8 @@ fun QueueTask.teleport(tile : Tile) {
             player.message("<col=7f007f>Your ring of dueling crumbles to dust.</col>")
             return
         }
-        player.equipment[EquipmentType.RING.id] = Item(set(player))
         player.message(message(player))
+        player.equipment[EquipmentType.RING.id] = Item(set(player))
     }
 }
 

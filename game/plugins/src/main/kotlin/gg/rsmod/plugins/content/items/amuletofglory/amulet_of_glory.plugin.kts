@@ -1,7 +1,6 @@
 package gg.rsmod.plugins.content.items.amuletofglory
 
 import gg.rsmod.plugins.content.magic.TeleportType
-import gg.rsmod.plugins.content.magic.canTeleport
 
 val GLORY = arrayOf(
         Items.AMULET_OF_GLORY1, Items.AMULET_OF_GLORY2, Items.AMULET_OF_GLORY3,
@@ -34,8 +33,8 @@ GLORY.forEach { glory ->
     }
 }
 
-suspend fun QueueTask.teleport(tile : Tile) {
-    if (player.canTeleport(TeleportType.MODERN)) {
+fun QueueTask.teleport(tile : Tile) {
+    if (player.canTeleport()) {
         world.spawn(AreaSound(tile, id = 200, radius = 10, volume = 1))
         player.teleport(tile, TeleportType.MODERN)
         player.equipment[EquipmentType.AMULET.id] = Item(set(player))
@@ -64,6 +63,23 @@ fun message(player: Player): String {
         player.hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY1) -> "<col=7f007f>Your amulet has one charge left.</col>"
         else -> "<col=7f007f>You use your amulet's last charge.</col>"
     }
+}
+
+fun Player.canTeleport(): Boolean {
+    val currWildLvl = tile.getWildernessLevel()
+    val wildLvlRestriction = 30
+
+    if (!lock.canTeleport()) {
+        return false
+    }
+
+    if (currWildLvl > wildLvlRestriction) {
+        message("A mysterious force blocks your teleport spell!")
+        message("You can't use this teleport after level $wildLvlRestriction wilderness.")
+        return false
+    }
+
+    return true
 }
 
 fun Pawn.teleport(tile : Tile, teleportType: TeleportType) {

@@ -62,7 +62,7 @@ fun message(player: Player): String {
         player.hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY3) -> "<col=7f007f>Your amulet has three charges left.</col>"
         player.hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY2) -> "<col=7f007f>Your amulet has two charges left.</col>"
         player.hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY1) -> "<col=7f007f>Your amulet has one charge left.</col>"
-        else -> "<col=7f007f>Your amulet has no charges left.</col>"
+        else -> "<col=7f007f>You use your amulet's last charge.</col>"
     }
 }
 

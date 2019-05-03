@@ -36,7 +36,7 @@ fun QueueTask.teleport(tile : Tile) {
         val delete = player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1)
         if (delete) {
             player.equipment.remove(Items.RING_OF_DUELING1)
-            player.message("<col=7f007f>Your ring has no charges left.</col>")
+            player.message("<col=7f007f>Your ring of dueling crumbles to dust.</col>")
             return
         }
         player.equipment[EquipmentType.RING.id] = Item(set(player))
@@ -59,15 +59,15 @@ fun set(player: Player): Int {
 
 fun message(player: Player): String {
     return when {
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING8) -> "<col=7f007f>Your ring has seven charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING7) -> "<col=7f007f>Your ring has seven charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING6) -> "<col=7f007f>Your ring has fix charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING5) -> "<col=7f007f>Your ring has five charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING4) -> "<col=7f007f>Your ring has four charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING3) -> "<col=7f007f>Your ring has three charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING2) -> "<col=7f007f>Your ring has two charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1) -> "<col=7f007f>Your ring has one charge left.</col>"
-        else -> "<col=7f007f>Your ring has no charges left.</col>"
+        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING8) -> "<col=7f007f>Your ring of dueling has seven uses left.</col>"
+        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING7) -> "<col=7f007f>Your ring of dueling has six uses left.</col>"
+        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING6) -> "<col=7f007f>Your ring of dueling has five uses left.</col>"
+        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING5) -> "<col=7f007f>Your ring of dueling has four uses left.</col>"
+        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING4) -> "<col=7f007f>Your ring of dueling has three uses left.</col>"
+        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING3) -> "<col=7f007f>Your ring of dueling has two uses left.</col>"
+        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING2) -> "<col=7f007f>Your ring of dueling has one use left.</col>"
+        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1) -> "<col=7f007f>Your ring of dueling crumbles to dust.</col>"
+        else -> "<col=7f007f>Your ring of dueling crumbles to dust.</col>"
     }
 }
 

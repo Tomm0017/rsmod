@@ -9,25 +9,25 @@ val GLORY = arrayOf(
 
 GLORY.forEach { glory ->
     on_equipment_option(glory, option = "Edgeville") {
-        player.queue {
+        player.queue(TaskPriority.STRONG) {
             teleport(Tile(x = 3086, z = 3500, height = 0)) //Coordinates of edgeville
         }
     }
 
     on_equipment_option(glory, option = "Karamja") {
-        player.queue {
+        player.queue(TaskPriority.STRONG) {
             teleport(Tile(x = 2917, z = 3176, height = 0)) //Coordinates of karamja
         }
     }
 
     on_equipment_option(glory, option = "Draynor Village") {
-        player.queue {
+        player.queue(TaskPriority.STRONG) {
             teleport(Tile(x = 3103, z = 3249, height = 0)) //Coordinates of draynor village
         }
     }
 
     on_equipment_option(glory, option = "Al kharid") {
-        player.queue {
+        player.queue(TaskPriority.STRONG) {
             teleport(Tile(x = 3292, z = 3165, height = 0)) //Coordinates of draynor village
         }
     }

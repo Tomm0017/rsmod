@@ -31,10 +31,10 @@ RING_OF_DUELING.forEach { duel ->
 
 fun QueueTask.teleport(tile : Tile) {
     if (player.canTeleport(TeleportType.MODERN)) {
-        world.spawn(AreaSound(tile, id = 200, radius = 10, volume = 1))
-        player.teleport(tile, TeleportType.MODERN)
-        val delete = player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1)
         if (player.hasEquipped(EquipmentType.AMULET, *RING_OF_DUELING)) {
+            world.spawn(AreaSound(tile, id = 200, radius = 10, volume = 1))
+            player.teleport(tile, TeleportType.MODERN)
+            val delete = player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1)
             if (delete) {
                 player.equipment.remove(Items.RING_OF_DUELING1)
                 player.message("<col=7f007f>Your ring of dueling crumbles to dust.</col>")

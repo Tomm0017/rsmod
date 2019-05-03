@@ -35,8 +35,8 @@ GLORY.forEach { glory ->
 
 fun QueueTask.teleport(tile : Tile) {
     if (player.canTeleport()) {
-        world.spawn(AreaSound(tile, id = 200, radius = 10, volume = 1))
         if (player.hasEquipped(EquipmentType.AMULET, *GLORY)) {
+            world.spawn(AreaSound(tile, id = 200, radius = 10, volume = 1))
             player.equipment[EquipmentType.AMULET.id] = Item(set(player))
             player.message(message(player))
             player.teleport(tile, TeleportType.MODERN)

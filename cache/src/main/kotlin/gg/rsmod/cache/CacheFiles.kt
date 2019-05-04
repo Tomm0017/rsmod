@@ -9,10 +9,10 @@ import java.nio.file.Paths
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-object CacheLoader {
+object CacheFiles {
 
     @JvmStatic fun main(vararg args: String) {
-        val result = load(Paths.get("./data", "cache"))
+        val result = find(Paths.get("./data", "cache"))
         println("Load cache result: $result")
     }
 
@@ -32,7 +32,7 @@ object CacheLoader {
     private const val DATA_FILE_SUFFIX = "dat2"
     private const val IDX_FILE_SUFFIX = "idx"
 
-    fun load(directory: Path): LoadCacheResult {
+    fun find(directory: Path): CacheFindResult {
         // The access type(s) for our data file.
         val accessTypes = setOf(AccessType.READ, AccessType.WRITE)
 
@@ -42,7 +42,7 @@ object CacheLoader {
         // If main data file is not found, we return the "no data file"
         // result.
         if (!Files.exists(dataFile)) {
-            return LoadCacheResult(LoadResultType.NO_DATA_FILE)
+            return CacheFindResult(ResultType.NO_DATA_FILE)
         }
 
         // A map of idx files with their respective index id as their key.
@@ -76,30 +76,30 @@ object CacheLoader {
         // If no index file was present in the directory, we return the
         // "no index file" result.
         if (indexFiles.isEmpty()) {
-            return LoadCacheResult(LoadResultType.NO_IDX_FILE)
+            return CacheFindResult(ResultType.NO_IDX_FILE)
         }
 
         // If the reference file is not found, we return the appropriate
         // failed result.
         if (!indexFiles.containsKey(Filestore.REFERENCE_IDX)) {
-            return LoadCacheResult(LoadResultType.NO_REF_FILE)
+            return CacheFindResult(ResultType.NO_REF_FILE)
         }
 
         // Create a RandomAccessFile for our data file.
         val dataRandomAccessFile = RandomAccessFile(dataFile.toFile(), AccessType.concatenate(accessTypes))
-        val filestore = Filestore(dataRandomAccessFile, indexFiles.toMap(), accessTypes.toSet())
+        val filestore = Filestore(dataRandomAccessFile, indexFiles.toMap(), accessTypes)
 
         // Return a successful state for our cache loading process.
-        val result = LoadCacheResult(LoadResultType.SUCCESS)
+        val result = CacheFindResult(ResultType.SUCCESS)
         result.filestore = filestore
         return result
     }
 
-    data class LoadCacheResult(val type: LoadResultType) {
+    data class CacheFindResult(val type: ResultType) {
         lateinit var filestore: Filestore
     }
 
-    enum class LoadResultType {
+    enum class ResultType {
         SUCCESS,
         NO_DATA_FILE,
         NO_IDX_FILE,

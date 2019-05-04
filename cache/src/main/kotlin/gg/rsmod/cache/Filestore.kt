@@ -11,11 +11,11 @@ import java.io.RandomAccessFile
 class Filestore internal constructor(
         private val dataFile: RandomAccessFile,
         private val indexFiles: Map<Int, File>,
-        private val accessTypes: Set<CacheLoader.AccessType>) {
+        private val accessTypes: Set<CacheFiles.AccessType>) {
 
-    private val archives = mutableMapOf<IndexType, Archive>()
+    internal val archives = mutableMapOf<IndexType, Archive>()
 
-    private val referenceIndex: File
+    internal val referenceIndex: File
         get() = indexFiles.getValue(REFERENCE_IDX)
 
     companion object {

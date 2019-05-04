@@ -1,5 +1,6 @@
 package gg.rsmod.util.io
 
+import io.netty.buffer.ByteBuf
 import java.nio.ByteBuffer
 
 /**
@@ -43,4 +44,22 @@ object Xtea {
         return buffer.array()
     }
 
+    /**
+     * Enciphers the specified [ByteBuf] with the given key.
+     */
+    fun encipher(buffer: ByteBuf, start: Int, end: Int, key: IntArray) {
+        val numQuads = (end - start) / 8
+        for (i in 0 until numQuads) {
+            var sum = 0
+            var v0 = buffer.getInt(start + i * 8)
+            var v1 = buffer.getInt(start + i * 8 + 4)
+            for (j in 0 until ROUNDS) {
+                v0 += (v1 shl 4 xor v1.ushr(5)) + v1 xor sum + key[sum and 3]
+                sum += GOLDEN_RATIO
+                v1 += (v0 shl 4 xor v0.ushr(5)) + v0 xor sum + key[sum.ushr(11) and 3]
+            }
+            buffer.setInt(start + i * 8, v0)
+            buffer.setInt(start + i * 8 + 4, v1)
+        }
+    }
 }

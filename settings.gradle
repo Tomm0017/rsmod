@@ -1,6 +1,6 @@
 rootProject.name = 'gg.rsmod'
-include ':util'
 include ':net'
+include ':util'
 include ':cache'
 include ':game'
 include ':game:plugins'

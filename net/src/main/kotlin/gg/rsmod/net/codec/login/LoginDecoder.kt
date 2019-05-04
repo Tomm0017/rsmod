@@ -10,7 +10,7 @@ import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import mu.KLogging
 import java.math.BigInteger
-import java.util.*
+import java.util.Arrays
 
 /**
  * @author Tom <rspsmods@gmail.com>

@@ -1,0 +1,32 @@
+package gg.rsmod.cache.config
+
+/**
+ * Represents valid compression types in the cache.
+ *
+ * @author Tom <rspsmods@gmail.com>
+ */
+enum class CompressionType(val value: Int) {
+    /**
+     * No compression type.
+     */
+    NONE(0),
+
+    /**
+     * BZIP2 compression type.
+     */
+    BZIP2(1),
+
+    /**
+     * GZIP compression type.
+     */
+    GZIP(2),
+
+    /**
+     * Lempel-Ziv-Marok compresion type.
+     */
+    LZMA(3);
+
+    companion object {
+        val values = enumValues<CompressionType>()
+    }
+}

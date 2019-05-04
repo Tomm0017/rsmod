@@ -10,66 +10,62 @@ val RING_OF_DUELING = intArrayOf(
         Items.RING_OF_DUELING2, Items.RING_OF_DUELING1
 )
 
-RING_OF_DUELING.forEach { duel ->
-    on_equipment_option(duel, option = "Duel Arena") {
-        player.queue(TaskPriority.STRONG) {
-            teleport(Tile(x = 3308, z = 3234, height = 0)) //Coordinates of duel arena
-        }
-    }
+private val LOCATIONS = mapOf(
+        "Duel Arena" to Tile(3308, 3234, 0),
+        "Castle Wars" to Tile(2440, 3089, 0),
+        "Clan Wars" to Tile(3370, 3161, 0)
+)
 
-    on_equipment_option(duel, option = "Castle Wars") {
-        player.queue(TaskPriority.STRONG) {
-            teleport(Tile(x = 2440, z = 3089, height = 0)) //Coordinates of castle wars
-        }
-    }
-
-    on_equipment_option(duel, option = "Clan Wars") {
-        player.queue(TaskPriority.STRONG) {
-            teleport(Tile(x = 3370, z = 3161, height = 0)) //Coordinates of clan wars
+RING_OF_DUELING.forEach { glory ->
+    LOCATIONS.forEach { location, tile ->
+        on_equipment_option(glory, option = location) {
+            player.queue(TaskPriority.STRONG) {
+                player.teleport(tile)
+            }
         }
     }
 }
 
-fun QueueTask.teleport(tile : Tile) {
-    if (player.canTeleport(TeleportType.MODERN)) {
-        if (player.hasEquipped(EquipmentType.RING, *RING_OF_DUELING)) {
+fun Player.teleport(endTile : Tile) {
+    if (canTeleport(TeleportType.MODERN)) {
+        if (hasEquipped(EquipmentType.RING, *RING_OF_DUELING)) {
             world.spawn(AreaSound(tile, 200, 10, 1))
-            player.teleport(tile, TeleportType.MODERN)
-            val delete = player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1)
+            teleport(endTile, TeleportType.MODERN)
+            val delete = hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1)
             if (delete) {
-                player.equipment.remove(Items.RING_OF_DUELING1)
-                player.message("<col=7f007f>Your ring of dueling crumbles to dust.</col>")
+                equipment.remove(Items.RING_OF_DUELING1)
+                message("<col=7f007f>Your ring of dueling crumbles to dust.</col>")
                 return
             }
-            player.message(message(player))
-            player.equipment[EquipmentType.RING.id] = Item(set(player))
+            message(message())
+            equipment[EquipmentType.RING.id] = Item(set())
         }
     }
 }
 
-fun set(player: Player): Int {
+fun Player.set(): Int {
     return when {
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING8) -> Items.RING_OF_DUELING7
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING7) -> Items.RING_OF_DUELING6
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING6) -> Items.RING_OF_DUELING5
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING5) -> Items.RING_OF_DUELING4
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING4) -> Items.RING_OF_DUELING3
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING3) -> Items.RING_OF_DUELING2
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING2) -> Items.RING_OF_DUELING1
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING8) -> Items.RING_OF_DUELING7
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING7) -> Items.RING_OF_DUELING6
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING6) -> Items.RING_OF_DUELING5
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING5) -> Items.RING_OF_DUELING4
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING4) -> Items.RING_OF_DUELING3
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING3) -> Items.RING_OF_DUELING2
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING2) -> Items.RING_OF_DUELING1
         else -> Items.RING_OF_DUELING1
     }
 }
 
-fun message(player: Player): String {
+fun Player.message(): String {
     return when {
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING8) -> "<col=7f007f>Your ring of dueling has seven uses left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING7) -> "<col=7f007f>Your ring of dueling has six uses left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING6) -> "<col=7f007f>Your ring of dueling has five uses left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING5) -> "<col=7f007f>Your ring of dueling has four uses left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING4) -> "<col=7f007f>Your ring of dueling has three uses left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING3) -> "<col=7f007f>Your ring of dueling has two uses left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING2) -> "<col=7f007f>Your ring of dueling has one use left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1) -> "<col=7f007f>Your ring of dueling crumbles to dust.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING8) -> "<col=7f007f>Your ring of dueling has seven uses left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING7) -> "<col=7f007f>Your ring of dueling has six uses left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING6) -> "<col=7f007f>Your ring of dueling has five uses left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING5) -> "<col=7f007f>Your ring of dueling has four uses left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING4) -> "<col=7f007f>Your ring of dueling has three uses left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING3) -> "<col=7f007f>Your ring of dueling has two uses left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING2) -> "<col=7f007f>Your ring of dueling has one use left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1) -> "<col=7f007f>Your ring of dueling crumbles to dust.</col>"
         else -> "<col=7f007f>Your ring of dueling crumbles to dust.</col>"
     }
 }

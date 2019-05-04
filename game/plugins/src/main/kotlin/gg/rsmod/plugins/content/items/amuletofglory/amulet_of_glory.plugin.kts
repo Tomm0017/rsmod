@@ -1,6 +1,8 @@
 package gg.rsmod.plugins.content.items.amuletofglory
 
 import gg.rsmod.plugins.content.magic.TeleportType
+import gg.rsmod.plugins.content.magic.canTeleport
+import gg.rsmod.plugins.content.magic.teleport
 
 val GLORY = intArrayOf(
         Items.AMULET_OF_GLORY1, Items.AMULET_OF_GLORY2, Items.AMULET_OF_GLORY3,
@@ -34,12 +36,12 @@ GLORY.forEach { glory ->
 }
 
 fun QueueTask.teleport(tile : Tile) {
-    if (player.canTeleport()) {
+    if (player.canTeleport(TeleportType.GLORY)) {
         if (player.hasEquipped(EquipmentType.AMULET, *GLORY)) {
-            world.spawn(AreaSound(tile, id = 200, radius = 10, volume = 1))
+            world.spawn(AreaSound(tile, 200, 10, 1))
             player.equipment[EquipmentType.AMULET.id] = Item(set(player))
             player.message(message(player))
-            player.teleport(tile, TeleportType.MODERN)
+            player.teleport(tile, TeleportType.GLORY)
         }
     }
 }
@@ -64,56 +66,5 @@ fun message(player: Player): String {
         player.hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY2) -> "<col=7f007f>Your amulet has two charges left.</col>"
         player.hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY1) -> "<col=7f007f>Your amulet has one charge left.</col>"
         else -> "<col=7f007f>You use your amulet's last charge.</col>"
-    }
-}
-
-fun Player.canTeleport(): Boolean {
-    val currWildLvl = tile.getWildernessLevel()
-    val wildLvlRestriction = 30
-
-    if (!lock.canTeleport()) {
-        return false
-    }
-
-    if (currWildLvl > wildLvlRestriction) {
-        message("A mysterious force blocks your teleport spell!")
-        message("You can't use this teleport after level $wildLvlRestriction wilderness.")
-        return false
-    }
-
-    return true
-}
-
-fun Pawn.teleport(tile : Tile, teleportType: TeleportType) {
-    queue(TaskPriority.STRONG) {
-        resetInteractions()
-        clearHits()
-
-        lock = LockState.FULL_WITH_DAMAGE_IMMUNITY
-
-        animate(teleportType.animation)
-        teleportType.graphic?.let {
-            graphic(it)
-        }
-
-        wait(teleportType.teleportDelay)
-
-        moveTo(tile)
-
-        teleportType.endAnimation?.let {
-            animate(it)
-        }
-
-        teleportType.endGraphic?.let {
-            graphic(it)
-        }
-
-        teleportType.endAnimation?.let {
-            val def = world.definitions.get(AnimDef::class.java, it)
-            wait(def.cycleLength)
-        }
-
-        animate(-1)
-        unlock()
     }
 }

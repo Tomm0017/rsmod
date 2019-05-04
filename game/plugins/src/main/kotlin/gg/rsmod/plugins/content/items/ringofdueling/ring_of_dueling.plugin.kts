@@ -2,6 +2,7 @@ package gg.rsmod.plugins.content.items.ringofdueling
 
 import gg.rsmod.plugins.content.magic.TeleportType
 import gg.rsmod.plugins.content.magic.canTeleport
+import gg.rsmod.plugins.content.magic.teleport
 
 val RING_OF_DUELING = intArrayOf(
         Items.RING_OF_DUELING8, Items.RING_OF_DUELING7, Items.RING_OF_DUELING6,
@@ -32,7 +33,7 @@ RING_OF_DUELING.forEach { duel ->
 fun QueueTask.teleport(tile : Tile) {
     if (player.canTeleport(TeleportType.MODERN)) {
         if (player.hasEquipped(EquipmentType.RING, *RING_OF_DUELING)) {
-            world.spawn(AreaSound(tile, id = 200, radius = 10, volume = 1))
+            world.spawn(AreaSound(tile, 200, 10, 1))
             player.teleport(tile, TeleportType.MODERN)
             val delete = player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1)
             if (delete) {
@@ -70,39 +71,5 @@ fun message(player: Player): String {
         player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING2) -> "<col=7f007f>Your ring of dueling has one use left.</col>"
         player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1) -> "<col=7f007f>Your ring of dueling crumbles to dust.</col>"
         else -> "<col=7f007f>Your ring of dueling crumbles to dust.</col>"
-    }
-}
-
-fun Pawn.teleport(tile : Tile, teleportType: TeleportType) {
-    queue(TaskPriority.STRONG) {
-        resetInteractions()
-        clearHits()
-
-        lock = LockState.FULL_WITH_DAMAGE_IMMUNITY
-
-        animate(teleportType.animation)
-        teleportType.graphic?.let {
-            graphic(it)
-        }
-
-        wait(teleportType.teleportDelay)
-
-        moveTo(tile)
-
-        teleportType.endAnimation?.let {
-            animate(it)
-        }
-
-        teleportType.endGraphic?.let {
-            graphic(it)
-        }
-
-        teleportType.endAnimation?.let {
-            val def = world.definitions.get(AnimDef::class.java, it)
-            wait(def.cycleLength)
-        }
-
-        animate(-1)
-        unlock()
     }
 }

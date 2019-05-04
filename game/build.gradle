@@ -15,6 +15,7 @@ run {
 dependencies {
     compile project(':util')
     compile project(':net')
+    compile project(':cache')
 
     runtimeClasspath project(":game:plugins")
 

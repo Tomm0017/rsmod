@@ -54,7 +54,6 @@ fun Player.getAmuletReplacement(): Item ? {
 
 fun Player.getAmuletChargeMessage(): String {
     return when {
-        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_ETERNAL_GLORY) -> ""
         hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY5) -> "<col=7f007f>Your amulet has five charges left.</col>"
         hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY4) -> "<col=7f007f>Your amulet has four charges left.</col>"
         hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY3) -> "<col=7f007f>Your amulet has three charges left.</col>"

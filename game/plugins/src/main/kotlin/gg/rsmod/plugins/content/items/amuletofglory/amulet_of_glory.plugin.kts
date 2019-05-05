@@ -10,7 +10,7 @@ val GLORY = intArrayOf(
 )
 
 private val SOUNDAREA_ID = 200
-private val SOUNDAREA_RADIUS = 10
+private val SOUNDAREA_RADIUS = 5
 private val SOUNDAREA_VOLUME = 1
 
 private val LOCATIONS = mapOf(
@@ -35,22 +35,22 @@ fun Player.teleport(endTile : Tile) {
     if (canTeleport(TeleportType.GLORY)) {
         if (hasEquipped(EquipmentType.AMULET, *GLORY)) {
             world.spawn(AreaSound(tile, SOUNDAREA_ID, SOUNDAREA_RADIUS, SOUNDAREA_VOLUME))
-            equipment[EquipmentType.AMULET.id] = Item(set())
+            equipment[EquipmentType.AMULET.id] = set()
             message(message())
             teleport(endTile, TeleportType.GLORY)
         }
     }
 }
 
-fun Player.set(): Int {
+fun Player.set(): Item ? {
     return when {
-        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY6) -> Items.AMULET_OF_GLORY5
-        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY5) -> Items.AMULET_OF_GLORY4
-        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY4) -> Items.AMULET_OF_GLORY3
-        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY3) -> Items.AMULET_OF_GLORY2
-        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY2) -> Items.AMULET_OF_GLORY1
-        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY1) -> Items.AMULET_OF_GLORY
-        else -> Items.AMULET_OF_GLORY
+        hasEquipped(EquipmentType.RING, Items.AMULET_OF_GLORY6) -> Item(Items.AMULET_OF_GLORY5)
+        hasEquipped(EquipmentType.RING, Items.AMULET_OF_GLORY5) -> Item(Items.AMULET_OF_GLORY4)
+        hasEquipped(EquipmentType.RING, Items.AMULET_OF_GLORY4) -> Item(Items.AMULET_OF_GLORY3)
+        hasEquipped(EquipmentType.RING, Items.AMULET_OF_GLORY3) -> Item(Items.AMULET_OF_GLORY2)
+        hasEquipped(EquipmentType.RING, Items.AMULET_OF_GLORY2) -> Item(Items.AMULET_OF_GLORY1)
+        hasEquipped(EquipmentType.RING, Items.AMULET_OF_GLORY1) -> Item(Items.AMULET_OF_GLORY)
+        else -> null
     }
 }
 

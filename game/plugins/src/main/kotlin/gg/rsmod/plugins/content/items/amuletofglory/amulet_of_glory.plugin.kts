@@ -32,18 +32,17 @@ GLORY.forEach { glory ->
 
 
 fun Player.teleport(endTile : Tile) {
-    if (canTeleport(TeleportType.GLORY)) {
-        if (hasEquipped(EquipmentType.AMULET, *GLORY)) {
-            world.spawn(AreaSound(tile, SOUNDAREA_ID, SOUNDAREA_RADIUS, SOUNDAREA_VOLUME))
-            equipment[EquipmentType.AMULET.id] = set()
-            message(message())
-            teleport(endTile, TeleportType.GLORY)
-        }
+    if (canTeleport(TeleportType.GLORY) && hasEquipped(EquipmentType.AMULET, *GLORY)) {
+        world.spawn(AreaSound(tile, SOUNDAREA_ID, SOUNDAREA_RADIUS, SOUNDAREA_VOLUME))
+        equipment[EquipmentType.AMULET.id] = getAmuletReplacement()
+        message(getAmuletChargeMessage())
+        teleport(endTile, TeleportType.GLORY)
     }
 }
 
-fun Player.set(): Item ? {
+fun Player.getAmuletReplacement(): Item ? {
     return when {
+        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_ETERNAL_GLORY) -> Item(Items.AMULET_OF_ETERNAL_GLORY)
         hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY6) -> Item(Items.AMULET_OF_GLORY5)
         hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY5) -> Item(Items.AMULET_OF_GLORY4)
         hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY4) -> Item(Items.AMULET_OF_GLORY3)
@@ -54,8 +53,9 @@ fun Player.set(): Item ? {
     }
 }
 
-fun Player.message(): String {
+fun Player.getAmuletChargeMessage(): String {
     return when {
+        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_ETERNAL_GLORY) -> ""
         hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY5) -> "<col=7f007f>Your amulet has five charges left.</col>"
         hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY4) -> "<col=7f007f>Your amulet has four charges left.</col>"
         hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY3) -> "<col=7f007f>Your amulet has three charges left.</col>"

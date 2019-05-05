@@ -31,17 +31,15 @@ RING_OF_DUELING.forEach { duel ->
 }
 
 fun Player.teleport(endTile : Tile) {
-    if (canTeleport(TeleportType.MODERN)) {
-        if (hasEquipped(EquipmentType.RING, *RING_OF_DUELING)) {
-            world.spawn(AreaSound(tile, SOUNDAREA_ID, SOUNDAREA_RADIUS, SOUNDAREA_VOLUME))
-            equipment[EquipmentType.RING.id] = set()
-            teleport(endTile, TeleportType.MODERN)
-            message(message())
-        }
+    if (canTeleport(TeleportType.MODERN) && hasEquipped(EquipmentType.RING, *RING_OF_DUELING)) {
+        world.spawn(AreaSound(tile, SOUNDAREA_ID, SOUNDAREA_RADIUS, SOUNDAREA_VOLUME))
+        equipment[EquipmentType.RING.id] = getRingReplacement()
+        teleport(endTile, TeleportType.MODERN)
+        message(getRingChargeMessage())
     }
 }
 
-fun Player.set(): Item ? {
+fun Player.getRingReplacement(): Item ? {
     return when {
         hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING8) -> Item(Items.RING_OF_DUELING7)
         hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING7) -> Item(Items.RING_OF_DUELING6)
@@ -55,7 +53,7 @@ fun Player.set(): Item ? {
     }
 }
 
-fun Player.message(): String {
+fun Player.getRingChargeMessage(): String {
     return when {
         hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING7) -> "<col=7f007f>Your ring of dueling has seven uses left.</col>"
         hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING6) -> "<col=7f007f>Your ring of dueling has six uses left.</col>"

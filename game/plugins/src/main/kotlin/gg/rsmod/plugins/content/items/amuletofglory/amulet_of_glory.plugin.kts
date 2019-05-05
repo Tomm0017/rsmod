@@ -42,7 +42,6 @@ fun Player.teleport(endTile : Tile) {
 
 fun Player.getAmuletReplacement(): Item ? {
     return when {
-        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_ETERNAL_GLORY) -> Item(Items.AMULET_OF_ETERNAL_GLORY)
         hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY6) -> Item(Items.AMULET_OF_GLORY5)
         hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY5) -> Item(Items.AMULET_OF_GLORY4)
         hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY4) -> Item(Items.AMULET_OF_GLORY3)

@@ -44,12 +44,12 @@ fun Player.teleport(endTile : Tile) {
 
 fun Player.set(): Item ? {
     return when {
-        hasEquipped(EquipmentType.RING, Items.AMULET_OF_GLORY6) -> Item(Items.AMULET_OF_GLORY5)
-        hasEquipped(EquipmentType.RING, Items.AMULET_OF_GLORY5) -> Item(Items.AMULET_OF_GLORY4)
-        hasEquipped(EquipmentType.RING, Items.AMULET_OF_GLORY4) -> Item(Items.AMULET_OF_GLORY3)
-        hasEquipped(EquipmentType.RING, Items.AMULET_OF_GLORY3) -> Item(Items.AMULET_OF_GLORY2)
-        hasEquipped(EquipmentType.RING, Items.AMULET_OF_GLORY2) -> Item(Items.AMULET_OF_GLORY1)
-        hasEquipped(EquipmentType.RING, Items.AMULET_OF_GLORY1) -> Item(Items.AMULET_OF_GLORY)
+        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY6) -> Item(Items.AMULET_OF_GLORY5)
+        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY5) -> Item(Items.AMULET_OF_GLORY4)
+        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY4) -> Item(Items.AMULET_OF_GLORY3)
+        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY3) -> Item(Items.AMULET_OF_GLORY2)
+        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY2) -> Item(Items.AMULET_OF_GLORY1)
+        hasEquipped(EquipmentType.AMULET, Items.AMULET_OF_GLORY1) -> Item(Items.AMULET_OF_GLORY)
         else -> null
     }
 }

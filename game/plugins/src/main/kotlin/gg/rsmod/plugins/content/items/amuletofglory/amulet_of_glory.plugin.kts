@@ -14,10 +14,10 @@ private val SOUNDAREA_RADIUS = 5
 private val SOUNDAREA_VOLUME = 1
 
 private val LOCATIONS = mapOf(
-        "Edgeville" to Tile(3086, 3500, 0),
-        "Karamja" to Tile(2917, 3176, 0),
-        "Draynor Village" to Tile(3103, 3249, 0),
-        "Al kharid" to Tile(3292, 3165, 0)
+        "Edgeville" to Tile(3086, 3500),
+        "Karamja" to Tile(2917, 3176),
+        "Draynor Village" to Tile(3103, 3249),
+        "Al kharid" to Tile(3292, 3165)
 )
 
 GLORY.forEach { glory ->

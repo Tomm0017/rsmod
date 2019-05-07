@@ -3,7 +3,9 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.OpHeldUMessage
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.attr.*
 import gg.rsmod.game.model.entity.Client
+import java.lang.ref.WeakReference
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -36,6 +38,14 @@ class OpHeldUHandler : MessageHandler<OpHeldUMessage> {
 
         log(client, "Item on item: from_component=[%d,%d], to_component=[%d,%d], from_item=%d, from_slot=%d, to_item=%d, to_slot=%d",
                 fromInterfaceId, fromComponent, toInterfaceId, toComponent, fromItem.id, fromSlot, toItem.id, toSlot)
+
+        client.attr[INTERACTING_ITEM] = WeakReference(fromItem)
+        client.attr[INTERACTING_ITEM_ID] = fromItem.id
+        client.attr[INTERACTING_ITEM_SLOT] = fromSlot
+
+        client.attr[OTHER_ITEM_ATTR] = WeakReference(toItem)
+        client.attr[OTHER_ITEM_ID_ATTR] = toItem.id
+        client.attr[OTHER_ITEM_SLOT_ATTR] = toSlot
 
         val handled = world.plugins.executeItemOnItem(client, fromItem.id, toItem.id)
         if (!handled && world.devContext.debugItemActions) {

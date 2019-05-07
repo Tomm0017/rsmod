@@ -143,6 +143,11 @@ val INTERACTING_ITEM_SLOT = AttributeKey<Int>()
 val INTERACTING_ITEM_ID = AttributeKey<Int>()
 
 /**
+ * The item pointer of the interacting item.
+ */
+val INTERACTING_ITEM = AttributeKey<WeakReference<Item>>()
+
+/**
  * The slot index of any 'secondary' item being interacted with.
  */
 val OTHER_ITEM_SLOT_ATTR = AttributeKey<Int>()
@@ -153,9 +158,9 @@ val OTHER_ITEM_SLOT_ATTR = AttributeKey<Int>()
 val OTHER_ITEM_ID_ATTR = AttributeKey<Int>()
 
 /**
- * The item pointer of the interacting item.
+ * The item pointer of any 'secondary' item being interacted with.
  */
-val INTERACTING_ITEM = AttributeKey<WeakReference<Item>>()
+val OTHER_ITEM_ATTR = AttributeKey<WeakReference<Item>>()
 
 /**
  * Interacting interface parent id.

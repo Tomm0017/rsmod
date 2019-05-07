@@ -1,7 +1,5 @@
 package gg.rsmod.cache
 
-import java.io.File
-import java.io.RandomAccessFile
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -11,30 +9,26 @@ import java.nio.file.Paths
  */
 object CacheFiles {
 
-    @JvmStatic fun main(vararg args: String) {
-        val result = find(Paths.get("./data", "cache"))
-        println("Load cache result: $result")
+    @JvmStatic
+    fun main(vararg args: String) {
+        val cacheDirectory = Paths.get("./data", "cache")
+
+        val result = find(cacheDirectory)
+        check(result.type == CacheFiles.ResultType.SUCCESS)
+        val filestore = result.filestore
+        filestore.load()
     }
-
-    /**
-    yeah it's Index, Archive, Group
-
-    index contains the metadata for an archive
-    then the archive itself contains all of the groups
-
-    yeah, but it's actually split up more than that technically still
-    there's files in groups
-    im not sure for the name of that "container" (i think is what openrs calls it)
-    that is all of the files in a single buffer, compressed
-     */
 
     private const val FILESTORE_PREFIX = "main_file_cache"
     private const val DATA_FILE_SUFFIX = "dat2"
     private const val IDX_FILE_SUFFIX = "idx"
 
-    fun find(directory: Path): CacheFindResult {
-        // The access type(s) for our data file.
-        val accessTypes = setOf(AccessType.READ, AccessType.WRITE)
+    private val DEFAULT_ACCESS_TYPES = arrayOf(AccessType.READ)
+
+    fun find(directory: Path, vararg accessType: AccessType = DEFAULT_ACCESS_TYPES): CacheFindResult {
+        // A set of the access types given to the function.
+        val accessTypes = accessType.toSet()
+        val accessTypeFlags = AccessType.concatenate(accessTypes)
 
         // Resolve the path to the main data file.
         val dataFile = directory.resolve("$FILESTORE_PREFIX.$DATA_FILE_SUFFIX")
@@ -46,7 +40,7 @@ object CacheFiles {
         }
 
         // A map of idx files with their respective index id as their key.
-        val indexFiles = mutableMapOf<Int, File>()
+        val indexFiles = mutableMapOf<Int, CacheFile>()
 
         // Go through each file in the directory to find index files.
         Files.walk(directory).forEach { filePath ->
@@ -70,7 +64,9 @@ object CacheFiles {
 
             // Resolve the index file number and store it.
             val idxNumber = fileName.substring(idxIndex + IDX_FILE_SUFFIX.length + 1).toInt()
-            indexFiles[idxNumber] = filePath.toFile()
+            val idxCacheFile = CacheFile(filePath.toFile(), accessTypeFlags)
+
+            indexFiles[idxNumber] = idxCacheFile
         }
 
         // If no index file was present in the directory, we return the
@@ -79,15 +75,15 @@ object CacheFiles {
             return CacheFindResult(ResultType.NO_IDX_FILE)
         }
 
-        // If the reference file is not found, we return the appropriate
+        // If the master index file is not found, we return the appropriate
         // failed result.
-        if (!indexFiles.containsKey(Filestore.REFERENCE_IDX)) {
-            return CacheFindResult(ResultType.NO_REF_FILE)
+        if (!indexFiles.containsKey(MASTER_IDX)) {
+            return CacheFindResult(ResultType.NO_MASTER_IDX_FILE)
         }
 
         // Create a RandomAccessFile for our data file.
-        val dataRandomAccessFile = RandomAccessFile(dataFile.toFile(), AccessType.concatenate(accessTypes))
-        val filestore = Filestore(dataRandomAccessFile, indexFiles.toMap(), accessTypes)
+        val dataCacheFile = CacheFile(dataFile.toFile(), accessTypeFlags)
+        val filestore = Filestore(dataCacheFile, indexFiles.toMap(), accessTypes)
 
         // Return a successful state for our cache loading process.
         val result = CacheFindResult(ResultType.SUCCESS)
@@ -103,10 +99,10 @@ object CacheFiles {
         SUCCESS,
         NO_DATA_FILE,
         NO_IDX_FILE,
-        NO_REF_FILE
+        NO_MASTER_IDX_FILE
     }
 
-    internal enum class AccessType(val flag: String) {
+    enum class AccessType(val flag: String) {
         READ("r"),
         WRITE("w");
 

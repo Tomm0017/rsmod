@@ -22,7 +22,7 @@ enum class CompressionType(val value: Int) {
     GZIP(2),
 
     /**
-     * Lempel-Ziv-Marok compresion type.
+     * Lempel-Ziv-Marok compression type.
      */
     LZMA(3);
 

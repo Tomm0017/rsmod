@@ -3,7 +3,7 @@ package gg.rsmod.cache.config
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-enum class IndexType(val id: Int) {
+enum class ArchiveType(val idx: Int) {
     SKELETONS(0),
     SKINS(1),
     CONFIGS(2),
@@ -21,6 +21,9 @@ enum class IndexType(val id: Int) {
     VORBIS(14),
     INSTRUMENTS(15),
     UNDERMINED(16),
-    DEFAULTS(17),
-    REF(255)
+    DEFAULTS(17);
+
+    companion object {
+        val values = enumValues<ArchiveType>()
+    }
 }

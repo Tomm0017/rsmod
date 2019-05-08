@@ -3,6 +3,7 @@ package gg.rsmod.cache
 import gg.rsmod.cache.config.CompressionType
 import gg.rsmod.cache.struct.Archive
 import gg.rsmod.cache.struct.ArchiveChunk
+import gg.rsmod.cache.struct.Group
 import gg.rsmod.cache.struct.Index
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
@@ -21,7 +22,8 @@ data class Filestore internal constructor(
     fun load() {
         val archiveChunks = mutableMapOf<Int, ArchiveChunk>()
         val indexes = mutableMapOf<Int, Index>()
-        val archives = mutableMapOf<Index, Collection<Archive>>()
+        val archives = mutableMapOf<Index, MutableCollection<Archive>>()
+        val groups = mutableMapOf<Archive, MutableCollection<Group>>()
 
         // Load archive chunks
         val indexMaster = indexFiles.getValue(MASTER_IDX)
@@ -78,7 +80,10 @@ data class Filestore internal constructor(
             val archiveNames = arrayOfNulls<Int>(archiveCount)
             val archiveCrcs = arrayOfNulls<Int>(archiveCount)
             val archiveRevisions = arrayOfNulls<Int>(archiveCount)
+
             val archiveGroupCount = arrayOfNulls<Int>(archiveCount)
+            val archiveGroupIds = mutableMapOf<Archive, MutableMap<Int, Int>>()
+            val archiveGroupNames = mutableMapOf<Archive, MutableMap<Int, Int>>()
 
             var incrementalProtocol = 0
             for (i in 0 until archiveCount) {
@@ -114,11 +119,12 @@ data class Filestore internal constructor(
             for (i in 0 until archiveCount) {
                 val groupCount = archiveGroupCount[i]!!
                 val archive = indexArchives[i]
+                val groupIds = archiveGroupIds.computeIfAbsent(archive) { mutableMapOf() }
 
                 incrementalProtocol = 0
                 for (j in 0 until groupCount) {
                     incrementalProtocol += protocol
-                    archive.groupIds[j] = dataBuffer.readProtocolSmart(incrementalProtocol)
+                    groupIds[j] = dataBuffer.readProtocolSmart(incrementalProtocol)
                 }
             }
 
@@ -128,10 +134,27 @@ data class Filestore internal constructor(
                 for (i in 0 until archiveCount) {
                     val groupCount = archiveGroupCount[i]!!
                     val archive = indexArchives[i]
+                    val groupNames = archiveGroupNames.computeIfAbsent(archive) { mutableMapOf() }
 
                     for (j in 0 until groupCount) {
-                        archive.groupNameHashes[j] = dataBuffer.readInt()
+                        groupNames[j] = dataBuffer.readInt()
                     }
+                }
+            }
+
+            // Create groups for archive.
+            for (i in 0 until archiveCount) {
+                val archive = indexArchives[i]
+                val groupCount = archiveGroupCount[i]!!
+                val groupIds = archiveGroupIds[archive]!!
+                val groupNames = archiveGroupNames[archive]
+
+                val archiveGroups = groups.computeIfAbsent(archive) { mutableListOf() }
+                for (j in 0 until groupCount) {
+                    val groupId = groupIds[j]!!
+                    val groupName = groupNames?.get(j)
+                    val group = Group(groupId, groupName)
+                    archiveGroups.add(group)
                 }
             }
         }

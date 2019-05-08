@@ -25,7 +25,7 @@ typealias CacheFile = RandomAccessFile
 
 internal const val MASTER_IDX = 255
 
-private fun ByteBuf.readProtocolSmart(protocol: Int): Int = if (protocol >= 7) {
+fun ByteBuf.readProtocolSmart(protocol: Int): Int = if (protocol >= 7) {
     readBigSmart()
 } else {
     readUnsignedShort()

@@ -19,10 +19,9 @@ data class Filestore internal constructor(
         internal val accessTypes: Set<CacheFiles.AccessType>) {
 
     fun load() {
-
-        val archives = mutableMapOf<Int, Archive>()
         val archiveChunks = mutableMapOf<Int, ArchiveChunk>()
         val indexes = mutableMapOf<Int, Index>()
+        val archives = mutableMapOf<Index, Collection<Archive>>()
 
         // Load archive chunks
         val indexMaster = indexFiles.getValue(MASTER_IDX)
@@ -56,28 +55,92 @@ data class Filestore internal constructor(
             val protocol = dataBuffer.readUnsignedByte().toInt()
             check(protocol in 5..7)
 
-            var revision = 0
-
-            if (protocol >= 6) {
-                revision = dataBuffer.readInt()
+            val revision = if (protocol >= 6) {
+                dataBuffer.readInt()
+            } else {
+                0
             }
 
             val hash = dataBuffer.readUnsignedByte().toInt()
-            val hasHashName = (1 and hash) != 0
+            val hasHashNames = (1 and hash) != 0
             check(hash and 1.inv() == 0)
             check(hash and 3.inv() == 0)
 
             val archiveCount = dataBuffer.readProtocolSmart(protocol)
 
-            val index = Index(protocol, revision, hasHashName)
+            val index = Index(protocol, revision, hasHashNames)
             indexes[archiveIdx] = index
+
+            val indexArchives = mutableListOf<Archive>()
+            archives[index] = indexArchives
+
+            val archiveIds = arrayOfNulls<Int>(archiveCount)
+            val archiveNames = arrayOfNulls<Int>(archiveCount)
+            val archiveCrcs = arrayOfNulls<Int>(archiveCount)
+            val archiveRevisions = arrayOfNulls<Int>(archiveCount)
+            val archiveGroupCount = arrayOfNulls<Int>(archiveCount)
+
+            var incrementalProtocol = 0
+            for (i in 0 until archiveCount) {
+                incrementalProtocol += protocol
+                archiveIds[i] = dataBuffer.readProtocolSmart(incrementalProtocol)
+            }
+
+            if (hasHashNames) {
+                for (i in 0 until archiveCount) {
+                    archiveNames[i] = dataBuffer.readInt()
+                }
+            }
+
+            for (i in 0 until archiveCount) {
+                archiveCrcs[i] = dataBuffer.readInt()
+            }
+
+            for (i in 0 until archiveCount) {
+                archiveRevisions[i] = dataBuffer.readInt()
+            }
+
+            for (i in 0 until archiveCount) {
+                archiveGroupCount[i] = dataBuffer.readProtocolSmart(protocol)
+            }
+
+            // Create archive based on metadata read from index file.
+            for (i in 0 until archiveCount) {
+                val archive = Archive(archiveIds[i]!!, archiveNames[i], archiveCrcs[i]!!, archiveRevisions[i]!!)
+                indexArchives.add(archive)
+            }
+
+            // Associate the group ids found in the index file to the archive.
+            for (i in 0 until archiveCount) {
+                val groupCount = archiveGroupCount[i]!!
+                val archive = indexArchives[i]
+
+                incrementalProtocol = 0
+                for (j in 0 until groupCount) {
+                    incrementalProtocol += protocol
+                    archive.groupIds[j] = dataBuffer.readProtocolSmart(incrementalProtocol)
+                }
+            }
+
+            // If the index specified that the archive has hashed names, we
+            // associate them with their respective archive.
+            if (hasHashNames) {
+                for (i in 0 until archiveCount) {
+                    val groupCount = archiveGroupCount[i]!!
+                    val archive = indexArchives[i]
+
+                    for (j in 0 until groupCount) {
+                        archive.groupNameHashes[j] = dataBuffer.readInt()
+                    }
+                }
+            }
         }
     }
 
     private fun readData(input: ByteArray, offset: Int, size: Int, headerLength: Int): ByteBuf {
         val output = Unpooled.buffer(size)
-
         var currOffset = offset
+
         var bytesRead = 0
         while (bytesRead < size) {
             dataFile.seek((currOffset * DATA_FILE_CHUNK_SIZE).toLong())
@@ -91,8 +154,7 @@ data class Filestore internal constructor(
 
             check(read == headerLength + blockLength)
 
-            val nextOffset = ((input[4].toInt() and 0xFF) shl 16) or ((input[5].toInt() and 0xFF) shl 8) or
-                    ((input[6].toInt() and 0xFF))
+            val nextOffset = ((input[4].toInt() and 0xFF) shl 16) or ((input[5].toInt() and 0xFF) shl 8) or ((input[6].toInt() and 0xFF))
 
             output.writeBytes(input, headerLength, blockLength)
 

@@ -1,5 +1,6 @@
 package gg.rsmod.cache
 
+import net.runelite.cache.fs.Store
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -12,6 +13,16 @@ object CacheFiles {
     @JvmStatic
     fun main(vararg args: String) {
         val cacheDirectory = Paths.get("./data", "cache")
+
+        val store = Store(cacheDirectory.toFile())
+        store.load()
+        store.indexes[4].let { index ->
+            index.toIndexData().archives.forEachIndexed { i, data ->
+                println("Archive[$i]=(rev=${data.revision}, name=${data.nameHash}, crc=${data.crc}, fileCount=${data.files.size})")
+            }
+        }
+
+        println()
 
         val result = find(cacheDirectory)
         check(result.type == CacheFiles.ResultType.SUCCESS)

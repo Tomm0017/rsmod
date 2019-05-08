@@ -16,11 +16,6 @@ im not sure for the name of that "container" (i think is what openrs calls it)
 that is all of the files in a single buffer, compressed
  */
 
-/**
- index255 points to the Index data for each Archive in data file
- idx0-n point to where cache data for Archive is in data file
- */
-
 typealias CacheFile = RandomAccessFile
 
 internal const val MASTER_IDX = 255

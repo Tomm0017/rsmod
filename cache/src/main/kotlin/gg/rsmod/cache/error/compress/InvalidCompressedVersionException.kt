@@ -5,5 +5,5 @@ import gg.rsmod.cache.error.FilestoreException
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class IllegalCompressedRevisionException(revision: Int)
-    : FilestoreException("Invalid revision: $revision")
+class InvalidCompressedVersionException(version: Int)
+    : FilestoreException("Invalid version: $version")

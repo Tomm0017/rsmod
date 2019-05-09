@@ -25,6 +25,13 @@ internal const val MASTER_IDX = 255
 fun Filestore.load() {
     val fileSystem = loadVFS()
     vfs = fileSystem
+
+    /*
+     * Clean up archive data from indexes as they are no longer needed.
+     */
+    vfs.indexes.values.forEach { index ->
+        index.archiveData = null
+    }
 }
 
 fun Filestore.getIndex(idx: Int): Index? = vfs.indexes[idx]

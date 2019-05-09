@@ -4,6 +4,7 @@ import gg.rsmod.cache.codec.StructCodec
 import gg.rsmod.cache.error.struct.InvalidHashedNamesFlagException
 import gg.rsmod.cache.error.struct.InvalidIndexProtocolException
 import gg.rsmod.cache.struct.Index
+import gg.rsmod.cache.type.ArchiveVersionType
 import io.netty.buffer.ByteBuf
 
 /**
@@ -12,13 +13,10 @@ import io.netty.buffer.ByteBuf
 object IndexCodec : StructCodec<Index> {
 
     override fun decode(buffer: ByteBuf): Index {
-        val protocol = buffer.readUnsignedByte().toInt()
+        val versionOpcode = buffer.readUnsignedByte().toInt()
+        val versionType = ArchiveVersionType.values.firstOrNull { it.opcode == versionOpcode } ?: throw InvalidIndexProtocolException(versionOpcode)
 
-        if (protocol !in 5..7) {
-            throw InvalidIndexProtocolException(protocol)
-        }
-
-        val revision = if (protocol >= 6) {
+        val version = if (versionType != ArchiveVersionType.NONE) {
             buffer.readInt()
         } else {
             0
@@ -34,7 +32,7 @@ object IndexCodec : StructCodec<Index> {
         val archiveData = ByteArray(buffer.readableBytes())
         buffer.readBytes(archiveData)
 
-        return Index(protocol, revision, hasHashedNames, archiveData)
+        return Index(version, versionType, hasHashedNames, archiveData)
     }
 
     override fun encode(buffer: ByteBuf, value: Index) {

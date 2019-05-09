@@ -1,9 +1,11 @@
 package gg.rsmod.cache.struct
 
+import gg.rsmod.cache.type.ArchiveVersionType
+
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-data class Index(val protocol: Int, val revision: Int, val nameHash: Boolean, val archiveData: ByteArray) {
+data class Index(val version: Int, val versionType: ArchiveVersionType, val nameHash: Boolean, var archiveData: ByteArray?) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -11,19 +13,17 @@ data class Index(val protocol: Int, val revision: Int, val nameHash: Boolean, va
 
         other as Index
 
-        if (protocol != other.protocol) return false
-        if (revision != other.revision) return false
+        if (version != other.version) return false
+        if (versionType != other.versionType) return false
         if (nameHash != other.nameHash) return false
-        if (!archiveData.contentEquals(other.archiveData)) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = protocol
-        result = 31 * result + revision
+        var result = version
+        result = 31 * result + versionType.hashCode()
         result = 31 * result + nameHash.hashCode()
-        result = 31 * result + archiveData.contentHashCode()
         return result
     }
 }

@@ -1,8 +1,9 @@
 package gg.rsmod.cache.ext
 
-import gg.rsmod.cache.type.CompressionType
 import gg.rsmod.cache.error.FilestoreException
 import gg.rsmod.cache.error.compress.*
+import gg.rsmod.cache.type.ArchiveVersionType
+import gg.rsmod.cache.type.CompressionType
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import net.runelite.cache.util.BZip2
@@ -14,14 +15,14 @@ import java.util.zip.CRC32
  */
 private val VALID_COMPRESSION_LENGTH = 0..1_000_000
 
-fun ByteBuf.readBigSmart(): Int = if (getByte(readerIndex()) >= 0) {
-    readUnsignedShort() and 0xFFFF
+fun ByteBuf.readLargeSmart(): Int = if (getByte(readerIndex()) >= 0) {
+    readUnsignedShort()
 } else {
-    readInt() and Int.MAX_VALUE
+    readInt()
 }
 
-fun ByteBuf.readProtocolSmart(protocol: Int): Int = if (protocol >= 7) {
-    readBigSmart()
+fun ByteBuf.readVersionSmart(version: ArchiveVersionType): Int = if (version == ArchiveVersionType.SMART) {
+    readLargeSmart()
 } else {
     readUnsignedShort()
 }
@@ -48,9 +49,9 @@ fun ByteBuf.decompress(crc: CRC32): ByteBuf {
             val decryptedData = encryptedData.copyOf()
 
             if (readableBytes() >= Short.SIZE_BYTES) {
-                val revision = readUnsignedShort()
-                if (revision == -1) {
-                    throw IllegalCompressedRevisionException(revision)
+                val version = readUnsignedShort()
+                if (version == -1) {
+                    throw InvalidCompressedVersionException(version)
                 }
             }
 
@@ -64,9 +65,9 @@ fun ByteBuf.decompress(crc: CRC32): ByteBuf {
             val decryptedData = encryptedData.copyOf()
 
             if (readableBytes() >= Short.SIZE_BYTES) {
-                val revision = readUnsignedShort()
-                if (revision == -1) {
-                    throw IllegalCompressedRevisionException(revision)
+                val version = readUnsignedShort()
+                if (version == -1) {
+                    throw InvalidCompressedVersionException(version)
                 }
             }
 
@@ -91,9 +92,9 @@ fun ByteBuf.decompress(crc: CRC32): ByteBuf {
             val decryptedData = encryptedData.copyOf()
 
             if (readableBytes() >= Short.SIZE_BYTES) {
-                val revision = readUnsignedShort()
-                if (revision == -1) {
-                    throw IllegalCompressedRevisionException(revision)
+                val version = readUnsignedShort()
+                if (version == -1) {
+                    throw InvalidCompressedVersionException(version)
                 }
             }
 

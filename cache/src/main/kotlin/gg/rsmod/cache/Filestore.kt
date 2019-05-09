@@ -32,7 +32,9 @@ data class Filestore internal constructor(
     internal lateinit var vfs: VirtualFileSystem
 
     internal fun loadVFS(): VirtualFileSystem {
-        val archiveChunks = loadArchiveChunks(indexFiles.getValue(MASTER_IDX))
+        val masterIndex = indexFiles.getValue(MASTER_IDX)
+
+        val archiveChunks = loadArchiveChunks(masterIndex)
         val indexes = loadIndexes(archiveChunks)
 
         val indexArchives = mutableMapOf<Index, List<Archive>>()
@@ -88,15 +90,16 @@ data class Filestore internal constructor(
             indexes[archiveIdx] = index
         }
 
+
         return indexes
     }
 
     private fun loadArchives(archiveBuf: ByteBuf, index: Index): List<Archive> {
-        return ArchiveListCodec(index.protocol, index.nameHash).decode(archiveBuf)
+        return ArchiveListCodec(index.versionType, index.nameHash).decode(archiveBuf)
     }
 
     private fun loadArchiveGroups(archiveBuf: ByteBuf, index: Index, archives: List<Archive>): Map<Archive, List<Group>> {
-        return ArchiveGroupListCodec(archives, index.protocol, index.nameHash).decode(archiveBuf)
+        return ArchiveGroupListCodec(archives, index.versionType, index.nameHash).decode(archiveBuf)
     }
 
     companion object {

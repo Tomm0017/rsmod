@@ -1,7 +1,9 @@
 package gg.rsmod.cache
 
-import gg.rsmod.cache.ext.readBigSmart
-import io.netty.buffer.ByteBuf
+import gg.rsmod.cache.struct.Archive
+import gg.rsmod.cache.struct.Group
+import gg.rsmod.cache.struct.Index
+import gg.rsmod.cache.type.GroupType
 import java.io.RandomAccessFile
 
 /**
@@ -20,8 +22,23 @@ typealias CacheFile = RandomAccessFile
 
 internal const val MASTER_IDX = 255
 
-fun ByteBuf.readProtocolSmart(protocol: Int): Int = if (protocol >= 7) {
-    readBigSmart()
-} else {
-    readUnsignedShort()
+fun Filestore.load() {
+    val fileSystem = loadVFS()
+    vfs = fileSystem
+}
+
+fun Filestore.getIndex(idx: Int): Index? = vfs.indexes[idx]
+
+fun Filestore.getArchives(index: Index): List<Archive>? = vfs.archives[index]
+
+fun Filestore.getGroups(archive: Archive): List<Group>? = vfs.groups[archive]
+
+fun Filestore.getGroups(groupType: GroupType): List<Group>? {
+    val archiveType = groupType.archiveType
+
+    val index = getIndex(archiveType.idx)!!
+    val archives = getArchives(index)!!
+    val archive = archives.first { it.id == archiveType.idx }
+
+    return getGroups(archive)
 }

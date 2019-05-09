@@ -1,4 +1,4 @@
-package gg.rsmod.cache.config
+package gg.rsmod.cache.type
 
 /**
  * Represents valid compression types in the cache.

@@ -1,4 +1,4 @@
-package gg.rsmod.cache.config
+package gg.rsmod.cache.type
 
 /**
  * @author Tom <rspsmods@gmail.com>

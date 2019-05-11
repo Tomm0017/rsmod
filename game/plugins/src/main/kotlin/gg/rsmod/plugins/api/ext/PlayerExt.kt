@@ -466,6 +466,7 @@ fun Player.calculateAndSetCombatLevel(): Boolean {
     if (changed) {
         runClientScript(389, combatLevel)
         sendCombatLevelText()
+        addBlock(UpdateBlockType.APPEARANCE)
         return true
     }
 

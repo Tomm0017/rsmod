@@ -2,105 +2,66 @@ package gg.rsmod.plugins.content.items.ringofdueling
 
 import gg.rsmod.plugins.content.magic.TeleportType
 import gg.rsmod.plugins.content.magic.canTeleport
+import gg.rsmod.plugins.content.magic.teleport
 
-val RING_OF_DUELING = arrayOf(
+val RING_OF_DUELING = intArrayOf(
         Items.RING_OF_DUELING8, Items.RING_OF_DUELING7, Items.RING_OF_DUELING6,
         Items.RING_OF_DUELING5, Items.RING_OF_DUELING4, Items.RING_OF_DUELING3,
         Items.RING_OF_DUELING2, Items.RING_OF_DUELING1
 )
 
+private val SOUNDAREA_ID = 200
+private val SOUNDAREA_RADIUS = 5
+private val SOUNDAREA_VOLUME = 1
+
+private val LOCATIONS = mapOf(
+        "Duel Arena" to Tile(3308, 3234),
+        "Castle Wars" to Tile(2440, 3089),
+        "Clan Wars" to Tile(3370, 3161)
+)
+
 RING_OF_DUELING.forEach { duel ->
-    on_equipment_option(duel, option = "Duel Arena") {
-        player.queue {
-            teleport(Tile(x = 3308, z = 3234, height = 0)) //Coordinates of duel arena
-        }
-    }
-
-    on_equipment_option(duel, option = "Castle Wars") {
-        player.queue {
-            teleport(Tile(x = 2440, z = 3089, height = 0)) //Coordinates of castle wars
-        }
-    }
-
-    on_equipment_option(duel, option = "Clan Wars") {
-        player.queue {
-            teleport(Tile(x = 3370, z = 3161, height = 0)) //Coordinates of clan wars
+    LOCATIONS.forEach { location, endTile ->
+        on_equipment_option(duel, option = location) {
+            player.queue(TaskPriority.STRONG) {
+                player.teleport(endTile)
+            }
         }
     }
 }
 
-fun QueueTask.teleport(tile : Tile) {
-    if (player.canTeleport(TeleportType.MODERN)) {
-        world.spawn(AreaSound(tile, id = 200, radius = 10, volume = 1))
-        player.teleport(tile, TeleportType.MODERN)
-        val delete = player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1)
-        if (delete) {
-            player.equipment.remove(Items.RING_OF_DUELING1)
-            player.message("<col=7f007f>Your ring has no charges left.</col>")
-            return
-        }
-        player.equipment[EquipmentType.RING.id] = Item(set(player))
-        player.message(message(player))
+fun Player.teleport(endTile : Tile) {
+    if (canTeleport(TeleportType.MODERN) && hasEquipped(EquipmentType.RING, *RING_OF_DUELING)) {
+        world.spawn(AreaSound(tile, SOUNDAREA_ID, SOUNDAREA_RADIUS, SOUNDAREA_VOLUME))
+        equipment[EquipmentType.RING.id] = getRingReplacement()
+        teleport(endTile, TeleportType.MODERN)
+        message(getRingChargeMessage())
     }
 }
 
-fun set(player: Player): Int {
+fun Player.getRingReplacement(): Item ? {
     return when {
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING8) -> Items.RING_OF_DUELING7
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING7) -> Items.RING_OF_DUELING6
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING6) -> Items.RING_OF_DUELING5
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING5) -> Items.RING_OF_DUELING4
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING4) -> Items.RING_OF_DUELING3
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING3) -> Items.RING_OF_DUELING2
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING2) -> Items.RING_OF_DUELING1
-        else -> Items.RING_OF_DUELING1
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING8)  -> Item(Items.RING_OF_DUELING7)
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING7) -> Item(Items.RING_OF_DUELING6)
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING6) -> Item(Items.RING_OF_DUELING5)
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING5) -> Item(Items.RING_OF_DUELING4)
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING4) -> Item(Items.RING_OF_DUELING3)
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING3) -> Item(Items.RING_OF_DUELING2)
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING2) -> Item(Items.RING_OF_DUELING1)
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1) -> null
+        else -> null
     }
 }
 
-fun message(player: Player): String {
+fun Player.getRingChargeMessage(): String {
     return when {
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING8) -> "<col=7f007f>Your ring has seven charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING7) -> "<col=7f007f>Your ring has seven charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING6) -> "<col=7f007f>Your ring has fix charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING5) -> "<col=7f007f>Your ring has five charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING4) -> "<col=7f007f>Your ring has four charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING3) -> "<col=7f007f>Your ring has three charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING2) -> "<col=7f007f>Your ring has two charges left.</col>"
-        player.hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1) -> "<col=7f007f>Your ring has one charge left.</col>"
-        else -> "<col=7f007f>Your ring has no charges left.</col>"
-    }
-}
-
-fun Pawn.teleport(tile : Tile, teleportType: TeleportType) {
-    queue(TaskPriority.STRONG) {
-        resetInteractions()
-        clearHits()
-
-        lock = LockState.FULL_WITH_DAMAGE_IMMUNITY
-
-        animate(teleportType.animation)
-        teleportType.graphic?.let {
-            graphic(it)
-        }
-
-        wait(teleportType.teleportDelay)
-
-        moveTo(tile)
-
-        teleportType.endAnimation?.let {
-            animate(it)
-        }
-
-        teleportType.endGraphic?.let {
-            graphic(it)
-        }
-
-        teleportType.endAnimation?.let {
-            val def = world.definitions.get(AnimDef::class.java, it)
-            wait(def.cycleLength)
-        }
-
-        animate(-1)
-        unlock()
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING7) -> "<col=7f007f>Your ring of dueling has seven uses left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING6) -> "<col=7f007f>Your ring of dueling has six uses left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING5) -> "<col=7f007f>Your ring of dueling has five uses left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING4) -> "<col=7f007f>Your ring of dueling has four uses left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING3) -> "<col=7f007f>Your ring of dueling has three uses left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING2) -> "<col=7f007f>Your ring of dueling has two uses left.</col>"
+        hasEquipped(EquipmentType.RING, Items.RING_OF_DUELING1) -> "<col=7f007f>Your ring of dueling has one use left.</col>"
+        else -> "<col=7f007f>Your ring of dueling crumbles to dust.</col>"
     }
 }

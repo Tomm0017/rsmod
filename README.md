@@ -111,7 +111,9 @@ there should be a green ``run`` button, click on that and the server should begi
     - You need to launch the server first and *then* the client
 - *When following ``2) Open the project in IntelliJ`` my IntelliJ throws the error ``Build model 'org.jetbrains.plugins.gradle.model.ExternalProject' for root project 'gg.rsmod'``*
     - This appears to be an issue that can be solved by upgrading your IntelliJ    
-    
+- I receive a `java.lang.NoClassDefFoundError: Could not initialize class class_name_here` when trying to log into the client
+    - The RSA key you copied to the client should not include `\n` at the end - remove it.
+
 ## FAQ
 
 #### One or more of my plugins stopped working

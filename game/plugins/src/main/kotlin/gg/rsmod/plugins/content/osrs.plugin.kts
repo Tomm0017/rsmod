@@ -59,7 +59,7 @@ on_login {
     player.syncVarp(OSRSGameframe.PLAYER_ATTACK_PRIORITY_VARP)
 
     // Send player interaction options.
-    player.sendOption("Follow", 1)
+    player.sendOption("Follow", 3)
     player.sendOption("Trade with", 4)
     player.sendOption("Report", 5)
 

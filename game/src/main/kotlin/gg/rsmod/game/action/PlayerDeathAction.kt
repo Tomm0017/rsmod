@@ -43,6 +43,7 @@ object PlayerDeathAction {
         player.animate(deathAnim.id)
         wait(deathAnim.cycleLength + 1)
         player.getSkills().restoreAll()
+        player.timers[POISON_TIMER] = 0
         player.animate(-1)
         if (instancedMap == null) {
             // Note: maybe add a player attribute for death locations

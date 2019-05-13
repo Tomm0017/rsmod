@@ -5,8 +5,8 @@ modify the core game module. People without developing experience can have
 others make plugins for them and simply drop them into the Plugins module 
 and it'll automatically load on the next server startup! 
 
-## Usage
-You can learn how to create plugins here: [RS Mod Wiki](https://github.com/Tomm0017/rsmod/wiki/Creating-Plugins)
+## Getting Started
+You can learn how to get started here: [RS Mod Wiki](https://github.com/Tomm0017/rsmod/wiki/Creating-Plugins)
 
 ## Installation
 There's two ways to launch RS Mod. One is for users who want to look into the code and 

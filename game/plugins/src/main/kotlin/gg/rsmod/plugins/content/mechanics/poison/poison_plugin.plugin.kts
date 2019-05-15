@@ -5,6 +5,11 @@ import gg.rsmod.game.model.timer.POISON_TIMER
 
 val POISON_TICK_DELAY = 25
 
+on_player_death {
+    player.timers.remove(POISON_TIMER)
+    Poison.setHpOrb(player, Poison.OrbState.NONE)
+}
+
 on_timer(POISON_TIMER) {
     val pawn = pawn
     val ticksLeft = pawn.attr[POISON_TICKS_LEFT_ATTR] ?: 0

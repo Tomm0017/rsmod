@@ -1,10 +1,10 @@
 package gg.rsmod.plugins.content.mechanics.poison
 
 import gg.rsmod.game.model.attr.POISON_TICKS_LEFT_ATTR
-import gg.rsmod.game.model.timer.POISON_TIMER
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.timer.POISON_TIMER
 import gg.rsmod.plugins.api.EquipmentType
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.hasEquipped
@@ -27,8 +27,7 @@ object Poison {
 
     fun poison(pawn: Pawn, initialDamage: Int): Boolean {
         val ticks = (initialDamage * 5) - 4
-        val oldDamage = getDamageForTicks(pawn.attr[POISON_TICKS_LEFT_ATTR]
-                ?: 0)
+        val oldDamage = getDamageForTicks(pawn.attr[POISON_TICKS_LEFT_ATTR] ?: 0)
         val newDamage = getDamageForTicks(ticks)
         if (oldDamage > newDamage) {
             return false

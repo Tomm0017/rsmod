@@ -226,6 +226,7 @@ object EquipAction {
         }
 
         if (addition.getLeftOver() == 0) {
+            addition.items.firstOrNull()?.item?.copyAttr(item)
             p.equipment[equipmentSlot] = null
         } else {
             val leftover = Item(item, addition.getLeftOver())

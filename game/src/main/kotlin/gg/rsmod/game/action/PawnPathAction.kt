@@ -117,7 +117,7 @@ object PawnPathAction {
             }
 
             if (other is Player) {
-                val option = other.options[opt - 1]
+                val option = pawn.options[opt - 1]
                 if (option != null) {
                     val handled = world.plugins.executePlayerOption(pawn, option)
                     if (!handled) {

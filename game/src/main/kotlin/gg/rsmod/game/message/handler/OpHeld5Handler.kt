@@ -38,6 +38,9 @@ class OpHeld5Handler : MessageHandler<OpHeld5Message> {
             val remove = client.inventory.remove(item, assureFullRemoval = false, beginSlot = slot)
             if (remove.completed > 0) {
                 val floor = GroundItem(item.id, remove.completed, client.tile, client)
+                remove.firstOrNull()?.let { removed ->
+                    floor.copyAttr(removed.item.attr)
+                }
                 world.spawn(floor)
                 world.getService(LoggerService::class.java, searchSubclasses = true)?.logItemDrop(client, Item(item.id, remove.completed), slot)
             }

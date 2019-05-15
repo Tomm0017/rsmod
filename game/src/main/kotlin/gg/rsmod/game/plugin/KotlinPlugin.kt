@@ -261,6 +261,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     fun on_item_on_item(item1: Int, item2: Int, plugin: Plugin.() -> Unit) = r.bindItemOnItem(item1, item2, plugin)
 
     /**
+     * Invoke [plugin] when [item] in inventory is used on [groundItem] on ground.
+     */
+    fun on_item_on_ground_item(item: Int, groundItem: Int, plugin: Plugin.() -> Unit) = r.bindItemOnGroundItem(item, groundItem, plugin)
+
+    /**
      * Set the logic to execute when [gg.rsmod.game.message.impl.WindowStatusMessage]
      * is handled.
      */

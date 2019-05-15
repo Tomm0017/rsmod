@@ -245,6 +245,14 @@ class PluginRepository(val world: World) {
     private val itemOnItemPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
 
     /**
+     * A map that contains item on ground item plugins.
+     *
+     * Key: (invItem << 16) | groundItem
+     * Value: plugin
+     */
+    private val itemOnGroundItemPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
+
+    /**
      * A map that contains magic spell on item plugins.
      *
      * Key: (fromComponentHash << 32) | toComponentHash
@@ -1082,6 +1090,24 @@ class PluginRepository(val world: World) {
 
         val hash = (max shl 16) or min
         val plugin = itemOnItemPlugins[hash] ?: return false
+        p.executePlugin(plugin)
+        return true
+    }
+
+    fun bindItemOnGroundItem(invItem: Int, groundItem: Int, plugin: Plugin.() -> Unit) {
+        val hash = (invItem shl 16) or groundItem
+        if (itemOnGroundItemPlugins.containsKey(hash)) {
+            val error = IllegalStateException("Item on Item pair is already bound to a plugin: [inv_item=$invItem, ground_item=$groundItem]")
+            logger.error(error) {}
+            throw error
+        }
+        itemOnGroundItemPlugins[hash] = plugin
+        pluginCount++
+    }
+
+    fun executeItemOnGroundItem(p: Player, invItem: Int, groundItem: Int): Boolean {
+        val hash = (invItem shl 16) or groundItem
+        val plugin = itemOnGroundItemPlugins[hash] ?: return false
         p.executePlugin(plugin)
         return true
     }

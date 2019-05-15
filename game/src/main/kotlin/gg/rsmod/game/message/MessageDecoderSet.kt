@@ -76,6 +76,7 @@ class MessageDecoderSet {
         put(OpObj1Message::class.java, OpObj1Decoder(), OpObj1Handler(), structures)
         put(OpObj3Message::class.java, OpObj3Decoder(), OpObj3Handler(), structures)
         put(OpObj4Message::class.java, OpObj4Decoder(), OpObj4Handler(), structures)
+        put(OpObjUMessage::class.java, OpObjUDecoder(), OpObjUHandler(), structures)
 
         put(OpNpc1Message::class.java, OpNpc1Decoder(), OpNpc1Handler(), structures)
         put(OpNpc2Message::class.java, OpNpc2Decoder(), OpNpc2Handler(), structures)

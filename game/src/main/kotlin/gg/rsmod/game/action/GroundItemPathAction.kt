@@ -83,7 +83,11 @@ object GroundItemPathAction {
             p.world.getService(LoggerService::class.java, searchSubclasses = true)?.logItemPickUp(p, Item(item.item, add.completed))
         } else {
             p.attr[INTERACTING_GROUNDITEM_ATTR] = WeakReference(item)
-            p.world.plugins.executeGroundItem(p, item.item, opt)
+
+            val handled = p.world.plugins.executeGroundItem(p, item.item, opt)
+            if (!handled && p.world.devContext.debugItemActions) {
+                p.writeMessage("Unhandled ground item action: [item=${item.item}, option=$opt]")
+            }
         }
     }
 }

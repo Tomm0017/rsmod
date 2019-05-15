@@ -206,7 +206,7 @@ class DefinitionSet {
             return true
         }
 
-        val keys = xteaService?.getOrNull(id) ?: return false
+        val keys = xteaService?.get(id) ?: XteaKeyService.EMPTY_KEYS
         try {
             val landData = landArchive.decompress(world.filestore.storage.loadArchive(landArchive), keys)
             val locDef = LocationsLoader().load(x, z, landData)

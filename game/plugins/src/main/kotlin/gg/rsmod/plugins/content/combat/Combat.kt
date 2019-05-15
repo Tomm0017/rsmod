@@ -187,13 +187,37 @@ object Combat {
             if (!target.lock.canBeAttacked()) {
                 return false
             }
-        }
 
-        if (pvp) {
-            // TODO: must be within combat lvl range
-            // TODO: make sure they're in wildy or in dangerous minigame
+            if (pvp) {
+                pawn as Player
+
+                if (!inPvpArea(pawn)) {
+                    pawn.message("You can't attack players here.")
+                    return false
+                }
+
+                if (!inPvpArea(target)) {
+                    pawn.message("You can't attack ${target.username} there.")
+                    return false
+                }
+
+                val combatLvlRange = getValidCombatLvlRange(pawn)
+                if (target.combatLevel !in combatLvlRange) {
+                    pawn.message("You can't attack ${target.username} - your level different is too great.")
+                    return false
+                }
+            }
         }
         return true
+    }
+
+    private fun inPvpArea(player: Player): Boolean = player.inWilderness()
+
+    private fun getValidCombatLvlRange(player: Player): IntRange {
+        val wildLvl = player.tile.getWildernessLevel()
+        val minLvl = Math.max(Skills.MIN_COMBAT_LVL, player.combatLevel - wildLvl)
+        val maxLvl = Math.min(Skills.MAX_COMBAT_LVL, player.combatLevel + wildLvl)
+        return minLvl..maxLvl
     }
 
     private fun getStrategy(combatClass: CombatClass): CombatStrategy = when (combatClass) {

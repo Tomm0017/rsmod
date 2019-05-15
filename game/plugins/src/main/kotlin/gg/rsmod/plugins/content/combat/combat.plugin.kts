@@ -3,6 +3,7 @@ package gg.rsmod.plugins.content.combat
 import gg.rsmod.game.action.PawnPathAction
 import gg.rsmod.game.model.attr.COMBAT_TARGET_FOCUS_ATTR
 import gg.rsmod.game.model.attr.FACING_PAWN_ATTR
+import gg.rsmod.game.model.attr.INTERACTING_PLAYER_ATTR
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.model.timer.STUN_TIMER
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
@@ -20,6 +21,11 @@ set_combat_logic {
             wait(1)
         }
     }
+}
+
+on_player_option("Attack") {
+    val target = pawn.attr[INTERACTING_PLAYER_ATTR]?.get() ?: return@on_player_option
+    player.attack(target)
 }
 
 suspend fun cycle(it: QueueTask): Boolean {

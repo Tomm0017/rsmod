@@ -1,5 +1,6 @@
 package gg.rsmod.game.action
 
+import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.attr.GROUNDITEM_PICKUP_TRANSACTION
@@ -86,7 +87,8 @@ object GroundItemPathAction {
 
             val handled = p.world.plugins.executeGroundItem(p, item.item, opt)
             if (!handled && p.world.devContext.debugItemActions) {
-                p.writeMessage("Unhandled ground item action: [item=${item.item}, option=$opt]")
+                val definition = p.world.definitions.get(ItemDef::class.java, item.item)
+                p.writeMessage("Unhandled ground item action: [item=${item.item}, option=[$opt, ${definition.groundMenu[opt - 1]}]")
             }
         }
     }

@@ -84,6 +84,10 @@ object GroundItemPathAction {
                 return
             }
 
+            add.items.firstOrNull()?.let { item ->
+                item.item.attr.putAll(groundItem.attr)
+            }
+
             p.world.remove(groundItem)
 
             p.attr[GROUNDITEM_PICKUP_TRANSACTION] = WeakReference(add)

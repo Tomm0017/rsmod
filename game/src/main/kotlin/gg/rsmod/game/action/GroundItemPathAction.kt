@@ -97,8 +97,6 @@ object GroundItemPathAction {
                 p.writeMessage("Unhandled item on ground item action: [item=${item.id}, ground=${groundItem.item}]")
             }
         } else {
-            p.attr[INTERACTING_GROUNDITEM_ATTR] = WeakReference(groundItem)
-
             val handled = p.world.plugins.executeGroundItem(p, groundItem.item, opt)
             if (!handled && p.world.devContext.debugItemActions) {
                 val definition = p.world.definitions.get(ItemDef::class.java, groundItem.item)

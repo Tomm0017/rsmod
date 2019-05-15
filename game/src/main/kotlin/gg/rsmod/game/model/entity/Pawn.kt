@@ -83,6 +83,12 @@ abstract class Pawn(val world: World) : Entity() {
     internal var lastFacingDirection: Direction = Direction.SOUTH
 
     /**
+     * A public getter property for [lastFacingDirection].
+     */
+    val faceDirection: Direction
+        get() = lastFacingDirection
+
+    /**
      * The current [LockState] which filters what actions this pawn can perform.
      */
     var lock = LockState.NONE

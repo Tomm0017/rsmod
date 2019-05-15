@@ -54,6 +54,8 @@ object PlayerDeathAction {
         player.writeMessage("Oh dear, you are dead!")
         player.unlock()
 
+        player.attr.removeIf { it.resetOnDeath }
+
         world.plugins.executePlayerDeath(player)
     }
 }

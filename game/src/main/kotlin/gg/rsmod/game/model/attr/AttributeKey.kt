@@ -20,17 +20,23 @@ import com.google.common.base.MoreObjects
  * multiply or divide it accordingly to represent a [Double] or [Float], if
  * needed.
  *
+ * @param resetOnDeath if true, the timer will be removed on pawn death.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
-class AttributeKey<T>(val persistenceKey: String? = null) {
+class AttributeKey<T>(val persistenceKey: String? = null, val resetOnDeath: Boolean = false) {
 
-    override fun toString(): String = MoreObjects.toStringHelper(this).add("persistenceKey", persistenceKey).toString()
+    override fun toString(): String = MoreObjects.toStringHelper(this).add("persistenceKey", persistenceKey).add("resetOnDeath", resetOnDeath).toString()
 
     override fun equals(other: Any?): Boolean {
         if (other !is AttributeKey<*>) {
             return false
         }
-        return if (persistenceKey != null) other.persistenceKey == persistenceKey else super.equals(other)
+        return if (persistenceKey != null) {
+            other.persistenceKey == persistenceKey && other.resetOnDeath == resetOnDeath
+        } else {
+            super.equals(other)
+        }
     }
 
     override fun hashCode(): Int = persistenceKey?.hashCode() ?: super.hashCode()

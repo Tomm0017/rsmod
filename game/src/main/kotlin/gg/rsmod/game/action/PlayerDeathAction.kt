@@ -55,6 +55,7 @@ object PlayerDeathAction {
         player.unlock()
 
         player.attr.removeIf { it.resetOnDeath }
+        player.timers.removeIf { it.resetOnDeath }
 
         world.plugins.executePlayerDeath(player)
     }

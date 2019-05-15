@@ -31,6 +31,17 @@ class TimerMap {
         timers.clear()
     }
 
+    fun removeIf(predicate: (TimerKey) -> Boolean) {
+        val iterator = timers.iterator()
+        while (iterator.hasNext()) {
+            val attr = iterator.next()
+            if (predicate(attr.key)) {
+                iterator.remove()
+            }
+        }
+    }
+
+
     fun toPersistentTimers(): List<PersistentTimer> = timers.filter { it.key.persistenceKey != null }.map { PersistentTimer(it.key.persistenceKey, it.key.tickOffline, it.value, System.currentTimeMillis()) }
 
     fun getTimers(): MutableMap<TimerKey, Int> = timers

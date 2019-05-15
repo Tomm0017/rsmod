@@ -7,6 +7,7 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.plugins.api.ext.getWildernessLevel
+import gg.rsmod.plugins.api.ext.message
 
 fun Player.canTeleport(type: TeleportType): Boolean {
     val currWildLvl = tile.getWildernessLevel()

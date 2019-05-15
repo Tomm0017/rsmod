@@ -51,7 +51,7 @@ object PlayerDeathAction {
             player.moveTo(instancedMap.exitTile)
             world.instanceAllocator.death(player)
         }
-        player.message("Oh dear, you are dead!")
+        player.writeMessage("Oh dear, you are dead!")
         player.unlock()
 
         world.plugins.executePlayerDeath(player)

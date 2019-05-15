@@ -368,7 +368,7 @@ abstract class Pawn(val world: World) : Entity() {
 
         if (timers.has(FROZEN_TIMER)) {
             if (this is Player) {
-                message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+                writeMessage(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
             }
             return
         }
@@ -421,7 +421,7 @@ abstract class Pawn(val world: World) : Entity() {
 
         if (timers.has(FROZEN_TIMER)) {
             if (this is Player) {
-                message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+                writeMessage(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
             }
             return
         }

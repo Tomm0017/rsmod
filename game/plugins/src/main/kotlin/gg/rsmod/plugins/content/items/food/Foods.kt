@@ -11,6 +11,7 @@ import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.hasEquipped
 import gg.rsmod.plugins.api.ext.heal
+import gg.rsmod.plugins.api.ext.message
 import gg.rsmod.plugins.api.ext.playSound
 
 /**

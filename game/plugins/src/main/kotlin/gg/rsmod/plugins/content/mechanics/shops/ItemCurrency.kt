@@ -9,6 +9,7 @@ import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.shop.ShopCurrency
 import gg.rsmod.game.model.shop.ShopItem
 import gg.rsmod.plugins.api.cfg.Items
+import gg.rsmod.plugins.api.ext.message
 
 /**
  * @author Tom <rspsmods@gmail.com>

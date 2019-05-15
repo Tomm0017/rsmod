@@ -45,7 +45,7 @@ object GroundItemPathAction {
         val p = ctx as Player
         val destination = p.movementQueue.peekLast()
         if (destination == null) {
-            p.message(Entity.YOU_CANT_REACH_THAT)
+            p.writeMessage(Entity.YOU_CANT_REACH_THAT)
             return
         }
         while (true) {
@@ -57,7 +57,7 @@ object GroundItemPathAction {
             if (p.tile.sameAs(item.tile)) {
                 handleAction(p, item, opt)
             } else {
-                p.message(Entity.YOU_CANT_REACH_THAT)
+                p.writeMessage(Entity.YOU_CANT_REACH_THAT)
             }
             break
         }
@@ -72,7 +72,7 @@ object GroundItemPathAction {
             // allow the world to remove some of the ground item instead of all of it.
             val add = p.inventory.add(item = item.item, amount = item.amount, assureFullInsertion = true)
             if (add.completed == 0) {
-                p.message("You don't have enough inventory space to hold that item.")
+                p.writeMessage("You don't have enough inventory space to hold that item.")
                 return
             }
 

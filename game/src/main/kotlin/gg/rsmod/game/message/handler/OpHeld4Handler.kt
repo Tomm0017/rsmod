@@ -42,7 +42,7 @@ class OpHeld4Handler : MessageHandler<OpHeld4Message> {
         client.attr[INTERACTING_ITEM_SLOT] = message.slot
 
         if (!world.plugins.executeItem(client, item.id, 4) && world.devContext.debugItemActions) {
-            client.message("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=4]")
+            client.writeMessage("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=4]")
         }
     }
 }

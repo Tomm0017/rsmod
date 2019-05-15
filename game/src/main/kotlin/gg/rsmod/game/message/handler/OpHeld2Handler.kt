@@ -44,7 +44,7 @@ class OpHeld2Handler : MessageHandler<OpHeld2Message> {
 
         val result = EquipAction.equip(client, item, message.slot)
         if (result == EquipAction.Result.UNHANDLED && world.devContext.debugItemActions) {
-            client.message("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=2]")
+            client.writeMessage("Unhandled item action: [item=${item.id}, slot=${message.slot}, option=2]")
         }
     }
 }

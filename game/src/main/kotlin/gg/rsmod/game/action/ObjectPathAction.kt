@@ -47,9 +47,9 @@ object ObjectPathAction {
             } else {
                 player.faceTile(obj.tile)
                 when {
-                    player.timers.has(FROZEN_TIMER) -> player.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
-                    player.timers.has(STUN_TIMER) -> player.message(Entity.YOURE_STUNNED)
-                    else -> player.message(Entity.YOU_CANT_REACH_THAT)
+                    player.timers.has(FROZEN_TIMER) -> player.writeMessage(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+                    player.timers.has(STUN_TIMER) -> player.writeMessage(Entity.YOURE_STUNNED)
+                    else -> player.writeMessage(Entity.YOU_CANT_REACH_THAT)
                 }
                 player.write(SetMapFlagMessage(255, 255))
             }
@@ -65,9 +65,9 @@ object ObjectPathAction {
 
         walk(player, obj, lineOfSightRange) {
             if (!player.world.plugins.executeItemOnObject(player, obj.getTransform(player), item.id)) {
-                player.message(Entity.NOTHING_INTERESTING_HAPPENS)
+                player.writeMessage(Entity.NOTHING_INTERESTING_HAPPENS)
                 if (player.world.devContext.debugObjects) {
-                    player.message("Unhandled item on object: [item=$item, id=${obj.id}, type=${obj.type}, rot=${obj.rot}, x=${obj.tile.x}, z=${obj.tile.z}]")
+                    player.writeMessage("Unhandled item on object: [item=$item, id=${obj.id}, type=${obj.type}, rot=${obj.rot}, x=${obj.tile.x}, z=${obj.tile.z}]")
                 }
             }
         }
@@ -82,9 +82,9 @@ object ObjectPathAction {
 
         walk(player, obj, lineOfSightRange) {
             if (!player.world.plugins.executeObject(player, obj.getTransform(player), opt!!)) {
-                player.message(Entity.NOTHING_INTERESTING_HAPPENS)
+                player.writeMessage(Entity.NOTHING_INTERESTING_HAPPENS)
                 if (player.world.devContext.debugObjects) {
-                    player.message("Unhandled object action: [opt=$opt, id=${obj.id}, type=${obj.type}, rot=${obj.rot}, x=${obj.tile.x}, z=${obj.tile.z}]")
+                    player.writeMessage("Unhandled object action: [opt=$opt, id=${obj.id}, type=${obj.type}, rot=${obj.rot}, x=${obj.tile.x}, z=${obj.tile.z}]")
                 }
             }
         }

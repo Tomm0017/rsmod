@@ -23,7 +23,7 @@ class ClientCheatHandler : MessageHandler<ClientCheatMessage> {
         if (handled) {
             world.getService(LoggerService::class.java, searchSubclasses = true)?.logCommand(client, command, *args ?: emptyArray())
         } else {
-            client.message("No valid command found: $command")
+            client.writeMessage("No valid command found: $command")
         }
     }
 }

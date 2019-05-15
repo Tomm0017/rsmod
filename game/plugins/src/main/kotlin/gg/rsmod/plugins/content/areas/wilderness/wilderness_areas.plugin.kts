@@ -35,8 +35,10 @@ fun set_in_wild(player: Player, inWilderness: Boolean) {
     player.attr[WAS_IN_WILD] = inWilderness
     if (inWilderness) {
         player.openInterface(dest = InterfaceDestination.PVP_OVERLAY, interfaceId = INTERFACE_ID)
+        player.sendOption("Attack", 2)
     } else {
         player.closeInterface(dest = InterfaceDestination.PVP_OVERLAY)
+        player.removeOption(2)
     }
     player.setComponentHidden(interfaceId = INTERFACE_ID, component = SKULL_CROSSOUT_COMPONENT, hidden = inWilderness)
 }

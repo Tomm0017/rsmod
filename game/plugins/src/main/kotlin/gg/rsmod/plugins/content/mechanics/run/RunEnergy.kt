@@ -6,10 +6,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.plugins.api.EquipmentType
 import gg.rsmod.plugins.api.Skills
-import gg.rsmod.plugins.api.ext.hasStorageBit
-import gg.rsmod.plugins.api.ext.sendRunEnergy
-import gg.rsmod.plugins.api.ext.setVarp
-import gg.rsmod.plugins.api.ext.toggleVarp
+import gg.rsmod.plugins.api.ext.*
 
 /**
  * @author Tom <rspsmods@gmail.com>

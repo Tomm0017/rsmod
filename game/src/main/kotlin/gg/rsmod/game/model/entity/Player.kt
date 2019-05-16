@@ -521,7 +521,7 @@ open class Player(world: World) : Pawn(world) {
     /**
      * Write a [MessageGameMessage] to the client.
      */
-    fun message(message: String) {
+    internal fun writeMessage(message: String) {
         write(MessageGameMessage(type = 0, message = message, username = null))
     }
 

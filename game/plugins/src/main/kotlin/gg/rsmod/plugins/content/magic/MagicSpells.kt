@@ -11,6 +11,7 @@ import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.getSpellbook
 import gg.rsmod.plugins.api.ext.getVarbit
+import gg.rsmod.plugins.api.ext.message
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 
 /**

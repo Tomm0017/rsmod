@@ -59,9 +59,9 @@ object PawnPathAction {
             pawn.movementQueue.clear()
             if (pawn is Player) {
                 when {
-                    pawn.timers.has(FROZEN_TIMER) -> pawn.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
-                    pawn.timers.has(STUN_TIMER) -> pawn.message(Entity.YOURE_STUNNED)
-                    else -> pawn.message(Entity.YOU_CANT_REACH_THAT)
+                    pawn.timers.has(FROZEN_TIMER) -> pawn.writeMessage(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+                    pawn.timers.has(STUN_TIMER) -> pawn.writeMessage(Entity.YOURE_STUNNED)
+                    else -> pawn.writeMessage(Entity.YOU_CANT_REACH_THAT)
                 }
                 pawn.write(SetMapFlagMessage(255, 255))
             }
@@ -112,16 +112,16 @@ object PawnPathAction {
                 val npcId = other.getTransform(pawn)
                 val handled = world.plugins.executeNpc(pawn, npcId, opt)
                 if (!handled) {
-                    pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
+                    pawn.writeMessage(Entity.NOTHING_INTERESTING_HAPPENS)
                 }
             }
 
             if (other is Player) {
-                val option = other.options[opt - 1]
+                val option = pawn.options[opt - 1]
                 if (option != null) {
                     val handled = world.plugins.executePlayerOption(pawn, option)
                     if (!handled) {
-                        pawn.message(Entity.NOTHING_INTERESTING_HAPPENS)
+                        pawn.writeMessage(Entity.NOTHING_INTERESTING_HAPPENS)
                     }
                 }
             }

@@ -83,6 +83,12 @@ abstract class Pawn(val world: World) : Entity() {
     internal var lastFacingDirection: Direction = Direction.SOUTH
 
     /**
+     * A public getter property for [lastFacingDirection].
+     */
+    val faceDirection: Direction
+        get() = lastFacingDirection
+
+    /**
      * The current [LockState] which filters what actions this pawn can perform.
      */
     var lock = LockState.NONE
@@ -362,7 +368,7 @@ abstract class Pawn(val world: World) : Entity() {
 
         if (timers.has(FROZEN_TIMER)) {
             if (this is Player) {
-                message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+                writeMessage(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
             }
             return
         }
@@ -415,7 +421,7 @@ abstract class Pawn(val world: World) : Entity() {
 
         if (timers.has(FROZEN_TIMER)) {
             if (this is Player) {
-                message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+                writeMessage(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
             }
             return
         }
@@ -528,7 +534,9 @@ abstract class Pawn(val world: World) : Entity() {
 
             blockBuffer.faceDegrees = (Math.atan2(degreesX, degreesZ) * 325.949).toInt() and 0x7ff
         } else if (entityType.isNpc()) {
-            blockBuffer.faceDegrees = (face.x shl 16) or face.z
+            val faceX = (face.x shl 1) + 1
+            val faceZ = (face.z shl 1) + 1
+            blockBuffer.faceDegrees = (faceX shl 16) or faceZ
         }
 
         blockBuffer.facePawnIndex = -1

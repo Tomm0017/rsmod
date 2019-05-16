@@ -717,6 +717,41 @@ in-packets:
         type: BYTE
         trans: SUBTRACT
 
+  - message: gg.rsmod.game.message.impl.OpObjUMessage
+    type: FIXED
+    opcode: 18
+    length: 15
+    structure:
+      - name: component_hash
+        order: MIDDLE
+        type: INT
+      - name: item
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: movement_type
+        type: BYTE
+        trans: ADD
+      - name: slot
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+      - name: ground_item
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: x
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+        trans: ADD
+      - name: z
+        sign: UNSIGNED
+        order: LITTLE
+        type: SHORT
+
   - message: gg.rsmod.game.message.impl.ResumePObjDialogMessage
     type: FIXED
     opcode: 42
@@ -1230,12 +1265,6 @@ in-packets:
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: BUG_REPORT
     type: VARIABLE_SHORT
     opcode: 16
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPOBJU
-    type: FIXED
-    opcode: 18
-    length: 15
-    ignore: true
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPNPCU
     type: FIXED

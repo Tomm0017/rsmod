@@ -12,13 +12,7 @@ import gg.rsmod.game.message.impl.LogoutFullMessage
 import gg.rsmod.game.message.impl.UpdateRebootTimerMessage
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.combat.NpcCombatDef
-import gg.rsmod.game.model.entity.AreaSound
-import gg.rsmod.game.model.entity.GameObject
-import gg.rsmod.game.model.entity.GroundItem
-import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.model.entity.Pawn
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.entity.Projectile
+import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.instance.InstancedMapAllocator
 import gg.rsmod.game.model.priv.PrivilegeSet
 import gg.rsmod.game.model.queue.QueueTask
@@ -357,6 +351,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
 
     fun unregister(p: Player) {
         players.remove(p)
+        chunks.get(p.tile)?.removeEntity(this, p, p.tile)
     }
 
     fun spawn(npc: Npc): Boolean {
@@ -370,6 +365,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
 
     fun remove(npc: Npc) {
         npcs.remove(npc)
+        chunks.get(npc.tile)?.removeEntity(this, npc, npc.tile)
     }
 
     fun spawn(obj: GameObject) {
@@ -539,7 +535,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
 
         if (examine != null) {
             val extension = if (devContext.debugExamines) " ($id)" else ""
-            p.message(examine + extension)
+            p.writeMessage(examine + extension)
         } else {
             logger.warn { "No examine info found for entity [$type, $id]" }
         }

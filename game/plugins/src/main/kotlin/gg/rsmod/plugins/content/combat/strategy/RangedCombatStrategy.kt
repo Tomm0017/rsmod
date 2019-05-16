@@ -15,6 +15,7 @@ import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.getEquipment
 import gg.rsmod.plugins.api.ext.hasEquipped
 import gg.rsmod.plugins.api.ext.hasWeaponType
+import gg.rsmod.plugins.api.ext.message
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
 import gg.rsmod.plugins.content.combat.createProjectile

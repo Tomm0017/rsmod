@@ -387,6 +387,8 @@ fun Player.hasSpellbook(book: Spellbook): Boolean = getVarbit(4070) == book.id
 
 fun Player.getSpellbook(): Spellbook = Spellbook.values.first { getVarbit(4070) == it.id }
 
+fun Player.setSpellbook(book: Spellbook) = setVarbit(4070, book.id)
+
 fun Player.getWeaponType(): Int = getVarbit(357)
 
 fun Player.getAttackStyle(): Int = getVarp(43)

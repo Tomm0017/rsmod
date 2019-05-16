@@ -173,7 +173,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     fun on_item_option(item: Int, option: String, logic: (Plugin).() -> Unit) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(ItemDef::class.java, item)
-        val slot = def.inventoryMenu.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
+        val slot = def.inventoryMenu.indexOfFirst { it?.toLowerCase() == opt }
 
         check(slot != -1) { "Option \"$option\" not found for item $item [options=${def.inventoryMenu.filterNotNull().filter { it.isNotBlank() }}]" }
 
@@ -187,7 +187,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     fun on_equipment_option(item: Int, option: String, logic: (Plugin).() -> Unit) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(ItemDef::class.java, item)
-        val slot = def.equipmentMenu.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
+        val slot = def.equipmentMenu.indexOfFirst { it?.toLowerCase() == opt }
 
         check(slot != -1) { "Option \"$option\" not found for item equipment $item [options=${def.equipmentMenu.filterNotNull().filter { it.isNotBlank() }}]" }
 
@@ -203,7 +203,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     fun on_obj_option(obj: Int, option: String, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(ObjectDef::class.java, obj)
-        val slot = def.options.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
+        val slot = def.options.indexOfFirst { it?.toLowerCase() == opt }
 
         check(slot != -1) { "Option \"$option\" not found for object $obj [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
 
@@ -223,7 +223,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     fun on_npc_option(npc: Int, option: String, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(NpcDef::class.java, npc)
-        val slot = def.options.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
+        val slot = def.options.indexOfFirst { it?.toLowerCase() == opt }
 
         check(slot != -1) { "Option \"$option\" not found for npc $npc [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
 
@@ -238,7 +238,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     fun on_ground_item_option(item: Int, option: String, logic: (Plugin).() -> Unit) {
         val opt = option.toLowerCase()
         val def = world.definitions.get(ItemDef::class.java, item)
-        val slot = def.groundMenu.filterNotNull().indexOfFirst { it.toLowerCase() == opt }
+        val slot = def.groundMenu.indexOfFirst { it?.toLowerCase() == opt }
 
         check(slot != -1) { "Option \"$option\" not found for ground item $item [options=${def.groundMenu.filterNotNull().filter { it.isNotBlank() }}]" }
 
@@ -259,6 +259,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      * Invoke [plugin] when [item1] is used on [item2] or vise-versa.
      */
     fun on_item_on_item(item1: Int, item2: Int, plugin: Plugin.() -> Unit) = r.bindItemOnItem(item1, item2, plugin)
+
+    /**
+     * Invoke [plugin] when [item] in inventory is used on [groundItem] on ground.
+     */
+    fun on_item_on_ground_item(item: Int, groundItem: Int, plugin: Plugin.() -> Unit) = r.bindItemOnGroundItem(item, groundItem, plugin)
 
     /**
      * Set the logic to execute when [gg.rsmod.game.message.impl.WindowStatusMessage]

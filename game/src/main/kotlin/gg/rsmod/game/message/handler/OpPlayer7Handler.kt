@@ -27,7 +27,7 @@ class OpPlayer7Handler : MessageHandler<OpPlayer7Message> {
 
         val other = world.players[index] ?: return
 
-        if (other.options[optionIndex] == null || other == client) {
+        if (client.options[optionIndex] == null || other == client) {
             return
         }
 

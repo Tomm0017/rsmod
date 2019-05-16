@@ -471,9 +471,19 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
      * Shifts the items in the [ItemContainer] to the appropriate position
      */
     fun shift() {
-        val tempItems = items.copyOf()
+        val newItems = Array<Item?>(capacity) { null }
+
+        var index = 0
+        for (i in 0 until capacity) {
+            val item = this[i] ?: continue
+            newItems[index++] = item
+        }
+
         removeAll()
-        tempItems.forEach { it?.let { item -> add(item) } }
+
+        for (i in 0 until capacity) {
+            set(i, newItems[i])
+        }
     }
 
     operator fun get(index: Int): Item? = items[index]

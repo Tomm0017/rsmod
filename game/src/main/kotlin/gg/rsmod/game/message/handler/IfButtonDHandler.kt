@@ -36,7 +36,7 @@ class IfButtonDHandler : MessageHandler<IfButtonDMessage> {
                 client, fromInterfaceId, fromComponent, toInterfaceId, toComponent)
 
         if (!swapped && world.devContext.debugButtons) {
-            client.message("Unhandled component to component swap: [from_item=$fromItemId, to_item=$toItemId, from_slot=$fromSlot, to_slot=$toSlot, " +
+            client.writeMessage("Unhandled component to component swap: [from_item=$fromItemId, to_item=$toItemId, from_slot=$fromSlot, to_slot=$toSlot, " +
                     "from_component=[$fromInterfaceId:$fromComponent], to_component=[$toInterfaceId:$toComponent]]")
         }
     }

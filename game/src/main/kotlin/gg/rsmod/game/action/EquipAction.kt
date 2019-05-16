@@ -88,8 +88,8 @@ object EquipAction {
                 if (p.getSkills().getMaxLevel(skill) < level) {
                     val skillName = SKILL_NAMES[skill]
                     val prefix = if ("aeiou".indexOf(Character.toLowerCase(skillName[0])) != -1) "an" else "a"
-                    p.message("You are not high enough level to use this item.")
-                    p.message("You need to have $prefix $skillName level of $level.")
+                    p.writeMessage("You are not high enough level to use this item.")
+                    p.writeMessage("You need to have $prefix $skillName level of $level.")
                     return Result.FAILED_REQUIREMENTS
                 }
             }
@@ -108,7 +108,7 @@ object EquipAction {
         if (stackable && replace?.id == item.id) {
             val add = Math.min(item.amount, Int.MAX_VALUE - replace.amount)
             if (add <= 0) {
-                p.message("You don't have enough free equipment space to do that.")
+                p.writeMessage("You don't have enough free equipment space to do that.")
                 return Result.NO_FREE_SPACE
             }
             if (inventorySlot != -1) {
@@ -156,7 +156,7 @@ object EquipAction {
 
             val spaceRequired = unequip.filter { slot -> p.equipment[slot] != null }.size - 1
             if (p.inventory.freeSlotCount < spaceRequired) {
-                p.message("You don't have enough free inventory space to do that.")
+                p.writeMessage("You don't have enough free inventory space to do that.")
                 return Result.NO_FREE_SPACE
             }
 
@@ -178,7 +178,7 @@ object EquipAction {
                         if (inventorySlot != -1) {
                             p.inventory.add(item.id, newEquippedItem.amount, beginSlot = inventorySlot)
                         }
-                        p.message("You don't have enough free inventory space to do that.")
+                        p.writeMessage("You don't have enough free inventory space to do that.")
                         return Result.NO_FREE_SPACE
                     }
                     if (maxAmount != Int.MAX_VALUE) {
@@ -221,11 +221,12 @@ object EquipAction {
         val addition = p.inventory.add(item.id, item.amount, assureFullInsertion = false)
 
         if (addition.completed == 0) {
-            p.message("You don't have enough free space to do that.")
+            p.writeMessage("You don't have enough free space to do that.")
             return Result.NO_FREE_SPACE
         }
 
         if (addition.getLeftOver() == 0) {
+            addition.items.firstOrNull()?.item?.copyAttr(item)
             p.equipment[equipmentSlot] = null
         } else {
             val leftover = Item(item, addition.getLeftOver())

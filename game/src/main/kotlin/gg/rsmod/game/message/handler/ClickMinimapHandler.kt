@@ -22,7 +22,7 @@ class ClickMinimapHandler : MessageHandler<MoveMinimapClickMessage> {
 
         if (client.timers.has(STUN_TIMER)) {
             client.write(SetMapFlagMessage(255, 255))
-            client.message(Entity.YOURE_STUNNED)
+            client.writeMessage(Entity.YOURE_STUNNED)
             return
         }
 

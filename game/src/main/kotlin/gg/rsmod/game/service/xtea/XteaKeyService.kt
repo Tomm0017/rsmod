@@ -49,7 +49,7 @@ class XteaKeyService : Service {
 
     fun get(region: Int): IntArray {
         if (keys[region] == null) {
-            logger.warn("No XTEA keys found for region {}.", region)
+            logger.trace { "No XTEA keys found for region $region." }
             keys[region] = EMPTY_KEYS
         }
         return keys[region]!!

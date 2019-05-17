@@ -29,6 +29,11 @@ LOCATIONS.forEach { item, endTile ->
 suspend fun Player.teleport(it : QueueTask, endArea : Area, tab : Int) {
     if (canTeleport(TeleportType.MODERN) && inventory.contains(tab)) {
         inventory.remove(item = tab)
+
+        resetInteractions()
+        clearHits()
+
+        lock = LockState.FULL_WITH_DAMAGE_IMMUNITY
         animate(id = 4069)
         playSound(id = 965)
         it.wait(cycles = 3)
@@ -36,6 +41,8 @@ suspend fun Player.teleport(it : QueueTask, endArea : Area, tab : Int) {
         animate(id = 4071)
         it.wait(cycles = 2)
         animate(id = -1)
+
+        unlock()
         moveTo(tile = endArea.randomTile)
     }
 }

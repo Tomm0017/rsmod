@@ -17,7 +17,7 @@ private val LOCATIONS = mapOf(
         Items.RELLEKKA_TELEPORT to Area(2668, 3631, 2671, 3632),
         Items.BRIMHAVEN_TELEPORT to Area(2757, 3176, 2758, 3179),
         Items.YANILLE_TELEPORT to Area(2542, 3095, 2545, 3096),
-        Items.TROLLHEIM_TELEPORT to Area(2888, 3678, 3893, 3681)
+        Items.TROLLHEIM_TELEPORT to Area(2888, 3678, 2893, 3681)
 )
 
 LOCATIONS.forEach { item, endTile ->

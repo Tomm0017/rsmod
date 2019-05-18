@@ -26,6 +26,11 @@ fun Player.canTeleport(type: TeleportType): Boolean {
     return true
 }
 
+fun Pawn.resetCombatActions() {
+    resetInteractions()
+    clearHits()
+}
+
 fun Pawn.teleport(endTile: Tile, type: TeleportType) {
     queue(TaskPriority.STRONG) {
         resetInteractions()

@@ -8,6 +8,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.plugins.api.ext.getWildernessLevel
 import gg.rsmod.plugins.api.ext.message
+import gg.rsmod.plugins.api.ext.player
 
 fun Player.canTeleport(type: TeleportType): Boolean {
     val currWildLvl = tile.getWildernessLevel()
@@ -26,10 +27,14 @@ fun Player.canTeleport(type: TeleportType): Boolean {
     return true
 }
 
+fun Player.resetCombatActions() {
+    resetInteractions()
+    clearHits()
+}
+
 fun Pawn.teleport(endTile: Tile, type: TeleportType) {
     queue(TaskPriority.STRONG) {
-        resetInteractions()
-        clearHits()
+        player.resetCombatActions()
 
         lock = LockState.FULL_WITH_DAMAGE_IMMUNITY
 

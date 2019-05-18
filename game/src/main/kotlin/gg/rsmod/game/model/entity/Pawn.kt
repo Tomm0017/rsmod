@@ -498,8 +498,9 @@ abstract class Pawn(val world: World) : Entity() {
         moveTo(tile.x, tile.z, tile.height)
     }
 
-    fun animate(id: Int) {
+    fun animate(id: Int, delay: Int = 0) {
         blockBuffer.animation = id
+        blockBuffer.animationDelay = delay
         addBlock(UpdateBlockType.ANIMATION)
     }
 

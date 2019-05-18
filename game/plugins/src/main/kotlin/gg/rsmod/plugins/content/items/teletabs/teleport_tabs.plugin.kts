@@ -23,8 +23,7 @@ private val LOCATIONS = mapOf(
 
 LOCATIONS.forEach { item, endTile ->
     on_item_option(item = item, option = "break") {
-        player.queue(TaskPriority.STRONG) {
-            player.teleport(this, endTile, item)
+        player.queue(TaskPriority.STRONG) { player.teleport(this, endTile, item)
         }
     }
 }

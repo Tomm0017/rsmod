@@ -33,8 +33,7 @@ fun Pawn.resetCombatActions() {
 
 fun Pawn.teleport(endTile: Tile, type: TeleportType) {
     queue(TaskPriority.STRONG) {
-        resetInteractions()
-        clearHits()
+        resetCombatActions()
 
         lock = LockState.FULL_WITH_DAMAGE_IMMUNITY
 

@@ -2,7 +2,6 @@ package gg.rsmod.plugins.content.items.teletabs
 
 import gg.rsmod.plugins.content.magic.TeleportType
 import gg.rsmod.plugins.content.magic.canTeleport
-import gg.rsmod.plugins.content.magic.resetCombatActions
 
 private val LOCATIONS = mapOf(
         Items.VARROCK_TELEPORT to Area(3210, 3423, 3216, 3425),
@@ -23,23 +22,26 @@ private val LOCATIONS = mapOf(
 
 LOCATIONS.forEach { item, endTile ->
     on_item_option(item = item, option = "break") {
-        player.queue(TaskPriority.STRONG) { player.teleport(this, endTile, item)
-        }
+        player.queue(TaskPriority.STRONG) { player.teleport(this, endTile, item) }
     }
 }
 
 suspend fun Player.teleport(it : QueueTask, endArea : Area, tab : Int) {
     if (canTeleport(TeleportType.MODERN) && inventory.contains(tab)) {
         inventory.remove(item = tab)
-        resetCombatActions()
+
+        resetInteractions()
+        clearHits()
+
         lock = LockState.FULL_WITH_DAMAGE_IMMUNITY
-        animate(id = 4069, delay = 16)
-        playSound(id = 965, volume = 1, delay = 15)
+        animate(id = 4069)
+        playSound(id = 965)
         it.wait(cycles = 3)
         graphic(id = 678)
         animate(id = 4071)
         it.wait(cycles = 2)
         animate(id = -1)
+
         unlock()
         moveTo(tile = endArea.randomTile)
     }

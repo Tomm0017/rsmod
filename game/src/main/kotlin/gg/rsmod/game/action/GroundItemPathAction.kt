@@ -76,6 +76,9 @@ object GroundItemPathAction {
             return
         }
         if (opt == 3) {
+            if (!p.world.plugins.canPickupGroundItem(p, groundItem.item)) {
+                return
+            }
             // NOTE(Tom): we may want to make the assureFullInsertion flag false and
             // allow the world to remove some of the ground item instead of all of it.
             val add = p.inventory.add(item = groundItem.item, amount = groundItem.amount, assureFullInsertion = true)

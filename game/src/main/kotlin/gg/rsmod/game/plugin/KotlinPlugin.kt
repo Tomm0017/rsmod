@@ -489,6 +489,13 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     fun on_ground_item_option(item: Int, option: Int, logic: (Plugin).() -> Unit) = r.bindGroundItem(item, option, logic)
 
     /**
+     * Set the condition of whether [item] can be picked up as a ground item.
+     *
+     * @return false if the item can not be picked up.
+     */
+    fun set_ground_item_condition(item: Int, plugin: Plugin.() -> Boolean) = r.setGroundItemPickupCondition(item, plugin)
+
+    /**
      * Invoke [plugin] when a spell is used on an item.
      */
     fun on_spell_on_item(fromInterface: Int, fromComponent: Int, toInterface: Int, toComponent: Int, plugin: Plugin.() -> Unit) = r.bindSpellOnItem((fromInterface shl 16) or fromComponent, (toInterface shl 16) or toComponent, plugin)

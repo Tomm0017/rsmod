@@ -219,6 +219,12 @@ class PluginRepository(val world: World) {
     private val groundItemPlugins = Int2ObjectOpenHashMap<Int2ObjectOpenHashMap<Plugin.() -> Unit>>()
 
     /**
+     * A map that contains Boolean functions that will return false when a ground
+     * item can not be picked up.
+     */
+    private val groundItemPickupConditions = Int2ObjectOpenHashMap<Plugin.() -> Boolean>()
+
+    /**
      * A map of plugins that check if an item with the associated key, can be
      * dropped on the floor.
      */
@@ -1027,6 +1033,21 @@ class PluginRepository(val world: World) {
         val logic = optMap[opt] ?: return false
         p.executePlugin(logic)
         return true
+    }
+
+    fun setGroundItemPickupCondition(item: Int, plugin: Plugin.() -> Boolean) {
+        if (groundItemPickupConditions.containsKey(item)) {
+            val error = IllegalStateException("Ground item pick-up condition already set: $item")
+            logger.error(error) {}
+            throw error
+        }
+        groundItemPickupConditions[item] = plugin
+        pluginCount++
+    }
+
+    fun canPickupGroundItem(p: Player, item: Int): Boolean {
+        val plugin = groundItemPickupConditions[item] ?: return true
+        return p.executePlugin(plugin)
     }
 
     fun bindCanItemDrop(item: Int, plugin: Plugin.() -> Boolean) {

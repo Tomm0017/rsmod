@@ -21,6 +21,11 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
         this.tile = tile
     }
 
+    constructor(owner: Player, id: Int, tile: Tile, world: World) : this(id, world, spawnTile = Tile(tile)) {
+        this.tile = tile
+        this.owner = owner
+    }
+
     /**
      * This flag indicates whether or not this npc's AI should be processed.
      *
@@ -29,6 +34,14 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
      * the AI.
      */
     private var active = false
+
+    /**
+     * The owner of an npc will be the only [Player] who can view this npc.
+     * If the owner is no longer online, this npc will be removed from the world.
+     *
+     * @see [gg.rsmod.game.task.WorldRemoveTask]
+     */
+    var owner: Player? = null
 
     /**
      * This flag indicates whether or not this npc will respawn after death.

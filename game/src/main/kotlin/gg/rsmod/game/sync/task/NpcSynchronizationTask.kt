@@ -5,14 +5,7 @@ import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.SynchronizationTask
-import gg.rsmod.game.sync.segment.AddLocalNpcSegment
-import gg.rsmod.game.sync.segment.NpcCountSegment
-import gg.rsmod.game.sync.segment.NpcNoMovementSegment
-import gg.rsmod.game.sync.segment.NpcSkipSegment
-import gg.rsmod.game.sync.segment.NpcTeleportSegment
-import gg.rsmod.game.sync.segment.NpcUpdateBlockSegment
-import gg.rsmod.game.sync.segment.NpcWalkSegment
-import gg.rsmod.game.sync.segment.RemoveLocalNpcSegment
+import gg.rsmod.game.sync.segment.*
 import gg.rsmod.net.packet.GamePacketBuilder
 import gg.rsmod.net.packet.PacketType
 
@@ -110,7 +103,7 @@ class NpcSynchronizationTask(private val worldNpcs: Array<Npc?>) : Synchronizati
 
     private fun shouldRemove(player: Player, npc: Npc): Boolean = !npc.isSpawned() || npc.invisible || !isWithinView(player, npc.tile)
 
-    private fun shouldAdd(player: Player, npc: Npc): Boolean = npc.isSpawned() && !npc.invisible && isWithinView(player, npc.tile)
+    private fun shouldAdd(player: Player, npc: Npc): Boolean = npc.isSpawned() && !npc.invisible && isWithinView(player, npc.tile)/* && (npc.owner == null || npc.owner == player)*/
 
     private fun isWithinView(player: Player, tile: Tile): Boolean = tile.isWithinRadius(player.tile, if (player.hasLargeViewport()) Player.LARGE_VIEW_DISTANCE else Player.NORMAL_VIEW_DISTANCE)
 

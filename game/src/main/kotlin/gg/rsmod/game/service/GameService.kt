@@ -6,10 +6,7 @@ import gg.rsmod.game.message.MessageDecoderSet
 import gg.rsmod.game.message.MessageEncoderSet
 import gg.rsmod.game.message.MessageStructureSet
 import gg.rsmod.game.model.World
-import gg.rsmod.game.task.ChunkCreationTask
-import gg.rsmod.game.task.GameTask
-import gg.rsmod.game.task.MessageHandlerTask
-import gg.rsmod.game.task.QueueHandlerTask
+import gg.rsmod.game.task.*
 import gg.rsmod.game.task.parallel.ParallelNpcCycleTask
 import gg.rsmod.game.task.parallel.ParallelPlayerCycleTask
 import gg.rsmod.game.task.parallel.ParallelPlayerPostCycleTask
@@ -155,6 +152,7 @@ class GameService : Service {
                     QueueHandlerTask(),
                     SequentialPlayerCycleTask(),
                     ChunkCreationTask(),
+                    WorldRemoveTask(),
                     SequentialNpcCycleTask(),
                     SequentialSynchronizationTask(),
                     SequentialPlayerPostCycleTask()
@@ -171,6 +169,7 @@ class GameService : Service {
                     QueueHandlerTask(),
                     ParallelPlayerCycleTask(executor),
                     ChunkCreationTask(),
+                    WorldRemoveTask(),
                     ParallelNpcCycleTask(executor),
                     ParallelSynchronizationTask(executor),
                     ParallelPlayerPostCycleTask(executor)

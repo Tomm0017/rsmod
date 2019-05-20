@@ -458,6 +458,13 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
     fun isSpawned(item: GroundItem): Boolean = chunks.getOrCreate(item.tile).getEntities<GroundItem>(item.tile, EntityType.GROUND_ITEM).contains(item)
 
     /**
+     * Get any [GroundItem] that matches the [predicate].
+     *
+     * @return null if no ground item meets the conditions of [predicate].
+     */
+    fun getGroundItem(predicate: (GroundItem) -> Boolean): GroundItem? = groundItems.firstOrNull { predicate(it) }
+
+    /**
      * Gets the [GameObject] that is located on [tile] and has a
      * [GameObject.type] equal to [type].
      *

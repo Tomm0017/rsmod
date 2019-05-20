@@ -26,12 +26,16 @@ fun Player.canTeleport(type: TeleportType): Boolean {
     return true
 }
 
+fun Pawn.prepareForTeleport() {
+    resetInteractions()
+    clearHits()
+}
+
 fun Pawn.teleport(endTile: Tile, type: TeleportType) {
     lock = LockState.FULL_WITH_DAMAGE_IMMUNITY
 
     queue(TaskPriority.STRONG) {
-        resetInteractions()
-        clearHits()
+        prepareForTeleport()
 
         animate(type.animation)
         type.graphic?.let {

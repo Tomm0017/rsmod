@@ -68,9 +68,11 @@ RSA is a method to stop man-in-the-middle (MITM) attacks on packets. RS Mod has 
 no two servers should use the same private key so you must create your own:
 
 - After the ``install`` task completes, it will print out a message on the IntelliJ console
-- The console message explains that you must find ``BigInteger("10001"`` in your client and
-replace it and another value near it, with the ones printed on the console. If you missed the 
-console messages you can run the ``install`` task again. 
+- Once your key is created, you will have to follow the instructions on the terminal/command prompt
+    - You need to copy the public keys you are given and replace them in your client
+    - In your client, you can find the text ``BigInteger("10001`` which will usually be the
+    place where you need to replace both the public keys (the ``"10001"`` key is usually the same)
+    - Once you have replaced the keys in the client, you can restart the server and launch your client  
 
 #### 5) Choose your revision
 Now you're ready to start choosing the direction of your server!

@@ -407,11 +407,9 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
-    fun walkTo(tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
-               projectilePath: Boolean = false) = walkTo(tile.x, tile.z, stepType, projectilePath)
+    fun walkTo(tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL) = walkTo(tile.x, tile.z, stepType)
 
-    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
-               projectilePath: Boolean = false) {
+    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL) {
         /*
          * Already standing on requested destination.
          */
@@ -431,7 +429,7 @@ abstract class Pawn(val world: World) : Entity() {
         }
 
         val multiThread = world.multiThreadPathFinding
-        val request = PathRequest.createWalkRequest(this, x, z, projectilePath)
+        val request = PathRequest.createWalkRequest(this, x, z, projectile = false)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
         /*
@@ -453,11 +451,9 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
-    suspend fun walkTo(it: QueueTask, tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
-                       projectilePath: Boolean = false) = walkTo(it, tile.x, tile.z, stepType, projectilePath)
+    suspend fun walkTo(it: QueueTask, tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL) = walkTo(it, tile.x, tile.z, stepType)
 
-    suspend fun walkTo(it: QueueTask, x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL,
-                       projectilePath: Boolean = false): Route {
+    suspend fun walkTo(it: QueueTask, x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL): Route {
         /*
          * Already standing on requested destination.
          */
@@ -465,7 +461,7 @@ abstract class Pawn(val world: World) : Entity() {
             return Route(ArrayDeque(), success = true, tail = Tile(tile))
         }
         val multiThread = world.multiThreadPathFinding
-        val request = PathRequest.createWalkRequest(this, x, z, projectilePath)
+        val request = PathRequest.createWalkRequest(this, x, z, projectile = false)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
         if (multiThread) {

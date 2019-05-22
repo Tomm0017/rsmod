@@ -464,9 +464,6 @@ abstract class Pawn(val world: World) : Entity() {
         val request = PathRequest.createWalkRequest(this, x, z, projectile = false)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
-        if (multiThread) {
-            movementQueue.clear()
-        }
         movementQueue.clear()
         futureRoute?.strategy?.cancel = true
 

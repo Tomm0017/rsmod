@@ -458,7 +458,7 @@ abstract class Pawn(val world: World) : Entity() {
          * Already standing on requested destination.
          */
         if (tile.x == x && tile.z == z) {
-            return Route(ArrayDeque(), success = true, tail = Tile(tile))
+            return Route(EMPTY_TILE_DEQUE, success = true, tail = Tile(tile))
         }
         val multiThread = world.multiThreadPathFinding
         val request = PathRequest.createWalkRequest(this, x, z, projectile = false)
@@ -605,5 +605,9 @@ abstract class Pawn(val world: World) : Entity() {
             world.collision
         }
         return if (entityType.isPlayer()) BFSPathFindingStrategy(collision) else SimplePathFindingStrategy(collision)
+    }
+
+    companion object {
+        private val EMPTY_TILE_DEQUE = ArrayDeque<Tile>()
     }
 }

@@ -1,6 +1,7 @@
 package gg.rsmod.game.action
 
 import gg.rsmod.game.message.impl.SetMapFlagMessage
+import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.attr.*
 import gg.rsmod.game.model.entity.Entity
@@ -176,7 +177,7 @@ object PawnPathAction {
         }
 
         val route = pawn.createPathFindingStrategy().calculateRoute(builder.build())
-        pawn.walkPath(route.path)
+        pawn.walkPath(route.path, MovementQueue.StepType.NORMAL, detectCollision = true)
 
         while (!pawn.tile.sameAs(route.tail)) {
             if (!targetTile.sameAs(target.tile)) {

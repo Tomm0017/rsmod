@@ -349,7 +349,7 @@ abstract class Pawn(val world: World) : Entity() {
     fun handleFutureRoute() {
         if (futureRoute?.completed == true && futureRoute?.strategy?.cancel == false) {
             val futureRoute = futureRoute!!
-            walkPath(futureRoute.route.path, futureRoute.stepType)
+            walkPath(futureRoute.route.path, futureRoute.stepType, futureRoute.detectCollision)
             this.futureRoute = null
         }
     }
@@ -358,7 +358,7 @@ abstract class Pawn(val world: World) : Entity() {
      * Walk to all the tiles specified in our [path] queue, using [stepType] as
      * the [MovementQueue.StepType].
      */
-    fun walkPath(path: Queue<Tile>, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL) {
+    fun walkPath(path: Queue<Tile>, stepType: MovementQueue.StepType, detectCollision: Boolean) {
         if (path.isEmpty()) {
             if (this is Player) {
                 write(SetMapFlagMessage(255, 255))
@@ -382,7 +382,7 @@ abstract class Pawn(val world: World) : Entity() {
         var tail: Tile? = null
         var next = path.poll()
         while (next != null) {
-            movementQueue.addStep(next, stepType)
+            movementQueue.addStep(next, stepType, detectCollision)
             val poll = path.poll()
             if (poll == null) {
                 tail = next
@@ -407,9 +407,9 @@ abstract class Pawn(val world: World) : Entity() {
         }
     }
 
-    fun walkTo(tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL) = walkTo(tile.x, tile.z, stepType)
+    fun walkTo(tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL, detectCollision: Boolean = true) = walkTo(tile.x, tile.z, stepType, detectCollision)
 
-    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL) {
+    fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL, detectCollision: Boolean = true) {
         /*
          * Already standing on requested destination.
          */
@@ -444,16 +444,16 @@ abstract class Pawn(val world: World) : Entity() {
         futureRoute?.strategy?.cancel = true
 
         if (multiThread) {
-            futureRoute = FutureRoute.of(strategy, request, stepType)
+            futureRoute = FutureRoute.of(strategy, request, stepType, detectCollision)
         } else {
             val route = strategy.calculateRoute(request)
-            walkPath(route.path, stepType)
+            walkPath(route.path, stepType, detectCollision)
         }
     }
 
-    suspend fun walkTo(it: QueueTask, tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL) = walkTo(it, tile.x, tile.z, stepType)
+    suspend fun walkTo(it: QueueTask, tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL, detectCollision: Boolean = true) = walkTo(it, tile.x, tile.z, stepType, detectCollision)
 
-    suspend fun walkTo(it: QueueTask, x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL): Route {
+    suspend fun walkTo(it: QueueTask, x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL, detectCollision: Boolean = true): Route {
         /*
          * Already standing on requested destination.
          */
@@ -468,7 +468,7 @@ abstract class Pawn(val world: World) : Entity() {
         futureRoute?.strategy?.cancel = true
 
         if (multiThread) {
-            futureRoute = FutureRoute.of(strategy, request, stepType)
+            futureRoute = FutureRoute.of(strategy, request, stepType, detectCollision)
             while (!futureRoute!!.completed) {
                 it.wait(1)
             }
@@ -476,7 +476,7 @@ abstract class Pawn(val world: World) : Entity() {
         }
 
         val route = strategy.calculateRoute(request)
-        walkPath(route.path, stepType)
+        walkPath(route.path, stepType, detectCollision)
         return route
     }
 

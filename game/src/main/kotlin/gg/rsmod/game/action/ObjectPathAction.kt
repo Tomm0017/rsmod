@@ -3,6 +3,7 @@ package gg.rsmod.game.action
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.Direction
+import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.attr.INTERACTING_ITEM
 import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
@@ -214,7 +215,7 @@ object ObjectPathAction {
             return Route(ArrayDeque(), success = false, tail = pawn.tile)
         }
 
-        pawn.walkPath(route.path)
+        pawn.walkPath(route.path, MovementQueue.StepType.NORMAL, detectCollision = true)
 
         val last = pawn.movementQueue.peekLast()
         while (last != null && !pawn.tile.sameAs(last) && !pawn.timers.has(FROZEN_TIMER) && !pawn.timers.has(STUN_TIMER) && pawn.lock.canMove()) {

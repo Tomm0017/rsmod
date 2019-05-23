@@ -142,6 +142,10 @@ class Tile {
 
     operator fun component3() = height
 
+    operator fun minus(other: Tile): Tile = Tile(x - other.x, z - other.z, height - other.height)
+
+    operator fun plus(other: Tile): Tile = Tile(x + other.x, z + other.z, height + other.height)
+
     companion object {
         /**
          * The total amount of height levels that can be used in the game.

@@ -22,6 +22,12 @@ import java.lang.ref.WeakReference
 val NEW_ACCOUNT_ATTR = AttributeKey<Boolean>()
 
 /**
+ * A flag which indicates that the player will not take collision into account
+ * when walking.
+ */
+val NO_CLIP_ATTR = AttributeKey<Boolean>()
+
+/**
  * A flag that indicates whether or not this player has protect-item
  * prayer active.
  */

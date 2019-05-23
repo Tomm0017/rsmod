@@ -5,6 +5,7 @@ import gg.rsmod.game.message.impl.MoveMinimapClickMessage
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.attr.NO_CLIP_ATTR
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.priv.Privilege
@@ -35,8 +36,9 @@ class ClickMinimapHandler : MessageHandler<MoveMinimapClickMessage> {
         if (message.movementType == 2 && world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
             client.moveTo(message.x, message.z, client.tile.height)
         } else {
-            client.walkTo(message.x, message.z, if (message.movementType == 1)
-                MovementQueue.StepType.FORCED_RUN else MovementQueue.StepType.NORMAL)
+            val stepType = if (message.movementType == 1) MovementQueue.StepType.FORCED_RUN else MovementQueue.StepType.NORMAL
+            val noClip = client.attr[NO_CLIP_ATTR] ?: false
+            client.walkTo(message.x, message.z, stepType, detectCollision = !noClip)
         }
     }
 }

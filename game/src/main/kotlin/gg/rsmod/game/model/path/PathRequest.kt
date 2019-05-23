@@ -4,7 +4,7 @@ import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.path.PathRequest.ClipFlag
-import java.util.*
+import java.util.EnumSet
 
 /**
  * Represents attributes and parameters that a [PathFindingStrategy] can use when
@@ -231,12 +231,12 @@ class PathRequest private constructor(val start: Tile, val sourceWidth: Int, val
         /**
          * Creates a default walk request.
          */
-        fun createWalkRequest(pawn: Pawn, x: Int, z: Int, projectile: Boolean): PathRequest = Builder()
+        fun createWalkRequest(pawn: Pawn, x: Int, z: Int, projectile: Boolean, detectCollision: Boolean): PathRequest = Builder()
                 .setPoints(start = Tile(pawn.tile), end = Tile(x, z, pawn.tile.height))
                 .setSourceSize(width = pawn.getSize(), length = pawn.getSize())
                 .setTargetSize(width = 0, length = 0)
                 .setProjectilePath(projectile)
-                .clipPathNodes(node = true, link = true)
+                .clipPathNodes(node = detectCollision, link = detectCollision)
                 .build()
     }
 }

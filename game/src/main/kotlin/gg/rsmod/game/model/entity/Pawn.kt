@@ -429,7 +429,7 @@ abstract class Pawn(val world: World) : Entity() {
         }
 
         val multiThread = world.multiThreadPathFinding
-        val request = PathRequest.createWalkRequest(this, x, z, projectile = false)
+        val request = PathRequest.createWalkRequest(this, x, z, projectile = false, detectCollision = detectCollision)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
         /*
@@ -461,7 +461,7 @@ abstract class Pawn(val world: World) : Entity() {
             return Route(EMPTY_TILE_DEQUE, success = true, tail = Tile(tile))
         }
         val multiThread = world.multiThreadPathFinding
-        val request = PathRequest.createWalkRequest(this, x, z, projectile = false)
+        val request = PathRequest.createWalkRequest(this, x, z, projectile = false, detectCollision = detectCollision)
         val strategy = createPathFindingStrategy(copyChunks = multiThread)
 
         movementQueue.clear()

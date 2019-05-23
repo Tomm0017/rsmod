@@ -13,15 +13,6 @@ import gg.rsmod.plugins.content.inter.bank.openBank
 import gg.rsmod.plugins.content.magic.MagicSpells
 import java.text.DecimalFormat
 
-on_command("reboot", Privilege.ADMIN_POWER) {
-    val args = player.getCommandArgs()
-    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::reboot 500</col>") { values ->
-        val cycles = values[0].toInt()
-        world.rebootTimer = cycles
-        world.sendRebootTimer()
-    }
-}
-
 on_command("max") {
     val target = player.getCombatTarget() ?: player
     CombatClass.values.forEach { combatClass ->
@@ -50,6 +41,15 @@ on_command("max") {
 
 on_command("empty") {
     player.inventory.removeAll()
+}
+
+on_command("reboot", Privilege.ADMIN_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::reboot 500</col>") { values ->
+        val cycles = values[0].toInt()
+        world.rebootTimer = cycles
+        world.sendRebootTimer()
+    }
 }
 
 on_command("home", Privilege.ADMIN_POWER) {

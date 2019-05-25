@@ -165,5 +165,11 @@ class Tile {
             val height = (packed shr 28)
             return Tile(x, z, height)
         }
+
+        fun fromRegion(region: Int): Tile {
+            val x = ((region shr 8) shl 6)
+            val z = ((region and 0xFF) shl 6)
+            return Tile(x, z)
+        }
     }
 }

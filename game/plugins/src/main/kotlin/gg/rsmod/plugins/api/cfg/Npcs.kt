@@ -384,13 +384,13 @@ object Npcs {
     const val EVIL_BOB_391 = 391
     const val SERVANT = 392
     const val SERVANT_393 = 393
-    const val BANKER = 394
-    const val BANKER_395 = 395
-    const val BANKER_396 = 396
-    const val BANKER_397 = 397
-    const val BANKER_398 = 398
-    const val BANKER_399 = 399
-    const val BANKER_400 = 400
+    const val ROD_FISHING_SPOT = 394
+    const val CAT = 395
+    const val JON = 396
+    const val TOWN_GUARD = 397
+    const val TOWN_GUARD_398 = 398
+    const val TOWN_GUARD_399 = 399
+    const val TOWN_GUARD_400 = 400
     const val TURAEL = 401
     const val MAZCHNA = 402
     const val VANNAKA = 403
@@ -744,7 +744,7 @@ object Npcs {
     const val GIANT_ROC = 763
     const val SHADOW = 764
     const val QUEEN_SIGRID = 765
-    const val BANKER_766 = 766
+    const val BANKER = 766
     const val ARNOR = 767
     const val HAMING = 768
     const val MOLDOF = 769
@@ -865,7 +865,6 @@ object Npcs {
     const val GRUH = 887
     const val IRWIN_FEASELBAUM = 888
     const val ELUNED = 889
-    const val ISLWYN = 890
     const val MOSS_GIANT = 891
     const val GOLRIE = 892
     const val FATHER_REEN = 893
@@ -1430,7 +1429,7 @@ object Npcs {
     const val HUNTING_EXPERT = 1503
     const val HUNTING_EXPERT_1504 = 1504
     const val FERRET_1505 = 1505
-    const val ROD_FISHING_SPOT = 1506
+    const val ROD_FISHING_SPOT_1506 = 1506
     const val ROD_FISHING_SPOT_1507 = 1507
     const val ROD_FISHING_SPOT_1508 = 1508
     const val ROD_FISHING_SPOT_1509 = 1509
@@ -1541,7 +1540,7 @@ object Npcs {
     const val BANKNOTE_EXCHANGE_MERCHANT = 1615
     const val HIGH_PRIESTESS_ZULHARCINQA = 1616
     const val PRIESTESS_ZULGWENWYNIG = 1617
-    const val CAT = 1619
+    const val CAT_1619 = 1619
     const val CAT_1620 = 1620
     const val CAT_1621 = 1621
     const val CAT_1622 = 1622
@@ -3078,7 +3077,7 @@ object Npcs {
     const val MAN_3264 = 3264
     const val MAN_3265 = 3265
     const val MAN_3266 = 3266
-    const val WOMAN_3267 = 3267
+    const val CECILIA = 3267
     const val WOMAN_3268 = 3268
     const val GUARD_3269 = 3269
     const val GUARD_3270 = 3270
@@ -3712,7 +3711,7 @@ object Npcs {
     const val BRUNDT_THE_CHIEFTAIN = 3926
     const val GUARD_3928 = 3928
     const val GUARD_3929 = 3929
-    const val TOWN_GUARD = 3930
+    const val TOWN_GUARD_3930 = 3930
     const val TOWN_GUARD_3931 = 3931
     const val THORA_THE_BARKEEP = 3932
     const val YRSA_3933 = 3933
@@ -3781,7 +3780,6 @@ object Npcs {
     const val MOUSE = 4000
     const val CHOMPY_CHICK_4001 = 4001
     const val CHOMPY_CHICK_4002 = 4002
-    const val ILFEEN = 4003
     const val SHADOW_4004 = 4004
     const val DARK_BEAST_4005 = 4005
     const val MOURNER_4006 = 4006
@@ -5168,10 +5166,10 @@ object Npcs {
     const val MURKY_MATT_RUNES = 5450
     const val RELOBO_BLINYO_LOGS = 5451
     const val HOFUTHAND_WEAPONS_AND_ARMOUR = 5452
-    const val BANKER_5453 = 5453
+    const val RESHI = 5453
     const val THUMPY = 5454
-    const val BANKER_5455 = 5455
-    const val BANKER_5456 = 5456
+    const val THOMDRIL = 5455
+    const val KENDALL = 5456
     const val DRUID_5457 = 5457
     const val SUSPECT_5458 = 5458
     const val SUSPECT_5459 = 5459
@@ -5582,8 +5580,12 @@ object Npcs {
     const val ABYSSAL_SIRE_5891 = 5891
     const val TZREKJAD_5892 = 5892
     const val TZREKJAD_5893 = 5893
-    const val PORTAL_5895 = 5895
-    const val PORTAL_5897 = 5897
+    const val BAST = 5894
+    const val BANKER_5895 = 5895
+    const val BANKER_5896 = 5896
+    const val BANKER_5897 = 5897
+    const val BANKER_5904 = 5904
+    const val BANKER_5905 = 5905
     const val PROBITA = 5906
     const val CHAOS_ELEMENTAL_JR_5907 = 5907
     const val ABYSSAL_SIRE_5908 = 5908
@@ -6009,8 +6011,8 @@ object Npcs {
     const val FIDELIO = 6525
     const val SBOTT = 6526
     const val ROAVAR = 6527
-    const val FERAL_VAMPYRE_6529 = 6529
-    const val ABIDOR_CRANK_6530 = 6530
+    const val BANKER_6529 = 6529
+    const val BANKER_6530 = 6530
     const val BLURBERRY = 6531
     const val BARMAN_6532 = 6532
     const val ROMILY_WEAKLAX = 6533
@@ -7105,8 +7107,8 @@ object Npcs {
     const val WEVE = 7777
     const val IRENE = 7778
     const val BOBBING_FOSSIL = 7779
-    const val PUFFER_FISH = 7780
-    const val PUFFER_FISH_7781 = 7781
+    const val ISLWYN = 7780
+    const val PUFFER_FISH = 7781
     const val FISH_SHOAL = 7782
     const val CETO = 7783
     const val MAIRIN = 7784
@@ -7255,6 +7257,7 @@ object Npcs {
     const val GNOCCI_THE_COOK_7972 = 7972
     const val DOLL = 7975
     const val ARSEN_THE_THIEF = 7976
+    const val THE_MIMIC = 7979
     const val YUSUF = 7981
     const val YUSUF_7982 = 7982
     const val FRANCOIS = 7983
@@ -7827,6 +7830,25 @@ object Npcs {
     const val TAYLOR = 8629
     const val VEOS_8630 = 8630
     const val SEAMAN_MORRIS = 8631
+    const val THE_MIMIC_8633 = 8633
     const val ALCHEMICAL_HYDRA_8634 = 8634
+    const val THIRD_AGE_WARRIOR = 8635
+    const val THIRD_AGE_RANGER = 8636
+    const val THIRD_AGE_MAGE = 8637
+    const val URI_8638 = 8638
+    const val DODGY_GEEZER = 8644
+    const val ARTHUR_THE_CLUE_HUNTER = 8665
+    const val BANKER_8666 = 8666
+    const val PUFFER_FISH_8667 = 8667
+    const val ISLWYN_8675 = 8675
+    const val ILFEEN = 8676
+    const val ILFEEN_8677 = 8677
+    const val FERAL_VAMPYRE_8678 = 8678
+    const val ABIDOR_CRANK_8679 = 8679
+    const val BANKER_8680 = 8680
+    const val BANKER_8681 = 8681
+    const val BANKER_8682 = 8682
+    const val PORTAL_8684 = 8684
+    const val PORTAL_8686 = 8686
     /* Auto-generated file using class gg.rsmod.game.service.game.DumpEntityIdService */
 }

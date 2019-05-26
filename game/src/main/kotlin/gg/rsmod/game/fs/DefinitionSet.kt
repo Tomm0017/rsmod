@@ -7,6 +7,7 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.collision.CollisionUpdate
 import gg.rsmod.game.model.entity.StaticObject
+import gg.rsmod.game.model.region.ChunkSet
 import gg.rsmod.game.service.xtea.XteaKeyService
 import io.netty.buffer.Unpooled
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
@@ -77,6 +78,20 @@ class DefinitionSet {
          */
         load(store, ObjectDef::class.java)
         logger.info("Loaded ${getCount(ObjectDef::class.java)} object definitions.")
+    }
+
+    fun loadRegions(world: World, chunks: ChunkSet, regions: IntArray) {
+        val start = System.currentTimeMillis()
+
+        var loaded = 0
+        regions.forEach { region ->
+            if (chunks.activeRegions.add(region)) {
+                if (createRegion(world, region)) {
+                    loaded++
+                }
+            }
+        }
+        logger.info { "Loaded $loaded regions in ${System.currentTimeMillis() - start}ms" }
     }
 
     fun <T : Definition> load(store: Store, type: Class<out T>) {

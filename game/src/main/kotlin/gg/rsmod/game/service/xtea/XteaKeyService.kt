@@ -23,6 +23,9 @@ class XteaKeyService : Service {
 
     private val keys = Int2ObjectOpenHashMap<IntArray>()
 
+    val validRegions: IntArray
+        get() = keys.keys.toIntArray()
+
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         val path = Paths.get(serviceProperties.getOrDefault("path", "./data/xteas/"))
         if (!Files.exists(path)) {

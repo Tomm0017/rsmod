@@ -59,6 +59,21 @@ enum class Direction(val orientationValue: Int, val playerWalkValue: Int, val np
         else -> throw IllegalArgumentException("Must provide a diagonal direction.")
     }
 
+    val angle: Int
+        get() {
+            return when (this) {
+                SOUTH -> 0
+                SOUTH_WEST -> 250
+                WEST -> 500
+                NORTH_WEST -> 750
+                NORTH -> 1000
+                NORTH_EAST -> 1250
+                EAST -> 1500
+                SOUTH_EAST -> 1750
+                NONE -> throw IllegalStateException("Invalid direction: $this")
+            }
+        }
+
     companion object {
 
         val NESW = arrayOf(NORTH, EAST, SOUTH, WEST)

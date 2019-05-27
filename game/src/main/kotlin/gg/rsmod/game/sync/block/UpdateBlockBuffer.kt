@@ -1,6 +1,7 @@
 package gg.rsmod.game.sync.block
 
 import gg.rsmod.game.model.ChatMessage
+import gg.rsmod.game.model.ForcedMovement
 import gg.rsmod.game.model.Hit
 
 /**
@@ -8,6 +9,7 @@ import gg.rsmod.game.model.Hit
  */
 class UpdateBlockBuffer {
 
+    internal var teleport = false
     private var mask = 0
 
     var forceChat = ""
@@ -23,12 +25,15 @@ class UpdateBlockBuffer {
     var graphicHeight = 0
     var graphicDelay = 0
 
+    lateinit var forceMovement: ForcedMovement
+
     val hits = mutableListOf<Hit>()
 
     fun isDirty(): Boolean = mask != 0
 
     fun clean() {
         mask = 0
+        teleport = false
         hits.clear()
     }
 

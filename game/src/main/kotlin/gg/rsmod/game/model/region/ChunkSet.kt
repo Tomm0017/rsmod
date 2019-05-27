@@ -42,7 +42,7 @@ class ChunkSet(val world: World) {
 
     private val chunks = Object2ObjectOpenHashMap<ChunkCoords, Chunk>()
 
-    private val activeRegions = IntOpenHashSet()
+    internal val activeRegions = IntOpenHashSet()
 
     fun getActiveChunkCount(): Int = chunks.size
 

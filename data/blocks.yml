@@ -7,6 +7,7 @@ players:
     - HITMARK
     - GFX
     - MOVEMENT
+    - FORCE_MOVEMENT
     - FORCE_CHAT
     - FACE_TILE
     - APPEARANCE
@@ -89,6 +90,27 @@ players:
 
     - block: FORCE_MOVEMENT
       bit: 0x400
+      structure:
+        - name: src_x
+          type: BYTE
+          trans: SUBTRACT
+        - name: src_z
+          type: BYTE
+          trans: ADD
+        - name: dst_x
+          type: BYTE
+          trans: ADD
+        - name: dst_z
+          type: BYTE
+          trans: SUBTRACT
+        - name: client_delay
+          type: SHORT
+          trans: ADD
+        - name: client_duration
+          order: LITTLE
+          type: SHORT
+        - name: direction_angle
+          type: SHORT
 
     - block: HITMARK
       bit: 0x40

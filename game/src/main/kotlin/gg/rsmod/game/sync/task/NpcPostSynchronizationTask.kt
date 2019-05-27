@@ -16,7 +16,7 @@ object NpcPostSynchronizationTask : SynchronizationTask<Npc> {
         if (moved) {
             pawn.lastTile = Tile(pawn.tile)
         }
-        pawn.teleport = false
+        pawn.moved = false
         pawn.steps = null
         pawn.blockBuffer.clean()
     }

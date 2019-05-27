@@ -58,7 +58,7 @@ class NpcSynchronizationTask(private val worldNpcs: Array<Npc?>) : Synchronizati
 
             val requiresBlockUpdate = npc.blockBuffer.isDirty()
 
-            if (npc.teleport) {
+            if (npc.moved) {
                 segments.add(NpcSkipSegment(skip = false))
                 segments.add(NpcTeleportSegment())
             } else if (npc.steps != null) {

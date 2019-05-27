@@ -7,7 +7,7 @@ import gg.rsmod.net.packet.GamePacketBuilder
 /**
  * @author Tom <rspsmods@gmail.com>
  */
-class PlayerTeleportSegment(private val player: Player, private val other: Player, private val encodeUpdateBlocks: Boolean) : SynchronizationSegment {
+class PlayerTeleportSegment(private val other: Player, private val encodeUpdateBlocks: Boolean) : SynchronizationSegment {
 
     override fun encode(buf: GamePacketBuilder) {
         /*

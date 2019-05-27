@@ -1,6 +1,7 @@
 package gg.rsmod.game.sync.block
 
 import gg.rsmod.game.model.ChatMessage
+import gg.rsmod.game.model.ForcedMovement
 import gg.rsmod.game.model.Hit
 
 /**
@@ -22,6 +23,8 @@ class UpdateBlockBuffer {
     var graphicId = 0
     var graphicHeight = 0
     var graphicDelay = 0
+
+    lateinit var forceMovement: ForcedMovement
 
     val hits = mutableListOf<Hit>()
 

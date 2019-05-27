@@ -9,6 +9,7 @@ import gg.rsmod.game.model.Hit
  */
 class UpdateBlockBuffer {
 
+    internal var teleport = false
     private var mask = 0
 
     var forceChat = ""
@@ -32,6 +33,7 @@ class UpdateBlockBuffer {
 
     fun clean() {
         mask = 0
+        teleport = false
         hits.clear()
     }
 

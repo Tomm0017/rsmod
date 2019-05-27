@@ -19,7 +19,7 @@ object PlayerPostSynchronizationTask : SynchronizationTask<Player> {
         if (moved) {
             pawn.lastTile = Tile(pawn.tile)
         }
-        pawn.teleport = false
+        pawn.moved = false
         pawn.steps = null
         pawn.blockBuffer.clean()
 

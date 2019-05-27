@@ -63,13 +63,13 @@ enum class Direction(val orientationValue: Int, val playerWalkValue: Int, val np
         get() {
             return when (this) {
                 SOUTH -> 0
-                SOUTH_WEST -> 250
-                WEST -> 500
-                NORTH_WEST -> 750
-                NORTH -> 1000
-                NORTH_EAST -> 1250
-                EAST -> 1500
-                SOUTH_EAST -> 1750
+                SOUTH_WEST -> 256
+                WEST -> 512
+                NORTH_WEST -> 768
+                NORTH -> 1024
+                NORTH_EAST -> 1280
+                EAST -> 1536
+                SOUTH_EAST -> 1792
                 NONE -> throw IllegalStateException("Invalid direction: $this")
             }
         }

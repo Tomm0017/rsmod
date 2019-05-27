@@ -18,6 +18,7 @@ import gg.rsmod.game.model.interf.InterfaceSet
 import gg.rsmod.game.model.interf.listener.PlayerInterfaceListener
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.priv.Privilege
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.skill.SkillSet
 import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.timer.FORCE_DISCONNECTION_TIMER
@@ -230,6 +231,21 @@ open class Player(world: World) : Pawn(world) {
     fun forceMove(movement: ForcedMovement) {
         blockBuffer.forceMovement = movement
         addBlock(UpdateBlockType.FORCE_MOVEMENT)
+    }
+
+    suspend fun forceMove(task: QueueTask, movement: ForcedMovement, animation: Int = -1, cycleDuration: Int = movement.maxDuration / 30) {
+        movementQueue.clear()
+        lock = LockState.DELAY_ACTIONS
+
+        lastTile = Tile(tile)
+        moveTo(movement.finalDestination)
+
+        animate(animation)
+
+        forceMove(movement)
+
+        task.wait(cycleDuration)
+        lock = LockState.NONE
     }
 
     /**

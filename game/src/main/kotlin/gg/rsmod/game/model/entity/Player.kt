@@ -227,6 +227,11 @@ open class Player(world: World) : Pawn(world) {
         return blockBuffer.hasBit(bits.bit)
     }
 
+    fun forceMove(movement: ForcedMovement) {
+        blockBuffer.forceMovement = movement
+        addBlock(UpdateBlockType.FORCE_MOVEMENT)
+    }
+
     /**
      * Logic that should be executed every game cycle, before
      * [gg.rsmod.game.sync.task.PlayerSynchronizationTask].

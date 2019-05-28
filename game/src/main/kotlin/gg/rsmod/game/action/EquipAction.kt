@@ -204,7 +204,7 @@ object EquipAction {
                     if (slot != equipSlot) {
                         p.equipment[slot] = null
                     }
-                    onItemUnequip(p, equipmentId)
+                    onItemUnequip(p, equipmentId, slot)
                 }
 
                 p.equipment[equipSlot] = newEquippedItem
@@ -233,11 +233,12 @@ object EquipAction {
             p.equipment[equipmentSlot] = leftover
         }
 
-        onItemUnequip(p, item.id)
+        onItemUnequip(p, item.id, equipmentSlot)
         return Result.SUCCESS
     }
 
-    fun onItemUnequip(p: Player, item: Int) {
+    fun onItemUnequip(p: Player, item: Int, slot: Int) {
         p.world.plugins.executeUnequipItem(p, item)
+        p.world.plugins.executeUnequipSlot(p, slot)
     }
 }

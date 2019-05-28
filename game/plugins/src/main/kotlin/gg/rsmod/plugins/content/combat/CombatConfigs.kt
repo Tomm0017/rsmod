@@ -99,6 +99,7 @@ object CombatConfigs {
             val style = pawn.getAttackStyle()
 
             return when {
+                pawn.hasEquipped(EquipmentType.WEAPON, *GODSWORDS) -> 7045
                 pawn.hasWeaponType(WeaponType.AXE) -> if (style == 1) 401 else 395
                 pawn.hasWeaponType(WeaponType.HAMMER) -> 401
                 pawn.hasWeaponType(WeaponType.BULWARK) -> 7511

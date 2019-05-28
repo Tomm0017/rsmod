@@ -102,7 +102,7 @@ suspend fun QueueTask.inputInt(description: String = "Enter amount"): Int {
 }
 
 /**
- * Prompts the player with an input dialog where they can only enter a string.
+ * Prompts the player with an input dialog where they can enter a string.
  *
  * @param description the title, or description, of the dialog box.
  *

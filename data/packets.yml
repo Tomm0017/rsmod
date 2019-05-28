@@ -1519,7 +1519,7 @@ in-packets:
         type: BYTE
         trans: SUBTRACT
 
-  - message: gg.rsmod.game.message.impl.ResumePNameDialogMessage # TODO: RESUME_P_NAMEDIALOG
+  - message: gg.rsmod.game.message.impl.ResumePNameDialogMessage
     type: VARIABLE_BYTE
     opcode: 95
     length: -1

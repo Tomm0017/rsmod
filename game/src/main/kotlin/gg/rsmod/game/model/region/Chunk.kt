@@ -81,7 +81,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         /*
          * Objects will affect the collision map.
          */
-        if (entity.entityType.isObject()) {
+        if (entity.entityType.isObject) {
             world.collision.applyCollision(world.definitions, entity as GameObject, CollisionUpdate.Type.ADD)
         }
 
@@ -89,7 +89,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
          * Transient entities will <strong>not</strong> be registered to one of
          * our [Chunk]'s tiles.
          */
-        if (!entity.entityType.isTransient()) {
+        if (!entity.entityType.isTransient) {
             val list = entities[tile] ?: ObjectArrayList(1)
             list.add(entity)
             entities[tile] = list
@@ -111,7 +111,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
                  * players who are currently in the viewport, but will now be
                  * sent to players who enter the region later on.
                  */
-                if (!entity.entityType.isTransient()) {
+                if (!entity.entityType.isTransient) {
                     updates.add(update)
                 }
                 /*
@@ -127,13 +127,13 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
          * Transient entities do not get added to our [Chunk]'s tiles, so no use
          * in trying to remove it.
          */
-        check(!entity.entityType.isTransient()) { "Transient entities cannot be removed from chunks." }
+        check(!entity.entityType.isTransient) { "Transient entities cannot be removed from chunks." }
 
         /*
          * [EntityType]s that are considered objects will be removed from our
          * collision map.
          */
-        if (entity.entityType.isObject()) {
+        if (entity.entityType.isObject) {
             world.collision.applyCollision(world.definitions, entity as GameObject, CollisionUpdate.Type.REMOVE)
         }
 
@@ -228,7 +228,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         if (p.tile.height != entity.tile.height) {
             return false
         }
-        if (entity.entityType.isGroundItem()) {
+        if (entity.entityType.isGroundItem) {
             val item = entity as GroundItem
             return item.isPublic() || item.isOwnedBy(p)
         }

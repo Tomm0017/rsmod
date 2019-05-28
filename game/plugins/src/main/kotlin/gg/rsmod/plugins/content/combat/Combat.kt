@@ -76,7 +76,7 @@ object Combat {
         target.animate(blockAnimation)
 
         if (target.lock.canAttack()) {
-            if (target.entityType.isNpc()) {
+            if (target.entityType.isNpc) {
                 if (!target.attr.has(COMBAT_TARGET_FOCUS_ATTR) || target.attr[COMBAT_TARGET_FOCUS_ATTR]!!.get() != pawn) {
                     target.attack(pawn)
                 }
@@ -145,7 +145,7 @@ object Combat {
             return false
         }
 
-        val pvp = pawn.entityType.isPlayer() && target.entityType.isPlayer()
+        val pvp = pawn.entityType.isPlayer && target.entityType.isPlayer
 
         if (pawn is Player) {
             if (!pawn.isOnline) {

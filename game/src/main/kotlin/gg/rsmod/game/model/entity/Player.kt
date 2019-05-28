@@ -383,7 +383,7 @@ open class Player(world: World) : Pawn(world) {
      * Handles any logic that should be executed upon log in.
      */
     fun login() {
-        if (entityType.isHumanControlled()) {
+        if (entityType.isHumanControlled) {
             gpiLocalPlayers[index] = this
             gpiLocalIndexes[gpiLocalCount++] = index
 

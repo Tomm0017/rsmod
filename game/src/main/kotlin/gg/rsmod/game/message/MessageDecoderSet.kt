@@ -53,6 +53,7 @@ class MessageDecoderSet {
         put(ResumePCountDialogMessage::class.java, ResumePCountDialogDecoder(), ResumePCountDialogHandler(), structures)
         put(ResumePObjDialogMessage::class.java, ResumePObjDialogDecoder(), ResumePObjDialogHandler(), structures)
         put(ResumePStringDialogMessage::class.java, ResumePStringDialogDecoder(), ResumePStringDialogHandler(), structures)
+        put(ResumePNameDialogMessage::class.java, ResumePNameDialogDecoder(), ResumePNameDialogHandler(), structures)
 
         put(OpLoc1Message::class.java, OpLoc1Decoder(), OpLoc1Handler(), structures)
         put(OpLoc2Message::class.java, OpLoc2Decoder(), OpLoc2Handler(), structures)

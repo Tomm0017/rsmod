@@ -1519,11 +1519,13 @@ in-packets:
         type: BYTE
         trans: SUBTRACT
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: RESUME_P_NAMEDIALOG
+  - message: gg.rsmod.game.message.impl.ResumePNameDialogMessage # TODO: RESUME_P_NAMEDIALOG
     type: VARIABLE_BYTE
     opcode: 95
     length: -1
-    ignore: true
+    structure:
+      - name: name
+        type: STRING
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown
     type: FIXED

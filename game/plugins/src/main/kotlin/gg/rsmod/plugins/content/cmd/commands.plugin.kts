@@ -126,6 +126,15 @@ on_command("sound", Privilege.ADMIN_POWER) {
     }
 }
 
+on_command("song", Privilege.ADMIN_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::song 1</col>") { values ->
+        val id = values[0].toInt()
+        player.playSong(id)
+        player.message("Song: $id")
+    }
+}
+
 on_command("infrun", Privilege.ADMIN_POWER) {
     player.toggleStorageBit(INFINITE_VARS_STORAGE, InfiniteVarsType.RUN)
     player.message("Infinite run: ${if (!player.hasStorageBit(INFINITE_VARS_STORAGE, InfiniteVarsType.RUN)) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")

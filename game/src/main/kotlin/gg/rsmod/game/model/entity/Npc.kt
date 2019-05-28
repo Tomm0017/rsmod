@@ -257,9 +257,9 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
          * positive number.
          *
          * @param capped if true, the [skill] level cannot increase further than
-         * [getMaxLevel] + [value].
+         * [getMaxLevel].
          */
-        fun incrementCurrentLevel(skill: Int, value: Int, capped: Boolean) = alterCurrentLevel(skill, value, if (capped) value else 0)
+        fun incrementCurrentLevel(skill: Int, value: Int, capped: Boolean) = alterCurrentLevel(skill, value, if (capped) 0 else value)
 
         companion object {
             /**

@@ -34,9 +34,13 @@ import gg.rsmod.game.model.Tile
  * @param gItemDespawnDelay the amount of cycles for a [gg.rsmod.game.model.entity.GroundItem]
  * to despawn.
  *
+ * @param preloadMaps if true, all map data will be be loaded on start-up instead
+ * of on-demand.
+ *
  * @author Tom <rspsmods@gmail.com>
  */
 data class GameContext(var initialLaunch: Boolean, val name: String, val revision: Int,
                        val cycleTime: Int, val playerLimit: Int, val home: Tile,
                        val skillCount: Int, val npcStatCount: Int, val runEnergy: Boolean,
-                       val gItemPublicDelay: Int, val gItemDespawnDelay: Int)
+                       val gItemPublicDelay: Int, val gItemDespawnDelay: Int,
+                       val preloadMaps: Boolean)

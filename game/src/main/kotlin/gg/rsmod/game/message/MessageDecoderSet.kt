@@ -84,6 +84,8 @@ class MessageDecoderSet {
         put(OpNpc4Message::class.java, OpNpc4Decoder(), OpNpc4Handler(), structures)
         put(OpNpc5Message::class.java, OpNpc5Decoder(), OpNpc5Handler(), structures)
         put(OpNpc6Message::class.java, OpNpc6Decoder(), OpNpc6Handler(), structures)
+        put(OpNpcTMessage::class.java, OpNpcTDecoder(), OpNpcTHandler(), structures)
+        put(OpNpcUMessage::class.java, OpNpcUDecoder(), OpNpcUHandler(), structures)
 
         put(OpPlayer1Message::class.java, OpPlayer1Decoder(), OpPlayer1Handler(), structures)
         put(OpPlayer2Message::class.java, OpPlayer2Decoder(), OpPlayer2Handler(), structures)
@@ -93,8 +95,6 @@ class MessageDecoderSet {
         put(OpPlayer6Message::class.java, OpPlayer6Decoder(), OpPlayer6Handler(), structures)
         put(OpPlayer7Message::class.java, OpPlayer7Decoder(), OpPlayer7Handler(), structures)
         put(OpPlayer8Message::class.java, OpPlayer8Decoder(), OpPlayer8Handler(), structures)
-
-        put(OpNpcTMessage::class.java, OpNpcTDecoder(), OpNpcTHandler(), structures)
     }
 
     private fun <T : Message> put(messageType: Class<T>, decoderType: MessageDecoder<T>, handlerType: MessageHandler<T>, structures: MessageStructureSet) {

@@ -65,7 +65,7 @@ abstract class Pawn(val world: World) : Entity() {
     /**
      * Whether or not this pawn can teleported this game cycle.
      */
-    internal var teleport = false
+    internal var moved = false
 
     /**
      * @see [MovementQueue]
@@ -323,7 +323,6 @@ abstract class Pawn(val world: World) : Entity() {
                          */
                         if (getCurrentHp() <= 0) {
                             hit.actions.forEach { action -> action(hit) }
-                            interruptQueues()
                             if (entityType.isPlayer()) {
                                 executePlugin(PlayerDeathAction.deathPlugin)
                             } else {
@@ -481,7 +480,8 @@ abstract class Pawn(val world: World) : Entity() {
     }
 
     fun moveTo(x: Int, z: Int, height: Int = 0) {
-        teleport = true
+        moved = true
+        blockBuffer.teleport = !tile.isWithinRadius(x, z, height, Player.NORMAL_VIEW_DISTANCE)
         tile = Tile(x, z, height)
         movementQueue.clear()
         addBlock(UpdateBlockType.MOVEMENT)

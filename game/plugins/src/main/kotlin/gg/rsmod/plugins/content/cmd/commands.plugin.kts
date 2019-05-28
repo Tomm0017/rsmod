@@ -72,10 +72,10 @@ on_command("mypos", Privilege.ADMIN_POWER) {
     val instancedMap = world.instanceAllocator.getMap(player.tile)
     val tile = player.tile
     if (instancedMap == null) {
-        player.message("Tile=[<col=ff0000>${tile.x}, ${tile.z}, ${tile.height}</col>], Region=${player.tile.regionId}")
+        player.message("Tile=[<col=801700>${tile.x}, ${tile.z}, ${tile.height}</col>], Region=${player.tile.regionId}")
     } else {
         val delta = tile - instancedMap.area.bottomLeft
-        player.message("Tile=[<col=ff0000>${tile.x}, ${tile.z}, ${tile.height}</col>], Relative=[${delta.x}, ${delta.z}]")
+        player.message("Tile=[<col=801700>${tile.x}, ${tile.z}, ${tile.height}</col>], Relative=[${delta.x}, ${delta.z}]")
     }
 }
 
@@ -86,6 +86,15 @@ on_command("tele", Privilege.ADMIN_POWER) {
         val z = values[1].toInt()
         val height = if (values.size > 2) values[2].toInt() else 0
         player.moveTo(x, z, height)
+    }
+}
+
+on_command("teler", Privilege.ADMIN_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::teler 12850</col>") { values ->
+        val region = values[0].toInt()
+        val tile = Tile.fromRegion(region)
+        player.moveTo(tile)
     }
 }
 

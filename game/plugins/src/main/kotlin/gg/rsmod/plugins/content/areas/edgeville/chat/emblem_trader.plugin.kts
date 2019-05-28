@@ -96,7 +96,7 @@ suspend fun pk_skull(it: QueueTask) {
 suspend fun give_pk_skull(it: QueueTask) {
     if (it.options("Give me a PK skull.", "Cancel.", title = "A PK skull means you drop ALL your items on death.") == 1) {
         it.player.skull(SkullIcon.WHITE, durationCycles = SKULL_SHORT_DURATION)
-        it.itemMessageBox("You are now skulled.", item = Items.SKULL)
+        it.itemMessageBox("You are now skulled.", item = Items.SKULL, amountOrZoom = 400)
     }
 }
 

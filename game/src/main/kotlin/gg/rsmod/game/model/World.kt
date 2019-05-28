@@ -10,6 +10,7 @@ import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.message.impl.LogoutFullMessage
 import gg.rsmod.game.message.impl.UpdateRebootTimerMessage
+import gg.rsmod.game.model.attr.AttributeMap
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.*
@@ -177,6 +178,13 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
      * @see TimerMap
      */
     val timers = TimerMap()
+
+    /**
+     * World attributes.
+     *
+     * @see AttributeMap
+     */
+    val attr = AttributeMap()
 
     /**
      * A local collection of [GroundItem]s that are currently spawned. We do

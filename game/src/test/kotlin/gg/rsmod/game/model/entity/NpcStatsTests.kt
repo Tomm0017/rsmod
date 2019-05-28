@@ -40,11 +40,11 @@ class NpcStatsTests {
         assertEquals(baseLevel, skills.getCurrentLevel(ATTACK_STAT))
 
         val increment = 3
-        skills.incrementCurrentLevel(ATTACK_STAT, increment, capped = true)
+        skills.incrementCurrentLevel(ATTACK_STAT, increment, capped = false)
         assertEquals(baseLevel + increment, skills.getCurrentLevel(ATTACK_STAT))
         assertEquals(baseLevel, skills.getMaxLevel(ATTACK_STAT))
 
-        skills.incrementCurrentLevel(ATTACK_STAT, increment, capped = true)
+        skills.alterCurrentLevel(ATTACK_STAT, increment, capValue = increment)
         assertEquals(baseLevel + increment, skills.getCurrentLevel(ATTACK_STAT))
     }
 
@@ -73,7 +73,7 @@ class NpcStatsTests {
         assertEquals(skills.getCurrentLevel(ATTACK_STAT), baseLevel + increment)
         assertEquals(skills.getMaxLevel(ATTACK_STAT), baseLevel)
 
-        skills.incrementCurrentLevel(ATTACK_STAT, increment, capped = false)
+        skills.alterCurrentLevel(ATTACK_STAT, increment, capValue = increment * 2)
         assertEquals(skills.getCurrentLevel(ATTACK_STAT), baseLevel + (increment * 2))
     }
 

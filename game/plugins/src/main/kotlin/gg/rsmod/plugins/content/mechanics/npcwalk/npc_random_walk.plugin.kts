@@ -12,7 +12,7 @@ on_global_npc_spawn {
 }
 
 on_timer(SEARCH_FOR_PATH_TIMER) {
-    if (npc.isActive()) {
+    if (npc.isActive() && npc.lock.canMove()) {
         val facing = npc.attr[FACING_PAWN_ATTR]?.get()
 
         /*

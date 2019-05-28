@@ -273,6 +273,14 @@ class PluginRepository(val world: World) {
     private val npcPlugins = Int2ObjectOpenHashMap<Int2ObjectOpenHashMap<Plugin.() -> Unit>>()
 
     /**
+     * A map of plugins for item on npc logic.
+     *
+     * Key: (item << 16) | npcId
+     * Value: plugin
+     */
+    private val itemOnNpcPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
+
+    /**
      * A map that contains npc ids as the key and their interaction distance as
      * the value. If map does not contain an npc, it will have the default interaction
      */
@@ -1194,6 +1202,24 @@ class PluginRepository(val world: World) {
         val optMap = npcPlugins[id] ?: return false
         val logic = optMap[opt] ?: return false
         p.executePlugin(logic)
+        return true
+    }
+
+    fun bindItemOnNpc(npc: Int, item: Int, plugin: Plugin.() -> Unit) {
+        val hash = (item shl 16) or npc
+        if (itemOnNpcPlugins.containsKey(hash)) {
+            val error = IllegalStateException("Item on npc is already bound to a plugin: npc=$npc, item=$item")
+            logger.error(error) {}
+            throw error
+        }
+        itemOnNpcPlugins[hash] = plugin
+        pluginCount++
+    }
+
+    fun executeItemOnNpc(p: Player, npc: Int, item: Int): Boolean {
+        val hash = (item shl 16) or npc
+        val plugin = itemOnNpcPlugins[hash] ?: return false
+        p.executePlugin(plugin)
         return true
     }
 

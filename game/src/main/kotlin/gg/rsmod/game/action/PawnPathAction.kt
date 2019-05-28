@@ -23,6 +23,8 @@ import java.lang.ref.WeakReference
  */
 object PawnPathAction {
 
+    private const val ITEM_USE_OPCODE = -1
+
     val walkPlugin: Plugin.() -> Unit = {
         val pawn = ctx as Pawn
         val world = pawn.world
@@ -46,6 +48,31 @@ object PawnPathAction {
             }
 
             walk(this, pawn, other, opt, lineOfSightRange)
+        }
+    }
+
+    val itemUsePlugin: Plugin.() -> Unit = s@ {
+        val pawn = ctx as Pawn
+        val world = pawn.world
+        val other = pawn.attr[INTERACTING_NPC_ATTR]?.get() ?: pawn.attr[INTERACTING_PLAYER_ATTR]?.get()!!
+
+        /*
+         * Some interactions only require line-of-sight range, such as npcs
+         * behind cells or booths. This allows for diagonal interaction.
+         *
+         * Set to null for default interaction range.
+         */
+        val lineOfSightRange = if (other is Npc) world.plugins.getNpcInteractionDistance(other.id) else null
+
+        pawn.queue(TaskPriority.STANDARD) {
+            terminateAction = {
+                pawn.stopMovement()
+                if (pawn is Player) {
+                    pawn.write(SetMapFlagMessage(255, 255))
+                }
+            }
+
+            walk(this, pawn, other, ITEM_USE_OPCODE, lineOfSightRange)
         }
     }
 
@@ -111,7 +138,13 @@ object PawnPathAction {
                 }
 
                 val npcId = other.getTransform(pawn)
-                val handled = world.plugins.executeNpc(pawn, npcId, opt)
+                val handled = if (opt != ITEM_USE_OPCODE) {
+                    world.plugins.executeNpc(pawn, npcId, opt)
+                } else {
+                    val item = pawn.attr[INTERACTING_ITEM]?.get() ?: return
+                    world.plugins.executeItemOnNpc(pawn, npcId, item.id)
+                }
+
                 if (!handled) {
                     pawn.writeMessage(Entity.NOTHING_INTERESTING_HAPPENS)
                 }

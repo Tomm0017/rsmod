@@ -77,6 +77,15 @@ class Tile {
         }
     }
 
+    fun isWithinRadius(otherX: Int, otherZ: Int, otherHeight: Int, radius: Int): Boolean {
+        if (otherHeight != height) {
+            return false
+        }
+        val dx = Math.abs(x - otherX)
+        val dz = Math.abs(z - otherZ)
+        return dx <= radius && dz <= radius
+    }
+
     /**
      * Checks if the [other] tile is within the [radius]x[radius] distance of
      * this [Tile].
@@ -84,14 +93,7 @@ class Tile {
      * @return true
      * if the tiles are on the same height and within radius of [radius] tiles.
      */
-    fun isWithinRadius(other: Tile, radius: Int): Boolean {
-        if (other.height != height) {
-            return false
-        }
-        val dx = Math.abs(x - other.x)
-        val dz = Math.abs(z - other.z)
-        return dx <= radius && dz <= radius
-    }
+    fun isWithinRadius(other: Tile, radius: Int): Boolean = isWithinRadius(other.x, other.z, other.height, radius)
 
     fun isInSameChunk(other: Tile): Boolean = (x shr 3) == (other.x shr 3) && (z shr 3) == (other.z shr 3)
 
@@ -164,6 +166,12 @@ class Tile {
             val z = ((packed) and 0x3FFF)
             val height = (packed shr 28)
             return Tile(x, z, height)
+        }
+
+        fun fromRegion(region: Int): Tile {
+            val x = ((region shr 8) shl 6)
+            val z = ((region and 0xFF) shl 6)
+            return Tile(x, z)
         }
     }
 }

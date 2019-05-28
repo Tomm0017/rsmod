@@ -81,18 +81,20 @@ class LoginService : Service {
         val encoderIsaac = if (isaacEncryption) encodeRandom else null
         val decoderIsaac = if (isaacEncryption) decodeRandom else null
 
-        pipeline.remove("handshake_encoder")
-        pipeline.remove("login_decoder")
-        pipeline.remove("login_encoder")
+        if (client.channel.isActive) {
+            pipeline.remove("handshake_encoder")
+            pipeline.remove("login_decoder")
+            pipeline.remove("login_encoder")
 
-        pipeline.addFirst("packet_encoder", GamePacketEncoder(encoderIsaac))
-        pipeline.addAfter("packet_encoder", "message_encoder", GameMessageEncoder(gameSystem.service.messageEncoders, gameSystem.service.messageStructures))
+            pipeline.addFirst("packet_encoder", GamePacketEncoder(encoderIsaac))
+            pipeline.addAfter("packet_encoder", "message_encoder", GameMessageEncoder(gameSystem.service.messageEncoders, gameSystem.service.messageStructures))
 
-        pipeline.addBefore("handler", "packet_decoder",
-                GamePacketDecoder(decoderIsaac, PacketMetadata(gameSystem.service.messageStructures)))
+            pipeline.addBefore("handler", "packet_decoder",
+                    GamePacketDecoder(decoderIsaac, PacketMetadata(gameSystem.service.messageStructures)))
 
-        client.login()
-        client.channel.flush()
+            client.login()
+            client.channel.flush()
+        }
     }
 
     companion object : KLogging()

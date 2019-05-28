@@ -62,7 +62,9 @@ class GameSystem(channel: Channel, val world: World, val client: Client, val ser
     }
 
     fun flush() {
-        channel.flush()
+        if (channel.isActive) {
+            channel.flush()
+        }
     }
 
     fun close() {

@@ -18,7 +18,11 @@ object PlayerDeathAction {
 
     val deathPlugin: Plugin.() -> Unit = {
         val player = ctx as Player
+
+        player.interruptQueues()
+        player.stopMovement()
         player.lock()
+
         player.queue(TaskPriority.STRONG) {
             death(player)
         }

@@ -225,7 +225,7 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
             val altered = when {
                 capValue > 0 -> Math.min(getCurrentLevel(skill) + value, getMaxLevel(skill) + capValue)
                 capValue < 0 -> Math.max(getCurrentLevel(skill) + value, getMaxLevel(skill) + capValue)
-                else -> getCurrentLevel(skill) + value
+                else -> Math.min(getMaxLevel(skill), getCurrentLevel(skill) + value)
             }
             val newLevel = Math.max(0, altered)
             val curLevel = getCurrentLevel(skill)
@@ -257,9 +257,9 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
          * positive number.
          *
          * @param capped if true, the [skill] level cannot increase further than
-         * [getMaxLevel] + [value].
+         * [getMaxLevel].
          */
-        fun incrementCurrentLevel(skill: Int, value: Int, capped: Boolean) = alterCurrentLevel(skill, value, if (capped) value else 0)
+        fun incrementCurrentLevel(skill: Int, value: Int, capped: Boolean) = alterCurrentLevel(skill, value, if (capped) 0 else value)
 
         companion object {
             /**

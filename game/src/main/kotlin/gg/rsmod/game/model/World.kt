@@ -484,7 +484,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
     fun getPlayerForName(username: String): Player? {
         for (i in 0 until players.capacity) {
             val player = players[i] ?: continue
-            if (player.username == username) {
+            if (player.username.equals(username, ignoreCase = true)) {
                 return player
             }
         }

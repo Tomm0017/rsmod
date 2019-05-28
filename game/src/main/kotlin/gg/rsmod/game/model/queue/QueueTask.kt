@@ -132,5 +132,9 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
         return result
     }
 
-    companion object : KLogging()
+    class EmptyReturnValue
+
+    companion object : KLogging() {
+        val EMPTY_RETURN_VALUE = EmptyReturnValue()
+    }
 }

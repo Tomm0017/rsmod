@@ -18,7 +18,6 @@ object SpecialAttacks {
 
     fun execute(player: Player, target: Pawn?, world: World): Boolean {
         val weaponItem = player.getEquipment(EquipmentType.WEAPON) ?: return false
-
         val special = attacks[weaponItem.id] ?: return false
 
         if (AttackTab.getEnergy(player) < special.energyRequired) {

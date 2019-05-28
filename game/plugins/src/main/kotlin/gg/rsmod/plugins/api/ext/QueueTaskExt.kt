@@ -206,17 +206,19 @@ suspend fun QueueTask.chatPlayer(message: String, animation: Int = 588, title: S
  * @param item
  * The id of the item to show on the dialog.
  *
- * @param amount
- * The amount of the item to show on the dialog.
+ * @param amountOrZoom
+ * The amount or zoom of the item to show on the dialog.
+ *
+ * @param options
+ * Item dialog boxes can have multiple options be shown instead of the default
+ * 'Click here to continue'.
  */
-suspend fun QueueTask.itemMessageBox(message: String, item: Int, amount: Int = 1) {
-    player.setComponentItem(interfaceId = 193, component = 1, item = item, amountOrZoom = amount)
-    player.setComponentText(interfaceId = 193, component = 2, text = message)
-    player.setComponentText(interfaceId = 193, component = 3, text = "Click here to continue")
-    player.setInterfaceEvents(interfaceId = 193, component = 3, range = -1..-1, setting = 1)
-    player.setInterfaceEvents(interfaceId = 193, component = 4, range = -1..-1, setting = 0)
-    player.setInterfaceEvents(interfaceId = 193, component = 5, range = -1..-1, setting = 0)
+suspend fun QueueTask.itemMessageBox(message: String, item: Int, amountOrZoom: Int = 1, vararg options: String = arrayOf("Click here to continue")) {
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 193)
+    player.setInterfaceEvents(interfaceId = 193, component = 0, range = 0..1, setting = 1)
+    player.setComponentItem(interfaceId = 193, component = 1, item = item, amountOrZoom = amountOrZoom)
+    player.setComponentText(interfaceId = 193, component = 2, text = message)
+    player.runClientScript(2868, *options)
 
     terminateAction = closeDialog
     waitReturnValue()

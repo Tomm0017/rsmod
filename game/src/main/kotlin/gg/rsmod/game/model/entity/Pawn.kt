@@ -323,7 +323,6 @@ abstract class Pawn(val world: World) : Entity() {
                          */
                         if (getCurrentHp() <= 0) {
                             hit.actions.forEach { action -> action(hit) }
-                            interruptQueues()
                             if (entityType.isPlayer()) {
                                 executePlugin(PlayerDeathAction.deathPlugin)
                             } else {

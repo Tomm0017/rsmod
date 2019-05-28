@@ -20,7 +20,11 @@ object NpcDeathAction {
 
     val deathPlugin: Plugin.() -> Unit = {
         val npc = ctx as Npc
+
+        npc.interruptQueues()
+        npc.stopMovement()
         npc.lock()
+
         npc.queue(TaskPriority.STRONG) {
             death(npc)
         }

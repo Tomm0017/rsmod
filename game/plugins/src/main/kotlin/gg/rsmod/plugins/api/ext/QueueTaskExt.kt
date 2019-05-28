@@ -102,6 +102,42 @@ suspend fun QueueTask.inputInt(description: String = "Enter amount"): Int {
 }
 
 /**
+ * Prompts the player with an input dialog where they can enter a string.
+ *
+ * @param description the title, or description, of the dialog box.
+ *
+ * @return the string input.
+ */
+suspend fun QueueTask.inputString(description: String = "Enter text"): String {
+    player.runClientScript(110, description)
+
+    terminateAction = closeInput
+    waitReturnValue()
+    terminateAction!!(this)
+
+    return requestReturnValue as? String ?: ""
+}
+
+/**
+ * Prompts the player with an input dialog where they can only enter a player
+ * username.
+ *
+ * @param description the title, or description, of the dialog box.
+ *
+ * @return the player with the respective username, null if the player is not
+ * online.
+ */
+suspend fun QueueTask.inputPlayer(description: String = "Enter name"): Player? {
+    player.runClientScript(109, description)
+
+    terminateAction = closeInput
+    waitReturnValue()
+    terminateAction!!(this)
+
+    return requestReturnValue as? Player
+}
+
+/**
  * Prompts the player with a chatbox interface that allows them to search
  * for an item.
  *

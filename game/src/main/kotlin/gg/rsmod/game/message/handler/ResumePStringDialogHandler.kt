@@ -11,7 +11,7 @@ import gg.rsmod.game.model.entity.Client
 class ResumePStringDialogHandler : MessageHandler<ResumePStringDialogMessage> {
 
     override fun handle(client: Client, world: World, message: ResumePStringDialogMessage) {
-        log(client, "String input dialog: input=%d", message.input)
+        log(client, "String input dialog: input=%s", message.input)
         client.queues.submitReturnValue(message.input)
     }
 }

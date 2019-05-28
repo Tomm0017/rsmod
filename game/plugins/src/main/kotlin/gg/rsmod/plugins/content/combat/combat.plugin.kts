@@ -6,7 +6,9 @@ import gg.rsmod.game.model.attr.FACING_PAWN_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_PLAYER_ATTR
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.model.timer.STUN_TIMER
+import gg.rsmod.plugins.content.combat.specialattack.SpecialAttacks
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
+import gg.rsmod.plugins.content.inter.attack.AttackTab
 
 set_combat_logic {
     pawn.attr[COMBAT_TARGET_FOCUS_ATTR]?.get()?.let { target ->
@@ -90,6 +92,16 @@ suspend fun cycle(it: QueueTask): Boolean {
 
     if (Combat.isAttackDelayReady(pawn)) {
         if (Combat.canAttack(pawn, target, strategy)) {
+
+            if (pawn is Player && AttackTab.isSpecialEnabled(pawn)) {
+                AttackTab.disableSpecial(pawn)
+                if (SpecialAttacks.execute(pawn, target, world)) {
+                    Combat.postAttack(pawn, target)
+                    return true
+                }
+                pawn.message("You don't have enough power left.")
+            }
+
             strategy.attack(pawn, target)
             Combat.postAttack(pawn, target)
         } else {

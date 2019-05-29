@@ -11,70 +11,83 @@ load_metadata {
 
     properties(
             // Inventory first row
-            0.getPropertyItem() to Items.IRON_FULL_HELM,
-            1.getPropertyItem() to Items.IRON_PLATEBODY,
-            2.getPropertyItem() to Items.IRON_PLATELEGS,
-            3.getPropertyItem() to Items.IRON_SCIMITAR,
+            0.getItem to Items.BRONZE_AXE,
+            1.getItem to Items.TINDERBOX,
+            2.getItem to Items.SMALL_FISHING_NET,
+            3.getItem to Items.SHRIMPS,
 
             // Inventory second row
-            4.getPropertyItem() to Items.BLUE_WIZARD_HAT,
-            5.getPropertyItem() to Items.BLUE_WIZARD_ROBE,
-            6.getPropertyItem() to Items.BLUE_SKIRT,
-            7.getPropertyItem() to Items.STAFF_OF_AIR,
+            4.getItem to Items.BUCKET,
+            5.getItem to Items.POT,
+            6.getItem to Items.BREAD,
+            7.getItem to Items.BRONZE_PICKAXE,
 
             // Inventory third row
-            8.getPropertyItem() to Items.LEATHER_COWL,
-            9.getPropertyItem() to Items.LEATHER_BODY,
-            10.getPropertyItem() to Items.LEATHER_CHAPS,
-            11.getPropertyItem() to Items.SHORTBOW,
+            8.getItem to Items.BRONZE_DAGGER,
+            9.getItem to Items.BRONZE_SWORD,
+            10.getItem to Items.WOODEN_SHIELD,
+            11.getItem to Items.SHORTBOW,
 
             // Inventory fourth row
-            12.getPropertyItem() to Items.AMULET_OF_POWER,
-            13.getPropertyItem() to Items.LEATHER_GLOVES,
-            14.getPropertyItem() to Items.CLIMBING_BOOTS,
-            15.getPropertyItem() to Items.IRON_ARROW,
-            15.getPropertyAmount() to 1000,
+            12.getItem to Items.BRONZE_ARROW,
+            12.getItemAmount to 25,
+            13.getItem to Items.AIR_RUNE,
+            13.getItemAmount to 25,
+            14.getItem to Items.MIND_RUNE,
+            14.getItemAmount to 15,
+            15.getItem to Items.WATER_RUNE,
+            15.getItemAmount to 6,
 
             // Inventory fifth row
-            16.getPropertyItem() to Items.AIR_RUNE,
-            16.getPropertyAmount() to 1000,
-            17.getPropertyItem() to Items.WATER_RUNE,
-            17.getPropertyAmount() to 1000,
-            18.getPropertyItem() to Items.EARTH_RUNE,
-            18.getPropertyAmount() to 1000,
-            19.getPropertyItem() to Items.FIRE_RUNE,
-            19.getPropertyAmount() to 1000,
+            16.getItem to Items.EARTH_RUNE,
+            16.getItemAmount to 4,
+            17.getItem to Items.BODY_RUNE,
+            17.getItemAmount to 2,
 
-            // Inventory sixth row
-            20.getPropertyItem() to Items.MIND_RUNE,
-            20.getPropertyAmount() to 4000,
-
-            // Inventory seventh row
-            27.getPropertyItem() to Items.COINS_995,
-            27.getPropertyAmount() to 10_000_000
+            // free monies
+            18.getItem to Items.COINS_995,
+            18.getItemAmount to 10_000_000
     )
 }
 
 on_login {
     val newAccount = player.attr[NEW_ACCOUNT_ATTR] ?: return@on_login
     if (newAccount) {
-        val items = getStarterItems()
-        items.forEach { slotItem ->
+        val inventory = player.getInventoryStarterItems()
+        val bank = player.getBankStarterItems()
+
+        inventory.forEach { slotItem ->
             player.inventory.add(item = slotItem.item, beginSlot = slotItem.slot)
+        }
+
+        bank.forEach { slotItem ->
+            player.bank.add(item = slotItem.item, beginSlot = slotItem.slot)
         }
     }
 }
 
-fun getStarterItems(): List<SlotItem> {
+fun Player.getInventoryStarterItems() = getStarterItems(inventory.capacity, { getItem }, { getItemAmount })
+
+fun Player.getBankStarterItems() = getStarterItems(bank.capacity, { getBankItem }, { getBankItemAmount })
+
+fun getStarterItems(containerCapacity: Int, itemProperty: (Int).() -> String, amountProperty: (Int).() -> String): List<SlotItem> {
     val items = mutableListOf<SlotItem>()
-    for (i in 0 until 28) {
-        val item = getProperty<Int>(i.getPropertyItem()) ?: continue
-        val amt = getProperty<Int>(i.getPropertyAmount()) ?: 1
+    for (i in 0 until containerCapacity) {
+        val item = getProperty<Int>(itemProperty(i)) ?: continue
+        val amt = getProperty<Int>(amountProperty(i)) ?: 1
         items.add(SlotItem(i, Item(item, amt)))
     }
     return items
 }
 
-fun Int.getPropertyItem(): String = "item[$this]"
+val Int.getItem: String
+    get() = "item[$this]"
 
-fun Int.getPropertyAmount(): String = "amount[$this]"
+val Int.getItemAmount: String
+    get() = "amount[$this]"
+
+val Int.getBankItem: String
+    get() = "bank_item[$this]"
+
+val Int.getBankItemAmount: String
+    get() = "bank_amount[$this]"

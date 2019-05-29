@@ -155,6 +155,12 @@ class PluginRepository(val world: World) {
     private val equipSlotPlugins: Multimap<Int, Plugin.() -> Unit> = HashMultimap.create()
 
     /**
+     * A map of plugins that contain plugins that should execute when un-equipping
+     * items from a certain equipment slot.
+     */
+    private val unequipSlotPlugins: Multimap<Int, Plugin.() -> Unit> = HashMultimap.create()
+
+    /**
      * A map of plugins that can stop an item from being equipped.
      */
     private val equipItemRequirementPlugins = Int2ObjectOpenHashMap<Plugin.() -> Boolean>()
@@ -875,6 +881,20 @@ class PluginRepository(val world: World) {
 
     fun executeEquipSlot(p: Player, equipSlot: Int): Boolean {
         val plugin = equipSlotPlugins[equipSlot]
+        if (plugin != null) {
+            plugin.forEach { logic -> p.executePlugin(logic) }
+            return true
+        }
+        return false
+    }
+
+    fun bindUnequipSlot(equipSlot: Int, plugin: Plugin.() -> Unit) {
+        unequipSlotPlugins.put(equipSlot, plugin)
+        pluginCount++
+    }
+
+    fun executeUnequipSlot(p: Player, equipSlot: Int): Boolean {
+        val plugin = unequipSlotPlugins[equipSlot]
         if (plugin != null) {
             plugin.forEach { logic -> p.executePlugin(logic) }
             return true

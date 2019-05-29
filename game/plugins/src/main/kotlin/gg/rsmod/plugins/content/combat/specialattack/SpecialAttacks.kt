@@ -18,13 +18,12 @@ object SpecialAttacks {
 
     fun execute(player: Player, target: Pawn?, world: World): Boolean {
         val weaponItem = player.getEquipment(EquipmentType.WEAPON) ?: return false
-
         val special = attacks[weaponItem.id] ?: return false
 
         if (AttackTab.getEnergy(player) < special.energyRequired) {
             return false
         }
-        
+
         AttackTab.setEnergy(player, AttackTab.getEnergy(player) - special.energyRequired)
 
         val combatContext = CombatContext(world, player)

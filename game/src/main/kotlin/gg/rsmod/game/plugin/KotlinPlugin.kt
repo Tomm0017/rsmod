@@ -420,6 +420,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     fun on_equip_to_slot(equipSlot: Int, logic: (Plugin).() -> Unit) = r.bindEquipSlot(equipSlot, logic)
 
     /**
+     * Invoke [logic] when an item is un-equipped from equipment slot [equipSlot].
+     */
+    fun on_unequip_from_slot(equipSlot: Int, logic: (Plugin).() -> Unit) = r.bindUnequipSlot(equipSlot, logic)
+
+    /**
      * Return true if [item] can be equipped, false if it can't.
      */
     fun can_equip_item(item: Int, logic: (Plugin).() -> Boolean) = r.bindEquipItemRequirement(item, logic)

@@ -159,7 +159,7 @@ fun deposit_equipment(player: Player) {
         }
         if (deposited > 0) {
             any = true
-            EquipAction.onItemUnequip(player, item.id)
+            EquipAction.onItemUnequip(player, item.id, i)
         }
     }
 

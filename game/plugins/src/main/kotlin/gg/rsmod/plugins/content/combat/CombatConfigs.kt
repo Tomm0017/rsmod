@@ -160,7 +160,7 @@ object CombatConfigs {
     }
 
     fun getAttackStyle(pawn: Pawn): AttackStyle {
-        if (pawn.entityType.isNpc()) {
+        if (pawn.entityType.isNpc) {
             return (pawn as Npc).attackStyle
         }
 
@@ -241,7 +241,7 @@ object CombatConfigs {
     }
 
     fun getCombatStyle(pawn: Pawn): CombatStyle {
-        if (pawn.entityType.isNpc()) {
+        if (pawn.entityType.isNpc) {
             return (pawn as Npc).combatStyle
         }
 

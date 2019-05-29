@@ -76,7 +76,7 @@ object Combat {
         target.animate(blockAnimation)
 
         if (target.lock.canAttack()) {
-            if (target.entityType.isNpc()) {
+            if (target.entityType.isNpc) {
                 if (!target.attr.has(COMBAT_TARGET_FOCUS_ATTR) || target.attr[COMBAT_TARGET_FOCUS_ATTR]!!.get() != pawn) {
                     target.attack(pawn)
                 }
@@ -116,7 +116,7 @@ object Combat {
         val dstSize = Math.max(distance, target.getSize())
 
         val touching = if (distance > 1) areOverlapping(start.x, start.z, srcSize, srcSize, end.x, end.z, dstSize, dstSize)
-                        else areBordering(start.x, start.z, srcSize, srcSize, end.x, end.z, dstSize, dstSize)
+        else areBordering(start.x, start.z, srcSize, srcSize, end.x, end.z, dstSize, dstSize)
         val withinRange = touching && world.collision.raycast(start, end, projectile = projectile)
         return withinRange || PawnPathAction.walkTo(it, pawn, target, interactionRange = distance, lineOfSight = false)
     }
@@ -145,7 +145,7 @@ object Combat {
             return false
         }
 
-        val pvp = pawn.entityType.isPlayer() && target.entityType.isPlayer()
+        val pvp = pawn.entityType.isPlayer && target.entityType.isPlayer
 
         if (pawn is Player) {
             if (!pawn.isOnline) {
@@ -227,7 +227,7 @@ object Combat {
     }
 
     private fun areOverlapping(x1: Int, z1: Int, width1: Int, length1: Int,
-                       x2: Int, z2: Int, width2: Int, length2: Int): Boolean {
+                               x2: Int, z2: Int, width2: Int, length2: Int): Boolean {
         val a = Box(x1, z1, width1 - 1, length1 - 1)
         val b = Box(x2, z2, width2 - 1, length2 - 1)
 

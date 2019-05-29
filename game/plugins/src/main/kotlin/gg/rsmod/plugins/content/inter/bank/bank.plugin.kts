@@ -80,7 +80,7 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
         }
         if (deposited > 0) {
             any = true
-            EquipAction.onItemUnequip(player, item.id)
+            EquipAction.onItemUnequip(player, item.id, i)
         }
     }
 

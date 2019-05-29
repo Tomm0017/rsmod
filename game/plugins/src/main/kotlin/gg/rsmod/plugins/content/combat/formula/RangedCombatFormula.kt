@@ -84,7 +84,7 @@ object RangedCombatFormula : CombatFormula {
         if (specialAttackMultiplier == 1.0) {
             val multiplier = when {
                 player.hasEquipped(EquipmentType.WEAPON, Items.DRAGON_HUNTER_CROSSBOW) && isDragon(target) -> 1.3
-                player.hasEquipped(EquipmentType.WEAPON, Items.TWISTED_BOW) && target.entityType.isNpc() -> {
+                player.hasEquipped(EquipmentType.WEAPON, Items.TWISTED_BOW) && target.entityType.isNpc -> {
                     // TODO: cap inside Chambers of Xeric is 350
                     val cap = 250.0
                     val magic = when (target) {
@@ -135,7 +135,7 @@ object RangedCombatFormula : CombatFormula {
         if (specialAttackMultiplier == 1.0) {
             val multiplier = when {
                 player.hasEquipped(EquipmentType.WEAPON, Items.DRAGON_HUNTER_CROSSBOW) && isDragon(target) -> 1.3
-                player.hasEquipped(EquipmentType.WEAPON, Items.TWISTED_BOW) && target.entityType.isNpc() -> {
+                player.hasEquipped(EquipmentType.WEAPON, Items.TWISTED_BOW) && target.entityType.isNpc -> {
                     // TODO: cap inside Chambers of Xeric is 250
                     val cap = 140.0
                     val magic = when (target) {
@@ -318,14 +318,14 @@ object RangedCombatFormula : CombatFormula {
     private fun getDamageTakeMultiplier(pawn: Pawn): Double = pawn.attr[Combat.DAMAGE_TAKE_MULTIPLIER] ?: 1.0
 
     private fun isDragon(pawn: Pawn): Boolean {
-        if (pawn.entityType.isNpc()) {
+        if (pawn.entityType.isNpc) {
             return (pawn as Npc).isSpecies(NpcSpecies.DRAGON)
         }
         return false
     }
 
     private fun isFiery(pawn: Pawn): Boolean {
-        if (pawn.entityType.isNpc()) {
+        if (pawn.entityType.isNpc) {
             return (pawn as Npc).isSpecies(NpcSpecies.FIERY)
         }
         return false

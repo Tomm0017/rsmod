@@ -69,7 +69,7 @@ suspend fun cycle(it: QueueTask): Boolean {
 
     if (!pathFound) {
         pawn.stopMovement()
-        if (pawn.entityType.isNpc()) {
+        if (pawn.entityType.isNpc) {
             /**
              * Npcs will keep trying to find a path to engage in combat.
              */
@@ -93,7 +93,7 @@ suspend fun cycle(it: QueueTask): Boolean {
     if (Combat.isAttackDelayReady(pawn)) {
         if (Combat.canAttack(pawn, target, strategy)) {
 
-            if (pawn is Player && AttackTab.isSpecialEnabled(pawn)) {
+            if (pawn is Player && AttackTab.isSpecialEnabled(pawn) && pawn.getEquipment(EquipmentType.WEAPON) != null) {
                 AttackTab.disableSpecial(pawn)
                 if (SpecialAttacks.execute(pawn, target, world)) {
                     Combat.postAttack(pawn, target)

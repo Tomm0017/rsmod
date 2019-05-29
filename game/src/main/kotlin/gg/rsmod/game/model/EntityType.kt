@@ -48,17 +48,24 @@ enum class EntityType {
      */
     AREA_SOUND;
 
-    fun isHumanControlled(): Boolean = this == CLIENT
+    val isHumanControlled: Boolean
+        get() = this == CLIENT
 
-    fun isPlayer(): Boolean = this == CLIENT || this == PLAYER
+    val isPlayer: Boolean
+        get() = this == CLIENT || this == PLAYER
 
-    fun isNpc(): Boolean = this == NPC
+    val isNpc: Boolean
+        get() = this == NPC
 
-    fun isObject(): Boolean = this == STATIC_OBJECT || this == DYNAMIC_OBJECT
+    val isObject: Boolean
+        get() = this == STATIC_OBJECT || this == DYNAMIC_OBJECT
 
-    fun isProjectile(): Boolean = this == PROJECTILE
+    val isProjectile: Boolean
+        get() = this == PROJECTILE
 
-    fun isGroundItem(): Boolean = this == GROUND_ITEM
+    val isGroundItem: Boolean
+        get() = this == GROUND_ITEM
 
-    fun isTransient(): Boolean = this == PROJECTILE || this == AREA_SOUND
+    val isTransient: Boolean
+        get() = this == PROJECTILE || this == AREA_SOUND
 }

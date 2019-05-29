@@ -150,22 +150,6 @@ object Bank {
         return slot
     }
 
-    fun ItemContainer.shift() {
-        val newItems = Array<Item?>(capacity) { null }
-
-        var index = 0
-        for (i in 0 until capacity) {
-            val item = this[i] ?: continue
-            newItems[index++] = item
-        }
-
-        removeAll()
-
-        for (i in 0 until capacity) {
-            set(i, newItems[i])
-        }
-    }
-
     fun ItemContainer.insert(from: Int, to: Int) {
         val fromItem = this[from]!! // Shouldn't be null
 

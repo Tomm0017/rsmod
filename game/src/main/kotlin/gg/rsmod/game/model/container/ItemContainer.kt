@@ -53,7 +53,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
     fun contains(item: Int): Boolean = items.any { it?.id == item }
 
     /**
-     * Check if the container contains all [Item]s in
+     * Check if the container contains all [Item]s in [itemArray].
      */
     fun contains(itemArray: IntArray): Boolean {
         itemArray.forEach { item ->

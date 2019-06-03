@@ -53,6 +53,18 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
     fun contains(item: Int): Boolean = items.any { it?.id == item }
 
     /**
+     * Check if the container contains all [Item]s in
+     */
+    fun contains(itemArray: IntArray): Boolean {
+        itemArray.forEach { item ->
+            if (!items.any { it?.id == item }) {
+                return false
+            }
+        }
+        return true
+    }
+
+    /**
      * Checks if the container has an [Item] which has the same [Item.id] as
      * [item] or any of the values (if any) in [others].
      */

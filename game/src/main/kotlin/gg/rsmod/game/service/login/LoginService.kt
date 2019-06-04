@@ -11,6 +11,7 @@ import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.Service
 import gg.rsmod.game.service.rsa.RsaService
 import gg.rsmod.game.service.serializer.PlayerSerializerService
+import gg.rsmod.game.service.world.SimpleWorldVerificationService
 import gg.rsmod.game.service.world.WorldVerificationService
 import gg.rsmod.game.system.GameSystem
 import gg.rsmod.net.codec.game.GamePacketDecoder
@@ -49,7 +50,7 @@ class LoginService : Service {
     override fun postLoad(server: Server, world: World) {
         serializer = world.getService(PlayerSerializerService::class.java, searchSubclasses = true)!!
 
-        val worldVerificationService = world.getService(WorldVerificationService::class.java, searchSubclasses = true)!!
+        val worldVerificationService = world.getService(WorldVerificationService::class.java, searchSubclasses = true) ?: SimpleWorldVerificationService()
 
         val executorService = Executors.newFixedThreadPool(threadCount, ThreadFactoryBuilder().setNameFormat("login-worker").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
         for (i in 0 until threadCount) {

@@ -1,9 +1,9 @@
 package gg.rsmod.game.service.login
 
-import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.serializer.PlayerLoadResult
+import gg.rsmod.game.service.world.WorldVerificationService
 import gg.rsmod.net.codec.login.LoginResponse
 import gg.rsmod.net.codec.login.LoginResultType
 import gg.rsmod.util.io.IsaacRandom
@@ -16,7 +16,7 @@ import mu.KLogging
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class LoginWorker(private val boss: LoginService) : Runnable {
+class LoginWorker(private val boss: LoginService, private val verificationService: WorldVerificationService) : Runnable {
 
     override fun run() {
         while (true) {
@@ -32,11 +32,11 @@ class LoginWorker(private val boss: LoginService) : Runnable {
                     val encodeRandom = IsaacRandom(IntArray(request.login.xteaKeys.size) { request.login.xteaKeys[it] + 50 })
 
                     world.getService(GameService::class.java)?.submitGameThreadJob {
-                        val loginResult: LoginResultType = when {
-                            world.rebootTimer != -1 && world.rebootTimer < World.REJECT_LOGIN_REBOOT_THRESHOLD -> LoginResultType.SERVER_UPDATE
-                            world.getPlayerForName(client.username) != null -> LoginResultType.ALREADY_ONLINE
-                            world.players.count() >= world.players.capacity -> LoginResultType.MAX_PLAYERS
-                            else -> if (client.register()) LoginResultType.ACCEPTABLE else LoginResultType.COULD_NOT_COMPLETE_LOGIN
+                        val interceptedLoginResult = verificationService.interceptLoginResult(client.uid, client.username, client.loginUsername)
+                        val loginResult: LoginResultType = interceptedLoginResult ?: if (client.register()) {
+                            LoginResultType.ACCEPTABLE
+                        } else {
+                            LoginResultType.COULD_NOT_COMPLETE_LOGIN
                         }
                         if (loginResult == LoginResultType.ACCEPTABLE) {
                             client.channel.write(LoginResponse(index = client.index, privilege = client.privilege.id))

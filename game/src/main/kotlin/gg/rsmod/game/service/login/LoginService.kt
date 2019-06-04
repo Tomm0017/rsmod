@@ -11,6 +11,7 @@ import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.Service
 import gg.rsmod.game.service.rsa.RsaService
 import gg.rsmod.game.service.serializer.PlayerSerializerService
+import gg.rsmod.game.service.world.WorldVerificationService
 import gg.rsmod.game.system.GameSystem
 import gg.rsmod.net.codec.game.GamePacketDecoder
 import gg.rsmod.net.codec.game.GamePacketEncoder
@@ -39,17 +40,21 @@ class LoginService : Service {
      */
     val requests = LinkedBlockingQueue<LoginServiceRequest>()
 
-    override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
-        serializer = world.getService(PlayerSerializerService::class.java, searchSubclasses = true)!!
+    private var threadCount = 1
 
-        val threadCount = serviceProperties.getOrDefault("thread-count", 3)
-        val executorService = Executors.newFixedThreadPool(threadCount, ThreadFactoryBuilder().setNameFormat("login-worker").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
-        for (i in 0 until threadCount) {
-            executorService.execute(LoginWorker(this))
-        }
+    override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
+        threadCount = serviceProperties.getOrDefault("thread-count", 3)
     }
 
     override fun postLoad(server: Server, world: World) {
+        serializer = world.getService(PlayerSerializerService::class.java, searchSubclasses = true)!!
+
+        val worldVerificationService = world.getService(WorldVerificationService::class.java, searchSubclasses = true)!!
+
+        val executorService = Executors.newFixedThreadPool(threadCount, ThreadFactoryBuilder().setNameFormat("login-worker").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
+        for (i in 0 until threadCount) {
+            executorService.execute(LoginWorker(this, worldVerificationService))
+        }
     }
 
     override fun bindNet(server: Server, world: World) {

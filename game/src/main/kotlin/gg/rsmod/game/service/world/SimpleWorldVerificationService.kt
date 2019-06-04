@@ -17,15 +17,10 @@ class SimpleWorldVerificationService : WorldVerificationService {
         this.world = world
     }
 
-    override fun interceptLoginResult(uid: PlayerUID, displayName: String, loginName: String): LoginResultType? {
-        return if (world.rebootTimer != -1 && world.rebootTimer < World.REJECT_LOGIN_REBOOT_THRESHOLD) {
-            LoginResultType.SERVER_UPDATE
-        } else if (world.getPlayerForName(displayName) != null) {
-            LoginResultType.ALREADY_ONLINE
-        } else if (world.players.count() >= world.players.capacity) {
-            LoginResultType.MAX_PLAYERS
-        } else {
-            null
-        }
+    override fun interceptLoginResult(uid: PlayerUID, displayName: String, loginName: String): LoginResultType? = when {
+        world.rebootTimer != -1 && world.rebootTimer < World.REJECT_LOGIN_REBOOT_THRESHOLD -> LoginResultType.SERVER_UPDATE
+        world.getPlayerForName(displayName) != null -> LoginResultType.ALREADY_ONLINE
+        world.players.count() >= world.players.capacity -> LoginResultType.MAX_PLAYERS
+        else -> null
     }
 }

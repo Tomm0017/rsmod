@@ -9,12 +9,14 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.api.ProjectileType
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.ext.getVarbit
+import gg.rsmod.plugins.api.ext.message
 import gg.rsmod.plugins.api.ext.playSound
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
 import gg.rsmod.plugins.content.combat.createProjectile
 import gg.rsmod.plugins.content.combat.dealHit
 import gg.rsmod.plugins.content.combat.formula.MagicCombatFormula
+import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 import gg.rsmod.plugins.content.magic.MagicSpells
 
 /**
@@ -59,14 +61,14 @@ object MagicCombatStrategy : CombatStrategy {
         val accuracy = formula.getAccuracy(pawn, target)
         val maxHit = formula.getMaxHit(pawn, target)
         val landHit = accuracy >= world.randomDouble()
-        val damage = if (landHit) world.random(maxHit) else 0
-
-        if (damage > 0 && pawn.entityType.isPlayer) {
-            addCombatXp(pawn as Player, target, damage)
-        }
 
         val hitDelay = getHitDelay(pawn.getCentreTile(), target.getCentreTile())
-        pawn.dealHit(target = target, maxHit = maxHit, landHit = landHit, delay = hitDelay)
+        val damage = pawn.dealHit(target = target, maxHit = maxHit, landHit = landHit, delay = hitDelay).hit.hitmarks.sumBy { it.damage }
+
+        if (damage > 0 && pawn.entityType.isPlayer) {
+            addCombatXp(pawn as Player, target, damage, spell)
+        }
+
     }
 
     fun getHitDelay(start: Tile, target: Tile): Int {
@@ -74,24 +76,30 @@ object MagicCombatStrategy : CombatStrategy {
         return 2 + Math.floor((1.0 + distance) / 3.0).toInt()
     }
 
-    private fun addCombatXp(player: Player, target: Pawn, damage: Int) {
+    private fun addCombatXp(player: Player, target: Pawn, damage: Int, spell: CombatSpell) {
         val modDamage = if (target.entityType.isNpc) Math.min(target.getCurrentHp(), damage) else damage
         val mode = CombatConfigs.getXpMode(player)
         val multiplier = if (target is Npc) Combat.getNpcXpMultiplier(target) else 1.0
+        val baseXp = spell.baseXp
+
+        player.message("Magic Xp: ${(modDamage * 2.0 * multiplier + baseXp)} Damage: $modDamage Multiplier: $multiplier Mode: $mode")
 
         if (mode == XpMode.MAGIC) {
             val defensive = player.getVarbit(Combat.SELECTED_AUTOCAST_VARBIT) != 0 && player.getVarbit(Combat.DEFENSIVE_MAGIC_CAST_VARBIT) != 0
             if (!defensive) {
-                player.addXp(Skills.MAGIC, modDamage * 2.0 * multiplier)
+                player.addXp(Skills.MAGIC, (modDamage * 2.0 * multiplier) + baseXp)
                 player.addXp(Skills.HITPOINTS, modDamage * 1.33 * multiplier)
             } else {
-                player.addXp(Skills.MAGIC, modDamage * 1.33 * multiplier)
+                player.addXp(Skills.MAGIC, (modDamage * 1.33 * multiplier) + baseXp)
                 player.addXp(Skills.DEFENCE, modDamage * multiplier)
                 player.addXp(Skills.HITPOINTS, modDamage * 1.33 * multiplier)
             }
         } else if (mode == XpMode.SHARED) {
-            player.addXp(Skills.MAGIC, modDamage * 1.33 * multiplier)
+            player.addXp(Skills.MAGIC, (modDamage * 1.33 * multiplier) + baseXp)
             player.addXp(Skills.DEFENCE, modDamage * multiplier)
+            player.addXp(Skills.HITPOINTS, modDamage * 1.33 * multiplier)
+        } else {
+            player.addXp(Skills.MAGIC, (modDamage * 2.0 * multiplier) + baseXp)
             player.addXp(Skills.HITPOINTS, modDamage * 1.33 * multiplier)
         }
     }

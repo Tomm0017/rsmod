@@ -7,6 +7,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.WeaponType
 import gg.rsmod.plugins.api.ext.hasWeaponType
+import gg.rsmod.plugins.api.ext.message
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
 import gg.rsmod.plugins.content.combat.dealHit
@@ -39,20 +40,20 @@ object MeleeCombatStrategy : CombatStrategy {
         val accuracy = formula.getAccuracy(pawn, target)
         val maxHit = formula.getMaxHit(pawn, target)
         val landHit = accuracy >= world.randomDouble()
-        val damage = if (landHit) world.random(maxHit) else 0
+
+
+        val damage = pawn.dealHit(target = target, maxHit = maxHit, landHit = landHit, delay = 1).hit.hitmarks.sumBy{it.damage}
 
         if (damage > 0 && pawn.entityType.isPlayer) {
             addCombatXp(pawn as Player, target, damage)
         }
-
-        pawn.dealHit(target = target, maxHit = maxHit, landHit = landHit, delay = 1)
     }
 
     private fun addCombatXp(player: Player, target: Pawn, damage: Int) {
         val modDamage = if (target.entityType.isNpc) Math.min(target.getCurrentHp(), damage) else damage
         val mode = CombatConfigs.getXpMode(player)
         val multiplier = if (target is Npc) Combat.getNpcXpMultiplier(target) else 1.0
-
+        player.message("Defence XP: ${modDamage * 4.0 * multiplier}, modDamage: $modDamage, multiplier: $multiplier")
         when (mode) {
             XpMode.ATTACK -> {
                 player.addXp(Skills.ATTACK, modDamage * 4.0 * multiplier)

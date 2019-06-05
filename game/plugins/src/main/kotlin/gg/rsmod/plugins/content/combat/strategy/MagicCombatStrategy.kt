@@ -82,8 +82,6 @@ object MagicCombatStrategy : CombatStrategy {
         val multiplier = if (target is Npc) Combat.getNpcXpMultiplier(target) else 1.0
         val baseXp = spell.baseXp
 
-        player.message("Magic Xp: ${(modDamage * 2.0 * multiplier + baseXp)} Damage: $modDamage Multiplier: $multiplier Mode: $mode")
-
         if (mode == XpMode.MAGIC) {
             val defensive = player.getVarbit(Combat.SELECTED_AUTOCAST_VARBIT) != 0 && player.getVarbit(Combat.DEFENSIVE_MAGIC_CAST_VARBIT) != 0
             if (!defensive) {

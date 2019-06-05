@@ -53,7 +53,7 @@ object MeleeCombatStrategy : CombatStrategy {
         val modDamage = if (target.entityType.isNpc) Math.min(target.getCurrentHp(), damage) else damage
         val mode = CombatConfigs.getXpMode(player)
         val multiplier = if (target is Npc) Combat.getNpcXpMultiplier(target) else 1.0
-        player.message("Defence XP: ${modDamage * 4.0 * multiplier}, modDamage: $modDamage, multiplier: $multiplier")
+        
         when (mode) {
             XpMode.ATTACK -> {
                 player.addXp(Skills.ATTACK, modDamage * 4.0 * multiplier)

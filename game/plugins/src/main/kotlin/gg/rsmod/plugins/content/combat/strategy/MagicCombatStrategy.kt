@@ -65,7 +65,7 @@ object MagicCombatStrategy : CombatStrategy {
         val hitDelay = getHitDelay(pawn.getCentreTile(), target.getCentreTile())
         val damage = pawn.dealHit(target = target, maxHit = maxHit, landHit = landHit, delay = hitDelay).hit.hitmarks.sumBy { it.damage }
 
-        if (damage > 0 && pawn.entityType.isPlayer) {
+        if (damage >= 0 && pawn.entityType.isPlayer) {
             addCombatXp(pawn as Player, target, damage, spell)
         }
 

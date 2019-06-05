@@ -50,7 +50,7 @@ class LoginService : Service {
     override fun postLoad(server: Server, world: World) {
         serializer = world.getService(PlayerSerializerService::class.java, searchSubclasses = true)!!
 
-        val worldVerificationService = world.getService(WorldVerificationService::class.java, searchSubclasses = true) ?: SimpleWorldVerificationService().apply { init(server, world, ServerProperties()) }
+        val worldVerificationService = world.getService(WorldVerificationService::class.java, searchSubclasses = true) ?: SimpleWorldVerificationService()
 
         val executorService = Executors.newFixedThreadPool(threadCount, ThreadFactoryBuilder().setNameFormat("login-worker").setUncaughtExceptionHandler { t, e -> logger.error("Error with thread $t", e) }.build())
         for (i in 0 until threadCount) {

@@ -32,7 +32,7 @@ class LoginWorker(private val boss: LoginService, private val verificationServic
                     val encodeRandom = IsaacRandom(IntArray(request.login.xteaKeys.size) { request.login.xteaKeys[it] + 50 })
 
                     world.getService(GameService::class.java)?.submitGameThreadJob {
-                        val interceptedLoginResult = verificationService.interceptLoginResult(client.uid, client.username, client.loginUsername)
+                        val interceptedLoginResult = verificationService.interceptLoginResult(world, client.uid, client.username, client.loginUsername)
                         val loginResult: LoginResultType = interceptedLoginResult ?: if (client.register()) {
                             LoginResultType.ACCEPTABLE
                         } else {

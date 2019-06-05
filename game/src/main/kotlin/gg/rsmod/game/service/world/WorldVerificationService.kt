@@ -29,5 +29,5 @@ interface WorldVerificationService : Service {
      *
      * @return null if the player can log in successfully without
      */
-    fun interceptLoginResult(uid: PlayerUID, displayName: String, loginName: String): LoginResultType?
+    fun interceptLoginResult(world: World, uid: PlayerUID, displayName: String, loginName: String): LoginResultType?
 }

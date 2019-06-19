@@ -335,7 +335,6 @@ on_command("cmds", Privilege.ADMIN_POWER) {
     var buf = ""
     val split = command.split(", ")
     split.forEach { s ->
-        player.message(s)
         buf += s
         buf += ", "
         if (buf.length > 75) {

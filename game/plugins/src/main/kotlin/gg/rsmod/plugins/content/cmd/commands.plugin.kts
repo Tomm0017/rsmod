@@ -329,6 +329,28 @@ on_command("clip", Privilege.ADMIN_POWER) {
     }
 }
 
+on_command("cmds", Privilege.ADMIN_POWER) {
+    val command = get_all_commands().joinToString()
+    val messages = ArrayList<String>()
+    var buf = ""
+    val split = command.split(", ")
+    split.forEach { s ->
+        player.message(s)
+        buf += s
+        buf += ", "
+        if (buf.length > 75) {
+            messages.add(buf)
+            buf = ""
+        }
+    }
+    if(buf != "") {
+        buf = buf.substring(0, buf.length-2)
+        messages.add(buf)
+    }
+    player.message("Commands:")
+    messages.forEach { s -> player.message(s)}
+}
+
 fun tryWithUsage(player: Player, args: Array<String>, failMessage: String, tryUnit: Function1<Array<String>, Unit>) {
     try {
         tryUnit.invoke(args)

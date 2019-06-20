@@ -516,6 +516,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      */
     fun on_item_on_npc(item: Int, npc: Int, plugin: Plugin.() -> Unit) = r.bindItemOnNpc(npc = npc, item = item, plugin = plugin)
 
+    fun npc_drop_table(npc: Int, plugin: (Plugin).() -> HashMap<Int, Int>?) = r.bindNpcDropTable(npc = npc, plugin = plugin)
+
     companion object {
         private val METADATA_PATH = Paths.get("./plugins", "configs")
     }

@@ -27,7 +27,19 @@ val smelting = SmeltingAction(world.definitions)
  * The set of 'standard' furnaces
  */
 val standardFurnaces = setOf(
-        Objs.FURNACE_24009
+        Objs.FURNACE_4304,
+        Objs.FURNACE_6189,
+        Objs.FURNACE_11010,
+        Objs.FURNACE_12100,
+        Objs.FURNACE_12809,
+        Objs.FURNACE_16469,
+        Objs.FURNACE_16657,
+        Objs.FURNACE_24009,
+        Objs.FURNACE_26300,
+        Objs.FURNACE_28565,
+        Objs.FURNACE_30158,
+        Objs.FURNACE_33504
+
 )
 
 /**

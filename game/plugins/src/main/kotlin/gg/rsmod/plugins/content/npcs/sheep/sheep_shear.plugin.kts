@@ -56,7 +56,7 @@ fun flee(n: Npc) {
 }
 
 suspend fun transmog_sheep(it: QueueTask, n: Npc) {
-    n.setTransmogId(if (n.id == 2803) Npcs.SHEEP_2792 else Npcs.SHEEP_2793)
+    n.setTransmogId(if (n.id == 2788) Npcs.SHEEP_2691 else Npcs.SHEEP_2692)
     it.wait(100)
     n.setTransmogId(n.id)
 }

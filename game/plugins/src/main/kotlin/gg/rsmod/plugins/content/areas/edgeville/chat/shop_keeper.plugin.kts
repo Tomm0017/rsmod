@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.content.areas.edgeville.chat
 
-arrayOf(Npcs.SHOP_KEEPER_514, Npcs.SHOP_ASSISTANT_515).forEach { shop ->
+arrayOf(Npcs.SHOP_KEEPER_2821, Npcs.SHOP_ASSISTANT_2822).forEach { shop ->
     on_npc_option(npc = shop, option = "talk-to") {
         player.queue { dialog(this) }
     }

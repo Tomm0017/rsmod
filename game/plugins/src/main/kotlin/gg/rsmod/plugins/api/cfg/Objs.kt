@@ -16133,7 +16133,7 @@ object Objs {
     const val GRAND_EXCHANGE_BOOTH_30390 = 30390
     const val IRON_LADDER_30391 = 30391
     const val IRON_LADDER_30392 = 30392
-    const val JADFEST_PORTAL = 30395
+    const val MYSTERIOUS_POOL = 30395
     const val SHIMMERING_BARRIER_30396 = 30396
     const val SHIMMERING_BARRIER_30397 = 30397
     const val SHIMMERING_BARRIER_30398 = 30398
@@ -17528,7 +17528,7 @@ object Objs {
     const val FIRE_OF_DEHUMIDIFICATION_33322 = 33322
     const val PILE_OF_RUBBLE_33340 = 33340
     const val PILE_OF_RUBBLE_33341 = 33341
-    const val HUB_PORTAL = 33343
+    const val LARRANS_SMALL_CHEST = 33343
     const val BROKEN_WALL_33344 = 33344
     const val PORTAL_NEXUS_SPACE = 33346
     const val RUG_SPACE_33347 = 33347
@@ -18605,5 +18605,10 @@ object Objs {
     const val RUBBLE_34803 = 34803
     const val RUBBLE_34804 = 34804
     const val RUBBLE_34805 = 34805
+    const val JADFEST_PORTAL = 34826
+    const val HUB_PORTAL = 34827
+    const val LARRANS_SMALL_CHEST_34828 = 34828
+    const val LARRANS_BIG_CHEST = 34829
+    const val LARRANS_BIG_CHEST_34830 = 34830
     /* Auto-generated file using class gg.rsmod.game.service.game.DumpEntityIdService */
 }

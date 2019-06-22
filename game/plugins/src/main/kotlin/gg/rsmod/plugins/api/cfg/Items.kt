@@ -14752,5 +14752,36 @@ object Items {
     const val NULL_23455 = 23455
     const val NULL_23456 = 23456
     const val NULL_23457 = 23457
+    const val ENCHANTED_LYREI = 23458
+    const val ATTACKER_ICON_23460 = 23460
+    const val ATTACKER_ICON_23461 = 23461
+    const val ATTACKER_ICON_23462 = 23462
+    const val ATTACKER_ICON_23463 = 23463
+    const val ATTACKER_ICON_23464 = 23464
+    const val ATTACKER_ICON_23465 = 23465
+    const val DEFENDER_ICON_23466 = 23466
+    const val DEFENDER_ICON_23467 = 23467
+    const val DEFENDER_ICON_23468 = 23468
+    const val DEFENDER_ICON_23469 = 23469
+    const val DEFENDER_ICON_23470 = 23470
+    const val COLLECTOR_ICON_23471 = 23471
+    const val COLLECTOR_ICON_23472 = 23472
+    const val COLLECTOR_ICON_23473 = 23473
+    const val COLLECTOR_ICON_23474 = 23474
+    const val COLLECTOR_ICON_23475 = 23475
+    const val COLLECTOR_ICON_23476 = 23476
+    const val COLLECTOR_ICON_23477 = 23477
+    const val HEALER_ICON_23478 = 23478
+    const val HEALER_ICON_23479 = 23479
+    const val HEALER_ICON_23480 = 23480
+    const val HEALER_ICON_23481 = 23481
+    const val HEALER_ICON_23482 = 23482
+    const val HEALER_ICON_23483 = 23483
+    const val HEALER_ICON_23484 = 23484
+    const val HEALER_ICON_23485 = 23485
+    const val HEALER_ICON_23486 = 23486
+    const val MYSTERIOUS_EMBLEM_TIER_10_NOTED = 23487
+    const val WINE_OF_ZAMORAK_23489 = 23489
+    const val LARRANS_KEY = 23490
     /* Auto-generated file using class gg.rsmod.game.service.game.DumpEntityIdService */
 }

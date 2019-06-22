@@ -3,6 +3,7 @@ package gg.rsmod.game.message.encoder
 import gg.rsmod.game.message.MessageEncoder
 import gg.rsmod.game.message.impl.RebuildNormalMessage
 import gg.rsmod.game.model.region.Chunk
+import gg.rsmod.game.service.xtea.XteaKeyService
 import io.netty.buffer.Unpooled
 
 /**
@@ -41,12 +42,12 @@ class RebuildNormalEncoder : MessageEncoder<RebuildNormalMessage>() {
                 for (z in lz..rz) {
                     if (!forceSend || z != 49 && z != 149 && z != 147 && x != 50 && (x != 49 || z != 47)) {
                         val region = z + (x shl 8)
-                        val keys = message.xteaKeyService!!.get(region)
+                        val keys = message.xteaKeyService?.get(region) ?: XteaKeyService.EMPTY_KEYS
                         for (xteaKey in keys) {
                             buf.writeInt(xteaKey) // Client always reads as int
                         }
+                        count++
                     }
-                    count++
                 }
             }
             buf.setShort(0, count)

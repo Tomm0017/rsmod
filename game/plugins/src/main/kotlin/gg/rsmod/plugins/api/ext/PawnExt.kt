@@ -1,5 +1,6 @@
 package gg.rsmod.plugins.api.ext
 
+import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Hit
 import gg.rsmod.game.model.attr.*
 import gg.rsmod.game.model.entity.*
@@ -99,6 +100,14 @@ fun Pawn.stun(cycles: Int) {
             resetInteractions()
             interruptQueues()
             message("You have been stunned!")
+        }
+    }
+}
+
+fun Pawn.stepAway(){
+    for(direction in Direction.NESW){
+        if(!world.collision.isBlocked(tile, direction, false)){
+            walkTo(tile.step(direction))
         }
     }
 }

@@ -24,7 +24,8 @@ import gg.rsmod.plugins.api.ext.*
 object Firemaking {
 
     private const val ANIMATION = 733
-    private const val SOUND = 2596
+    private const val IGNITING_LOGS_SOUND = 2597
+    private const val BURNING_LOGS_SOUND = 2596
     private const val DEFAULT_ASHES = Items.ASHES
 
     const val DEFAULT_TINDERBOX = Items.TINDERBOX
@@ -76,6 +77,8 @@ object Firemaking {
 
             player.animate(ANIMATION)
             it.wait(2)
+            player.playSound(IGNITING_LOGS_SOUND)
+            it.wait(1)
 
             if (!canIgnite(player, log)) {
                 player.animate(-1)
@@ -99,7 +102,7 @@ object Firemaking {
 
                 player.addXp(Skills.FIREMAKING, log.xp)
                 player.filterableMessage("You light a fire.")
-                player.playSound(SOUND)
+                player.playSound(BURNING_LOGS_SOUND)
                 player.stepAway()
                 it.wait(1)
                 player.faceTile(fire.tile)

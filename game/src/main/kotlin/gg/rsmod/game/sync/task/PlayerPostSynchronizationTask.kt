@@ -1,6 +1,5 @@
 package gg.rsmod.game.sync.task
 
-import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.service.GameService
 import gg.rsmod.game.sync.SynchronizationTask
@@ -16,9 +15,6 @@ object PlayerPostSynchronizationTask : SynchronizationTask<Player> {
         val moved = oldTile == null || !oldTile.sameAs(pawn.tile)
         val changedHeight = oldTile?.height != pawn.tile.height
 
-        if (moved) {
-            pawn.lastTile = Tile(pawn.tile)
-        }
         pawn.moved = false
         pawn.steps = null
         pawn.blockBuffer.clean()

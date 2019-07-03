@@ -14,7 +14,7 @@ abstract class Entity {
     /**
      * The current 3D [Tile] that this [Pawn] is standing on in the [World].
      */
-    lateinit var tile: Tile
+    open lateinit var tile: Tile
 
     abstract val entityType: EntityType
 

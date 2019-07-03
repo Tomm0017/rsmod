@@ -137,6 +137,7 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
             timerCycle()
         }
         hitsCycle()
+        updateLastTile()
     }
 
     /**

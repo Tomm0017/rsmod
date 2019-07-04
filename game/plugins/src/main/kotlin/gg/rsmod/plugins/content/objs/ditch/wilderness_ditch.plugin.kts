@@ -35,7 +35,7 @@ on_obj_option(23271, "cross") {
 
 fun Player.crossDitch(movement: ForcedMovement) {
     queue {
-        playSound(2452)
+        playSound(id = 2462, volume = 1, delay = 25)
         animate(6132)
         forceMove(this, movement)
     }

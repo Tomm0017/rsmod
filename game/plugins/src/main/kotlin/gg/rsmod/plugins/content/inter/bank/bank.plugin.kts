@@ -11,6 +11,13 @@ import gg.rsmod.plugins.content.inter.bank.BankTabs.numTabsUnlocked
 import gg.rsmod.plugins.content.inter.bank.BankTabs.shiftTabs
 
 on_interface_open(Bank.BANK_INTERFACE_ID) {
+    var slotOffset = 0
+    for(tab in 1..9){
+        for(slot in slotOffset until slotOffset+player.getVarbit(4170+tab)) // from beginning slot of tab to end
+            if(player.bank[slot] == null)
+                player.setVarbit(4170+tab, player.getVarbit(4170+tab)-1)
+        slotOffset += player.getVarbit(4170+tab)
+    }
     player.bank.shift()
 }
 

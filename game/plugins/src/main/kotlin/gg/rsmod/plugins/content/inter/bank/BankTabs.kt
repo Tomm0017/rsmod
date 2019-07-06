@@ -112,6 +112,8 @@ object BankTabs{
      * The insertion index for inserting into the desired tab
      */
     fun insertionPoint(player: Player, tabIndex: Int = 0) : Int {
+        if(tabIndex == 0)
+            return player.bank.nextFreeSlot
         var dex = 0
         for(tab in 1..tabIndex)
             dex += player.getVarbit(4170+tab)

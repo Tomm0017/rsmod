@@ -6,6 +6,13 @@ import gg.rsmod.plugins.content.inter.bank.BankTabs.dropToTab
 val BANK_TABLIST_ID = 11
 
 /**
+ * Handles setting the current selected tab varbit on tab selection.
+ */
+on_button(Bank.BANK_INTERFACE_ID, BANK_TABLIST_ID){
+    player.setVarbit(Bank.SELECTED_TAB_VARBIT, player.getInteractingSlot()-10)
+}
+
+/**
  * Moving items to tabs via the top tabs bar.
  */
 on_component_to_component_item_swap(

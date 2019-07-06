@@ -6,6 +6,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
+import gg.rsmod.plugins.content.inter.bank.BankTabs.insertionPoint
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -84,6 +85,9 @@ object Bank {
         val from = p.inventory
         val to = p.bank
 
+        val oldFree = to.freeSlotCount
+        val curTab = p.getVarbit(SELECTED_TAB_VARBIT)
+
         val amount = Math.min(from.getItemCount(id), amt)
 
         var deposited = 0
@@ -109,6 +113,10 @@ object Bank {
 
             if (transfer != null) {
                 deposited += transfer.completed
+                if(placeholderSlot==-1 && curTab!=0 && oldFree!=to.freeSlotCount){ // shift newly add items to tab position
+                    to.insert(to.getItemIndex(copy.id, false), insertionPoint(p, curTab))
+                    p.setVarbit(4170+curTab, p.getVarbit(4170+curTab)+1)
+                }
             }
         }
 

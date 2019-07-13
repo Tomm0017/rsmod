@@ -121,6 +121,32 @@ object BankTabs{
     }
 
     /**
+     * Determines the beginning index for a specified bank tab
+     * based on the tab order and number of items in previous tabs.
+     *
+     * @param player
+     * The acting [Player] to find the start point for the bank tab
+     * specified by [tabIndex]
+     *
+     * @param tabIndex
+     * The tab for which the start point is desired
+     *
+     * @return -> Int
+     * The start index for the beginning of the desired tab
+     */
+    fun startPoint(player: Player, tabIndex: Int = 0) : Int {
+        var dex = 0
+        if(tabIndex == 0){
+            for(tab in 1..9)
+                dex += player.getVarbit(4170+tab)
+        } else{
+            for(tab in 1 until tabIndex)
+                dex += player.getVarbit(4170+tab)
+        }
+        return dex
+    }
+
+    /**
      * Performs the shifting of [Bank] tabs' varbit pointers to remove
      * an empty tab, effectively shifting greater tabs down.
      *

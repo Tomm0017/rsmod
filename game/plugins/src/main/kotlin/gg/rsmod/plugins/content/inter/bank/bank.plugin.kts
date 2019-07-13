@@ -3,20 +3,28 @@ package gg.rsmod.plugins.content.inter.bank
 import gg.rsmod.game.action.EquipAction
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
+import gg.rsmod.plugins.content.inter.bank.Bank.SELECTED_TAB_VARBIT
 import gg.rsmod.plugins.content.inter.bank.Bank.insert
 import gg.rsmod.plugins.content.inter.bank.Bank.removePlaceholder
 import gg.rsmod.plugins.content.inter.bank.BankTabs.dropToTab
 import gg.rsmod.plugins.content.inter.bank.BankTabs.getCurrentTab
+import gg.rsmod.plugins.content.inter.bank.BankTabs.insertionPoint
 import gg.rsmod.plugins.content.inter.bank.BankTabs.numTabsUnlocked
 import gg.rsmod.plugins.content.inter.bank.BankTabs.shiftTabs
 
 on_interface_open(Bank.BANK_INTERFACE_ID) {
     var slotOffset = 0
     for(tab in 1..9){
-        for(slot in slotOffset until slotOffset+player.getVarbit(4170+tab)) // from beginning slot of tab to end
-            if(player.bank[slot] == null)
+        val size = player.getVarbit(4170+tab)
+        for(slot in slotOffset until slotOffset+size){ // from beginning slot of tab to end
+            if(player.bank[slot] == null){
                 player.setVarbit(4170+tab, player.getVarbit(4170+tab)-1)
-        slotOffset += player.getVarbit(4170+tab)
+                // check for empty tab shift
+                if(player.getVarbit(4170+tab)==0 && tab<=numTabsUnlocked(player))
+                    shiftTabs(player, tab)
+            }
+        }
+        slotOffset += size
     }
     player.bank.shift()
 }
@@ -66,6 +74,11 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 42) {
         }
         if (deposited > 0) {
             any = true
+            val curTab = player.getVarbit(SELECTED_TAB_VARBIT)
+            if(placeholderSlot==-1 && curTab!=0){
+                to.insert(to.getItemIndex(item.id, false), insertionPoint(player, curTab))
+                player.setVarbit(4170+curTab, player.getVarbit(4170+curTab)+1)
+            }
         }
     }
 
@@ -91,6 +104,11 @@ on_button(interfaceId = Bank.BANK_INTERFACE_ID, component = 44) {
         }
         if (deposited > 0) {
             any = true
+            val curTab = player.getVarbit(SELECTED_TAB_VARBIT)
+            if(placeholderSlot==-1 && curTab!=0){
+                to.insert(to.getItemIndex(item.id, false), insertionPoint(player, curTab))
+                player.setVarbit(4170+curTab, player.getVarbit(4170+curTab)+1)
+            }
             EquipAction.onItemUnequip(player, item.id, i)
         }
     }

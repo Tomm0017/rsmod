@@ -114,7 +114,10 @@ object Bank {
             if (transfer != null) {
                 deposited += transfer.completed
                 if(placeholderSlot==-1 && curTab!=0 && oldFree!=to.freeSlotCount){ // shift newly add items to tab position
-                    to.insert(to.getItemIndex(copy.id, false), insertionPoint(p, curTab))
+                    var fromPos = to.getItemIndex(copy.id, false)
+                    fromPos = if(fromPos != -1) fromPos else to.nextFreeSlot-1
+                    val toPos = insertionPoint(p, curTab)
+                    to.insert(fromPos, toPos)
                     p.setVarbit(4170+curTab, p.getVarbit(4170+curTab)+1)
                 }
             }

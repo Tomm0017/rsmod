@@ -31,6 +31,8 @@ class IfButtonDHandler : MessageHandler<IfButtonDMessage> {
 
         client.attr[INTERACTING_ITEM_SLOT] = fromSlot
         client.attr[OTHER_ITEM_SLOT_ATTR] = toSlot
+		client.attr[INTERACTING_COMPONENT_CHILD] = fromComponent
+
 
         val swapped = world.plugins.executeComponentToComponentItemSwap(
                 client, fromInterfaceId, fromComponent, toInterfaceId, toComponent)

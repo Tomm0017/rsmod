@@ -3,6 +3,7 @@ package gg.rsmod.game.message.handler
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.IfButtonDMessage
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.attr.INTERACTING_COMPONENT_CHILD
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 import gg.rsmod.game.model.entity.Client
@@ -31,8 +32,7 @@ class IfButtonDHandler : MessageHandler<IfButtonDMessage> {
 
         client.attr[INTERACTING_ITEM_SLOT] = fromSlot
         client.attr[OTHER_ITEM_SLOT_ATTR] = toSlot
-		client.attr[INTERACTING_COMPONENT_CHILD] = fromComponent
-
+        client.attr[INTERACTING_COMPONENT_CHILD] = fromComponent
 
         val swapped = world.plugins.executeComponentToComponentItemSwap(
                 client, fromInterfaceId, fromComponent, toInterfaceId, toComponent)

@@ -48,8 +48,11 @@ on_component_to_component_item_swap(
     val dstTab = player.attr[OTHER_ITEM_SLOT_ATTR]!! - 10
 
     if(dstTab==0){
-        for(item in startPoint(player, srcTab) until insertionPoint(player, srcTab)){
+        var item = startPoint(player, srcTab)
+        var end = insertionPoint(player, srcTab)
+        while(item != end){
             container.insert(item, container.nextFreeSlot - 1)
+            end--
             player.setVarbit(4170+srcTab, player.getVarbit(4170+srcTab)-1)
             // check for empty tab shift
             if(player.getVarbit(4170+srcTab)==0 && srcTab<=numTabsUnlocked(player))

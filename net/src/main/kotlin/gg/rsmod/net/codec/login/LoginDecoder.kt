@@ -10,7 +10,7 @@ import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import mu.KLogging
 import java.math.BigInteger
-import java.util.*
+import java.util.Arrays
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -133,7 +133,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
             xteaBuf.readString()
             xteaBuf.skipBytes(Int.SIZE_BYTES)
 
-            xteaBuf.skipBytes(Byte.SIZE_BYTES * 9)
+            xteaBuf.skipBytes(Byte.SIZE_BYTES * 10)
             xteaBuf.skipBytes(Short.SIZE_BYTES)
             xteaBuf.skipBytes(Byte.SIZE_BYTES)
             xteaBuf.skipBytes(Byte.SIZE_BYTES * 3)

@@ -426,7 +426,7 @@ fun Player.sendWorldMapTile() {
 }
 
 fun Player.sendCombatLevelText() {
-    setComponentText(593, 2, "Combat Lvl: $combatLevel")
+    setComponentText(593, 3, "Combat Lvl: $combatLevel")
 }
 
 fun Player.sendWeaponComponentInformation() {

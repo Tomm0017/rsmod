@@ -442,6 +442,13 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
         chunk.addEntity(this, sound, tile)
     }
 
+    fun spawn(graphic: TileGraphic) {
+        val tile = graphic.tile
+        val chunk = chunks.getOrCreate(tile)
+
+        chunk.addEntity(this, graphic, tile)
+    }
+
     /**
      * Despawn entities in an area.
      */

@@ -2,10 +2,7 @@ package gg.rsmod.game.model.region
 
 import gg.rsmod.game.message.impl.UpdateZonePartialEnclosedMessage
 import gg.rsmod.game.message.impl.UpdateZonePartialFollowsMessage
-import gg.rsmod.game.model.Direction
-import gg.rsmod.game.model.EntityType
-import gg.rsmod.game.model.Tile
-import gg.rsmod.game.model.World
+import gg.rsmod.game.model.*
 import gg.rsmod.game.model.collision.CollisionMatrix
 import gg.rsmod.game.model.collision.CollisionUpdate
 import gg.rsmod.game.model.entity.*
@@ -250,6 +247,10 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
 
         EntityType.AREA_SOUND ->
             if (spawn) SoundAreaUpdate(EntityUpdateType.PLAY_TILE_SOUND, entity as AreaSound)
+            else throw RuntimeException("${entity.entityType} can only be spawned, not removed!")
+
+        EntityType.MAP_ANIM ->
+            if (spawn) MapAnimUpdate(EntityUpdateType.MAP_ANIM, entity as TileGraphic)
             else throw RuntimeException("${entity.entityType} can only be spawned, not removed!")
 
         else -> null

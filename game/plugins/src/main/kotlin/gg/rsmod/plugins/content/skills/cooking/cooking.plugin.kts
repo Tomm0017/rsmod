@@ -4,7 +4,6 @@ import gg.rsmod.game.plugin.KotlinPlugin
 import gg.rsmod.plugins.content.skills.cooking.data.CookingFood
 import gg.rsmod.plugins.content.skills.cooking.data.CookingIngredient
 import gg.rsmod.plugins.content.skills.cooking.data.CookingObj
-import gg.rsmod.plugins.content.areas.lumbridge.quests.*
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.ints.IntArrayList
 

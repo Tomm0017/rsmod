@@ -60,12 +60,30 @@ suspend fun cycle(it: QueueTask): Boolean {
 
     val strategy = CombatConfigs.getCombatStrategy(pawn)
     val attackRange = strategy.getAttackRange(pawn)
+    var cancelPath: Boolean = false
+    var pathFound: Boolean
 
-    val pathFound = PawnPathAction.walkTo(it, pawn, target, interactionRange = attackRange, lineOfSight = false)
+    if(pawn is Npc) {
+        pathFound = PawnPathAction.walkTo(it, pawn, target, interactionRange = attackRange, lineOfSight = false)
+    } else {
+        if(pawn.tile.getDistance(target.tile) < 1 && !pawn.isAttackDelayReady()) {
+            pathFound = false
+            cancelPath = true
+        }
+        else if(!pawn.isAttackDelayReady() && !target.isAttackDelayReady() && pawn.isAttacking() && target.isAttacking()) {
+            pathFound = false
+            cancelPath = true
+        }
+        else {
+            pathFound = PawnPathAction.walkTo(it, pawn, target, interactionRange = attackRange, lineOfSight = false)
+        }
+    }
 
     if (target != pawn.attr[FACING_PAWN_ATTR]?.get()) {
         return false
     }
+
+
 
     if (!pathFound) {
         pawn.stopMovement()
@@ -76,10 +94,12 @@ suspend fun cycle(it: QueueTask): Boolean {
             return true
         }
         if (pawn is Player) {
-            when {
-                pawn.timers.has(FROZEN_TIMER) -> pawn.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
-                pawn.timers.has(STUN_TIMER) -> pawn.message(Entity.YOURE_STUNNED)
-                else -> pawn.message(Entity.YOU_CANT_REACH_THAT)
+            if(!cancelPath) {
+                when {
+                    pawn.timers.has(FROZEN_TIMER) -> pawn.message(Entity.MAGIC_STOPS_YOU_FROM_MOVING)
+                    pawn.timers.has(STUN_TIMER) -> pawn.message(Entity.YOURE_STUNNED)
+                    else -> pawn.message(Entity.YOU_CANT_REACH_THAT)
+                }
             }
             pawn.clearMapFlag()
         }

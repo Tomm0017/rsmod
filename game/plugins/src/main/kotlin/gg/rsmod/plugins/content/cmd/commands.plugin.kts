@@ -1,5 +1,9 @@
 package gg.rsmod.plugins.content.cmd
 
+import gg.rsmod.game.message.impl.CameraLookAtMessage
+import gg.rsmod.game.message.impl.CameraMoveToMessage
+import gg.rsmod.game.message.impl.CameraResetMessage
+import gg.rsmod.game.message.impl.CameraShakeMessage
 import gg.rsmod.game.model.attr.NO_CLIP_ATTR
 import gg.rsmod.game.model.bits.INFINITE_VARS_STORAGE
 import gg.rsmod.game.model.bits.InfiniteVarsType
@@ -266,6 +270,15 @@ on_command("varp", Privilege.ADMIN_POWER) {
     }
 }
 
+on_command("getvarp", Privilege.ADMIN_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::getvarp 5451</col>") { values ->
+        val varp = values[0].toInt()
+        val state = player.getVarp(varp)
+        player.message("Varp state (<col=801700>$varp</col>): <col=801700>$state</col>")
+    }
+}
+
 on_command("varbit", Privilege.ADMIN_POWER) {
     val args = player.getCommandArgs()
     tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::varbit 5451 1</col>") { values ->
@@ -326,6 +339,50 @@ on_command("clip", Privilege.ADMIN_POWER) {
         val walkable = if (walkBlocked) "<col=801700>blocked</col>" else "<col=178000>walkable</col>"
         val projectile = if (projectileBlocked) "<col=801700>projectiles blocked" else "<col=178000>projectiles allowed"
         player.message("$dir: $walkable - $projectile")
+    }
+}
+
+on_command("unlock") {
+    player.filterableMessage("<col=178000>Unlocked")
+    player.unlock()
+}
+
+on_command("camreset", Privilege.DEV_POWER){
+    player.write(CameraResetMessage())
+}
+
+on_command("shakecam", Privilege.DEV_POWER){
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::shakecam param1 param2 param3 param4</col>") { values ->
+        val index = values[0].toInt()
+        val param2  = values[1].toInt()
+        val param3  = values[2].toInt()
+        val param4  = values[3].toInt()
+        player.write(CameraShakeMessage(index, param2, param3, param4))
+    }
+}
+
+on_command("movecam", Privilege.DEV_POWER){
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::movecam param1 param2 parma3 movespeed multiplier</col>") { values ->
+        val param1 = values[0].toInt()
+        val param2  = values[1].toInt()
+        val index  = values[2].toInt()
+        val param4  = values[3].toInt()
+        val param5  = values[4].toInt()
+        player.write(CameraMoveToMessage(param1, param2, index, param4, param5))
+    }
+}
+
+on_command("lookat", Privilege.DEV_POWER){
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::lookat param1 param2 param3 param4 param5</col>") { values ->
+        val param1 = values[0].toInt()
+        val param2  = values[1].toInt()
+        val index  = values[2].toInt()
+        val param4  = values[3].toInt()
+        val param5  = values[4].toInt()
+        player.write(CameraLookAtMessage(param1, param2, index, param4, param5))
     }
 }
 

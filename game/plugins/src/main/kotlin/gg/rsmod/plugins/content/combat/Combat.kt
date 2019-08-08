@@ -56,7 +56,7 @@ object Combat {
         pawn.attr[LAST_HIT_ATTR] = WeakReference(target)
         target.attr[LAST_HIT_BY_ATTR] = WeakReference(pawn)
 
-        if (pawn.attr.has(CASTING_SPELL) && pawn is Player && pawn.getVarbit(SELECTED_AUTOCAST_VARBIT) == 0) {
+        if (pawn.attr.has(CASTING_SPELL) && pawn is Player && pawn.getVarbit(SELECTED_AUTOCAST_VARBIT) == 1) {
             reset(pawn)
             pawn.attr.remove(CASTING_SPELL)
         }

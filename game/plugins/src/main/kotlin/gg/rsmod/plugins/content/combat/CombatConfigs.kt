@@ -367,6 +367,7 @@ object CombatConfigs {
                     1 -> XpMode.STRENGTH
                     2 -> XpMode.STRENGTH
                     3 -> XpMode.DEFENCE
+                    6 -> XpMode.MAGIC
                     else -> XpMode.ATTACK
                 }
             }

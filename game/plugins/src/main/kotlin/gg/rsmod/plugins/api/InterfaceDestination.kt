@@ -17,7 +17,7 @@ enum class InterfaceDestination(val interfaceId: Int, val fixedChildId: Int, val
 
     SKILLS(interfaceId = 320, fixedChildId = 67, resizeChildId = 69, resizeListChildId = 69),
 
-    QUEST(interfaceId = 399, fixedChildId = 68, resizeChildId = 70, resizeListChildId = 70),
+    QUEST(interfaceId = 629, fixedChildId = 68, resizeChildId = 70, resizeListChildId = 70),
 
     INVENTORY(interfaceId = 149, fixedChildId = 69, resizeChildId = 71, resizeListChildId = 71),
 

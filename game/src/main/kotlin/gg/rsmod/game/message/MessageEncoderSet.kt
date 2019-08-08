@@ -59,6 +59,10 @@ class MessageEncoderSet {
         put(MidiSongEncoder(), MidiSongMessage::class.java)
         put(OnDialogAbortEncoder(), TriggerOnDialogAbortMessage::class.java)
         put(UpdateRebootTimerEncoder(), UpdateRebootTimerMessage::class.java)
+        put(CamLookAtEncoder(), CameraLookAtMessage::class.java)
+        put(CamMoveToEncoder(), CameraMoveToMessage::class.java)
+        put(CameraResetEncoder(), CameraResetMessage::class.java)
+        put(CameraShakeEncoder(), CameraShakeMessage::class.java)
         put(MapAnimEncoder(), MapAnimMessage::class.java)
     }
 

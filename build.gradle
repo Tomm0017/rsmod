@@ -33,6 +33,7 @@ allprojects {
         compile "io.github.microutils:kotlin-logging:$kloggingVersion"
         compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
         compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$yamlVersion"
+        compile 'org.json:json:20171018'
 
         implementation "org.mindrot:jbcrypt:$bcryptVersion"
         implementation "com.google.code.gson:gson:$gsonVersion"

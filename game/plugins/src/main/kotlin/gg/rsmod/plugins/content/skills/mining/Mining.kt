@@ -14,6 +14,7 @@ import kotlin.random.Random
 /**
  * @author Anthony Loukinas <anthony.loukinas@gmail.com>
  */
+
 object Mining {
     data class Ore(val type: OreType, val obj: Int, val emptyOreId: Int)
 
@@ -30,7 +31,6 @@ object Mining {
     suspend fun mineOre(it: QueueTask, obj: GameObject, ore: OreType, emptyOreId: Int) {
         val p = it.player
         var loops: Int = 0
-        val maxLoops: Int = 0 // will be used
 
         if(!canMine(p, obj, ore)) {
             return
@@ -55,6 +55,17 @@ object Mining {
             it.wait(2)
             p.animate(pickaxe.animation)
 
+            when (ore) {
+                OreType.RUNE_ESSENCE -> {
+                    val essenceType = evalEssenceType(p.getSkills().getCurrentLevel(Skills.MINING))
+                    oreName = p.world.definitions.get(ItemDef::class.java, essenceType.ore).name
+                    p.filterableMessage("You manage to mine some $oreName.")
+                    p.playSound(3600) // may need to update this
+                    p.inventory.add(essenceType.ore)
+                    p.addXp(Skills.MINING, essenceType.xp)
+                }
+            }
+
             if(!canMine(p, obj, ore)) {
                 p.animate(-1)
                 break
@@ -65,18 +76,9 @@ object Mining {
             val level = p.getSkills().getCurrentLevel(Skills.MINING)
             // TODO: Implement pickaxe type interpolation
             val mineChance = level.interpolate(minChance = 60, maxChance = 190, minLvl = 1, maxLvl = 99, cap = 255)
-
             if(mineChance) {
 
                 when(ore) {
-                    OreType.RUNE_ESSENCE -> {
-                        val essenceType = evalEssenceType(level)
-                        oreName = p.world.definitions.get(ItemDef::class.java, essenceType.ore).name
-                        p.filterableMessage("You manage to mine some $oreName.")
-                        p.playSound(3600) // may need to update this
-                        p.inventory.add(essenceType.ore)
-                        p.addXp(Skills.MINING, essenceType.xp)
-                    }
                     OreType.SANDSTONE1 -> {
                         val sandstoneWeight = evalSandstoneWeight()
                         oreName = p.world.definitions.get(ItemDef::class.java, sandstoneWeight.ore).name
@@ -109,8 +111,7 @@ object Mining {
                     }
                 }
 
-                p.animate(-1) // reset animation
-                val world = p.world
+                    val world = p.world
 
                 if(emptyOreId != 0) {
                     world.queue {
@@ -121,9 +122,10 @@ object Mining {
                         world.remove(emptyOreVein)
                         world.spawn(DynamicObject(obj))
                     }
+                    p.animate(-1) // reset animation
+                    randomGemEvent(p)
+                    break
                 }
-                randomGemEvent(p)
-                break
             }
         }
     }

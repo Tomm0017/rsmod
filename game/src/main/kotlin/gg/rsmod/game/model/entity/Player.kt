@@ -180,6 +180,8 @@ open class Player(world: World) : Pawn(world) {
 
     var runEnergy = 100.0
 
+    var hitpoints = getCurrentHp()
+
     /**
      * The current combat level. This must be set externally by a login plugin
      * that is used on whatever revision you want.

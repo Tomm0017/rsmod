@@ -13,6 +13,7 @@ import gg.rsmod.game.message.impl.UpdateRebootTimerMessage
 import gg.rsmod.game.model.attr.AttributeMap
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.combat.NpcCombatDef
+import gg.rsmod.game.model.droptable.NpcDropTableDef
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.instance.InstancedMapAllocator
 import gg.rsmod.game.model.priv.PrivilegeSet
@@ -566,6 +567,9 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
     fun setNpcDefaults(npc: Npc) {
         val combatDef = plugins.npcCombatDefs.getOrDefault(npc.id, null) ?: NpcCombatDef.DEFAULT
         npc.combatDef = combatDef
+
+        val dropTableDef = plugins.npcDropTableDefs.getOrDefault(npc.id, null) ?: NpcDropTableDef.DEFAULT
+        npc.dropTables = dropTableDef
 
         npc.combatDef.bonuses.forEachIndexed { index, bonus -> npc.equipmentBonuses[index] = bonus }
         npc.respawns = combatDef.respawnDelay > 0

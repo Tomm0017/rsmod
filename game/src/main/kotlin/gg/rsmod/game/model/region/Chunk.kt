@@ -2,6 +2,10 @@ package gg.rsmod.game.model.region
 
 import gg.rsmod.game.message.impl.UpdateZonePartialEnclosedMessage
 import gg.rsmod.game.message.impl.UpdateZonePartialFollowsMessage
+import gg.rsmod.game.model.Direction
+import gg.rsmod.game.model.EntityType
+import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.World
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.collision.CollisionMatrix
 import gg.rsmod.game.model.collision.CollisionUpdate

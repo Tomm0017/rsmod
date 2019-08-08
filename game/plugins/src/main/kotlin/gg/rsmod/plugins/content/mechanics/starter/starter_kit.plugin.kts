@@ -1,6 +1,7 @@
 package gg.rsmod.plugins.content.mechanics.starter
 
 import gg.rsmod.game.model.attr.NEW_ACCOUNT_ATTR
+import gg.rsmod.plugins.api.cfg.Items
 
 load_metadata {
     propertyFileName = "starter_kit"
@@ -11,47 +12,40 @@ load_metadata {
 
     properties(
             // Inventory first row
-            0.getItem to Items.IRON_FULL_HELM,
-            1.getItem to Items.IRON_PLATEBODY,
-            2.getItem to Items.IRON_PLATELEGS,
-            3.getItem to Items.IRON_SCIMITAR,
+            0.getItem to Items.BRONZE_AXE,
+            1.getItem to Items.TINDERBOX,
+            2.getItem to Items.SMALL_FISHING_NET,
+            3.getItem to Items.SHRIMPS,
 
             // Inventory second row
-            4.getItem to Items.BLUE_WIZARD_HAT,
-            5.getItem to Items.BLUE_WIZARD_ROBE,
-            6.getItem to Items.BLUE_SKIRT,
-            7.getItem to Items.STAFF_OF_AIR,
+            4.getItem to Items.BUCKET,
+            5.getItem to Items.POT,
+            6.getItem to Items.BREAD,
+            7.getItem to Items.BRONZE_PICKAXE,
 
             // Inventory third row
-            8.getItem to Items.LEATHER_COWL,
-            9.getItem to Items.LEATHER_BODY,
-            10.getItem to Items.LEATHER_CHAPS,
+            8.getItem to Items.BRONZE_DAGGER,
+            9.getItem to Items.BRONZE_SWORD,
+            10.getItem to Items.WOODEN_SHIELD,
             11.getItem to Items.SHORTBOW,
 
             // Inventory fourth row
-            12.getItem to Items.AMULET_OF_POWER,
-            13.getItem to Items.LEATHER_GLOVES,
-            14.getItem to Items.CLIMBING_BOOTS,
-            15.getItem to Items.IRON_ARROW,
-            15.getItemAmount to 1000,
+            12.getItem to Items.BRONZE_ARROW,
+            12.getItemAmount to 25,
+            13.getItem to Items.AIR_RUNE,
+            13.getItemAmount to 25,
+            14.getItem to Items.MIND_RUNE,
+            14.getItemAmount to 15,
+            15.getItem to Items.WATER_RUNE,
+            15.getItemAmount to 6,
 
             // Inventory fifth row
-            16.getItem to Items.AIR_RUNE,
-            16.getItemAmount to 1000,
-            17.getItem to Items.WATER_RUNE,
-            17.getItemAmount to 1000,
-            18.getItem to Items.EARTH_RUNE,
-            18.getItemAmount to 1000,
-            19.getItem to Items.FIRE_RUNE,
-            19.getItemAmount to 1000,
-
-            // Inventory sixth row
-            20.getItem to Items.MIND_RUNE,
-            20.getItemAmount to 4000,
-
-            // Inventory seventh row
-            27.getItem to Items.COINS_995,
-            27.getItemAmount to 10_000_000
+            16.getItem to Items.EARTH_RUNE,
+            16.getItemAmount to 4,
+            17.getItem to Items.BODY_RUNE,
+            17.getItemAmount to 2,
+            18.getItem to Items.COINS_995,
+            18.getItemAmount to 25
     )
 }
 

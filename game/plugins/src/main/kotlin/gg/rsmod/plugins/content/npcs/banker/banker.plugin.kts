@@ -1,8 +1,9 @@
 package gg.rsmod.plugins.content.npcs.banker
 
+import gg.rsmod.plugins.api.cfg.Npcs
 import gg.rsmod.plugins.content.inter.bank.openBank
 
-arrayOf(Npcs.BANKER_1027, Npcs.BANKER_1028).forEach { banker ->
+arrayOf(Npcs.BANKER_TUTOR, Npcs.BANKER_1027, Npcs.BANKER_1028, Npcs.BANKER_2898, Npcs.BANKER_2897, Npcs.BANKER_1029, Npcs.BANKER_1030, Npcs.BANKER_1031, Npcs.BANKER_1032, Npcs.BANKER_1033).forEach { banker ->
     on_npc_option(npc = banker, option = "talk-to", lineOfSightDistance = 2) {
         player.queue {
             dialog(this)

@@ -7,6 +7,6 @@ import gg.rsmod.plugins.api.cfg.Npcs
  */
 object Sheep {
 
-    val SHEEP_NPCS = arrayOf(Npcs.SHEEP, Npcs.SHEEP_2697, Npcs.SHEEP_2698, Npcs.SHEEP_2699,
+    val SHEEP_NPCS = arrayOf(Npcs.SHEEP_2693, Npcs.SHEEP_2694, Npcs.SHEEP_2695, Npcs.SHEEP_2697, Npcs.SHEEP_2698, Npcs.SHEEP_2699,
             Npcs.SHEEP_2786, Npcs.SHEEP_2787, Npcs.SHEEP_2788, Npcs.SHEEP_2789)
 }

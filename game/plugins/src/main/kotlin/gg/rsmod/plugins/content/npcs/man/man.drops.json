@@ -1,0 +1,144 @@
+{
+  "always": {
+    "percentage": 100.0,
+    "items": [
+      {
+        "itemId": 526,
+        "quanityMin": 1,
+        "quanityMax": 1
+      }
+    ]
+  },
+
+  "rolls": 1,
+
+  "common": {
+    "percentage": 85.537,
+    "items": [
+      {
+        "itemId": 199,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 201,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 203,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 877,
+        "quanityMin": 2,
+        "quanityMax": 12
+      },
+      {
+        "itemId": 882,
+        "quanityMin": 7,
+        "quanityMax": 7
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 3,
+        "quanityMax": 3
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 5,
+        "quanityMax": 5
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 15,
+        "quanityMax": 15
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 25,
+        "quanityMax": 25
+      },
+      {
+        "itemId": 313,
+        "quanityMin": 1,
+        "quanityMax": 1
+      }
+    ]
+  },
+  "uncommon": {
+    "percentage": 3.125,
+    "items": [
+      {
+        "itemId": 557,
+        "quanityMin": 4,
+        "quanityMax": 4
+      },
+      {
+        "itemId": 554,
+        "quanityMin": 6,
+        "quanityMax": 6
+      },
+      {
+        "itemId": 558,
+        "quanityMin": 9,
+        "quanityMax": 9
+      },
+      {
+        "itemId": 562,
+        "quanityMin": 2,
+        "quanityMax": 2
+      },
+      {
+        "itemId": 205,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 207,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 213,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 209,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 211,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 1203,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 1155,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 1440,
+        "quanityMin": 1,
+        "quanityMax": 1
+      }
+    ]
+  },
+  "rare": {
+    "percentage": 0.390,
+    "items": []
+  },
+  "veryrare": {
+    "percentage": 0.195,
+    "items": []
+  }
+
+}

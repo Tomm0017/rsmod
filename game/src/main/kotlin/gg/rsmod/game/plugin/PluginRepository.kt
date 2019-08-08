@@ -12,6 +12,7 @@ import gg.rsmod.game.model.container.key.BANK_KEY
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
 import gg.rsmod.game.model.container.key.INVENTORY_KEY
+import gg.rsmod.game.model.droptable.NpcDropTableDef
 import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.timer.TimerKey
@@ -370,6 +371,9 @@ class PluginRepository(val world: World) {
      */
     internal val npcCombatDefs = Int2ObjectOpenHashMap<NpcCombatDef>()
 
+
+    internal val npcDropTableDefs = Int2ObjectOpenHashMap<NpcDropTableDef>()
+
     /**
      * Holds all valid shops set from plugins for this [PluginRepository].
      */
@@ -379,6 +383,16 @@ class PluginRepository(val world: World) {
      * A list of [Service]s that have been requested for loading by a [KotlinPlugin].
      */
     internal val services = mutableListOf<Service>()
+
+    /**
+     * A map of [Plugins] that are listening to start fishing bind
+     */
+    internal val onStartFishingPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
+
+    /**
+     * A map of [Plugins] that are listening for fish to be caught.
+     */
+    internal val onCatchFishPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
 
     /**
      * Holds all container keys set from plugins for this [PluginRepository].
@@ -1181,10 +1195,10 @@ class PluginRepository(val world: World) {
 
     fun bindObject(obj: Int, opt: Int, lineOfSightDistance: Int = -1, plugin: Plugin.() -> Unit) {
         val optMap = objectPlugins[obj] ?: Int2ObjectOpenHashMap(1)
-        if (optMap.containsKey(opt)) {
+        /*if (optMap.containsKey(opt)) {
             logger.error("Object is already bound to a plugin: $obj [opt=$opt]")
             throw IllegalStateException("Object is already bound to a plugin: $obj [opt=$opt]")
-        }
+        }*/
 
         if (lineOfSightDistance != -1) {
             objInteractionDistancePlugins[obj] = lineOfSightDistance
@@ -1251,6 +1265,38 @@ class PluginRepository(val world: World) {
         globalGroundItemPickUp.forEach { plugin ->
             p.executePlugin(plugin)
         }
+    }
+
+    fun bindOnStartFishing(npc_spot: Int, plugin: Plugin.() -> Unit) {
+        if(onStartFishingPlugins.containsKey(npc_spot)) {
+            val error = IllegalStateException("Start fishing listener already bound to a plugin: npc=$npc_spot")
+            logger.error(error) {}
+            throw error
+        }
+        onStartFishingPlugins[npc_spot] = plugin
+        pluginCount++
+    }
+
+    fun executeOnStartFishing(p: Player, npc_spot: Int): Boolean {
+        val plugin = onStartFishingPlugins[npc_spot] ?: return false
+        p.executePlugin(plugin)
+        return true
+    }
+
+    fun bindOnCatchFish(npc_spot: Int, plugin: Plugin.() -> Unit) {
+        if(onCatchFishPlugins.contains(npc_spot)) {
+            val error = IllegalStateException("Catch fish listener already bound to a plugin: npc=$npc_spot")
+            logger.error(error) {}
+            throw error
+        }
+        onCatchFishPlugins[npc_spot] = plugin
+        pluginCount++
+    }
+
+    fun executeOnCatchFish(p: Player, npc_spot: Int): Boolean {
+        val plugin = onCatchFishPlugins[npc_spot] ?: return false
+        p.executePlugin(plugin)
+        return true
     }
 
     companion object : KLogging()

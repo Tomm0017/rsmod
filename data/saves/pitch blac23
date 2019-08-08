@@ -1,0 +1,267 @@
+{
+  "passwordHash": "$2a$16$vqc4YnkB3G3t8uTj9HDcEedb/BFrE615razt7DERqqmmojvvA59i.",
+  "username": "pitch blac23",
+  "displayName": "pitch blac23",
+  "previousXteas": [
+    241169501,
+    1045973211,
+    1311264533,
+    1604549919
+  ],
+  "x": 3222,
+  "z": 3219,
+  "height": 0,
+  "privilege": 0,
+  "displayMode": 1,
+  "runEnergy": 100.0,
+  "appearance": {
+    "gender": 0,
+    "looks": [
+      9,
+      14,
+      109,
+      26,
+      33,
+      36,
+      42
+    ],
+    "colors": [
+      0,
+      3,
+      2,
+      0,
+      0
+    ]
+  },
+  "skills": [
+    {
+      "skill": 0,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 1,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 2,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 3,
+      "xp": 1154.0,
+      "lvl": 10
+    },
+    {
+      "skill": 4,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 5,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 6,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 7,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 8,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 9,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 10,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 11,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 12,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 13,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 14,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 15,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 16,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 17,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 18,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 19,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 20,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 21,
+      "xp": 0.0,
+      "lvl": 1
+    },
+    {
+      "skill": 22,
+      "xp": 0.0,
+      "lvl": 1
+    }
+  ],
+  "attributes": {},
+  "timers": [],
+  "itemContainers": [
+    {
+      "name": "inventory",
+      "items": {
+        "0": {
+          "attr": {},
+          "id": 1351,
+          "amount": 1
+        },
+        "1": {
+          "attr": {},
+          "id": 590,
+          "amount": 1
+        },
+        "2": {
+          "attr": {},
+          "id": 303,
+          "amount": 1
+        },
+        "3": {
+          "attr": {},
+          "id": 315,
+          "amount": 1
+        },
+        "4": {
+          "attr": {},
+          "id": 1925,
+          "amount": 1
+        },
+        "5": {
+          "attr": {},
+          "id": 1931,
+          "amount": 1
+        },
+        "6": {
+          "attr": {},
+          "id": 2309,
+          "amount": 1
+        },
+        "7": {
+          "attr": {},
+          "id": 1265,
+          "amount": 1
+        },
+        "8": {
+          "attr": {},
+          "id": 1205,
+          "amount": 1
+        },
+        "9": {
+          "attr": {},
+          "id": 1277,
+          "amount": 1
+        },
+        "10": {
+          "attr": {},
+          "id": 1171,
+          "amount": 1
+        },
+        "11": {
+          "attr": {},
+          "id": 841,
+          "amount": 1
+        },
+        "12": {
+          "attr": {},
+          "id": 882,
+          "amount": 25
+        },
+        "13": {
+          "attr": {},
+          "id": 556,
+          "amount": 25
+        },
+        "14": {
+          "attr": {},
+          "id": 558,
+          "amount": 15
+        },
+        "15": {
+          "attr": {},
+          "id": 555,
+          "amount": 6
+        },
+        "16": {
+          "attr": {},
+          "id": 557,
+          "amount": 4
+        },
+        "17": {
+          "attr": {},
+          "id": 559,
+          "amount": 2
+        },
+        "18": {
+          "attr": {},
+          "id": 995,
+          "amount": 25
+        }
+      }
+    }
+  ],
+  "varps": [
+    {
+      "id": 300,
+      "state": 1000
+    },
+    {
+      "id": 1737,
+      "state": -2147483648
+    }
+  ]
+}

@@ -8,5 +8,25 @@
       "hinge": 1558,
       "extension": 1560
     }
+  },
+  {
+    "opened": {
+      "hinge": 12988,
+      "extension": 12989
+    },
+    "closed": {
+      "hinge": 12986,
+      "extension": 12987
+    }
+  },
+  {
+    "opened": {
+      "hinge": 1563,
+      "extension": 1564
+    },
+    "closed": {
+      "hinge": 1561,
+      "extension": 1562
+    }
   }
 ]

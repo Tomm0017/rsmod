@@ -3,6 +3,67 @@
 
 out-packets:
 
+  - message: gg.rsmod.game.message.impl.CameraResetMessage
+    type: FIXED
+    opcode: 2
+
+  - message: gg.rsmod.game.message.impl.CameraShakeMessage
+    type: FIXED
+    opcode: 39
+    length: 4
+    structure:
+      - name: cam_index
+        sign: UNSIGNED
+        type: BYTE
+      - name: sinus_x
+        sign: UNSIGNED
+        type: BYTE
+      - name: amplitude
+        sign: UNSIGNED
+        type: BYTE
+      - name: sinus_y
+        sign: UNSIGNED
+        type: BYTE
+
+  - message: gg.rsmod.game.message.impl.CameraMoveToMessage
+    type: FIXED
+    opcode: 75
+    structure:
+      - name: scene_x
+        sign: UNSIGNED
+        type: BYTE
+      - name: scene_z
+        sign: UNSIGNED
+        type: BYTE
+      - name: height
+        type: SHORT
+      - name: param4
+        sign: UNSIGNED
+        type: BYTE
+      - name: param5
+        sign: UNSIGNED
+        type: BYTE
+
+  - message: gg.rsmod.game.message.impl.CameraLookAtMessage
+    type: FIXED
+    opcode: 83
+    length: 6
+    structure:
+      - name: scene_x
+        sign: UNSIGNED
+        type: BYTE
+      - name: scene_z
+        sign: UNSIGNED
+        type: BYTE
+      - name: height
+        type: SHORT
+      - name: param4
+        sign: UNSIGNED
+        type: BYTE
+      - name: param5
+        sign: UNSIGNED
+        type: BYTE
+
   - message: gg.rsmod.game.message.impl.MapAnimMessage
     type: FIXED
     opcode: 8
@@ -480,6 +541,14 @@ out-packets:
         type: SHORT
 
 in-packets:
+
+  - message: gg.rsmod.game.message.impl.IfModelOpMessage
+    type: FIXED
+    opcode: 69
+    length: 4
+    structure:
+      - name: component
+        type: INT
 
   - message: gg.rsmod.game.message.impl.ClickWorldMapMessage
     type: FIXED
@@ -1442,12 +1511,6 @@ in-packets:
     type: FIXED
     opcode: 65
     length: 8
-    ignore: true
-
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown
-    type: FIXED
-    opcode: 69
-    length: 4
     ignore: true
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPOBJ2

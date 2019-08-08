@@ -2,7 +2,7 @@ package gg.rsmod.plugins.content.objs.bankbooth
 
 import gg.rsmod.plugins.content.inter.bank.openBank
 
-private val BOOTHS = setOf(Objs.BANK_BOOTH, Objs.BANK_BOOTH_10355, Objs.BANK_BOOTH_24101)
+private val BOOTHS = setOf(Objs.BANK_BOOTH, Objs.BANK_BOOTH_10355, Objs.BANK_BOOTH_10583, Objs.BANK_BOOTH_24101, Objs.BANK_BOOTH_18491)
 
 BOOTHS.forEach { booth ->
     on_obj_option(obj = booth, option = "bank") {

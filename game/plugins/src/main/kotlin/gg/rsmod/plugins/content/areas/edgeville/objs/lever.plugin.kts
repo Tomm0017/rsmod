@@ -14,7 +14,7 @@ on_obj_option(Objs.LEVER_26761, "pull") {
             val pulled = DynamicObject(obj, 88)
             world.remove(obj)
             world.spawn(pulled)
-            wait(10)
+
             world.remove(pulled)
             world.spawn(DynamicObject(obj))
         }

@@ -414,7 +414,7 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
     ),
     ELF(
             npcIds = intArrayOf(
-                    Npcs.GOREU, Npcs.YSGAWYN, Npcs.ARVEL, Npcs.MAWRTH, Npcs.KELYN, Npcs.SIGMUND_5322, Npcs.SANDY
+                    Npcs.GOREU, Npcs.ARVEL, Npcs.MAWRTH, Npcs.SIGMUND_5322, Npcs.SANDY
             ),
             experience = 353.0,
             reqLevel = 85,

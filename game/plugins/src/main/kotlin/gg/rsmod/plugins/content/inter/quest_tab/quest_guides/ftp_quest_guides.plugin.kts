@@ -3,12 +3,13 @@ package gg.rsmod.plugins.content.inter.quest_tab.quest_guides
     on_button(interfaceId = 399, component = 6) {
         val slot = player.getInteractingSlot()
 
-        player.openInterface(119, dest = InterfaceDestination.MAIN_SCREEN)
+        player.closeInterface(119)
         player.runClientScript(2523, 0, 5)
         player.message("$slot")
 
 //Sheep Shearer
         if (slot == 16) {
+            player.openInterface(119, dest = InterfaceDestination.MAIN_SCREEN)
             if (player.getVarp(179) == 0) {
                 player.setComponentText(interfaceId = 119, component = 2, text = "<col=7f0000>Sheep Shearer</col>")
                 player.setComponentText(interfaceId = 119, component = 4, text = "<col=000080>I can start this quest by speaking to <col=800000>Farmer Fred<col=000080> at his")
@@ -32,6 +33,7 @@ package gg.rsmod.plugins.content.inter.quest_tab.quest_guides
 
 //X Marks the Spot
         if (slot == 20) {
+            player.openInterface(119, dest = InterfaceDestination.MAIN_SCREEN)
             if (player.getVarp(2111) == 0) {
                 player.setComponentText(interfaceId = 119, component = 2, text = "<col=7f0000>X Marks the Spot</col>")
                 player.setComponentText(interfaceId = 119, component = 4, text = "<col=000080>I can start this quest by talking to <col=800000>Veos<col=000080> in the <col=800000>Sheared")

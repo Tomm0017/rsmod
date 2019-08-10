@@ -45,8 +45,8 @@ class LeatherAction(private val defs: DefinitionSet) {
         // Wait two ticks to follow OSRS behavior
         var completed = 0
         while(completed < maxCount) {
-            task.wait(leatherItem.ticks)
             player.animate(LEATHER_ANIM)
+            task.wait(leatherItem.ticks)
 
             player.lock()
             // This is here to prevent a TOCTTOU attack

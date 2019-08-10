@@ -10,28 +10,14 @@ import gg.rsmod.plugins.content.skills.crafting.data.Leathers
 
 /**
  * @author momof513
- *
- * Handles the action of whittling logs with a knife
+ * @editor pitch blac23
  */
-class LeatherAction(private val defs: DefinitionSet) {
-    /**
-     * A map of log ids to their item names
-     */
-    private val leatherNames = Leathers.leatherDefinitions.keys.associate { it to defs.get(ItemDef::class.java, it).name.toLowerCase() }
 
-    /**
-     * A map of fletchable item ids to their item names
-     */
+class LeatherAction(private val defs: DefinitionSet) {
+
+    private val leatherNames = Leathers.leatherDefinitions.keys.associate { it to defs.get(ItemDef::class.java, it).name.toLowerCase() }
     private val leatherItemNames = Leathers.leatherDefinitions.flatMap { it.value.values }.distinct().associate { it.id to defs.get(ItemDef::class.java, it.id).name.toLowerCase() }
 
-    /**
-     * Handles the whittling of a log
-     *
-     * @param task          The queued action task
-     * @param log           The log definition
-     * @param whittleItem   The whittleItem definition
-     * @param amount        The amount the player is trying to whittle
-     */
     suspend fun leathers(task: QueueTask, leathers: Int, leatherItem: LeatherItem, amount: Int) {
         if (!canLeather(task, leathers, leatherItem))
             return
@@ -42,14 +28,12 @@ class LeatherAction(private val defs: DefinitionSet) {
         val primaryCount = inventory.getItemCount(leathers)/leatherItem.leatherCount
         val maxCount = Math.min(amount, primaryCount)
 
-        // Wait two ticks to follow OSRS behavior
         var completed = 0
         while(completed < maxCount) {
             player.animate(LEATHER_ANIM)
             task.wait(leatherItem.ticks)
-
             player.lock()
-            // This is here to prevent a TOCTTOU attack
+
             if (!canLeather(task, leathers, leatherItem, sendMessageBox = false)){
                 player.unlock()
                 break
@@ -70,14 +54,6 @@ class LeatherAction(private val defs: DefinitionSet) {
         }
     }
 
-    /**
-     * Checks if a log can be whittled into the given whittleItem
-     *
-     * @param task              The queued task
-     * @param log               The log id being whittled
-     * @param whittleItem       The whittleItem being created
-     * @param sendMessageBox    Whether or not to send the error message
-     */
     private suspend fun canLeather(task: QueueTask, leathers: Int, leatherItem: LeatherItem, sendMessageBox: Boolean = true) : Boolean {
         val player = task.player
         val inventory = player.inventory
@@ -97,9 +73,6 @@ class LeatherAction(private val defs: DefinitionSet) {
     }
     companion object {
 
-        /**
-         * The animation played when whittling a log
-         */
         const val LEATHER_ANIM = 1249
     }
 }

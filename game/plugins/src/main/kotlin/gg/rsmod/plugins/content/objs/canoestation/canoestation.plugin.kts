@@ -93,7 +93,7 @@ on_button(52, 39) {
 //float different canoes
 on_obj_option(Objs.CANOE_STATION_12147, "float log") {
     faceWest(player)
-    floatCanoe(player, Objs.CANOE_STATION_12153)
+    floatCanoe(player, Objs.CANOE_STATION_12151)
     player.message("float log")
     player.setVarp(674, 11)
 }

@@ -8,7 +8,7 @@ package gg.rsmod.plugins.content.objs.canoestation
  * make the sinking canoes spawn
  * add in fading interface and blackout minimap
  * add proper sounds
- * make all stations work
+ * make Champ guild work
  * */
 
 import gg.rsmod.game.message.impl.CameraLookAtMessage
@@ -174,6 +174,7 @@ on_button(52, 39) {
 //float different canoes
 on_obj_option(Objs.CANOE_STATION_12147, "float log") {
     faceWest(player)
+    player.setVarbit(1843, 1)
     floatCanoe(player, Objs.CANOE_STATION_12151)
     player.message("float log")
     //lumbridge
@@ -195,11 +196,34 @@ on_obj_option(Objs.CANOE_STATION_12147, "float log") {
 }
 on_obj_option(Objs.CANOE_STATION_12148, "float canoe") {
     faceWest(player)
+    player.setVarbit(1843, 2)
     floatCanoe(player, Objs.CANOE_STATION_12152)
     player.message("float dugout")
     //lumbridge
     if (player.tile.x == 3243 && player.tile.z == 3237) {
         player.setVarp(674, 12)
+    }
+    //champs guild
+    if (player.tile.x == 3202 && player.tile.z == 3343) {
+        player.setVarp(674, 3072)
+    }
+    //barbarian village
+    if (player.tile.x == 3112 && player.tile.z == 3411) {
+        player.setVarp(674, 786432)
+    }
+    //edgeville
+    if (player.tile.x == 3132 && player.tile.z == 3510) {
+        player.setVarp(674, 201326592)
+    }
+}
+on_obj_option(Objs.CANOE_STATION_12149, "float canoe") {
+    faceWest(player)
+    player.setVarbit(1843, 3)
+    floatCanoe(player, Objs.CANOE_STATION_12153)
+    player.message("float stable dugout")
+    //lumbridge
+    if (player.tile.x == 3243 && player.tile.z == 3237) {
+        player.setVarp(674, 13)
     }
     //champs guild
     if (player.tile.x == 3202 && player.tile.z == 3343) {
@@ -211,32 +235,12 @@ on_obj_option(Objs.CANOE_STATION_12148, "float canoe") {
     }
     //edgeville
     if (player.tile.x == 3132 && player.tile.z == 3510) {
-        player.setVarp(674, 201326592)
-    }
-}
-on_obj_option(Objs.CANOE_STATION_12149, "float canoe") {
-    faceWest(player)
-    floatCanoe(player, Objs.CANOE_STATION_12153)
-    player.message("float stable dugout")
-    //lumbridge
-    if (player.tile.x == 3243 && player.tile.z == 3237) {
-        player.setVarp(674, 13)
-    }
-    //champs guild
-    if (player.tile.x == 3202 && player.tile.z == 3343) {
-        player.setVarp(674, 851968)
-    }
-    //barbarian village
-    if (player.tile.x == 3112 && player.tile.z == 3411) {
-        player.setVarp(674, 786432)
-    }
-    //edgeville
-    if (player.tile.x == 3132 && player.tile.z == 3510) {
         player.setVarp(674, 218103808)
     }
 }
 on_obj_option(Objs.CANOE_STATION_12150, "float canoe") {
     faceWest(player)
+    player.setVarbit(1843, 4)
     floatCanoe(player, Objs.CANOE_STATION_12154)
     player.message("float waka")
     //lumbridge

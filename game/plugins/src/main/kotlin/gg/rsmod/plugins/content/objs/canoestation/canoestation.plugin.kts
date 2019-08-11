@@ -27,16 +27,16 @@ on_obj_option(Objs.CANOE_STATION, "Chop-down") {
     player.lock()
 
     player.queue {
-        wait(2)
+        wait(3)
         faceWest(player)
         player.animate(875)
         wait(3)
         if (player.tile.x == 3243 && player.tile.z == 3235) {
             player.setVarp(674, 9)
         }
-        /*if (player.tile.x == 3204 && player.tile.z == 3343) {
+        if (player.tile.x == 3204 && player.tile.z == 3343) {
             player.setVarp(674, 2304)
-        }*/
+        }
         if (player.tile.x == 3112 && player.tile.z == 3409) {
             player.setVarp(674, 589824)
         }
@@ -91,93 +91,81 @@ on_interface_close(interfaceId = 52) {
 
 //interface 52 buttons
 on_button(52, 24) {
+    player.message("log")
     //lumbrige
     if (player.tile.x == 3243 && player.tile.z == 3237) {
-        player.message("log")
         player.setVarp(674, 1)
     }
     //champs guild
     if (player.tile.x == 3202 && player.tile.z == 3343) {
-        player.message("log")
         player.setVarp(674, 256)
     }
     //barbarian village
     if (player.tile.x == 3112 && player.tile.z == 3411) {
-        player.message("log")
         player.setVarp(674, 65536)
     }
     //edgeville
     if (player.tile.x == 3132 && player.tile.z == 3510) {
-        player.message("log")
         player.setVarp(674, 16777216)
     }
     player.closeInterface(dest = InterfaceDestination.MAIN_SCREEN)
 }
 on_button(52, 37) {
+    player.message("dugout")
     //lumbridge
     if (player.tile.x == 3243 && player.tile.z == 3237) {
-        player.message("dugout")
         player.setVarp(674, 2)
     }
     //champs guild
     if (player.tile.x == 3202 && player.tile.z == 3343) {
-        player.message("dugout")
         player.setVarp(674, 512)
     }
     //barbarian village
     if (player.tile.x == 3112 && player.tile.z == 3411) {
-        player.message("log")
         player.setVarp(674, 131072)
     }
     //edgeville
     if (player.tile.x == 3132 && player.tile.z == 3510) {
-        player.message("log")
         player.setVarp(674, 33554432)
     }
     player.closeInterface(dest = InterfaceDestination.MAIN_SCREEN)
 }
 on_button(52, 38) {
+    player.message("stable dugout")
     //lumbridge
     if (player.tile.x == 3243 && player.tile.z == 3237) {
-        player.message("stable dugout")
         player.setVarp(674, 3)
     }
     //champs guild
     if (player.tile.x == 3202 && player.tile.z == 3343) {
-        player.message("stable dugout")
         player.setVarp(674, 768)
     }
     //barbarian village
     if (player.tile.x == 3112 && player.tile.z == 3411) {
-        player.message("log")
         player.setVarp(674, 196608)
     }
     //edgeville
     if (player.tile.x == 3132 && player.tile.z == 3510) {
-        player.message("log")
         player.setVarp(674, 50331648)
     }
     player.closeInterface(dest = InterfaceDestination.MAIN_SCREEN)
 }
 on_button(52, 39) {
+    player.message("waka")
     //lumbridge
     if (player.tile.x == 3243 && player.tile.z == 3237) {
-        player.message("waka")
         player.setVarp(674, 4)
     }
     //champs guild
     if (player.tile.x == 3202 && player.tile.z == 3343) {
-        player.message("stable dugout")
         player.setVarp(674, 1024)
     }
     //barbarian village
     if (player.tile.x == 3112 && player.tile.z == 3411) {
-        player.message("log")
         player.setVarp(674, 262144)
     }
     //edgeville
     if (player.tile.x == 3132 && player.tile.z == 3510) {
-        player.message("log")
         player.setVarp(674, 67108864)
     }
     player.closeInterface(dest = InterfaceDestination.MAIN_SCREEN)
@@ -221,7 +209,7 @@ on_obj_option(Objs.CANOE_STATION_12148, "float canoe") {
     }
     //edgeville
     if (player.tile.x == 3132 && player.tile.z == 3510) {
-        player.setVarp(674, 218103808)
+        player.setVarp(674, 201326592)
     }
 }
 on_obj_option(Objs.CANOE_STATION_12149, "float canoe") {
@@ -241,7 +229,7 @@ on_obj_option(Objs.CANOE_STATION_12149, "float canoe") {
     }
     //edgeville
     if (player.tile.x == 3132 && player.tile.z == 3510) {
-        player.setVarp(674, 201326592)
+        player.setVarp(674, 218103808)
     }
 }
 on_obj_option(Objs.CANOE_STATION_12150, "float canoe") {

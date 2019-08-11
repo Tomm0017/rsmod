@@ -34,7 +34,7 @@ on_obj_option(Objs.CANOE_STATION, "Chop-down") {
         if (player.tile.x == 3243 && player.tile.z == 3235) {
             player.setVarp(674, 9)
         }
-        if (player.tile.x == 3204 && player.tile.z == 3343) {
+        if (player.tile.x == 3202 && player.tile.z == 3343) {
             player.setVarp(674, 2304)
         }
         if (player.tile.x == 3112 && player.tile.z == 3409) {
@@ -57,7 +57,7 @@ on_obj_option(Objs.CANOE_STATION, "Chop-down") {
             player.setVarp(674, 10)
         }
         //Champs guild
-        if (player.tile.x == 3204 && player.tile.z == 3343) {
+        if (player.tile.x == 3202 && player.tile.z == 3343) {
             player.setVarp(674, 2560)
         }
         //barbvillage
@@ -176,6 +176,7 @@ on_obj_option(Objs.CANOE_STATION_12147, "float log") {
     faceWest(player)
     floatCanoe(player, Objs.CANOE_STATION_12151)
     player.message("float log")
+    //lumbridge
     if (player.tile.x == 3243 && player.tile.z == 3237) {
         player.setVarp(674, 11)
     }
@@ -196,6 +197,7 @@ on_obj_option(Objs.CANOE_STATION_12148, "float canoe") {
     faceWest(player)
     floatCanoe(player, Objs.CANOE_STATION_12152)
     player.message("float dugout")
+    //lumbridge
     if (player.tile.x == 3243 && player.tile.z == 3237) {
         player.setVarp(674, 12)
     }
@@ -216,6 +218,7 @@ on_obj_option(Objs.CANOE_STATION_12149, "float canoe") {
     faceWest(player)
     floatCanoe(player, Objs.CANOE_STATION_12153)
     player.message("float stable dugout")
+    //lumbridge
     if (player.tile.x == 3243 && player.tile.z == 3237) {
         player.setVarp(674, 13)
     }
@@ -236,6 +239,7 @@ on_obj_option(Objs.CANOE_STATION_12150, "float canoe") {
     faceWest(player)
     floatCanoe(player, Objs.CANOE_STATION_12154)
     player.message("float waka")
+    //lumbridge
     if (player.tile.x == 3243 && player.tile.z == 3237) {
         player.setVarp(674, 14)
     }
@@ -337,4 +341,8 @@ fun doCanoeAction(player: Player, finalMoveLocation: Tile) {
 fun faceWest(player: Player) {
     val direction : Direction = Direction.WEST
     player.faceTile(player.tile.transform(direction.getDeltaX(), direction.getDeltaZ()))
+}
+
+on_logout {
+    player.setVarp(id = 674, value = 0)
 }

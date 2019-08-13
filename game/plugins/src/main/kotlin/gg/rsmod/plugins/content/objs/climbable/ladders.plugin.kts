@@ -55,7 +55,7 @@ on_obj_option(Objs.LADDER_12966, option = "climb-down") {
     player.moveTo(player.tile.x, player.tile.z, 1)
 }
 
-/**Wood Cutting Guild ladders*/
+/**Redwood ladders*/
 on_obj_option(obj = Objs.ROPE_LADDER_28857, option = "climb-up") {
     player.queue {
         moveTo(player, 828)
@@ -80,3 +80,68 @@ on_obj_option(obj = Objs.ROPE_LADDER_28858, option = "climb-down") {
     }
 }
 
+/**Mining guild ladders*/
+on_obj_option(Objs.LADDER_30367, option = "climb-down") {
+    if (player.getSkills().getCurrentLevel(Skills.MINING) < 60) {
+        player.queue {
+            when (world.random(1)) {
+                0 -> {
+                    chatNpc("Sorry, but you're not experienced enough to go in<br>there.", npc = 7713)
+                    messageBox("You need a ${Skills.getSkillName(player.world, Skills.MINING)} level of 60 to access the Mining Guild.")
+                }
+                1 -> {
+                    chatNpc("Sorry, but you're not experienced enough to go in<br>there.", npc = 7712)
+                    messageBox("You need a ${Skills.getSkillName(player.world, Skills.MINING)} level of 60 to access the Mining Guild.")
+                }
+            }
+        }
+    } else
+        player.queue {
+            wait(2)
+            player.animate(828)
+            wait(1)
+            if (player.tile.x == 3019 && player.tile.z == 3341) {
+                player.moveTo(player.tile.x, 9741)
+            }
+            if (player.tile.x == 3021 && player.tile.z == 3339) {
+                player.moveTo(player.tile.x, 9739)
+            }
+            if (player.tile.x == 3019 && player.tile.z == 3337) {
+                player.moveTo(player.tile.x, 9737)
+            }
+            if (player.tile.x == 3017 && player.tile.z == 3339) {
+                player.moveTo(player.tile.x, 9739)
+            }
+        }
+}
+on_obj_option(Objs.LADDER_17385, "climb-up") {
+    player.queue {
+        wait(2)
+        player.animate(828)
+        wait(1)
+        if (player.tile.x == 3019 && player.tile.z == 9741) {
+            player.moveTo(player.tile.x, 3341)
+        }
+        if (player.tile.x == 3021 && player.tile.z == 9739) {
+            player.moveTo(player.tile.x, 3339)
+        }
+        if (player.tile.x == 3019 && player.tile.z == 9737) {
+            player.moveTo(player.tile.x, 3337)
+        }
+        if (player.tile.x == 3017 && player.tile.z == 9739) {
+            player.moveTo(player.tile.x, 3339)
+        }
+        if (player.tile.x == 3020 && player.tile.z == 9738) {
+            player.moveTo(player.tile.x, 3338)
+        }
+        if (player.tile.x == 3020 && player.tile.z == 9740) {
+            player.moveTo(player.tile.x, 3340)
+        }
+        if (player.tile.x == 3018 && player.tile.z == 9740) {
+            player.moveTo(player.tile.x, 3340)
+        }
+        if (player.tile.x == 3018 && player.tile.z == 9738) {
+            player.moveTo(player.tile.x, 3338)
+        }
+    }
+}

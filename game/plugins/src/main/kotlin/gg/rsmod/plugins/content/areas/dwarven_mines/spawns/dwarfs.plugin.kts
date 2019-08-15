@@ -1,0 +1,56 @@
+package gg.rsmod.plugins.content.areas.dwarven_mines.spawns
+
+spawn_npc(npc = Npcs.CART_CONDUCTOR_2391, x = 2995, z = 9837, walkRadius = 3)
+spawn_npc(npc = Npcs.HURA, x = 3003, z = 9799, walkRadius = 0, direction = Direction.SOUTH)
+
+spawn_npc(npc = Npcs.DWARF_290, x = 2992, z = 9844, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3001, z = 9844, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 2998, z = 9841, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3002, z = 9829, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3000, z = 9826, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 2994, z = 9826, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 2995, z = 9805, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3005, z = 9799, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3013, z = 9811, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3018, z = 9809, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3017, z = 9819, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3023, z = 9820, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3022, z = 9851, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3037, z = 9844, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3020, z = 9849, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3019, z = 9845, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 3026, z = 9833, walkRadius = 11)
+spawn_npc(npc = Npcs.DWARF_290, x = 2984, z = 9807, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3001, z = 9796, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3010, z = 9813, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3000, z = 9809, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 2999, z = 9817, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3014, z = 9814, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3018, z = 9814, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3028, z = 9816, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3034, z = 9848, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3017, z = 9851, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3018, z = 9835, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3025, z = 9828, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3044, z = 9830, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3048, z = 9823, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3051, z = 9817, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3050, z = 9827, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3053, z = 9826, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3054, z = 9821, walkRadius = 13)
+spawn_npc(npc = Npcs.DWARF_290, x = 3050, z = 9813, walkRadius = 13)
+
+spawn_npc(npc = Npcs.RAT_2854, x = 3033, z = 9827, walkRadius = 14)
+spawn_npc(npc = Npcs.RAT_2854, x = 3026, z = 9837, walkRadius = 14)
+spawn_npc(npc = Npcs.RAT_2854, x = 3042, z = 9818, walkRadius = 14)
+spawn_npc(npc = Npcs.RAT_2854, x = 3043, z = 9815, walkRadius = 14)
+
+
+
+spawn_item(item = Items.PIE_DISH, x = 2993, z = 9847, amount = 1)
+spawn_item(item = Items.BRONZE_CHAINBODY, x = 2985, z = 9817, amount = 1)
+spawn_item(item = Items.COINS_995, x = 3001, z = 9798, amount = 1)
+spawn_item(item = Items.COINS_995, x = 3003, z = 9801, amount = 1)
+
+
+

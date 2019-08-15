@@ -145,3 +145,33 @@ on_obj_option(Objs.LADDER_17385, "climb-up") {
         }
     }
 }
+
+/**Dwarven mines*/
+on_obj_option(Objs.TRAPDOOR_11867, "climb-down") {
+    if (player.tile.x == 3018 && player.tile.z == 3450) {
+        player.queue {
+            wait(2)
+            player.animate(827)
+            wait(1)
+            player.moveTo(3018, 9850)
+        }
+    }
+    if (player.tile.x == 3020 && player.tile.z == 3450) {
+        player.queue {
+            wait(2)
+            player.animate(827)
+            wait(1)
+            player.moveTo(3020, 9850)
+        }
+    }
+}
+on_obj_option(Objs.LADDER_17387, "climb-up") {
+    if (player.tile.x == 3018 && player.tile.z == 9850) {
+        player.queue {
+            wait(2)
+            player.animate(828)
+            wait(1)
+            player.moveTo(3018, 3450)
+        }
+    }
+}

@@ -2,7 +2,7 @@ package gg.rsmod.plugins.content.areas.varrock.shops
 
 import gg.rsmod.plugins.content.mechanics.shops.CoinCurrency
 
-create_shop("Zaff's Superior Staffs!", CoinCurrency()) {
+create_shop("Zaff's Superior Staffs!", CoinCurrency(), purchasePolicy = PurchasePolicy.BUY_STOCK) {
     items[0] = ShopItem(Items.BATTLESTAFF, 5)
     items[1] = ShopItem(Items.STAFF, 5)
     items[2] = ShopItem(Items.MAGIC_STAFF, 5)

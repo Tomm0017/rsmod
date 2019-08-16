@@ -2,7 +2,7 @@ package gg.rsmod.plugins.content.areas.varrock.shops
 
 import gg.rsmod.plugins.content.mechanics.shops.CoinCurrency
 
-create_shop("Aubury's Rune Shop.", CoinCurrency()) {
+create_shop("Aubury's Rune Shop.", CoinCurrency(), purchasePolicy = PurchasePolicy.BUY_STOCK) {
     items[0] = ShopItem(Items.FIRE_RUNE, 5000)
     items[1] = ShopItem(Items.WATER_RUNE, 5000)
     items[2] = ShopItem(Items.AIR_RUNE, 5000)

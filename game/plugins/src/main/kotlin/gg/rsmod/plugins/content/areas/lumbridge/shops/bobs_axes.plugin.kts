@@ -2,7 +2,7 @@ package gg.rsmod.plugins.content.areas.lumbridge.shops
 
 import gg.rsmod.plugins.content.mechanics.shops.CoinCurrency
 
-create_shop("Bob's Brilliant Axes.", CoinCurrency()) {
+create_shop("Bob's Brilliant Axes.", CoinCurrency(), purchasePolicy = PurchasePolicy.BUY_STOCK) {
     items[0] = ShopItem(Items.BRONZE_PICKAXE, 5, 1, 0)
     items[1] = ShopItem(Items.BRONZE_AXE, 10, 16, 9)
     items[2] = ShopItem(Items.IRON_AXE, 5, 56, 33)

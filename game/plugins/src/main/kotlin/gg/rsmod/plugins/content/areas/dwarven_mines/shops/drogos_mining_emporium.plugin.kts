@@ -2,7 +2,7 @@ package gg.rsmod.plugins.content.areas.dwarven_mines.shops
 
 import gg.rsmod.plugins.content.mechanics.shops.CoinCurrency
 
-create_shop("Drogo's Mining Emporium.", CoinCurrency()) {
+create_shop("Drogo's Mining Emporium.", CoinCurrency(), purchasePolicy = PurchasePolicy.BUY_STOCK) {
     items[0] = ShopItem(Items.HAMMER, 4)
     items[1] = ShopItem(Items.BRONZE_PICKAXE, 4)
     items[2] = ShopItem(Items.COPPER_ORE, 0)

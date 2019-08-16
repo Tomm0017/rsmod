@@ -29,8 +29,6 @@ suspend fun dialog(it: QueueTask) {
         1 -> {
             it.chatNpc("Can I buy some leather then?", animation = 567)
             it.chatNpc("I make leather from animal hides. bring me some cowhides and one gold coin per hide, and I'll tan them into soft leather for you.", animation = 567)
-
-
         }
         2 -> {
             it.chatPlayer("Leather is rather weak stuff.", animation = 567)

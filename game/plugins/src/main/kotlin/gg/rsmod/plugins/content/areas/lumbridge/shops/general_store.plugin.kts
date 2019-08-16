@@ -2,7 +2,7 @@ package gg.rsmod.plugins.content.areas.lumbridge.shops
 
 import gg.rsmod.plugins.content.mechanics.shops.CoinCurrency
 
-create_shop("Lumbridge General Store", CoinCurrency()) {
+create_shop("Lumbridge General Store", CoinCurrency(), purchasePolicy = PurchasePolicy.BUY_TRADEABLES) {
     items[0] = ShopItem(Items.POT, 5, 1, 0)
     items[1] = ShopItem(Items.JUG, 2, 1, 0)
     items[2] = ShopItem(Items.EMPTY_JUG_PACK, 5, 182, 56)

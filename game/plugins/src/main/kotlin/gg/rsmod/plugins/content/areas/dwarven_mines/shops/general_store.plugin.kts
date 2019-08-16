@@ -2,7 +2,7 @@ package gg.rsmod.plugins.content.areas.dwarven_mines.shops
 
 import gg.rsmod.plugins.content.mechanics.shops.CoinCurrency
 
-create_shop("Dwarven shopping store", CoinCurrency()) {
+create_shop("Dwarven shopping store", CoinCurrency(), purchasePolicy = PurchasePolicy.BUY_TRADEABLES) {
     items[0] = ShopItem(Items.POT, 3)
     items[1] = ShopItem(Items.JUG, 2)
     items[2] = ShopItem(Items.EMPTY_JUG_PACK, 5)

@@ -370,7 +370,7 @@ class NpcDropTableBuilder {
 
     fun setJson(jsonString: String) {
 
-        val file = File("game/plugins/src/main/kotlin/gg/rsmod/plugins/content/npcs/$jsonString")
+        val file = File("game/plugins/src/main/kotlin/gg/rsmod/plugins/content/npcs/npcInfo/$jsonString")
         val ins: InputStream = file.inputStream()
 
         json = ins.readBytes().toString(Charset.defaultCharset())

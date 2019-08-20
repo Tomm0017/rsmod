@@ -22,7 +22,7 @@ on_item_on_obj(Objs.HOPPER_24961, Items.GRAIN) {
             player.unlock()
             player.inventory.remove(Items.GRAIN)
             player.attr.put(GRAIN_IN_HOPPER_ATTRIBUTE, Unit)
-            player.filterableMessage("You put the grain in the hopper.")
+            player.filterableMessage("You put the grain in the hopper. You should now pull the lever nearby to operate the hopper.")
         }
     } else {
         player.message("There is already grain in the hopper.")

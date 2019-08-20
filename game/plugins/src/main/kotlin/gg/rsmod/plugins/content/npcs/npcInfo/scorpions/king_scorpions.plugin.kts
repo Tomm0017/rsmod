@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.content.npcs.npcInfo.scorpions
 
-arrayOf(Npcs.SCORPION_3024).forEach { scorpion ->
+arrayOf(Npcs.KING_SCORPION).forEach { scorpion ->
     set_combat_def(scorpion) {
         configs {
             attackSpeed = 4

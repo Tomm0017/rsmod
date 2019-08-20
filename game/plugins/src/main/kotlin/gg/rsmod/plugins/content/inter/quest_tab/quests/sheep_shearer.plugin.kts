@@ -41,6 +41,7 @@ on_npc_option(732, option = "talk-to") {
             askForQuest(this)
         }
         if (player.getVarp(179) == 1) { // STARTED
+            chatNpc("What are you doing on my land?")
             checkItems(this)
         }
         if ((player.getVarp(179) == 2) and (!player.isInterfaceVisible(277))) { // COMPLETED
@@ -154,25 +155,52 @@ suspend fun CanDoThat(it: QueueTask) {
 }
 
 suspend fun checkItems(it: QueueTask) {
-    it.chatNpc("How are you doing getting those balls of wool?")
-    if (it.player.inventory.contains(Items.BALL_OF_WOOL) and (ballsNeeded >= 0)) {
-        it.chatPlayer("I have some.")
-        it.chatNpc("Give 'em here then.")
-        val currentlyHaz = it.player.inventory.getItemCount(Items.BALL_OF_WOOL)
-        ballsNeeded-=currentlyHaz
-        it.player.inventory.remove(item = Items.BALL_OF_WOOL, amount = currentlyHaz)
+    when (it.options("I'm back!", "Fred! Fred! I've seen The Thing!")) {
+        1 -> {
+            it.chatPlayer("I'm back!")
+            it.chatNpc("How are you doing getting those balls of wool?")
+            if (it.player.hasItem(Items.WOOL)) {
+                it.chatPlayer("Well I've got some wool. I've not managed to make it<br>into a ball though.", animation = 589)
+                it.chatNpc("Well go find a spinning wheel then. You can find one<br>on the first floor of Lumbridge Castle, just walk east on<br>the road outside my house and you'll find Lumbridge.", animation = 590)
+            }
+            if (it.player.inventory.contains(Items.BALL_OF_WOOL) and (ballsNeeded >= 0)) {
+                it.chatPlayer("I have some.")
+                it.chatNpc("Give 'em here then.")
+                val currentlyHaz = it.player.inventory.getItemCount(Items.BALL_OF_WOOL)
+                ballsNeeded -= currentlyHaz
+                it.player.inventory.remove(item = Items.BALL_OF_WOOL, amount = currentlyHaz)
+            }
+            if (ballsNeeded > 0) {
+                it.chatPlayer("How many more do I need to give you?")
+                it.chatNpc("You need to collect $ballsNeeded more balls of wool.")
+                it.chatPlayer("I haven't got any at the moment.")
+                it.chatNpc("Ah well at least you haven't been eaten.")
+            }
+            if (ballsNeeded <= 0) {
+                it.chatPlayer("That's the last of them.")
+                it.chatNpc("I guess I'd better pay you then.")
+                questCompleted(it)
+            }
+        }
+        2 -> {
+            it.chatPlayer("Fred! Fred! I've seen The Thing!")
+            it.chatNpc("You ... you actually saw it?")
+            it.chatNpc("Run for the hills! /*player*/ grab as many chickens<br><br> as you can! We have to...")
+            it.chatPlayer("Fred!")
+            it.chatNpc("... flee! Oh, woe is me! The shapeshifter is coming!<br><br>We're all ...")
+            it.chatPlayer("FRED!")
+            it.chatNpc("... doomed. What!")
+            it.chatPlayer("It's not a shapeshifter or any other kind of monster!")
+            it.chatNpc("Well then what is it boy?")
+            it.chatPlayer("Well ... it's two Penguins; Penguins disguised as a<br><br>sheep.")
+            it.chatNpc("...")
+            it.chatNpc("Have you been out in the sun to long?")
+        }
     }
-    if (ballsNeeded > 0) {
-        it.chatPlayer("How many more do I need to give you?")
-        it.chatNpc("You need to collect $ballsNeeded more balls of wool.")
-        it.chatPlayer("I haven't got any at the moment.")
-        it.chatNpc("Ah well at least you haven't been eaten.")
-    }
-    if (ballsNeeded <= 0) {
-        it.chatPlayer("That's the last of them.")
-        it.chatNpc("I guess I'd better pay you then.")
-        questCompleted(it)
-    }
+}
+
+on_interface_open(119) {
+    player.setComponentText(interfaceId = 119, component = 7, text = "<col=000080>I need to collect $ballsNeeded more <col=800000>balls of wool.")
 }
 
 suspend fun questCompleted(it: QueueTask) {

@@ -185,7 +185,7 @@ suspend fun checkItems(it: QueueTask) {
         2 -> {
             it.chatPlayer("Fred! Fred! I've seen The Thing!")
             it.chatNpc("You ... you actually saw it?")
-            it.chatNpc("Run for the hills! /*player*/ grab as many chickens<br><br> as you can! We have to...")
+            it.chatNpc("Run for the hills! ${it.player.username} grab as many chickens<br><br> as you can! We have to...")
             it.chatPlayer("Fred!")
             it.chatNpc("... flee! Oh, woe is me! The shapeshifter is coming!<br><br>We're all ...")
             it.chatPlayer("FRED!")

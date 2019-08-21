@@ -38,5 +38,15 @@
       "left": 24059,
       "right": 24064
     }
+  },
+  {
+    "opened": {
+      "left": 1571,
+      "right": 1572
+    },
+    "closed": {
+      "left": 1568,
+      "right": 1569
+    }
   }
 ]

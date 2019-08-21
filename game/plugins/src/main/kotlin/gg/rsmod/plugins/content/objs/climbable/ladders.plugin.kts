@@ -143,6 +143,10 @@ on_obj_option(Objs.LADDER_17385, "climb-up") {
         if (player.tile.x == 3018 && player.tile.z == 9738) {
             player.moveTo(player.tile.x, 3338)
         }
+        if (player.tile.x == 3096 && player.tile.z == 9867) {
+            player.moveTo(player.tile.x, 3468)
+            faceWest(player)
+        }
     }
 }
 

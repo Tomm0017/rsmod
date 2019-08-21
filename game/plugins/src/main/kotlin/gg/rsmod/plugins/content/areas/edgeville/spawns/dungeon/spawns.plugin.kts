@@ -11,7 +11,6 @@ spawn_npc(npc = Npcs.GIANT_RAT_2863, x = 3122, z = 9889, walkRadius = 5)//17sec
 spawn_npc(npc = Npcs.GIANT_RAT_2863, x = 3089, z = 9895, walkRadius = 4)
 spawn_npc(npc = Npcs.GIANT_RAT_2856, x = 3121, z = 9893, walkRadius = 5)//17sec
 spawn_npc(npc = Npcs.GIANT_RAT_2856, x = 3102, z = 9880, walkRadius = 5)
-spawn_npc(npc = Npcs.GIANT_RAT_2856, x = 3102, z = 9880, walkRadius = 5)
 spawn_npc(npc = Npcs.GIANT_RAT_2856, x = 3091, z = 9897, walkRadius = 4)
 
 spawn_npc(npc = Npcs.SKELETON_81, x = 3141, z = 9869, walkRadius = 9)//35sec

@@ -143,8 +143,8 @@ on_obj_option(Objs.LADDER_17385, "climb-up") {
         if (player.tile.x == 3018 && player.tile.z == 9738) {
             player.moveTo(player.tile.x, 3338)
         }
-        if (player.tile.x == 3096 && player.tile.z == 9867) {
-            player.moveTo(player.tile.x, 3468)
+        if (player.tile.x == 3096 && player.tile.z == 9867 || player.tile.x == 3097 && player.tile.z == 9868) {
+            player.moveTo(3096, 3468)
             faceWest(player)
         }
     }
@@ -176,6 +176,18 @@ on_obj_option(Objs.LADDER_17387, "climb-up") {
             player.animate(828)
             wait(1)
             player.moveTo(3018, 3450)
+        }
+    }
+}
+
+/**Varrock man hole*/
+on_obj_option(Objs.LADDER_11806, option = "climb-up") {
+    if (player.tile.x == 3236 && player.tile.z == 9858) {
+        player.queue {
+            wait(2)
+            player.animate(828)
+            wait(1)
+            player.moveTo(3236, 3458)
         }
     }
 }

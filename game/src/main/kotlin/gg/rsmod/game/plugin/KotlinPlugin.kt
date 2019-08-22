@@ -15,8 +15,6 @@ import gg.rsmod.game.model.droptable.NpcDropTableDef
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.shop.PurchasePolicy
 import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.shop.ShopCurrency

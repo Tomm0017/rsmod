@@ -12585,13 +12585,13 @@
 - id: 10817
   examine: "Head back down to the ground now."
 - id: 10819
-  examine: "An ominous tree."
+  examine: "These trees are found near water."
 - id: 10820
   examine: "It's a looooooong way down!"
 - id: 10821
   examine: "Don't look down!"
 - id: 10822
-  examine: "Less examiney, more jumpy!"
+  examine: "A splendid tree."
 - id: 10823
   examine: "It's not that far across..."
 - id: 10824
@@ -12601,13 +12601,13 @@
 - id: 10828
   examine: "Parkour; Go!"
 - id: 10829
-  examine: "This would be easier if the rope were under more tension!"
+  examine: "A droopy tree."
 - id: 10831
-  examine: "For jumping large gaps."
+  examine: "These trees are found near water."
 - id: 10832
   examine: "Try not to belly-flop."
 - id: 10833
-  examine: "Perhaps you can get a grip here and climb the wall."
+  examine: "These trees are found near water."
 - id: 10834
   examine: "Viaducts are for noobs."
 - id: 10836

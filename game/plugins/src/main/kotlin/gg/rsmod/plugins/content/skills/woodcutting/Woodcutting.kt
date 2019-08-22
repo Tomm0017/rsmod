@@ -10,6 +10,9 @@ import gg.rsmod.plugins.api.ext.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
+ *
+ * Thanks to Stuart2
+ * for the better axe usage 
  */
 object Woodcutting {
 
@@ -23,7 +26,7 @@ object Woodcutting {
         }
 
         val logName = p.world.definitions.get(ItemDef::class.java, tree.log).name
-        val axe = AxeType.values.firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && (p.equipment.contains(it.item) || p.inventory.contains(it.item)) }!!
+        val axe = AxeType.values.filter { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && (p.equipment.contains(it.item) || p.inventory.contains(it.item)) }.sortedBy { it.level }.last()
 
         p.filterableMessage("You swing your axe at the tree.")
         while (true) {

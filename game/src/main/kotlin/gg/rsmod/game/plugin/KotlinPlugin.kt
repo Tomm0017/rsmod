@@ -15,6 +15,8 @@ import gg.rsmod.game.model.droptable.NpcDropTableDef
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
+import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.shop.PurchasePolicy
 import gg.rsmod.game.model.shop.Shop
 import gg.rsmod.game.model.shop.ShopCurrency
@@ -166,11 +168,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      */
     fun spawn_item(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = GroundItem.DEFAULT_RESPAWN_CYCLES) {
         val ground = GroundItem(item, amount, Tile(x, z, height))
-        if(!ground.isSpawned(world)){
-            ground.respawnCycles = respawnCycles
-            r.itemSpawns.add(ground)
-        } else
-            r.itemSpawns.remove(ground)
+        ground.respawnCycles = respawnCycles
+        r.itemSpawns.add(ground)
     }
 
     /**

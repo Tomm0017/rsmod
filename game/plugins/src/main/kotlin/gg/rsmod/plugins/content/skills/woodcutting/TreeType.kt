@@ -6,7 +6,7 @@ package gg.rsmod.plugins.content.skills.woodcutting
 enum class TreeType(val level: Int, val xp: Double, val log: Int, val depleteChance: Int, val respawnTime: IntRange) {
     TREE(level = 1, xp = 25.0, log = 1511, depleteChance = 0, respawnTime = 15..25),
     ACHEY(level = 1, xp = 25.0, log = 2862, depleteChance = 0, respawnTime = 15..25),
-    OAK(level = 15, xp = 37.5, log = 1521, depleteChance = 0, respawnTime = 15..25),
+    OAK(level = 15, xp = 37.5, log = 1521, depleteChance = 8, respawnTime = 15..25),
     WILLOW(level = 30, xp = 67.5, log = 1519, depleteChance = 8, respawnTime = 22..68),
     TEAK(level = 35, xp = 85.0, log = 6333, depleteChance = 8, respawnTime = 22..68),
     MAPLE(level = 45, xp = 100.0, log = 1517, depleteChance = 8, respawnTime = 22..68),

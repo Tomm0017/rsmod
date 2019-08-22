@@ -11,8 +11,16 @@ private val TREES = setOf(
         Tree(TreeType.TREE, obj = 1289, trunk = 1353), // Dead tree
         Tree(TreeType.TREE, obj = 2091, trunk = 1342), // Evergreen
 
+        Tree(TreeType.OAK, obj = 10820, trunk = 1356),
+
+        Tree(TreeType.WILLOW, obj = 10833, trunk = 9471),
+        Tree(TreeType.WILLOW, obj = 10831, trunk = 9471),
+        Tree(TreeType.WILLOW, obj = 10829, trunk = 9471),
+        Tree(TreeType.WILLOW, obj = 10819, trunk = 9711),
+
         Tree(TreeType.YEW, obj = 1753, trunk = 9714),
         Tree(TreeType.YEW, obj = 1754, trunk = 9714),
+        Tree(TreeType.YEW, obj = 10822, trunk = 9714),
 
         Tree(TreeType.REDWOOD, obj = 29668, trunk = 29669),
         Tree(TreeType.REDWOOD, obj = 29670, trunk = 29671)

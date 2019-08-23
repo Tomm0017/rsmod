@@ -1,0 +1,179 @@
+{
+  "always": {
+    "percentage": 100.0,
+    "items": [
+      {
+        "itemId": 526,
+        "quanityMin": 1,
+        "quanityMax": 1
+      }
+    ]
+  },
+
+  "rolls": 1,
+
+  "common": {
+    "percentage": 85.537,
+    "items": [
+      {
+        "itemId": 199,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 201,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 203,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 205,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 5,
+        "quanityMax": 5
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 10,
+        "quanityMax": 10
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 25,
+        "quanityMax": 25
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 45,
+        "quanityMax": 45
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 65,
+        "quanityMax": 65
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 75,
+        "quanityMax": 75
+      }
+    ]
+  },
+  "uncommon": {
+    "percentage": 3.125,
+    "items": [
+      {
+        "itemId": 207,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 209,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 211,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },{
+        "itemId": 213,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 556,
+        "quanityMin": 15,
+        "quanityMax": 15
+      },
+      {
+        "itemId": 555,
+        "quanityMin": 9,
+        "quanityMax": 9
+      },
+      {
+        "itemId": 562,
+        "quanityMin": 5,
+        "quanityMax": 5
+      },
+      {
+        "itemId": 1349,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 1137,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 1279,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 2349,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 23182,
+        "quanityMin": 1,
+        "quanityMax": 1
+      }
+    ]
+  },
+  "rare": {
+    "percentage": 0.390,
+    "items": [
+      {
+        "itemId": 215,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 217,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 2485,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 564,
+        "quanityMin": 2,
+        "quanityMax": 2
+      },
+      {
+        "itemId": 563,
+        "quanityMin": 2,
+        "quanityMax": 2
+      },
+      {
+        "itemId": 884,
+        "quanityMin": 12,
+        "quanityMax": 12
+      },
+      {
+        "itemId": 1323,
+        "quanityMin": 1,
+        "quanityMax": 1
+      }
+    ]
+  },
+  "veryrare": {
+    "percentage": 0.195,
+    "items": []
+  }
+
+}

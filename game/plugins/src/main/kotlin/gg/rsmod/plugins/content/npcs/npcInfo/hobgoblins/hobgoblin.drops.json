@@ -3,7 +3,7 @@
     "percentage": 100.0,
     "items": [
       {
-        "itemId": 532,
+        "itemId": 526,
         "quanityMin": 1,
         "quanityMax": 1
       }
@@ -16,9 +16,9 @@
     "percentage": 85.537,
     "items": [
       {
-      "itemId": 995,
-      "quanityMin": 2,
-      "quanityMax": 2
+        "itemId": 995,
+        "quanityMin": 1,
+        "quanityMax": 1
       },
       {
         "itemId": 995,
@@ -27,38 +27,63 @@
       },
       {
         "itemId": 995,
-        "quanityMin": 37,
-        "quanityMax": 37
+        "quanityMin": 10,
+        "quanityMax": 10
       },
       {
         "itemId": 995,
-        "quanityMin": 119,
-        "quanityMax": 119
+        "quanityMin": 15,
+        "quanityMax": 15
       },
       {
         "itemId": 995,
-        "quanityMin": 300,
-        "quanityMax": 300
+        "quanityMin": 20,
+        "quanityMax": 20
       },
       {
-        "itemId": 1179,
+        "itemId": 995,
+        "quanityMin": 25,
+        "quanityMax": 25
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 28,
+        "quanityMax": 28
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 42,
+        "quanityMax": 42
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 62,
+        "quanityMax": 62
+      },
+      {
+        "itemId": 995,
+        "quanityMin": 68,
+        "quanityMax": 68
+      },
+      {
+        "itemId": 225,
         "quanityMin": 1,
         "quanityMax": 1
       },
       {
-        "itemId": 1141,
-        "quanityMin": 1,
-        "quanityMax": 1
+        "itemId": 5318,
+        "quanityMin": 4,
+        "quanityMax": 4
       },
       {
-        "itemId": 1389,
-        "quanityMin": 1,
-        "quanityMax": 1
+        "itemId": 5319,
+        "quanityMin": 4,
+        "quanityMax": 4
       },
       {
-        "itemId": 1285,
-        "quanityMin": 1,
-        "quanityMax": 1
+        "itemId": 5324,
+        "quanityMin": 4,
+        "quanityMax": 4
       },
       {
         "itemId": 199,
@@ -74,31 +99,6 @@
         "itemId": 203,
         "quanityMin": 1,
         "quanityMax": 1
-      },
-      {
-        "itemId": 556,
-        "quanityMin": 12,
-        "quanityMax": 18
-      },
-      {
-        "itemId": 557,
-        "quanityMin": 27,
-        "quanityMax": 27
-      },
-      {
-        "itemId": 561,
-        "quanityMin": 6,
-        "quanityMax": 6
-      },
-      {
-        "itemId": 2353,
-        "quanityMin": 1,
-        "quanityMax": 1
-      },
-      {
-        "itemId": 13475,
-        "quanityMin": 1,
-        "quanityMax": 1
       }
     ]
   },
@@ -107,14 +107,49 @@
     "percentage": 3.125,
     "items": [
       {
-        "itemId": 884,
-        "quanityMin": 15,
-        "quanityMax": 15
+        "itemId": 1279,
+        "quanityMin": 1,
+        "quanityMax": 1
       },
       {
-        "itemId": 886,
-        "quanityMin": 30,
-        "quanityMax": 30
+        "itemId": 1239,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 1207,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 559,
+        "quanityMin": 6,
+        "quanityMax": 6
+      },
+      {
+        "itemId": 563,
+        "quanityMin": 2,
+        "quanityMax": 2
+      },
+      {
+        "itemId": 554,
+        "quanityMin": 7,
+        "quanityMax": 7
+      },
+      {
+        "itemId": 562,
+        "quanityMin": 3,
+        "quanityMax": 3
+      },
+      {
+        "itemId": 555,
+        "quanityMin": 2,
+        "quanityMax": 2
+      },
+      {
+        "itemId": 561,
+        "quanityMin": 4,
+        "quanityMax": 4
       },
       {
         "itemId": 205,
@@ -137,22 +172,12 @@
         "quanityMax": 1
       },
       {
-        "itemId": 563,
-        "quanityMin": 3,
-        "quanityMax": 6
-      },
-      {
-        "itemId": 565,
+        "itemId": 288,
         "quanityMin": 1,
         "quanityMax": 1
       },
       {
-        "itemId": 562,
-        "quanityMin": 7,
-        "quanityMax": 7
-      },
-      {
-        "itemId": 453,
+        "itemId": 23182,
         "quanityMin": 1,
         "quanityMax": 1
       },
@@ -188,18 +213,39 @@
       }
     ]
   },
+
   "rare": {
     "percentage": 0.390,
     "items": [
       {
-        "itemId": 1193,
+        "itemId": 1237,
         "quanityMin": 1,
         "quanityMax": 1
       },
       {
-        "itemId": 1243,
+        "itemId": 1241,
         "quanityMin": 1,
         "quanityMax": 1
+      },
+      {
+        "itemId": 826,
+        "quanityMin": 5,
+        "quanityMax": 5
+      },
+      {
+        "itemId": 1295,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 1009,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 564,
+        "quanityMin": 2,
+        "quanityMax": 2
       },
       {
         "itemId": 213,
@@ -217,24 +263,9 @@
         "quanityMax": 1
       },
       {
-        "itemId": 564,
+        "itemId": 5320,
         "quanityMin": 3,
         "quanityMax": 3
-      },
-      {
-        "itemId": 560,
-        "quanityMin": 1,
-        "quanityMax": 1
-      },
-      {
-        "itemId": 560,
-        "quanityMin": 3,
-        "quanityMax": 3
-      },
-      {
-        "itemId": 1969,
-        "quanityMin": 1,
-        "quanityMax": 1
       },
       {
         "itemId": 5321,
@@ -295,24 +326,10 @@
         "itemId": 5299,
         "quanityMin": 1,
         "quanityMax": 1
-      },
-      {
-        "itemId": 5100,
-        "quanityMin": 1,
-        "quanityMax": 1
-      },
-      {
-        "itemId": 22879,
-        "quanityMin": 1,
-        "quanityMax": 1
-      },
-      {
-        "itemId": 22374,
-        "quanityMin": 1,
-        "quanityMax": 1
       }
     ]
   },
+
   "veryrare": {
     "percentage": 0.195,
     "items": [
@@ -320,6 +337,16 @@
         "itemId": 217,
         "quanityMin": 1,
         "quanityMax": 1
+      },
+      {
+        "itemId": 6802,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 22879,
+        "quanityMin": 1,
+        "quanityMax": 2
       },
       {
         "itemId": 5300,
@@ -345,12 +372,8 @@
         "itemId": 5304,
         "quanityMin": 1,
         "quanityMax": 1
-      },
-      {
-        "itemId": 6800,
-        "quanityMin": 1,
-        "quanityMax": 1
       }
     ]
   }
+
 }

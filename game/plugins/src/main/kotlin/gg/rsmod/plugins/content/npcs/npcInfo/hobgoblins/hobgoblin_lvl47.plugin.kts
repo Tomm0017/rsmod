@@ -1,5 +1,5 @@
 package gg.rsmod.plugins.content.npcs.npcInfo.hobgoblins
-
+/*
     set_combat_def(Npcs.HOBGOBLIN_3050) {
         configs {
             attackSpeed = 6

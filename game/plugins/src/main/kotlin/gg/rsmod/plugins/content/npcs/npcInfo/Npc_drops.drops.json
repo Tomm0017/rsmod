@@ -1,0 +1,32 @@
+{
+  "always": {
+    "percentage": 100.0,
+    "items": [
+      {
+        "itemId": 526,
+        "quanityMin": 1,
+        "quanityMax": 1
+      }
+    ]
+  },
+
+  "rolls": 0,
+
+  "common": {
+    "percentage": 85.537,
+    "items": []
+  },
+  "uncommon": {
+    "percentage": 3.125,
+    "items": []
+  },
+  "rare": {
+    "percentage": 0.390,
+    "items": []
+  },
+  "veryrare": {
+    "percentage": 0.195,
+    "items": []
+  }
+
+}

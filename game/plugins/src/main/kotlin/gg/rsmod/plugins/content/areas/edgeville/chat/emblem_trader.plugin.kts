@@ -1,5 +1,9 @@
 package gg.rsmod.plugins.content.areas.edgeville.chat
 
+// Emblem trader "real" npc has an id of 308, this npc then changes appearance
+// based on its varbit state for each player.
+spawn_npc(npc = 308, x = 3096, z = 3504, walkRadius = 2)
+
 val HIDE_STREAK_VARBIT = 1621
 val LIMIT_TARGETS_VARBIT = 6503
 

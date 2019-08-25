@@ -1,4 +1,6 @@
-package gg.rsmod.plugins.content.areas.varrock.npcs.aubury
+package gg.rsmod.plugins.content.areas.varrock.chat
+
+spawn_npc(Npcs.AUBURY, 3253, 3402, 0, 2)
 
 arrayOf(Npcs.AUBURY).forEach { aubury ->
     on_npc_option(npc = aubury, option = "trade", lineOfSightDistance = 1) {

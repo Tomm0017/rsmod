@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.areas.edgeville.chat
 
+spawn_npc(npc = Npcs.RICHARD_2200, x = 3102, z = 3518, walkRadius = 2)
+
 on_npc_option(npc = Npcs.RICHARD_2200, option = "talk-to") {
     player.queue { chat(this) }
 }

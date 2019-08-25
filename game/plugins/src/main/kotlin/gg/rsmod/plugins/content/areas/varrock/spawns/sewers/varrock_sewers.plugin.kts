@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.content.areas.varrock.spawns
+package gg.rsmod.plugins.content.areas.varrock.spawns.sewers
 
 spawn_npc(Npcs.SPIDER_3019, 3261, 9869, walkRadius = 8)//20sec
 spawn_npc(Npcs.SPIDER_3019, 3262, 9870, walkRadius = 8)//20sec

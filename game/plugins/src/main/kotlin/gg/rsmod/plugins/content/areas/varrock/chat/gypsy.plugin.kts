@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.areas.varrock.chat
 
+spawn_npc(npc = Npcs.GYPSY, x = 3203, z = 3424, walkRadius = 2, direction = Direction.EAST)
+
 on_npc_option(npc = Npcs.GYPSY, option = "talk-to") {
     player.queue { dialog(this) }
 }

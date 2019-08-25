@@ -1,4 +1,4 @@
-package com.desetude.plugins.content.objs.crops
+package gg.rsmod.plugins.content.objs.crops
 
 val RESPAWN_DELAY = 75
 
@@ -12,7 +12,12 @@ val crops = setOf(
         Crop(
                 "wheat",
                 setOf(Objs.WHEAT_15506, Objs.WHEAT_15507, Objs.WHEAT_15508)
-        ) { Items.GRAIN }
+        ) { Items.GRAIN },
+        Crop(
+                "potato",
+                setOf(Objs.POTATO_312)
+        ) { Items.POTATO }
+
 )
 
 for (crop in crops) {
@@ -34,6 +39,7 @@ for (crop in crops) {
                         player.inventory.add(item = item)
                         world.remove(obj)
                         world.queue {
+                            spawn_obj(45774, 1441, 144)
                             wait(RESPAWN_DELAY)
                             world.spawn(DynamicObject(obj))
                         }

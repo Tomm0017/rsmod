@@ -1,0 +1,51 @@
+{
+  "always": {
+    "percentage": 100.0,
+    "items": [
+      {
+        "itemId": 526,
+        "quanityMin": 1,
+        "quanityMax": 1
+      },
+      {
+        "itemId": 2138,
+        "quanityMin": 1,
+        "quanityMax": 1
+      }
+    ]
+  },
+
+  "rolls": 1,
+
+  "common": {
+    "percentage": 50.0,
+    "items": [
+      {
+        "itemId": 314,
+        "quanityMin": 5,
+        "quanityMax": 5
+      }
+    ]
+  },
+
+  "uncommon": {
+    "percentage": 25.0,
+    "items": [
+      {
+        "itemId": 314,
+        "quanityMin": 15,
+        "quanityMax": 15
+      }
+    ]
+  },
+
+  "rare": {
+    "percentage": 25.0,
+    "items": []
+  },
+  "veryrare": {
+    "percentage": 0.195,
+    "items": []
+  }
+
+}

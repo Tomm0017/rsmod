@@ -6,15 +6,7 @@
         "itemId": 526,
         "quanityMin": 1,
         "quanityMax": 1
-      }
-    ]
-  },
-
-  "rolls": 2,
-
-  "common": {
-    "percentage": 100.0,
-    "items": [
+      },
       {
         "itemId": 2132,
         "quanityMin": 1,
@@ -26,6 +18,13 @@
         "quanityMax": 1
       }
     ]
+  },
+
+  "rolls": 0,
+
+  "common": {
+    "percentage": 100.0,
+    "items": []
   },
   "uncommon": {
     "percentage": 3.125,

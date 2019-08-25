@@ -1,0 +1,21 @@
+package gg.rsmod.plugins.content.areas.lumbridge.spawns
+
+spawn_npc(Npcs.CHICKEN_1173, 3231, 3300, 0, 5)
+spawn_npc(Npcs.CHICKEN_1173, 3229, 3299, 0, 5)
+spawn_npc(Npcs.CHICKEN_1173, 3230, 3298, 0, 5)
+spawn_npc(Npcs.CHICKEN_1173, 3229, 3296, 0, 5)
+spawn_npc(Npcs.CHICKEN_1173, 3235, 3298, 0, 5)
+spawn_npc(Npcs.CHICKEN_1174, 3233, 3294, 0, 5)
+spawn_npc(Npcs.CHICKEN_1174, 3231, 3297, 0, 5)
+spawn_npc(Npcs.CHICKEN_1174, 3232, 3299, 0, 5)
+spawn_npc(Npcs.CHICKEN_1174, 3228, 3300, 0, 5)
+spawn_npc(Npcs.CHICKEN_1174, 3228, 3297, 0, 5)
+spawn_npc(Npcs.CHICKEN_1174, 3226, 3296, 0, 5)
+spawn_npc(Npcs.CHICKEN_1174, 3225, 3300, 0, 5)
+
+spawn_item(item = Items.EGG, amount = 1, x = 3226, z = 3301, height = 0)
+spawn_item(item = Items.EGG, amount = 1, x = 3229, z = 3299, height = 0)
+spawn_item(item = Items.EGG, amount = 1, x = 3185, z = 3297, height = 0)
+spawn_item(item = Items.EGG, amount = 1, x = 3169, z = 3291, height = 0)
+spawn_item(item = Items.EGG, amount = 1, x = 3172, z = 3301, height = 0)
+spawn_item(item = Items.EGG, amount = 1, x = 3175, z = 3305, height = 0)

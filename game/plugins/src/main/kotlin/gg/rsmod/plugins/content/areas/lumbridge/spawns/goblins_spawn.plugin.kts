@@ -31,3 +31,6 @@ for(i in (1..spawnCount)) {
     val randSpawn = (0..(GOBLIN_SPAWNS.size-1)).random()
     spawn_npc(GOBLINS[rand], GOBLIN_SPAWNS[randSpawn].x, GOBLIN_SPAWNS[randSpawn].z, 0, 8)
 }
+
+spawn_npc(Npcs.GOBLIN_3029, 3234, 3234, 0, 1)
+spawn_npc(Npcs.GOBLIN_3031, 3237, 3228, 0, 1)

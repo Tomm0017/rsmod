@@ -3,15 +3,15 @@ package gg.rsmod.game.action
 import gg.rsmod.game.fs.def.AnimDef
 import gg.rsmod.game.model.LockState
 import gg.rsmod.game.model.attr.KILLER_ATTR
+import gg.rsmod.game.model.droptable.createItem
+import gg.rsmod.game.model.droptable.toGroundItem
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.service.log.LoggerService
-import kotlinx.coroutines.channels.consumesAll
 import java.lang.ref.WeakReference
 import kotlin.random.Random
 
@@ -53,39 +53,19 @@ object NpcDeathAction {
         deathAnimation.forEach { anim ->
             val def = npc.world.definitions.get(AnimDef::class.java, anim)
             npc.animate(def.id)
-            wait(def.cycleLength + 1)
+            wait(def.cycleLength)
         }
 
         npc.animate(-1)
 
         world.plugins.executeNpcDeath(npc)
-        if(npc.dropTables.always_table.items!!.isEmpty()) {
-            if (npc.respawns) {
-                npc.invisible = true
-                npc.reset()
-                wait(respawnDelay)
-                npc.invisible = false
-                world.plugins.executeNpcSpawn(npc)
-            } else {
-                world.remove(npc)
-            }
-        }
-        if(npc.dropTables.always_table.items!!.isNotEmpty()) {
-            val _always_table_random = (0 until npc.dropTables.always_table.items!!.size).random()
-            val _always_table_item = npc.dropTables.always_table.items!![_always_table_random]
-            var _always_table_quanity = 0
 
-            if (_always_table_item.quanityMin == _always_table_item.quanityMax) {
-                _always_table_quanity = _always_table_item.quanityMax
-            } else {
-                _always_table_quanity = (_always_table_item.quanityMin until _always_table_item.quanityMax).random()
-            }
-
-            world.spawn(item = GroundItem(_always_table_item.itemId, _always_table_quanity, npc.tile))
+        /**Thanks Nbness2 for making this work properly*/
+        npc.dropTables.always_table.items!!.forEach { always_item ->
+            world.spawn(always_item.createItem().toGroundItem(npc.tile))
         }
 
         var _table = npc.dropTables.common_table
-
         var _rolls = npc.dropTables.rolls
         var _roll_count = 0
 
@@ -97,6 +77,8 @@ object NpcDeathAction {
                 _table = npc.dropTables.rare_table
             } else if(r <= npc.dropTables.uncommon_table.percentage && npc.dropTables.uncommon_table.items!!.isNotEmpty()) {
                 _table = npc.dropTables.uncommon_table
+            } else if(r <= npc.dropTables.common_table.percentage && npc.dropTables.common_table.items!!.isNotEmpty()) {
+                _table = npc.dropTables.common_table
             }
 
             if(npc.dropTables.common_table.items!!.size == 0 && npc.dropTables.uncommon_table.items!!.size == 0 && npc.dropTables.rare_table.items!!.size == 0 && npc.dropTables.veryrare_table.items!!.size == 0) {

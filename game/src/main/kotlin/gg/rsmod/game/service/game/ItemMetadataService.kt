@@ -145,6 +145,9 @@ class ItemMetadataService : Service {
                 equipSlot = 4
                 equipType = 6
             }
+            "chest" -> {
+                equipSlot = 4
+            }
             "shield" -> {
                 equipSlot = 5
             }

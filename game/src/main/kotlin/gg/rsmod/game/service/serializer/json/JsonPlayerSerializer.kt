@@ -81,6 +81,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             client.tile = Tile(data.x, data.z, data.height)
             client.privilege = world.privileges.get(data.privilege) ?: Privilege.DEFAULT
             client.runEnergy = data.runEnergy
+            client.xpRate = data.XpRate
             client.interfaces.displayMode = DisplayMode.values.firstOrNull { it.id == data.displayMode } ?: DisplayMode.FIXED
             client.appearance = Appearance(data.appearance.looks, data.appearance.colors, Gender.values.firstOrNull { it.id == data.appearance.gender } ?: Gender.MALE)
             data.skills.forEach { skill ->
@@ -130,7 +131,8 @@ class JsonPlayerSerializer : PlayerSerializerService() {
         val data = JsonPlayerSaveData(passwordHash = client.passwordHash, username = client.loginUsername, previousXteas = client.currentXteaKeys,
                 displayName = client.username, x = client.tile.x, z = client.tile.z, height = client.tile.height,
                 privilege = client.privilege.id, runEnergy = client.runEnergy, displayMode = client.interfaces.displayMode.id,
-                appearance = client.getPersistentAppearance(), skills = client.getPersistentSkills(), itemContainers = client.getPersistentContainers(),
+                appearance = client.getPersistentAppearance(), XpRate = client.xpRate,
+                skills = client.getPersistentSkills(), itemContainers = client.getPersistentContainers(),
                 attributes = client.attr.toPersistentMap(), timers = client.timers.toPersistentTimers(),
                 varps = client.varps.getAll().filter { it.state != 0 })
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))

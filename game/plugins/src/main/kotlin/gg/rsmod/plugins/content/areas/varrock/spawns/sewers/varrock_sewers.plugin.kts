@@ -87,9 +87,9 @@ spawn_npc(Npcs.DEADLY_RED_SPIDER, 3183, 9885, walkRadius = 10)//17sec
 spawn_npc(Npcs.DEADLY_RED_SPIDER, 3174, 9891, walkRadius = 10)//17sec
 spawn_npc(Npcs.DEADLY_RED_SPIDER, 3171, 9884, walkRadius = 10)//17sec
 
-spawn_npc(Npcs.MOSS_GIANT_2090, 3163,9877,0,1, Direction.SOUTH)
-spawn_npc(Npcs.MOSS_GIANT_2090, 3158,9899,0,1, Direction.NORTH_EAST)
-spawn_npc(Npcs.MOSS_GIANT_2090, 3156,9907,0,1, Direction.NORTH_WEST)
+spawn_npc(Npcs.MOSS_GIANT, 3163,9877,0,1, Direction.SOUTH)
+spawn_npc(Npcs.MOSS_GIANT, 3158,9899,0,1, Direction.NORTH_EAST)
+spawn_npc(Npcs.MOSS_GIANT, 3156,9907,0,1, Direction.NORTH_WEST)
 spawn_npc(Npcs.MOSS_GIANT_2091, 3164,9880,0,1, Direction.NORTH_EAST)
 spawn_npc(Npcs.MOSS_GIANT_2091, 3158,9896,0,1, Direction.SOUTH)
 spawn_npc(Npcs.MOSS_GIANT_2091, 3158,9905,0,1, Direction.EAST)

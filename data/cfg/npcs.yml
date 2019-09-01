@@ -11203,9 +11203,11 @@
 - id: 5893
   examine: "This is not going to hurt... but it might tickle."
 - id: 5895
-  examine: "A portal from this mystical place."
+  examine: "He runs a mining store."
 - id: 5897
   examine: "A portal from this mystical place."
+- id: 5904
+  examine: "I wonder if he wants to buy my junk?"
 - id: 5906
   examine: "A young woman running a pet insurance business."
 - id: 5907
@@ -15335,7 +15337,7 @@
 - id: 8390
   examine: "It's a Nigel"
 - id: 8391
-  examine: "It's a Nigel"
+  examine: "Looks like a guy not to be messed with."
 - id: 8400
   examine: "It's a Monk of Zamorak"
 - id: 8401
@@ -15726,3 +15728,5 @@
   examine: "It's a Seaman Morris"
 - id: 8634
   examine: "It's a Alchemical Hydra"
+- id: 8686
+  examine: "He runs a pickaxe store."

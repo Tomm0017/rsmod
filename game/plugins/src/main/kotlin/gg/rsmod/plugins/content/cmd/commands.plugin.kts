@@ -79,10 +79,17 @@ on_command("resetAll") {
 }
 on_command("xpRate") {
     val args = player.getCommandArgs()
-    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::xpRate 1.0</col>") { values ->
-        val id = values[0].toDouble()
-        player.xpRate = id
-        player.message("XpRate: $id")
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::xpRate 1.0</col>") {
+        player.queue {
+            when (options("2", "5", "10", "25", "Reset.", title = "What XpRate would you like?")) {
+                1 -> player.xpRate = 2.0
+                2 -> player.xpRate = 5.0
+                3 -> player.xpRate = 10.0
+                4 -> player.xpRate = 25.0
+                5 -> player.xpRate = 1.0
+            }
+            player.message("XpRate set.")
+        }
     }
 }
 on_command("unlock") {

@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.content.npcs.npcInfo.mossgiants
 
-arrayOf(Npcs.MOSS_GIANT_2090, Npcs.MOSS_GIANT_2091, Npcs.MOSS_GIANT_2092, Npcs.MOSS_GIANT_2093).forEach { mossgiant ->
+arrayOf(Npcs.MOSS_GIANT, Npcs.MOSS_GIANT_2091, Npcs.MOSS_GIANT_2092, Npcs.MOSS_GIANT_2093).forEach { mossgiant ->
     set_combat_def(mossgiant) {
         configs {
             attackSpeed = 4

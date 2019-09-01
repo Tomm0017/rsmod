@@ -2,7 +2,7 @@
 # You want to edit these to fit your game.
 name: "RS Mod Server"
 game-port: 43594
-revision: 181
+revision: 182
 
 # The coordinates for the home location.
 home-x: 3221
@@ -25,8 +25,12 @@ privileges:
     powers: ["mod", "admin"]
   - id: 3
     icon: 2
+    name: "developer"
+    powers: ["mod", "admin", "dev"]
+  - id: 4
+    icon: 2
     name: "owner"
-    powers: ["mod", "dev", "admin", "owner"]
+    powers: ["mod", "admin", "dev", "owner"]
 
 # Game services
 # You can pick and choose which services you want to run.

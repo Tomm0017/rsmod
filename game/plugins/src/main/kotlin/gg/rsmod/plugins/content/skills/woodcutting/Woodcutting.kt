@@ -24,7 +24,7 @@ import gg.rsmod.plugins.api.ext.*
 object Woodcutting {
 
     val infernalaxe = Item(Items.INFERNAL_AXE)
-    var charges = 10
+    var charges = 5000
     data class Tree(val type: TreeType, val obj: Int, val trunk: Int)
 
     suspend fun chopDownTree(it: QueueTask, obj: GameObject, tree: TreeType, trunkId: Int) {
@@ -67,11 +67,10 @@ object Woodcutting {
                             p.inventory.add(Items.INFERNAL_AXE_UNCHARGED)
                         }
                         if (p.inventory.contains(Items.INFERNAL_AXE)) {
-                            charges = 10
+                            charges = 5000
                         }
                     }
                     infernalaxe.putAttr(ItemAttribute.CHARGES, charges)
-                    p.message("${infernalaxe.getAttr(ItemAttribute.CHARGES)}")
                     it.player.graphic(id = 86, height = 2)
                     p.addXp(Skills.FIREMAKING, tree.burnXp)
                 }

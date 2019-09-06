@@ -11,10 +11,6 @@ on_item_on_item(item1 = Items.INFERNAL_AXE_UNCHARGED, item2 = Items.SMOULDERING_
     player.inventory.add(Items.INFERNAL_AXE)
     Woodcutting.charges = 10
 }
-on_command("charges"){
-    player.message("${Woodcutting.charges}")
-    player.message("${infernalaxe.getAttr(ItemAttribute.CHARGES)}")
-}
 
 on_item_option(Items.INFERNAL_AXE, "check") {
     Woodcutting.checkCharges(player)

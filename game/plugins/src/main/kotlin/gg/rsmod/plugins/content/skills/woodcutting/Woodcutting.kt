@@ -7,6 +7,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.item.ItemAttribute
 import gg.rsmod.game.model.queue.QueueTask
+import gg.rsmod.plugins.api.EquipmentType
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.*
@@ -20,6 +21,9 @@ import gg.rsmod.plugins.api.ext.*
  * Thanks to Hoax
  * for making the Infernal Axe work
  */
+
+// TODO: fix for picking up charged axe doesn't use charges from axe if charges = 0.
+// TODO: add in player.message("") for if charges is under amount to keep from checking all the time
 
 object Woodcutting {
 
@@ -62,11 +66,16 @@ object Woodcutting {
                     p.inventory.remove(tree.log)
                     charges--
                     if (charges == 0) {
-                        val removeAxe = p.inventory.remove(Items.INFERNAL_AXE, 1)
-                        if (removeAxe.hasSucceeded()) {
+                        if (p.hasEquipped(EquipmentType.WEAPON, Items.INFERNAL_AXE)) {
+                            p.equipment.remove(Items.INFERNAL_AXE)
                             p.inventory.add(Items.INFERNAL_AXE_UNCHARGED)
+                        } else {
+                            val removeAxe = p.inventory.remove(Items.INFERNAL_AXE, 1)
+                            if (removeAxe.hasSucceeded()) {
+                                p.inventory.add(Items.INFERNAL_AXE_UNCHARGED)
+                            }
                         }
-                        if (p.inventory.contains(Items.INFERNAL_AXE)) {
+                        if (p.inventory.contains(Items.INFERNAL_AXE) || p.hasEquipped(EquipmentType.WEAPON, Items.INFERNAL_AXE)) {
                             charges = 5000
                         }
                     }

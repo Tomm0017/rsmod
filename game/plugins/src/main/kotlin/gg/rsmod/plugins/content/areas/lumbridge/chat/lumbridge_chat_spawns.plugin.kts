@@ -7,13 +7,6 @@ spawn_npc(Npcs.LUMBRIDGE_GUIDE_306, 3238,3220,0, 0, Direction.WEST)
 spawn_npc(Npcs.FATHER_AERECK, 3243,3206,0,3)
 spawn_npc(Npcs.HATIUS_COSAINTUS, 3233,3215,0,1)
 spawn_npc(Npcs.ADAM, 3229,3228,0,1)
-spawn_npc(Npcs.DOOMSAYER, 3232,3232,0, 0, Direction.SOUTH)
-
-// Aurther the clue hunter
-spawn_npc(Npcs.ARTHUR_THE_CLUE_HUNTER, 3229, 3236, 0, 0, Direction.NORTH)
-
-// Pub
-spawn_npc(Npcs.BARTENDER_7546, 3232, 3241, 0, 0, Direction.WEST)
 
 // Combat tutors
 spawn_npc(Npcs.MELEE_COMBAT_TUTOR, 3220, 3238, 0, 1)
@@ -28,3 +21,7 @@ spawn_npc(Npcs.SMITHING_APPRENTICE, 3228,3254,0,1)
 
 //duke horacio
 spawn_npc(Npcs.DUKE_HORACIO, 3212,3220,1,4, Direction.WEST)
+
+spawn_npc(Npcs.COUNT_CHECK, 3238, 3199, 0, 0, Direction.NORTH)
+
+spawn_npc(Npcs.NIGEL_8391, 3243, 3201, 0, 2, Direction.WEST)

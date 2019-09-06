@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.areas.alkharid.chat
 
+spawn_npc(Npcs.SILK_TRADER, 3299, 3204, 0, 2, Direction.EAST)
+
     on_npc_option(npc = Npcs.SILK_TRADER, option = "talk-to") {
         player.queue { dialog(this) }
     }

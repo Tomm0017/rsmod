@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.areas.alkharid.chat
 
+spawn_npc(Npcs.ELLIS, 3273, 3192, 0, 4, Direction.EAST)
+
     on_npc_option(npc = Npcs.ELLIS, option = "talk-to") {
         player.queue { dialog(this) }
     }

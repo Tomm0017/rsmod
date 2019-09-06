@@ -4,7 +4,6 @@ val bones = Bone.values
 
 private val altars = setOf(
     Objs.ALTAR_14860,
-    Objs.ALTAR_409,
     Objs.ALTAR_2640,
     Objs.CHAOS_ALTAR_411
 )
@@ -14,6 +13,9 @@ bones.forEach { bone ->
         player.queue {
             BoneBurying.bury(this, bone)
         }
+    }
+    on_item_on_obj(obj = Objs.ALTAR_409, item = bone.item) {
+        player.message("You fear the wrath of the gods!")
     }
 }
 

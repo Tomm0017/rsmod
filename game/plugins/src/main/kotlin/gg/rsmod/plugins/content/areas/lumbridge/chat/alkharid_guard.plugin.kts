@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.content.areas.lumbridge.npcs.alkharid_gate
+package gg.rsmod.plugins.content.areas.lumbridge.chat
 /**
  * Thanks to Tomm for the movement code
  * Thanks to Desetude for gate open and close code

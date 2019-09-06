@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.areas.alkharid.chat
 
+spawn_npc(Npcs.KARIM, 3272, 3181, 0, 3, Direction.EAST)
+
     on_npc_option(npc = Npcs.KARIM, option = "talk-to") {
         player.queue { dialog(this) }
     }

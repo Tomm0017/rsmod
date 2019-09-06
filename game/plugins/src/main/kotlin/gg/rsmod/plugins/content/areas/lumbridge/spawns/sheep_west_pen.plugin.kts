@@ -1,4 +1,4 @@
-package gg.rsmod.plugins.content.areas.lumbridge.npcs.sheep
+package gg.rsmod.plugins.content.areas.lumbridge.spawns
 
 val SHEEP = intArrayOf(
         Npcs.SHEEP_2693,

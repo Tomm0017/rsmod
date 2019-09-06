@@ -14,6 +14,8 @@ enum class AxeType(val item: Int, val level: Int, val animation: Int) {
     ADAMANT(item = Items.ADAMANT_AXE, level = 31, animation = 869),
     RUNE(item = Items.RUNE_AXE, level = 41, animation = 867),
     DRAGON(item = Items.DRAGON_AXE, level = 61, animation = 2846),
+    THREE_AGE(item = Items._3RD_AGE_AXE, level = 61, animation = 7264),
+    INFERNAL_UNCHARGED(item = Items.INFERNAL_AXE_UNCHARGED, level = 61, animation = 2117),
     INFERNAL(item = Items.INFERNAL_AXE, level = 61, animation = 2117);
 
     companion object {

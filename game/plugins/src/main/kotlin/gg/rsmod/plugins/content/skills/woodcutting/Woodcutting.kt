@@ -4,22 +4,33 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.item.Item
+import gg.rsmod.game.model.item.ItemAttribute
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.api.Skills
+import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
  *
  * Thanks to Stuart2
- * for the better axe usage 
+ * for the better axe usage
+ *
+ * Thanks to Hoax
+ * for making the Infernal Axe work
  */
+
 object Woodcutting {
 
+    val infernalaxe = Item(Items.INFERNAL_AXE)
+    var charges = 10
     data class Tree(val type: TreeType, val obj: Int, val trunk: Int)
 
     suspend fun chopDownTree(it: QueueTask, obj: GameObject, tree: TreeType, trunkId: Int) {
+
         val p = it.player
+        val infernalaxe = Item(Items.INFERNAL_AXE)
 
         if (!canChop(p, obj, tree)) {
             return
@@ -30,6 +41,7 @@ object Woodcutting {
 
         p.filterableMessage("You swing your axe at the tree.")
         while (true) {
+
             p.animate(axe.animation)
             it.wait(2)
 
@@ -44,6 +56,25 @@ object Woodcutting {
                 p.playSound(3600)
                 p.inventory.add(tree.log)
                 p.addXp(Skills.WOODCUTTING, tree.xp)
+
+                val chanceOfBurningLogOnCut = (1..3).random()
+                if (axe.item == Items.INFERNAL_AXE && p.getSkills().getMaxLevel(Skills.FIREMAKING) >= 85 && chanceOfBurningLogOnCut == 3 && charges > 0) {
+                    p.inventory.remove(tree.log)
+                    charges--
+                    if (charges == 0) {
+                        val removeAxe = p.inventory.remove(Items.INFERNAL_AXE, 1)
+                        if (removeAxe.hasSucceeded()) {
+                            p.inventory.add(Items.INFERNAL_AXE_UNCHARGED)
+                        }
+                        if (p.inventory.contains(Items.INFERNAL_AXE)) {
+                            charges = 10
+                        }
+                    }
+                    infernalaxe.putAttr(ItemAttribute.CHARGES, charges)
+                    p.message("${infernalaxe.getAttr(ItemAttribute.CHARGES)}")
+                    it.player.graphic(id = 86, height = 2)
+                    p.addXp(Skills.FIREMAKING, tree.burnXp)
+                }
 
                 if (p.world.random(tree.depleteChance) == 0) {
                     p.animate(-1)
@@ -89,5 +120,25 @@ object Woodcutting {
         }
 
         return true
+    }
+
+    fun createAxe(player: Player) {
+        player.inventory.remove(Items.DRAGON_AXE)
+        player.inventory.remove(Items.SMOULDERING_STONE)
+
+        player.inventory.add(infernalaxe).items.forEach {
+            infernalaxe.putAttr(ItemAttribute.CHARGES, charges)
+        }
+
+        player.animate(id = 4511, delay = 2)
+        player.graphic(id = 1240, height = 2)
+
+        player.addXp(Skills.FIREMAKING, 350.0)
+        player.addXp(Skills.WOODCUTTING, 200.0)
+    }
+
+    fun checkCharges(p: Player) {
+        infernalaxe.putAttr(ItemAttribute.CHARGES, charges)
+        p.message("Your infernal axe currently has ${infernalaxe.getAttr(ItemAttribute.CHARGES)} charges left.")
     }
 }

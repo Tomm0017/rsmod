@@ -5,14 +5,11 @@ import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.item.Item
-import gg.rsmod.game.model.item.ItemAttribute
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.api.EquipmentType
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.*
-import kotlin.math.min
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -22,6 +19,9 @@ import kotlin.math.min
  *
  * Thanks to Hoax
  * for making the Infernal Axe work
+ *
+ * Thanks to Darkk98
+ * for info on player attributes
  */
 
 // TODO: fix for picking up charged axe doesn't use charges from axe if charges = 0.
@@ -30,7 +30,6 @@ import kotlin.math.min
 object Woodcutting {
 
     val infernalAxe = AttributeKey<Int>("Infernal Axe Charges")
-    //var charges = 5000
 
     data class Tree(val type: TreeType, val obj: Int, val trunk: Int)
 
@@ -66,7 +65,6 @@ object Woodcutting {
                 val chanceOfBurningLogOnCut = (1..3).random()
                 if (axe.item == Items.INFERNAL_AXE && chanceOfBurningLogOnCut == 3 && p.attr.get(infernalAxe)!! > 0) {
                     p.inventory.remove(tree.log)
-                    //charges--
                     p.attr[infernalAxe] = p.attr.get(infernalAxe)!!.minus(1)
                     if (p.attr.get(infernalAxe) == 0) {
                         if (p.hasEquipped(EquipmentType.WEAPON, Items.INFERNAL_AXE)) {
@@ -145,7 +143,10 @@ object Woodcutting {
 
             player.addXp(Skills.FIREMAKING, 350.0)
             player.addXp(Skills.WOODCUTTING, 200.0)
-        } else player.message("You need 61 woodcrafing and 85 firemaking to make this")
+        } else if (player.getSkills().getMaxLevel(Skills.FIREMAKING) < 85 || player.getSkills().getMaxLevel(Skills.WOODCUTTING) < 61 &&
+                   player.getSkills().getMaxLevel(Skills.FIREMAKING) >= 85 || player.getSkills().getMaxLevel(Skills.WOODCUTTING) >= 61) {
+            player.message("You need 61 woodcrafing and 85 firemaking to make this")
+        }
     }
 
     fun checkCharges(p: Player) {

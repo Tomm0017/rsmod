@@ -1,6 +1,7 @@
 package gg.rsmod.plugins.content.skills.woodcutting
 
 import gg.rsmod.game.fs.def.ItemDef
+import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
@@ -11,6 +12,7 @@ import gg.rsmod.plugins.api.EquipmentType
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Items
 import gg.rsmod.plugins.api.ext.*
+import kotlin.math.min
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -27,14 +29,14 @@ import gg.rsmod.plugins.api.ext.*
 
 object Woodcutting {
 
-    val infernalaxe = Item(Items.INFERNAL_AXE)
-    var charges = 5000
+    val infernalAxe = AttributeKey<Int>("Infernal Axe Charges")
+    //var charges = 5000
+
     data class Tree(val type: TreeType, val obj: Int, val trunk: Int)
 
     suspend fun chopDownTree(it: QueueTask, obj: GameObject, tree: TreeType, trunkId: Int) {
 
         val p = it.player
-        val infernalaxe = Item(Items.INFERNAL_AXE)
 
         if (!canChop(p, obj, tree)) {
             return
@@ -62,10 +64,11 @@ object Woodcutting {
                 p.addXp(Skills.WOODCUTTING, tree.xp)
 
                 val chanceOfBurningLogOnCut = (1..3).random()
-                if (axe.item == Items.INFERNAL_AXE && p.getSkills().getMaxLevel(Skills.FIREMAKING) >= 85 && chanceOfBurningLogOnCut == 3 && charges > 0) {
+                if (axe.item == Items.INFERNAL_AXE && chanceOfBurningLogOnCut == 3 && p.attr.get(infernalAxe)!! > 0) {
                     p.inventory.remove(tree.log)
-                    charges--
-                    if (charges == 0) {
+                    //charges--
+                    p.attr[infernalAxe] = p.attr.get(infernalAxe)!!.minus(1)
+                    if (p.attr.get(infernalAxe) == 0) {
                         if (p.hasEquipped(EquipmentType.WEAPON, Items.INFERNAL_AXE)) {
                             p.equipment.remove(Items.INFERNAL_AXE)
                             p.inventory.add(Items.INFERNAL_AXE_UNCHARGED)
@@ -75,11 +78,10 @@ object Woodcutting {
                                 p.inventory.add(Items.INFERNAL_AXE_UNCHARGED)
                             }
                         }
-                        if (p.inventory.contains(Items.INFERNAL_AXE) || p.hasEquipped(EquipmentType.WEAPON, Items.INFERNAL_AXE)) {
-                            charges = 5000
+                        if (p.inventory.contains(Items.INFERNAL_AXE)) {
+                            p.attr.put(infernalAxe, 5000)
                         }
                     }
-                    infernalaxe.putAttr(ItemAttribute.CHARGES, charges)
                     it.player.graphic(id = 86, height = 2)
                     p.addXp(Skills.FIREMAKING, tree.burnXp)
                 }
@@ -131,22 +133,22 @@ object Woodcutting {
     }
 
     fun createAxe(player: Player) {
-        player.inventory.remove(Items.DRAGON_AXE)
-        player.inventory.remove(Items.SMOULDERING_STONE)
+        if (player.getSkills().getMaxLevel(Skills.WOODCUTTING) >= 61 && player.getSkills().getMaxLevel(Skills.FIREMAKING) >= 85) {
+            player.inventory.remove(Items.DRAGON_AXE)
+            player.inventory.remove(Items.SMOULDERING_STONE)
+            player.inventory.add(Items.INFERNAL_AXE)
 
-        player.inventory.add(infernalaxe).items.forEach {
-            infernalaxe.putAttr(ItemAttribute.CHARGES, charges)
-        }
+            player.attr.put(infernalAxe, 5000)
 
-        player.animate(id = 4511, delay = 2)
-        player.graphic(id = 1240, height = 2)
+            player.animate(id = 4511, delay = 2)
+            player.graphic(id = 1240, height = 2)
 
-        player.addXp(Skills.FIREMAKING, 350.0)
-        player.addXp(Skills.WOODCUTTING, 200.0)
+            player.addXp(Skills.FIREMAKING, 350.0)
+            player.addXp(Skills.WOODCUTTING, 200.0)
+        } else player.message("You need 61 woodcrafing and 85 firemaking to make this")
     }
 
     fun checkCharges(p: Player) {
-        infernalaxe.putAttr(ItemAttribute.CHARGES, charges)
-        p.message("Your infernal axe currently has ${infernalaxe.getAttr(ItemAttribute.CHARGES)} charges left.")
+        p.message("Your infernal axe currently has ${p.attr.get(infernalAxe)} charges left.")
     }
 }

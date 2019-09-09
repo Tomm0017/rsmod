@@ -190,137 +190,49 @@ fun sendTravelLog(player: Player) {
 fun teleportToFairyRingLocation(player: Player) {
     when {
         //MUDSKIPPER POINT
-        isMudSkipperPoint(player) -> fairyRingTeleAction(player, Tile(2996, 3114, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 0 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(2996, 3114, 0))
         //South-east of Ardougne
-        isEastArdougne(player) -> fairyRingTeleAction(player, Tile(2700, 3247, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 0 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(2700, 3247, 0))
         //Dungeons: Cave south of Dorgesh-Kaan
-        isDorgeshKaan(player) -> fairyRingTeleAction(player, Tile(2735, 5221, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(2735, 5221, 0))
         //Kandarin: Slayer cave south-east of Rellekka
-        isSlayerCave(player) -> fairyRingTeleAction(player, Tile(2780, 3613, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(2780, 3613, 0))
         //Islands: Penguins near Miscellania.
-        isPenguins(player) -> fairyRingTeleAction(player, Tile(2500, 3896, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2500, 3896, 0))
         //Kandarin: Piscatoris Hunter area
-        isPiscatoris(player) -> fairyRingTeleAction(player, Tile(2319, 3619, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(2986) == 2 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(2319, 3619, 0))
         //Feldip Hills: Jungle Hunter area
-        isFeldipHills(player) -> fairyRingTeleAction(player, Tile(2571, 2956, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(2986) == 2 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2571, 2956, 0))
         //Fremennik Province: Lighthouse
-        isLightHouse(player) -> fairyRingTeleAction(player, Tile(2503, 3636, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(2986) == 1 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2503, 3636, 0))
         //Morytania: Haunted Woods
-        isHauntedWoods(player) -> fairyRingTeleAction(player, Tile(3597, 3495,0))
+        player.getVarbit(3985) == 0 && player.getVarbit(2986) == 1 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(3597, 3495,0))
         //Other Realms: Abyss
-        isAbyssalArea(player) -> fairyRingTeleAction(player, Tile(3059, 4875, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(2986) == 1 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(3059, 4875, 0))
         //Kandarin: McGurbor's Wood
-        isMcGruborWood(player) -> fairyRingTeleAction(player, Tile(2644, 3495, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(2986) == 1 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2644, 3495, 0))
         //Islands: River Slave
-        isRiverSlave(player) -> fairyRingTeleAction(player, Tile(3410, 3324, 0))
+        player.getVarbit(3985) == 3 && player.getVarbit(2986) == 0 && player.getVarbit(3987) == 0 -> fairyRingTeleAction(player, Tile(3410, 3324, 0))
         //Kalhridian Desert: Near the Kalphite Hive
-        isKalphiteHive(player) -> fairyRingTeleAction(player, Tile(3251, 3095, 0))
+        player.getVarbit(3985) == 3 && player.getVarbit(2986) == 0 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(3251, 3095, 0))
         //Kandarin: Ardougne Zoo unicorns
-        isArdougneZoo(player) -> fairyRingTeleAction(player, Tile(2635, 3266, 0))
+        player.getVarbit(3985) == 3 && player.getVarbit(2986) == 0 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2635, 3266, 0))
         //Other Realms: Fisher King
-        isFisherKing(player) -> fairyRingTeleAction(player, Tile(2650, 4730, 0))
+        player.getVarbit(3985) == 3 && player.getVarbit(2986) == 3 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(2650, 4730, 0))
         //Islands: Near Zul-Andra
-        isZulrahAndra(player) -> fairyRingTeleAction(player, Tile(2150, 3070, 0))
+        player.getVarbit(3985) == 3 && player.getVarbit(2986) == 3 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2150, 3070, 0))
         //Feldip Hills: South of Castle Wars
-        isCastleWars(player) -> fairyRingTeleAction(player, Tile(2385, 3035, 0))
+        player.getVarbit(3985) == 3 && player.getVarbit(2986) == 2 && player.getVarbit(3987) == 0 -> fairyRingTeleAction(player, Tile(2385, 3035, 0))
         //Other Realms: Enchanted Valley
-        isEnchantedValley(player) -> fairyRingTeleAction(player, Tile(3041, 4532,0))
+        player.getVarbit(3985) == 3 && player.getVarbit(2986) == 2 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(3041, 4532,0))
         //Morytania: Mort Myre
-        isMortMyreSwamp(player) -> fairyRingTeleAction(player, Tile(3469, 3431,0))
+        player.getVarbit(3985) == 3 && player.getVarbit(2986) == 2 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(3469, 3431,0))
         //Other Realms: Zanaris
-        isZanaris(player) -> fairyRingTeleAction(player, Tile(2412, 4434, 0))
+        player.getVarbit(3985) == 3 && player.getVarbit(2986) == 2 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2412, 4434, 0))
         //Dungeons: TzHaar Area
-        isTzHaarArea(player) -> fairyRingTeleAction(player, Tile(2437, 5126, 0))
+        player.getVarbit(3985) == 3 && player.getVarbit(2986) == 1 && player.getVarbit(3987) == 0 -> fairyRingTeleAction(player, Tile(2437, 5126, 0))
         //Kandarin: Legends' Guild
-        isLegensGuild(player) -> fairyRingTeleAction(player, Tile(2740, 3351, 0))
+        player.getVarbit(3985) == 3 && player.getVarbit(2986) == 1 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(2740, 3351, 0))
     }
     player.closeInterfaces()
-}
-
-fun isMudSkipperPoint(player: Player): Boolean {
-    return player.getVarbit(3985) == 0 && player.getVarbit(3986) == 0 && player.getVarbit(3987) == 3
-}
-
-fun isEastArdougne(player: Player): Boolean {
-    return player.getVarbit(3985) == 0 && player.getVarbit(3986) == 0 && player.getVarbit(3987) == 2
-}
-
-fun isDorgeshKaan(player: Player): Boolean {
-    return player.getVarbit(3985) == 0 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 3
-}
-
-fun isSlayerCave(player: Player): Boolean {
-    return player.getVarbit(3985) == 0 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 2
-}
-
-fun isPenguins(player: Player): Boolean {
-    return player.getVarbit(3985) == 0 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 1
-}
-
-fun isPiscatoris(player: Player): Boolean {
-    return player.getVarbit(3985) == 0 && player.getVarbit(2986) == 2 && player.getVarbit(3987) == 3
-}
-
-fun isFeldipHills(player: Player): Boolean {
-    return player.getVarbit(3985) == 0 && player.getVarbit(2986) == 2 && player.getVarbit(3987) == 1
-}
-
-fun isLightHouse(player: Player): Boolean {
-    return player.getVarbit(3985) == 0 && player.getVarbit(2986) == 1 && player.getVarbit(3987) == 1
-}
-
-fun isHauntedWoods(player: Player): Boolean {
-    return player.getVarbit(3985) == 0 && player.getVarbit(2986) == 1 && player.getVarbit(3987) == 3
-}
-
-fun isAbyssalArea(player: Player): Boolean {
-    return player.getVarbit(3985) == 0 && player.getVarbit(2986) == 1 && player.getVarbit(3987) == 2
-}
-
-fun isMcGruborWood(player: Player): Boolean {
-    return player.getVarbit(3985) == 0 && player.getVarbit(2986) == 1 && player.getVarbit(3987) == 1
-}
-
-fun isRiverSlave(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 0 && player.getVarbit(3987) == 0
-}
-
-fun isKalphiteHive(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 0 && player.getVarbit(3987) == 3
-}
-
-fun isArdougneZoo(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 0 && player.getVarbit(3987) == 1
-}
-
-fun isFisherKing(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 3 && player.getVarbit(3987) == 2
-}
-
-fun isZulrahAndra(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 3 && player.getVarbit(3987) == 1
-}
-
-fun isCastleWars(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 2 && player.getVarbit(3987) == 0
-}
-
-fun isEnchantedValley(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 2 && player.getVarbit(3987) == 3
-}
-
-fun isMortMyreSwamp(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 2 && player.getVarbit(3987) == 2
-}
-
-fun isZanaris(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 2 && player.getVarbit(3987) == 1
-}
-
-fun isTzHaarArea(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 1 && player.getVarbit(3987) == 0
-}
-
-fun isLegensGuild(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 1 && player.getVarbit(3987) == 2
 }

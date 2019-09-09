@@ -1,9 +1,5 @@
 package gg.rsmod.plugins.content.objs.fairyrings
 
-import gg.rsmod.game.model.queue.coroutine.SuspendableStep
-import gg.rsmod.game.model.queue.coroutine.WaitCondition
-import kotlin.coroutines.suspendCoroutine
-
 /**
  * @author DaGreenRs <dagreenrs@gmail.com>
  * https://oldschool.runescape.wiki/w/Fairy_rings
@@ -66,7 +62,7 @@ on_button(398, 26) {
 }
 
 class Locations(val name: String, val component: Int, val tile: Tile, val dial1: Int, val dial2: Int, val dial3: Int)
-val fairylocation = arrayOf(
+val FairyRings = arrayOf(
         Locations("Mudskipper Point", 13, Tile(2996, 3114), 0, 0, 3),
         Locations("Island: Ardougne", 15, Tile(2700, 3247), 0, 0, 3),
         Locations("Dungeons: Dorgesh-Kaan", 21, Tile(2735, 5221), 0, 3, 3),

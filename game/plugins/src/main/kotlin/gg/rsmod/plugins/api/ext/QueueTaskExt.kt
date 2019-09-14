@@ -85,6 +85,18 @@ suspend fun QueueTask.options(vararg options: String, title: String = "Select an
     return (requestReturnValue as? ResumePauseButtonMessage)?.slot ?: -1
 }
 
+suspend fun QueueTask.interfaceOptions(vararg options: String, title: String): Int {
+    player.openInterface(187, InterfaceDestination.MAIN_SCREEN)
+    player.runClientScript(217, title, options.joinToString("|"))
+    player.setInterfaceEvents(interfaceId = 187, component = 3, from = 0, to = options.size, setting = 1)
+
+    terminateAction = closeDialog
+    waitReturnValue()
+    terminateAction!!(this)
+
+    return (requestReturnValue as? ResumePauseButtonMessage)?.slot ?: -1
+}
+
 /**
  * Prompts the player with an input dialog where they can only enter an integer.
  *
@@ -261,6 +273,15 @@ suspend fun QueueTask.itemMessageBox(message: String, item: Int, amountOrZoom: I
     terminateAction = closeDialog
     waitReturnValue()
     terminateAction!!(this)
+}
+
+suspend fun QueueTask.itemMessage(message: String, item: Int, amountOrZoom: Int = 1, wait: Int = 1) {
+    player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 193)
+    player.setInterfaceEvents(interfaceId = 193, component = 0, range = 0..1, setting = 1)
+    player.setComponentItem(interfaceId = 193, component = 1, item = item, amountOrZoom = amountOrZoom)
+    player.setComponentText(interfaceId = 193, component = 2, text = message)
+
+    wait(wait)
 }
 
 suspend fun QueueTask.doubleItemMessageBox(message: String, item1: Int, item2: Int, amount1: Int = 1, amount2: Int = 1) {

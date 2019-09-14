@@ -6,7 +6,7 @@ package gg.rsmod.plugins.content.objs.fairyrings
  */
 
 for (objectid in 29496 until 29560) {
-    on_obj_option(objectid, "Zanaris", lineOfSightDistance = 0) {
+    on_obj_option(objectid, "Zanaris") {
         if (checkFairyStaff(player)) {
             fairyRingTeleAction(player, Tile(2412, 4434, 0))
         }
@@ -23,18 +23,26 @@ for (objectid in 29496 until 29560) {
     }
     on_obj_option(objectid, 3) {
         if (checkFairyStaff(player)) {
-            teleportToFairyRingLocation(player)
+            LastDesination(player)
         }
     }
 }
-on_obj_option(Objs.FAIRY_RING_29561, "Configure") {
-    if (checkFairyStaff(player)) {
-        player.setVarbit(3985, 0)
-        player.setVarbit(3986, 0)
-        player.setVarbit(3987, 0)
-        sendTravelLog(player)
-        player.openInterface(398, InterfaceDestination.MAIN_SCREEN)
-        player.openInterface(381, InterfaceDestination.TAB_AREA)
+
+for (ZanarisRing in 29561 until 29624) {
+    on_obj_option(ZanarisRing, "Configure") {
+        if (checkFairyStaff(player)) {
+            player.setVarbit(3985, 0)
+            player.setVarbit(3986, 0)
+            player.setVarbit(3987, 0)
+            sendTravelLog(player)
+            player.openInterface(398, InterfaceDestination.MAIN_SCREEN)
+            player.openInterface(381, InterfaceDestination.TAB_AREA)
+        }
+    }
+    on_obj_option(ZanarisRing, 3) {
+        if (checkFairyStaff(player)) {
+            LastDesination(player)
+        }
     }
 }
 
@@ -66,53 +74,53 @@ on_button(398, 26) {
     teleportToFairyRingLocation(player)
 }
 
-class Locations(val name: String, val component: Int, val dial1: Int, val dial2: Int, val dial3: Int, val last: Int)
+class Locations(val name: String, val component: Int, val dial1: Int, val dial2: Int, val dial3: Int)
 val FairyRings = arrayOf(
-        Locations("Mudskipper Point", 13, 0, 0, 3, 3),
-        Locations("Island: Ardougne", 15, 0, 0, 2, 2),
-        Locations("Dungeons: Dorgesh-Kaan", 21, 0, 3, 3, 0),
-        Locations("Fremennik Slayer Cave", 23, 0, 3, 2, 14),
-        Locations("Penguins", 25, 0, 3, 1, 13),
-        Locations("Piscatoris", 29, 0, 2,3, 11),
-        Locations("Feldip Hills", 33, 0, 2, 1, 9),
-        Locations("Light House", 35, 0, 1, 0, 4),
-        Locations("Haunted Woods", 37, 0, 1, 3, 7),
-        Locations("Abyssal Area", 39, 0, 1, 2, 6),
-        Locations("McGrubor's Wood", 41, 0, 1, 1, 5),
-        Locations("River Slave", 43, 3, 0, 0, 48),
-        Locations("Kalphite Hive", 45, 3, 0, 3, 51),
-        Locations("Ardougne Zoo", 49, 3, 0 , 1, 49),
-        Locations("Fisher King", 55, 3, 3, 2, 62),
-        Locations("Zulrah Andra", 57, 3, 3, 1, 61),
-        Locations("Castle Wars", 59, 3, 2, 0, 56),
-        Locations("Enchanted Valley", 61, 3, 2, 3, 59),
-        Locations("Mort Myre Swamp", 63, 3, 2, 2, 58),
-        Locations("Zanaris", 65, 3, 2, 1, 57),
-        Locations("TzHaar Area", 67, 3, 1, 0, 52),
-        Locations("Legends Guild", 71, 3, 1 , 2, 54),
-        Locations("Miscellania", 75, 2,0,0, 32),
-        Locations("Yanille", 77, 2,0,3, 35),
-        Locations("Mount Karuulm", 79, 2,0,2, 34),
-        Locations("Arceuus Library", 81, 2,0,1, 33),
-        Locations("Sinclair Mansion", 87, 2,3,2, 46),
-        Locations("Cosmic Entity's plane", 91, 2,2,0, 40),
-        Locations("Tai Bwo Wannai Village", 95, 2,2,2, 42),
-        Locations("Canifis", 97, 2,2,1, 41),
-        Locations("Islands: Draynor", 99, 2,1,0, 36),
-        Locations("Ape Atoll", 103, 2,1,2, 38),
-        Locations("Hazelmere's Home", 105, 2,1,1, 37),
-        Locations("Abyssal Nexus", 107, 1,0,0, 16),
-        Locations("player Home", 109, 1,0,3, 19),
-        Locations("Gorak's Plane", 111, 1,0,2, 18),
-        Locations("Wizards' Tower", 113, 1,0,1, 17),
-        Locations("Tower of Life", 115, 1,3,0, 28),
-        Locations("Chasm of Fire", 119, 1,3,2, 30),
-        Locations("Musa Point", 123, 1,2,0, 24),
-        Locations("Edgeville", 127, 1,2,2, 26),
-        Locations("Polar Hunter area", 129, 1,2,1, 25),
-        Locations("Kahaidian Desert", 133, 1,1,3, 23),
-        Locations("Poison Waste", 135, 1,1,2, 22),
-        Locations("Myreque Hideout", 137, 1,1,1, 21)
+        Locations("Mudskipper Point", 13, 0, 0, 3),
+        Locations("Island: Ardougne", 15, 0, 0, 2),
+        Locations("Dungeons: Dorgesh-Kaan", 21, 0, 3, 3),
+        Locations("Fremennik Slayer Cave", 23, 0, 3, 2),
+        Locations("Penguins", 25, 0, 3, 1),
+        Locations("Piscatoris", 29, 0, 2,3),
+        Locations("Feldip Hills", 33, 0, 2, 1),
+        Locations("Light House", 35, 0, 1, 0),
+        Locations("Haunted Woods", 37, 0, 1, 3),
+        Locations("Abyssal Area", 39, 0, 1, 2),
+        Locations("McGrubor's Wood", 41, 0, 1, 1),
+        Locations("River Slave", 43, 3, 0, 0),
+        Locations("Kalphite Hive", 45, 3, 0, 3),
+        Locations("Ardougne Zoo", 49, 3, 0 , 1),
+        Locations("Fisher King", 55, 3, 3, 2),
+        Locations("Zulrah Andra", 57, 3, 3, 1),
+        Locations("Castle Wars", 59, 3, 2, 0),
+        Locations("Enchanted Valley", 61, 3, 2, 3),
+        Locations("Mort Myre Swamp", 63, 3, 2, 2),
+        Locations("Zanaris", 65, 3, 2, 1),
+        Locations("TzHaar Area", 67, 3, 1, 0),
+        Locations("Legends Guild", 71, 3, 1 , 2),
+        Locations("Miscellania", 75, 2,0,0),
+        Locations("Yanille", 77, 2,0,3),
+        Locations("Mount Karuulm", 79, 2,0,2),
+        Locations("Arceuus Library", 81, 2,0,1),
+        Locations("Sinclair Mansion", 87, 2,3,2),
+        Locations("Cosmic Entity's plane", 91, 2,2,0),
+        Locations("Tai Bwo Wannai Village", 95, 2,2,2),
+        Locations("Canifis", 97, 2,2,1),
+        Locations("Islands: Draynor", 99, 2,1,0),
+        Locations("Ape Atoll", 103, 2,1,2),
+        Locations("Hazelmere's Home", 105, 2,1,1),
+        Locations("Abyssal Nexus", 107, 1,0,0),
+        Locations("player Home", 109, 1,0,3),
+        Locations("Gorak's Plane", 111, 1,0,2),
+        Locations("Wizards' Tower", 113, 1,0,1),
+        Locations("Tower of Life", 115, 1,3,0),
+        Locations("Chasm of Fire", 119, 1,3,2),
+        Locations("Musa Point", 123, 1,2,0),
+        Locations("Edgeville", 127, 1,2,2),
+        Locations("Polar Hunter area", 129, 1,2,1),
+        Locations("Kahaidian Desert", 133, 1,1,3),
+        Locations("Poison Waste", 135, 1,1,2),
+        Locations("Myreque Hideout", 137, 1,1,1)
 )
 
 FairyRings.forEach {
@@ -120,7 +128,6 @@ FairyRings.forEach {
         player.setVarbit(3985, it.dial1)
         player.setVarbit(3986, it.dial2)
         player.setVarbit(3987, it.dial3)
-        player.setVarbit(5374, it.last)
     }
 }
 
@@ -134,6 +141,7 @@ fun checkFairyStaff(player: Player) : Boolean {
 
 fun fairyRingTeleAction(player: Player, endTile : Tile) {
     player.queue(TaskPriority.STRONG) {
+        player.lock = LockState.DELAY_ACTIONS
         player.walkTo(player.getInteractingGameObj().tile, MovementQueue.StepType.FORCED_WALK, detectCollision = false)
         wait(2)
         player.closeInterfaces()
@@ -145,6 +153,7 @@ fun fairyRingTeleAction(player: Player, endTile : Tile) {
         player.animate(3266)
         wait(2)
         player.walkTo(player.tile.x, player.tile.z -1, MovementQueue.StepType.FORCED_WALK, detectCollision = false)
+        player.unlock()
     }
 }
 
@@ -214,33 +223,33 @@ fun sendTravelLog(player: Player) {
 fun teleportToFairyRingLocation(player: Player) {
     when {
         //MUDSKIPPER POINT
-        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 0 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(2996, 3114, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 0 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(2996, 3114))
         //South-east of Ardougne
-        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 0 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(2700, 3247, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 0 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(2700, 3247))
         //Dungeons: Cave south of Dorgesh-Kaan
-        //player.getVarbit(3985) == 0 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(2735, 5221, 0))
+        //player.getVarbit(3985) == 0 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(2735, 5221))
         //Kandarin: Slayer cave south-east of Rellekka
-        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(2780, 3613, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(2780, 3613))
         //Islands: Penguins near Miscellania.
-        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2500, 3896, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2500, 3896))
         //Kandarin: Piscatoris Hunter area
-        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 2 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(2319, 3619, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 2 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(2319, 3619))
         //Feldip Hills: Jungle Hunter area
-        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 2 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2571, 2956, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 2 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2571, 2956))
         //Fremennik Province: Lighthouse
-        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 1 && player.getVarbit(3987) == 0 -> fairyRingTeleAction(player, Tile(2503, 3636, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 1 && player.getVarbit(3987) == 0 -> fairyRingTeleAction(player, Tile(2503, 3636))
         //Morytania: Haunted Woods
-        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 1 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(3597, 3495,0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 1 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(3597, 3495))
         //Other Realms: Abyss
-        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 1 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(3059, 4875, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 1 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(3059, 4875))
         //Kandarin: McGurbor's Wood
-        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 1 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2644, 3495, 0))
+        player.getVarbit(3985) == 0 && player.getVarbit(3986) == 1 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2644, 3495))
         //Islands: River Slave
-        //RiverSlave(player) -> fairyRingTeleAction(player, Tile(3410, 3324))
+        //player.getVarbit(3985) == 3 && player.getVarbit(2986) == 0 && player.getVarbit(3987) == 0 && player.getVarbit(5374) == 3 -> fairyRingTeleAction(player, Tile(3410, 3324))
         //Kalhridian Desert: Near the Kalphite Hive
-        //KalphiteHive(player) -> fairyRingTeleAction(player, Tile(3251, 3095))
+        //player.getVarbit(3985) == 3 && player.getVarbit(2986) == 0 && player.getVarbit(3987) == 3 -> fairyRingTeleAction(player, Tile(3251, 3095))
         //Kandarin: Ardougne Zoo unicorns
-        player.getVarbit(3985) == 3 && player.getVarbit(3986) == 0 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2635, 3266, 0))
+        player.getVarbit(3985) == 3 && player.getVarbit(3986) == 0 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(2635, 3266))
         //Other Realms: Fisher King
         player.getVarbit(3985) == 3 && player.getVarbit(3986) == 3 && player.getVarbit(3987) == 2 -> fairyRingTeleAction(player, Tile(2650,4730))
         //Islands: Near Zul-Andra
@@ -302,13 +311,20 @@ fun teleportToFairyRingLocation(player: Player) {
         //Dungeons: Myreque hideout under The Hollows
         player.getVarbit(3985) == 1 && player.getVarbit(3986) == 1 && player.getVarbit(3987) == 1 -> fairyRingTeleAction(player, Tile(3501, 9821, 3))
     }
-    player.closeInterfaces()
 }
 
-fun RiverSlave(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 0 && player.getVarbit(3987) == 0
-}
-
-fun KalphiteHive(player: Player): Boolean {
-    return player.getVarbit(3985) == 3 && player.getVarbit(2986) == 0 && player.getVarbit(3987) == 3
+fun LastDesination(player: Player) {
+    when {
+        player.getVarbit(5374) == 2 -> fairyRingTeleAction(player, Tile(2700, 3247))
+        player.getVarbit(5374) == 3 -> fairyRingTeleAction(player, Tile(2996, 3114))
+        player.getVarbit(5374) == 4 -> fairyRingTeleAction(player, Tile(2503, 3636))
+        player.getVarbit(5374) == 5 -> fairyRingTeleAction(player, Tile(2644, 3495))
+        player.getVarbit(5374) == 6 -> fairyRingTeleAction(player, Tile(3059, 4875))
+        player.getVarbit(5374) == 7 -> fairyRingTeleAction(player, Tile(3597, 3495))
+        player.getVarbit(5374) == 9 -> fairyRingTeleAction(player, Tile(2571, 2956))
+        player.getVarbit(5374) == 11 -> fairyRingTeleAction(player, Tile(2319, 3619))
+        player.getVarbit(5374) == 13 -> fairyRingTeleAction(player, Tile(2500, 3896))
+        player.getVarbit(5374) == 14 -> fairyRingTeleAction(player, Tile(2780, 3613))
+        player.getVarbit(5374) == 30 -> fairyRingTeleAction(player, Tile(1455, 3658))
+    }
 }

@@ -28,9 +28,9 @@ privileges:
     name: "developer"
     powers: ["mod", "admin", "dev"]
   - id: 4
-      icon: 2
-      name: "owner"
-      powers: ["mod", "admin", "dev", "owner"]
+    icon: 2
+    name: "owner"
+    powers: ["mod", "admin", "dev", "owner"]
 
 # Game services
 # You can pick and choose which services you want to run.

@@ -1,4 +1,4 @@
-package gg.rsmod.game.model.coroutine.cyclable
+package gg.rsmod.game.model.coroutine.cyclable.task
 
 import gg.rsmod.game.model.coroutine.suspendable.step.SuspendableStep
 import gg.rsmod.game.model.coroutine.suspendable.condition.SuspendableCondition

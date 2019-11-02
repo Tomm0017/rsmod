@@ -1,4 +1,4 @@
-package gg.rsmod.game.model.coroutine.suspendable
+package gg.rsmod.game.model.coroutine.suspendable.step
 
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume

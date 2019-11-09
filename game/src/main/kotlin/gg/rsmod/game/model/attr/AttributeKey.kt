@@ -1,6 +1,8 @@
 package gg.rsmod.game.model.attr
 
 import com.google.common.base.MoreObjects
+import gg.rsmod.game.model.entity.Pawn
+import kotlin.reflect.KProperty
 
 /**
  * An [AttributeKey] is a flexible key that can be used to represent any type of
@@ -25,6 +27,12 @@ import com.google.common.base.MoreObjects
  * @author Tom <rspsmods@gmail.com>
  */
 class AttributeKey<T>(val persistenceKey: String? = null, val resetOnDeath: Boolean = false) {
+
+    fun defaultValue(value: T) = AttributeDelegate(this, value)
+
+    operator fun getValue(ref: Pawn, prop: KProperty<*>) = ref.attr[this] as T
+
+    operator fun setValue(ref: Pawn, prop: KProperty<*>, value: T) = ref.attr.set(this, value)
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("persistenceKey", persistenceKey).add("resetOnDeath", resetOnDeath).toString()
 

@@ -1,10 +1,14 @@
 package gg.rsmod.game.model.attr
 
 import com.google.common.base.MoreObjects
+import gg.rsmod.game.model.entity.Pawn
+import kotlin.reflect.KProperty
 
 /**
  * An [AttributeKey] is a flexible key that can be used to represent any type of
  * value.
+ *
+ * Can also be used as a delegate for a [Pawn] extension property
  *
  * @param T
  * The type of the value that this attribute will store.
@@ -25,6 +29,15 @@ import com.google.common.base.MoreObjects
  * @author Tom <rspsmods@gmail.com>
  */
 class AttributeKey<T>(val persistenceKey: String? = null, val resetOnDeath: Boolean = false) {
+
+    operator fun getValue(ref: Pawn, prop: KProperty<*>): T = ref.attr[this] as T
+
+    operator fun setValue(ref: Pawn, prop: KProperty<*>, value: T) { ref.attr[this] = value }
+
+    /**
+     * For when you want to delegate to this key but also want a default value just in case.
+     */
+    operator fun invoke(defaultValue: T) = AttributeDelegate(this, defaultValue)
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("persistenceKey", persistenceKey).add("resetOnDeath", resetOnDeath).toString()
 

@@ -9,6 +9,8 @@ import kotlin.reflect.KProperty
  * @property [attributeKey] The [AttributeKey] being delegated to
  *
  * @property [defaultValue] The default value when [getValue] is called but [Pawn.attr] fails to return a [T]
+ *
+ * @author Curtis Woodard <Nbness2@gmail.com>
  */
 class AttributeDelegate<T>(val attributeKey: AttributeKey<T>, private val defaultValue: T) {
     constructor(persistenceKey: String? = null, resetOnDeath: Boolean = false, defaultValue: T): this(

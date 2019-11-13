@@ -7,6 +7,8 @@ import kotlin.reflect.KProperty
  * Allows you to delegate a [Player] extension property to have quick simple and easy access to a varp
  *
  * @property [varpId] The id of the varp you are writing to and reading from
+ *
+ * @author Curtis Woodard <Nbness2@gmail.com>
  */
 abstract class VarpDelegate<T>(val varpId: Int) {
 

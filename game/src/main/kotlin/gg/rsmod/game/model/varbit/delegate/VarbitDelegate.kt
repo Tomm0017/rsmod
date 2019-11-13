@@ -8,6 +8,8 @@ import kotlin.reflect.KProperty
  * Allows you to delegate a [Player] extension property to have quick simple and easy access to a varbit
  *
  * @property [varbitId] The id of the varbit you are writing to and reading from
+ *
+ * @author Curtis Woodard <Nbness2@gmail.com>
  */
 abstract class VarbitDelegate<T>(val varbitId: Int) {
 

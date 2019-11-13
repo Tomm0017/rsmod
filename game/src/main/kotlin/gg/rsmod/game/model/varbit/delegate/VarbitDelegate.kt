@@ -47,7 +47,7 @@ abstract class VarbitDelegate<T>(val varbitId: Int) {
 
     private fun getVarbit(player: Player): Int {
         ensureVarbitDef(player)
-        return player.varps.getBit(varbitId, varbitDef.startBit, varbitDef.endBit)
+        return player.varps.getBit(varbitDef.varp, varbitDef.startBit, varbitDef.endBit)
     }
 
     private fun setVarbit(player: Player, value: Int) {

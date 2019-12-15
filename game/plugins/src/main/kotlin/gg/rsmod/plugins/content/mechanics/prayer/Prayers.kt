@@ -21,6 +21,7 @@ object Prayers {
 
     val PRAYER_DRAIN = TimerKey()
     private val DISABLE_OVERHEADS = TimerKey()
+    private val DISABLE_PROTECTION = TimerKey()
 
     private const val DEACTIVATE_PRAYER_SOUND = 2663
 
@@ -34,7 +35,10 @@ object Prayers {
     const val AUGURY_UNLOCK_VARBIT = 5452
     const val PRESERVE_UNLOCK_VARBIT = 5453
 
-    fun disableOverheads(p: Player, cycles: Int) {
+    fun disableOverheads(p: Player, cycles: Int, group : PrayerGroup) {
+        if(group == PrayerGroup.OVERHEAD_PROTECTION)
+            p.timers[DISABLE_PROTECTION] = cycles
+        else
         p.timers[DISABLE_OVERHEADS] = cycles
     }
 
@@ -57,9 +61,13 @@ object Prayers {
             return
         } else if (!checkRequirements(it, prayer)) {
             return
-        } else if (prayer.group == PrayerGroup.OVERHEAD && p.timers.has(DISABLE_OVERHEADS)) {
+        } else if (prayer.group == PrayerGroup.OVERHEAD_PRAYER && p.timers.has(DISABLE_OVERHEADS)) {
             p.syncVarp(ACTIVE_PRAYERS_VARP)
             p.message("You cannot use overhead prayers right now.")
+            return
+        } else if (prayer.group == PrayerGroup.OVERHEAD_PROTECTION && p.timers.has(DISABLE_PROTECTION)) {
+            p.syncVarp(ACTIVE_PRAYERS_VARP)
+            p.message("You cannot use protection prayers right now.")
             return
         } else if (p.getSkills().getCurrentLevel(Skills.PRAYER) == 0) {
             return
@@ -186,6 +194,14 @@ object Prayers {
                     p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 0)
                     p.message("You have run out of prayer points, you can recharge at an altar.")
                 }
+                (p.timers.has(DISABLE_OVERHEADS)) -> {
+                    p.message("You cannot use overhead prayers right now.")
+                    return
+                }
+                ((quickPrayers == Prayer.PROTECT_FROM_MELEE.quickPrayerSlot || quickPrayers == Prayer.PROTECT_FROM_MAGIC.quickPrayerSlot || quickPrayers == Prayer.PROTECT_FROM_MISSILES.quickPrayerSlot)&& p.timers.has(DISABLE_PROTECTION)) -> {
+                    p.message("You cannot use protection prayers right now.")
+                    return
+                }
                 p.getVarp(ACTIVE_PRAYERS_VARP) == quickPrayers -> {
                     /*
                      * All active prayers are quick-prayers - so we turn them off.
@@ -194,6 +210,7 @@ object Prayers {
                     p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 0)
                     setOverhead(p)
                 }
+
                 else -> {
                     p.setVarp(ACTIVE_PRAYERS_VARP, quickPrayers)
                     p.setVarbit(QUICK_PRAYERS_ACTIVE_VARBIT, 1)

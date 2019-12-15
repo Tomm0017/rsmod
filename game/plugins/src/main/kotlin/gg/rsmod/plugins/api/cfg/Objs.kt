@@ -15295,7 +15295,7 @@ object Objs {
     const val SHRINE = 29088
     const val LADDER_29089 = 29089
     const val MYSTERIOUS_RUINS_29090 = 29090
-    const val VENDING_SHRINE = 29091
+    const val HOUSE_ADVERTISEMENT_29091 = 29091
     const val LADDER_29092 = 29092
     const val MYSTERIOUS_RUINS_29094 = 29094
     const val MYSTERIOUS_RUINS_29095 = 29095
@@ -19354,5 +19354,12 @@ object Objs {
     const val NOTICEBOARD_37381 = 37381
     const val SUPPLY_CHEST = 37382
     const val SUPPLY_CHEST_37383 = 37383
+    const val HOUSE_ADVERTISEMENT_37384 = 37384
+    const val HOUSE_ADVERTISEMENT_37385 = 37385
+    const val HOUSE_ADVERTISEMENT_37386 = 37386
+    const val HOUSE_ADVERTISEMENT_37387 = 37387
+    const val HOUSE_ADVERTISEMENT_37388 = 37388
+    const val HOUSE_ADVERTISEMENT_37389 = 37389
+    const val HOUSE_ADVERTISEMENT_37390 = 37390
     /* Auto-generated file using class gg.rsmod.game.service.game.DumpEntityIdService */
 }

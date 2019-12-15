@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.skills.thieving.pickpocket
 
+import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
+import gg.rsmod.game.model.attr.RESET_FACING_PAWN_DISTANCE_ATTR
 import gg.rsmod.plugins.content.combat.isAttacking
 import gg.rsmod.plugins.content.combat.isBeingAttacked
 
@@ -9,16 +11,19 @@ private val GLOVES_OF_SILENCE_BONUS = 5
 PickpocketNpc.values.forEach { pickpocketNpc ->
     pickpocketNpc.npcIds.forEach { npcId ->
         on_npc_option(npc = npcId, option = "pickpocket") {
-            player.queue {
-                pickpocket(npcId, pickpocketNpc)
+            val interactingNpc = player.getInteractingNpc()
+            if (!interactingNpc.isDead()) {
+                player.queue {
+                    pickpocket(interactingNpc, pickpocketNpc)
+                }
             }
         }
     }
 }
 
-suspend fun QueueTask.pickpocket(npcId: Int, npc: PickpocketNpc) {
+suspend fun QueueTask.pickpocket(interactingNpc: Npc, npc: PickpocketNpc) {
     val playerThievingLvl = player.getSkills().getCurrentLevel(Skills.THIEVING)
-    val npcName = npc.npcName ?: world.definitions.get(NpcDef::class.java, npcId).name
+    val npcName = npc.npcName ?: world.definitions.get(NpcDef::class.java, interactingNpc.id).name
     if (playerThievingLvl < npc.reqLevel) {
         player.message("You need level ${npc.reqLevel} thieving to pick the $npcName's pocket.")
         return
@@ -51,6 +56,10 @@ suspend fun QueueTask.pickpocket(npcId: Int, npc: PickpocketNpc) {
     } else {
         //if failed, sends relevant messages
         player.message("...and you have failed.")
+
+        //faces player
+        interactingNpc.facePawn(player)
+        interactingNpc.attr[RESET_FACING_PAWN_DISTANCE_ATTR] = interactingNpc.getSize() + 1
 
         //damages player for a value in the npc's damage range
         player.hit(npc.damage.random())

@@ -7,7 +7,7 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.WeaponType
 import gg.rsmod.plugins.api.ext.hasWeaponType
-import gg.rsmod.plugins.api.ext.message
+import gg.rsmod.plugins.api.ext.playSound
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
 import gg.rsmod.plugins.content.combat.dealHit
@@ -34,7 +34,13 @@ object MeleeCombatStrategy : CombatStrategy {
         val world = pawn.world
 
         val animation = CombatConfigs.getAttackAnimation(pawn)
+        val weaponSound = CombatConfigs.getAttackSound(pawn)
+
         pawn.animate(animation)
+        if(pawn is Player)
+            pawn.playSound(weaponSound)
+        if(target is Player)
+            target.playSound(weaponSound)
 
         val formula = MeleeCombatFormula
         val accuracy = formula.getAccuracy(pawn, target)

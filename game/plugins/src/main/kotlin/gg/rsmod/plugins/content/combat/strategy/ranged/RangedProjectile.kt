@@ -45,6 +45,9 @@ enum class RangedProjectile(val gfx: Int, val drawback: Graphic? = null, val imp
 
     BOLTS(gfx = 27, type = ProjectileType.BOLT, items = Bolts.BRONZE_BOLTS + Bolts.IRON_BOLTS + Bolts.STEEL_BOLTS + Bolts.MITHRIL_BOLTS
             + Bolts.ADAMANT_BOLTS + Bolts.RUNITE_BOLTS + Bolts.DRAGON_BOLTS + Bolts.BLURITE_BOLTS + Bolts.KEBBIT_BOLTS + Bolts.BONE_BOLTS),
+    ARMADYL_BOLT(gfx = 301, type = ProjectileType.SLOW_BOLT, items = Bolts.BRONZE_BOLTS + Bolts.IRON_BOLTS + Bolts.STEEL_BOLTS + Bolts.ADAMANT_BOLTS + Bolts.BROAD_BOLTS + Bolts.RUNITE_BOLTS + Bolts.DRAGON_BOLTS),
+    DORGESHUUN_BOLT(gfx = 698, type = ProjectileType.SLOW_BOLT, items = Bolts.BONE_BOLTS),
+    DRAGON_BOLT(gfx = 698,impact = Graphic(1466, height = 80), type = ProjectileType.BOLT, items = Bolts.BRONZE_BOLTS + Bolts.IRON_BOLTS + Bolts.STEEL_BOLTS + Bolts.ADAMANT_BOLTS + Bolts.BROAD_BOLTS + Bolts.RUNITE_BOLTS + Bolts.DRAGON_BOLTS),
 
     BRONZE_ARROW(gfx = 10, drawback = Graphic(id = 19, height = 96), type = ProjectileType.ARROW, items = BRONZE_ARROWS),
     IRON_ARROW(gfx = 9, drawback = Graphic(id = 18, height = 96), type = ProjectileType.ARROW, items = IRON_ARROWS),
@@ -54,6 +57,7 @@ enum class RangedProjectile(val gfx: Int, val drawback: Graphic? = null, val imp
     RUNE_ARROW(gfx = 15, drawback = Graphic(id = 24, height = 96), type = ProjectileType.ARROW, items = RUNE_ARROWS),
     AMETHYST_ARROW(gfx = 1384, drawback = Graphic(id = 1385, height = 96), type = ProjectileType.ARROW, items = AMETHYST_ARROWS),
     DRAGON_ARROW(gfx = 1120, drawback = Graphic(id = 1111, height = 96), type = ProjectileType.ARROW, items = DRAGON_ARROWS),
+    MAGIC_ARROW(gfx = 249, drawback = Graphic(id = 256, height = 96, delay = 0), type = ProjectileType.MAGIC_ARROW, items = STEEL_ARROWS),
     OGRE_ARROW(gfx = 242, drawback = Graphic(id = 243, height = 50), type = ProjectileType.ARROW, items = OGRE_ARROWS),
 
     BRONZE_JAVELIN(gfx = 200, type = ProjectileType.JAVELIN, items = BRONZE_JAVELINS),
@@ -73,6 +77,7 @@ enum class RangedProjectile(val gfx: Int, val drawback: Graphic? = null, val imp
     ADAMANT_KNIFE(gfx = 217, drawback = Graphic(id = 224, height = 96), type = ProjectileType.THROWN, items = ADAMANT_KNIVES),
     RUNE_KNIFE(gfx = 218, drawback = Graphic(id = 225, height = 96), type = ProjectileType.THROWN, items = RUNE_KNIVES),
     DRAGON_KNIFE(gfx = 28, type = ProjectileType.THROWN, items = DRAGON_KNIVES),
+    DRAGON_KNIFE_SPEC(gfx = 699, type = ProjectileType.THROWN, items = DRAGON_KNIVES),
 
     BRONZE_DART(gfx = 226, drawback = Graphic(id = 232, height = 96), type = ProjectileType.THROWN, items = BRONZE_DARTS),
     IRON_DART(gfx = 227, drawback = Graphic(id = 233, height = 96), type = ProjectileType.THROWN, items = IRON_DARTS),
@@ -90,6 +95,7 @@ enum class RangedProjectile(val gfx: Int, val drawback: Graphic? = null, val imp
     ADAMANT_THROWING_AXE(gfx = 39, drawback = Graphic(id = 46, height = 96), type = ProjectileType.THROWN, items = arrayOf(Items.ADAMANT_THROWNAXE)),
     RUNE_THROWING_AXE(gfx = 41, drawback = Graphic(id = 48, height = 96), type = ProjectileType.THROWN, items = arrayOf(Items.RUNE_THROWNAXE)),
     DRAGON_THROWING_AXE(gfx = 1319, drawback = Graphic(id = 1320, height = 96), type = ProjectileType.THROWN, items = arrayOf(Items.DRAGON_THROWNAXE)),
+    DRAGON_THROWING_AXE_SPEC(gfx = 1318, drawback = Graphic(id = 1317, height = 96), type = ProjectileType.THROWN, items = arrayOf(Items.DRAGON_THROWNAXE)),
 
     TOKTZ_XIL_UL(gfx = 442, type = ProjectileType.THROWN, items = arrayOf(Items.TOKTZXILUL)),
 

@@ -22,7 +22,7 @@ class DragonfireFormula(val maxHit: Int, val minHit: Int = 0) : CombatFormula {
         return MagicCombatFormula.getAccuracy(pawn, target, specialAttackMultiplier)
     }
 
-    override fun getMaxHit(pawn: Pawn, target: Pawn, specialAttackMultiplier: Double, specialPassiveMultiplier: Double): Int {
+    override fun getMaxHit(pawn: Pawn, target: Pawn, specialAttackMultiplier: Double, specialPassiveMultiplier: Double, ignore_protection : Boolean): Int {
         var max = maxHit.toDouble()
 
         if (target is Player) {

@@ -18,7 +18,7 @@ enum class Attached(val id: Int, val toolRequired: Int = -1, val firstMaterial: 
     MAGIC_SHORTBOW(id = Items.MAGIC_SHORTBOW, firstMaterial = Items.MAGIC_SHORTBOW_U, secondMaterial = Items.BOW_STRING, level = 80, animation = 6683, fletchingXP = 83.3),
     MAGIC_LONGBOW(id = Items.MAGIC_LONGBOW, firstMaterial = Items.MAGIC_LONGBOW_U, secondMaterial = Items.BOW_STRING, level = 85, animation = 6689, fletchingXP = 91.5),
 
-    // Crossbow stringing
+    // gg.rsmod.plugins.content.combat.specialattack.weapons.ranged.Crossbow stringing
     BRONZE_CROSSBOW(id = Items.BRONZE_CROSSBOW, firstMaterial = Items.BRONZE_CROSSBOW_U, secondMaterial = Items.CROSSBOW_STRING, level = 9, animation = 6671, fletchingXP = 6.0),
     BLURITE_CROSSBOW(id = Items.BLURITE_CROSSBOW, firstMaterial = Items.BLURITE_CROSSBOW_U, secondMaterial = Items.CROSSBOW_STRING, level = 24, animation = 6672, fletchingXP = 16.0),
     IRON_CROSSBOW(id = Items.IRON_CROSSBOW, firstMaterial = Items.IRON_CROSSBOW_U, secondMaterial = Items.CROSSBOW_STRING, level = 39, animation = 6673, fletchingXP = 22.0),

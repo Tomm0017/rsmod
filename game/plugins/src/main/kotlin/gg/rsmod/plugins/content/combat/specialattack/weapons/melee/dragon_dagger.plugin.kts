@@ -1,12 +1,13 @@
-package gg.rsmod.plugins.content.combat.specialattack.weapons.dragondagger
+package gg.rsmod.plugins.content.combat.specialattack.weapons.melee
 
 import gg.rsmod.plugins.content.combat.dealHit
 import gg.rsmod.plugins.content.combat.formula.MeleeCombatFormula
+import gg.rsmod.plugins.content.combat.specialattack.ExecutionType
 import gg.rsmod.plugins.content.combat.specialattack.SpecialAttacks
 
 val SPECIAL_REQUIREMENT = 25
 
-SpecialAttacks.register(Items.DRAGON_DAGGER, SPECIAL_REQUIREMENT) {
+SpecialAttacks.register(intArrayOf(Items.DRAGON_DAGGER), SPECIAL_REQUIREMENT, ExecutionType.EXECUTE_ON_ATTACK) {
     player.animate(id = 1062)
     player.graphic(id = 252, height = 92)
     world.spawn(AreaSound(tile = player.tile, id = 2537, radius = 10, volume = 1))

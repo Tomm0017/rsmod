@@ -269,6 +269,7 @@ abstract class Pawn(val world: World) : Entity() {
             val time = entry.value
             if (time <= 0) {
                 if (key == RESET_PAWN_FACING_TIMER) {
+                    attr.remove(RESET_FACING_PAWN_DISTANCE_ATTR)
                     resetFacePawn()
                 } else {
                     world.plugins.executeTimer(this, key)
@@ -405,7 +406,23 @@ abstract class Pawn(val world: World) : Entity() {
             write(SetMapFlagMessage(tail.x - lastKnownRegionBase!!.x, tail.z - lastKnownRegionBase!!.z))
         }
     }
+    fun forceMove(movement: ForcedMovement) {
+        blockBuffer.forceMovement = movement
+        addBlock(UpdateBlockType.FORCE_MOVEMENT)
+    }
 
+    suspend fun forceMove(task: QueueTask, movement: ForcedMovement, cycleDuration: Int = movement.maxDuration / 30) {
+        movementQueue.clear()
+        lock = LockState.DELAY_ACTIONS
+
+        lastTile = Tile(tile)
+        moveTo(movement.finalDestination)
+
+        forceMove(movement)
+
+        task.wait(cycleDuration)
+        lock = LockState.NONE
+    }
     fun walkTo(tile: Tile, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL, detectCollision: Boolean = true) = walkTo(tile.x, tile.z, stepType, detectCollision)
 
     fun walkTo(x: Int, z: Int, stepType: MovementQueue.StepType = MovementQueue.StepType.NORMAL, detectCollision: Boolean = true) {

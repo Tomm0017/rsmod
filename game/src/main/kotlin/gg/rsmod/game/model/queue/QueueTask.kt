@@ -103,7 +103,7 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
      * as well as the x and z coordinates.
      */
     suspend fun waitTile(tile: Tile): Unit = suspendCoroutine {
-        nextStep = SuspendableStep(TileCondition((ctx as Pawn).tile, tile), it)
+        nextStep = SuspendableStep(TileCondition(ctx as Pawn, tile), it)
     }
 
     /**

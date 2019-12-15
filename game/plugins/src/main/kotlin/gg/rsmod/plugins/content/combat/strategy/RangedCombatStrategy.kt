@@ -12,10 +12,7 @@ import gg.rsmod.plugins.api.EquipmentType
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.WeaponType
 import gg.rsmod.plugins.api.cfg.Items
-import gg.rsmod.plugins.api.ext.getEquipment
-import gg.rsmod.plugins.api.ext.hasEquipped
-import gg.rsmod.plugins.api.ext.hasWeaponType
-import gg.rsmod.plugins.api.ext.message
+import gg.rsmod.plugins.api.ext.*
 import gg.rsmod.plugins.content.combat.Combat
 import gg.rsmod.plugins.content.combat.CombatConfigs
 import gg.rsmod.plugins.content.combat.createProjectile
@@ -24,6 +21,7 @@ import gg.rsmod.plugins.content.combat.formula.RangedCombatFormula
 import gg.rsmod.plugins.content.combat.strategy.ranged.RangedProjectile
 import gg.rsmod.plugins.content.combat.strategy.ranged.ammo.Darts
 import gg.rsmod.plugins.content.combat.strategy.ranged.ammo.Knives
+import gg.rsmod.plugins.content.combat.strategy.ranged.weapon.BallistaType
 import gg.rsmod.plugins.content.combat.strategy.ranged.weapon.BowType
 import gg.rsmod.plugins.content.combat.strategy.ranged.weapon.Bows
 import gg.rsmod.plugins.content.combat.strategy.ranged.weapon.CrossbowType
@@ -67,6 +65,13 @@ object RangedCombatStrategy : CombatStrategy {
             val weapon = pawn.getEquipment(EquipmentType.WEAPON)
             val ammo = pawn.getEquipment(EquipmentType.AMMO)
 
+            val ballista = BallistaType.values.firstOrNull { it.item == weapon?.id }
+            if (ballista != null && ammo?.id !in ballista.ammo) {
+                val message = if (ammo != null) "You can't use that ammo with your ballista." else "There is no ammo left in your quiver."
+                pawn.message(message)
+                return false
+            }
+
             val crossbow = CrossbowType.values.firstOrNull { it.item == weapon?.id }
             if (crossbow != null && ammo?.id !in crossbow.ammo) {
                 val message = if (ammo != null) "You can't use that ammo with your crossbow." else "There is no ammo left in your quiver."
@@ -88,6 +93,7 @@ object RangedCombatStrategy : CombatStrategy {
         val world = pawn.world
 
         val animation = CombatConfigs.getAttackAnimation(pawn)
+        val weaponSound = CombatConfigs.getAttackSound(pawn)
 
         /*
          * A list of actions that will be executed upon this hit dealing damage
@@ -140,6 +146,10 @@ object RangedCombatStrategy : CombatStrategy {
             }
         }
         pawn.animate(animation)
+        if(pawn is Player)
+            pawn.playSound(weaponSound)
+        if(target is Player)
+            target.playSound(weaponSound)
 
         val formula = RangedCombatFormula
         val accuracy = formula.getAccuracy(pawn, target)

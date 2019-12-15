@@ -125,16 +125,18 @@ object PawnPathAction {
                         it.timers.remove(RESET_PAWN_FACING_TIMER)
                     }
                 }
-                pawn.attr[NPC_FACING_US_ATTR] = WeakReference(other)
-
                 /*
                  * Stop the npc from walking while the player talks to it
                  * for [Npc.RESET_PAWN_FACE_DELAY] cycles.
                  */
                 other.stopMovement()
-                if (other.attr[FACING_PAWN_ATTR]?.get() != pawn) {
-                    other.facePawn(pawn)
-                    other.timers[RESET_PAWN_FACING_TIMER] = Npc.RESET_PAWN_FACE_DELAY
+                if(opt == 1) {
+                    pawn.attr[NPC_FACING_US_ATTR] = WeakReference(other)
+                    if (other.attr[FACING_PAWN_ATTR]?.get() != pawn) {
+                        other.facePawn(pawn)
+                        other.timers[RESET_PAWN_FACING_TIMER] = Npc.RESET_PAWN_FACE_DELAY
+                        other.attr[RESET_FACING_PAWN_DISTANCE_ATTR] = pawn.getSize() + Npc.RESET_PAWN_FACE_DISTANCE
+                    }
                 }
 
                 val npcId = other.getTransform(pawn)

@@ -112,6 +112,12 @@ class PluginRepository(val world: World) {
     private val spellOnNpcPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
 
     /**
+     * A map of plugins that will handle spells on players depending on the interface
+     * hash of the spell.
+     */
+    private val spellOnPlayerPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
+
+    /**
      * A map that contains plugins that should be executed when the [TimerKey]
      * hits a value of [0] time left.
      */
@@ -616,13 +622,30 @@ class PluginRepository(val world: World) {
         spellOnNpcPlugins[hash] = plugin
         pluginCount++
     }
-
     fun executeSpellOnNpc(p: Player, parent: Int, child: Int): Boolean {
         val hash = (parent shl 16) or child
         val plugin = spellOnNpcPlugins[hash] ?: return false
         p.executePlugin(plugin)
         return true
     }
+
+    fun bindSpellOnPlayer(parent: Int, child: Int, plugin: Plugin.() -> Unit) {
+        val hash = (parent shl 16) or child
+        if (spellOnPlayerPlugins.containsKey(hash)) {
+            logger.error("Spell is already bound to a plugin: [$parent, $child]")
+            throw IllegalStateException("Spell is already bound to a plugin: [$parent, $child]")
+        }
+        spellOnPlayerPlugins[hash] = plugin
+        pluginCount++
+    }
+
+    fun executeSpellOnPlayer(p: Player, parent: Int, child: Int): Boolean {
+        val hash = (parent shl 16) or child
+        val plugin = spellOnPlayerPlugins[hash] ?: return false
+        p.executePlugin(plugin)
+        return true
+    }
+
 
     fun bindWindowStatus(plugin: Plugin.() -> Unit) {
         if (windowStatusPlugin != null) {

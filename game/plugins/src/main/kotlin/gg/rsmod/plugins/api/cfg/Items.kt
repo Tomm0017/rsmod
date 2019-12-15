@@ -15292,5 +15292,23 @@ object Items {
     const val AVAS_ASSEMBLER_L = 24222
     const val FIRE_CAPE_L = 24223
     const val INFERNAL_CAPE_L = 24224
+    const val GRANITE_MAUL_24225 = 24225
+    const val GRANITE_MAUL_24227 = 24227
+    const val ORNATE_MAUL_HANDLE = 24229
+    const val ORNATE_MAUL_HANDLE_NOTED = 24230
+    const val IMBUED_SARADOMIN_MAX_CAPE_L = 24232
+    const val IMBUED_ZAMORAK_MAX_CAPE_L = 24233
+    const val IMBUED_GUTHIX_MAX_CAPE_L = 24234
+    const val HOUSE_ADVERTISEMENT = 24235
+    const val IMBUED_SARADOMIN_CAPE_BROKEN = 24236
+    const val IMBUED_SARADOMIN_MAX_CAPE_BROKEN = 24238
+    const val IMBUED_GUTHIX_CAPE_BROKEN = 24240
+    const val IMBUED_GUTHIX_MAX_CAPE_BROKEN = 24242
+    const val IMBUED_ZAMORAK_CAPE_BROKEN = 24244
+    const val IMBUED_ZAMORAK_MAX_CAPE_BROKEN = 24246
+    const val IMBUED_SARADOMIN_CAPE_L = 24248
+    const val IMBUED_GUTHIX_CAPE_L = 24249
+    const val IMBUED_ZAMORAK_CAPE_L = 24250
+    const val WILDERNESS_CRABS_TELEPORT = 24251
     /* Auto-generated file using class gg.rsmod.game.service.game.DumpEntityIdService */
 }

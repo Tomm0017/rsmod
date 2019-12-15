@@ -59,6 +59,12 @@ open class Player(world: World) : Pawn(world) {
     var lastKnownRegionBase: Coordinate? = null
 
     /**
+     * The tile region [regionId] is region id
+     * the last known region Id for this player begins.
+     */
+    var lastRegionId: Int = lastTile?.regionId ?: -1
+
+    /**
      * A flag that indicates whether or not the [login] method has been executed.
      * This is currently used so that we don't send player updates when the player
      * hasn't been fully initialized. We can test later to see if this is even
@@ -229,7 +235,7 @@ open class Player(world: World) : Pawn(world) {
         val bits = world.playerUpdateBlocks.updateBlocks[block]!!
         return blockBuffer.hasBit(bits.bit)
     }
-
+/*
     fun forceMove(movement: ForcedMovement) {
         blockBuffer.forceMovement = movement
         addBlock(UpdateBlockType.FORCE_MOVEMENT)
@@ -246,7 +252,7 @@ open class Player(world: World) : Pawn(world) {
 
         task.wait(cycleDuration)
         lock = LockState.NONE
-    }
+    }*/
 
     /**
      * Logic that should be executed every game cycle, before
@@ -291,13 +297,7 @@ open class Player(world: World) : Pawn(world) {
             }
         }
 
-        val oldRegion = lastTile?.regionId ?: -1
-        if (oldRegion != tile.regionId) {
-            if (oldRegion != -1) {
-                world.plugins.executeRegionExit(this, oldRegion)
-            }
-            world.plugins.executeRegionEnter(this, tile.regionId)
-        }
+
 
         if (inventory.dirty) {
             write(UpdateInvFullMessage(interfaceId = 149, component = 0, containerKey = 93, items = inventory.rawItems))

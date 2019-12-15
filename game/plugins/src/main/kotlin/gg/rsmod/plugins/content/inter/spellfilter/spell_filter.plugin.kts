@@ -1,6 +1,8 @@
 package gg.rsmod.plugins.content.inter.spellfilter
 
 import gg.rsmod.game.model.interf.DisplayMode
+import gg.rsmod.plugins.api.ext.*
+import gg.rsmod.plugins.api.getDisplayComponentId
 
 on_login {
     player.setInterfaceEvents(interfaceId = SpellFilters.INTERFACE_ID, component = 184, range = 0..4, setting = 2)

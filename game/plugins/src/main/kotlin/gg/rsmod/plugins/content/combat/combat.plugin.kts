@@ -6,6 +6,7 @@ import gg.rsmod.game.model.attr.FACING_PAWN_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_PLAYER_ATTR
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.model.timer.STUN_TIMER
+import gg.rsmod.plugins.content.combat.specialattack.ExecutionType
 import gg.rsmod.plugins.content.combat.specialattack.SpecialAttacks
 import gg.rsmod.plugins.content.combat.strategy.magic.CombatSpell
 import gg.rsmod.plugins.content.inter.attack.AttackTab
@@ -25,11 +26,6 @@ set_combat_logic {
     }
 }
 
-on_player_option("Attack") {
-    val target = pawn.attr[INTERACTING_PLAYER_ATTR]?.get() ?: return@on_player_option
-    player.attack(target)
-}
-
 suspend fun cycle(it: QueueTask): Boolean {
     val pawn = it.pawn
     val target = pawn.attr[COMBAT_TARGET_FOCUS_ATTR]?.get() ?: return false
@@ -44,6 +40,7 @@ suspend fun cycle(it: QueueTask): Boolean {
     if (!Combat.canEngage(pawn, target)) {
         Combat.reset(pawn)
         pawn.resetFacePawn()
+        pawn.faceTile(target.tile)
         return false
     }
 
@@ -69,21 +66,10 @@ suspend fun cycle(it: QueueTask): Boolean {
         if(pawn.tile.getDistance(target.tile) < 1 && !pawn.isAttackDelayReady()) {
             pathFound = false
             cancelPath = true
-        }
-        else if(!pawn.isAttackDelayReady() && !target.isAttackDelayReady() && pawn.isAttacking() && target.isAttacking()) {
-            pathFound = false
-            cancelPath = true
-        }
-        else {
+        } else {
             pathFound = PawnPathAction.walkTo(it, pawn, target, interactionRange = attackRange, lineOfSight = false)
         }
     }
-
-    if (target != pawn.attr[FACING_PAWN_ATTR]?.get()) {
-        return false
-    }
-
-
 
     if (!pathFound) {
         pawn.stopMovement()
@@ -103,29 +89,30 @@ suspend fun cycle(it: QueueTask): Boolean {
             }
             pawn.clearMapFlag()
         }
-        pawn.resetFacePawn()
         Combat.reset(pawn)
+        pawn.resetFacePawn()
+        pawn.faceTile(target.tile)
         return false
     }
 
+    if(target != pawn.attr[FACING_PAWN_ATTR]?.get()) { return false }
+
     pawn.stopMovement()
 
-    if (Combat.isAttackDelayReady(pawn)) {
+    if (Combat.isAttackDelayReady(pawn) || ( pawn is Player && AttackTab.isSpecialEnabled(pawn) && pawn.getEquipment(EquipmentType.WEAPON) != null && SpecialAttacks.ignoreDelay(pawn))) {
         if (Combat.canAttack(pawn, target, strategy)) {
-
             if (pawn is Player && AttackTab.isSpecialEnabled(pawn) && pawn.getEquipment(EquipmentType.WEAPON) != null) {
-                AttackTab.disableSpecial(pawn)
-                if (SpecialAttacks.execute(pawn, target, world)) {
+                if (SpecialAttacks.execute(pawn, target, world,ExecutionType.EXECUTE_ON_ATTACK)) {
                     Combat.postAttack(pawn, target)
                     return true
                 }
-                pawn.message("You don't have enough power left.")
             }
-
             strategy.attack(pawn, target)
             Combat.postAttack(pawn, target)
         } else {
             Combat.reset(pawn)
+            pawn.resetFacePawn()
+            pawn.faceTile(target.tile)
             return false
         }
     }

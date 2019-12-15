@@ -379,6 +379,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     fun on_spell_on_npc(parent: Int, child: Int, logic: (Plugin).() -> Unit) = r.bindSpellOnNpc(parent, child, logic)
 
     /**
+     * Invoke [logic] when [gg.rsmod.game.message.impl.OpPlayerTMessage] is handled.
+     */
+    fun on_spell_on_player(parent: Int, child: Int, logic: (Plugin).() -> Unit) = r.bindSpellOnPlayer(parent, child, logic)
+
+    /**
      * Invoke [logic] when [gg.rsmod.game.message.impl.IfOpenSubMessage] is handled.
      */
     fun on_interface_open(interfaceId: Int, logic: (Plugin).() -> Unit) = r.bindInterfaceOpen(interfaceId, logic)

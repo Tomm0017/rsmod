@@ -1,6 +1,8 @@
 package gg.rsmod.plugins.content.skills.woodcutting
 
+import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.plugins.api.cfg.Items
+import gg.rsmod.plugins.api.ext.player
 
 val rechargeItem = intArrayOf(Items.SMOULDERING_STONE, Items.DRAGON_AXE)
 val infernalAxe = AttributeKey<Int>("Infernal Axe Charges")

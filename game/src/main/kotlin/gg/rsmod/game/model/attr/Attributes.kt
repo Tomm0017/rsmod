@@ -49,6 +49,11 @@ val FACING_PAWN_ATTR = AttributeKey<WeakReference<Pawn>>()
 val NPC_FACING_US_ATTR = AttributeKey<WeakReference<Npc>>()
 
 /**
+ * The distance a [Pawm] keeps facing their [FACING_PAWN_ATTR].
+ */
+val RESET_FACING_PAWN_DISTANCE_ATTR = AttributeKey<Int>()
+
+/**
  * The current viewed shop.
  */
 val CURRENT_SHOP_ATTR = AttributeKey<Shop>()

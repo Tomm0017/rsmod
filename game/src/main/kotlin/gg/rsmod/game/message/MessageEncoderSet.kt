@@ -47,6 +47,7 @@ class MessageEncoderSet {
         put(UpdateInvPartialEncoder(), UpdateInvPartialMessage::class.java)
         put(UpdateZonePartialFollowsEncoder(), UpdateZonePartialFollowsMessage::class.java)
         put(LodAddChangeEncoder(), LocAddChangeMessage::class.java)
+        put(LoadFriendListEncoder(), LoadFriendListMessage::class.java)
         put(LocDelEncoder(), LocDelMessage::class.java)
         put(UpdateZonePartialEnclosedEncoder(), UpdateZonePartialEnclosedMessage::class.java)
         put(UpdateRunWeightEncoder(), UpdateRunWeightMessage::class.java)

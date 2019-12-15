@@ -46,6 +46,14 @@ object PlayerPostSynchronizationTask : SynchronizationTask<Player> {
                     pawn.world.plugins.executeChunkEnter(pawn, newChunk.hashCode())
                 }
             }
+            val oldRegion = oldTile?.regionId ?: -1
+            if (oldRegion != pawn.tile.regionId) {
+                if (oldRegion != -1) {
+                    pawn.world.plugins.executeRegionExit(pawn, oldRegion)
+                }
+                pawn.world.plugins.executeRegionEnter(pawn, pawn.tile.regionId)
+            }
         }
+
     }
 }

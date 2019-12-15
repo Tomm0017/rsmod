@@ -2,9 +2,8 @@ package gg.rsmod.plugins.content.areas.edgeville.chat
 
 spawn_npc(npc = Npcs.RICHARD_2200, x = 3102, z = 3518, walkRadius = 2)
 
-on_npc_option(npc = Npcs.RICHARD_2200, option = "talk-to") {
-    player.queue { chat(this) }
-}
+on_npc_option(npc = Npcs.RICHARD_2200, option = "talk-to") { player.queue { chat(this) } }
+on_npc_option(npc = Npcs.RICHARD_2200, option = "trade") { open_shop(player) }
 
 suspend fun chat(it: QueueTask) {
     it.chatNpc("Hello there, are you interested in buying one of my<br>special capes?", animation = 568)

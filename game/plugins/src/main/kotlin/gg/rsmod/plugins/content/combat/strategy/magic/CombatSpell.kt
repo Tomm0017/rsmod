@@ -138,5 +138,6 @@ enum class CombatSpell(val id: Int, val maxHit: Int, val castAnimation: Int, val
 
     companion object {
         val values = enumValues<CombatSpell>()
+        val autoCast = values.associate { it.autoCastId to it }
     }
 }

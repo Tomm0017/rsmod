@@ -29,5 +29,20 @@ MagicSpells.getCombatSpells().forEach { entry ->
                 }
             }
         }
+        on_spell_on_player(requirement.interfaceId, requirement.component) {
+            val otherPlayer = player.getInteractingPlayer()
+            val combatSpell = CombatSpell.values.firstOrNull { spell -> spell.id == requirement.paramItem }
+            if (combatSpell != null) {
+                player.attr[Combat.CASTING_SPELL] = combatSpell
+                player.attack(otherPlayer)
+            } else {
+                /*
+             * The spell is not defined in [CombatSpell].
+             */
+                if (world.devContext.debugMagicSpells) {
+                    player.message("Undefined combat spell: [spellId=${requirement.paramItem}, name=${requirement.name}]")
+                }
+            }
+        }
     }
 }

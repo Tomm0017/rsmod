@@ -1,5 +1,8 @@
 package gg.rsmod.plugins.content.mechanics.aggro
 
+import gg.rsmod.game.model.EntityType
+import gg.rsmod.game.model.entity.Npc
+import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.content.combat.getCombatTarget
 import gg.rsmod.plugins.content.combat.isAttacking
 

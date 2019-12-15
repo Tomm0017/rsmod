@@ -9,7 +9,8 @@ val INTERFACE_ID = 90
  * The component that draws a 'cross' (or x) through the skull interface
  * that signifies the player is in a pvp-area but cannot engage in pvp.
  */
-val SKULL_CROSSOUT_COMPONENT = 57
+val SKULL_CROSSOUT_COMPONENT = 63
+val SKULL_COMPONENT = 62
 
 on_login {
     player.timers[CHECK_TIMER] = 1

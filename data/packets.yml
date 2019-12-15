@@ -7,6 +7,21 @@ out-packets:
     type: FIXED
     opcode: 2
 
+
+  - message: gg.rsmod.game.message.impl.LoadFriendListMessage
+    type: VARIABLE_SHORT
+    opcode: 58
+    structure:
+      - name: online
+        type: BYTE
+      - name: username
+        type: BYTES
+      - name: previousUsername
+        type: BYTES
+      - name: world
+        type: SHORT
+
+
   - message: gg.rsmod.game.message.impl.CameraShakeMessage
     type: FIXED
     opcode: 39
@@ -1472,11 +1487,23 @@ in-packets:
     opcode: 54
     ignore: true
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYERT
+  - message: gg.rsmod.game.message.impl.OpPlayerTMessage # TODO: OPPLAYERT
     type: FIXED
     opcode: 55
     length: 9
-    ignore: true
+    structure:
+      - name: component_hash
+        order: INVERSED_MIDDLE
+        type: INT
+      - name: movement_type
+        type: BYTE
+        trans: ADD
+      - name: component_slot
+        order: LITTLE
+        type: SHORT
+        trans: NEGATE
+      - name: index
+        type: SHORT
 
   - message: gg.rsmod.game.message.impl.OpPlayer2Message
     type: FIXED

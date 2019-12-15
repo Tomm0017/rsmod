@@ -22,6 +22,9 @@ object AttackTab {
 
     fun getEnergy(p: Player): Int = p.getVarp(SPECIAL_ATTACK_ENERGY_VARP) / 10
 
+    fun enableSpecial(p: Player) {
+        p.setVarp(SPECIAL_ATTACK_VARP, 1)
+    }
     fun disableSpecial(p: Player) {
         p.setVarp(SPECIAL_ATTACK_VARP, 0)
     }

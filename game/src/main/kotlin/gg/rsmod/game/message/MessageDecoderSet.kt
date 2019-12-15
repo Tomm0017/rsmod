@@ -97,6 +97,7 @@ class MessageDecoderSet {
         put(OpPlayer6Message::class.java, OpPlayer6Decoder(), OpPlayer6Handler(), structures)
         put(OpPlayer7Message::class.java, OpPlayer7Decoder(), OpPlayer7Handler(), structures)
         put(OpPlayer8Message::class.java, OpPlayer8Decoder(), OpPlayer8Handler(), structures)
+        put(OpPlayerTMessage::class.java, OpPlayerTDecoder(), OpPlayerTHandler(), structures)
     }
 
     private fun <T : Message> put(messageType: Class<T>, decoderType: MessageDecoder<T>, handlerType: MessageHandler<T>, structures: MessageStructureSet) {

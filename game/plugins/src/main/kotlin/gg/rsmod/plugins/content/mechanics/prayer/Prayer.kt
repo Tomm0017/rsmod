@@ -56,13 +56,13 @@ enum class Prayer(val named: String, val child: Int, val quickPrayerSlot: Int, v
             group = PrayerGroup.ATTACK, overlap = *arrayOf(PrayerGroup.RANGED, PrayerGroup.MAGIC, PrayerGroup.COMBAT)),
 
     PROTECT_FROM_MAGIC(named = "Protect from Magic", child = 17, quickPrayerSlot = 12, varbit = 4116, level = 37, sound = 2675, drainEffect = 12,
-            group = PrayerGroup.OVERHEAD, overlap = *arrayOf()),
+            group = PrayerGroup.OVERHEAD_PROTECTION, overlap = *arrayOf()),
 
     PROTECT_FROM_MISSILES(named = "Protect from Missiles", child = 18, quickPrayerSlot = 13, varbit = 4117, level = 40, sound = 2677, drainEffect = 12,
-            group = PrayerGroup.OVERHEAD, overlap = *arrayOf()),
+            group = PrayerGroup.OVERHEAD_PROTECTION, overlap = *arrayOf()),
 
     PROTECT_FROM_MELEE(named = "Protect from Melee", child = 19, quickPrayerSlot = 14, varbit = 4118, level = 43, sound = 2676, drainEffect = 12,
-            group = PrayerGroup.OVERHEAD, overlap = *arrayOf()),
+            group = PrayerGroup.OVERHEAD_PROTECTION, overlap = *arrayOf()),
 
     EAGLE_EYE(named = "Eagle Eye", child = 27, quickPrayerSlot = 22, varbit = 4126, level = 44, sound = 2665, drainEffect = 12,
             group = PrayerGroup.RANGED, overlap = *arrayOf(PrayerGroup.ATTACK, PrayerGroup.STRENGTH, PrayerGroup.MAGIC, PrayerGroup.COMBAT)),
@@ -71,13 +71,13 @@ enum class Prayer(val named: String, val child: Int, val quickPrayerSlot: Int, v
             group = PrayerGroup.MAGIC, overlap = *arrayOf(PrayerGroup.ATTACK, PrayerGroup.STRENGTH, PrayerGroup.RANGED, PrayerGroup.COMBAT)),
 
     RETRIBUTION(named = "Retribution", child = 20, quickPrayerSlot = 15, varbit = 4119, level = 46, sound = 2682, drainEffect = 3,
-            group = PrayerGroup.OVERHEAD, overlap = *arrayOf()),
+            group = PrayerGroup.OVERHEAD_PRAYER, overlap = *arrayOf()),
 
     REDEMPTION(named = "Redemption", child = 21, quickPrayerSlot = 16, varbit = 4120, level = 49, sound = 2680, drainEffect = 6,
-            group = PrayerGroup.OVERHEAD, overlap = *arrayOf()),
+            group = PrayerGroup.OVERHEAD_PRAYER, overlap = *arrayOf()),
 
     SMITE(named = "Smite", child = 22, quickPrayerSlot = 17, varbit = 4121, level = 52, sound = 2686, drainEffect = 18,
-            group = PrayerGroup.OVERHEAD, overlap = *arrayOf()),
+            group = PrayerGroup.OVERHEAD_PRAYER, overlap = *arrayOf()),
 
     PRESERVE(named = "Preserve", child = 33, quickPrayerSlot = 28, varbit = 5466, level = 55, sound = 3825, drainEffect = 3,
             group = null, overlap = *arrayOf()),

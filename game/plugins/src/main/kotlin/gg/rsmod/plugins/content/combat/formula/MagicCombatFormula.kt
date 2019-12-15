@@ -52,7 +52,7 @@ object MagicCombatFormula : CombatFormula {
         return accuracy
     }
 
-    override fun getMaxHit(pawn: Pawn, target: Pawn, specialAttackMultiplier: Double, specialPassiveMultiplier: Double): Int {
+    override fun getMaxHit(pawn: Pawn, target: Pawn, specialAttackMultiplier: Double, specialPassiveMultiplier: Double, ignore_protection : Boolean): Int {
         val spell = pawn.attr[Combat.CASTING_SPELL]
         var hit = spell?.maxHit?.toDouble() ?: 1.0
         if (pawn is Player) {

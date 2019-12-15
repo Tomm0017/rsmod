@@ -101,7 +101,7 @@ object CombatConfigs {
             return when {
                 pawn.hasEquipped(EquipmentType.WEAPON, *GODSWORDS) -> 7045
                 pawn.hasWeaponType(WeaponType.AXE) -> if (style == 1) 401 else 395
-                pawn.hasWeaponType(WeaponType.HAMMER) -> 401
+                pawn.hasWeaponType(WeaponType.HAMMER)  -> if (pawn.hasEquipped(EquipmentType.WEAPON, Items.GRANITE_MAUL)) 1665 else 401
                 pawn.hasWeaponType(WeaponType.BULWARK) -> 7511
                 pawn.hasWeaponType(WeaponType.SCYTHE) -> 8056
                 pawn.hasWeaponType(WeaponType.BOW) -> 426
@@ -118,6 +118,39 @@ object CombatConfigs {
                 pawn.hasWeaponType(WeaponType.SPEAR) || pawn.hasWeaponType(WeaponType.HALBERD) -> if (style == 1) 440 else if (style == 2) 429 else 428
                 pawn.hasWeaponType(WeaponType.CLAWS) -> 393
                 else -> if (style == 1) 423 else 422
+            }
+        }
+
+        throw IllegalArgumentException("Invalid pawn type.")
+    }
+    fun getAttackSound(pawn: Pawn): Int {
+        if (pawn is Npc) {
+            return pawn.combatDef.attackSound
+        }
+
+        if (pawn is Player) {
+            val style = pawn.getAttackStyle()
+
+            return when {
+                pawn.hasEquipped(EquipmentType.WEAPON, *GODSWORDS) -> 2511
+                pawn.hasWeaponType(WeaponType.AXE) -> if (style == 1) 2497 else 2498
+                pawn.hasWeaponType(WeaponType.HAMMER)  -> if (pawn.hasEquipped(EquipmentType.WEAPON, Items.GRANITE_MAUL)) 1665 else 1665//NOT CORRECT?
+                pawn.hasWeaponType(WeaponType.BULWARK) -> 3454
+                pawn.hasWeaponType(WeaponType.SCYTHE) -> 2524
+                pawn.hasWeaponType(WeaponType.BOW) -> 2693
+                pawn.hasWeaponType(WeaponType.CROSSBOW) -> 2695
+                pawn.hasWeaponType(WeaponType.LONG_SWORD) -> if (style == 2) 2503 else 2500
+                pawn.hasWeaponType(WeaponType.TWO_HANDED) -> if (style == 2) 2512 else 2511
+                pawn.hasWeaponType(WeaponType.PICKAXE) -> if (style == 2) 2498 else 2497
+                pawn.hasWeaponType(WeaponType.DAGGER) -> if (style == 2) 2549 else 2549
+                pawn.hasWeaponType(WeaponType.MAGIC_STAFF) || pawn.hasWeaponType(WeaponType.STAFF) -> 1309
+                pawn.hasWeaponType(WeaponType.MACE) -> if (style == 2) 2497 else 2498
+                //pawn.hasWeaponType(WeaponType.CHINCHOMPA) -> 7618
+                //pawn.hasWeaponType(WeaponType.THROWN) -> if (pawn.hasEquipped(EquipmentType.WEAPON, Items.TOKTZXILUL)) 7558 else 929
+                pawn.hasWeaponType(WeaponType.WHIP) -> 1658
+                pawn.hasWeaponType(WeaponType.SPEAR) || pawn.hasWeaponType(WeaponType.HALBERD) -> if (style == 1) 2554 else if (style == 2) 2555 else 2556
+                pawn.hasWeaponType(WeaponType.CLAWS) -> 2548
+                else -> if (style == 1) 2565 else 2566
             }
         }
 

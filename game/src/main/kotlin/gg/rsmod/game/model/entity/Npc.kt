@@ -6,11 +6,14 @@ import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.attr.FACING_PAWN_ATTR
+import gg.rsmod.game.model.attr.RESET_FACING_PAWN_DISTANCE_ATTR
 import gg.rsmod.game.model.combat.AttackStyle
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.combat.CombatStyle
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.droptable.NpcDropTableDef
+import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
 import gg.rsmod.game.sync.block.UpdateBlockType
 
 /**
@@ -140,6 +143,13 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
         if (timers.isNotEmpty) {
             timerCycle()
         }
+        if(attr[FACING_PAWN_ATTR]?.get() != null && attr[RESET_FACING_PAWN_DISTANCE_ATTR] != null) {
+            if (attr[FACING_PAWN_ATTR]?.get()?.tile?.let { tile.getDistance(it) }!! > attr[RESET_FACING_PAWN_DISTANCE_ATTR]!!) {
+                attr.remove(RESET_FACING_PAWN_DISTANCE_ATTR)
+                timers[RESET_PAWN_FACING_TIMER] = 0
+                resetFacePawn()
+            }
+        }
         hitsCycle()
     }
 
@@ -186,6 +196,8 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
 
     companion object {
         internal const val RESET_PAWN_FACE_DELAY = 25
+        //reset pawn facing after 1 tiles
+        internal const val RESET_PAWN_FACE_DISTANCE = 2
     }
 
     /**

@@ -361,6 +361,52 @@ on_command("interface", Privilege.DEV_POWER) {
         player.message("Opening interface <col=801700>$component</col>")
     }
 }
+on_command("togglevarbits", Privilege.DEV_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::varbit 5451 1</col>") { values ->
+        val varbitStart = values[0].toInt()
+        val varbitEnd = values[1].toInt()
+        var oldState = 0
+        for (i in varbitStart until varbitEnd) {
+            oldState = player.getVarbit(i)
+            player.toggleVarbit(i)
+            player.message("Set varbit (<col=801700>$i</col>) from <col=801700>$oldState</col> to <col=801700>${player.getVarbit(i)}</col>")
+        }
+    }
+}
+on_command("tabinterface", Privilege.DEV_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::interface 214</col>") { values ->
+        val component = values[0].toInt()
+        player.openInterface(component, InterfaceDestination.TAB_AREA)
+        player.message("Opening tabinterface <col=801700>$component</col>")
+    }
+}
+on_command("ic", Privilege.DEV_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::interface 214</col>") { values ->
+        val component = values[0].toInt()
+        val component2 = values[1].toInt()
+        val component3 = values[2].toBoolean()
+        player.openInterface(component, InterfaceDestination.MAIN_SCREEN)
+        player.setComponentHidden(interfaceId = component, component = component2, hidden = component3)
+        player.message("Opening interface <col=801700>$component</col> toggle component: $component2")
+    }
+}
+on_command("ievents", Privilege.DEV_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::ievents 214 1 0 100</col>") { values ->
+        val component = values[0].toInt()
+        val component2 = values[1].toInt()
+        val component3 = values[2].toInt()
+        val component4 = values[3].toInt()
+        for (i in 0 until component2) {
+            player.setInterfaceEvents(interfaceId = component, component = component2, range = component3..component4, setting = 2)
+            player.message("Setting Interface<col=801700>$component</col>component:<col=801700>$i</col>  Events  toggle from: $component3 to : $component4")
+
+        }
+    }
+}
 on_command("clip", Privilege.DEV_POWER) {
     val chunk = world.chunks.getOrCreate(player.tile)
     val matrix = chunk.getMatrix(player.tile.height)

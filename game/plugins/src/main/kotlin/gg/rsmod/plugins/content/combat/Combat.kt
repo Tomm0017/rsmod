@@ -50,13 +50,13 @@ object Combat {
 
     fun postAttack(pawn: Pawn, target: Pawn) {
         pawn.timers[ATTACK_DELAY] = CombatConfigs.getAttackDelay(pawn)
-        target.timers[ACTIVE_COMBAT_TIMER] = 17 // 10,2 seconds
+        target.timers[ACTIVE_COMBAT_TIMER] = 15 // 9 seconds
         pawn.attr[BOLT_ENCHANTMENT_EFFECT] = false
 
         pawn.attr[LAST_HIT_ATTR] = WeakReference(target)
         target.attr[LAST_HIT_BY_ATTR] = WeakReference(pawn)
 
-        if (pawn.attr.has(CASTING_SPELL) && pawn is Player && pawn.getVarbit(SELECTED_AUTOCAST_VARBIT) == 1) {
+        if (pawn.attr.has(CASTING_SPELL) && pawn is Player && pawn.getVarbit(SELECTED_AUTOCAST_VARBIT) == 0) {
             reset(pawn)
             pawn.attr.remove(CASTING_SPELL)
         }
@@ -69,6 +69,7 @@ object Combat {
 
     fun postDamage(pawn: Pawn, target: Pawn) {
         if (target.isDead()) {
+            pawn.timers[ACTIVE_COMBAT_TIMER] = 0
             return
         }
 
@@ -81,7 +82,8 @@ object Combat {
                     target.attack(pawn)
                 }
             } else if (target is Player) {
-                if (target.getVarp(AttackTab.DISABLE_AUTO_RETALIATE_VARP) == 0 && target.getCombatTarget() != pawn) {
+                if ((target.getVarp(AttackTab.DISABLE_AUTO_RETALIATE_VARP) == 0 && target.getCombatTarget() != pawn)
+                        || (target.getVarp(AttackTab.DISABLE_AUTO_RETALIATE_VARP) == 1 && target.getCombatTarget() == pawn)) {
                     target.attack(pawn)
                 }
             }
@@ -166,6 +168,16 @@ object Combat {
                 return false
             }
         }
+        if(!target.isInMulti()) {
+            if (pawn.isBeingAttacked() && pawn.getLastHitByAttr() != target) {
+                (pawn as? Player)?.message("I'm already under attack.")
+                return false
+            } else if (target.isBeingAttacked() && target.getLastHitByAttr() != pawn) {
+                if (target.entityType.isNpc) (pawn as? Player)?.message("Someone else is fighting that.")
+                else if (target is Player) (pawn as? Player)?.message("Someone else is already fighting ${target.username}.")
+                return false
+            }
+        }
 
         if (target is Npc) {
             if (!target.isSpawned()) {
@@ -200,6 +212,7 @@ object Combat {
                     pawn.message("You can't attack ${target.username} there.")
                     return false
                 }
+
 
                 val combatLvlRange = getValidCombatLvlRange(pawn)
                 if (target.combatLevel !in combatLvlRange) {

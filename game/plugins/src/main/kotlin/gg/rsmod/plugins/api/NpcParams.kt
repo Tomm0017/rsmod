@@ -52,6 +52,12 @@ class NpcCombatBuilder {
 
     private val deathAnimList = mutableListOf<Int>()
 
+    private var defaultAttackSound = -1
+
+    private var defaultBlockSound = -1
+
+    private var deathSound = -1
+
     private var respawnDelay = -1
 
     private var aggroRadius = -1
@@ -98,7 +104,8 @@ class NpcCombatBuilder {
 
         return NpcCombatDef(
                 maxHealth, stats.toList(), attackSpeed, defaultAttackAnim,
-                defaultBlockAnim, deathAnimList, respawnDelay, aggroRadius,
+                defaultBlockAnim, deathAnimList,defaultAttackSound,
+                defaultBlockSound, deathSound, respawnDelay, aggroRadius,
                 aggroTargetDelay, aggroTimer, poisonChance, venomChance,
                 poisonImmunity, venomImmunity, slayerReq, slayerXp,
                 bonuses.toList(), speciesSet)
@@ -179,6 +186,29 @@ class NpcCombatBuilder {
     fun setCombatAnimations(attackAnimation: Int, blockAnimation: Int): NpcCombatBuilder {
         setDefaultAttackAnimation(attackAnimation)
         setDefaultBlockAnimation(blockAnimation)
+        return this
+    }
+
+    fun setDefaultAttackSound(animation: Int): NpcCombatBuilder {
+        check(defaultAttackAnim == -1) { "Default attack sound already set." }
+        defaultAttackAnim = animation
+        return this
+    }
+    fun setDefaultBlockSound(animation: Int): NpcCombatBuilder {
+        check(defaultBlockSound == -1) { "Default block sound already set." }
+        defaultBlockSound = animation
+        return this
+    }
+
+    fun setCombatSound(attackSound: Int, blockSound: Int): NpcCombatBuilder {
+        setDefaultAttackSound(attackSound)
+        setDefaultBlockSound(blockSound)
+        return this
+    }
+
+    fun setDeathSound( sound: Int): NpcCombatBuilder {
+        check(deathSound == -1) { "Default death sound already set." }
+        deathSound = sound
         return this
     }
 

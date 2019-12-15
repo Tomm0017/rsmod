@@ -2601,9 +2601,6 @@ object Npcs {
     const val COMBAT_STONE_2776 = 2776
     const val COMBAT_STONE_2777 = 2777
     const val COMBAT_STONE_2778 = 2778
-    const val TOY_SOLDIER_2779 = 2779
-    const val TOY_DOLL_2780 = 2780
-    const val TOY_MOUSE_2781 = 2781
     const val CLOCKWORK_CAT_2782 = 2782
     const val HIRKO = 2783
     const val HOLOY = 2784
@@ -3412,6 +3409,7 @@ object Npcs {
     const val SEAMAN_THRESNOR = 3646
     const val LUTHAS = 3647
     const val CUSTOMS_OFFICER = 3648
+    const val TOY_SOLDIER_3649 = 3649
     const val GARDENER_3651 = 3651
     const val MAN_3652 = 3652
     const val LUMBERJACK_LEIF = 3653
@@ -8266,5 +8264,12 @@ object Npcs {
     const val ESSYLLT_HARD = 9247
     const val ARIANWYN_9248 = 9248
     const val ESSYLLT_9249 = 9249
+    const val CAPTAIN_BARNABY_9250 = 9250
+    const val TOY_SOLDIER_9251 = 9251
+    const val TOY_DOLL_9252 = 9252
+    const val TOY_DOLL_9253 = 9253
+    const val TOY_MOUSE_9254 = 9254
+    const val TOY_MOUSE_9255 = 9255
+    const val PENGUIN_SUIT_9257 = 9257
     /* Auto-generated file using class gg.rsmod.game.service.game.DumpEntityIdService */
 }

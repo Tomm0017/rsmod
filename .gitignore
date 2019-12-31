@@ -4,9 +4,6 @@ build/
 g=out/
 gen/
 
-gradlew
-gradlew.bat
-
 /data/saves/
 /data/rsa/
 /data/xteas/

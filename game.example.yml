@@ -2,7 +2,7 @@
 # You want to edit these to fit your game.
 name: "RS Mod Server"
 game-port: 43594
-revision: 180
+revision: 181
 
 # The coordinates for the home location.
 home-x: 3087

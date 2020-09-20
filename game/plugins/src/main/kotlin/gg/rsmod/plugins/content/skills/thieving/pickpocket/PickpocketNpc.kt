@@ -276,7 +276,7 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
     FREMENNIK_CITIZEN(
             npcIds = intArrayOf(
                     Npcs.AGNAR, Npcs.FREIDIR, Npcs.BORROKAR, Npcs.LANZIG,
-                    Npcs.PONTAK, Npcs.FREYGERD_3942, Npcs.LENSA_3943, Npcs.JENNELLA,
+                    Npcs.PONTAK, Npcs.LENSA_3943, Npcs.JENNELLA,
                     Npcs.SASSILIK_3945, Npcs.INGA
             ),
             experience = 65.0,

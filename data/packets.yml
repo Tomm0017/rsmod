@@ -3,6 +3,21 @@
 
 out-packets:
 
+  - message: gg.rsmod.game.message.impl.MapAnimMessage
+    type: FIXED
+    opcode: 8
+    structure:
+      - name: id
+        type: SHORT
+      - name: height
+        type: BYTE
+        trans: ADD
+      - name: delay
+        type: SHORT
+        trans: ADD
+      - name: tile
+        type: BYTE
+
   - message: gg.rsmod.game.message.impl.UpdateRebootTimerMessage
     type: FIXED
     opcode: 72

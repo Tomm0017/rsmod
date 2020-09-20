@@ -1982,9 +1982,9 @@ object Npcs {
     const val CYCLOPS_2140 = 2140
     const val CYCLOPS_2141 = 2141
     const val CYCLOPS_2142 = 2142
-    const val GIANT_FROG_2143 = 2143
-    const val BIG_FROG_2144 = 2144
-    const val FROG_2145 = 2145
+    const val SRARACHA_2143 = 2143
+    const val SRARACHA_2144 = 2144
+    const val UNDEAD_DRUID = 2145
     const val FISHING_SPOT_2146 = 2146
     const val VEOS = 2147
     const val GRAND_EXCHANGE_CLERK = 2148
@@ -7856,5 +7856,22 @@ object Npcs {
     const val LEKE_QUO_KERAN = 8697
     const val MONK_OF_ZAMORAK_8698 = 8698
     const val LARRAN = 8699
+    const val GIANT_FROG_8700 = 8700
+    const val BIG_FROG_8701 = 8701
+    const val FROG_8702 = 8702
+    const val TEMPLE_SPIDER = 8703
+    const val BROTHER_AIMERI = 8704
+    const val BROTHER_AIMERI_8705 = 8705
+    const val OLBERTUS = 8706
+    const val OLBERTUS_8707 = 8707
+    const val OLBERTUS_8708 = 8708
+    const val SHAEDED_BEAST = 8709
+    const val SHAEDED_BEAST_8710 = 8710
+    const val EODAN = 8711
+    const val KNIGHT_OF_VARLAMORE_8712 = 8712
+    const val SARACHNIS = 8713
+    const val SPAWN_OF_SARACHNIS = 8714
+    const val SPAWN_OF_SARACHNIS_8715 = 8715
+    const val JUSTINE = 8721
     /* Auto-generated file using class gg.rsmod.game.service.game.DumpEntityIdService */
 }

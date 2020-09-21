@@ -412,25 +412,6 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
             damage = 4..4,
             stunTicks = 10
     ),
-    ELF(
-            npcIds = intArrayOf(
-                    Npcs.GOREU, Npcs.YSGAWYN, Npcs.ARVEL, Npcs.MAWRTH, Npcs.KELYN, Npcs.SIGMUND_5322, Npcs.SANDY
-            ),
-            experience = 353.0,
-            reqLevel = 85,
-            npcName = "Elf",
-            rewards = arrayOf(
-                    WeightItem(item = Items.COINS_995, amount = 280..350, weight = COMMON),
-                    WeightItem(item = Items.DEATH_RUNE, amount = 2, weight = UNCOMMON),
-                    WeightItem(item = Items.NATURE_RUNE, amount = 3, weight = UNCOMMON),
-                    WeightItem(item = Items.GOLD_ORE, amount = 1, weight = UNCOMMON),
-                    WeightItem(item = Items.JUG_OF_WINE, amount = 1, weight = UNCOMMON),
-                    WeightItem(item = Items.FIRE_ORB, amount = 1, weight = UNCOMMON),
-                    WeightItem(item = Items.DIAMOND, amount = 1, weight = UNCOMMON)
-            ),
-            damage = 5..5,
-            stunTicks = 10
-    ),
     TZHAAR_HUR(
             npcIds = intArrayOf(
                     Npcs.TZHAARHUR_7682,

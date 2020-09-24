@@ -3,6 +3,7 @@ package gg.rsmod.game.action
 import gg.rsmod.game.fs.def.AnimDef
 import gg.rsmod.game.model.LockState
 import gg.rsmod.game.model.attr.KILLER_ATTR
+import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.QueueTask
@@ -34,12 +35,16 @@ object NpcDeathAction {
         val world = npc.world
         val deathAnimation = npc.combatDef.deathAnimation
         val respawnDelay = npc.combatDef.respawnDelay
+        val killer = npc.damageMap.getMostDamage()
 
-        npc.damageMap.getMostDamage()?.let { killer ->
-            if (killer is Player) {
-                world.getService(LoggerService::class.java, searchSubclasses = true)?.logNpcKill(killer, npc)
+        npc.stopMovement()
+        npc.lock()
+
+        npc.damageMap.getMostDamage()?.let { _killer ->
+            if (_killer is Player) {
+                world.getService(LoggerService::class.java, searchSubclasses = true)?.logNpcKill(_killer, npc)
             }
-            npc.attr[KILLER_ATTR] = WeakReference(killer)
+            npc.attr[KILLER_ATTR] = WeakReference(_killer)
         }
 
         world.plugins.executeNpcPreDeath(npc)
@@ -55,6 +60,12 @@ object NpcDeathAction {
         npc.animate(-1)
 
         world.plugins.executeNpcDeath(npc)
+
+        val drops = world.plugins.executeNpcDropTable(killer, npc.id)
+
+        drops?.forEach { id, amount ->
+            world.spawn(GroundItem(id, amount, npc.tile, killer as? Player))
+        }
 
         if (npc.respawns) {
             npc.invisible = true

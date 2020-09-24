@@ -332,6 +332,12 @@ class PluginRepository(val world: World) {
     private val npcDeathPlugins = Int2ObjectOpenHashMap<Plugin.() -> Unit>()
 
     /**
+     * A list of plugin that will be invoked when an npc dies
+     * and invokes its drop table
+     */
+    private val npcDropsPlugins = Int2ObjectOpenHashMap<Plugin.() -> HashMap<Int, Int>?>()
+
+    /**
      * A map of plugins that occur when an [Event] is triggered.
      */
     private val eventPlugins = Object2ObjectOpenHashMap<Class<out Event>, MutableList<Plugin.(Event) -> Unit>>()
@@ -1251,6 +1257,21 @@ class PluginRepository(val world: World) {
         globalGroundItemPickUp.forEach { plugin ->
             p.executePlugin(plugin)
         }
+    }
+
+    fun bindNpcDropTable(npc: Int, plugin: Plugin.() -> HashMap<Int, Int>?) {
+        if (npcDropsPlugins.containsKey(npc)) {
+            val error = java.lang.IllegalStateException("Npc drop table is already bound to a plugin: npc=$npc")
+            logger.error(error) {}
+            throw error
+        }
+        npcDropsPlugins[npc] = plugin
+        pluginCount++
+    }
+
+    fun executeNpcDropTable(p: Pawn?, npc: Int): HashMap<Int, Int>? {
+        val plugin = npcDropsPlugins[npc] ?: return null
+        return p?.executePlugin(plugin)
     }
 
     companion object : KLogging()

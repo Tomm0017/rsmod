@@ -1444,11 +1444,13 @@ in-packets:
     length: 8
     ignore: true
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # Unknown
+  - message: gg.rsmod.game.message.impl.OpModel1Message # TODO: FIND MORE ABOUT THIS
     type: FIXED
     opcode: 69
     length: 4
-    ignore: true
+    structure:
+      - name: componentId
+        type: INT
 
   - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPOBJ2
     type: FIXED

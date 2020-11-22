@@ -1,11 +1,9 @@
 package gg.rsmod.plugins.api.ext
 
+import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Hit
 import gg.rsmod.game.model.attr.*
-import gg.rsmod.game.model.entity.GameObject
-import gg.rsmod.game.model.entity.Npc
-import gg.rsmod.game.model.entity.Pawn
-import gg.rsmod.game.model.entity.Player
+import gg.rsmod.game.model.entity.*
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.timer.FROZEN_TIMER
 import gg.rsmod.game.model.timer.STUN_TIMER
@@ -22,9 +20,13 @@ fun Pawn.getInteractingItem(): Item = attr[INTERACTING_ITEM]!!.get()!!
 
 fun Pawn.getInteractingItemId(): Int = attr[INTERACTING_ITEM_ID]!!
 
+fun Pawn.getInteractingItemPair(): Pair<Item, Item> = Pair(getInteractingItem(), attr[OTHER_ITEM_ATTR]!!.get()!!)
+
 fun Pawn.getInteractingItemSlot(): Int = attr[INTERACTING_ITEM_SLOT]!!
 
 fun Pawn.getInteractingOption(): Int = attr[INTERACTING_OPT_ATTR]!!
+
+fun Pawn.getInteractingGroundItem(): GroundItem = attr[INTERACTING_GROUNDITEM_ATTR]!!.get()!!
 
 fun Pawn.getInteractingGameObj(): GameObject = attr[INTERACTING_OBJ_ATTR]!!.get()!!
 
@@ -98,6 +100,14 @@ fun Pawn.stun(cycles: Int) {
             resetInteractions()
             interruptQueues()
             message("You have been stunned!")
+        }
+    }
+}
+
+fun Pawn.stepAway(){
+    for(direction in Direction.NESW){
+        if(!world.collision.isBlocked(tile, direction, false)){
+            walkTo(tile.step(direction))
         }
     }
 }

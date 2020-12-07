@@ -1253,5 +1253,11 @@ class PluginRepository(val world: World) {
         }
     }
 
+    fun get_all_commands(): ArrayList<String> {
+        val str_list = ArrayList<String>()
+        commandPlugins.forEach { t, _ ->  str_list.add(t) }
+        return str_list
+    }
+
     companion object : KLogging()
 }

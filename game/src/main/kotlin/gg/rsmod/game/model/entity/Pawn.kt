@@ -52,10 +52,18 @@ abstract class Pawn(val world: World) : Entity() {
      */
     internal var blockBuffer = UpdateBlockBuffer()
 
+    override var tile: Tile = Tile(0, 0, 0)
+        set(value) {
+            lastTileBuffer = field
+            field = value
+        }
+
     /**
      * The 3D [Tile] that this pawn was standing on, in the last game cycle.
      */
     internal var lastTile: Tile? = null
+
+    private var lastTileBuffer: Tile? = null
 
     /**
      * The last tile that was set for the pawn's [gg.rsmod.game.model.region.Chunk].
@@ -150,6 +158,10 @@ abstract class Pawn(val world: World) : Entity() {
      * Handles logic before any synchronization tasks are executed.
      */
     abstract fun cycle()
+
+    fun updateLastTile() {
+        lastTile = lastTileBuffer
+    }
 
     fun isDead(): Boolean = getCurrentHp() == 0
 

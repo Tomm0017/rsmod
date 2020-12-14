@@ -237,7 +237,6 @@ open class Player(world: World) : Pawn(world) {
         movementQueue.clear()
         lock = LockState.DELAY_ACTIONS
 
-        lastTile = Tile(tile)
         moveTo(movement.finalDestination)
 
         forceMove(movement)
@@ -366,6 +365,7 @@ open class Player(world: World) : Pawn(world) {
      * conditions if any logic may modify other [Pawn]s.
      */
     fun postCycle() {
+        updateLastTile()
         /*
          * Flush the channel at the end.
          */

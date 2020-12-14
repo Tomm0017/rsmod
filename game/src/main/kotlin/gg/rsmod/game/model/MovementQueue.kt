@@ -43,8 +43,8 @@ class MovementQueue(val pawn: Pawn) {
         val collision = pawn.world.collision
 
         var next = steps.poll()
+        var tile = pawn.tile
         if (next != null) {
-            var tile = pawn.tile
 
             var walkDirection: Direction?
             var runDirection: Direction? = null
@@ -81,12 +81,12 @@ class MovementQueue(val pawn: Pawn) {
 
             if (walkDirection != null && walkDirection != Direction.NONE) {
                 pawn.steps = StepDirection(walkDirection, runDirection)
-                pawn.tile = Tile(tile)
                 if (runDirection != null) {
                     pawn.addBlock(UpdateBlockType.MOVEMENT)
                 }
             }
         }
+        pawn.tile = Tile(tile)
     }
 
     private fun addStep(current: Tile, next: Tile, type: StepType, detectCollision: Boolean) {

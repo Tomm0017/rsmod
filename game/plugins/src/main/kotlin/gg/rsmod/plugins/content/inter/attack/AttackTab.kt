@@ -8,6 +8,7 @@ import gg.rsmod.plugins.api.ext.setVarp
  * @author Tom <rspsmods@gmail.com>
  */
 object AttackTab {
+    const val ATTACK_TAB_INTERFACE_ID = 593
 
     const val ATTACK_STYLE_VARP = 43
     const val DISABLE_AUTO_RETALIATE_VARP = 172

@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.content.inter.options
 
-on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 100) {
+on_button(interfaceId = OptionsTab.OPTIONS_INTERFACE_ID, component = 30) {
     /**
     [Varp (SHORT)]: id=1780, state=6
     [Varp (SHORT)]: id=1781, state=4

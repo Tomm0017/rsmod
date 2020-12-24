@@ -5,8 +5,6 @@ package gg.rsmod.plugins.api
  */
 object OSRSGameframe {
 
-    //6516= friends list to ignore list
-
     const val XP_DROPS_VISIBLE_VARBIT = 4702
 
     /**

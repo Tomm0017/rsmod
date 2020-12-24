@@ -20,6 +20,8 @@ enum class EquipmentType(val id: Int) {
     AMMO(id = 13);
 
     companion object {
+        const val EQUIPMENT_INTERFACE_ID = 387
+
         val values = enumValues<EquipmentType>()
     }
 }

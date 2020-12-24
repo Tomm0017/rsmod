@@ -151,22 +151,40 @@ class GamePacketBuilder {
             DataOrder.MIDDLE -> {
                 Preconditions.checkArgument(transformation == DataTransformation.NONE, "Middle endian cannot be transformed.")
 
-                Preconditions.checkArgument(type == DataType.INT, "Middle endian can only be used with an integer.")
+                Preconditions.checkArgument(type == DataType.INT || type == DataType.MEDIUM, "Middle endian can only be used with integer and medium values.")
 
-                buffer.writeByte((longValue shr 8).toByte().toInt())
-                buffer.writeByte(longValue.toByte().toInt())
-                buffer.writeByte((longValue shr 24).toByte().toInt())
-                buffer.writeByte((longValue shr 16).toByte().toInt())
+                when (type) {
+                    DataType.MEDIUM -> {
+                        buffer.writeByte((longValue shr 8).toByte().toInt())
+                        buffer.writeByte((longValue shr 16).toByte().toInt())
+                        buffer.writeByte(longValue.toByte().toInt())
+                    }
+                    DataType.INT -> {
+                        buffer.writeByte((longValue shr 8).toByte().toInt())
+                        buffer.writeByte(longValue.toByte().toInt())
+                        buffer.writeByte((longValue shr 24).toByte().toInt())
+                        buffer.writeByte((longValue shr 16).toByte().toInt())
+                    }
+                }
             }
             DataOrder.INVERSED_MIDDLE -> {
                 Preconditions.checkArgument(transformation == DataTransformation.NONE, "Inversed middle endian cannot be transformed.")
 
-                Preconditions.checkArgument(type == DataType.INT, "Inversed middle endian can only be used with an integer.")
+                Preconditions.checkArgument(type == DataType.INT || type == DataType.MEDIUM, "Inversed middle endian can only be used with integer and medium values.")
 
-                buffer.writeByte((longValue shr 16).toByte().toInt())
-                buffer.writeByte((longValue shr 24).toByte().toInt())
-                buffer.writeByte(longValue.toByte().toInt())
-                buffer.writeByte((longValue shr 8).toByte().toInt())
+                when (type) {
+                    DataType.MEDIUM -> {
+                        buffer.writeByte(longValue.toByte().toInt())
+                        buffer.writeByte((longValue shr 16).toByte().toInt())
+                        buffer.writeByte((longValue shr 8).toByte().toInt())
+                    }
+                    DataType.INT -> {
+                        buffer.writeByte((longValue shr 16).toByte().toInt())
+                        buffer.writeByte((longValue shr 24).toByte().toInt())
+                        buffer.writeByte(longValue.toByte().toInt())
+                        buffer.writeByte((longValue shr 8).toByte().toInt())
+                    }
+                }
             }
             else -> throw IllegalArgumentException("Unknown order.")
         }
@@ -344,9 +362,9 @@ class GamePacketBuilder {
      *
      * @param bytes The byte array.
      */
-    fun putBytesReverse(bytes: ByteArray) {
+    fun putBytesReverse(bytes: ByteArray, length: Int = bytes.size) {
         checkByteAccess()
-        for (i in bytes.indices.reversed()) {
+        for (i in length-1 downTo 0) {
             buffer.writeByte(bytes[i].toInt())
         }
     }
@@ -356,8 +374,8 @@ class GamePacketBuilder {
      *
      * @param buffer The source [ByteBuf].
      */
-    fun putBytesReverse(buffer: ByteBuf) {
-        val bytes = ByteArray(buffer.readableBytes())
+    fun putBytesReverse(buffer: ByteBuf, length: Int = buffer.readableBytes()) {
+        val bytes = ByteArray(length)
         buffer.markReaderIndex()
         try {
             buffer.readBytes(bytes)
@@ -373,11 +391,11 @@ class GamePacketBuilder {
      * @param transformation The transformation.
      * @param bytes The byte array.
      */
-    fun putBytesReverse(transformation: DataTransformation, bytes: ByteArray) {
+    fun putBytesReverse(transformation: DataTransformation, bytes: ByteArray, length: Int = bytes.size) {
         if (transformation == DataTransformation.NONE) {
-            putBytesReverse(bytes)
+            putBytesReverse(bytes, length)
         } else {
-            for (i in bytes.indices.reversed()) {
+            for (i in length-1 downTo 0) {
                 put(DataType.BYTE, transformation, bytes[i])
             }
         }

@@ -1,23 +1,23 @@
 players:
 
-  updating-opcode: 79
-  excess-mask: 0x8
+  updating-opcode: 75
+  excess-mask: 0x40
 
   order:
-    - HITMARK
-    - GFX
-    - MOVEMENT
     - FORCE_MOVEMENT
     - FORCE_CHAT
-    - FACE_TILE
-    - APPEARANCE
-    - FACE_PAWN
     - PUBLIC_CHAT
+    - FACE_TILE
+    - HITMARK
+    - FACE_PAWN
+    - GFX
+    - MOVEMENT
     - ANIMATION
+    - APPEARANCE
 
   blocks:
     - block: APPEARANCE
-      bit: 0x1
+      bit: 0x4
       structure:
         - name: length
           type: BYTE
@@ -27,59 +27,63 @@ players:
           trans: ADD
 
     - block: MOVEMENT
-      bit: 0x1000
+      bit: 0x800
       structure:
         - name: type
           type: BYTE
-          trans: ADD
+          trans: SUBTRACT
 
     - block: FORCE_CHAT
       bit: 0x20
 
     - block: ANIMATION
-      bit: 0x80
+      bit: 0x2
       structure:
         - name: animation
           type: SHORT
+          trans: ADD
         - name: delay
           type: BYTE
+          trans: ADD
 
     - block: GFX
-      bit: 0x200
+      bit: 0x1000
       structure:
         - name: gfx
-          order: LITTLE
           type: SHORT
           trans: ADD
         - name: settings
-          order: MIDDLE
+          order: LITTLE
           type: INT
 
     - block: PUBLIC_CHAT
-      bit: 0x10
+      bit: 0x80
       structure:
         - name: effects
+          order: LITTLE
           type: SHORT
           trans: ADD
         - name: icon
           type: BYTE
+          trans: ADD
         - name: auto
           type: BYTE
-          trans: NEGATE
         - name: compressed_length
           type: BYTE
+          trans: NEGATE
         - name: compressed_data
           type: BYTES
 
     - block: FACE_TILE
-      bit: 0x4
+      bit: 0x8
       structure:
         - name: degrees
-          type: SHORT
           order: LITTLE
+          type: SHORT
+          trans: ADD
 
     - block: FACE_PAWN
-      bit: 0x2
+      bit: 0x1
       structure:
         - name: pawn_index
           type: SHORT
@@ -89,11 +93,130 @@ players:
       bit: 0x100
 
     - block: FORCE_MOVEMENT
-      bit: 0x400
+      bit: 0x100
       structure:
         - name: src_x
           type: BYTE
           trans: SUBTRACT
+        - name: src_z
+          type: BYTE
+          trans: SUBTRACT
+        - name: dst_x
+          type: BYTE
+          trans: SUBTRACT
+        - name: dst_z
+          type: BYTE
+          trans: NEGATE
+        - name: client_delay
+          order: LITTLE
+          type: SHORT
+          trans: ADD
+        - name: client_duration
+          type: SHORT
+          trans: ADD
+        - name: direction_angle
+          type: SHORT
+
+    - block: HITMARK
+      bit: 0x10
+      structure:
+        - name: hitmarks
+          type: BYTE
+          trans: ADD
+        - name: hitbars
+          type: BYTE
+          trans: NEGATE
+        - name: hitbar_percentage
+          type: BYTE
+          trans: NEGATE
+        - name: hitbar_to_percentage
+          type: BYTE
+          trans: SUBTRACT
+
+npcs:
+
+  updating-opcode: 43
+  large-updating-opcode: 36
+
+  order:
+    - GFX
+    - FACE_TILE
+    - FACE_PAWN
+    - FORCE_CHAT
+    - APPEARANCE
+    - ANIMATION
+    - HITMARK
+    - FORCE_MOVEMENT
+
+  blocks:
+    - block: FACE_PAWN
+      bit: 0x10
+      structure:
+        - name: pawn_index
+          order: LITTLE
+          type: SHORT
+
+    - block: FACE_TILE
+      bit: 0x2
+      structure:
+        - name: x
+          order: LITTLE
+          type: SHORT
+          trans: ADD
+        - name: z
+          type: SHORT
+          trans: ADD
+
+    - block: ANIMATION
+      bit: 0x40
+      structure:
+        - name: animation
+          order: LITTLE
+          type: SHORT
+          trans: ADD
+        - name: delay
+          type: BYTE
+
+    - block: APPEARANCE
+      bit: 0x1
+      structure:
+        - name: transmog
+          order: LITTLE
+          type: SHORT
+
+    - block: GFX
+      bit: 0x8
+      structure:
+        - name: gfx
+          type: SHORT
+          trans: ADD
+        - name: settings
+          type: INT
+
+    - block: FORCE_CHAT
+      bit: 0x20
+
+    - block: HITMARK
+      bit: 0x4
+      structure:
+        - name: hitmarks
+          type: BYTE
+          trans: ADD
+        - name: hitbars
+          type: BYTE
+        - name: hitbar_percentage
+          type: BYTE
+          trans: NEGATE
+        - name: hitbar_to_percentage
+          type: BYTE
+          trans: NEGATE
+
+    - block: FORCE_MOVEMENT
+      bit: 0x80
+      structure:
+        - name: src_x
+          type: BYTE
+          trans: ADD
         - name: src_z
           type: BYTE
           trans: ADD
@@ -102,104 +225,12 @@ players:
           trans: ADD
         - name: dst_z
           type: BYTE
-          trans: SUBTRACT
+          trans: ADD
         - name: client_delay
           type: SHORT
-          trans: ADD
         - name: client_duration
           order: LITTLE
           type: SHORT
+          trans: ADD
         - name: direction_angle
           type: SHORT
-
-    - block: HITMARK
-      bit: 0x40
-      structure:
-        - name: hitmarks
-          type: BYTE
-          trans: ADD
-        - name: hitbars
-          type: BYTE
-          trans: NEGATE
-        - name: hitbar_percentage
-          type: BYTE
-          trans: ADD
-        - name: hitbar_to_percentage
-          type: BYTE
-
-npcs:
-
-  updating-opcode: 33
-  large-updating-opcode: 81
-
-  order:
-    - FACE_PAWN
-    - FACE_TILE
-    - ANIMATION
-    - APPEARANCE
-    - HITMARK
-    - GFX
-    - FORCE_CHAT
-
-  blocks:
-    - block: FACE_PAWN
-      bit: 0x1
-      structure:
-        - name: pawn_index
-          order: LITTLE
-          type: SHORT
-
-    - block: FACE_TILE
-      bit: 0x40
-      structure:
-        - name: x
-          order: LITTLE
-          type: SHORT
-          trans: ADD
-        - name: z
-          order: LITTLE
-          type: SHORT
-          trans: ADD
-
-    - block: ANIMATION
-      bit: 0x20
-      structure:
-        - name: animation
-          type: SHORT
-        - name: delay
-          type: BYTE
-          trans: SUBTRACT
-
-    - block: APPEARANCE
-      bit: 0x4
-      structure:
-        - name: transmog
-          type: SHORT
-
-    - block: GFX
-      bit: 0x8
-      structure:
-        - name: gfx
-          order: LITTLE
-          type: SHORT
-        - name: settings
-          order: MIDDLE
-          type: INT
-
-    - block: FORCE_CHAT
-      bit: 0x2
-
-    - block: HITMARK
-      bit: 0x10
-      structure:
-        - name: hitmarks
-          type: BYTE
-          trans: NEGATE
-        - name: hitbars
-          type: BYTE
-          trans: ADD
-        - name: hitbar_percentage
-          type: BYTE
-        - name: hitbar_to_percentage
-          type: BYTE
-          trans: SUBTRACT

@@ -6,16 +6,16 @@ import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
+import gg.rsmod.plugins.content.inter.bank.BankTabs.insertionPoint
+import gg.rsmod.plugins.content.inter.bank.BankTabs.SELECTED_TAB_VARBIT
+import gg.rsmod.plugins.content.inter.bank.BankTabs.BANK_TAB_ROOT_VARBIT
 
 /**
  * @author Tom <rspsmods@gmail.com>
  */
 object Bank {
-
-    const val TAB_COUNT = 9
-
     const val BANK_INTERFACE_ID = 12
-    const val BANK_MAINTAB_COMPONENT = 13
+    const val BANK_MAINTAB_COMPONENT = 12
     const val INV_INTERFACE_ID = 15
     const val INV_INTERFACE_CHILD = 3
 
@@ -24,8 +24,7 @@ object Bank {
     const val ALWAYS_PLACEHOLD_VARBIT = 3755
     const val LAST_X_INPUT = 3960
     const val QUANTITY_VARBIT = 6590
-    const val SELECTED_TAB_VARBIT = 4150
-    const val TAB0_VARBIT = 4171
+    const val INCINERATOR_VARBIT = 5102
 
     /**
      * Visual varbit for the "Bank your loot" tab area interface when storing
@@ -88,6 +87,9 @@ object Bank {
         val from = p.inventory
         val to = p.bank
 
+        val oldFree = to.freeSlotCount
+        val curTab = p.getVarbit(SELECTED_TAB_VARBIT)
+
         val amount = Math.min(from.getItemCount(id), amt)
 
         var deposited = 0
@@ -113,6 +115,13 @@ object Bank {
 
             if (transfer != null) {
                 deposited += transfer.completed
+                if(placeholderSlot==-1 && curTab!=0 && oldFree!=to.freeSlotCount){ // shift newly add items to tab position
+                    var fromPos = to.getItemIndex(copy.id, false)
+                    fromPos = if(fromPos != -1) fromPos else to.nextFreeSlot-1
+                    val toPos = insertionPoint(p, curTab)
+                    to.insert(fromPos, toPos)
+                    p.setVarbit(BANK_TAB_ROOT_VARBIT+curTab, p.getVarbit(BANK_TAB_ROOT_VARBIT+curTab)+1)
+                }
             }
         }
 
@@ -128,15 +137,17 @@ object Bank {
 
         p.setComponentText(interfaceId = BANK_INTERFACE_ID, component = 8, text = p.bank.capacity.toString())
 
-        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 13, range = 0..815, setting = 1312766)
-        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 13, range = 825..833, setting = 2)
-        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 13, range = 834..843, setting = 1048576)
-        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 11, range = 10..10, setting = 1048578)
-        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 11, range = 11..19, setting = 1179714)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 12, range = 0..815, setting = 1312766)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 12, range = 825..833, setting = 2)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 12, range = 834..843, setting = 1048576)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 10, range = 10..10, setting = 1048706)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 10, range = 11..19, setting = 1179842)
         p.setInterfaceEvents(interfaceId = INV_INTERFACE_ID, component = 3, range = 0..27, setting = 1181694)
-        p.setInterfaceEvents(interfaceId = INV_INTERFACE_ID, component = 10, range = 0..27, setting = 1054)
-        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 47, range = 1..816, setting = 2)
-        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 50, range = 0..3, setting = 2)
+        p.setInterfaceEvents(interfaceId = INV_INTERFACE_ID, component = 13, range = 0..27, setting = 1054)
+        p.setInterfaceEvents(interfaceId = INV_INTERFACE_ID, component = 19, range = 0..27, setting = 1054)
+        p.setInterfaceEvents(interfaceId = INV_INTERFACE_ID, component = 4, range = 0..27, setting = 1180674)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 46, range = 1..816, setting = 2)
+        p.setInterfaceEvents(interfaceId = BANK_INTERFACE_ID, component = 49, range = 0..3, setting = 2)
 
         p.setVarbit(BANK_YOUR_LOOT_VARBIT, 0)
     }

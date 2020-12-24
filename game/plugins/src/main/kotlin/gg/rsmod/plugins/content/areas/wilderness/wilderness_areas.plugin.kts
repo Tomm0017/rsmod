@@ -40,7 +40,7 @@ fun set_in_wild(player: Player, inWilderness: Boolean) {
         player.closeInterface(dest = InterfaceDestination.PVP_OVERLAY)
         player.removeOption(2)
     }
-    player.setComponentHidden(interfaceId = INTERFACE_ID, component = SKULL_CROSSOUT_COMPONENT, hidden = inWilderness)
+    //player.setComponentHidden(interfaceId = INTERFACE_ID, component = SKULL_CROSSOUT_COMPONENT, hidden = inWilderness)
 }
 
 fun in_wilderness(tile: Tile): Boolean = tile.getWildernessLevel() > 0

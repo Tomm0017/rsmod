@@ -82,8 +82,8 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                 // NOTE(Tom): seems that they don't use reverse bytes as they once use to.
                 // If they do at some point read reverse bytes, we can add support for it.
                 // To fix the issues that would arise, simply write the smart after the bytes.
+                buf.putBytesReverse(structure[4].transformation, compressed, length)
                 buf.putSmart(chatMessage.text.length)
-                buf.putBytes(structure[4].transformation, compressed, 0, length)
             }
 
             UpdateBlockType.FORCE_CHAT -> {

@@ -17,8 +17,8 @@ import java.text.DecimalFormat
  */
 object PriceGuide {
 
-    const val INTERFACE_ID = 464
-    const val TAB_INTERFACE_ID = 238
+    const val PRICE_GUIDE_INTERFACE_ID = 464
+    const val PRICE_GUIDE_TAB_INTERFACE_ID = 238
 
     private val GUIDE_CONTAINER = AttributeKey<ItemContainer>()
     private val TEMP_INV_CONTAINER = AttributeKey<ItemContainer>()
@@ -28,18 +28,18 @@ object PriceGuide {
         p.attr[TEMP_INV_CONTAINER] = ItemContainer(p.inventory)
 
         p.setInterfaceUnderlay(color = -1, transparency = -1)
-        p.openInterface(interfaceId = INTERFACE_ID, dest = InterfaceDestination.MAIN_SCREEN)
-        p.openInterface(interfaceId = TAB_INTERFACE_ID, dest = InterfaceDestination.TAB_AREA)
+        p.openInterface(interfaceId = PRICE_GUIDE_INTERFACE_ID, dest = InterfaceDestination.MAIN_SCREEN)
+        p.openInterface(interfaceId = PRICE_GUIDE_TAB_INTERFACE_ID, dest = InterfaceDestination.TAB_AREA)
 
         update(p)
 
-        p.setInterfaceEvents(interfaceId = INTERFACE_ID, component = 2, range = 0..27, setting = 1086)
+        p.setInterfaceEvents(interfaceId = PRICE_GUIDE_INTERFACE_ID, component = 2, range = 0..27, setting = 1086)
         p.runClientScript(149, 15597568, 93, 4, 7, 0, -1, "Add<col=ff9040>", "Add-5<col=ff9040>", "Add-10<col=ff9040>", "Add-All<col=ff9040>", "Add-X<col=ff9040>")
-        p.setInterfaceEvents(interfaceId = TAB_INTERFACE_ID, component = 0, range = 0..27, setting = 1086)
+        p.setInterfaceEvents(interfaceId = PRICE_GUIDE_TAB_INTERFACE_ID, component = 0, range = 0..27, setting = 1086)
     }
 
     fun close(p: Player) {
-        p.closeInterface(TAB_INTERFACE_ID)
+        p.closeInterface(PRICE_GUIDE_TAB_INTERFACE_ID)
         p.attr.remove(GUIDE_CONTAINER)
         p.attr.remove(TEMP_INV_CONTAINER)
     }
@@ -183,9 +183,9 @@ object PriceGuide {
         val valueService = p.world.getService(ItemMarketValueService::class.java)
         val cost = valueService?.get(item) ?: def.cost
 
-        p.setComponentItem(interfaceId = INTERFACE_ID, component = 8, item = item, amountOrZoom = 1)
+        p.setComponentItem(interfaceId = PRICE_GUIDE_INTERFACE_ID, component = 8, item = item, amountOrZoom = 1)
         p.runClientScript(600, 0, 1, 15, 30408716)
-        p.setComponentText(interfaceId = INTERFACE_ID, component = 12, text = "${def.name}:<br><col=ffffff>${DecimalFormat().format(cost)}</col>")
+        p.setComponentText(interfaceId = PRICE_GUIDE_INTERFACE_ID, component = 12, text = "${def.name}:<br><col=ffffff>${DecimalFormat().format(cost)}</col>")
     }
 
     fun update(p: Player) {
@@ -195,7 +195,7 @@ object PriceGuide {
         p.sendItemContainer(key = 90, container = guideContainer)
         p.sendItemContainer(key = 93, container = invContainer)
 
-        p.setComponentItem(interfaceId = INTERFACE_ID, component = 8, item = -1, amountOrZoom = 1)
+        p.setComponentItem(interfaceId = PRICE_GUIDE_INTERFACE_ID, component = 8, item = -1, amountOrZoom = 1)
 
         val valueService = p.world.getService(ItemMarketValueService::class.java)
         val costs = Array(size = guideContainer.capacity) { 0 }
@@ -209,6 +209,6 @@ object PriceGuide {
         p.runClientScript(785, *costs)
         p.runClientScript(600, 1, 1, 15, 30408716)
 
-        p.setComponentText(interfaceId = INTERFACE_ID, component = 12, text = "Total guide price:<br><col=ffffff>${DecimalFormat().format(guideContainer.getNetworth(p.world))}</col>")
+        p.setComponentText(interfaceId = PRICE_GUIDE_INTERFACE_ID, component = 12, text = "Total guide price:<br><col=ffffff>${DecimalFormat().format(guideContainer.getNetworth(p.world))}</col>")
     }
 }

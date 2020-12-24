@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.content.inter.options
 
-on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 98) {
+on_button(interfaceId = OptionsTab.OPTIONS_INTERFACE_ID, component = 28) {
     /**
      Teleport inside + doors: varp 1047
      */

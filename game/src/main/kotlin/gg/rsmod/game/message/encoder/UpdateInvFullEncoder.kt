@@ -3,6 +3,7 @@ package gg.rsmod.game.message.encoder
 import gg.rsmod.game.message.MessageEncoder
 import gg.rsmod.game.message.impl.UpdateInvFullMessage
 import gg.rsmod.net.packet.DataOrder
+import gg.rsmod.net.packet.DataTransformation
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
 
@@ -28,14 +29,14 @@ class UpdateInvFullEncoder : MessageEncoder<UpdateInvFullMessage>() {
 
             val buf = GamePacketBuilder()
             message.items.forEach { item ->
-                if (item != null) {
-                    buf.put(DataType.SHORT, item.id + 1)
-                    buf.put(DataType.BYTE, Math.min(255, item.amount))
+                if (item != null && item.amount != 0) {
+                    buf.put(DataType.SHORT, DataTransformation.ADD, item.id + 1)
+                    buf.put(DataType.BYTE, DataTransformation.NEGATE, Math.min(255, item.amount))
                     if (item.amount >= 255) {
-                        buf.put(DataType.INT, DataOrder.INVERSED_MIDDLE, item.amount)
+                        buf.put(DataType.INT, DataOrder.MIDDLE, item.amount)
                     }
                 } else {
-                    buf.put(DataType.SHORT, 0)
+                    buf.put(DataType.SHORT, DataTransformation.ADD, 0)
                     buf.put(DataType.BYTE, 0)
                 }
             }

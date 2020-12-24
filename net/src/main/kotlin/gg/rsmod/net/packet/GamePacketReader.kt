@@ -188,24 +188,44 @@ class GamePacketReader(packet: GamePacket) {
             if (transformation != DataTransformation.NONE) {
                 throw IllegalArgumentException("Middle endian cannot be transformed.")
             }
-            if (type != DataType.INT) {
-                throw IllegalArgumentException("Middle endian can only be used with an integer.")
+            if (!(type == DataType.INT || type == DataType.MEDIUM)) {
+                throw IllegalArgumentException("Middle endian can only be used with integer and medium values.")
             }
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 8).toLong()
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF).toLong()
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 24).toLong()
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 16).toLong()
+
+            when (type) {
+                DataType.MEDIUM -> {
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 8).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 16).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF).toLong()
+                }
+                DataType.INT -> {
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 8).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 24).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 16).toLong()
+                }
+            }
         } else if (order == DataOrder.INVERSED_MIDDLE) {
             if (transformation != DataTransformation.NONE) {
                 throw IllegalArgumentException("Inversed middle endian cannot be transformed.")
             }
-            if (type != DataType.INT) {
-                throw IllegalArgumentException("Inversed middle endian can only be used with an integer.")
+            if (!(type == DataType.INT || type == DataType.MEDIUM)) {
+                throw IllegalArgumentException("Inversed middle endian can only be used with integer and medium values.")
             }
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 16).toLong()
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 24).toLong()
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF).toLong()
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 8).toLong()
+
+            when (type) {
+                DataType.MEDIUM -> {
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 16).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 8).toLong()
+                }
+                DataType.INT -> {
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 16).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 24).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 8).toLong()
+                }
+            }
         } else {
             throw IllegalArgumentException("Unknown order.")
         }

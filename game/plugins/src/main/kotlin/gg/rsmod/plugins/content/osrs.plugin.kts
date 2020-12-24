@@ -2,6 +2,7 @@ package gg.rsmod.plugins.content
 
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
+import gg.rsmod.plugins.content.inter.welcome.WelcomeScreen.openChristmasWelcome
 
 /**
  * Closing main modal for players.
@@ -33,17 +34,8 @@ on_login {
     player.sendWeaponComponentInformation()
     player.sendCombatLevelText()
 
-
     // Interface-related logic.
-    player.openOverlayInterface(player.interfaces.displayMode)
-    InterfaceDestination.values.filter { pane -> pane.interfaceId != -1 }.forEach { pane ->
-        if (pane == InterfaceDestination.XP_COUNTER && player.getVarbit(OSRSGameframe.XP_DROPS_VISIBLE_VARBIT) == 0) {
-            return@forEach
-        } else if (pane == InterfaceDestination.MINI_MAP && player.getVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT) == 1) {
-            return@forEach
-        }
-        player.openInterface(pane.interfaceId, pane)
-    }
+    openChristmasWelcome(player)
 
     // Inform the client whether or not we have a display name.
     val displayName = player.username.isNotBlank()
@@ -82,5 +74,27 @@ on_component_item_swap(interfaceId = 149, component = 0) {
     } else {
         // Sync the container on the client
         container.dirty = true
+    }
+}
+
+object OSRSInterfaces {
+    fun openDefaultInterfaces(player: Player) {
+        player.openOverlayInterface(player.interfaces.displayMode)
+        openModals(player)
+    }
+
+    fun openModals(player: Player, fullscreen: Boolean = false) {
+        InterfaceDestination.getModals().forEach { pane ->
+            if (pane == InterfaceDestination.XP_COUNTER && player.getVarbit(OSRSGameframe.XP_DROPS_VISIBLE_VARBIT) == 0) {
+                return@forEach
+            } else if (pane == InterfaceDestination.MINI_MAP && player.getVarbit(OSRSGameframe.HIDE_DATA_ORBS_VARBIT) == 1) {
+                return@forEach
+            } else if (pane == InterfaceDestination.QUEST_ROOT) {
+                player.openInterface(pane.interfaceId, pane, fullscreen)
+                player.openInterface(InterfaceDestination.QUEST_ROOT.interfaceId, 33, 399, 1)
+                return@forEach
+            }
+            player.openInterface(pane.interfaceId, pane, fullscreen)
+        }
     }
 }

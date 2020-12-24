@@ -25,13 +25,13 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
     MAN_WOMAN(
             npcIds = intArrayOf(
                     //Man NPC npcIds
-                    Npcs.MAN_3014, Npcs.MAN_3078, Npcs.MAN_3079, Npcs.MAN_3080, Npcs.MAN_3081,
-                    Npcs.MAN_3082, Npcs.MAN_3101, Npcs.MAN_3109, Npcs.MAN_3260, Npcs.MAN_3264,
-                    Npcs.MAN_3265, Npcs.MAN_3266, Npcs.MAN_3652, Npcs.MAN_6987, Npcs.MAN_6988,
-                    Npcs.MAN_6989, Npcs.MAN_7547,
+                    Npcs.MAN_3014, Npcs.MAN_3110, Npcs.MAN_3298, Npcs.MAN_3106,
+                    Npcs.MAN_3107, Npcs.MAN_3108, Npcs.MAN_3109, Npcs.MAN_3264, Npcs.MAN_3265,
+                    Npcs.MAN_3261, Npcs.MAN_3652, Npcs.MAN_6987, Npcs.MAN_6988, Npcs.MAN_6989,
+                    Npcs.MAN_6818,
 
                     //Woman NPC Ids
-                    Npcs.WOMAN_3015, Npcs.WOMAN_3083, Npcs.WOMAN_3084, Npcs.WOMAN_3085, Npcs.WOMAN_3110,
+                    Npcs.WOMAN_3015, Npcs.WOMAN_3111, Npcs.WOMAN_3112, Npcs.WOMAN_3113, Npcs.WOMAN_3299,
                     Npcs.WOMAN_3268, Npcs.WOMAN_6990, Npcs.WOMAN_6991, Npcs.WOMAN_6992
             ),
             experience = 8.0,
@@ -44,7 +44,7 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
     ),
     FARMER(
             npcIds = intArrayOf(
-                    Npcs.FARMER_3086, Npcs.FARMER_3087, Npcs.FARMER_3088
+                    Npcs.FARMER_3243, Npcs.FARMER_3244, Npcs.FARMER_3114
             ),
             experience = 14.5,
             reqLevel = 10,
@@ -153,7 +153,7 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
     ),
     ALKHARID_WARRIOR(
             npcIds = intArrayOf(
-                    Npcs.ALKHARID_WARRIOR, Npcs.WARRIOR_WOMAN_3100
+                    Npcs.ALKHARID_WARRIOR, Npcs.WARRIOR_WOMAN_3260
             ),
             experience = 26.0,
             reqLevel = 25,
@@ -165,7 +165,7 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
     ),
     ROGUE(
             npcIds = intArrayOf(
-                    Npcs.ROGUE_518
+                    Npcs.ROGUE_526
             ),
             experience = 35.5,
             reqLevel = 32,
@@ -210,7 +210,7 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
     ),
     MASTER_FARMER(
             npcIds = intArrayOf(
-                    Npcs.MASTER_FARMER_3257, Npcs.MASTER_FARMER_3258, Npcs.MARTIN_THE_MASTER_GARDENER
+                    Npcs.MASTER_FARMER_5730, Npcs.MASTER_FARMER_5731, Npcs.MARTIN_THE_MASTER_GARDENER
             ),
             experience = 43.0,
             reqLevel = 38,
@@ -263,7 +263,7 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
     ),
     GUARD(
             npcIds = intArrayOf(
-                    Npcs.GUARD_3094
+                    Npcs.GUARD_3010
             ),
             experience = 46.8,
             reqLevel = 40,
@@ -317,7 +317,7 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
     ),
     KNIGHT(
             npcIds = intArrayOf(
-                    Npcs.KNIGHT_OF_ARDOUGNE_3108, Npcs.KNIGHT_OF_ARDOUGNE_3111
+                    Npcs.KNIGHT_OF_ARDOUGNE_3297, Npcs.KNIGHT_OF_ARDOUGNE_3300
             ),
             experience = 84.3,
             reqLevel = 55,
@@ -341,7 +341,7 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
     ),
     YANILLE_WATCHMAN(
             npcIds = intArrayOf(
-                    Npcs.WATCHMAN_3251
+                    Npcs.WATCHMAN_5420
             ),
             experience = 137.5,
             reqLevel = 65,
@@ -366,7 +366,7 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
     ),
     PALADIN(
             npcIds = intArrayOf(
-                    Npcs.PALADIN_3104, Npcs.PALADIN_3105
+                    Npcs.PALADIN_3293, Npcs.PALADIN_3294
             ),
             experience = 151.75,
             reqLevel = 70,
@@ -397,7 +397,7 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
             stunTicks = 8
     ),
     HERO(
-            npcIds = intArrayOf(Npcs.HERO_3106),
+            npcIds = intArrayOf(Npcs.HERO_3295),
             experience = 275.0,
             reqLevel = 80,
             rewards = arrayOf(
@@ -410,6 +410,25 @@ enum class PickpocketNpc(val npcIds: IntArray, val experience: Double, val reqLe
                     WeightItem(item = Items.DIAMOND, amount = 1, weight = UNCOMMON)
             ),
             damage = 4..4,
+            stunTicks = 10
+    ),
+    ELF(
+            npcIds = intArrayOf(
+                    Npcs.GOREU, Npcs.ARVEL, Npcs.MAWRTH, Npcs.KELYN_9015, Npcs.SIGMUND_5322, Npcs.SANDY
+            ),
+            experience = 353.0,
+            reqLevel = 85,
+            npcName = "Elf",
+            rewards = arrayOf(
+                    WeightItem(item = Items.COINS_995, amount = 280..350, weight = COMMON),
+                    WeightItem(item = Items.DEATH_RUNE, amount = 2, weight = UNCOMMON),
+                    WeightItem(item = Items.NATURE_RUNE, amount = 3, weight = UNCOMMON),
+                    WeightItem(item = Items.GOLD_ORE, amount = 1, weight = UNCOMMON),
+                    WeightItem(item = Items.JUG_OF_WINE, amount = 1, weight = UNCOMMON),
+                    WeightItem(item = Items.FIRE_ORB, amount = 1, weight = UNCOMMON),
+                    WeightItem(item = Items.DIAMOND, amount = 1, weight = UNCOMMON)
+            ),
+            damage = 5..5,
             stunTicks = 10
     ),
     TZHAAR_HUR(

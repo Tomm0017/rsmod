@@ -74,7 +74,7 @@ fun Player.setInterfaceEvents(interfaceId: Int, component: Int, from: Int, to: I
 }
 
 fun Player.setInterfaceEvents(interfaceId: Int, component: Int, range: IntRange, setting: Int) {
-    write(IfSetEventsMessage(hash = ((interfaceId shl 16) or component), fromChild = range.start, toChild = range.endInclusive, setting = setting))
+    write(IfSetEventsMessage(hash = ((interfaceId shl 16) or component), fromChild = range.first, toChild = range.last, setting = setting))
 }
 
 fun Player.setComponentText(interfaceId: Int, component: Int, text: String) {
@@ -115,9 +115,6 @@ fun Player.openInterface(interfaceId: Int, dest: InterfaceDestination, fullscree
     val displayMode = if (!fullscreen || dest.fullscreenChildId == -1) interfaces.displayMode else DisplayMode.FULLSCREEN
     val child = getChildId(dest, displayMode)
     val parent = getDisplayComponentId(displayMode)
-    if (displayMode == DisplayMode.FULLSCREEN) {
-        openOverlayInterface(displayMode)
-    }
     openInterface(parent, child, interfaceId, if (dest.clickThrough) 1 else 0, isModal = dest == InterfaceDestination.MAIN_SCREEN)
 }
 
@@ -477,6 +474,7 @@ fun Player.calculateAndSetCombatLevel(): Boolean {
 
 fun Player.calculateDeathContainers(): DeathContainers {
     var keepAmount = if (hasSkullIcon(SkullIcon.WHITE)) 0 else 3
+    if (getVarbit(599) == 1) keepAmount++
     if (attr[PROTECT_ITEM_ATTR] == true) {
         keepAmount++
     }
@@ -508,8 +506,7 @@ fun Player.calculateDeathContainers(): DeathContainers {
     return DeathContainers(kept = keptContainer, lost = lostContainer)
 }
 
-// Note: this does not take ground items, that may belong to the player, into
-// account.
+// Note: this does not take ground items, that may belong to the player, into account.
 fun Player.hasItem(item: Int, amount: Int = 1): Boolean = containers.values.firstOrNull { container -> container.getItemCount(item) >= amount } != null
 
 fun Player.isPrivilegeEligible(to: String): Boolean = world.privileges.isEligible(privilege, to)

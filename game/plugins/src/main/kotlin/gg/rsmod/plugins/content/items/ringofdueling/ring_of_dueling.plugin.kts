@@ -17,7 +17,7 @@ private val SOUNDAREA_VOLUME = 1
 private val LOCATIONS = mapOf(
         "Duel Arena" to Tile(3308, 3234, 0),
         "Castle Wars" to Tile(2440, 3089, 0),
-        "Clan Wars" to Tile(3370, 3161, 0)
+        "Ferox Enclave" to Tile(3370, 3161, 0)
 )
 
 RING_OF_DUELING.forEach { duel ->

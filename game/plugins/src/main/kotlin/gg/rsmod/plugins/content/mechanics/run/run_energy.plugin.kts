@@ -19,6 +19,6 @@ on_button(interfaceId = 160, component = 22) {
 /**
  * Settings button.
  */
-on_button(interfaceId = 261, component = 95) {
+on_button(interfaceId = 116, component = 27) {
     RunEnergy.toggle(player)
 }

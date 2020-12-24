@@ -1,6 +1,9 @@
 package gg.rsmod.plugins.content.inter.options
 
-on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 71) {
+/**
+ * custom game notifications implementation unsure of proper component to map to
+ */
+on_button(interfaceId = OptionsTab.OPTIONS_INTERFACE_ID, component = 7000) {
     player.queue {
         while (true) {
 

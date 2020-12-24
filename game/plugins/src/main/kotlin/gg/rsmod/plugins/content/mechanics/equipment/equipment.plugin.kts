@@ -1,11 +1,16 @@
 package gg.rsmod.plugins.content.mechanics.equipment
 
+import gg.rsmod.plugins.api.EquipmentType.Companion.EQUIPMENT_INTERFACE_ID
 import gg.rsmod.game.action.EquipAction
 
+/**
+ * This actually varies by item and needs to be worked into a proper implementation
+ * accounting for such.
+ */
 val EQUIP_ITEM_SOUND = 2238
 
 fun bind_unequip(equipment: EquipmentType, child: Int) {
-    on_button(interfaceId = 387, component = child) {
+    on_button(interfaceId = EQUIPMENT_INTERFACE_ID, component = child) {
         val opt = player.getInteractingOption()
         when (opt) {
             1 -> {
@@ -39,14 +44,14 @@ for (equipment in EquipmentType.values) {
     }
 }
 
-bind_unequip(EquipmentType.HEAD, child = 6)
-bind_unequip(EquipmentType.CAPE, child = 7)
-bind_unequip(EquipmentType.AMULET, child = 8)
-bind_unequip(EquipmentType.AMMO, child = 16)
-bind_unequip(EquipmentType.WEAPON, child = 9)
-bind_unequip(EquipmentType.CHEST, child = 10)
-bind_unequip(EquipmentType.SHIELD, child = 11)
-bind_unequip(EquipmentType.LEGS, child = 12)
-bind_unequip(EquipmentType.GLOVES, child = 13)
-bind_unequip(EquipmentType.BOOTS, child = 14)
-bind_unequip(EquipmentType.RING, child = 15)
+bind_unequip(EquipmentType.HEAD, child = 14)
+bind_unequip(EquipmentType.CAPE, child = 15)
+bind_unequip(EquipmentType.AMULET, child = 16)
+bind_unequip(EquipmentType.AMMO, child = 17)
+bind_unequip(EquipmentType.WEAPON, child = 18)
+bind_unequip(EquipmentType.CHEST, child = 19)
+bind_unequip(EquipmentType.SHIELD, child = 20)
+bind_unequip(EquipmentType.LEGS, child = 21)
+bind_unequip(EquipmentType.GLOVES, child = 22)
+bind_unequip(EquipmentType.BOOTS, child = 23)
+bind_unequip(EquipmentType.RING, child = 24)

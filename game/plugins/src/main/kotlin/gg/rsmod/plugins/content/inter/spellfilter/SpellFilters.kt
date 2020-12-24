@@ -5,7 +5,8 @@ package gg.rsmod.plugins.content.inter.spellfilter
  */
 object SpellFilters {
 
-    const val INTERFACE_ID = 218
+    const val SPELL_FILTER_INTERFACE_ID = 218
+    const val SPELL_FILTER_COMPONENT_ID = 185
 
     const val DISABLE_FILTERS_VARBIT = 6718
 

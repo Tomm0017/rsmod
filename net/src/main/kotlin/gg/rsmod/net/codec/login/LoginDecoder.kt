@@ -1,7 +1,10 @@
 package gg.rsmod.net.codec.login
 
 import gg.rsmod.net.codec.StatefulFrameDecoder
+import gg.rsmod.util.io.BufferUtils.readInverseMiddleInt
 import gg.rsmod.util.io.BufferUtils.readJagexString
+import gg.rsmod.util.io.BufferUtils.readLEInt
+import gg.rsmod.util.io.BufferUtils.readMiddleEndianInt
 import gg.rsmod.util.io.BufferUtils.readString
 import gg.rsmod.util.io.Xtea
 import io.netty.buffer.ByteBuf
@@ -10,7 +13,6 @@ import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import mu.KLogging
 import java.math.BigInteger
-import java.util.Arrays
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -48,9 +50,16 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
             if (buf.readableBytes() >= size) {
                 val revision = buf.readInt()
                 buf.skipBytes(Int.SIZE_BYTES) // Always 1
-                buf.skipBytes(Byte.SIZE_BYTES)
+
+                /**
+                 * login protocols see param4 sent before and inside the xtea buffer
+                 * and clientType here is an addition since the inclusion of mobile;
+                 * all of this is ignored by rsmod for now.
+                 */
+                buf.skipBytes(Byte.SIZE_BYTES) // param4 is written as a signed byte
+                val clientType = buf.readUnsignedByte().toInt() // 0 for desktop
                 if (revision == serverRevision) {
-                    payloadLength = size - (Int.SIZE_BYTES + Int.SIZE_BYTES + Byte.SIZE_BYTES)
+                    payloadLength = size - (Int.SIZE_BYTES + Int.SIZE_BYTES + Byte.SIZE_BYTES + Byte.SIZE_BYTES)
                     decodePayload(ctx, buf, out)
                 } else {
                     ctx.writeResponse(LoginResultType.REVISION_MISMATCH)
@@ -153,9 +162,9 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
 
             xteaBuf.skipBytes(Int.SIZE_BYTES * 3)
 
-            val crcs = IntArray(cacheCrcs.size) { xteaBuf.readInt() }
+            val crcs = decodeCRCs(xteaBuf)
 
-            for (i in 0 until crcs.size) {
+            for (i in crcs.indices) {
                 /**
                  * CRC for index 16 is always sent as 0 (at least on the
                  * Desktop client, need to look into mobile).
@@ -166,7 +175,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
                 if (crcs[i] != cacheCrcs[i]) {
                     buf.resetReaderIndex()
                     buf.skipBytes(payloadLength)
-                    logger.info { "User '$username' login request crc mismatch [requestCrc=${Arrays.toString(crcs)}, cacheCrc=${Arrays.toString(cacheCrcs)}]." }
+                    logger.info { "User '$username' login request crc mismatch [requestCrc=${crcs.contentToString()}, cacheCrc=${cacheCrcs.contentToString()}]." }
                     ctx.writeResponse(LoginResultType.REVISION_MISMATCH)
                     return
                 }
@@ -180,6 +189,24 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
                     reconnecting = reconnecting)
             out.add(request)
         }
+    }
+
+    private fun decodeCRCs(xteaBuf: ByteBuf): IntArray {
+        val crcs = IntArray(cacheCrcs.size)
+
+        /**
+         * switch based on incoming CRCorder
+         */
+        for(i in CRCorder.indices){
+            when(val idx = CRCorder[i]){
+                9,20,4 -> crcs[idx] = xteaBuf.readInt()
+                11,18,1,19,2,0,16 -> crcs[idx] = xteaBuf.readLEInt()
+                17,15,7 -> crcs[idx] = xteaBuf.readMiddleEndianInt()
+                5,13,12,10,14,8,3,6 -> crcs[idx] = xteaBuf.readInverseMiddleInt()
+            }
+        }
+
+        return crcs
     }
 
     private fun ChannelHandlerContext.writeResponse(result: LoginResultType) {
@@ -197,5 +224,15 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
     companion object : KLogging() {
         private const val LOGIN_OPCODE = 16
         private const val RECONNECT_OPCODE = 18
+
+        /**
+         * As of revision 190 the client now sends the CRCs out of order
+         * and with varying byte orders
+         */
+        private val CRCorder = intArrayOf(
+                5,13,12,11,9,
+                20,10,18,17,15,
+                1,14,19,8,2,
+                3,0,4,16,7,6)
     }
 }

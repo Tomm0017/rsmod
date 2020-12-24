@@ -26,27 +26,27 @@ package gg.rsmod.net.packet
 enum class DataType(val bytes: Int) {
 
     /**
-     * A byte.
+     * A byte is a single byte.
      */
     BYTE(1),
 
     /**
-     * A short.
+     * A short value spans 3 bytes.
      */
     SHORT(2),
 
     /**
-     * A 'tri byte' - a group of three bytes.
+     * A medium value spans 3 bytes.
      */
-    TRI_BYTE(3),
+    MEDIUM(3),
 
     /**
-     * An integer.
+     * An integer value spans 4 bytes.
      */
     INT(4),
 
     /**
-     * A long.
+     * A long value spans 8 bytes.
      */
     LONG(8),
 

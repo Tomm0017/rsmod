@@ -2,11 +2,11 @@
 # You want to edit these to fit your game.
 name: "RS Mod Server"
 game-port: 43594
-revision: 181
+revision: 193
 
 # The coordinates for the home location.
-home-x: 3087
-home-z: 3497
+home-x: 3218
+home-z: 3218
 
 # Privileges
 # Any privilege you want to be represented in-game you define here.

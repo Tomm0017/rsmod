@@ -1,23 +1,31 @@
 package gg.rsmod.plugins.content.inter.options
 
-import gg.rsmod.game.model.attr.DISPLAY_MODE_CHANGE_ATTR
+import gg.rsmod.plugins.content.inter.options.OptionsTab.OPTIONS_INTERFACE_ID
+import gg.rsmod.plugins.content.inter.options.OptionsTab.ALL_SETTINGS_INTERFACE_ID
+import gg.rsmod.plugins.content.inter.options.OptionsTab.ALL_SETTINGS_BUTTON_ID
 import gg.rsmod.game.model.interf.DisplayMode
 
 fun bind_setting(child: Int, plugin: Plugin.() -> Unit) {
-    on_button(interfaceId = OptionsTab.INTERFACE_ID, component = child) {
+    on_button(interfaceId = OPTIONS_INTERFACE_ID, component = child) {
+        plugin(this)
+    }
+}
+
+fun bind_advanced_setting(child: Int, plugin: Plugin.() -> Unit) {
+    on_button(interfaceId = ALL_SETTINGS_INTERFACE_ID, component = child) {
         plugin(this)
     }
 }
 
 on_login {
-    player.setInterfaceEvents(interfaceId = OptionsTab.INTERFACE_ID, component = 106, range = 1..4, setting = 2) // Player option priority
-    player.setInterfaceEvents(interfaceId = OptionsTab.INTERFACE_ID, component = 107, range = 1..4, setting = 2) // Npc option priority
+    player.setInterfaceEvents(interfaceId = OPTIONS_INTERFACE_ID, component = 6, range = 1..4, setting = 2) // Player option priority
+    player.setInterfaceEvents(interfaceId = OPTIONS_INTERFACE_ID, component = 7, range = 1..4, setting = 2) // Npc option priority
 }
 
 /**
  * Toggle mouse scroll wheel zoom.
  */
-on_button(interfaceId = OptionsTab.INTERFACE_ID, component = 5) {
+on_button(interfaceId = OPTIONS_INTERFACE_ID, component = 5) {
     // TODO(Tom): figure out why this varbit isn't causing the cross to be drawn.
     // It technically works since it won't allow zooming with mouse wheel, but it
     // doesn't visually show on the interface.
@@ -39,24 +47,40 @@ for (offset in 0..3) {
 /**
  * Changing display modes (fixed, resizable).
  */
-set_window_status_logic {
-    val change = player.attr[DISPLAY_MODE_CHANGE_ATTR]
-    val mode = when (change) {
-        2 -> if (player.getVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT) == 1) DisplayMode.RESIZABLE_LIST else DisplayMode.RESIZABLE_NORMAL
+on_login {
+    player.setInterfaceEvents(interfaceId = OPTIONS_INTERFACE_ID, component = 40, range = 0..4, setting = 2)
+    player.setInterfaceEvents(interfaceId = OPTIONS_INTERFACE_ID, component = 42, range = 0..4, setting = 2)
+    player.setInterfaceEvents(interfaceId = OPTIONS_INTERFACE_ID, component = 44, range = 0..4, setting = 2)
+    player.setInterfaceEvents(interfaceId = OPTIONS_INTERFACE_ID, component = 35, range = 1..4, setting = 2)
+    player.setInterfaceEvents(interfaceId = OPTIONS_INTERFACE_ID, component = 36, range = 1..4, setting = 2)
+    player.setInterfaceEvents(interfaceId = OPTIONS_INTERFACE_ID, component = 37, range = 1..3, setting = 2)
+    player.setInterfaceEvents(interfaceId = OPTIONS_INTERFACE_ID, component = 115, range = 0..3, setting = 2)
+}
+
+on_button(OPTIONS_INTERFACE_ID, 37) {
+    val slot = player.getInteractingSlot()
+    val mode = when (slot) {
+        2 -> DisplayMode.RESIZABLE_NORMAL
+        3 -> DisplayMode.RESIZABLE_LIST
         else -> DisplayMode.FIXED
     }
     player.toggleDisplayInterface(mode)
+    player.runClientScript(3998, slot-1)
 }
 
 /**
  * Advanced options.
  */
-bind_setting(child = 35) {
+bind_setting(child = ALL_SETTINGS_BUTTON_ID) {
     if (!player.lock.canInterfaceInteract()) {
         return@bind_setting
     }
     player.setInterfaceUnderlay(color = -1, transparency = -1)
-    player.openInterface(interfaceId = OptionsTab.ADVANCED_COMPONENT_ID, dest = InterfaceDestination.MAIN_SCREEN)
+    player.openInterface(interfaceId = ALL_SETTINGS_INTERFACE_ID, dest = InterfaceDestination.MAIN_SCREEN)
+}
+
+on_button(ALL_SETTINGS_INTERFACE_ID, 4) {
+    player.closeInterface(ALL_SETTINGS_INTERFACE_ID)
 }
 
 /**
@@ -159,16 +183,19 @@ bind_setting(child = 83) {
 }
 
 /**
- * Toggle shift-click dropping.
+ * Toggle shift-click dropping is an advanced setting under an entire tab.
  */
-bind_setting(child = 85) {
-    player.toggleVarbit(OSRSGameframe.SHIFT_CLICK_DROP_VARBIT)
+bind_advanced_setting(child = 17) {
+    when(player.getInteractingSlot()) {
+        30 -> player.toggleVarbit(OSRSGameframe.SHIFT_CLICK_DROP_VARBIT)
+        else -> return@bind_advanced_setting
+    }
 }
 
 /**
  * Set player option priority.
  */
-bind_setting(child = 106) {
+bind_setting(child = 6) {
     val slot = player.getInteractingSlot()
     player.setVarp(OSRSGameframe.PLAYER_ATTACK_PRIORITY_VARP, slot - 1)
 }
@@ -176,7 +203,7 @@ bind_setting(child = 106) {
 /**
  * Set npc option priority.
  */
-bind_setting(child = 107) {
+bind_setting(child = 7) {
     val slot = player.getInteractingSlot()
     player.setVarp(OSRSGameframe.NPC_ATTACK_PRIORITY_VARP, slot - 1)
 }
@@ -184,6 +211,6 @@ bind_setting(child = 107) {
 /**
  * Toggle aid.
  */
-bind_setting(child = 92) {
+bind_setting(child = 26) {
     player.toggleVarp(OSRSGameframe.ACCEPT_AID_VARP)
 }

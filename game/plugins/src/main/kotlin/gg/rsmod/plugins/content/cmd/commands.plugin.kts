@@ -5,14 +5,16 @@ import gg.rsmod.game.model.bits.INFINITE_VARS_STORAGE
 import gg.rsmod.game.model.bits.InfiniteVarsType
 import gg.rsmod.game.model.combat.CombatClass
 import gg.rsmod.game.model.priv.Privilege
+import gg.rsmod.game.model.timer.FORCE_DISCONNECTION_TIMER
+import gg.rsmod.plugins.content.cmd.Commands_plugin.Command.tryWithUsage
 import gg.rsmod.plugins.content.combat.CombatConfigs
 import gg.rsmod.plugins.content.combat.formula.MagicCombatFormula
 import gg.rsmod.plugins.content.combat.formula.MeleeCombatFormula
 import gg.rsmod.plugins.content.combat.formula.RangedCombatFormula
 import gg.rsmod.plugins.content.combat.getCombatTarget
-import gg.rsmod.plugins.content.inter.bank.openBank
 import gg.rsmod.plugins.content.magic.MagicSpells
 import java.text.DecimalFormat
+import kotlin.system.exitProcess
 
 on_command("max") {
     val target = player.getCombatTarget() ?: player
@@ -44,6 +46,21 @@ on_command("empty") {
     player.inventory.removeAll()
 }
 
+on_command("shutdown", Privilege.ADMIN_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::shutdown 500</col>"){ values ->
+        val cycles = values[0].toInt()
+        world.queue {
+            world.rebootTimer = cycles
+            world.sendRebootTimer(cycles)
+            wait(cycles)
+            world.players.forEach { player -> player.timers[FORCE_DISCONNECTION_TIMER] = 0 }
+            wait(5)
+            exitProcess(0)
+        }
+    }
+}
+
 on_command("reboot", Privilege.ADMIN_POWER) {
     val args = player.getCommandArgs()
     tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::reboot 500</col>") { values ->
@@ -56,10 +73,6 @@ on_command("reboot", Privilege.ADMIN_POWER) {
 on_command("home", Privilege.ADMIN_POWER) {
     val home = world.gameContext.home
     player.moveTo(home)
-}
-
-on_command("obank", Privilege.ADMIN_POWER) {
-    player.openBank()
 }
 
 on_command("noclip", Privilege.ADMIN_POWER) {
@@ -305,15 +318,6 @@ on_command("getvarbits", Privilege.ADMIN_POWER) {
     }
 }
 
-on_command("interface", Privilege.ADMIN_POWER) {
-    val args = player.getCommandArgs()
-    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::interface 214</col>") { values ->
-        val component = values[0].toInt()
-        player.openInterface(component, InterfaceDestination.MAIN_SCREEN)
-        player.message("Opening interface <col=801700>$component</col>")
-    }
-}
-
 on_command("clip", Privilege.ADMIN_POWER) {
     val chunk = world.chunks.getOrCreate(player.tile)
     val matrix = chunk.getMatrix(player.tile.height)
@@ -329,11 +333,13 @@ on_command("clip", Privilege.ADMIN_POWER) {
     }
 }
 
-fun tryWithUsage(player: Player, args: Array<String>, failMessage: String, tryUnit: Function1<Array<String>, Unit>) {
-    try {
-        tryUnit.invoke(args)
-    } catch (e: Exception) {
-        player.message(failMessage)
-        e.printStackTrace()
+object Command {
+    fun tryWithUsage(player: Player, args: Array<String>, failMessage: String, tryUnit: Function1<Array<String>, Unit>) {
+        try {
+            tryUnit.invoke(args)
+        } catch (e: Exception) {
+            player.message(failMessage)
+            e.printStackTrace()
+        }
     }
 }

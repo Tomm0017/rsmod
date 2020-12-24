@@ -12,6 +12,6 @@ object WorldMap {
     val UPDATE_TIMER = TimerKey()
     val LAST_TILE = AttributeKey<Tile>()
 
-    const val INTERFACE_ID = 595
-    const val FULLSCREEN_INTERFACE_ID = 594
+    const val WORLD_MAP_INTERFACE_ID = 595
+    const val WORLD_MAP_FULLSCREEN_INTERFACE_ID = 594
 }

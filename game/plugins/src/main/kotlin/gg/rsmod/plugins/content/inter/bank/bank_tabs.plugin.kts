@@ -3,30 +3,34 @@ package gg.rsmod.plugins.content.inter.bank
 import gg.rsmod.game.model.attr.INTERACTING_COMPONENT_CHILD
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
+import gg.rsmod.plugins.content.inter.bank.Bank.BANK_INTERFACE_ID
+import gg.rsmod.plugins.content.inter.bank.Bank.BANK_MAINTAB_COMPONENT
+import gg.rsmod.plugins.content.inter.bank.Bank.REARRANGE_MODE_VARBIT
 import gg.rsmod.plugins.content.inter.bank.Bank.insert
+import gg.rsmod.plugins.content.inter.bank.BankTabs.BANK_TABLIST_ID
+import gg.rsmod.plugins.content.inter.bank.BankTabs.BANK_TAB_ROOT_VARBIT
+import gg.rsmod.plugins.content.inter.bank.BankTabs.SELECTED_TAB_VARBIT
 import gg.rsmod.plugins.content.inter.bank.BankTabs.dropToTab
 import gg.rsmod.plugins.content.inter.bank.BankTabs.insertionPoint
 import gg.rsmod.plugins.content.inter.bank.BankTabs.numTabsUnlocked
 import gg.rsmod.plugins.content.inter.bank.BankTabs.shiftTabs
 import gg.rsmod.plugins.content.inter.bank.BankTabs.startPoint
 
-val BANK_TABLIST_ID = 11
-
 /**
  * Handles setting the current selected tab varbit on tab selection.
  */
-on_button(Bank.BANK_INTERFACE_ID, BANK_TABLIST_ID){
+on_button(BANK_INTERFACE_ID, BANK_TABLIST_ID){
     val dstTab = player.getInteractingSlot()-10
     if(dstTab <= numTabsUnlocked(player))
-        player.setVarbit(Bank.SELECTED_TAB_VARBIT, dstTab)
+        player.setVarbit(SELECTED_TAB_VARBIT, dstTab)
 }
 
 /**
  * Moving items to tabs via the top tabs bar.
  */
 on_component_to_component_item_swap(
-        srcInterfaceId = Bank.BANK_INTERFACE_ID, srcComponent = Bank.BANK_MAINTAB_COMPONENT,
-        dstInterfaceId = Bank.BANK_INTERFACE_ID, dstComponent = BANK_TABLIST_ID) {
+        srcInterfaceId = BANK_INTERFACE_ID, srcComponent = BANK_MAINTAB_COMPONENT,
+        dstInterfaceId = BANK_INTERFACE_ID, dstComponent = BANK_TABLIST_ID) {
     val srcComponent = player.attr[INTERACTING_COMPONENT_CHILD]!!
     if(srcComponent == BANK_TABLIST_ID){ // attempting to drop tab on bank!!
         return@on_component_to_component_item_swap
@@ -40,8 +44,8 @@ on_component_to_component_item_swap(
  * Moving tabs via the top tabs bar to swap/insert their order.
  */
 on_component_to_component_item_swap(
-        srcInterfaceId = Bank.BANK_INTERFACE_ID, srcComponent = BANK_TABLIST_ID,
-        dstInterfaceId = Bank.BANK_INTERFACE_ID, dstComponent = BANK_TABLIST_ID) {
+        srcInterfaceId = BANK_INTERFACE_ID, srcComponent = BANK_TABLIST_ID,
+        dstInterfaceId = BANK_INTERFACE_ID, dstComponent = BANK_TABLIST_ID) {
     val container = player.bank
 
     val srcTab = player.attr[INTERACTING_ITEM_SLOT]!! - 10
@@ -53,18 +57,18 @@ on_component_to_component_item_swap(
         while(item != end){
             container.insert(item, container.nextFreeSlot - 1)
             end--
-            player.setVarbit(4170+srcTab, player.getVarbit(4170+srcTab)-1)
+            player.setVarbit(BANK_TAB_ROOT_VARBIT+srcTab, player.getVarbit(BANK_TAB_ROOT_VARBIT+srcTab)-1)
             // check for empty tab shift
-            if(player.getVarbit(4170+srcTab)==0 && srcTab<=numTabsUnlocked(player))
+            if(player.getVarbit(BANK_TAB_ROOT_VARBIT+srcTab)==0 && srcTab<=numTabsUnlocked(player))
                 shiftTabs(player, srcTab)
         }
         return@on_component_to_component_item_swap
     }
 
-    val srcSize = player.getVarbit(4170+srcTab)
-    val dstSize = player.getVarbit(4170+dstTab)
+    val srcSize = player.getVarbit(BANK_TAB_ROOT_VARBIT+srcTab)
+    val dstSize = player.getVarbit(BANK_TAB_ROOT_VARBIT+dstTab)
 
-    val insertMode = player.getVarbit(Bank.REARRANGE_MODE_VARBIT) == 1
+    val insertMode = player.getVarbit(REARRANGE_MODE_VARBIT) == 1
     if(insertMode){
         if(dstTab < srcTab){ // insert each of the items in srcTab directly before dstTab moving index up each time to account for shifts
             var destination = startPoint(player, dstTab)
@@ -72,11 +76,11 @@ on_component_to_component_item_swap(
                 container.insert(item, destination++)
 
             // update tab size varbits according to insertion location
-            var holder = player.getVarbit(4170+dstTab)
-            player.setVarbit(4170+dstTab, srcSize)
+            var holder = player.getVarbit(BANK_TAB_ROOT_VARBIT+dstTab)
+            player.setVarbit(BANK_TAB_ROOT_VARBIT+dstTab, srcSize)
             for(tab in dstTab+1 .. srcTab){
-                val temp = player.getVarbit(4170+tab)
-                player.setVarbit(4170+tab, holder)
+                val temp = player.getVarbit(BANK_TAB_ROOT_VARBIT+tab)
+                player.setVarbit(BANK_TAB_ROOT_VARBIT+tab, holder)
                 holder = temp
             }
         } else{ // insert each item in srcTab before dstTab consuming index move in the shifts already in insert()
@@ -92,16 +96,16 @@ on_component_to_component_item_swap(
             var holder = player.getVarbit(4169+dstTab)
             player.setVarbit(4169+dstTab, srcSize)
             for(tab in dstTab-2 downTo srcTab){
-                val temp = player.getVarbit(4170+tab)
-                player.setVarbit(4170+tab, holder)
+                val temp = player.getVarbit(BANK_TAB_ROOT_VARBIT+tab)
+                player.setVarbit(BANK_TAB_ROOT_VARBIT+tab, holder)
                 holder = temp
             }
         }
     } else{ // swap tabs in place
         val smallerTab = if(dstSize<=srcSize) dstTab else srcTab
-        val smallSize = player.getVarbit(4170+smallerTab)
+        val smallSize = player.getVarbit(BANK_TAB_ROOT_VARBIT+smallerTab)
         val largerTab = if(dstSize>srcSize) dstTab else srcTab
-        val largeSize = player.getVarbit(4170+largerTab)
+        val largeSize = player.getVarbit(BANK_TAB_ROOT_VARBIT+largerTab)
 
         val smallStart = startPoint(player, smallerTab)
         val largeStart = startPoint(player, largerTab)
@@ -124,16 +128,7 @@ on_component_to_component_item_swap(
         }
 
         // update each tab's size to reflect new contents
-        player.setVarbit(4170+smallerTab, largeSize)
-        player.setVarbit(4170+largerTab, smallSize)
+        player.setVarbit(BANK_TAB_ROOT_VARBIT+smallerTab, largeSize)
+        player.setVarbit(BANK_TAB_ROOT_VARBIT+largerTab, smallSize)
     }
-}
-
-/**
- * Clears all bank tab varbits for the player, effectively
- * dumping all items back into the one main tab.
- */
-on_command("tabreset"){
-    for(tab in 1..9)
-        player.setVarbit(4170+tab, 0)
 }

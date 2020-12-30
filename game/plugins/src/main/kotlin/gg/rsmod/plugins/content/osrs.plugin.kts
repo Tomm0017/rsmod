@@ -78,9 +78,25 @@ on_component_item_swap(interfaceId = 149, component = 0) {
 }
 
 object OSRSInterfaces {
-    fun openDefaultInterfaces(player: Player) {
-        player.openOverlayInterface(player.interfaces.displayMode)
-        openModals(player)
+    fun Player.openDefaultInterfaces() {
+        openOverlayInterface(interfaces.displayMode)
+        openModals(this)
+        setInterfaceEvents(interfaceId = 239, component = 3, range = 0..648, setting = 6) // enable music buttons
+        runClientScript(2498, 0, 0, 0)
+//        setInterfaceEvents(interfaceId = 548, component = 51, range = -1..-1, setting = 2)
+//        setInterfaceEvents(interfaceId = 548, component = 52, range = -1..-1, setting = 2)
+//        setInterfaceEvents(interfaceId = 548, component = 53, range = -1..-1, setting = 2)
+//        setInterfaceEvents(interfaceId = 548, component = 54, range = -1..-1, setting = 2)
+//        setInterfaceEvents(interfaceId = 548, component = 55, range = -1..-1, setting = 2)
+//        setInterfaceEvents(interfaceId = 548, component = 56, range = -1..-1, setting = 2)
+//        setInterfaceEvents(interfaceId = 548, component = 57, range = -1..-1, setting = 6)
+//        setInterfaceEvents(interfaceId = 548, component = 34, range = -1..-1, setting = 2)
+//        setInterfaceEvents(interfaceId = 548, component = 35, range = -1..-1, setting = 2)
+//        setInterfaceEvents(interfaceId = 548, component = 36, range = -1..-1, setting = 2)
+//        setInterfaceEvents(interfaceId = 548, component = 37, range = -1..-1, setting = 2)
+//        setInterfaceEvents(interfaceId = 548, component = 38, range = -1..-1, setting = 2)
+//        setInterfaceEvents(interfaceId = 548, component = 39, range = -1..-1, setting = 2)
+//        setInterfaceEvents(interfaceId = 548, component = 40, range = -1..-1, setting = 2)
     }
 
     fun openModals(player: Player, fullscreen: Boolean = false) {
@@ -91,7 +107,10 @@ object OSRSInterfaces {
                 return@forEach
             } else if (pane == InterfaceDestination.QUEST_ROOT) {
                 player.openInterface(pane.interfaceId, pane, fullscreen)
-                player.openInterface(InterfaceDestination.QUEST_ROOT.interfaceId, 33, 399, 1)
+                player.openInterface(InterfaceDestination.QUEST_ROOT.interfaceId, 33, 399, 1) // quest sub interfaces
+                player.setInterfaceEvents(interfaceId = 399, component = 6, range = 0..20, setting = 14)
+                player.setInterfaceEvents(interfaceId = 399, component = 7, range = 0..125, setting = 14)
+                player.setInterfaceEvents(interfaceId = 399, component = 8, range = 0..13, setting = 14)
                 return@forEach
             }
             player.openInterface(pane.interfaceId, pane, fullscreen)

@@ -111,13 +111,14 @@ class ObjectDef(override val id: Int) : Definition(id) {
                     varp = -1
                 }
 
+                var terminatingTransform = -1
                 if (opcode == 92) {
                     buf.readUnsignedShort()
                 }
 
                 val count = buf.readUnsignedByte().toInt()
 
-                transforms = Array(count + 1) { 0 }
+                transforms = Array(count + 2) { 0 }
                 for (i in 0..count) {
                     val transform = buf.readUnsignedShort()
                     transforms!![i] = transform

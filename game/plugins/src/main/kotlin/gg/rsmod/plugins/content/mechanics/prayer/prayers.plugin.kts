@@ -1,5 +1,26 @@
 package gg.rsmod.plugins.content.mechanics.prayer
 
+/**
+ * Checks if Retribution is active and deals
+ * ((prayer lvl)/4) damage to nearby enemies
+ */
+on_player_pre_death {
+    if (Prayers.isActive(player, Prayer.RETRIBUTION)) {
+        val targets = player.getNeighbourPawns()
+        loop@ for (target in targets) {
+            when {
+                !target.lock.canBeAttacked() -> continue@loop
+                (target is Player && !target.inWilderness()) -> continue@loop // TODO Check Duel Arena, Castle Wars, Clan Wars
+                target.isDead() -> continue@loop
+                target is Player || (target is Npc && target.def.isAttackable()) -> {
+                    player.graphic(437)
+                    target.hit(damage = (player.getSkills().getCurrentLevel(Skills.PRAYER) / 4))
+                }
+            }
+        }
+    }
+}
+
 on_player_death {
     Prayers.deactivateAll(player)
 }

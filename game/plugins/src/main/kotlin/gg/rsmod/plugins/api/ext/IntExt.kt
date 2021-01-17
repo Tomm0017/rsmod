@@ -1,5 +1,9 @@
 package gg.rsmod.plugins.api.ext
 
+import gg.rsmod.game.fs.DefinitionSet
+import gg.rsmod.game.fs.def.ItemDef
+import gg.rsmod.game.fs.def.ObjectDef
+
 /**
  * A map of numbers to English string literals
  */
@@ -50,4 +54,18 @@ fun Int.formatRS2() : String {
         this < 10_000_000 -> "${this / 1_000}K"
         else -> "${this / 1_000_000}M"
     }
+}
+
+fun Int.getItemName(definitions: DefinitionSet, lowercase: Boolean = false): String {
+    return if(lowercase)
+        definitions.get(ItemDef::class.java, this).name.toLowerCase()
+    else
+        definitions.get(ItemDef::class.java, this).name
+}
+
+fun Int.getObjName(definitions: DefinitionSet, lowercase: Boolean = false): String {
+    return if(lowercase)
+        definitions.get(ObjectDef::class.java, this).name.toLowerCase()
+    else
+        definitions.get(ObjectDef::class.java, this).name
 }

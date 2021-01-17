@@ -246,7 +246,7 @@ out-packets:
         type: SHORT
       - name: tile
         type: BYTE
-        tran: NEGATE
+        trans: NEGATE
 
   - message: gg.rsmod.game.message.impl.ObjCountMessage
     type: FIXED
@@ -319,7 +319,7 @@ out-packets:
     opcode: 5
     structure:
       - name: xp
-        order: LITTLE
+        order: INVERSED_MIDDLE
         type: INT
       - name: level
         type: BYTE
@@ -493,7 +493,7 @@ in-packets:
 
   - message: gg.rsmod.game.message.impl.OpLocUMessage
     type: FIXED
-    opcode: 44
+    opcode: 46
     length: 15
     structure:
       - name: item

@@ -21,7 +21,7 @@ suspend fun QueueTask.dialog() {
 }
 
 fun heal(p: Player) {
-    if (p.getSkills().getCurrentLevel(Skills.HITPOINTS) < p.getSkills().getMaxLevel(Skills.HITPOINTS)) {
-        p.getSkills().setCurrentLevel(Skills.HITPOINTS, p.getSkills().getMaxLevel(Skills.HITPOINTS))
+    if (p.getSkills().getCurrentLevel(Skills.HITPOINTS) < p.getSkills().getBaseLevel(Skills.HITPOINTS)) {
+        p.getSkills().setCurrentLevel(Skills.HITPOINTS, p.getSkills().getBaseLevel(Skills.HITPOINTS))
     }
 }

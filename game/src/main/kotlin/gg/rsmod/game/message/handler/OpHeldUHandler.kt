@@ -47,7 +47,22 @@ class OpHeldUHandler : MessageHandler<OpHeldUMessage> {
         client.attr[OTHER_ITEM_ID_ATTR] = toItem.id
         client.attr[OTHER_ITEM_SLOT_ATTR] = toSlot
 
-        val handled = world.plugins.executeItemOnItem(client, fromItem.id, toItem.id)
+        var handled = world.plugins.executeItemOnItem(client, fromItem.id, toItem.id)
+
+        /**
+         * simple catchall registration to allow customizable fallback
+         * for all other [on_item_on_item] interactions for a given [Item]
+         * not explicitly registered
+         *   Note| should be used with prejudice or for flavour
+         */
+        if(!handled){
+            handled = world.plugins.executeItemOnItem(client, fromItem.id, -1)
+            if (handled && world.devContext.debugItemActions) {
+                client.writeMessage("Unhandled item on item: [from_item=${fromItem.id}, to_item=${toItem.id}, from_slot=$fromSlot, to_slot=$toSlot, " +
+                        "from_component=[$fromInterfaceId:$fromComponent], to_component=[$toInterfaceId:$toComponent]]")
+            }
+        }
+
         if (!handled && world.devContext.debugItemActions) {
             client.writeMessage("Unhandled item on item: [from_item=${fromItem.id}, to_item=${toItem.id}, from_slot=$fromSlot, to_slot=$toSlot, " +
                     "from_component=[$fromInterfaceId:$fromComponent], to_component=[$toInterfaceId:$toComponent]]")

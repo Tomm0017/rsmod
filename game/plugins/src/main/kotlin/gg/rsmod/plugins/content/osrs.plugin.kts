@@ -2,6 +2,8 @@ package gg.rsmod.plugins.content
 
 import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
+import gg.rsmod.game.model.attr.LAST_LOGIN_ATTR
+import gg.rsmod.game.model.timer.TimeConstants
 import gg.rsmod.plugins.content.inter.welcome.WelcomeScreen.openChristmasWelcome
 
 /**
@@ -26,8 +28,13 @@ set_menu_open_check {
  * Execute when a player logs in.
  */
 on_login {
+    val now = System.currentTimeMillis()
+    val last = player.attr.getOrDefault(LAST_LOGIN_ATTR, now.toString()).toLong()
+    val time_lapsed = now - last
+    player.attr[LAST_LOGIN_ATTR] = now.toString()
+
     // Skill-related logic.
-    if (player.getSkills().getMaxLevel(Skills.HITPOINTS) < 10) {
+    if (player.getSkills().getBaseLevel(Skills.HITPOINTS) < 10) {
         player.getSkills().setBaseLevel(Skills.HITPOINTS, 10)
     }
     player.calculateAndSetCombatLevel()
@@ -35,7 +42,7 @@ on_login {
     player.sendCombatLevelText()
 
     // Interface-related logic.
-    openChristmasWelcome(player)
+    openChristmasWelcome(player, (time_lapsed/TimeConstants.MINUTE).toInt())
 
     // Inform the client whether or not we have a display name.
     val displayName = player.username.isNotBlank()

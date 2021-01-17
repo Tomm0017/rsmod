@@ -68,4 +68,8 @@ object Misc {
             return 14
         return if (dx == 2 && dy == 2) 15 else -1
     }
+
+    fun IntRange.toArray(): Array<Int> {
+        return toList().toTypedArray()
+    }
 }

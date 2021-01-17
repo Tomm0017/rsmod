@@ -1,14 +1,12 @@
 package gg.rsmod.plugins.content.mechanics.appearance
 
-import gg.rsmod.game.model.attr.NEW_ACCOUNT_ATTR
-import gg.rsmod.game.sync.block.UpdateBlockType
+import gg.rsmod.game.model.attr.APPEARANCE_SET_ATTR
 
 on_login {
-    if (player.attr[NEW_ACCOUNT_ATTR] == true) {
-        player.queue(TaskPriority.WEAK) {
-            val appearance = selectAppearance() ?: return@queue
-            player.appearance = appearance
-            player.addBlock(UpdateBlockType.APPEARANCE)
+    if (player.attr[APPEARANCE_SET_ATTR] == false) {
+        player.queue(TaskPriority.STRONG) {
+            player.lock = LockState.FULL_WITH_LOGOUT
+            selectAppearance()
         }
     }
 }

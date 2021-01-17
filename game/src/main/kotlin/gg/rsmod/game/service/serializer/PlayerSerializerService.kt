@@ -3,6 +3,7 @@ package gg.rsmod.game.service.serializer
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.attr.APPEARANCE_SET_ATTR
 import gg.rsmod.game.model.attr.NEW_ACCOUNT_ATTR
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.Service
@@ -35,6 +36,7 @@ abstract class PlayerSerializerService : Service {
 
     fun configureNewPlayer(client: Client, request: LoginRequest) {
         client.attr.put(NEW_ACCOUNT_ATTR, true)
+        client.attr.put(APPEARANCE_SET_ATTR, false)
 
         client.passwordHash = BCrypt.hashpw(request.password, BCrypt.gensalt(16))
         client.tile = startTile

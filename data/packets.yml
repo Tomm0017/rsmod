@@ -178,10 +178,10 @@ out-packets:
     type: FIXED
     opcode: 30
     structure:
-      - name: x
+      - name: z
         type: BYTE
         trans: ADD
-      - name: z
+      - name: x
         type: BYTE
         trans: SUBTRACT
 
@@ -246,7 +246,7 @@ out-packets:
         type: SHORT
       - name: tile
         type: BYTE
-        tran: NEGATE
+        trans: NEGATE
 
   - message: gg.rsmod.game.message.impl.ObjCountMessage
     type: FIXED
@@ -319,7 +319,7 @@ out-packets:
     opcode: 5
     structure:
       - name: xp
-        order: LITTLE
+        order: INVERSED_MIDDLE
         type: INT
       - name: level
         type: BYTE
@@ -335,6 +335,13 @@ out-packets:
       - name: hash
         type: INT
       - name: text
+        type: BYTES
+
+  - message: gg.rsmod.game.message.impl.OpenUrlMessage
+    type: VARIABLE_SHORT
+    opcode: 64
+    structure:
+      - name: url
         type: BYTES
 
   - message: gg.rsmod.game.message.impl.UpdateRunEnergyMessage
@@ -493,7 +500,7 @@ in-packets:
 
   - message: gg.rsmod.game.message.impl.OpLocUMessage
     type: FIXED
-    opcode: 44
+    opcode: 46
     length: 15
     structure:
       - name: item

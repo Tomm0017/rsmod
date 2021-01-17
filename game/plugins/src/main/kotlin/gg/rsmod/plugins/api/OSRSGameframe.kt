@@ -10,7 +10,8 @@ object OSRSGameframe {
     /**
      * Game options.
      */
-    const val ACCEPT_AID_VARP = 427
+    const val ACCEPT_AID_VARBIT = 4180
+    const val RUN_MODE_VARP = 173
     const val SCREEN_BRIGHTNESS_VARP = 166
     const val DISABLE_MOUSEWHEEL_ZOOM_VARBIT = 6357
 
@@ -35,6 +36,8 @@ object OSRSGameframe {
     /**
      * Advanced options.
      */
+
+
     const val CHATBOX_SCROLLBAR_VARBIT = 6374
     const val DISABLE_SIDEPANELS_OPAQUE_VARBIT = 4609
     const val DISABLE_XP_TILL_LEVEL_VARBIT = 4181

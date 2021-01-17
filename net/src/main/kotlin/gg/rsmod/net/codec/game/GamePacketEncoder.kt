@@ -28,7 +28,18 @@ class GamePacketEncoder(private val random: IsaacRandom?) : MessageToByteEncoder
             PacketType.VARIABLE_SHORT -> out.writeShort(msg.length)
             else -> {}
         }
-        out.writeBytes(msg.payload)
+
+        /**
+         * The [OpenUrlMessage] is a unique packet which
+         * requires each byte be masked with isaac randoms
+         */
+        if(msg.opcode == 64){
+            for (i in 0 until msg.length){
+                out.writeByte((msg.payload.getByte(i) + (random?.nextInt() ?: 0)) and 0xFF)
+            }
+        } else {
+            out.writeBytes(msg.payload)
+        }
         msg.payload.release()
     }
 

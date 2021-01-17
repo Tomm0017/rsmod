@@ -16,10 +16,39 @@ import java.lang.ref.WeakReference
  */
 
 /**
+ * Indicates the last [Date.time] the player logged in
+ *   Note| due to GSON/JSON limitation on types, storing [Long] as [String] instead
+ *   despite imposed costs
+ */
+val LAST_LOGIN_ATTR = AttributeKey<String>("last_login")
+
+/**
+ * Indicates the amount of time the player has membership
+ *   Note| due to GSON/JSON limitation on types, storing [Long] as [String] instead
+ *   despite imposed costs
+ */
+val MEMBERS_EXPIRES_ATTR = AttributeKey<String>("members_expires")
+
+/**
  * A flag which indicates if the player's account was just created/logged in for
  * the first time.
  */
 val NEW_ACCOUNT_ATTR = AttributeKey<Boolean>()
+
+/**
+ * Indicates the last [Date.time] the player claimed a free bond (tradeable)
+ *   Note| due to GSON/JSON limitation on types, storing [Long] as [String] instead
+ *   despite imposed costs
+ */
+val FREE_BOND_CLAIMED_ATTR = AttributeKey<String>("bond_claimed")
+
+/**
+ * A flag which indicates if the player's appearance has been set by the player.
+ * Opting for persistence and modifying on_login behavior this will allow OSRS-like
+ * behavior such that player can logout and will still be allowed to set appearance
+ * at next login. Additionally this flag can be set by admins to allow change on next login.
+ */
+val APPEARANCE_SET_ATTR = AttributeKey<Boolean>("appearance_set")
 
 /**
  * A flag which indicates that the player will not take collision into account

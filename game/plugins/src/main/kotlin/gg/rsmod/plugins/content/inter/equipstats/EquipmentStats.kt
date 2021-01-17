@@ -34,32 +34,30 @@ object EquipmentStats {
             magicDamageBonus += 2.5
         }
 
-        var index: Int
-
-        index = 23
+        var index = 24
         p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index++, text = "Stab: ${formatBonus(p, BonusSlot.ATTACK_STAB)}")
         p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index++, text = "Slash: ${formatBonus(p, BonusSlot.ATTACK_SLASH)}")
         p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index++, text = "Crush: ${formatBonus(p, BonusSlot.ATTACK_CRUSH)}")
         p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index++, text = "Magic: ${formatBonus(p, BonusSlot.ATTACK_MAGIC)}")
         p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index, text = "Range: ${formatBonus(p, BonusSlot.ATTACK_RANGED)}")
 
-        index = 29
+        index = 30
         p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index++, text = "Stab: ${formatBonus(p, BonusSlot.DEFENCE_STAB)}")
         p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index++, text = "Slash: ${formatBonus(p, BonusSlot.DEFENCE_SLASH)}")
         p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index++, text = "Crush: ${formatBonus(p, BonusSlot.DEFENCE_CRUSH)}")
         p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index++, text = "Range: ${formatBonus(p, BonusSlot.DEFENCE_RANGED)}")
         p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index, text = "Magic: ${formatBonus(p, BonusSlot.DEFENCE_MAGIC)}")
 
-        index = 35
+        index = 36
         p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index++, text = "Melee strength: ${EquipmentStats.formatBonus(p.getStrengthBonus())}")
         p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index++, text = "Ranged strength: ${EquipmentStats.formatBonus(p.getRangedStrengthBonus())}")
-        p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index, text = "Magic damage: ${EquipmentStats.formatBonus(magicDamageBonus)}%")
-        p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = 38, text = "Prayer: ${EquipmentStats.formatBonus(p.getPrayerBonus())}")
+        p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index++, text = "Magic damage: ${EquipmentStats.formatBonus(magicDamageBonus)}%")
+        p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = index, text = "Prayer: ${EquipmentStats.formatBonus(p.getPrayerBonus())}")
 
         val undead = String.format("%.1f", undeadBonus)
         val slayer = String.format("%.1f", slayerBonus)
 
-        p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = 40, text = "Undead: $undead%")
-        p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = 41, text = "Slayer: $slayer%")
+        p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = 41, text = "Undead: $undead%")
+        p.setComponentText(interfaceId = EQUIPMENTSTATS_INTERFACE_ID, component = 42, text = "Slayer: $slayer%")
     }
 }

@@ -5,15 +5,13 @@ import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.appearance.Appearance
 import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
 import gg.rsmod.game.model.attr.LEVEL_UP_INCREMENT
 import gg.rsmod.game.model.attr.LEVEL_UP_OLD_XP
 import gg.rsmod.game.model.attr.LEVEL_UP_SKILL_ID
 import gg.rsmod.game.model.container.ItemContainer
-import gg.rsmod.game.model.container.key.BANK_KEY
-import gg.rsmod.game.model.container.key.ContainerKey
-import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
-import gg.rsmod.game.model.container.key.INVENTORY_KEY
+import gg.rsmod.game.model.container.key.*
 import gg.rsmod.game.model.interf.InterfaceSet
 import gg.rsmod.game.model.interf.listener.PlayerInterfaceListener
 import gg.rsmod.game.model.item.Item
@@ -88,6 +86,8 @@ open class Player(world: World) : Pawn(world) {
      */
     @Volatile private var setDisconnectionTimer = false
 
+    val bonds = ItemContainer(world.definitions, BOND_POUCH_KEY)
+
     val inventory = ItemContainer(world.definitions, INVENTORY_KEY)
 
     val equipment = ItemContainer(world.definitions, EQUIPMENT_KEY)
@@ -98,6 +98,7 @@ open class Player(world: World) : Pawn(world) {
      * A map that contains all the [ItemContainer]s a player can have.
      */
     val containers = HashMap<ContainerKey, ItemContainer>().apply {
+        put(BOND_POUCH_KEY, bonds)
         put(INVENTORY_KEY, inventory)
         put(EQUIPMENT_KEY, equipment)
         put(BANK_KEY, bank)
@@ -172,7 +173,16 @@ open class Player(world: World) : Pawn(world) {
      */
     internal val localNpcs = ObjectArrayList<Npc>()
 
-    var appearance = Appearance.DEFAULT
+    var appearance = Appearance.DEFAULT_MALE
+
+    /**
+     * A flag to indicate whether [anims] should be sent
+     *  in place of the default animation appearance
+     *   Note| "forced" because it's embedded in the [PlayerUpdateBlock]
+     */
+    private var appearimation = false
+
+    val anims = arrayOf(808, 823, 819, 820, 821, 822, 824)
 
     var weight = 0.0
 
@@ -202,6 +212,26 @@ open class Player(world: World) : Pawn(world) {
 
     override val entityType: EntityType = EntityType.PLAYER
 
+    fun isAppearimation(): Boolean = appearimation
+
+    fun setAppearimation(forced: Boolean) {
+        this.appearimation = forced
+        addBlock(UpdateBlockType.APPEARANCE)
+    }
+
+    fun appearimate(idleSequence: Int, turnLeftSequence: Int, turnRightSequence: Int,
+            walkBackSequence: Int, walkLeftSequence: Int, walkRightSequence: Int, runSequence: Int) {
+        anims[0] = idleSequence
+        anims[1] = turnLeftSequence
+        anims[2] = turnRightSequence
+        anims[3] = walkBackSequence
+        anims[4] = walkLeftSequence
+        anims[5] = walkRightSequence
+        anims[6] = runSequence
+        appearimation = true
+        addBlock(UpdateBlockType.APPEARANCE)
+    }
+
     /**
      * Checks if the player is running. We assume that the varp with id of
      * [173] is the running state varp.
@@ -212,7 +242,7 @@ open class Player(world: World) : Pawn(world) {
 
     override fun getCurrentHp(): Int = getSkills().getCurrentLevel(3)
 
-    override fun getMaxHp(): Int = getSkills().getMaxLevel(3)
+    override fun getMaxHp(): Int = getSkills().getBaseLevel(3)
 
     override fun setCurrentHp(level: Int) {
         getSkills().setCurrentLevel(3, level)
@@ -462,7 +492,7 @@ open class Player(world: World) : Pawn(world) {
         /*
          * Only increment the 'current' level if it's set at its capped level.
          */
-        if (getSkills().getCurrentLevel(skill) == getSkills().getMaxLevel(skill)) {
+        if (getSkills().getCurrentLevel(skill) == getSkills().getBaseLevel(skill)) {
             getSkills().setBaseXp(skill, newXp)
         } else {
             getSkills().setXp(skill, newXp)

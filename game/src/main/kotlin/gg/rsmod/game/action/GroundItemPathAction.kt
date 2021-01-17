@@ -79,19 +79,33 @@ object GroundItemPathAction {
             if (!p.world.plugins.canPickupGroundItem(p, groundItem.item)) {
                 return
             }
-            // NOTE(Tom): we may want to make the assureFullInsertion flag false and
-            // allow the world to remove some of the ground item instead of all of it.
-            val add = p.inventory.add(item = groundItem.item, amount = groundItem.amount, assureFullInsertion = true)
-            if (add.completed == 0) {
-                p.writeMessage("You don't have enough inventory space to hold that item.")
-                return
+
+            /**
+             * added partial pickup requires tracking player inventory amount before and after
+             * as the leftover amount must be derived after transaction in order to properly
+             * place the remainder [Item.amount] of [GroundItem] back as leftover
+             */
+            val before = p.inventory.getItemCount(groundItem.item)
+            val add = p.inventory.add(item = groundItem.item, amount = groundItem.amount, assureFullInsertion = false)
+            val after = p.inventory.getItemCount(groundItem.item)
+
+            if (add.getLeftOver() != 0) {
+                p.writeMessage("You don't have enough inventory space to hold any more.")
             }
 
             add.items.firstOrNull()?.let { item ->
                 item.item.attr.putAll(groundItem.attr)
             }
 
+            val remainder = groundItem.amount - (after - before)
             p.world.remove(groundItem)
+
+            if(remainder != 0){
+                if(groundItem.ownerUID == null)
+                    p.world.spawn(GroundItem(groundItem.item, remainder, groundItem.tile))
+                else
+                    p.world.spawn(GroundItem(groundItem.item, remainder, groundItem.tile, p.world.getPlayerForUid(groundItem.ownerUID!!)))
+            }
 
             p.attr[GROUNDITEM_PICKUP_TRANSACTION] = WeakReference(add)
             p.world.plugins.executeGlobalGroundItemPickUp(p)

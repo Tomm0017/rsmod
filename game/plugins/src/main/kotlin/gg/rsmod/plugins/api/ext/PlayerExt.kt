@@ -11,6 +11,7 @@ import gg.rsmod.game.model.bits.BitStorage
 import gg.rsmod.game.model.bits.StorageBits
 import gg.rsmod.game.model.container.ContainerStackType
 import gg.rsmod.game.model.container.ItemContainer
+import gg.rsmod.game.model.entity.Entity
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
@@ -53,8 +54,16 @@ fun Player.message(message: String, type: ChatMessageType = ChatMessageType.CONS
     write(MessageGameMessage(type = type.id, message = message, username = username))
 }
 
+fun Player.nothingMessage(){
+    message(Entity.NOTHING_INTERESTING_HAPPENS)
+}
+
 fun Player.filterableMessage(message: String) {
     write(MessageGameMessage(type = ChatMessageType.SPAM.id, message = message, username = null))
+}
+
+fun Player.openUrl(url: String) {
+    write(OpenUrlMessage(url))
 }
 
 fun Player.runClientScript(id: Int, vararg args: Any) {
@@ -449,13 +458,13 @@ fun Player.sendWeaponComponentInformation() {
 fun Player.calculateAndSetCombatLevel(): Boolean {
     val old = combatLevel
 
-    val attack = getSkills().getMaxLevel(Skills.ATTACK)
-    val defence = getSkills().getMaxLevel(Skills.DEFENCE)
-    val strength = getSkills().getMaxLevel(Skills.STRENGTH)
-    val hitpoints = getSkills().getMaxLevel(Skills.HITPOINTS)
-    val prayer = getSkills().getMaxLevel(Skills.PRAYER)
-    val ranged = getSkills().getMaxLevel(Skills.RANGED)
-    val magic = getSkills().getMaxLevel(Skills.MAGIC)
+    val attack = getSkills().getBaseLevel(Skills.ATTACK)
+    val defence = getSkills().getBaseLevel(Skills.DEFENCE)
+    val strength = getSkills().getBaseLevel(Skills.STRENGTH)
+    val hitpoints = getSkills().getBaseLevel(Skills.HITPOINTS)
+    val prayer = getSkills().getBaseLevel(Skills.PRAYER)
+    val ranged = getSkills().getBaseLevel(Skills.RANGED)
+    val magic = getSkills().getBaseLevel(Skills.MAGIC)
 
     val base = Ints.max(strength + attack, magic * 2, ranged * 2)
 

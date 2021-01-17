@@ -6,6 +6,12 @@ import io.netty.buffer.ByteBuf
  * @author Tom <rspsmods@gmail.com>
  */
 object BufferUtils {
+    fun ByteBuf.toArray(length: Int = readableBytes()): ByteArray {
+        val bytes = ByteArray(length)
+        duplicate().readBytes(bytes)
+        return bytes
+    }
+
     fun ByteBuf.readString(): String {
         if (isReadable) {
             val start = readerIndex()

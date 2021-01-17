@@ -2,8 +2,8 @@ package gg.rsmod.game.message.handler
 
 import gg.rsmod.game.message.MessageHandler
 import gg.rsmod.game.message.impl.UpdateAppearanceMessage
-import gg.rsmod.game.model.Appearance
-import gg.rsmod.game.model.Gender
+import gg.rsmod.game.model.appearance.Appearance
+import gg.rsmod.game.model.appearance.Gender
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import java.util.Arrays

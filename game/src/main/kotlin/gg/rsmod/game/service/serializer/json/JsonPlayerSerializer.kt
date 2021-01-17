@@ -5,6 +5,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.appearance.Appearance
+import gg.rsmod.game.model.appearance.Gender
 import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Client

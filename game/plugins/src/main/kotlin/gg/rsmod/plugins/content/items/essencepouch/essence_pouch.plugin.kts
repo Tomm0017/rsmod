@@ -29,7 +29,7 @@ pouches.forEach { pouch ->
  */
 fun fillPouch(player: Player, pouch: EssencePouch) {
 
-    if (player.getSkills().getMaxLevel(Skills.RUNECRAFTING) < pouch.levelReq) {
+    if (player.getSkills().getBaseLevel(Skills.RUNECRAFTING) < pouch.levelReq) {
         player.message("This pouch requires level ${pouch.levelReq} ${Skills.getSkillName(world, Skills.RUNECRAFTING)} to use.")
         return
     }

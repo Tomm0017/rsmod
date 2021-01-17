@@ -85,7 +85,7 @@ object EquipAction {
                 val skill = entry.key.toInt()
                 val level = entry.value
 
-                if (p.getSkills().getMaxLevel(skill) < level) {
+                if (p.getSkills().getBaseLevel(skill) < level) {
                     val skillName = SKILL_NAMES[skill]
                     val prefix = if ("aeiou".indexOf(Character.toLowerCase(skillName[0])) != -1) "an" else "a"
                     p.writeMessage("You are not high enough level to use this item.")

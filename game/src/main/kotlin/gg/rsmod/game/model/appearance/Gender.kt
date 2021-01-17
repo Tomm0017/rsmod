@@ -1,4 +1,4 @@
-package gg.rsmod.game.model
+package gg.rsmod.game.model.appearance
 
 /**
  * Represents the valid genders in the game.

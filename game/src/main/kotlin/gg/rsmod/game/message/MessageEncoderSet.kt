@@ -23,6 +23,7 @@ class MessageEncoderSet {
         put(RebuildLoginEncoder(), RebuildLoginMessage::class.java)
         put(VarpSmallEncoder(), VarpSmallMessage::class.java)
         put(VarpLargeEncoder(), VarpLargeMessage::class.java)
+        put(OpenUrlEncoder(), OpenUrlMessage::class.java)
         put(IfOpenSubEncoder(), IfOpenSubMessage::class.java)
         put(IfCloseSubEncoder(), IfCloseSubMessage::class.java)
         put(IfSetTextEncoder(), IfSetTextMessage::class.java)

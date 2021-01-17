@@ -20,7 +20,7 @@ class SkillSetTests {
         assertEquals(xp, skills.calculateTotalXp)
 
         val lvl = SkillSet.getLevelForXp(xp)
-        assertEquals(lvl, skills.getMaxLevel(ATTACK_SKILL))
+        assertEquals(lvl, skills.getBaseLevel(ATTACK_SKILL))
     }
 
     @Test
@@ -30,12 +30,12 @@ class SkillSetTests {
         val baseLevel = 50
         skills.setBaseLevel(ATTACK_SKILL, baseLevel)
         assertEquals(skills.getCurrentLevel(ATTACK_SKILL), baseLevel)
-        assertEquals(skills.getMaxLevel(ATTACK_SKILL), baseLevel)
+        assertEquals(skills.getBaseLevel(ATTACK_SKILL), baseLevel)
 
         val decrement = 3
         skills.decrementCurrentLevel(ATTACK_SKILL, decrement, capped = true)
         assertEquals(baseLevel - decrement, skills.getCurrentLevel(ATTACK_SKILL))
-        assertEquals(baseLevel, skills.getMaxLevel(ATTACK_SKILL))
+        assertEquals(baseLevel, skills.getBaseLevel(ATTACK_SKILL))
 
         skills.decrementCurrentLevel(ATTACK_SKILL, decrement, capped = true)
         assertEquals(baseLevel - decrement, skills.getCurrentLevel(ATTACK_SKILL))
@@ -46,7 +46,7 @@ class SkillSetTests {
         val increment = 3
         skills.incrementCurrentLevel(ATTACK_SKILL, increment, capped = false)
         assertEquals(baseLevel + increment, skills.getCurrentLevel(ATTACK_SKILL))
-        assertEquals(baseLevel, skills.getMaxLevel(ATTACK_SKILL))
+        assertEquals(baseLevel, skills.getBaseLevel(ATTACK_SKILL))
 
         skills.incrementCurrentLevel(ATTACK_SKILL, increment, capped = false)
         assertEquals(baseLevel + increment, skills.getCurrentLevel(ATTACK_SKILL))
@@ -59,12 +59,12 @@ class SkillSetTests {
         val baseLevel = 50
         skills.setBaseLevel(ATTACK_SKILL, baseLevel)
         assertEquals(skills.getCurrentLevel(ATTACK_SKILL), baseLevel)
-        assertEquals(skills.getMaxLevel(ATTACK_SKILL), baseLevel)
+        assertEquals(skills.getBaseLevel(ATTACK_SKILL), baseLevel)
 
         val decrement = 3
         skills.decrementCurrentLevel(ATTACK_SKILL, decrement, capped = false)
         assertEquals(skills.getCurrentLevel(ATTACK_SKILL), baseLevel - decrement)
-        assertEquals(skills.getMaxLevel(ATTACK_SKILL), baseLevel)
+        assertEquals(skills.getBaseLevel(ATTACK_SKILL), baseLevel)
 
         skills.decrementCurrentLevel(ATTACK_SKILL, decrement, capped = false)
         assertEquals(skills.getCurrentLevel(ATTACK_SKILL), baseLevel - (decrement * 2))
@@ -75,7 +75,7 @@ class SkillSetTests {
         val increment = 3
         skills.incrementCurrentLevel(ATTACK_SKILL, increment, capped = false)
         assertEquals(skills.getCurrentLevel(ATTACK_SKILL), baseLevel + increment)
-        assertEquals(skills.getMaxLevel(ATTACK_SKILL), baseLevel)
+        assertEquals(skills.getBaseLevel(ATTACK_SKILL), baseLevel)
 
         skills.alterCurrentLevel(ATTACK_SKILL, increment, capValue = increment * 2)
         assertEquals(skills.getCurrentLevel(ATTACK_SKILL), baseLevel + (increment * 2))

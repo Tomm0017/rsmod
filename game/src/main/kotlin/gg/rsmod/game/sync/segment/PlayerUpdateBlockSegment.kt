@@ -3,6 +3,7 @@ package gg.rsmod.game.sync.segment
 import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.ChatMessage
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.appearance.Gender
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.block.UpdateBlockType
@@ -129,6 +130,11 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                     val beard = 11
 
                     for (i in 0 until 12) {
+                        if(i == beard && other.appearance.gender == Gender.FEMALE){
+                            appBuf.put(DataType.BYTE, 0)
+                            continue
+                        }
+
                         if (i == arms) {
                             val item = other.equipment[4]
                             if (item != null) {
@@ -154,7 +160,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                             if (translation[i] == -1) {
                                 appBuf.put(DataType.BYTE, 0)
                             } else {
-                                appBuf.put(DataType.SHORT, 0x100 + other.appearance.looks[translation[i]])
+                                appBuf.put(DataType.SHORT, 0x100 + other.appearance.getLook(translation[i]))
                             }
                         }
                     }
@@ -168,27 +174,36 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                     appBuf.put(DataType.BYTE, color)
                 }
 
-                if (!transmog) {
-                    val animations = intArrayOf(808, 823, 819, 820, 821, 822, 824)
+                when {
+                    transmog -> {
+                        val def = other.world.definitions.get(NpcDef::class.java, other.getTransmogId())
+                        val animations = arrayOf(def.standAnim, def.walkAnim, def.walkAnim, def.render3,
+                                def.render4, def.render5, def.walkAnim)
 
-                    val weapon = other.equipment[3] // Assume slot 3 is the weapon.
-                    if (weapon != null) {
-                        val def = weapon.getDef(other.world.definitions)
-                        def.renderAnimations?.forEachIndexed { index, anim ->
-                            animations[index] = anim
+                        animations.forEach { anim ->
+                            appBuf.put(DataType.SHORT, anim)
                         }
                     }
-
-                    animations.forEach { anim ->
-                        appBuf.put(DataType.SHORT, anim)
+                    other.isAppearimation() -> {
+                        other.anims.forEach { anim ->
+                            appBuf.put(DataType.SHORT, anim)
+                        }
+                        other.setAppearimation(false)
                     }
-                } else {
-                    val def = other.world.definitions.get(NpcDef::class.java, other.getTransmogId())
-                    val animations = arrayOf(def.standAnim, def.walkAnim, def.walkAnim, def.render3,
-                            def.render4, def.render5, def.walkAnim)
+                    else -> {
+                        val animations = arrayOf(808, 823, 819, 820, 821, 822, 824)
 
-                    animations.forEach { anim ->
-                        appBuf.put(DataType.SHORT, anim)
+                        val weapon = other.equipment[3] // Assume slot 3 is the weapon.
+                        if (weapon != null) {
+                            val def = weapon.getDef(other.world.definitions)
+                            def.renderAnimations?.forEachIndexed { index, anim ->
+                                animations[index] = anim
+                            }
+                        }
+
+                        animations.forEach { anim ->
+                            appBuf.put(DataType.SHORT, anim)
+                        }
                     }
                 }
 

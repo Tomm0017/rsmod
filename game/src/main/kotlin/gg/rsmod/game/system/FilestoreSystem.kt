@@ -3,6 +3,7 @@ package gg.rsmod.game.system
 import com.google.common.primitives.Ints
 import gg.rsmod.net.codec.filestore.FilestoreRequest
 import gg.rsmod.net.codec.filestore.FilestoreResponse
+import gg.rsmod.util.io.BufferUtils.toArray
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext
 import mu.KLogging
@@ -52,7 +53,7 @@ class FilestoreSystem(channel: Channel, private val filestore: Store) : ServerSy
                 }
 
                 val container = Container(CompressionType.NONE, -1)
-                container.compress(buf.array().copyOf(buf.readableBytes()), null)
+                container.compress(buf.toArray().copyOf(buf.readableBytes()), null)
                 cachedIndexData = container.data
                 buf.release()
             }

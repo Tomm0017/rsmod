@@ -58,7 +58,7 @@ object MagicSpells {
             p.message("You can't cast this spell.")
             return false
         }
-        if (p.getSkills().getMaxLevel(Skills.MAGIC) < lvl) {
+        if (p.getSkills().getBaseLevel(Skills.MAGIC) < lvl) {
             p.message("Your Magic level is not high enough for this spell.")
             return false
         }

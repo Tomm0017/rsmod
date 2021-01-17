@@ -106,7 +106,7 @@ object RunecraftAction {
         val essence = inventory.filter { it != null }.map { it?.id!! }.first { rune.essence.contains(it) }
         val transaction = inventory.remove(item = essence, amount = inventory.getItemCount(essence))
 
-        val count = (transaction.items.size * rune.getBonusMultiplier(player.getSkills().getMaxLevel(Skills.RUNECRAFTING))).toInt()
+        val count = (transaction.items.size * rune.getBonusMultiplier(player.getSkills().getBaseLevel(Skills.RUNECRAFTING))).toInt()
 
         if (transaction.hasSucceeded()) {
             player.inventory.add(rune.id, count)
@@ -124,7 +124,7 @@ object RunecraftAction {
         val player = it.player
         val def = player.world.definitions.get(ItemDef::class.java, rune.id)
 
-        if (player.getSkills().getMaxLevel(Skills.RUNECRAFTING) < rune.level) {
+        if (player.getSkills().getBaseLevel(Skills.RUNECRAFTING) < rune.level) {
             it.messageBox("You need a ${Skills.getSkillName(player.world, Skills.RUNECRAFTING)} level of at least ${rune.level} to craft ${def.name.toLowerCase()}s.")
             return false
         }
@@ -153,7 +153,7 @@ object RunecraftAction {
         val runeName = player.world.definitions.get(ItemDef::class.java, combo.rune).name.toLowerCase()
         val talismanName = player.world.definitions.get(ItemDef::class.java, combo.talisman).name.toLowerCase()
 
-        if (player.getSkills().getMaxLevel(Skills.RUNECRAFTING) < combo.level) {
+        if (player.getSkills().getBaseLevel(Skills.RUNECRAFTING) < combo.level) {
             it.messageBox("You need a ${Skills.getSkillName(player.world, Skills.RUNECRAFTING)} level of at least ${combo.level} to craft ${comboName}s.")
             return false
         }

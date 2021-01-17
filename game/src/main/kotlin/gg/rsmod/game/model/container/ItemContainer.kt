@@ -2,6 +2,7 @@ package gg.rsmod.game.model.container
 
 import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.fs.def.ItemDef
+import gg.rsmod.game.model.attr.OTHER_ITEM_SLOT_ATTR
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.item.SlotItem
@@ -457,6 +458,98 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
      * ```
      */
     fun remove(item: Item, assureFullRemoval: Boolean = false, beginSlot: Int = -1): ItemTransaction = remove(item.id, item.amount, assureFullRemoval, beginSlot)
+
+    /**
+     * replaces [Item] in container with optional slot awareness
+     * and is generally for generating an [Item] from another
+     *   Note| most useful for operations which produce an [Item]
+     *   of another form (e.g. and empty vial becoming a vial of water)
+     *
+     * @param remove - [Item.id] of [Item] to replace
+     * @param add - [Item.id] of [Item] to add
+     * @param slot - the destination slot to remove and add to
+     *   Note| slot default of -1 is not slot-aware and works on first available
+     *
+     * @return whether or not the replace operation completed as expected -> true|false
+     */
+    fun replace(remove: Int, add: Int, slot: Int = -1): Boolean {
+        return if(remove(remove, beginSlot = slot).hasSucceeded())
+            add(add, beginSlot = slot).hasSucceeded()
+        else
+            false
+    }
+
+    /**
+     * wrapper for [replace] method with added [Item] requirement
+     * only if the specified [Item] is also in container
+     *   Note| really only useful for inventory replacements ALTHOUGH it could be adapted
+     *   to mock a container with the [required] [Item] added upon desired conditions
+     *
+     * @param required - [Item.id] of [Item] required in container for replace
+     */
+    fun replaceWithItemRequirement(remove: Int, add: Int, required: Int, slot: Int = -1): Boolean {
+        return if(contains(required))
+            replace(remove, add, slot)
+        else
+            false
+    }
+
+    /**
+     * wrapper for [replace] which works to [remove] an [Item] as a requirement
+     * in a hopefully conscious way to preserve proper removal along with replacement
+     *   Note| most useful for operations which consume a secondary [Item] during
+     *   production of another form (e.g. clean herb is lost when a vial of water
+     *   becomes an unfinished potion)
+     *
+     * @param other - [Item] to remove along with [replace] operation
+     *   Note| the use of [Item] and not [Item.id] is purposed to permit amounts
+     *   and imposes assurance checks in container operations
+     */
+    fun replaceAndRemoveAnother(remove: Int, add: Int, other: Item, slot: Int = -1, otherSlot: Int = -1): Boolean {
+        val taken = remove(other, assureFullRemoval = true, beginSlot = otherSlot).hasSucceeded()
+        return if(replace(remove, add, slot) && taken)
+            true
+        else if(taken){
+            add(other, assureFullInsertion = true, beginSlot = otherSlot)
+            false
+        } else
+            false
+    }
+
+    /**
+     * wrapper for [replaceAndRemoveAnother] which requires the container to contain [required]
+     */
+    fun replaceAndRemoveAnotherWithItemRequirement(remove: Int, add: Int, other: Item, required: Int, slot: Int = -1, otherSlot: Int = -1): Boolean {
+        return if(contains(required))
+            replaceAndRemoveAnother(remove, add, other, slot, otherSlot)
+        else
+            false
+    }
+
+    /**
+     * works to [replace] two [Item]s involved in [Item] productions where
+     * both input [Item]s have a supplemental by-product [Item]
+     *
+     * @param removeItem - [Item.id] of "main" [Item] involved to be replaced
+     * @param addItem - [Item.id] of "main" [Item] involved to be replaced with
+     * @param slot - the intended destination slot in container for the "main" [Item] replacement
+     *   Note| params prefixed with "other" follow same conventions as "main" [Item] params
+     *   however the imposed meaning of "main" and "other" reside with method caller and this method
+     *   couldn't really care less which is which or if either [Item] is using slot awareness but
+     *   does allow for flexibility of either inherently as wrapped calls handle slot-aware operations
+     *
+     * @return whether or not the replace operation completed as expected -> true|false
+     */
+    fun replaceBoth(removeItem: Int, addItem: Int, otherItem: Int, otherAddItem:Int, slot: Int = -1, otherSlot: Int = -1): Boolean {
+        val taken = replace(otherItem, otherAddItem, otherSlot)
+        return if(replace(removeItem, addItem, slot) && taken)
+            true
+        else if(taken){
+            replace(otherAddItem, otherItem, otherSlot)
+            false
+        } else
+            false
+    }
 
     /**
      * Swap slots of items in slot [from] and [to].

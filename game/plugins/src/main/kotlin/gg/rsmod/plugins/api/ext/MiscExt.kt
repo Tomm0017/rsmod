@@ -2,12 +2,14 @@ package gg.rsmod.plugins.api.ext
 
 import gg.rsmod.game.model.Area
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.timer.TimeConstants
 import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.model.timer.TimerMap
 import java.text.DecimalFormat
 import java.text.Format
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
+import kotlin.math.roundToInt
 
 private val RANDOM = ThreadLocalRandom.current()
 
@@ -36,14 +38,7 @@ fun Int.interpolate(minChance: Int, maxChance: Int, minLvl: Int, maxLvl: Int, ca
  * @return
  * Null if the minutes left is less than 1 (one). Minutes left in timer key otherwise.
  */
-fun TimerMap.getMinutesLeft(key: TimerKey): Int? {
-    val cyclesLeft = get(key)
-    val minutes = (cyclesLeft / 100.0).toInt()
-    if (minutes > 0) {
-        return minutes
-    }
-    return null
-}
+fun TimerMap.getMinutesLeft(key: TimerKey): Int? = TimeConstants.cyclesToMinutes(get(key))
 
 /**
  * Create an empty [EnumSet] of type [T].

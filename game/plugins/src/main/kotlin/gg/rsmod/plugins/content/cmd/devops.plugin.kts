@@ -2,6 +2,7 @@ package gg.rsmod.plugins.content.cmd
 
 import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.plugins.content.cmd.Commands_plugin.Command.tryWithUsage
+import gg.rsmod.game.message.impl.OpenUrlMessage
 
 on_command("script", Privilege.DEV_POWER){
     val args = player.getCommandArgs()
@@ -44,5 +45,29 @@ on_command("closeinterface", Privilege.DEV_POWER) {
         val interfaceId = values[0].toInt()
         player.closeInterface(interfaceId)
         player.message("Closing interface <col=801700>$interfaceId</col>")
+    }
+}
+
+on_command("hitme", Privilege.DEV_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::hitme hitType amount</col>") { values ->
+        val hitType = HitType.get(values[0].toInt())
+        if(hitType?.name ?: "INVALID" == "INVALID"){
+            throw IllegalArgumentException()
+        }
+        val damage = if(values.size==2 && values[1].matches(Regex("-?\\d+"))) values[1].toInt() else 0
+        player.message("${hitType!!.name} hit for $damage")
+        player.hit(damage, hitType)
+    }
+}
+
+on_command("openurl", Privilege.DEV_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::openurl google.com</col>") { values ->
+        val url = values[0]
+        if(!url.startsWith("http://") || !url.startsWith("https://"))
+            player.openUrl("https://$url") // not perfect by any means, but simple enough as fallback for easier command
+        else
+            player.openUrl(url)
     }
 }

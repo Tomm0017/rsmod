@@ -31,14 +31,14 @@ object Foods {
 
         val heal = when (food) {
             Food.ANGLERFISH -> {
-                val c = when (p.getSkills().getMaxLevel(Skills.HITPOINTS)) {
+                val c = when (p.getSkills().getBaseLevel(Skills.HITPOINTS)) {
                     in 25..49 -> 4
                     in 50..74 -> 6
                     in 75..92 -> 8
                     in 93..99 -> 13
                     else -> 2
                 }
-                Math.floor(p.getSkills().getMaxLevel(Skills.HITPOINTS) / 10.0).toInt() + c
+                Math.floor(p.getSkills().getBaseLevel(Skills.HITPOINTS) / 10.0).toInt() + c
             }
             else -> food.heal
         }

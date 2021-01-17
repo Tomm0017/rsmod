@@ -175,7 +175,7 @@ object Combat {
                 (pawn as? Player)?.message("You can't attack this npc.")
                 return false
             }
-            if (pawn is Player && target.combatDef.slayerReq > pawn.getSkills().getMaxLevel(Skills.SLAYER)) {
+            if (pawn is Player && target.combatDef.slayerReq > pawn.getSkills().getBaseLevel(Skills.SLAYER)) {
                 pawn.message("You need a higher Slayer level to know how to wound this monster.")
                 return false
             }

@@ -8,15 +8,17 @@ import gg.rsmod.plugins.api.getDisplayComponentId
 object WelcomeScreen {
     const val WELCOME_SCREEN_INTERFACE_ID = 378
 
-    fun openChristmasWelcome(player: Player) {
-        player.setVarp(261, 666) // last logged on 666 minutes ago
-        player.setVarp(1780, 400) // 400 days of membership left
+    fun openChristmasWelcome(player: Player, minSinceLogin: Int) {
+        player.setVarp(261, minSinceLogin)
+        player.setVarp(1780, player.membersDaysLeft())
 
         val fullScreenRoot = getDisplayComponentId(DisplayMode.FULLSCREEN)
 
         player.openOverlayInterface(DisplayMode.FULLSCREEN)
         player.openInterface(fullScreenRoot, 29, WELCOME_SCREEN_INTERFACE_ID)
         player.openInterface(fullScreenRoot, 2, 651)
+
+        player.setComponentText(WELCOME_SCREEN_INTERFACE_ID, 73, "You do not have a Bank PIN.<br>Please visit a bank if you would like one.")
 
         player.setComponentText(WELCOME_SCREEN_INTERFACE_ID, 7, "<col=2f2fff>Happy Christmas!</col><br>" +
                 "<col=003900>Rev193</col> thanks to the fine folks in the <col=ffff00>RsMod</col> Discord<br>" +
@@ -25,6 +27,6 @@ object WelcomeScreen {
         player.setComponentHidden(WELCOME_SCREEN_INTERFACE_ID, 51, false)
 
         player.runClientScript(1080, "https://discord.gg/UznZnZR")
-        player.runClientScript(828, 1) // members for Christmas
+        player.runClientScript(828, 1)
     }
 }

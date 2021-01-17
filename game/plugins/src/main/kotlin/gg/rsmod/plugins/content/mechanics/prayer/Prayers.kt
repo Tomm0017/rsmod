@@ -212,7 +212,7 @@ object Prayers {
     private suspend fun checkRequirements(it: QueueTask, prayer: Prayer): Boolean {
         val p = it.player
 
-        if (p.getSkills().getMaxLevel(Skills.PRAYER) < prayer.level) {
+        if (p.getSkills().getBaseLevel(Skills.PRAYER) < prayer.level) {
             p.syncVarp(ACTIVE_PRAYERS_VARP)
             it.messageBox("You need a <col=000080>Prayer</col> level of ${prayer.level} to use <col=000080>${prayer.named}.")
             return false

@@ -601,7 +601,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
             val values = s as LinkedHashMap<*, *>
             val className = values["class"] as String
             val clazz = Class.forName(className).asSubclass(Service::class.java)!!
-            val service = clazz.newInstance()
+            val service = clazz.getDeclaredConstructor().newInstance()
 
             val properties = hashMapOf<String, Any>()
             values.filterKeys { it != "class" }.forEach { key, value ->

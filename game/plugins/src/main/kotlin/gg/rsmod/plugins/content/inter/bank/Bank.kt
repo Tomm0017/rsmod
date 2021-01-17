@@ -26,6 +26,7 @@ object Bank {
     const val QUANTITY_VARBIT = 6590
     const val INCINERATOR_VARBIT = 5102
 
+
     /**
      * Visual varbit for the "Bank your loot" tab area interface when storing
      * items from a looting bag into the bank.

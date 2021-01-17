@@ -29,6 +29,12 @@ data class Privilege(val id: Int, val icon: Int, val name: String, val powers: S
         const val DEV_POWER = "dev"
 
         /**
+         * The global identifier used for developers. This identifier should be
+         * used globally to identify a player with developer privileges.
+         */
+        const val DONOR_POWER = "donor"
+
+        /**
          * The global identifier used for administrators. This identifier should
          * be used globally to identify a player with administrator privileges.
          */

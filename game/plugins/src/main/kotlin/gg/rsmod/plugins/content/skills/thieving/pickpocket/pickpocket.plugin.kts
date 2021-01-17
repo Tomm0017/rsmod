@@ -50,7 +50,7 @@ suspend fun QueueTask.pickpocket(npcId: Int, npc: PickpocketNpc) {
 
     } else {
         //if failed, sends relevant messages
-        player.message("...and you have failed.")
+        player.message("You have been Stunned.")
 
         //damages player for a value in the npc's damage range
         player.hit(npc.damage.random())

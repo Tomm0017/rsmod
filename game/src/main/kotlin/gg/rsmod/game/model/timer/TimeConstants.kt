@@ -81,6 +81,55 @@ object TimeConstants {
         return if (years > 0) years else null
     }
 
+    fun cyclesContext(cycles: Int): String {
+        val sb = StringBuilder()
+        var value = cycles
+        var amount: Double
+        var formatted: String
+
+        val df = DecimalFormat("#.#")
+
+        when {
+            value < CYCLES_PER_MINUTE*3 -> {
+                amount = value / 1.666
+                formatted = df.format(amount)
+                sb.append("$formatted ${if(amount > 1) "seconds" else "second"}")
+            }
+
+            value < CYCLES_PER_HOUR -> {
+                amount = value / CYCLES_PER_MINUTE.toDouble()
+                formatted = df.format(amount)
+                sb.append("$formatted ${if(amount > 1) "minutes" else "minute"}")
+            }
+
+            value < CYCLES_PER_DAY -> {
+                amount = value / CYCLES_PER_HOUR.toDouble()
+                formatted = df.format(amount)
+                sb.append("$formatted ${if(amount > 1) "hours" else "hour"}")
+            }
+
+            value < CYCLES_PER_WEEK -> {
+                amount = value / CYCLES_PER_DAY.toDouble()
+                formatted = df.format(amount)
+                sb.append("$formatted ${if(amount.toInt() > 1) "days" else "day"}")
+            }
+
+            value < CYCLES_PER_WEEK*26 -> {
+                amount = value / (CYCLES_PER_WEEK.toDouble() * 4)
+                formatted = df.format(amount)
+                sb.append("$formatted ${if(amount.toInt() > 1) "months" else "month"}")
+            }
+
+            else -> {
+                amount = value / CYCLES_PER_YEAR.toDouble()
+                formatted = df.format(amount)
+                sb.append("$formatted ${if (amount > 1) "years" else "year"}")
+            }
+        }
+
+        return sb.toString()
+    }
+
     fun timePassed(last: Long): Long {
         return System.currentTimeMillis() - last
     }

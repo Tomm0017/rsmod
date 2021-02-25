@@ -74,7 +74,7 @@ object MagicCombatFormula : CombatFormula {
                 multiplier += 0.3
             }
 
-            if (pawn.hasEquipped(EquipmentType.WEAPON, Items.MYSTIC_SMOKE_STAFF) && pawn.hasSpellbook(Spellbook.STANDARD)) {
+            if (pawn.hasEquipped(EquipmentType.WEAPON, Items.MYSTIC_SMOKE_STAFF) && pawn.hasSpellbook(Spellbook.NORMAL)) {
                 multiplier += 0.1
             }
 

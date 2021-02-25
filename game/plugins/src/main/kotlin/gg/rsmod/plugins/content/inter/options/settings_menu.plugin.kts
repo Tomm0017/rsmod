@@ -1,7 +1,5 @@
 package gg.rsmod.plugins.content.inter.options
 
-import gg.rsmod.game.model.interf.DisplayMode
-
 fun bind_all_setting(child: Int, plugin: Plugin.() -> Unit) {
     on_button(interfaceId = OptionsTab.ALL_SETTINGS_INTERFACE_ID, component = child) {
         plugin(this)

@@ -18,6 +18,7 @@ import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.timer.SKULL_ICON_DURATION_TIMER
 import gg.rsmod.game.sync.block.UpdateBlockType
 import gg.rsmod.plugins.api.*
+import gg.rsmod.plugins.content.music.Songs
 import gg.rsmod.plugins.service.marketvalue.ItemMarketValueService
 import gg.rsmod.util.BitManipulation
 
@@ -200,6 +201,7 @@ fun Player.toggleDisplayInterface(newMode: DisplayMode) {
         interfaces.displayMode = newMode
 
         openOverlayInterface(newMode)
+        initInterfaces(newMode)
 
         InterfaceDestination.values.filter { it.isSwitchable() }.forEach { pane ->
             val fromParent = getDisplayComponentId(oldMode)
@@ -208,7 +210,7 @@ fun Player.toggleDisplayInterface(newMode: DisplayMode) {
             val toChild = getChildId(pane, newMode)
 
             /*
-             * Remove the interfaces from the old display mode's chilren and add
+             * Remove the interfaces from the old display mode's children and add
              * them to the new display mode's children.
              */
             if (interfaces.isOccupied(parent = fromParent, child = fromChild)) {
@@ -224,13 +226,6 @@ fun Player.toggleDisplayInterface(newMode: DisplayMode) {
 
             write(IfMoveSubMessage(from = (fromParent shl 16) or fromChild, to = (toParent shl 16) or toChild))
         }
-
-        if (newMode.isResizable()) {
-            setInterfaceUnderlay(color = -1, transparency = -1)
-        }
-        if (oldMode.isResizable()) {
-            openInterface(parent = getDisplayComponentId(newMode), child = getChildId(InterfaceDestination.MAIN_SCREEN, newMode), interfaceId = 60, type = 0)
-        }
     }
 }
 
@@ -241,6 +236,60 @@ fun Player.openOverlayInterface(displayMode: DisplayMode) {
     val component = getDisplayComponentId(displayMode)
     interfaces.setVisible(parent = getDisplayComponentId(displayMode), child = 0, visible = true)
     write(IfOpenTopMessage(component))
+}
+
+fun Player.initInterfaces(displayMode: DisplayMode) {
+    when(displayMode) {
+        DisplayMode.FIXED -> {
+            setInterfaceEvents(interfaceId = 548, component = 51, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 548, component = 52, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 548, component = 53, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 548, component = 54, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 548, component = 55, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 548, component = 56, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 548, component = 57, range = -1..-1, setting = 6)
+            setInterfaceEvents(interfaceId = 548, component = 34, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 548, component = 35, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 548, component = 36, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 548, component = 37, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 548, component = 38, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 548, component = 39, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 548, component = 40, range = -1..-1, setting = 2)
+        }
+        DisplayMode.RESIZABLE_NORMAL -> {
+            setInterfaceEvents(interfaceId = 161, component = 54, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 161, component = 55, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 161, component = 56, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 161, component = 57, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 161, component = 58, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 161, component = 59, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 161, component = 60, range = -1..-1, setting = 6)
+            setInterfaceEvents(interfaceId = 161, component = 38, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 161, component = 39, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 161, component = 40, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 161, component = 41, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 161, component = 42, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 161, component = 43, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 161, component = 44, range = -1..-1, setting = 2)
+        }
+        DisplayMode.RESIZABLE_LIST -> {
+            setInterfaceEvents(interfaceId = 164, component = 53, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 164, component = 54, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 164, component = 55, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 164, component = 56, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 164, component = 57, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 164, component = 58, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 164, component = 59, range = -1..-1, setting = 6)
+            setInterfaceEvents(interfaceId = 164, component = 38, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 164, component = 39, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 164, component = 40, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 164, component = 32, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 164, component = 41, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 164, component = 42, range = -1..-1, setting = 2)
+            setInterfaceEvents(interfaceId = 164, component = 43, range = -1..-1, setting = 2)
+        }
+        else -> return
+    }
 }
 
 fun Player.sendItemContainer(key: Int, items: Array<Item?>) {
@@ -298,6 +347,11 @@ fun Player.playSound(id: Int, volume: Int = 1, delay: Int = 0) {
 
 fun Player.playSong(id: Int) {
     write(MidiSongMessage(id))
+    setComponentText(interfaceId = 239, component = 6, text = Songs.getTitle(id))
+}
+
+fun Player.playJingle(id: Int) {
+    write(MidiJingleMessage(id))
 }
 
 fun Player.getVarp(id: Int): Int = varps.getState(id)
@@ -317,6 +371,18 @@ fun Player.syncVarp(id: Int) {
 fun Player.getVarbit(id: Int): Int {
     val def = world.definitions.get(VarbitDef::class.java, id)
     return varps.getBit(def.varp, def.startBit, def.endBit)
+}
+
+fun Player.incrementVarbit(id: Int, amount: Int = 1): Int {
+    val inc = getVarbit(id)+amount
+    setVarbit(id, inc)
+    return inc
+}
+
+fun Player.decrementVarbit(id: Int, amount: Int = 1): Int {
+    val dec = getVarbit(id)-amount
+    setVarbit(id, dec)
+    return dec
 }
 
 fun Player.setVarbit(id: Int, value: Int) {
@@ -425,7 +491,7 @@ fun Player.hasSkullIcon(icon: SkullIcon): Boolean = skullIcon == icon.id
 
 fun Player.isClientResizable(): Boolean = interfaces.displayMode == DisplayMode.RESIZABLE_NORMAL || interfaces.displayMode == DisplayMode.RESIZABLE_LIST
 
-fun Player.inWilderness(): Boolean = getInterfaceAt(InterfaceDestination.PVP_OVERLAY) != -1
+fun Player.inWilderness(): Boolean = getInterfaceAt(InterfaceDestination.OVERLAY) != -1
 
 fun Player.sendWorldMapTile() {
     runClientScript(1749, tile.as30BitInteger)

@@ -513,6 +513,10 @@ abstract class Pawn(val world: World) : Entity() {
         addBlock(UpdateBlockType.FORCE_CHAT)
     }
 
+    fun faceDirection(direction: Direction) {
+        faceTile(Tile(direction.getDeltaX(), direction.getDeltaZ()))
+    }
+
     fun faceTile(face: Tile, width: Int = 1, length: Int = 1) {
         if (entityType.isPlayer) {
             val srcX = tile.x * 64

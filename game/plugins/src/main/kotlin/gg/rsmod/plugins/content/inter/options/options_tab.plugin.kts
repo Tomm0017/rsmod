@@ -3,6 +3,7 @@ package gg.rsmod.plugins.content.inter.options
 import gg.rsmod.plugins.content.inter.options.OptionsTab.OPTIONS_INTERFACE_ID
 import gg.rsmod.plugins.content.inter.options.OptionsTab.ALL_SETTINGS_INTERFACE_ID
 import gg.rsmod.plugins.content.inter.options.OptionsTab.ALL_SETTINGS_BUTTON_ID
+import gg.rsmod.game.model.attr.DISPLAY_MODE_CHANGE_ATTR
 import gg.rsmod.game.model.interf.DisplayMode
 
 fun bind_setting(child: Int, plugin: Plugin.() -> Unit) {
@@ -34,8 +35,17 @@ bind_setting(child = ALL_SETTINGS_BUTTON_ID) {
     if (!player.lock.canInterfaceInteract()) {
         return@bind_setting
     }
-    player.setInterfaceUnderlay(color = -1, transparency = -1)
-    player.openInterface(interfaceId = ALL_SETTINGS_INTERFACE_ID, dest = InterfaceDestination.MAIN_SCREEN)
+
+    val main_parent = getDisplayComponentId(player.interfaces.displayMode)
+    val main_child = getChildId(InterfaceDestination.MAIN_SCREEN, player.interfaces.displayMode)
+    val world_child = getChildId(InterfaceDestination.WORLD_MAP, player.interfaces.displayMode)
+
+    if(player.interfaces.isOccupied(main_parent, main_child) || player.interfaces.isOccupied(main_parent, world_child)){
+        player.message("Please finish what you are doing before opening the settings.")
+        return@bind_setting
+    }
+
+    player.openInterface(interfaceId = ALL_SETTINGS_INTERFACE_ID, dest = InterfaceDestination.WORLD_MAP)
     player.setInterfaceEvents(interfaceId = ALL_SETTINGS_INTERFACE_ID, component = 22, range = 0..5, setting = 2)
     player.setInterfaceEvents(interfaceId = ALL_SETTINGS_INTERFACE_ID, component = 18, range = 0..87, setting = 2)
     player.setInterfaceEvents(interfaceId = ALL_SETTINGS_INTERFACE_ID, component = 27, range = 0..122, setting = 2)
@@ -156,10 +166,26 @@ bind_setting(child = 115) {
 on_button(OPTIONS_INTERFACE_ID, 37) {
     val slot = player.getInteractingSlot()
     val mode = when (slot) {
-        2 -> DisplayMode.RESIZABLE_NORMAL
-        3 -> DisplayMode.RESIZABLE_LIST
+        2 -> {
+            player.setVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT, 0)
+            DisplayMode.RESIZABLE_NORMAL
+        }
+        3 -> {
+            player.setVarbit(OSRSGameframe.SIDESTONES_ARRAGEMENT_VARBIT, 1)
+            DisplayMode.RESIZABLE_LIST
+        }
         else -> DisplayMode.FIXED
     }
+    if(!(mode.isResizable() && player.interfaces.displayMode.isResizable()))
+        player.runClientScript(3998, slot-1)
     player.toggleDisplayInterface(mode)
-    player.runClientScript(3998, slot-1)
+}
+
+set_window_status_logic {
+    /**
+     * DisplayMode changes moved to proper implementation for interface controlled
+     * rather than window status; status updates client dimensions (width and height)
+     * as well as whether client is resizable (2) or fixed (1) but as a status has
+     * no practical purpose as of now (could be useful for anti-cheat/bot detection??)
+     */
 }

@@ -148,6 +148,15 @@ on_command("song", Privilege.ADMIN_POWER) {
     }
 }
 
+on_command("jingle", Privilege.ADMIN_POWER) {
+    val args = player.getCommandArgs()
+    tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::jingle 1</col>") { values ->
+        val id = values[0].toInt()
+        player.playJingle(id)
+        player.message("Jingle: $id")
+    }
+}
+
 on_command("infrun", Privilege.ADMIN_POWER) {
     player.toggleStorageBit(INFINITE_VARS_STORAGE, InfiniteVarsType.RUN)
     player.message("Infinite run: ${if (!player.hasStorageBit(INFINITE_VARS_STORAGE, InfiniteVarsType.RUN)) "<col=801700>disabled</col>" else "<col=178000>enabled</col>"}")
@@ -182,6 +191,16 @@ on_command("npc", Privilege.ADMIN_POWER) {
     }
 }
 
+on_command("removenpc", Privilege.ADMIN_POWER) {
+    val chunk = world.chunks.getOrCreate(player.tile)
+    val npc = chunk.getEntities<Npc>(player.tile, EntityType.NPC).firstOrNull()
+    if (npc != null) {
+        world.remove(npc)
+    } else {
+        player.message("No NPC found in tile.")
+    }
+}
+
 on_command("obj", Privilege.ADMIN_POWER) {
     val args = player.getCommandArgs()
     tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::obj 1</col>") { values ->
@@ -198,6 +217,16 @@ on_command("removeobj", Privilege.ADMIN_POWER) {
     val obj = chunk.getEntities<GameObject>(player.tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull()
     if (obj != null) {
         world.remove(obj)
+    } else {
+        player.message("No object found in tile.")
+    }
+}
+
+on_command("aboutobj", Privilege.ADMIN_POWER) {
+    val chunk = world.chunks.getOrCreate(player.tile)
+    val obj = chunk.getEntities<GameObject>(player.tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull()
+    if (obj != null) {
+        player.message("obj [id = ${obj.id}, type = ${obj.type}, rot = ${obj.rot}]")
     } else {
         player.message("No object found in tile.")
     }

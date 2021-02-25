@@ -58,6 +58,7 @@ class MessageEncoderSet {
         put(SynthSoundEncoder(), SynthSoundMessage::class.java)
         put(SoundAreaEncoder(), SoundAreaMessage::class.java)
         put(MidiSongEncoder(), MidiSongMessage::class.java)
+        put(MidiJingleEncoder(), MidiJingleMessage::class.java)
         put(OnDialogAbortEncoder(), TriggerOnDialogAbortMessage::class.java)
         put(UpdateRebootTimerEncoder(), UpdateRebootTimerMessage::class.java)
         put(MapAnimEncoder(), MapAnimMessage::class.java)

@@ -178,10 +178,10 @@ out-packets:
     type: FIXED
     opcode: 30
     structure:
-      - name: z
+      - name: x
         type: BYTE
         trans: ADD
-      - name: x
+      - name: z
         type: BYTE
         trans: SUBTRACT
 
@@ -479,6 +479,16 @@ out-packets:
       - name: id
         type: SHORT
         trans: ADD
+
+  - message: gg.rsmod.game.message.impl.MidiJingleMessage
+    type: FIXED
+    opcode: 15
+    structure:
+      - name: id
+        type: SHORT
+      - name: garbage_delay
+        order: INVERSED_MIDDLE
+        type: MEDIUM
 
   - message: gg.rsmod.game.message.impl.UpdateRunWeightMessage
     type: FIXED
@@ -1408,11 +1418,21 @@ in-packets:
     opcode: 20
     ignore: true
 
-  - message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: OPPLAYERT
+  - message: gg.rsmod.game.message.impl.OpPlayerTMessage
     type: FIXED
     opcode: 29
     length: 9
-    ignore: true
+    structure:
+      - name: player_index
+        type: SHORT
+      - name: keydown
+        type: BYTE
+        trans: SUBTRACT
+      - name: spell_child_index
+        type: SHORT
+        order: LITTLE
+      - name: component_hash
+        type: INT
 
   - message: gg.rsmod.game.message.impl.OpPlayer2Message
     type: FIXED

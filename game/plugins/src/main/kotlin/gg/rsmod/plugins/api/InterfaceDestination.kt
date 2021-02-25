@@ -37,30 +37,31 @@ enum class InterfaceDestination(val interfaceId: Int, val fixedChildId: Int, val
 
     MUSIC(interfaceId = 239, fixedChildId = 82, resizeChildId = 84, resizeListChildId = 84, fullscreenChildId = 23),
 
-    USERNAME(interfaceId = 163, fixedChildId = 20, resizeChildId = 11, resizeListChildId = 11, fullscreenChildId = 25),
+    PRIVATE_CHAT(interfaceId = 163, fixedChildId = 20, resizeChildId = 11, resizeListChildId = 11, fullscreenChildId = 25),
 
     MINI_MAP(interfaceId = 160, fixedChildId = 11, resizeChildId = 31, resizeListChildId = 31, fullscreenChildId = 26),
-
-    PVP_OVERLAY(interfaceId = -1, fixedChildId = 15, resizeChildId = 4, resizeListChildId = 4, fullscreenChildId = 24),
 
     MAIN_SCREEN(interfaceId = -1, fixedChildId = 23, resizeChildId = 15, resizeListChildId = 15, fullscreenChildId = 8,
             clickThrough = false),
 
-    TAB_AREA(interfaceId = -1, fixedChildId = 67, resizeChildId = 66, resizeListChildId = 66,
+    TAB_AREA(interfaceId = -1, fixedChildId = 67, resizeChildId = 69, resizeListChildId = 69,
             clickThrough = false),
 
     WALKABLE(interfaceId = -1, fixedChildId = 14, resizeChildId = 3, resizeListChildId = 3),
 
     WORLD_MAP(interfaceId = -1, fixedChildId = 24, resizeChildId = 16, resizeListChildId = 16, fullscreenChildId = 30),
 
-    WORLD_MAP_FULL(interfaceId = -1, fixedChildId = 27, resizeChildId = 27, resizeListChildId = 27, fullscreenChildId = 27, clickThrough = false);
+    WORLD_MAP_FULL(interfaceId = -1, fixedChildId = 27, resizeChildId = 27, resizeListChildId = 27, fullscreenChildId = 27, clickThrough = false),
+    // interface 90??
+    OVERLAY(interfaceId = -1, fixedChildId = 17, resizeChildId = 7, resizeListChildId = 7, fullscreenChildId = 24)
+    ;
 
     fun isSwitchable(): Boolean = when (this) {
         CHAT_BOX, MAIN_SCREEN, WALKABLE, TAB_AREA,
         ATTACK, SKILLS, QUEST_ROOT, INVENTORY, EQUIPMENT,
         PRAYER, MAGIC, CLAN_CHAT, ACCOUNT_MANAGEMENT,
-        SOCIAL, LOG_OUT, SETTINGS, EMOTES, MUSIC, PVP_OVERLAY,
-        USERNAME, MINI_MAP, XP_COUNTER, WORLD_MAP -> true
+        SOCIAL, LOG_OUT, SETTINGS, EMOTES, MUSIC, OVERLAY,
+        PRIVATE_CHAT, MINI_MAP, XP_COUNTER, WORLD_MAP -> true
         else -> false
     }
 

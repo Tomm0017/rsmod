@@ -266,7 +266,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
 
             groundItem.currentCycle++
 
-            if (groundItem.isPublic() && groundItem.currentCycle >= gameContext.gItemDespawnDelay) {
+            if (groundItem.isPublic() && groundItem.currentCycle >= gameContext.gItemDespawnDelay && groundItem.respawnCycles == -1) {
                 /*
                  * If the ground item is public and its cycle count has reached the
                  * despawn delay set by our game, we add it to our removal queue.

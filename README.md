@@ -1,4 +1,4 @@
-# RS Mod
+# RS Mod V1
 **RS Mod** is a server that is highly flexible and user-friendly. We allow the 
 developer to make and create any sort of plugin they wish without having to 
 modify the core game module. People without developing experience can have 

@@ -1,6 +1,25 @@
-package gg.rsmod.plugins.content.areas.edgeville.objs
+package gg.rsmod.plugins.content.areas.shared.objs
 
 on_obj_option(Objs.LEVER_26761, "pull") {
+    handleLeverInteraction {
+        moveTo(3154, 3924)
+        message("... and teleport into the Wilderness.")
+    }
+}
+on_obj_option(Objs.LEVER_1814, "pull") {
+    handleLeverInteraction {
+        moveTo(3154, 3924)
+        message("... and teleport into the Wilderness.")
+    }
+}
+on_obj_option(Objs.LEVER_9472, "pull") {
+    handleLeverInteraction {
+        moveTo(2561, 3311)
+        message("... and teleport to Ardougne.")
+    }
+}
+
+fun Plugin.handleLeverInteraction(onAnimationComplete: Player.() -> Unit) {
     val obj = player.getInteractingGameObj()
 
     player.queue {
@@ -26,8 +45,7 @@ on_obj_option(Objs.LEVER_26761, "pull") {
         wait(4)
 
         player.animate(-1)
-        player.moveTo(3154, 3924)
-        player.message("... and teleport into the Wilderness.")
+        onAnimationComplete(player)
         player.unlock()
     }
 }

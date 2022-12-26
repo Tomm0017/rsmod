@@ -1,124 +1,81 @@
 package gg.rsmod.game.model.queue
 
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.coroutine.cyclable.task.CyclableTask
+import gg.rsmod.game.model.coroutine.suspendable.step.SuspendableStep
+import gg.rsmod.game.model.coroutine.suspendable.step.impl.SuspendableStepImpl
+import gg.rsmod.game.model.coroutine.suspendable.condition.impl.*
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
-import gg.rsmod.game.model.queue.coroutine.*
 import mu.KLogging
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.coroutines.*
 
 /**
- * Represents a task that can be paused, or suspended, and resumed at any point
- * in the future.
+ * Re-implementation of the old [QueueTask] to implement the new [CyclableTask]
  *
- * @author Tom <rspsmods@gmail.com>
+ * @author Curtis Woodard <nbness2@gmail.com>
  */
-data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Unit> {
-
-    lateinit var coroutine: Continuation<Unit>
-
-    /**
-     * If the task's logic has already been invoked.
-     */
-    var invoked = false
-
-    /**
-     * A value that can be requested by a task, such as an input for dialogs.
-     */
-    var requestReturnValue: Any? = null
-
-    /**
-     * Represents an action that should be executed if, and only if, this task
-     * was terminated via [terminate].
-     */
-    var terminateAction: ((QueueTask).() -> Unit)? = null
-
-    /**
-     * The next [SuspendableStep], if any, that must be handled once a [SuspendableCondition]
-     * returns [SuspendableCondition.resume] as true.
-     */
-    private var nextStep: SuspendableStep? = null
-
-    /**
-     * The [CoroutineContext] implementation for our task.
-     */
+data class QueueTask(override val ctx: Any, override val priority: TaskPriority) : CyclableTask {
+    override var onResultException: (Throwable) -> Unit = { }
+    override val currentCycle: AtomicInteger = AtomicInteger(0)
+    override val lastCycle: AtomicInteger = AtomicInteger(0)
+    override lateinit var coroutine: Continuation<Unit>
+    override var invoked = false
+    override var requestReturnValue: Any? = null
+    override var terminateAction: (QueueTask).() -> Unit = { }
+    override var nextStep: SuspendableStep? = null
     override val context: CoroutineContext = EmptyCoroutineContext
 
-    /**
-     * When the [nextStep] [SuspendableCondition.resume] returns true, this
-     * method is called.
-     */
     override fun resumeWith(result: Result<Unit>) {
         nextStep = null
         result.exceptionOrNull()?.let { e -> logger.error("Error with plugin!", e) }
     }
 
-    /**
-     * The logic in each [SuspendableStep] must be game-thread-safe, so we use
-     * this method to keep them in-sync.
-     */
-    internal fun cycle() {
+    override fun cycle() {
         val next = nextStep ?: return
 
-        if (next.condition.resume()) {
+        if (next.predicate()) {
             next.continuation.resume(Unit)
             requestReturnValue = null
         }
     }
 
-    /**
-     * Terminate any further execution of this task, during any state,
-     * and invoke [terminateAction] if applicable (not null).
-     */
-    fun terminate() {
+    override fun terminate() {
         nextStep = null
         requestReturnValue = null
-        terminateAction?.invoke(this)
+        terminateAction(this)
     }
 
-    /**
-     * If the task has been "paused" (aka suspended).
-     */
-    fun suspended(): Boolean = nextStep != null
+    override fun suspended(): Boolean = nextStep != null
 
-    /**
-     * Wait for the specified amount of game cycles [cycles] before
-     * continuing the logic associated with this task.
-     */
+    suspend fun onCycle(cycle: Int): Unit = suspendCoroutine {
+        check(cycle > 0) { "Execution cycle must be greater than 0." }
+        check(cycle > lastCycle.get()) { "Execution cycle must be after the previous cycle: ${lastCycle.get()}" }
+        lastCycle.set(cycle)
+        nextStep = SuspendableStepImpl(AsynchronousCondition(cycle, currentCycle), it)
+    }
+
     suspend fun wait(cycles: Int): Unit = suspendCoroutine {
         check(cycles > 0) { "Wait cycles must be greater than 0." }
-        nextStep = SuspendableStep(WaitCondition(cycles), it)
+        lastCycle.set(currentCycle.get() + cycles)
+        nextStep = SuspendableStepImpl(SynchronousCondition(cycles), it)
     }
 
-    /**
-     * Wait for [predicate] to return true.
-     */
     suspend fun wait(predicate: () -> Boolean): Unit = suspendCoroutine {
-        nextStep = SuspendableStep(PredicateCondition { predicate() }, it)
+        nextStep = SuspendableStepImpl(PredicateCondition { predicate() }, it)
     }
 
-    /**
-     * Wait for our [ctx] to reach [tile]. Note that [ctx] MUST be an instance
-     * of [Pawn] and that the height of the [tile] and [Pawn.tile] must be equal,
-     * as well as the x and z coordinates.
-     */
-    suspend fun waitTile(tile: Tile): Unit = suspendCoroutine {
-        nextStep = SuspendableStep(TileCondition((ctx as Pawn).tile, tile), it)
+    suspend fun waitTile(tile: Tile, pawn: Pawn = ctx as Pawn): Unit = suspendCoroutine {
+        nextStep = SuspendableStepImpl(TileCondition(pawn, tile), it)
     }
 
-    /**
-     * Wait for our [ctx] as [Player] to close the [interfaceId].
-     */
     suspend fun waitInterfaceClose(interfaceId: Int): Unit = suspendCoroutine {
-        nextStep = SuspendableStep(PredicateCondition { !(ctx as Player).interfaces.isVisible(interfaceId) }, it)
+        nextStep = SuspendableStepImpl(PredicateCondition { !(ctx as Player).interfaces.isVisible(interfaceId) }, it)
     }
 
-    /**
-     * Wait for <strong>any</strong> return value to be available before
-     * continuing.
-     */
     suspend fun waitReturnValue(): Unit = suspendCoroutine {
-        nextStep = SuspendableStep(PredicateCondition { requestReturnValue != null }, it)
+        nextStep = SuspendableStepImpl(PredicateCondition { requestReturnValue != null }, it)
     }
 
     override fun equals(other: Any?): Boolean {

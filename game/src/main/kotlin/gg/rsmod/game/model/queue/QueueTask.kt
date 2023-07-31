@@ -102,8 +102,8 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
      * of [Pawn] and that the height of the [tile] and [Pawn.tile] must be equal,
      * as well as the x and z coordinates.
      */
-    suspend fun waitTile(tile: Tile): Unit = suspendCoroutine {
-        nextStep = SuspendableStep(TileCondition((ctx as Pawn).tile, tile), it)
+    suspend fun waitTile(tile: Tile, pawn: Pawn = ctx as Pawn): Unit = suspendCoroutine {
+        nextStep = SuspendableStep(TileCondition(pawn, tile), it)
     }
 
     /**

@@ -2,6 +2,7 @@ package gg.rsmod.game.model.queue.coroutine
 
 import com.google.common.base.MoreObjects
 import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.entity.Pawn
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -33,23 +34,23 @@ class WaitCondition(cycles: Int) : SuspendableCondition() {
 }
 
 /**
- * A [SuspendableCondition] that waits for [src] to possess the exact same
+ * A [SuspendableCondition] that waits for [pawn] to possess the exact same
  * coordinates as [dst] before permitting the coroutine to continue its logic.
  *
- * Note that the [src] and [dst] can't be the same coordinates if their height
+ * Note that the [pawn] and [dst] can't be the same coordinates if their height
  * does not match as well as their x and z coordinates.
  *
- * @param src
+ * @param pawn
  * The tile that must reach [dst] before the condition returns true.
  *
  * @param dst
  * The tile that must be reached by [dst].
  */
-class TileCondition(private val src: Tile, private val dst: Tile) : SuspendableCondition() {
+class TileCondition(private val pawn: Pawn, private val dst: Tile) : SuspendableCondition() {
 
-    override fun resume(): Boolean = src.sameAs(dst)
+    override fun resume(): Boolean = pawn.tile.sameAs(dst)
 
-    override fun toString(): String = MoreObjects.toStringHelper(this).add("src", src).add("dst", dst).toString()
+    override fun toString(): String = MoreObjects.toStringHelper(this).add("pawn", pawn).add("dst", dst).toString()
 }
 
 /**

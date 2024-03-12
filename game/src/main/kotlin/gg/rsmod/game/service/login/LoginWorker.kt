@@ -7,8 +7,8 @@ import gg.rsmod.game.service.world.WorldVerificationService
 import gg.rsmod.net.codec.login.LoginResponse
 import gg.rsmod.net.codec.login.LoginResultType
 import gg.rsmod.util.io.IsaacRandom
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.netty.channel.ChannelFutureListener
-import mu.KLogging
 
 /**
  * A worker for the [LoginService] that is responsible for handling the most
@@ -43,7 +43,7 @@ class LoginWorker(private val boss: LoginService, private val verificationServic
                             boss.successfulLogin(client, world, encodeRandom, decodeRandom)
                         } else {
                             request.login.channel.writeAndFlush(loginResult).addListener(ChannelFutureListener.CLOSE)
-                            logger.info("User '{}' login denied with code {}.", client.username, loginResult)
+                            logger.info { "${"User '{}' login denied with code {}."} ${client.username} $loginResult" }
                         }
                     }
                 } else {
@@ -54,13 +54,23 @@ class LoginWorker(private val boss: LoginService, private val verificationServic
                         else -> LoginResultType.COULD_NOT_COMPLETE_LOGIN
                     }
                     request.login.channel.writeAndFlush(errorCode).addListener(ChannelFutureListener.CLOSE)
-                    logger.info("User '{}' login denied with code {} and channel {}.", client.username, loadResult, client.channel)
+                    logger.info {
+                        "${"User '{}' login denied with code {} and channel {}."} ${
+                            arrayOf<Any?>(
+                                client.username,
+                                loadResult,
+                                client.channel
+                            )
+                        }"
+                    }
                 }
             } catch (e: Exception) {
-                logger.error("Error when handling request from ${request.login.channel}.", e)
+                logger.error(e) { "Error when handling request from ${request.login.channel}." }
             }
         }
     }
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

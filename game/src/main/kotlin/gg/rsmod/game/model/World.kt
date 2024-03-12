@@ -31,11 +31,11 @@ import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.game.sync.block.UpdateBlockSet
 import gg.rsmod.util.HuffmanCodec
 import gg.rsmod.util.ServerProperties
+import io.github.oshai.kotlinlogging.KotlinLogging
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import mu.KLogging
 import net.runelite.cache.IndexType
 import net.runelite.cache.fs.Store
 import java.io.File
@@ -225,7 +225,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
     internal fun cycle() {
         if (currentCycle++ >= Int.MAX_VALUE - 1) {
             currentCycle = 0
-            logger.info("World cycle has been reset.")
+            logger.info { "World cycle has been reset." }
         }
 
         /*
@@ -233,7 +233,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
          * the [timers] during its execution, which isn't uncommon.
          */
         val timersCopy = timers.getTimers().toMutableMap()
-        timersCopy.forEach { key, time ->
+        timersCopy.forEach { (key, time) ->
             if (time <= 0) {
                 plugins.executeWorldTimer(this, key)
                 if (!timers.has(key)) {
@@ -613,10 +613,16 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
             stopwatch.stop()
 
             services.add(service)
-            logger.info("Initiated service '{}' in {}ms.", service.javaClass.simpleName, stopwatch.elapsed(TimeUnit.MILLISECONDS))
+            logger.info {
+                "${"Initiated service '{}' in {}ms."} ${service.javaClass.simpleName} ${
+                    stopwatch.elapsed(
+                        TimeUnit.MILLISECONDS
+                    )
+                }"
+            }
         }
         services.forEach { s -> s.postLoad(server, this) }
-        logger.info("Loaded {} game services.", services.size)
+        logger.info { "${"Loaded {} game services."} ${services.size}" }
     }
 
     /**
@@ -641,8 +647,8 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
         services.forEach { it.bindNet(server, this) }
     }
 
-    companion object : KLogging() {
-
+    companion object {
+        val logger = KotlinLogging.logger{}
         /**
          * If the [rebootTimer] is active and is less than this value, we will
          * begin to reject any log-in.

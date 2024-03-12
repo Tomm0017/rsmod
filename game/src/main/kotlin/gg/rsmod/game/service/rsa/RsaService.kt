@@ -4,7 +4,7 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.io.pem.PemObject
 import org.bouncycastle.util.io.pem.PemReader
@@ -46,7 +46,7 @@ class RsaService : Service {
 
             val create = if (scanner.hasNext()) scanner.nextLine() in arrayOf("yes", "y", "true") else true
             if (create) {
-                logger.info("Generating RSA key pair...")
+                logger.info { "Generating RSA key pair..." }
                 createPair(bitCount = serviceProperties.getOrDefault("bit-count", 2048))
                 println("Please follow the instructions on console and continue once you've done so.")
                 scanner.next()
@@ -119,7 +119,9 @@ class RsaService : Service {
 
     fun getModulus(): BigInteger = modulus
 
-    companion object : KLogging() {
+    companion object {
+
+        private val logger = KotlinLogging.logger{}
 
         @JvmStatic
         fun main(args: Array<String>) {
@@ -136,7 +138,7 @@ class RsaService : Service {
                 Files.createDirectory(directory)
             }
 
-            logger.info("Generating RSA key pair...")
+            logger.info { "Generating RSA key pair..." }
             service.createPair(bitCount)
         }
     }

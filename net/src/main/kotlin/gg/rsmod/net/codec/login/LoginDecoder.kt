@@ -4,13 +4,13 @@ import gg.rsmod.net.codec.StatefulFrameDecoder
 import gg.rsmod.util.io.BufferUtils.readJagexString
 import gg.rsmod.util.io.BufferUtils.readString
 import gg.rsmod.util.io.Xtea
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
-import mu.KLogging
 import java.math.BigInteger
-import java.util.Arrays
+import java.util.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -78,7 +78,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
             if (!successfulEncryption) {
                 buf.resetReaderIndex()
                 buf.skipBytes(payloadLength)
-                logger.info("Channel '{}' login request rejected.", ctx.channel())
+                logger.info { "${"Channel '{}' login request rejected."} ${ctx.channel()}" }
                 ctx.writeResponse(LoginResultType.BAD_SESSION_ID)
                 return
             }
@@ -91,7 +91,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
             val previousXteaKeys = IntArray(4)
 
             if (reconnecting) {
-                for (i in 0 until previousXteaKeys.size) {
+                for (i in previousXteaKeys.indices) {
                     previousXteaKeys[i] = secureBuf.readInt()
                 }
 
@@ -119,7 +119,15 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
             if (reportedSeed != serverSeed) {
                 xteaBuf.resetReaderIndex()
                 xteaBuf.skipBytes(payloadLength)
-                logger.info("User '{}' login request seed mismatch [receivedSeed=$reportedSeed, expectedSeed=$serverSeed].", username, reportedSeed, serverSeed)
+                logger.info {
+                    "${"User '{}' login request seed mismatch [receivedSeed=$reportedSeed, expectedSeed=$serverSeed]."} ${
+                        arrayOf<Any?>(
+                            username,
+                            reportedSeed,
+                            serverSeed
+                        )
+                    }"
+                }
                 ctx.writeResponse(LoginResultType.BAD_SESSION_ID)
                 return
             }
@@ -166,7 +174,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
                 if (crcs[i] != cacheCrcs[i]) {
                     buf.resetReaderIndex()
                     buf.skipBytes(payloadLength)
-                    logger.info { "User '$username' login request crc mismatch [requestCrc=${Arrays.toString(crcs)}, cacheCrc=${Arrays.toString(cacheCrcs)}]." }
+                    logger.info { "User '$username' login request crc mismatch [requestCrc=${crcs.contentToString()}, cacheCrc=${cacheCrcs.contentToString()}]." }
                     ctx.writeResponse(LoginResultType.REVISION_MISMATCH)
                     return
                 }
@@ -176,7 +184,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
 
             val request = LoginRequest(channel = ctx.channel(), username = username,
                     password = password ?: "", revision = serverRevision, xteaKeys = xteaKeys,
-                    resizableClient = clientResizable, auth = authCode, uuid = "".toUpperCase(), clientWidth = clientWidth, clientHeight = clientHeight,
+                    resizableClient = clientResizable, auth = authCode, uuid = "".uppercase(Locale.getDefault()), clientWidth = clientWidth, clientHeight = clientHeight,
                     reconnecting = reconnecting)
             out.add(request)
         }
@@ -194,7 +202,8 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
         return Unpooled.wrappedBuffer(Xtea.decipher(xteaKeys, data, 0, data.size))
     }
 
-    companion object : KLogging() {
+    companion object {
+        private val logger = KotlinLogging.logger{}
         private const val LOGIN_OPCODE = 16
         private const val RECONNECT_OPCODE = 18
     }

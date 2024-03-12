@@ -9,8 +9,8 @@ import gg.rsmod.plugins.service.worldlist.io.WorldListChannelHandler
 import gg.rsmod.plugins.service.worldlist.io.WorldListChannelInitializer
 import gg.rsmod.plugins.service.worldlist.model.WorldEntry
 import gg.rsmod.util.ServerProperties
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.netty.channel.ChannelFuture
-import mu.KLogging
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -58,7 +58,7 @@ class WorldListService : Service {
 
         // If the world configuration file doesn't exist, spit out a warning and do nothing
         if (!Files.exists(path)) {
-            logger.warn("World list configuration file does not exist: $path")
+            logger.warn { "World list configuration file does not exist: $path" }
             return
         }
 
@@ -89,7 +89,7 @@ class WorldListService : Service {
         val bootstrap = server.bootstrap.clone()
         bootstrap.childHandler(WorldListChannelInitializer(handler))
         channelFuture = bootstrap.bind(port).syncUninterruptibly()
-        logger.info("World list service listening on port $port")
+        logger.info { "World list service listening on port $port" }
     }
 
     /**
@@ -128,5 +128,7 @@ class WorldListService : Service {
         worldEntry.players--
     }
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

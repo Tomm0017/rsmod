@@ -11,11 +11,11 @@ import gg.rsmod.game.service.GameService
 import gg.rsmod.game.service.rsa.RsaService
 import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.util.ServerProperties
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
-import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.net.InetSocketAddress
 import java.nio.file.Files
@@ -59,8 +59,8 @@ class Server {
         /*
          * Inform the time it took to load the API related logic.
          */
-        logger.info("${getApiName()} loaded up in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms.")
-        logger.info("Visit our site ${getApiSite()} to purchase & sell plugins.")
+        logger.info { "${getApiName()} loaded up in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms." }
+        logger.info { "Visit our site ${getApiSite()} to purchase & sell plugins." }
     }
 
     /**
@@ -162,7 +162,13 @@ class Server {
          */
         individualStopwatch.reset().start()
         world.privileges.load(gameProperties)
-        logger.info("Loaded {} privilege levels in {}ms.", world.privileges.size(), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
+        logger.info {
+            "${"Loaded {} privilege levels in {}ms."} ${world.privileges.size()} ${
+                individualStopwatch.elapsed(
+                    TimeUnit.MILLISECONDS
+                )
+            }"
+        }
 
         /*
          * Load the plugins for game content.
@@ -171,7 +177,13 @@ class Server {
         world.plugins.init(
                 server = this, world = world,
                 jarPluginsDirectory = gameProperties.getOrDefault("plugin-packed-path", "./plugins"))
-        logger.info("Loaded {} plugins in {}ms.", DecimalFormat().format(world.plugins.getPluginCount()), individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
+        logger.info {
+            "${"Loaded {} plugins in {}ms."} ${DecimalFormat().format(world.plugins.getPluginCount())} ${
+                individualStopwatch.elapsed(
+                    TimeUnit.MILLISECONDS
+                )
+            }"
+        }
 
         /*
          * Post load world.
@@ -181,7 +193,7 @@ class Server {
         /*
          * Inform the time it took to load up all non-network logic.
          */
-        logger.info("${gameProperties.get<String>("name")!!} loaded up in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms.")
+        logger.info { "${gameProperties.get<String>("name")!!} loaded up in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms." }
 
         /*
          * Set our bootstrap's groups and parameters.
@@ -220,5 +232,7 @@ class Server {
 
     fun getApiSite(): String = apiProperties.getOrDefault("org-site", "rspsmods.com")
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

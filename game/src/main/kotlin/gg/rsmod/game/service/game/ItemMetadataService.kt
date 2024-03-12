@@ -10,8 +10,8 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
+import io.github.oshai.kotlinlogging.KotlinLogging
 import it.unimi.dsi.fastutil.bytes.Byte2ByteOpenHashMap
-import mu.KLogging
 import java.io.BufferedReader
 import java.io.FileNotFoundException
 import java.nio.file.Files
@@ -259,5 +259,7 @@ class ItemMetadataService : Service {
     private data class SkillRequirement(@JsonProperty("skill") val skill: String?,
                                         @JsonProperty("level") val level: Int?)
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

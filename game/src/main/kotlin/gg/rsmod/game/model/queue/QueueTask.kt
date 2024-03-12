@@ -4,7 +4,7 @@ import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.coroutine.*
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlin.coroutines.*
 
 /**
@@ -50,7 +50,7 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
      */
     override fun resumeWith(result: Result<Unit>) {
         nextStep = null
-        result.exceptionOrNull()?.let { e -> logger.error("Error with plugin!", e) }
+        result.exceptionOrNull()?.let { e -> logger.error(e) { "Error with plugin!" } }
     }
 
     /**
@@ -134,7 +134,8 @@ data class QueueTask(val ctx: Any, val priority: TaskPriority) : Continuation<Un
 
     class EmptyReturnValue
 
-    companion object : KLogging() {
+    companion object {
+        private val logger = KotlinLogging.logger{}
         val EMPTY_RETURN_VALUE = EmptyReturnValue()
     }
 }

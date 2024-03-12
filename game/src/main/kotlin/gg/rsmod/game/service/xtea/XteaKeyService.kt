@@ -5,8 +5,8 @@ import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
+import io.github.oshai.kotlinlogging.KotlinLogging
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
-import mu.KLogging
 import net.runelite.cache.IndexType
 import org.apache.commons.io.FilenameUtils
 import java.io.FileNotFoundException
@@ -98,8 +98,14 @@ class XteaKeyService : Service {
         world.xteaKeyService = this
 
         val validKeys = totalRegions - missingKeys.size
-        logger.info("Loaded {} / {} ({}%) XTEA keys.", validKeys, totalRegions,
-                String.format("%.2f", (validKeys.toDouble() * 100.0) / totalRegions.toDouble()))
+        logger.info {
+            "${"Loaded {} / {} ({}%) XTEA keys."} ${
+                arrayOf<Any?>(
+                    validKeys, totalRegions,
+                    String.format("%.2f", (validKeys.toDouble() * 100.0) / totalRegions.toDouble())
+                )
+            }"
+        }
     }
 
     private fun loadSingleFile(path: Path) {
@@ -145,7 +151,8 @@ class XteaKeyService : Service {
         }
     }
 
-    companion object : KLogging() {
+    companion object {
+        private val logger = KotlinLogging.logger{}
         val EMPTY_KEYS = intArrayOf(0, 0, 0, 0)
     }
 }

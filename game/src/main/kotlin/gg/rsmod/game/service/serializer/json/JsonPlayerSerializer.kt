@@ -16,7 +16,7 @@ import gg.rsmod.game.service.serializer.PlayerLoadResult
 import gg.rsmod.game.service.serializer.PlayerSerializerService
 import gg.rsmod.net.codec.login.LoginRequest
 import gg.rsmod.util.ServerProperties
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.mindrot.jbcrypt.BCrypt
 import java.nio.file.Files
 import java.nio.file.Path
@@ -37,7 +37,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
         path = Paths.get(serviceProperties.getOrDefault("path", "../data/saves/"))
         if (!Files.exists(path)) {
             Files.createDirectory(path)
-            logger.info("Path does not exist: $path, creating directory...")
+            logger.info { "Path does not exist: $path, creating directory..." }
         }
     }
 
@@ -69,7 +69,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                  * If the [request] is a [LoginRequest.reconnecting] request, we
                  * verify that the login xteas match from our previous session.
                  */
-                if (!Arrays.equals(data.previousXteas, request.xteaKeys)) {
+                if (!data.previousXteas.contentEquals(request.xteaKeys)) {
                     return PlayerLoadResult.INVALID_RECONNECTION
                 }
             }
@@ -178,5 +178,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                                @JsonProperty("xp") val xp: Double,
                                @JsonProperty("lvl") val lvl: Int)
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

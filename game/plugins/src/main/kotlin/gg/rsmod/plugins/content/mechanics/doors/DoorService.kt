@@ -7,8 +7,8 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.plugins.api.ext.appendToString
 import gg.rsmod.util.ServerProperties
+import io.github.oshai.kotlinlogging.KotlinLogging
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import mu.KLogging
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -47,5 +47,7 @@ class DoorService : Service {
     override fun terminate(server: Server, world: World) {
     }
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

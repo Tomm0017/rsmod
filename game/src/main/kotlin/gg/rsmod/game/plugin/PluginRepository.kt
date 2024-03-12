@@ -18,6 +18,7 @@ import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
 import io.github.classgraph.ClassGraph
+import io.github.oshai.kotlinlogging.KotlinLogging
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
@@ -25,11 +26,11 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
-import mu.KLogging
 import java.net.URLClassLoader
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.*
 
 /**
  * A repository that is responsible for storing and executing plugins, as well
@@ -520,7 +521,7 @@ class PluginRepository(val world: World) {
 
     fun bindCombat(plugin: Plugin.() -> Unit) {
         if (combatPlugin != null) {
-            logger.error("Combat plugin is already bound")
+            logger.error { "Combat plugin is already bound" }
             throw IllegalStateException("Combat plugin is already bound")
         }
         combatPlugin = plugin
@@ -534,7 +535,7 @@ class PluginRepository(val world: World) {
 
     fun bindNpcCombat(npc: Int, plugin: Plugin.() -> Unit) {
         if (npcCombatPlugins.containsKey(npc)) {
-            logger.error("Npc is already bound to a combat plugin: $npc")
+            logger.error { "Npc is already bound to a combat plugin: $npc" }
             throw IllegalStateException("Npc is already bound to a combat plugin: $npc")
         }
         npcCombatPlugins[npc] = plugin
@@ -596,7 +597,7 @@ class PluginRepository(val world: World) {
     fun bindSpellOnNpc(parent: Int, child: Int, plugin: Plugin.() -> Unit) {
         val hash = (parent shl 16) or child
         if (spellOnNpcPlugins.containsKey(hash)) {
-            logger.error("Spell is already bound to a plugin: [$parent, $child]")
+            logger.error { "Spell is already bound to a plugin: [$parent, $child]" }
             throw IllegalStateException("Spell is already bound to a plugin: [$parent, $child]")
         }
         spellOnNpcPlugins[hash] = plugin
@@ -612,7 +613,7 @@ class PluginRepository(val world: World) {
 
     fun bindWindowStatus(plugin: Plugin.() -> Unit) {
         if (windowStatusPlugin != null) {
-            logger.error("Window status is already bound to a plugin")
+            logger.error { "Window status is already bound to a plugin" }
             throw IllegalStateException("Window status is already bound to a plugin")
         }
         windowStatusPlugin = plugin
@@ -628,7 +629,7 @@ class PluginRepository(val world: World) {
 
     fun bindModalClose(plugin: Plugin.() -> Unit) {
         if (closeModalPlugin != null) {
-            logger.error("Modal close is already bound to a plugin")
+            logger.error { "Modal close is already bound to a plugin" }
             throw IllegalStateException("Modal close is already bound to a plugin")
         }
         closeModalPlugin = plugin
@@ -644,7 +645,7 @@ class PluginRepository(val world: World) {
 
     fun setMenuOpenedCheck(plugin: Plugin.() -> Boolean) {
         if (isMenuOpenedPlugin != null) {
-            logger.error("\"Menu Opened\" is already bound to a plugin")
+            logger.error { "\"Menu Opened\" is already bound to a plugin" }
             throw IllegalStateException("\"Menu Opened\" is already bound to a plugin")
         }
         isMenuOpenedPlugin = plugin
@@ -744,7 +745,7 @@ class PluginRepository(val world: World) {
 
     fun bindTimer(key: TimerKey, plugin: Plugin.() -> Unit) {
         if (timerPlugins.containsKey(key)) {
-            logger.error("Timer key is already bound to a plugin: $key")
+            logger.error { "Timer key is already bound to a plugin: $key" }
             throw IllegalStateException("Timer key is already bound to a plugin: $key")
         }
         timerPlugins[key] = plugin
@@ -771,7 +772,7 @@ class PluginRepository(val world: World) {
 
     fun bindInterfaceOpen(interfaceId: Int, plugin: Plugin.() -> Unit) {
         if (interfaceOpenPlugins.containsKey(interfaceId)) {
-            logger.error("Component id is already bound to a plugin: $interfaceId")
+            logger.error { "Component id is already bound to a plugin: $interfaceId" }
             throw IllegalStateException("Component id is already bound to a plugin: $interfaceId")
         }
         interfaceOpenPlugins[interfaceId] = plugin
@@ -789,7 +790,7 @@ class PluginRepository(val world: World) {
 
     fun bindInterfaceClose(interfaceId: Int, plugin: Plugin.() -> Unit) {
         if (interfaceClosePlugins.containsKey(interfaceId)) {
-            logger.error("Component id is already bound to a plugin: $interfaceId")
+            logger.error { "Component id is already bound to a plugin: $interfaceId" }
             throw IllegalStateException("Component id is already bound to a plugin: $interfaceId")
         }
         interfaceClosePlugins[interfaceId] = plugin
@@ -806,9 +807,9 @@ class PluginRepository(val world: World) {
     }
 
     fun bindCommand(command: String, powerRequired: String? = null, plugin: Plugin.() -> Unit) {
-        val cmd = command.toLowerCase()
+        val cmd = command.lowercase(Locale.getDefault())
         if (commandPlugins.containsKey(cmd)) {
-            logger.error("Command is already bound to a plugin: $cmd")
+            logger.error { "Command is already bound to a plugin: $cmd" }
             throw IllegalStateException("Command is already bound to a plugin: $cmd")
         }
         commandPlugins[cmd] = Pair(powerRequired, plugin)
@@ -840,7 +841,7 @@ class PluginRepository(val world: World) {
     fun bindButton(parent: Int, child: Int, plugin: Plugin.() -> Unit) {
         val hash = (parent shl 16) or child
         if (buttonPlugins.containsKey(hash)) {
-            logger.error("Button hash already bound to a plugin: [parent=$parent, child=$child]")
+            logger.error { "Button hash already bound to a plugin: [parent=$parent, child=$child]" }
             throw IllegalStateException("Button hash already bound to a plugin: [parent=$parent, child=$child]")
         }
         buttonPlugins[hash] = plugin
@@ -904,7 +905,7 @@ class PluginRepository(val world: World) {
 
     fun bindEquipItemRequirement(item: Int, plugin: Plugin.() -> Boolean) {
         if (equipItemRequirementPlugins.containsKey(item)) {
-            logger.error("Equip item requirement already bound to a plugin: [item=$item]")
+            logger.error { "Equip item requirement already bound to a plugin: [item=$item]" }
             throw IllegalStateException("Equip item requirement already bound to a plugin: [item=$item]")
         }
         equipItemRequirementPlugins[item] = plugin
@@ -928,7 +929,7 @@ class PluginRepository(val world: World) {
 
     fun bindEquipItem(item: Int, plugin: Plugin.() -> Unit) {
         if (equipItemPlugins.containsKey(item)) {
-            logger.error("Equip item already bound to a plugin: [item=$item]")
+            logger.error { "Equip item already bound to a plugin: [item=$item]" }
             throw IllegalStateException("Equip item already bound to a plugin: [item=$item]")
         }
         equipItemPlugins[item] = plugin
@@ -946,7 +947,7 @@ class PluginRepository(val world: World) {
 
     fun bindUnequipItem(item: Int, plugin: Plugin.() -> Unit) {
         if (unequipItemPlugins.containsKey(item)) {
-            logger.error("Unequip item already bound to a plugin: [item=$item]")
+            logger.error { "Unequip item already bound to a plugin: [item=$item]" }
             throw IllegalStateException("Unequip item already bound to a plugin: [item=$item]")
         }
         unequipItemPlugins[item] = plugin
@@ -1030,7 +1031,7 @@ class PluginRepository(val world: World) {
     fun bindItem(id: Int, opt: Int, plugin: Plugin.() -> Unit) {
         val optMap = itemPlugins[id] ?: Int2ObjectOpenHashMap(1)
         if (optMap.containsKey(opt)) {
-            logger.error("Item is already bound to a plugin: $id [opt=$opt]")
+            logger.error { "Item is already bound to a plugin: $id [opt=$opt]" }
             throw IllegalStateException("Item is already bound to a plugin: $id [opt=$opt]")
         }
         optMap[opt] = plugin
@@ -1048,7 +1049,7 @@ class PluginRepository(val world: World) {
     fun bindGroundItem(id: Int, opt: Int, plugin: Plugin.() -> Unit) {
         val optMap = groundItemPlugins[id] ?: Int2ObjectOpenHashMap(1)
         if (optMap.containsKey(opt)) {
-            logger.error("Ground item is already bound to a plugin: $id [opt=$opt]")
+            logger.error { "Ground item is already bound to a plugin: $id [opt=$opt]" }
             throw IllegalStateException("Ground item is already bound to a plugin: $id [opt=$opt]")
         }
         optMap[opt] = plugin
@@ -1080,7 +1081,7 @@ class PluginRepository(val world: World) {
 
     fun bindCanItemDrop(item: Int, plugin: Plugin.() -> Boolean) {
         if (canDropItemPlugins.containsKey(item)) {
-            logger.error("Item already bound to a 'can-drop' plugin: $item")
+            logger.error { "Item already bound to a 'can-drop' plugin: $item" }
             throw IllegalStateException("Item already bound to a 'can-drop' plugin: $item")
         }
         canDropItemPlugins[item] = plugin
@@ -1098,7 +1099,7 @@ class PluginRepository(val world: World) {
         val plugins = itemOnObjectPlugins[item] ?: Int2ObjectOpenHashMap(1)
         if (plugins.containsKey(obj)) {
             val error = "Item is already bound to an object plugin: $item [obj=$obj]"
-            logger.error(error)
+            logger.error { error }
             throw IllegalStateException(error)
         }
 
@@ -1182,7 +1183,7 @@ class PluginRepository(val world: World) {
     fun bindObject(obj: Int, opt: Int, lineOfSightDistance: Int = -1, plugin: Plugin.() -> Unit) {
         val optMap = objectPlugins[obj] ?: Int2ObjectOpenHashMap(1)
         if (optMap.containsKey(opt)) {
-            logger.error("Object is already bound to a plugin: $obj [opt=$opt]")
+            logger.error { "Object is already bound to a plugin: $obj [opt=$opt]" }
             throw IllegalStateException("Object is already bound to a plugin: $obj [opt=$opt]")
         }
 
@@ -1205,7 +1206,7 @@ class PluginRepository(val world: World) {
     fun bindNpc(npc: Int, opt: Int, lineOfSightDistance: Int = -1, plugin: Plugin.() -> Unit) {
         val optMap = npcPlugins[npc] ?: Int2ObjectOpenHashMap(1)
         if (optMap.containsKey(opt)) {
-            logger.error("Npc is already bound to a plugin: $npc [opt=$opt]")
+            logger.error { "Npc is already bound to a plugin: $npc [opt=$opt]" }
             throw IllegalStateException("Npc is already bound to a plugin: $npc [opt=$opt]")
         }
 
@@ -1253,5 +1254,7 @@ class PluginRepository(val world: World) {
         }
     }
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

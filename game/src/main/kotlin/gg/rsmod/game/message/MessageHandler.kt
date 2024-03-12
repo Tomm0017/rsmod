@@ -3,7 +3,7 @@ package gg.rsmod.game.message
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.log.LoggerService
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 /**
  * A [MessageHandler] is responsible for executing [Message] logic on the
@@ -29,10 +29,12 @@ interface MessageHandler<T : Message> {
             if (logService != null) {
                 logService.logPacket(client, message)
             } else {
-                logger.trace(message)
+                logger.trace { message }
             }
         }
     }
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

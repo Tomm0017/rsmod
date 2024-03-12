@@ -2,10 +2,10 @@ package gg.rsmod.net.codec.filestore
 
 import gg.rsmod.net.codec.StatefulFrameDecoder
 import gg.rsmod.net.codec.login.LoginResultType
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
-import mu.KLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -59,7 +59,8 @@ class FilestoreDecoder(private val serverRevision: Int) : StatefulFrameDecoder<F
         }
     }
 
-    companion object : KLogging() {
+    companion object {
+        private val logger = KotlinLogging.logger{}
         private const val ARCHIVE_REQUEST_URGENT = 0
         private const val ARCHIVE_REQUEST_NEUTRAL = 1
         private const val CLIENT_INIT_GAME = 2

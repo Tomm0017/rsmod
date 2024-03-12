@@ -6,12 +6,12 @@ import gg.rsmod.game.system.LoginSystem
 import gg.rsmod.game.system.ServerSystem
 import gg.rsmod.net.codec.handshake.HandshakeMessage
 import gg.rsmod.net.codec.handshake.HandshakeType
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelInboundHandlerAdapter
 import io.netty.handler.timeout.ReadTimeoutException
 import io.netty.util.AttributeKey
-import mu.KLogging
 import net.runelite.cache.fs.Store
 
 /**
@@ -46,23 +46,23 @@ class GameHandler(private val filestore: Store, private val world: World) : Chan
                 }
             }
         } catch (e: Exception) {
-            logger.error("Error reading message $msg from channel ${ctx.channel()}.", e)
+            logger.error(e) { "${"Error reading message $msg from channel ${ctx.channel()}."}" }
         }
     }
 
     override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
         if (cause.stackTrace.isEmpty() || cause.stackTrace[0].methodName != "read0") {
             if (cause is ReadTimeoutException) {
-                logger.info("Channel disconnected due to read timeout: {}", ctx.channel())
+                logger.info { "${"Channel disconnected due to read timeout: {}"} ${ctx.channel()}" }
             } else {
-                logger.error("Channel threw an exception: ${ctx.channel()}", cause)
+                logger.error(cause) { "${"Channel threw an exception: ${ctx.channel()}"}" }
             }
         }
         ctx.channel().close()
     }
 
-    companion object : KLogging() {
-
+    companion object {
+        private val logger = KotlinLogging.logger{}
         /**
          * An [AttributeKey] that stores the current [ServerSystem] that
          * will intercept messages sent by the [io.netty.channel.Channel].

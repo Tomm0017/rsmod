@@ -8,7 +8,7 @@ import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.runelite.cache.util.Namer
 import java.io.PrintWriter
 import java.nio.file.Files
@@ -34,9 +34,9 @@ class DumpEntityIdService : Service {
 
             if (!Files.exists(outputPath)) {
                 Files.createDirectory(outputPath)
-                logger.info("Output path does not exist. Creating directory: $outputPath")
+                logger.info { "Output path does not exist. Creating directory: $outputPath" }
             } else if (!Files.isDirectory(outputPath)) {
-                logger.error("Output path specified is a file - it must be a directory!")
+                logger.error { "Output path specified is a file - it must be a directory!" }
             }
         }
     }
@@ -127,5 +127,7 @@ class DumpEntityIdService : Service {
         writer.close()
     }
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

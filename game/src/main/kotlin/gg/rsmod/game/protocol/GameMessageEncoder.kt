@@ -4,9 +4,9 @@ import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.MessageEncoderSet
 import gg.rsmod.game.message.MessageStructureSet
 import gg.rsmod.net.packet.GamePacketBuilder
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToMessageEncoder
-import mu.KLogging
 
 /**
  * An implementation of [MessageToMessageEncoder] which is responsible for taking
@@ -26,12 +26,12 @@ class GameMessageEncoder(private val encoders: MessageEncoderSet, private val st
         val structure = structures.get(msg.javaClass)
 
         if (encoder == null) {
-            logger.error("No encoder found for message $msg")
+            logger.error { "No encoder found for message $msg" }
             return
         }
 
         if (structure == null) {
-            logger.error("No packet structure found for message $msg")
+            logger.error { "No packet structure found for message $msg" }
             return
         }
 
@@ -40,5 +40,7 @@ class GameMessageEncoder(private val encoders: MessageEncoderSet, private val st
         out.add(builder.toGamePacket())
     }
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

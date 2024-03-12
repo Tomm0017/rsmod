@@ -5,10 +5,10 @@ import gg.rsmod.net.packet.GamePacket
 import gg.rsmod.net.packet.IPacketMetadata
 import gg.rsmod.net.packet.PacketType
 import gg.rsmod.util.io.IsaacRandom
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.netty.buffer.ByteBuf
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelHandlerContext
-import mu.KLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -36,7 +36,7 @@ class GamePacketDecoder(private val random: IsaacRandom?, private val packetMeta
             opcode = buf.readUnsignedByte().toInt() - (random?.nextInt() ?: 0) and 0xFF
             val packetType = packetMetadata.getType(opcode)
             if (packetType == null) {
-                logger.warn("Channel {} sent message with no valid metadata: {}.", ctx.channel(), opcode)
+                logger.warn { "${"Channel {} sent message with no valid metadata: {}."} ${ctx.channel()} $opcode" }
                 buf.skipBytes(buf.readableBytes())
                 return
             }
@@ -84,5 +84,7 @@ class GamePacketDecoder(private val random: IsaacRandom?, private val packetMeta
         }
     }
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

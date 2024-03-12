@@ -16,10 +16,10 @@ import gg.rsmod.game.task.sequential.SequentialPlayerCycleTask
 import gg.rsmod.game.task.sequential.SequentialPlayerPostCycleTask
 import gg.rsmod.game.task.sequential.SequentialSynchronizationTask
 import gg.rsmod.util.ServerProperties
+import io.github.oshai.kotlinlogging.KotlinLogging
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
-import mu.KLogging
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -157,7 +157,7 @@ class GameService : Service {
                     SequentialSynchronizationTask(),
                     SequentialPlayerPostCycleTask()
             ))
-            logger.info("Sequential tasks preference enabled. {} tasks will be handled per cycle.", tasks.size)
+            logger.info { "${"Sequential tasks preference enabled. {} tasks will be handled per cycle."} ${tasks.size}" }
         } else {
             val executor = Executors.newFixedThreadPool(processors, ThreadFactoryBuilder()
                     .setNameFormat("game-task-thread")
@@ -207,7 +207,7 @@ class GameService : Service {
             try {
                 job()
             } catch (e: Exception) {
-                logger.error("Error executing game-thread job.", e)
+                logger.error(e) { "Error executing game-thread job." }
             }
         }
         /*
@@ -226,7 +226,7 @@ class GameService : Service {
             try {
                 task.execute(world, this)
             } catch (e: Exception) {
-                logger.error("Error with task ${task.javaClass.simpleName}.", e)
+                logger.error(e) { "Error with task ${task.javaClass.simpleName}." }
             }
             taskTimes[task.javaClass] = System.currentTimeMillis() - taskStart
         }
@@ -275,11 +275,24 @@ class GameService : Service {
              * R: reserved memory, in megabytes
              * M: max memory available, in megabytes
              */
-            logger.info("[Cycle time: {}ms] [Entities: {}p / {}n] [Map: {}c / {}r / {}i] [Queues: {}p / {}n / {}w] [Mem usage: U={}MB / R={}MB / M={}MB].",
-                    cycleTime / TICKS_PER_DEBUG_LOG, world.players.count(), world.npcs.count(),
-                    world.chunks.getActiveChunkCount(), world.chunks.getActiveRegionCount(), world.instanceAllocator.activeMapCount,
-                    totalPlayerQueues, totalNpcQueues, totalWorldQueues,
-                    (totalMemory - freeMemory) / (1024 * 1024), totalMemory / (1024 * 1024), maxMemory / (1024 * 1024))
+            logger.info {
+                "${"[Cycle time: {}ms] [Entities: {}p / {}n] [Map: {}c / {}r / {}i] [Queues: {}p / {}n / {}w] [Mem usage: U={}MB / R={}MB / M={}MB]."} ${
+                    arrayOf<Any?>(
+                        cycleTime / TICKS_PER_DEBUG_LOG,
+                        world.players.count(),
+                        world.npcs.count(),
+                        world.chunks.getActiveChunkCount(),
+                        world.chunks.getActiveRegionCount(),
+                        world.instanceAllocator.activeMapCount,
+                        totalPlayerQueues,
+                        totalNpcQueues,
+                        totalWorldQueues,
+                        (totalMemory - freeMemory) / (1024 * 1024),
+                        totalMemory / (1024 * 1024),
+                        maxMemory / (1024 * 1024)
+                    )
+                }"
+            }
             debugTick = 0
             cycleTime = 0
         }
@@ -298,7 +311,8 @@ class GameService : Service {
         }
     }
 
-    companion object : KLogging() {
+    companion object {
+        private val logger = KotlinLogging.logger{}
 
         /**
          * The amount of ticks that must go by for debug info to be logged.

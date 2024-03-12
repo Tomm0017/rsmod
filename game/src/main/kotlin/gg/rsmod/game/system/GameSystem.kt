@@ -7,9 +7,9 @@ import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.GameService
 import gg.rsmod.net.packet.GamePacket
 import gg.rsmod.net.packet.GamePacketReader
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext
-import mu.KLogging
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.BlockingQueue
 
@@ -27,12 +27,12 @@ class GameSystem(channel: Channel, val world: World, val client: Client, val ser
         if (msg is GamePacket) {
             val decoder = service.messageDecoders.get(msg.opcode)
             if (decoder == null) {
-                logger.warn("No decoder found for message $msg.")
+                logger.warn { "No decoder found for message $msg." }
                 return
             }
             val handler = service.messageDecoders.getHandler(msg.opcode)
             if (handler == null) {
-                logger.warn("No handler found for message $msg")
+                logger.warn { "No handler found for message $msg" }
                 return
             }
             val message = decoder.decode(msg.opcode, service.messageStructures.get(msg.opcode)!!, GamePacketReader(msg))
@@ -47,7 +47,7 @@ class GameSystem(channel: Channel, val world: World, val client: Client, val ser
 
     override fun terminate() {
         client.requestLogout()
-        logger.info("User '{}' requested disconnection from channel {}.", client.username, channel)
+        logger.info { "${"User '{}' requested disconnection from channel {}."} ${client.username} $channel" }
     }
 
     fun handleMessages() {
@@ -73,5 +73,7 @@ class GameSystem(channel: Channel, val world: World, val client: Client, val ser
 
     private data class MessageHandle(val message: Message, val handler: MessageHandler<Message>, val opcode: Int, val length: Int)
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

@@ -2,7 +2,7 @@ package gg.rsmod.game.message.encoder
 
 import gg.rsmod.game.message.MessageEncoder
 import gg.rsmod.game.message.impl.RunClientScriptMessage
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -38,7 +38,7 @@ class RunClientScriptEncoder : MessageEncoder<RunClientScriptMessage>() {
                         args.add((value.toInt() shr 8).toByte())
                         args.add(value.toByte())
                     }
-                    else -> logger.error("Invalid argument type {} for script {}.", value::class.java, message.id)
+                    else -> logger.error { "${"Invalid argument type {} for script {}."} ${value::class.java} ${message.id}" }
                 }
             }
             args.toByteArray()
@@ -46,5 +46,7 @@ class RunClientScriptEncoder : MessageEncoder<RunClientScriptMessage>() {
         else -> throw Exception("Unhandled value key.")
     }
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

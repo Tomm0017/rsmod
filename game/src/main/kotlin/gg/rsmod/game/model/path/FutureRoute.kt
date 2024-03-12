@@ -2,7 +2,8 @@ package gg.rsmod.game.model.path
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
 import gg.rsmod.game.model.MovementQueue
-import mu.KLogging
+
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.util.concurrent.Executors
 
 /**
@@ -30,8 +31,9 @@ class FutureRoute private constructor(val strategy: PathFindingStrategy, val ste
 
     lateinit var route: Route
 
-    companion object : KLogging() {
+    companion object {
 
+        private val logger = KotlinLogging.logger{}
         /**
          * Future routes are handled on a separate thread. This should be defined
          * else-where, but for now we'll keep it here!

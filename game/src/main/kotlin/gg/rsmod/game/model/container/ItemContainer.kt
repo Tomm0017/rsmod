@@ -5,7 +5,7 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.item.SlotItem
-import mu.KLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 /**
  * An [ItemContainer] represents a collection of ordered [Item]s.
@@ -493,5 +493,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
         dirty = true
     }
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

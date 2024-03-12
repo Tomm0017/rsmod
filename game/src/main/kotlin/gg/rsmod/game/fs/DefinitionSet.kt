@@ -9,10 +9,10 @@ import gg.rsmod.game.model.collision.CollisionUpdate
 import gg.rsmod.game.model.entity.StaticObject
 import gg.rsmod.game.model.region.ChunkSet
 import gg.rsmod.game.service.xtea.XteaKeyService
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.netty.buffer.Unpooled
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
-import mu.KLogging
 import net.runelite.cache.ConfigType
 import net.runelite.cache.IndexType
 import net.runelite.cache.definitions.loaders.LocationsLoader
@@ -41,43 +41,43 @@ class DefinitionSet {
          * Load [AnimDef]s.
          */
         load(store, AnimDef::class.java)
-        logger.info("Loaded ${getCount(AnimDef::class.java)} animation definitions.")
+        logger.info { "Loaded ${getCount(AnimDef::class.java)} animation definitions." }
 
         /*
          * Load [VarpDef]s.
          */
         load(store, VarpDef::class.java)
-        logger.info("Loaded ${getCount(VarpDef::class.java)} varp definitions.")
+        logger.info { "Loaded ${getCount(VarpDef::class.java)} varp definitions." }
 
         /*
          * Load [VarbitDef]s.
          */
         load(store, VarbitDef::class.java)
-        logger.info("Loaded ${getCount(VarbitDef::class.java)} varbit definitions.")
+        logger.info { "Loaded ${getCount(VarbitDef::class.java)} varbit definitions." }
 
         /*
          * Load [EnumDef]s.
          */
         load(store, EnumDef::class.java)
-        logger.info("Loaded ${getCount(EnumDef::class.java)} enum definitions.")
+        logger.info { "Loaded ${getCount(EnumDef::class.java)} enum definitions." }
 
         /*
          * Load [NpcDef]s.
          */
         load(store, NpcDef::class.java)
-        logger.info("Loaded ${getCount(NpcDef::class.java)} npc definitions.")
+        logger.info { "Loaded ${getCount(NpcDef::class.java)} npc definitions." }
 
         /*
          * Load [ItemDef]s.
          */
         load(store, ItemDef::class.java)
-        logger.info("Loaded ${getCount(ItemDef::class.java)} item definitions.")
+        logger.info { "Loaded ${getCount(ItemDef::class.java)} item definitions." }
 
         /*
          * Load [ObjectDef]s.
          */
         load(store, ObjectDef::class.java)
-        logger.info("Loaded ${getCount(ObjectDef::class.java)} object definitions.")
+        logger.info { "Loaded ${getCount(ObjectDef::class.java)} object definitions." }
     }
 
     fun loadRegions(world: World, chunks: ChunkSet, regions: IntArray) {
@@ -237,10 +237,12 @@ class DefinitionSet {
             }
             return true
         } catch (e: IOException) {
-            logger.error("Could not decrypt map region {}.", id)
+            logger.error { "${"Could not decrypt map region {}."} $id" }
             return false
         }
     }
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

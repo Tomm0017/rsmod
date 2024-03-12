@@ -1,10 +1,9 @@
 package gg.rsmod.game.service.cache
 
 import gg.rsmod.util.ServerProperties
+import io.github.oshai.kotlinlogging.KotlinLogging
 import me.tongfei.progressbar.ProgressBar
 import me.tongfei.progressbar.ProgressBarStyle
-import mu.KotlinLogging
-import org.yaml.snakeyaml.Yaml
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.URI

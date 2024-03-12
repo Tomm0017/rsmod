@@ -5,8 +5,8 @@ import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
+import io.github.oshai.kotlinlogging.KotlinLogging
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
-import mu.KLogging
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -27,7 +27,7 @@ class ItemMarketValueService : Service {
                 }
             }
         }
-        logger.info("Loaded {} item values.", values.size)
+        logger.info { "${"Loaded {} item values."} ${values.size}" }
     }
 
     override fun postLoad(server: Server, world: World) {
@@ -47,5 +47,7 @@ class ItemMarketValueService : Service {
         return 0
     }
 
-    companion object : KLogging()
+    companion object {
+        private val logger = KotlinLogging.logger{}
+    }
 }

@@ -27,7 +27,7 @@ class XteaKeyService : Service {
         get() = keys.keys.toIntArray()
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
-        val path = Paths.get(serviceProperties.getOrDefault("path", "./data/xteas/"))
+        val path = Paths.get(serviceProperties.getOrDefault("path", "../data/xteas/"))
         if (!Files.exists(path)) {
             throw FileNotFoundException("Path does not exist. $path")
         }

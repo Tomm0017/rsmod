@@ -23,7 +23,7 @@ import java.nio.file.Paths
 class ItemMetadataService : Service {
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
-        val path = Paths.get(serviceProperties.getOrDefault("path", "./data/cfg/items.yml"))
+        val path = Paths.get(serviceProperties.getOrDefault("path", "../data/cfg/items.yml"))
         if (!Files.exists(path)) {
             throw FileNotFoundException("Path does not exist. $path")
         }

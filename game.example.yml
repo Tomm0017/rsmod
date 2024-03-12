@@ -1,8 +1,10 @@
 # Game values
 # You want to edit these to fit your game.
-name: "RS Mod Server"
+name: "OpenRune"
 game-port: 43594
 revision: 181
+# Cache Build from OpenRS2
+cache-build: 101
 
 # The coordinates for the home location.
 home-x: 3087
@@ -42,8 +44,8 @@ services:
   - class: gg.rsmod.game.service.game.ObjectMetadataService
 
   - class: gg.rsmod.game.service.game.DumpEntityIdService
-    cache-path: "./data/cache/"
-    output-path: "./game/plugins/src/main/kotlin/gg/rsmod/plugins/api/cfg/"
+    cache-path: "../data/cache/"
+    output-path: "../game/plugins/src/main/kotlin/gg/rsmod/plugins/api/cfg/"
     dump: false
 
   - class: gg.rsmod.game.service.rsa.RsaService

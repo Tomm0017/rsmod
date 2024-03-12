@@ -36,7 +36,7 @@ class RsaService : Service {
     private var radix = -1
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
-        keyPath = Paths.get(serviceProperties.getOrDefault("path", "./data/rsa/key.pem"))
+        keyPath = Paths.get(serviceProperties.getOrDefault("path", "../data/rsa/key.pem"))
         radix = serviceProperties.getOrDefault("radix", 16)
 
         if (!Files.exists(keyPath)) {

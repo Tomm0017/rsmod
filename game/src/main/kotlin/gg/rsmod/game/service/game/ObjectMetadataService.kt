@@ -25,7 +25,7 @@ class ObjectMetadataService : Service {
     private lateinit var path: Path
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
-        path = Paths.get(serviceProperties.getOrDefault("path", "./data/cfg/objs.yml"))
+        path = Paths.get(serviceProperties.getOrDefault("path", "../data/cfg/objs.yml"))
         if (!Files.exists(path)) {
             throw FileNotFoundException("Path does not exist. $path")
         }

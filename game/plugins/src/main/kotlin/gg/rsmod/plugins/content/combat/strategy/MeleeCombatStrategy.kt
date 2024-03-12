@@ -73,6 +73,8 @@ object MeleeCombatStrategy : CombatStrategy {
                 player.addXp(Skills.DEFENCE, modDamage * 1.33 * multiplier)
                 player.addXp(Skills.HITPOINTS, modDamage * 1.33 * multiplier)
             }
+
+            else -> throw IllegalStateException("Unknown $mode in MeleeCombatStrategy.")
         }
     }
 }

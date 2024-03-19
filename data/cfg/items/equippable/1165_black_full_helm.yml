@@ -1,0 +1,33 @@
+---
+id: 1165
+name: "Black full helm"
+examine: "A full face helmet."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: true
+cost: 1056
+lowalch: 422
+highalch: 633
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: -3
+  defenceStab: 12
+  defenceSlash: 13
+  defenceCrush: 10
+  defenceMagic: -1
+  defenceRanged: 12
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 10

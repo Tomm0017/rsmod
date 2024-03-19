@@ -1,0 +1,31 @@
+---
+id: 11122
+name: "Combat bracelet(2)"
+examine: "A handy way to get around."
+tradeable: true
+weight: 0.25
+tradeable_on_ge: false
+cost: 21040
+lowalch: 8416
+highalch: 12624
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 7
+  attackSlash: 7
+  attackCrush: 7
+  attackMagic: 3
+  attackRanged: 7
+  defenceStab: 5
+  defenceSlash: 5
+  defenceCrush: 5
+  defenceMagic: 3
+  defenceRanged: 5
+  meleeStrength: 6
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

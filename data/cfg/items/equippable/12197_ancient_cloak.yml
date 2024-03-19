@@ -1,0 +1,33 @@
+---
+id: 12197
+name: "Ancient cloak"
+examine: "An Ancient cloak."
+tradeable: true
+weight: 0.003
+tradeable_on_ge: true
+cost: 2000
+lowalch: 800
+highalch: 1200
+buy_limit: 8
+equipment:
+  prayer: 3
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 1
+  attackRanged: 0
+  defenceStab: 3
+  defenceSlash: 3
+  defenceCrush: 3
+  defenceMagic: 3
+  defenceRanged: 3
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "prayer"
+    level: 40

@@ -1,0 +1,31 @@
+---
+id: 278
+name: "Cattleprod"
+examine: "A sharp cattleprod."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 3
+lowalch: 1
+highalch: 1
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 8337
+  attackSpeed: 4
+  attackStab: 4
+  attackSlash: 2
+  attackCrush: -4
+  attackMagic: 1
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 1
+  defenceRanged: 0
+  meleeStrength: 3
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

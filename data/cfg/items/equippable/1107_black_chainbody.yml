@@ -1,0 +1,33 @@
+---
+id: 1107
+name: "Black chainbody"
+examine: "A series of connected metal rings."
+tradeable: true
+weight: 6.803
+tradeable_on_ge: true
+cost: 1440
+lowalch: 576
+highalch: 864
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -15
+  attackRanged: 0
+  defenceStab: 22
+  defenceSlash: 32
+  defenceCrush: 39
+  defenceMagic: -3
+  defenceRanged: 24
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 10

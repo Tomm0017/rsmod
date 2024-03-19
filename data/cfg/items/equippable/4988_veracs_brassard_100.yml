@@ -1,0 +1,33 @@
+---
+id: 4988
+name: "Verac's brassard 100"
+examine: "Verac the Defiled's brassard."
+tradeable: false
+weight: 4.989
+tradeable_on_ge: false
+cost: 280000
+lowalch: 112000
+highalch: 168000
+buy_limit: null
+equipment:
+  prayer: 5
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: -2
+  defenceStab: 81
+  defenceSlash: 95
+  defenceCrush: 85
+  defenceMagic: 0
+  defenceRanged: 81
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 70

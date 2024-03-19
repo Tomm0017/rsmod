@@ -1,0 +1,31 @@
+---
+id: 27194
+name: "Ancestral robe bottom"
+examine: "The robe bottoms of a powerful sorceress from a bygone era."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: false
+cost: 55
+lowalch: 22
+highalch: 33
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 26
+  attackRanged: -7
+  defenceStab: 27
+  defenceSlash: 24
+  defenceCrush: 30
+  defenceMagic: 20
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 2
+  renderAnimations: null
+  skillReqs: null

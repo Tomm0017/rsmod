@@ -1,0 +1,31 @@
+---
+id: 2952
+name: "Wolfbane"
+examine: "A silver dagger that can prevent werewolves changing form."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 300
+lowalch: 120
+highalch: 180
+buy_limit: null
+equipment:
+  prayer: 5
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 11
+  attackSlash: 5
+  attackCrush: -4
+  attackMagic: 1
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 1
+  defenceRanged: 0
+  meleeStrength: 10
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

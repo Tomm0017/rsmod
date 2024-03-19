@@ -1,0 +1,31 @@
+---
+id: 23354
+name: "Amulet of power (t)"
+examine: "An enchanted diamond amulet that looks good."
+tradeable: true
+weight: 0.01
+tradeable_on_ge: true
+cost: 4025
+lowalch: 1610
+highalch: 2415
+buy_limit: 5
+equipment:
+  prayer: 1
+  equipSlot: "neck"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 6
+  attackSlash: 6
+  attackCrush: 6
+  attackMagic: 6
+  attackRanged: 6
+  defenceStab: 6
+  defenceSlash: 6
+  defenceCrush: 6
+  defenceMagic: 6
+  defenceRanged: 6
+  meleeStrength: 6
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

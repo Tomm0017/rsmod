@@ -1,0 +1,33 @@
+---
+id: 20756
+name: "Hill giant club"
+examine: "A brutal weapon popular among giants."
+tradeable: true
+weight: 3.628
+tradeable_on_ge: true
+cost: 60000
+lowalch: 24000
+highalch: 36000
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 7
+  attackStab: -4
+  attackSlash: 50
+  attackCrush: 65
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: -1
+  meleeStrength: 70
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 40

@@ -1,0 +1,33 @@
+---
+id: 12213
+name: "Bronze kiteshield (g)"
+examine: "Bronze kiteshield with gold trim."
+tradeable: true
+weight: 5.443
+tradeable_on_ge: true
+cost: 64
+lowalch: 25
+highalch: 38
+buy_limit: 4
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -8
+  attackRanged: -3
+  defenceStab: 5
+  defenceSlash: 7
+  defenceCrush: 6
+  defenceMagic: -1
+  defenceRanged: 6
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 1

@@ -1,0 +1,31 @@
+---
+id: 27001
+name: "Void knight robe (l)(or)"
+examine: "Void knight robes plucked from the shattered abyss."
+tradeable: false
+weight: 8.164
+tradeable_on_ge: false
+cost: 45000
+lowalch: 18000
+highalch: 27000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 30
+  defenceSlash: 30
+  defenceCrush: 30
+  defenceMagic: 30
+  defenceRanged: 30
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,42 @@
+---
+id: 3122
+name: "Granite shield"
+examine: "A solid stone shield."
+tradeable: true
+weight: 6.803
+tradeable_on_ge: true
+cost: 56000
+lowalch: 22400
+highalch: 33600
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: 0
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -12
+  attackRanged: -8
+  defenceStab: 40
+  defenceSlash: 42
+  defenceCrush: 38
+  defenceMagic: 0
+  defenceRanged: 65
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "defence"
+    level: 50
+  - skill: "strength"
+    level: 50

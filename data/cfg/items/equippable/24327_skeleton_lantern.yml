@@ -1,0 +1,31 @@
+---
+id: 24327
+name: "Skeleton lantern"
+examine: "Alas... I'm sure someone knew him well."
+tradeable: false
+weight: 0.07
+tradeable_on_ge: false
+cost: 0
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 18
+  attackSpeed: 4
+  attackStab: -100
+  attackSlash: -100
+  attackCrush: -50
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: -10
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

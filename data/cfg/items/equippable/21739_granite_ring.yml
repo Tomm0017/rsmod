@@ -1,0 +1,35 @@
+---
+id: 21739
+name: "Granite ring"
+examine: "A solid ring."
+tradeable: true
+weight: 3.0
+tradeable_on_ge: true
+cost: 15000
+lowalch: 6000
+highalch: 9000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "ring"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 2
+  defenceSlash: 2
+  defenceCrush: 2
+  defenceMagic: -2
+  defenceRanged: 8
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "strength"
+    level: 50
+  - skill: "defence"
+    level: 50

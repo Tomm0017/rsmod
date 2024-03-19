@@ -1,0 +1,41 @@
+---
+id: 19675
+name: "Arclight"
+examine: "The magical sword 'Silverlight', enhanced with the blood of Agrith-Naar\
+  \ and ancient shards."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 500
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 9
+  attackSpeed: 4
+  attackStab: 10
+  attackSlash: 38
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 3
+  defenceCrush: 2
+  defenceMagic: 2
+  defenceRanged: 0
+  meleeStrength: 8
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 809
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 75

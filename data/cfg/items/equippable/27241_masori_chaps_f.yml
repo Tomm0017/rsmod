@@ -1,0 +1,31 @@
+---
+id: 27241
+name: "Masori chaps (f)"
+examine: "Fortified armour once worn by a powerful ranger."
+tradeable: true
+weight: 8.5
+tradeable_on_ge: true
+cost: 1300000
+lowalch: 520000
+highalch: 780000
+buy_limit: null
+equipment:
+  prayer: 1
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -2
+  attackRanged: 27
+  defenceStab: 35
+  defenceSlash: 30
+  defenceCrush: 39
+  defenceMagic: 46
+  defenceRanged: 37
+  meleeStrength: 0
+  rangedStrength: 2
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

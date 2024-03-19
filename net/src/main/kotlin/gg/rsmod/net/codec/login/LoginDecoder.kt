@@ -1,7 +1,10 @@
 package gg.rsmod.net.codec.login
 
 import gg.rsmod.net.codec.StatefulFrameDecoder
+import gg.rsmod.util.io.BufferUtils.readIntIME
 import gg.rsmod.util.io.BufferUtils.readJagexString
+import gg.rsmod.util.io.BufferUtils.readIntLE
+import gg.rsmod.util.io.BufferUtils.readIntME
 import gg.rsmod.util.io.BufferUtils.readString
 import gg.rsmod.util.io.Xtea
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -10,7 +13,6 @@ import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import java.math.BigInteger
-import java.util.*
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -54,7 +56,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
             if (buf.readableBytes() >= size) {
 
                 val revision
-                        = buf.readInt()
+                    = buf.readInt()
                 buf.readInt() // always 1
                 buf.readUnsignedByte() // client type
                 /**
@@ -187,17 +189,33 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
         readBytes(data)
         return Unpooled.wrappedBuffer(Xtea.decipher(xteaKeys, data, 0, data.size))
     }
+    /**
+     * switch based on incoming CRCorder
+     */
+    private fun decodeCRCs(xteaBuf: ByteBuf): IntArray {
+        val crcs = IntArray(cacheCrcs.size)
+        for(i in CRCorder.indices){
+            when(val idx = CRCorder[i]){
+                9,17,10,13,6,12,5,8,1 -> crcs[idx] = xteaBuf.readIntME()
+                20,11,3,15,19 -> crcs[idx] = xteaBuf.readIntLE()
+                18,4,7 -> crcs[idx] = xteaBuf.readInt()
+                0,2,14 -> crcs[idx] = xteaBuf.readIntIME()
+            }
+        }
+
+        return crcs
+    }
 
     /**
      * As of revision 190 the client now sends the CRCs out of order
      * and with varying byte orders
      */
-    companion object {
-        private val logger = KotlinLogging.logger{}
-        private const val LOGIN_OPCODE = 16
-        private const val RECONNECT_OPCODE = 18
-        private val CRCorder = intArrayOf(
-            9,20,17,10,13,6,12,18,11,5,3,4,0,2,14,15,19,8,1,7
-        )
+     companion object {
+         private val logger = KotlinLogging.logger{}
+         private const val LOGIN_OPCODE = 16
+         private const val RECONNECT_OPCODE = 18
+         private val CRCorder = intArrayOf(
+             9,20,17,10,13,6,12,18,11,5,3,4,0,2,14,15,19,8,1,7
+         )
     }
 }

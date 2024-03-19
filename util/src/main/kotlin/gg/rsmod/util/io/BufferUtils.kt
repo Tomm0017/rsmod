@@ -6,6 +6,12 @@ import io.netty.buffer.ByteBuf
  * @author Tom <rspsmods@gmail.com>
  */
 object BufferUtils {
+    fun ByteBuf.toArray(length: Int = readableBytes()): ByteArray {
+        val bytes = ByteArray(length)
+        duplicate().readBytes(bytes)
+        return bytes
+    }
+
     fun ByteBuf.readString(): String {
         if (isReadable) {
             val start = readerIndex()
@@ -37,4 +43,47 @@ object BufferUtils {
             return ""
         }
     }
+
+    /**
+     * Gets a 32-bit integer at the current {@code readerIndex}
+     * in Litte endian format (DCBA)
+     * and increases the {@code readerIndex} by {@code 4} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 4}
+     *
+     * Note| this method now is natively implemented in netty and shouldn't be needed
+     *       commented out for posterity and to keep it from showing in code completion
+     */
+    fun ByteBuf.readIntLE(): Int {
+        if(readableBytes() < 4) throw IndexOutOfBoundsException("buffer does not contain enough bytes to read an int")
+        return (readByte().toInt() and 0xFF) + ((readByte().toInt() and 0xFF) shl 8) + ((readByte().toInt() and 0xFF) shl 16) + ((readByte().toInt() and 0xFF) shl 24)
+    }
+
+    /**
+     * Gets a 32-bit integer at the current {@code readerIndex}
+     * in Inverse Middle endian format (BADC)
+     * and increases the {@code readerIndex} by {@code 4} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 4}
+     */
+    fun ByteBuf.readIntIME(): Int {
+        if(readableBytes() < 4) throw IndexOutOfBoundsException("buffer does not contain enough bytes to read an int")
+        return ((readByte().toInt() and 0xFF) shl 16) + ((readByte().toInt() and 0xFF) shl 24) + (readByte().toInt() and 0xFF) + ((readByte().toInt() and 0xFF) shl 8)
+    }
+
+    /**
+     * Gets a 32-bit integer at the current {@code readerIndex}
+     * in Middle endian format (CDAB)
+     * and increases the {@code readerIndex} by {@code 4} in this buffer.
+     *
+     * @throws IndexOutOfBoundsException
+     *         if {@code this.readableBytes} is less than {@code 4}
+     */
+    fun ByteBuf.readIntME(): Int {
+        if(readableBytes() < 4) throw IndexOutOfBoundsException("buffer does not contain enough bytes to read an int")
+        return ((readByte().toInt() and 0xFF) shl 8) + (readByte().toInt() and 0xFF) + ((readByte().toInt() and 0xFF) shl 24) + ((readByte().toInt() and 0xFF) shl 16)
+    }
+
 }

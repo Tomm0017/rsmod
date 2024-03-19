@@ -1,0 +1,33 @@
+---
+id: 4506
+name: "Decorative helm"
+examine: "A very decorative helm."
+tradeable: false
+weight: 1.36
+tradeable_on_ge: false
+cost: 780
+lowalch: 312
+highalch: 468
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -3
+  attackRanged: 0
+  defenceStab: 10
+  defenceSlash: 11
+  defenceCrush: 9
+  defenceMagic: -1
+  defenceRanged: 10
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 5

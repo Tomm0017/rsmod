@@ -1,0 +1,31 @@
+---
+id: 24395
+name: "Twisted cane"
+examine: "A cane of the twisted relic hunter."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 1000
+lowalch: 400
+highalch: 600
+buy_limit: 10
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 16
+  attackSpeed: 5
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

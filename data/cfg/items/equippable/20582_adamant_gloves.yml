@@ -1,0 +1,31 @@
+---
+id: 20582
+name: "Adamant gloves"
+examine: "A pair of nice gloves."
+tradeable: false
+weight: 0.226
+tradeable_on_ge: false
+cost: 550
+lowalch: 220
+highalch: 330
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 7
+  attackSlash: 7
+  attackCrush: 7
+  attackMagic: 4
+  attackRanged: 7
+  defenceStab: 7
+  defenceSlash: 7
+  defenceCrush: 7
+  defenceMagic: 4
+  defenceRanged: 7
+  meleeStrength: 7
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

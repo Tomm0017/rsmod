@@ -1,0 +1,33 @@
+---
+id: 12375
+name: "Black cane"
+examine: "A ruby topped cane."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 600
+lowalch: 240
+highalch: 360
+buy_limit: 4
+equipment:
+  prayer: 2
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 8
+  attackSlash: -2
+  attackCrush: 16
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 13
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 10

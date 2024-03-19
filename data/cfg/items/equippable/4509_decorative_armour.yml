@@ -1,0 +1,33 @@
+---
+id: 4509
+name: "Decorative armour"
+examine: "Very decorative armour."
+tradeable: false
+weight: 8.618
+tradeable_on_ge: false
+cost: 12800
+lowalch: 5120
+highalch: 7680
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -30
+  attackRanged: -15
+  defenceStab: 65
+  defenceSlash: 63
+  defenceCrush: 55
+  defenceMagic: -6
+  defenceRanged: 63
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 30

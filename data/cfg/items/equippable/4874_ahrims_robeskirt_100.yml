@@ -1,0 +1,35 @@
+---
+id: 4874
+name: "Ahrim's robeskirt 100"
+examine: "Ahrim the Blighted's armoured robe skirt."
+tradeable: false
+weight: 11.339
+tradeable_on_ge: false
+cost: 47000
+lowalch: 18800
+highalch: 28200
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 22
+  attackRanged: -7
+  defenceStab: 33
+  defenceSlash: 30
+  defenceCrush: 36
+  defenceMagic: 22
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "magic"
+    level: 70
+  - skill: "defence"
+    level: 70

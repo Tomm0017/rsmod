@@ -1,0 +1,33 @@
+---
+id: 19997
+name: "Holy wraps"
+examine: "Holy handwear!"
+tradeable: true
+weight: 0.5
+tradeable_on_ge: true
+cost: 9600
+lowalch: 3840
+highalch: 5760
+buy_limit: 4
+equipment:
+  prayer: 3
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "prayer"
+    level: 31

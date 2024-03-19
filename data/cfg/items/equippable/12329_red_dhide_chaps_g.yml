@@ -1,0 +1,33 @@
+---
+id: 12329
+name: "Red d'hide chaps (g)"
+examine: "Made from 100% real dragonhide. With colourful trim!"
+tradeable: true
+weight: 5.443
+tradeable_on_ge: true
+cost: 5180
+lowalch: 2072
+highalch: 3108
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -10
+  attackRanged: 14
+  defenceStab: 15
+  defenceSlash: 18
+  defenceCrush: 22
+  defenceMagic: 18
+  defenceRanged: 20
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 60

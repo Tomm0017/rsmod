@@ -1,0 +1,33 @@
+---
+id: 1151
+name: "Black med helm"
+examine: "A medium sized helmet."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 576
+lowalch: 230
+highalch: 345
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -3
+  attackRanged: 0
+  defenceStab: 9
+  defenceSlash: 10
+  defenceCrush: 8
+  defenceMagic: -1
+  defenceRanged: 9
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 10

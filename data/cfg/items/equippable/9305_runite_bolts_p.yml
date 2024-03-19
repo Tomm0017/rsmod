@@ -1,0 +1,33 @@
+---
+id: 9305
+name: "Runite bolts (p++)"
+examine: "Super poisoned runite bolts."
+tradeable: true
+weight: 0.0
+tradeable_on_ge: true
+cost: 300
+lowalch: 120
+highalch: 180
+buy_limit: 11000
+equipment:
+  prayer: 0
+  equipSlot: "ammo"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 115
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 61

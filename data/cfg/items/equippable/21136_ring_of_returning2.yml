@@ -1,0 +1,31 @@
+---
+id: 21136
+name: "Ring of returning(2)"
+examine: "This ring returns you to your spawn point."
+tradeable: true
+weight: 0.006
+tradeable_on_ge: false
+cost: 1275
+lowalch: 510
+highalch: 765
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "ring"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

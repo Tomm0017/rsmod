@@ -1,0 +1,35 @@
+---
+id: 12327
+name: "Red d'hide body (g)"
+examine: "Made from 100% real dragonhide. With colourful trim!"
+tradeable: true
+weight: 6.803
+tradeable_on_ge: true
+cost: 11230
+lowalch: 4492
+highalch: 6738
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -15
+  attackRanged: 25
+  defenceStab: 26
+  defenceSlash: 34
+  defenceCrush: 36
+  defenceMagic: 36
+  defenceRanged: 45
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 60
+  - skill: "defence"
+    level: 40

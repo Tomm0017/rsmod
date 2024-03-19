@@ -1,0 +1,33 @@
+---
+id: 6524
+name: "Toktz-ket-xil"
+examine: "A spiked shield of obsidian."
+tradeable: true
+weight: 3.628
+tradeable_on_ge: true
+cost: 45000
+lowalch: 18000
+highalch: 27000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -12
+  attackRanged: -8
+  defenceStab: 40
+  defenceSlash: 42
+  defenceCrush: 38
+  defenceMagic: 0
+  defenceRanged: 65
+  meleeStrength: 5
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 60

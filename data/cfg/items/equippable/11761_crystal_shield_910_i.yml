@@ -1,0 +1,35 @@
+---
+id: 11761
+name: "Crystal shield 9/10 (i)"
+examine: "A nice sturdy crystal shield."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: false
+cost: 1
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -10
+  attackRanged: -10
+  defenceStab: 51
+  defenceSlash: 54
+  defenceCrush: 53
+  defenceMagic: 0
+  defenceRanged: 80
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "agility"
+    level: 50
+  - skill: "defence"
+    level: 70

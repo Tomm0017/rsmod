@@ -1,0 +1,33 @@
+---
+id: 24617
+name: "Vesta's blighted longsword"
+examine: "Blighted so it can fight only in the Wilderness on Target worlds."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 800000
+lowalch: 320000
+highalch: 480000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 9
+  attackSpeed: 5
+  attackStab: 106
+  attackSlash: 121
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 1
+  defenceSlash: 4
+  defenceCrush: 3
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 118
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 75

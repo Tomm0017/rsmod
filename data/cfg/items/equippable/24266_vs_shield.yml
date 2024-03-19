@@ -1,0 +1,33 @@
+---
+id: 24266
+name: "V's shield"
+examine: "A recreation of V's mighty shield."
+tradeable: false
+weight: 2.267
+tradeable_on_ge: false
+cost: 50000
+lowalch: 20000
+highalch: 30000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 27
+  defenceSlash: 31
+  defenceCrush: 29
+  defenceMagic: 5
+  defenceRanged: 29
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

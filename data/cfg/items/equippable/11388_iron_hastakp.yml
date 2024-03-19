@@ -1,0 +1,33 @@
+---
+id: 11388
+name: "Iron hasta(kp)"
+examine: "A karambwan poison-tipped, one-handed iron hasta."
+tradeable: false
+weight: 2.267
+tradeable_on_ge: false
+cost: 91
+lowalch: 36
+highalch: 54
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 8
+  attackSlash: 8
+  attackCrush: 8
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: -2
+  defenceSlash: -2
+  defenceCrush: -2
+  defenceMagic: 0
+  defenceRanged: -2
+  meleeStrength: 10
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 1

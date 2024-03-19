@@ -1,0 +1,37 @@
+---
+id: 23675
+name: "Crystal axe (inactive)"
+examine: "A very powerful axe."
+tradeable: false
+weight: 0.907
+tradeable_on_ge: false
+cost: 520000
+lowalch: 208000
+highalch: 312000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 1
+  attackSpeed: 5
+  attackStab: -2
+  attackSlash: 38
+  attackCrush: 32
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 42
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "woodcutting"
+    level: 70
+  - skill: "agility"
+    level: 50
+  - skill: "attack"
+    level: 70

@@ -1,6 +1,6 @@
 package gg.rsmod.game.action
 
-import gg.rsmod.game.fs.def.ItemDef
+import dev.openrune.cache.CacheManager.item
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 
@@ -60,7 +60,7 @@ object EquipAction {
     }
 
     fun equip(p: Player, item: Item, inventorySlot: Int = -1): Result {
-        val def = p.world.definitions.get(ItemDef::class.java, item.id)
+        val def = item(item.id)
         val plugins = p.world.plugins
 
         // Resets interaction when an item is equipped.
@@ -84,7 +84,7 @@ object EquipAction {
                 val skill = entry.key.toInt()
                 val level = entry.value
 
-                if (p.getSkills().getBaseLevel(skill) < level) {
+                if (p.getSkills().getMaxLevel(skill) < level) {
                     val skillName = SKILL_NAMES[skill]
                     val prefix = if ("aeiou".indexOf(Character.toLowerCase(skillName[0])) != -1) "an" else "a"
                     p.writeMessage("You are not high enough level to use this item.")
@@ -130,7 +130,7 @@ object EquipAction {
 
             if (equipType != -1 && equipType != equipSlot) {
                 /*
-                 * [org.alter.game.fs.def.ItemDef.equipType] counts as a 'secondary'
+                 * [gg.rsmod.game.fs.def.ItemDef.equipType] counts as a 'secondary'
                  * equipment slot, which should be unequipped as well.
                  *
                  * For example, 2h swords have an equipment type of 5, which is also
@@ -147,7 +147,7 @@ object EquipAction {
              */
             for (i in 0 until p.equipment.capacity) {
                 val equip = p.equipment[i] ?: continue
-                val otherDef = p.world.definitions.get(ItemDef::class.java, equip.id)
+                val otherDef = item(equip.id)
                 if (otherDef.equipType == equipSlot && otherDef.equipType != 0) {
                     unequip.add(i)
                 }
@@ -199,10 +199,6 @@ object EquipAction {
                         p.equipment[slot] = null
                     }
                     onItemUnequip(p, equipmentId, slot)
-                }
-
-                if (def.equipSound != null) {
-                    p.playSound(def.equipSound!!)
                 }
 
                 p.equipment[equipSlot] = newEquippedItem

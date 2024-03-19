@@ -1,0 +1,33 @@
+---
+id: 11407
+name: "Adamant hasta(p)"
+examine: "A poison-tipped, one-handed adamantite hasta."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: true
+cost: 2080
+lowalch: 832
+highalch: 1248
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 24
+  attackSlash: 24
+  attackCrush: 24
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: -6
+  defenceSlash: -7
+  defenceCrush: -5
+  defenceMagic: 0
+  defenceRanged: -6
+  meleeStrength: 28
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 30

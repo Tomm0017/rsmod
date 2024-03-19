@@ -1,0 +1,33 @@
+---
+id: 1241
+name: "Steel spear"
+examine: "A steel tipped spear."
+tradeable: true
+weight: 2.267
+tradeable_on_ge: true
+cost: 325
+lowalch: 130
+highalch: 195
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 12
+  attackSlash: 12
+  attackCrush: 12
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 1
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 12
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 5

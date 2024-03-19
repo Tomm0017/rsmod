@@ -1,0 +1,31 @@
+---
+id: 7539
+name: "Crab helmet"
+examine: "If it's good enough for crabs, it's good enough for me!"
+tradeable: false
+weight: 0.907
+tradeable_on_ge: false
+cost: 1
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -3
+  attackRanged: -1
+  defenceStab: 5
+  defenceSlash: 4
+  defenceCrush: 3
+  defenceMagic: -1
+  defenceRanged: 4
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,35 @@
+---
+id: 12506
+name: "Armadyl bracers"
+examine: "Armadyl blessed dragonhide vambraces."
+tradeable: true
+weight: 1.0
+tradeable_on_ge: true
+cost: 4000
+lowalch: 1600
+highalch: 2400
+buy_limit: 8
+equipment:
+  prayer: 1
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -10
+  attackRanged: 11
+  defenceStab: 6
+  defenceSlash: 5
+  defenceCrush: 7
+  defenceMagic: 8
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 70
+  - skill: "defence"
+    level: 40

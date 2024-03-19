@@ -1,0 +1,35 @@
+---
+id: 22981
+name: "Ferocious gloves"
+examine: "A pair of very very nice gloves."
+tradeable: false
+weight: 0.226
+tradeable_on_ge: false
+cost: 100000
+lowalch: 40000
+highalch: 60000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 16
+  attackSlash: 16
+  attackCrush: 16
+  attackMagic: -16
+  attackRanged: -16
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 14
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 80
+  - skill: "defence"
+    level: 80

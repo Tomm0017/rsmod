@@ -1,6 +1,7 @@
 package gg.rsmod.game.service.login
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
+import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.protocol.GameHandler
@@ -43,11 +44,11 @@ class LoginService : Service {
 
     private var threadCount = 1
 
-    override fun init(server: gg.rsmod.game.Server, world: World, serviceProperties: ServerProperties) {
+    override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         threadCount = serviceProperties.getOrDefault("thread-count", 3)
     }
 
-    override fun postLoad(server: gg.rsmod.game.Server, world: World) {
+    override fun postLoad(server: Server, world: World) {
         serializer = world.getService(PlayerSerializerService::class.java, searchSubclasses = true)!!
 
         val worldVerificationService = world.getService(WorldVerificationService::class.java, searchSubclasses = true) ?: SimpleWorldVerificationService()
@@ -58,10 +59,10 @@ class LoginService : Service {
         }
     }
 
-    override fun bindNet(server: gg.rsmod.game.Server, world: World) {
+    override fun bindNet(server: Server, world: World) {
     }
 
-    override fun terminate(server: gg.rsmod.game.Server, world: World) {
+    override fun terminate(server: Server, world: World) {
     }
 
     fun addLoginRequest(world: World, request: LoginRequest) {

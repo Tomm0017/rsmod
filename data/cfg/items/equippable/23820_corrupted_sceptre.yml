@@ -1,0 +1,31 @@
+---
+id: 23820
+name: "Corrupted sceptre"
+examine: "A corrupted crystalline sceptre with some magical properties."
+tradeable: false
+weight: 0.003
+tradeable_on_ge: false
+cost: 1
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 18
+  attackSpeed: 5
+  attackStab: 8
+  attackSlash: 10
+  attackCrush: 16
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 20
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,35 @@
+---
+id: 1167
+name: "Leather cowl"
+examine: "Better than no armour!"
+tradeable: true
+weight: 0.907
+tradeable_on_ge: true
+cost: 24
+lowalch: 9
+highalch: 14
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 1
+  defenceStab: 2
+  defenceSlash: 3
+  defenceCrush: 4
+  defenceMagic: 2
+  defenceRanged: 3
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 1
+  - skill: "defence"
+    level: 1

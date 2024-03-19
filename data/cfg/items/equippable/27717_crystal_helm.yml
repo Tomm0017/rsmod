@@ -1,0 +1,31 @@
+---
+id: 27717
+name: "Crystal helm"
+examine: "This helmet shines bright, like a diamond."
+tradeable: false
+weight: 0.5
+tradeable_on_ge: false
+cost: 500000
+lowalch: 200000
+highalch: 300000
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -10
+  attackRanged: 9
+  defenceStab: 12
+  defenceSlash: 8
+  defenceCrush: 14
+  defenceMagic: 10
+  defenceRanged: 18
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

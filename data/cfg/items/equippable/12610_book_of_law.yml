@@ -1,0 +1,38 @@
+---
+id: 12610
+name: "Book of law"
+examine: "The book of Armadyl's Law."
+tradeable: false
+weight: 1.0
+tradeable_on_ge: false
+cost: 200
+lowalch: 80
+highalch: 120
+buy_limit: null
+equipment:
+  prayer: 5
+  equipSlot: "shield"
+  weaponType: 0
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 10
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs: null

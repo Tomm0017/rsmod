@@ -1,0 +1,35 @@
+---
+id: 20577
+name: "3rd age robe"
+examine: "Fabulously ancient mage protection enchanted in the 3rd Age."
+tradeable: true
+weight: 1.8
+tradeable_on_ge: false
+cost: 40
+lowalch: 16
+highalch: 24
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 19
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 19
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "magic"
+    level: 65
+  - skill: "defence"
+    level: 30

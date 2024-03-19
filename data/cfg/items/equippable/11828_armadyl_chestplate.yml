@@ -1,0 +1,35 @@
+---
+id: 11828
+name: "Armadyl chestplate"
+examine: "Armour of great craftsmanship."
+tradeable: true
+weight: 4.0
+tradeable_on_ge: true
+cost: 290000
+lowalch: 116000
+highalch: 174000
+buy_limit: 8
+equipment:
+  prayer: 1
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -7
+  attackSlash: -7
+  attackCrush: -7
+  attackMagic: -15
+  attackRanged: 33
+  defenceStab: 56
+  defenceSlash: 48
+  defenceCrush: 61
+  defenceMagic: 70
+  defenceRanged: 57
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 70
+  - skill: "ranged"
+    level: 70

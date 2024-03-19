@@ -1,0 +1,40 @@
+---
+id: 22550
+name: "Craw's bow"
+examine: "This bow once belonged to a formidable follower of Armadyl."
+tradeable: false
+weight: 3.175
+tradeable_on_ge: false
+cost: 120000
+lowalch: 48000
+highalch: 72000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 3
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 75
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 60
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "ranged"
+    level: 60

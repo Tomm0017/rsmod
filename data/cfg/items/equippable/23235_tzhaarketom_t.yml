@@ -1,0 +1,33 @@
+---
+id: 23235
+name: "Tzhaar-ket-om (t)"
+examine: "A maul of obsidian with trim and spikes."
+tradeable: false
+weight: 3.628
+tradeable_on_ge: false
+cost: 50001
+lowalch: 20000
+highalch: 30000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 18
+  attackSpeed: 7
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 80
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 85
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "strength"
+    level: 40

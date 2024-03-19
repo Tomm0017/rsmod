@@ -1,0 +1,35 @@
+---
+id: 10336
+name: "3rd age vambraces"
+examine: "Fabulously ancient range protection crafted from white dragonhide."
+tradeable: true
+weight: 1.0
+tradeable_on_ge: true
+cost: 50500
+lowalch: 20200
+highalch: 30300
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -10
+  attackRanged: 11
+  defenceStab: 6
+  defenceSlash: 5
+  defenceCrush: 7
+  defenceMagic: 9
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 65
+  - skill: "defence"
+    level: 45

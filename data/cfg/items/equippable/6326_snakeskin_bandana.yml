@@ -1,0 +1,35 @@
+---
+id: 6326
+name: "Snakeskin bandana"
+examine: "Lightweight head protection."
+tradeable: true
+weight: 0.907
+tradeable_on_ge: true
+cost: 300
+lowalch: 120
+highalch: 180
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -5
+  attackRanged: 4
+  defenceStab: 2
+  defenceSlash: 4
+  defenceCrush: 4
+  defenceMagic: 2
+  defenceRanged: 2
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 30
+  - skill: "defence"
+    level: 30

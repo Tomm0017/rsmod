@@ -1,0 +1,33 @@
+---
+id: 1335
+name: "Iron warhammer"
+examine: "I don't think it's intended for joinery."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 173
+lowalch: 69
+highalch: 103
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 6
+  attackStab: -4
+  attackSlash: -4
+  attackCrush: 11
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 11
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 1

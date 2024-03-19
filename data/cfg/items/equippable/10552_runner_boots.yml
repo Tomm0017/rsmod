@@ -1,0 +1,33 @@
+---
+id: 10552
+name: "Runner boots"
+examine: "Boots made from a Penance Runner."
+tradeable: false
+weight: 0.34
+tradeable_on_ge: false
+cost: 65003
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 1
+  attackRanged: 1
+  defenceStab: 8
+  defenceSlash: 8
+  defenceCrush: 8
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

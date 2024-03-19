@@ -1,0 +1,35 @@
+---
+id: 5575
+name: "Initiate hauberk"
+examine: "An initiate Temple Knight's Armour."
+tradeable: true
+weight: 8.618
+tradeable_on_ge: true
+cost: 10000
+lowalch: 4000
+highalch: 6000
+buy_limit: 125
+equipment:
+  prayer: 6
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -30
+  attackRanged: -15
+  defenceStab: 46
+  defenceSlash: 44
+  defenceCrush: 38
+  defenceMagic: -6
+  defenceRanged: 44
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 20
+  - skill: "prayer"
+    level: 10

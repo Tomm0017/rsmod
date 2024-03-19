@@ -1,0 +1,31 @@
+---
+id: 23246
+name: "Fremennik kilt"
+examine: "A kilt worn by the mightiest of Fremennik warriors."
+tradeable: true
+weight: 3.0
+tradeable_on_ge: true
+cost: 60000
+lowalch: 24000
+highalch: 36000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -21
+  attackRanged: -7
+  defenceStab: 11
+  defenceSlash: 10
+  defenceCrush: 10
+  defenceMagic: -4
+  defenceRanged: 10
+  meleeStrength: 1
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

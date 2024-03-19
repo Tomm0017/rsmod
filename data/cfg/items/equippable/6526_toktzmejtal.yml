@@ -1,0 +1,35 @@
+---
+id: 6526
+name: "Toktz-mej-tal"
+examine: "A staff of obsidian."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 35000
+lowalch: 14000
+highalch: 21000
+buy_limit: 70
+equipment:
+  prayer: 5
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 6
+  attackStab: 15
+  attackSlash: -1
+  attackCrush: 55
+  attackMagic: 15
+  attackRanged: 0
+  defenceStab: 10
+  defenceSlash: 15
+  defenceCrush: 5
+  defenceMagic: 15
+  defenceRanged: 0
+  meleeStrength: 55
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 60
+  - skill: "magic"
+    level: 60

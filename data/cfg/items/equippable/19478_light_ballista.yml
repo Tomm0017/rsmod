@@ -1,0 +1,40 @@
+---
+id: 19478
+name: "Light ballista"
+examine: "A weapon forged from the wreckage of an airship."
+tradeable: true
+weight: 3.0
+tradeable_on_ge: true
+cost: 125000
+lowalch: 50000
+highalch: 75000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 5
+  attackSpeed: 7
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 110
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 7220
+    turnOnSpotAnim: 7223
+    walkForwardAnimId: 7223
+    walkBackwardsAnimId: 7223
+    walkLeftAnimId: 7223
+    walkRightAnimId: 7223
+    runAnimId: 7221
+  skillReqs:
+  - skill: "ranged"
+    level: 65

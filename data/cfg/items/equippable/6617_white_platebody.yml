@@ -1,0 +1,33 @@
+---
+id: 6617
+name: "White platebody"
+examine: "Provides excellent protection."
+tradeable: true
+weight: 9.979
+tradeable_on_ge: true
+cost: 3840
+lowalch: 1536
+highalch: 2304
+buy_limit: 125
+equipment:
+  prayer: 1
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -30
+  attackRanged: -15
+  defenceStab: 41
+  defenceSlash: 40
+  defenceCrush: 30
+  defenceMagic: -6
+  defenceRanged: 40
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 10

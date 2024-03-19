@@ -1,0 +1,40 @@
+---
+id: 1357
+name: "Adamant axe"
+examine: "A powerful axe."
+tradeable: true
+weight: 1.587
+tradeable_on_ge: true
+cost: 1280
+lowalch: 512
+highalch: 768
+buy_limit: 40
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 1
+  attackSpeed: 5
+  attackStab: -2
+  attackSlash: 17
+  attackCrush: 15
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 19
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 30

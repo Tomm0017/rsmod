@@ -1,0 +1,33 @@
+---
+id: 21301
+name: "Obsidian platebody"
+examine: "Provides excellent protection."
+tradeable: true
+weight: 9.979
+tradeable_on_ge: true
+cost: 84000
+lowalch: 33600
+highalch: 50400
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 55
+  defenceSlash: 78
+  defenceCrush: 56
+  defenceMagic: -15
+  defenceRanged: 60
+  meleeStrength: 3
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 60

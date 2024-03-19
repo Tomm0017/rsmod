@@ -1,0 +1,38 @@
+---
+id: 12357
+name: "Katana"
+examine: "Created by Hattori Hanzo in the Eastern Lands."
+tradeable: true
+weight: 0.453
+tradeable_on_ge: true
+cost: 24000
+lowalch: 9600
+highalch: 14400
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 9
+  attackSpeed: 4
+  attackStab: 7
+  attackSlash: 45
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 3
+  defenceSlash: 7
+  defenceCrush: 7
+  defenceMagic: 0
+  defenceRanged: -3
+  meleeStrength: 40
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs: null

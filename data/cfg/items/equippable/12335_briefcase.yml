@@ -1,0 +1,38 @@
+---
+id: 12335
+name: "Briefcase"
+examine: "For your first day in the big city."
+tradeable: true
+weight: 0.005
+tradeable_on_ge: true
+cost: 666
+lowalch: 266
+highalch: 399
+buy_limit: 4
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: 0
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 1660
+    walkBackwardsAnimId: 1660
+    walkLeftAnimId: 1660
+    walkRightAnimId: 1660
+    runAnimId: 1661
+  skillReqs: null

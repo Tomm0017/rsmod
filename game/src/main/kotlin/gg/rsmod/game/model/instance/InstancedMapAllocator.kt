@@ -67,8 +67,8 @@ class InstancedMapAllocator {
     }
 
     private fun allocate(x: Int, z: Int, chunks: InstancedChunkSet, configs: InstancedMapConfiguration): InstancedMap =
-            InstancedMap(Area(x, z, x + chunks.regionSize * Chunk.REGION_SIZE, z + chunks.regionSize * Chunk.REGION_SIZE), chunks,
-                    configs.exitTile, configs.owner, configs.attributes)
+        InstancedMap(Area(x, z, x + chunks.regionSize * Chunk.REGION_SIZE, z + chunks.regionSize * Chunk.REGION_SIZE), chunks,
+            configs.exitTile, configs.owner, configs.attributes)
 
     private fun deallocate(world: World, map: InstancedMap) {
         if (maps.remove(map)) {
@@ -167,9 +167,9 @@ class InstancedMapAllocator {
 
                         copyChunk.getEntities<StaticObject>(EntityType.STATIC_OBJECT).forEach { obj ->
                             if (obj.tile.height == chunkH && obj.tile.isInSameChunk(copyTile)) {
-                                val def = obj.getDef(world.definitions)
-                                val width = def.getRotatedWidth(obj)
-                                val length = def.getRotatedLength(obj)
+                                val def = obj.getDef()
+                                val width = obj.getRotatedWidth()
+                                val length = obj.getRotatedLength()
 
                                 val localX = obj.tile.x % 8
                                 val localZ = obj.tile.z % 8

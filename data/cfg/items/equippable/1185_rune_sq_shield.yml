@@ -1,0 +1,33 @@
+---
+id: 1185
+name: "Rune sq shield"
+examine: "A medium square shield."
+tradeable: true
+weight: 3.628
+tradeable_on_ge: true
+cost: 38400
+lowalch: 15360
+highalch: 23040
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: 0
+  defenceStab: 38
+  defenceSlash: 40
+  defenceCrush: 36
+  defenceMagic: 0
+  defenceRanged: 38
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

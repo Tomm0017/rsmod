@@ -1,0 +1,35 @@
+---
+id: 1131
+name: "Hardleather body"
+examine: "Harder than normal leather."
+tradeable: true
+weight: 3.628
+tradeable_on_ge: true
+cost: 170
+lowalch: 68
+highalch: 102
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "torso"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -4
+  attackRanged: 8
+  defenceStab: 12
+  defenceSlash: 15
+  defenceCrush: 18
+  defenceMagic: 6
+  defenceRanged: 15
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 1
+  - skill: "defence"
+    level: 10

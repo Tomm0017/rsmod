@@ -1,0 +1,33 @@
+---
+id: 10491
+name: "Blessed axe"
+examine: "It radiates purity but can still lop off heads."
+tradeable: false
+weight: 1.162
+tradeable_on_ge: false
+cost: 20
+lowalch: 8
+highalch: 12
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: -2
+  attackSlash: 12
+  attackCrush: 10
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 13
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 20

@@ -1,0 +1,45 @@
+---
+id: 11663
+name: "Void mage helm"
+examine: "A mage helm from the order of the Void Knights."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 9851
+lowalch: 3940
+highalch: 5910
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 6
+  defenceSlash: 6
+  defenceCrush: 6
+  defenceMagic: 6
+  defenceRanged: 6
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 42
+  - skill: "strength"
+    level: 42
+  - skill: "hitpoints"
+    level: 42
+  - skill: "ranged"
+    level: 42
+  - skill: "magic"
+    level: 42
+  - skill: "defence"
+    level: 42
+  - skill: "prayer"
+    level: 22

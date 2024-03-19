@@ -1,0 +1,33 @@
+---
+id: 8748
+name: "Steel kiteshield"
+examine: "A shield with the symbol of Asgarnia."
+tradeable: false
+weight: 5.443
+tradeable_on_ge: false
+cost: 900
+lowalch: 360
+highalch: 540
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -8
+  attackRanged: -3
+  defenceStab: 13
+  defenceSlash: 15
+  defenceCrush: 14
+  defenceMagic: -1
+  defenceRanged: 14
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 5

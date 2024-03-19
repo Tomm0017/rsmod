@@ -1,0 +1,31 @@
+---
+id: 26378
+name: "Torva platebody (damaged)"
+examine: "An ancient warrior's platebody."
+tradeable: true
+weight: 9.979
+tradeable_on_ge: true
+cost: 600000
+lowalch: 240000
+highalch: 360000
+buy_limit: null
+equipment:
+  prayer: 1
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -18
+  attackRanged: -14
+  defenceStab: 117
+  defenceSlash: 111
+  defenceCrush: 117
+  defenceMagic: -11
+  defenceRanged: 142
+  meleeStrength: 6
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

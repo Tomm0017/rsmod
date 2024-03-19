@@ -1,0 +1,38 @@
+---
+id: 7673
+name: "Boxing gloves"
+examine: "I think they look a bit silly."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 0
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 0
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 2
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 3677
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 3680
+    walkBackwardsAnimId: 3680
+    walkLeftAnimId: 3680
+    walkRightAnimId: 3680
+    runAnimId: 824
+  skillReqs: null

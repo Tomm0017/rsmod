@@ -1,0 +1,31 @@
+---
+id: 6313
+name: "Opal machete"
+examine: "A jungle specific slashing device."
+tradeable: true
+weight: 1.36
+tradeable_on_ge: true
+cost: 500
+lowalch: 200
+highalch: 300
+buy_limit: 15
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 8
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 1
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

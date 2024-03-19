@@ -1,0 +1,31 @@
+---
+id: 25643
+name: "Barronite mace (l)"
+examine: "Made from the unearthly material, barronite."
+tradeable: false
+weight: 2.0
+tradeable_on_ge: false
+cost: 10499
+lowalch: 4199
+highalch: 6299
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "weapon"
+  weaponType: 18
+  attackSpeed: 4
+  attackStab: 20
+  attackSlash: -2
+  attackCrush: 40
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 40
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

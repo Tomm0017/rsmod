@@ -1,0 +1,35 @@
+---
+id: 24288
+name: "Dagon'hai hat"
+examine: "A hat worn by members of the Dagon'hai."
+tradeable: true
+weight: 0.453
+tradeable_on_ge: true
+cost: 17000
+lowalch: 6800
+highalch: 10200
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "hat"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 5
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 5
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "magic"
+    level: 70
+  - skill: "defence"
+    level: 40

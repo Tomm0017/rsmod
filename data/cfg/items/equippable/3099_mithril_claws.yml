@@ -1,0 +1,33 @@
+---
+id: 3099
+name: "Mithril claws"
+examine: "A set of fighting claws."
+tradeable: true
+weight: 0.907
+tradeable_on_ge: true
+cost: 475
+lowalch: 190
+highalch: 285
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 11
+  attackSlash: 16
+  attackCrush: -4
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 4
+  defenceSlash: 8
+  defenceCrush: 2
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 17
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 20

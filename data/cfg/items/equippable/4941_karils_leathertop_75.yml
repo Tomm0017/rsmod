@@ -1,0 +1,35 @@
+---
+id: 4941
+name: "Karil's leathertop 75"
+examine: "Karil the Tainted's leather body armour."
+tradeable: false
+weight: 6.803
+tradeable_on_ge: false
+cost: 50000
+lowalch: 20000
+highalch: 30000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -15
+  attackRanged: 30
+  defenceStab: 47
+  defenceSlash: 42
+  defenceCrush: 50
+  defenceMagic: 65
+  defenceRanged: 57
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 70
+  - skill: "defence"
+    level: 70

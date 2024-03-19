@@ -1,0 +1,33 @@
+---
+id: 1181
+name: "Mithril sq shield"
+examine: "A medium square shield."
+tradeable: true
+weight: 3.175
+tradeable_on_ge: true
+cost: 1560
+lowalch: 624
+highalch: 936
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: 0
+  defenceStab: 17
+  defenceSlash: 19
+  defenceCrush: 15
+  defenceMagic: 0
+  defenceRanged: 17
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 20

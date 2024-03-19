@@ -1,0 +1,33 @@
+---
+id: 23381
+name: "Leather body (g)"
+examine: "Better than no armour! Nice trim too!"
+tradeable: true
+weight: 5.443
+tradeable_on_ge: true
+cost: 850
+lowalch: 340
+highalch: 510
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -2
+  attackRanged: 2
+  defenceStab: 8
+  defenceSlash: 9
+  defenceCrush: 10
+  defenceMagic: 4
+  defenceRanged: 9
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 1

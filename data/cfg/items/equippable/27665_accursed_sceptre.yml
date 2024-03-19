@@ -1,0 +1,32 @@
+---
+id: 27665
+name: "Accursed sceptre"
+examine: "A mighty sceptre from long forgotten battles, corrupted by the power of\
+  \ Vet'ion."
+tradeable: false
+weight: 0.198
+tradeable_on_ge: false
+cost: 175000
+lowalch: 70000
+highalch: 105000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 8337
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 22
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 20
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,35 @@
+---
+id: 20739
+name: "Mystic dust staff"
+examine: "It's a slightly more magical stick."
+tradeable: true
+weight: 2.267
+tradeable_on_ge: true
+cost: 42500
+lowalch: 17000
+highalch: 25500
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 10
+  attackSlash: -1
+  attackCrush: 40
+  attackMagic: 14
+  attackRanged: 0
+  defenceStab: 2
+  defenceSlash: 3
+  defenceCrush: 1
+  defenceMagic: 14
+  defenceRanged: 0
+  meleeStrength: 50
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 40
+  - skill: "magic"
+    level: 40

@@ -57,18 +57,7 @@ arrayOf(Items.LOOTING_BAG, Items.LOOTING_BAG_22586).forEach { bag ->
         settings(player)
     }
 
-    can_drop_item(bag) {
-        val slot = player.attr[INTERACTING_ITEM_SLOT] ?: return@can_drop_item false
 
-        player.queue {
-            val container = player.containers[CONTAINER_KEY]
-            val destroy = destroyItem(note = if (container != null && container.hasAny) "If you destroy it, the contents will be lost." else "The bag is empty. Are you sure you want to destroy it?", item = bag, amount = 1)
-            if (destroy) {
-                player.inventory.remove(item = bag, amount = 1, beginSlot = slot)
-            }
-        }
-        return@can_drop_item false
-    }
 }
 
 on_button(interfaceId = TAB_INTERFACE_ID, component = 5) {

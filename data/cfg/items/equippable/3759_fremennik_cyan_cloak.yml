@@ -1,0 +1,31 @@
+---
+id: 3759
+name: "Fremennik cyan cloak"
+examine: "The latest fashion in Rellekka."
+tradeable: true
+weight: 0.453
+tradeable_on_ge: true
+cost: 250
+lowalch: 100
+highalch: 150
+buy_limit: 150
+equipment:
+  prayer: 0
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 1
+  defenceMagic: 0
+  defenceRanged: 2
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

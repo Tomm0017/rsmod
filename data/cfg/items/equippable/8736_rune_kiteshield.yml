@@ -1,0 +1,40 @@
+---
+id: 8736
+name: "Rune kiteshield"
+examine: "A shield with a picture of a money-bag."
+tradeable: false
+weight: 5.443
+tradeable_on_ge: false
+cost: 54400
+lowalch: 21760
+highalch: 32640
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: 0
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -8
+  attackRanged: -3
+  defenceStab: 44
+  defenceSlash: 48
+  defenceCrush: 46
+  defenceMagic: -1
+  defenceRanged: 46
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "defence"
+    level: 40

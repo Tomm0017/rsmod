@@ -1,0 +1,31 @@
+---
+id: 20585
+name: "Amulet of power"
+examine: "An enchanted diamond amulet of power."
+tradeable: false
+weight: 0.01
+tradeable_on_ge: false
+cost: 550
+lowalch: 220
+highalch: 330
+buy_limit: null
+equipment:
+  prayer: 1
+  equipSlot: "neck"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 6
+  attackSlash: 6
+  attackCrush: 6
+  attackMagic: 6
+  attackRanged: 6
+  defenceStab: 6
+  defenceSlash: 6
+  defenceCrush: 6
+  defenceMagic: 6
+  defenceRanged: 6
+  meleeStrength: 6
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

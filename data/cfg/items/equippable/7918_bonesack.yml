@@ -1,0 +1,31 @@
+---
+id: 7918
+name: "Bonesack"
+examine: "The Bonesack is a little old item that protects like leather."
+tradeable: false
+weight: 0.003
+tradeable_on_ge: false
+cost: 1
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 4
+  defenceSlash: 4
+  defenceCrush: 4
+  defenceMagic: 4
+  defenceRanged: 4
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

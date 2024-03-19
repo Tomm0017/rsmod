@@ -1,0 +1,40 @@
+---
+id: 21006
+name: "Kodai wand"
+examine: "A wand of an ancient Kodai mage."
+tradeable: true
+weight: 0.198
+tradeable_on_ge: true
+cost: 150000
+lowalch: 60000
+highalch: 90000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 18
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 28
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 3
+  defenceCrush: 3
+  defenceMagic: 20
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 15
+  renderAnimations:
+    standAnimId: 813
+    turnOnSpotAnim: 1209
+    walkForwardAnimId: 1205
+    walkBackwardsAnimId: 1206
+    walkLeftAnimId: 1207
+    walkRightAnimId: 1208
+    runAnimId: 1210
+  skillReqs:
+  - skill: "magic"
+    level: 75

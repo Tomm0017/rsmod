@@ -1,0 +1,31 @@
+---
+id: 25918
+name: "Dragon hunter crossbow (b)"
+examine: "A crossbow used for dragon hunting."
+tradeable: false
+weight: 7.0
+tradeable_on_ge: false
+cost: 80000
+lowalch: 32000
+highalch: 48000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 5
+  attackSpeed: 6
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 95
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,42 @@
+---
+id: 1273
+name: "Mithril pickaxe"
+examine: "Used for mining."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 1300
+lowalch: 520
+highalch: 780
+buy_limit: 40
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 11
+  attackSpeed: 5
+  attackStab: 12
+  attackSlash: -2
+  attackCrush: 10
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 13
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "mining"
+    level: 21
+  - skill: "attack"
+    level: 20

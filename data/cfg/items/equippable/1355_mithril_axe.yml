@@ -1,0 +1,40 @@
+---
+id: 1355
+name: "Mithril axe"
+examine: "A powerful axe."
+tradeable: true
+weight: 1.133
+tradeable_on_ge: true
+cost: 520
+lowalch: 208
+highalch: 312
+buy_limit: 40
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 1
+  attackSpeed: 5
+  attackStab: -2
+  attackSlash: 12
+  attackCrush: 10
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 13
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 20

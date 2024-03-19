@@ -1,0 +1,33 @@
+---
+id: 10043
+name: "Larupia top"
+examine: "This should make me harder to spot in woodland and jungle areas."
+tradeable: true
+weight: 0.226
+tradeable_on_ge: true
+cost: 100
+lowalch: 40
+highalch: 60
+buy_limit: 150
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 10
+  defenceSlash: 15
+  defenceCrush: 19
+  defenceMagic: 0
+  defenceRanged: 12
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "hunter"
+    level: 28

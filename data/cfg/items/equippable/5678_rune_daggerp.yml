@@ -1,0 +1,33 @@
+---
+id: 5678
+name: "Rune dagger(p+)"
+examine: "The blade is covered with a nasty poison."
+tradeable: true
+weight: 0.453
+tradeable_on_ge: true
+cost: 8000
+lowalch: 3200
+highalch: 4800
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 25
+  attackSlash: 12
+  attackCrush: -4
+  attackMagic: 1
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 1
+  defenceRanged: 0
+  meleeStrength: 24
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 40

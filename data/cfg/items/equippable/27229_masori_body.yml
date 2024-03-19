@@ -1,0 +1,31 @@
+---
+id: 27229
+name: "Masori body"
+examine: "Ancient armour once worn by a powerful ranger."
+tradeable: true
+weight: 8.0
+tradeable_on_ge: true
+cost: 1200000
+lowalch: 480000
+highalch: 720000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -4
+  attackRanged: 43
+  defenceStab: 37
+  defenceSlash: 35
+  defenceCrush: 38
+  defenceMagic: 25
+  defenceRanged: 33
+  meleeStrength: 0
+  rangedStrength: 4
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

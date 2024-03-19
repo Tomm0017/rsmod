@@ -1,0 +1,35 @@
+---
+id: 21018
+name: "Ancestral hat"
+examine: "The hat of a powerful sorceress from a bygone era."
+tradeable: true
+weight: 0.453
+tradeable_on_ge: true
+cost: 45000
+lowalch: 18000
+highalch: 27000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "hat"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 8
+  attackRanged: -2
+  defenceStab: 12
+  defenceSlash: 11
+  defenceCrush: 13
+  defenceMagic: 5
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 2
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 65
+  - skill: "magic"
+    level: 75

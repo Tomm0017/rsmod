@@ -1,0 +1,31 @@
+---
+id: 26721
+name: "Centurion cuirass"
+examine: "A chest piece worn by the mightiest warriors of the arena."
+tradeable: false
+weight: 6.0
+tradeable_on_ge: false
+cost: 79006
+lowalch: 31602
+highalch: 47403
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -40
+  attackRanged: 0
+  defenceStab: 72
+  defenceSlash: 91
+  defenceCrush: 70
+  defenceMagic: -10
+  defenceRanged: 7
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,33 @@
+---
+id: 11377
+name: "Rune hasta"
+examine: "A rune-tipped, one-handed hasta."
+tradeable: true
+weight: 2.267
+tradeable_on_ge: true
+cost: 20800
+lowalch: 8320
+highalch: 12480
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 36
+  attackSlash: 36
+  attackCrush: 36
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: -10
+  defenceSlash: -10
+  defenceCrush: -9
+  defenceMagic: 0
+  defenceRanged: -10
+  meleeStrength: 42
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 40

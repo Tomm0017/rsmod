@@ -1,0 +1,33 @@
+---
+id: 10547
+name: "Healer hat"
+examine: "A Penance Healer hat."
+tradeable: false
+weight: 2.0
+tradeable_on_ge: false
+cost: 65002
+lowalch: 26000
+highalch: 39001
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hat"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -5
+  attackSlash: -5
+  attackCrush: -5
+  attackMagic: 6
+  attackRanged: -5
+  defenceStab: 6
+  defenceSlash: 8
+  defenceCrush: 10
+  defenceMagic: 7
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 45

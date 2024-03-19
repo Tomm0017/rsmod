@@ -1,0 +1,31 @@
+---
+id: 27157
+name: "Dragon knife"
+examine: "A finely balanced and powerful throwing knife."
+tradeable: true
+weight: 0.0
+tradeable_on_ge: false
+cost: 5
+lowalch: 2
+highalch: 3
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 3
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 28
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 30
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

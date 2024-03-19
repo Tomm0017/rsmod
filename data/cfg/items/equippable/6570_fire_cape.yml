@@ -1,0 +1,31 @@
+---
+id: 6570
+name: "Fire cape"
+examine: "A cape of fire."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 65007
+lowalch: 26002
+highalch: 39004
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 1
+  attackSlash: 1
+  attackCrush: 1
+  attackMagic: 1
+  attackRanged: 1
+  defenceStab: 11
+  defenceSlash: 11
+  defenceCrush: 11
+  defenceMagic: 11
+  defenceRanged: 11
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

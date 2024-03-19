@@ -1,0 +1,32 @@
+---
+id: 27374
+name: "Masori assembler"
+examine: "A superior bagged chicken empowered by Vorkath, ready to serve you, magnet\
+  \ in claw."
+tradeable: false
+weight: 5.896
+tradeable_on_ge: false
+cost: 51000
+lowalch: 20400
+highalch: 30600
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 8
+  defenceStab: 1
+  defenceSlash: 1
+  defenceCrush: 1
+  defenceMagic: 8
+  defenceRanged: 2
+  meleeStrength: 0
+  rangedStrength: 2
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

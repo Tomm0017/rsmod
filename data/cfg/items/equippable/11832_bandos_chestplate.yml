@@ -1,0 +1,33 @@
+---
+id: 11832
+name: "Bandos chestplate"
+examine: "A sturdy chestplate."
+tradeable: true
+weight: 12.0
+tradeable_on_ge: true
+cost: 290010
+lowalch: 116004
+highalch: 174006
+buy_limit: 8
+equipment:
+  prayer: 1
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -15
+  attackRanged: -10
+  defenceStab: 98
+  defenceSlash: 93
+  defenceCrush: 105
+  defenceMagic: -6
+  defenceRanged: 133
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 65

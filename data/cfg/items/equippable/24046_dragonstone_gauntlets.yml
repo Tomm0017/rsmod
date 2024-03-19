@@ -1,0 +1,33 @@
+---
+id: 24046
+name: "Dragonstone gauntlets"
+examine: "A stylish pair of rune gauntlets inlaid with dragonstones."
+tradeable: true
+weight: 0.226
+tradeable_on_ge: true
+cost: 12500
+lowalch: 5000
+highalch: 7500
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 8
+  attackSlash: 8
+  attackCrush: 8
+  attackMagic: -4
+  attackRanged: -3
+  defenceStab: 8
+  defenceSlash: 8
+  defenceCrush: 8
+  defenceMagic: -4
+  defenceRanged: 4
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

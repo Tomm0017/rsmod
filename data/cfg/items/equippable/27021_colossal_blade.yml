@@ -1,0 +1,31 @@
+---
+id: 27021
+name: "Colossal blade"
+examine: "It takes a lot of guts to wield a blade this big."
+tradeable: false
+weight: 30.0
+tradeable_on_ge: false
+cost: 225000
+lowalch: 90000
+highalch: 135000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 8337
+  attackSpeed: 6
+  attackStab: -4
+  attackSlash: 98
+  attackCrush: 65
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: -1
+  meleeStrength: 100
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

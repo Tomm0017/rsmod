@@ -28,7 +28,7 @@ class XteaKeyService : Service {
         get() = keys.keys.toIntArray()
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
-        val path = Paths.get(serviceProperties.getOrDefault("path", "../data/"))
+        val path = Paths.get(serviceProperties.getOrDefault("path", "../data/xteas/"))
         val singleFile = path.resolve("xteas.json")
         if (Files.exists(singleFile)) {
             loadSingleFile(singleFile)
@@ -45,7 +45,7 @@ class XteaKeyService : Service {
     override fun bindNet(server: Server, world: World) {
     }
 
-    override fun terminate(server: gg.rsmod.game.Server, world: World) {
+    override fun terminate(server: Server, world: World) {
     }
 
     fun get(region: Int): IntArray {

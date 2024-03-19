@@ -1,0 +1,31 @@
+---
+id: 6776
+name: "Rat pole"
+examine: "A pole with three rats on it."
+tradeable: false
+weight: 2.267
+tradeable_on_ge: false
+cost: 1
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 0
+  attackSlash: -1
+  attackCrush: 7
+  attackMagic: 4
+  attackRanged: 0
+  defenceStab: 2
+  defenceSlash: 3
+  defenceCrush: 1
+  defenceMagic: 4
+  defenceRanged: 0
+  meleeStrength: 3
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

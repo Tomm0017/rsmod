@@ -1,0 +1,33 @@
+---
+id: 4995
+name: "Verac's plateskirt 75"
+examine: "Verac the Defiled's plate skirt."
+tradeable: false
+weight: 4.535
+tradeable_on_ge: false
+cost: 275000
+lowalch: 110000
+highalch: 165000
+buy_limit: null
+equipment:
+  prayer: 4
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -21
+  attackRanged: -11
+  defenceStab: 85
+  defenceSlash: 82
+  defenceCrush: 83
+  defenceMagic: 0
+  defenceRanged: 84
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 70

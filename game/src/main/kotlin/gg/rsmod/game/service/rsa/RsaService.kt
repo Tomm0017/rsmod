@@ -1,5 +1,6 @@
 package gg.rsmod.game.service.rsa
 
+import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
@@ -38,7 +39,7 @@ class RsaService : Service {
 
     private var radix = -1
 
-    override fun init(server: gg.rsmod.game.Server, world: World, serviceProperties: ServerProperties) {
+    override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         keyPath = Paths.get(serviceProperties.getOrDefault("path", "../data/rsa/key.pem"))
         radix = serviceProperties.getOrDefault("radix", 16)
 
@@ -76,13 +77,13 @@ class RsaService : Service {
         }
     }
 
-    override fun postLoad(server: gg.rsmod.game.Server, world: World) {
+    override fun postLoad(server: Server, world: World) {
     }
 
-    override fun bindNet(server: gg.rsmod.game.Server, world: World) {
+    override fun bindNet(server: Server, world: World) {
     }
 
-    override fun terminate(server: gg.rsmod.game.Server, world: World) {
+    override fun terminate(server: Server, world: World) {
     }
 
     /**

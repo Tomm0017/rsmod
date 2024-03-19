@@ -1,0 +1,31 @@
+---
+id: 24219
+name: "Swift blade"
+examine: "A dull blade that moves at incredible speed."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 1500
+lowalch: 600
+highalch: 900
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 17
+  attackSpeed: 3
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

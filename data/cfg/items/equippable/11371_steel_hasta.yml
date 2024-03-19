@@ -1,0 +1,33 @@
+---
+id: 11371
+name: "Steel hasta"
+examine: "A steel-tipped, one-handed hasta."
+tradeable: true
+weight: 2.267
+tradeable_on_ge: true
+cost: 325
+lowalch: 130
+highalch: 195
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 12
+  attackSlash: 12
+  attackCrush: 12
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: -3
+  defenceSlash: -3
+  defenceCrush: -3
+  defenceMagic: 0
+  defenceRanged: -3
+  meleeStrength: 12
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 5

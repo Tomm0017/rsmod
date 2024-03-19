@@ -1,0 +1,35 @@
+---
+id: 22281
+name: "Red d'hide shield"
+examine: "A solid magic wood shield covered in red dragon leather."
+tradeable: true
+weight: 8.0
+tradeable_on_ge: true
+cost: 11000
+lowalch: 4400
+highalch: 6600
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -15
+  attackSlash: -15
+  attackCrush: -11
+  attackMagic: -10
+  attackRanged: 6
+  defenceStab: 18
+  defenceSlash: 16
+  defenceCrush: 14
+  defenceMagic: 13
+  defenceRanged: 13
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 60
+  - skill: "defence"
+    level: 40

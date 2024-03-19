@@ -1,0 +1,33 @@
+---
+id: 1225
+name: "Mithril dagger(p)"
+examine: "A poisoned Mithril dagger."
+tradeable: true
+weight: 0.396
+tradeable_on_ge: true
+cost: 325
+lowalch: 130
+highalch: 195
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 11
+  attackSlash: 5
+  attackCrush: -4
+  attackMagic: 1
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 1
+  defenceRanged: 0
+  meleeStrength: 10
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 20

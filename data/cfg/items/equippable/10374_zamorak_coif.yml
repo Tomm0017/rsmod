@@ -1,0 +1,35 @@
+---
+id: 10374
+name: "Zamorak coif"
+examine: "Zamorak blessed dragonhide coif."
+tradeable: true
+weight: 0.9
+tradeable_on_ge: true
+cost: 2000
+lowalch: 800
+highalch: 1200
+buy_limit: 8
+equipment:
+  prayer: 1
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -1
+  attackRanged: 7
+  defenceStab: 4
+  defenceSlash: 7
+  defenceCrush: 10
+  defenceMagic: 4
+  defenceRanged: 8
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 70
+  - skill: "defence"
+    level: 40

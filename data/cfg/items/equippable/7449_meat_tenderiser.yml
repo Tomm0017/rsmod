@@ -1,0 +1,31 @@
+---
+id: 7449
+name: "Meat tenderiser"
+examine: "Often used to soften tough meat up."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 41500
+lowalch: 16600
+highalch: 24900
+buy_limit: 50
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 6
+  attackStab: -4
+  attackSlash: -4
+  attackCrush: 53
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 48
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

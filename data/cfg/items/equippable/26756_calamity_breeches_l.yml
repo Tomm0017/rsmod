@@ -1,0 +1,31 @@
+---
+id: 26756
+name: "Calamity breeches (l)"
+examine: "Breeches used by the Calamity Coven."
+tradeable: false
+weight: 0.907
+tradeable_on_ge: false
+cost: 75000
+lowalch: 30000
+highalch: 45000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 2
+  attackSlash: 2
+  attackCrush: 2
+  attackMagic: 5
+  attackRanged: 8
+  defenceStab: 4
+  defenceSlash: 5
+  defenceCrush: 8
+  defenceMagic: 8
+  defenceRanged: 8
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

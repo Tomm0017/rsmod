@@ -1,0 +1,33 @@
+---
+id: 1127
+name: "Rune platebody"
+examine: "Provides excellent protection."
+tradeable: true
+weight: 9.979
+tradeable_on_ge: true
+cost: 65000
+lowalch: 26000
+highalch: 39000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -30
+  attackRanged: -15
+  defenceStab: 82
+  defenceSlash: 80
+  defenceCrush: 72
+  defenceMagic: -6
+  defenceRanged: 80
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

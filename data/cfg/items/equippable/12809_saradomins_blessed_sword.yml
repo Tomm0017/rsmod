@@ -1,0 +1,40 @@
+---
+id: 12809
+name: "Saradomin's blessed sword"
+examine: "The blade of an Icyene, blessed with a tear from Saradomin himself."
+tradeable: false
+weight: 3.0
+tradeable_on_ge: false
+cost: 289850
+lowalch: 115940
+highalch: 173910
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "2h"
+  weaponType: 10
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 100
+  attackCrush: 60
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 88
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 7053
+    turnOnSpotAnim: 7044
+    walkForwardAnimId: 7052
+    walkBackwardsAnimId: 7049
+    walkLeftAnimId: 7048
+    walkRightAnimId: 7047
+    runAnimId: 7043
+  skillReqs:
+  - skill: "attack"
+    level: 75

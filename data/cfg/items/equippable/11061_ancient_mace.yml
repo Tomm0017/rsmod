@@ -1,0 +1,35 @@
+---
+id: 11061
+name: "Ancient mace"
+examine: "It has ancient goblin symbols on it."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 1000
+lowalch: null
+highalch: null
+buy_limit: 8
+equipment:
+  prayer: 3
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 10
+  attackSlash: -2
+  attackCrush: 16
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 14
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 15
+  - skill: "prayer"
+    level: 25

@@ -1,0 +1,35 @@
+---
+id: 13239
+name: "Primordial boots"
+examine: "A pair of upgraded dragon boots."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 75000
+lowalch: 30000
+highalch: 45000
+buy_limit: 15
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 2
+  attackSlash: 2
+  attackCrush: 2
+  attackMagic: -4
+  attackRanged: -1
+  defenceStab: 22
+  defenceSlash: 22
+  defenceCrush: 22
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 5
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 75
+  - skill: "strength"
+    level: 75

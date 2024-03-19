@@ -1,0 +1,35 @@
+---
+id: 3385
+name: "Splitbark helm"
+examine: "A wooden helmet."
+tradeable: true
+weight: 0.907
+tradeable_on_ge: true
+cost: 10000
+lowalch: 4000
+highalch: 6000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "hat"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 3
+  attackRanged: -2
+  defenceStab: 10
+  defenceSlash: 9
+  defenceCrush: 11
+  defenceMagic: 3
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "magic"
+    level: 40
+  - skill: "defence"
+    level: 40

@@ -1,0 +1,31 @@
+---
+id: 23363
+name: "Staff of bob the cat"
+examine: "A staff styled after the elusive cat."
+tradeable: true
+weight: 2.0
+tradeable_on_ge: true
+cost: 1500
+lowalch: 600
+highalch: 900
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 12
+  attackSpeed: 5
+  attackStab: 2
+  attackSlash: -1
+  attackCrush: 10
+  attackMagic: 10
+  attackRanged: 0
+  defenceStab: 2
+  defenceSlash: 3
+  defenceCrush: 1
+  defenceMagic: 10
+  defenceRanged: 0
+  meleeStrength: 7
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

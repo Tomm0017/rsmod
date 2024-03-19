@@ -1,0 +1,31 @@
+---
+id: 26743
+name: "Maoma's med helm"
+examine: "Maoma the Corrupt Captain's med helm."
+tradeable: false
+weight: 1.36
+tradeable_on_ge: false
+cost: 11500
+lowalch: 4600
+highalch: 6900
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 6
+  attackSlash: 6
+  attackCrush: 6
+  attackMagic: -20
+  attackRanged: -20
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: -10
+  defenceRanged: 10
+  meleeStrength: 1
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

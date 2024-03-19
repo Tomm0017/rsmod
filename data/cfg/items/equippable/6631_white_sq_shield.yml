@@ -1,0 +1,33 @@
+---
+id: 6631
+name: "White sq shield"
+examine: "A medium square shield."
+tradeable: true
+weight: 3.628
+tradeable_on_ge: true
+cost: 1152
+lowalch: 460
+highalch: 691
+buy_limit: 125
+equipment:
+  prayer: 1
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: 0
+  defenceStab: 15
+  defenceSlash: 16
+  defenceCrush: 14
+  defenceMagic: 0
+  defenceRanged: 15
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 10

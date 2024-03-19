@@ -1,0 +1,42 @@
+---
+id: 21634
+name: "Ancient wyvern shield"
+examine: "A magical shield with a wyvern visage."
+tradeable: true
+weight: 4.535
+tradeable_on_ge: true
+cost: 2000000
+lowalch: 800000
+highalch: 1200000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: 0
+  attackSpeed: 0
+  attackStab: -10
+  attackSlash: -10
+  attackCrush: -10
+  attackMagic: 15
+  attackRanged: -10
+  defenceStab: 22
+  defenceSlash: 30
+  defenceCrush: 25
+  defenceMagic: 15
+  defenceRanged: -55
+  meleeStrength: -2
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "magic"
+    level: 70
+  - skill: "defence"
+    level: 75

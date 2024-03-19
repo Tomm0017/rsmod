@@ -1,0 +1,31 @@
+---
+id: 25369
+name: "Infernal pickaxe (uncharged)"
+examine: "A formerly powerful, fiery pickaxe in the colours of the Trailblazer League."
+tradeable: false
+weight: 2.4
+tradeable_on_ge: false
+cost: 97950
+lowalch: 39180
+highalch: 58770
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 38
+  attackSlash: -2
+  attackCrush: 32
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 42
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

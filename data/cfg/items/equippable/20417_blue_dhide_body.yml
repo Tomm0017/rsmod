@@ -1,0 +1,35 @@
+---
+id: 20417
+name: "Blue d'hide body"
+examine: "Made from 100% real dragonhide."
+tradeable: true
+weight: 6.803
+tradeable_on_ge: false
+cost: 10
+lowalch: 4
+highalch: 6
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -15
+  attackRanged: 20
+  defenceStab: 23
+  defenceSlash: 30
+  defenceCrush: 30
+  defenceMagic: 26
+  defenceRanged: 40
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 50
+  - skill: "defence"
+    level: 40

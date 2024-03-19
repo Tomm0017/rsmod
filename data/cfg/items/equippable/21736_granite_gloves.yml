@@ -1,0 +1,35 @@
+---
+id: 21736
+name: "Granite gloves"
+examine: "Never take these for granite."
+tradeable: true
+weight: 1.0
+tradeable_on_ge: true
+cost: 34000
+lowalch: 13600
+highalch: 20400
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 5
+  attackSlash: 5
+  attackCrush: 9
+  attackMagic: -3
+  attackRanged: -1
+  defenceStab: 8
+  defenceSlash: 8
+  defenceCrush: 8
+  defenceMagic: -3
+  defenceRanged: 5
+  meleeStrength: 7
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 50
+  - skill: "strength"
+    level: 50

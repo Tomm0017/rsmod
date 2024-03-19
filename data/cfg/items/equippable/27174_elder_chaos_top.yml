@@ -1,0 +1,31 @@
+---
+id: 27174
+name: "Elder chaos top"
+examine: "The robes worn by the dangerous elder druids."
+tradeable: true
+weight: 0.2
+tradeable_on_ge: false
+cost: 10
+lowalch: 4
+highalch: 6
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 10
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 8
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

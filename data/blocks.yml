@@ -18,147 +18,147 @@ players:
     - FACE_TILE
 
   blocks:
-    - block: FORCE_MOVEMENT
-      bit: 0x1000
-      structure:
-        - name: src_x
-          type: BYTE
-          trans: SUBTRACT
-        - name: src_z
-          type: BYTE
-          trans: SUBTRACT
-        - name: dst_x
-          type: BYTE
-          trans: SUBTRACT
-        - name: dst_z
-          type: BYTE
-          trans: NEGATE
-        - name: client_delay
-          type: SHORT
-        - name: client_duration
-          type: SHORT
-          trans: ADD
-          order: LITTLE
-        - name: direction_angle
-          type: SHORT
-          trans: ADD
+      - block: FORCE_MOVEMENT
+        bit: 0x1000
+        structure:
+          - name: src_x
+            type: BYTE
+            trans: SUBTRACT
+          - name: src_z
+            type: BYTE
+            trans: SUBTRACT
+          - name: dst_x
+            type: BYTE
+            trans: SUBTRACT
+          - name: dst_z
+            type: BYTE
+            trans: NEGATE
+          - name: client_delay
+            type: SHORT
+          - name: client_duration
+            type: SHORT
+            trans: ADD
+            order: LITTLE
+          - name: direction_angle
+            type: SHORT
+            trans: ADD
 
-    - block: APPLY_TINT
-      bit: 0x4000
-      structure:
-        - name: recolourStartCycle
-          type: SHORT
-          trans: ADD
-        - name: recolourEndCycle
-          type: SHORT
-          trans: ADD
-          order: LITTLE
-        - name: recolourHue
-          type: BYTE
-          trans: ADD
-        - name: recolourSaturation
-          type: BYTE
-          trans: ADD
-        - name: recolourLuminance
-          type: BYTE
-        - name: recolourAmount
-          type: BYTE
-          trans: SUBTRACT
+      - block: APPLY_TINT
+        bit: 0x4000
+        structure:
+          - name: recolourStartCycle
+            type: SHORT
+            trans: ADD
+          - name: recolourEndCycle
+            type: SHORT
+            trans: ADD
+            order: LITTLE
+          - name: recolourHue
+            type: BYTE
+            trans: ADD
+          - name: recolourSaturation
+            type: BYTE
+            trans: ADD
+          - name: recolourLuminance
+            type: BYTE
+          - name: recolourAmount
+            type: BYTE
+            trans: SUBTRACT
 
-    - block: FACE_PAWN
-      bit: 0x8
-      structure:
-        - name: pawn_index
-          type: SHORT
-          order: LITTLE
-        - name: pawn_index_shift
-          type: BYTE
-          trans: SUBTRACT
+      - block: FACE_PAWN
+        bit: 0x8
+        structure:
+          - name: pawn_index
+            type: SHORT
+            order: LITTLE
+          - name: pawn_index_shift
+            type: BYTE
+            trans: SUBTRACT
 
-    - block: ANIMATION
-      bit: 0x80
-      structure:
-        - name: animation
-          type: SHORT
-          order: LITTLE
-        - name: delay
-          type: BYTE
+      - block: ANIMATION
+        bit: 0x80
+        structure:
+          - name: animation
+            type: SHORT
+            order: LITTLE
+          - name: delay
+            type: BYTE
 
-    - block: APPEARANCE
-      bit: 0x20
-      structure:
-        - name: length
-          type: BYTE
-          trans: ADD
-        - name: buffer
-          type: BYTES
-          trans: ADD
+      - block: APPEARANCE
+        bit: 0x20
+        structure:
+          - name: length
+            type: BYTE
+            trans: ADD
+          - name: buffer
+            type: BYTES
+            trans: ADD
 
-    - block: FORCE_CHAT
-      bit: 0x2
+      - block: FORCE_CHAT
+        bit: 0x2
 
-    - block: HITMARK
-      bit: 0x4
-      structure:
-        - name: hitmarks
-          type: BYTE
-        - name: hitbars
-          type: BYTE
-        - name: hitbar_percentage
-          type: BYTE
-          trans: ADD
-        - name: hitbar_to_percentage
-          type: BYTE
-          trans: NEGATE
+      - block: HITMARK
+        bit: 0x4
+        structure:
+          - name: hitmarks
+            type: BYTE
+          - name: hitbars
+            type: BYTE
+          - name: hitbar_percentage
+            type: BYTE
+            trans: ADD
+          - name: hitbar_to_percentage
+            type: BYTE
+            trans: NEGATE
 
-    - block: PUBLIC_CHAT
-      bit: 0x200
-      structure:
-        - name: effects
-          type: SHORT
-        - name: icon
-          type: BYTE
-          trans: SUBTRACT
-        - name: auto
-          type: BYTE
-        - name: compressed_length
-          type: BYTE
-          trans: ADD
-        - name: compressed_data
-          type: BYTES
+      - block: PUBLIC_CHAT
+        bit: 0x200
+        structure:
+          - name: effects
+            type: SHORT
+          - name: icon
+            type: BYTE
+            trans: SUBTRACT
+          - name: auto
+            type: BYTE
+          - name: compressed_length
+            type: BYTE
+            trans: ADD
+          - name: compressed_data
+            type: BYTES
 
-    - block: CONTEXT_MENU
-      bit: 0x400
+      - block: CONTEXT_MENU
+        bit: 0x400
 
-    - block: GFX
-      bit: 0x10000
-      structure:
-        - name: gfx
-          type: SHORT
-        - name: settings
-          type: INT
-          order: LITTLE
+      - block: GFX
+        bit: 0x10000
+        structure:
+          - name: gfx
+            type: SHORT
+          - name: settings
+            type: INT
+            order: LITTLE
 
-    - block: MOVEMENT
-      bit: 0x8000
-      structure:
-        - name: type
-          type: BYTE
+      - block: MOVEMENT
+        bit: 0x8000
+        structure:
+          - name: type
+            type: BYTE
 
-    - block: FACE_TILE
-      bit: 0x1
-      structure:
-        - name: degrees
-          type: SHORT
-          trans: ADD
-          order: LITTLE
+      - block: FACE_TILE
+        bit: 0x1
+        structure:
+          - name: degrees
+            type: SHORT
+            trans: ADD
+            order: LITTLE
 
-    - block: TEMP_MOVEMENT
-      bit: 0x8000
-      structure:
-        - name: type
-          type: BYTE
-          trans: SUBTRACT
+      - block: TEMP_MOVEMENT
+        bit: 0x8000
+        structure:
+          - name: type
+            type: BYTE
+            trans: SUBTRACT
 
 npcs:
   updating-opcode: 67

@@ -1,0 +1,33 @@
+---
+id: 10075
+name: "Gloves of silence"
+examine: "Made from dark kebbit fur, these are perfect for tasks of a stealthier nature."
+tradeable: true
+weight: 0.226
+tradeable_on_ge: true
+cost: 600
+lowalch: 240
+highalch: 360
+buy_limit: 8000
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 2
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "hunter"
+    level: 54

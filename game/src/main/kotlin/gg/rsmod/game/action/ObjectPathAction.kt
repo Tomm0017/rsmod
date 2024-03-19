@@ -1,6 +1,6 @@
 package gg.rsmod.game.action
 
-import gg.rsmod.game.fs.def.ObjectDef
+import dev.openrune.cache.CacheManager.objects
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.MovementQueue
@@ -94,7 +94,7 @@ object ObjectPathAction {
     private suspend fun QueueTask.walkTo(obj: GameObject, lineOfSightRange: Int?): Route {
         val pawn = ctx as Pawn
 
-        val def = obj.getDef(pawn.world.definitions)
+        val def = obj.getDef()
         val tile = obj.tile
         val type = obj.type
         val rot = obj.rot
@@ -239,7 +239,7 @@ object ObjectPathAction {
     }
 
     private fun faceObj(pawn: Pawn, obj: GameObject) {
-        val def = pawn.world.definitions.get(ObjectDef::class.java, obj.id)
+        val def = objects(obj.id)
         val rot = obj.rot
         val type = obj.type
 

@@ -1,0 +1,33 @@
+---
+id: 20424
+name: "Black d'hide chaps"
+examine: "Made from 100% real dragonhide."
+tradeable: true
+weight: 5.443
+tradeable_on_ge: false
+cost: 30
+lowalch: 12
+highalch: 18
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -10
+  attackRanged: 17
+  defenceStab: 18
+  defenceSlash: 20
+  defenceCrush: 26
+  defenceMagic: 23
+  defenceRanged: 26
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 70

@@ -1,0 +1,40 @@
+---
+id: 1293
+name: "Iron longsword"
+examine: "A razor sharp longsword."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 140
+lowalch: 56
+highalch: 84
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 9
+  attackSpeed: 5
+  attackStab: 6
+  attackSlash: 8
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 3
+  defenceCrush: 2
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 10
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 1

@@ -1,0 +1,33 @@
+---
+id: 12233
+name: "Iron kiteshield (t)"
+examine: "Iron kiteshield with trim."
+tradeable: true
+weight: 5.443
+tradeable_on_ge: true
+cost: 240
+lowalch: 96
+highalch: 144
+buy_limit: 4
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -8
+  attackRanged: -3
+  defenceStab: 8
+  defenceSlash: 10
+  defenceCrush: 9
+  defenceMagic: -1
+  defenceRanged: 9
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 1

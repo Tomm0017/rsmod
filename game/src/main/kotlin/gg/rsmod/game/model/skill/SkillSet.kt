@@ -18,7 +18,7 @@ class SkillSet(val maxSkills: Int) {
     /**
      * Sum up the max level for all your skills.
      */
-    val calculateTotalLevel: Int get() = skills.sumOf { skill -> getBaseLevel(skill.id) }
+    val calculateTotalLevel: Int get() = skills.sumOf { skill -> getMaxLevel(skill.id) }
 
     /**
      * Sum up the experience for all your skills.
@@ -49,7 +49,7 @@ class SkillSet(val maxSkills: Int) {
     /**
      * Gets the level based on the xp that [skills].get([skill]) has.
      */
-    fun getBaseLevel(skill: Int): Int = getLevelForXp(skills[skill].xp)
+    fun getMaxLevel(skill: Int): Int = getLevelForXp(skills[skill].xp)
 
     fun setXp(skill: Int, xp: Double) {
         get(skill).xp = xp
@@ -97,9 +97,9 @@ class SkillSet(val maxSkills: Int) {
             "Cap value and alter value must always be the same signum (+ or -)."
         }
         val altered = when {
-            capValue > 0 -> Math.min(getCurrentLevel(skill) + value, getBaseLevel(skill) + capValue)
-            capValue < 0 -> Math.max(getCurrentLevel(skill) + value, getBaseLevel(skill) + capValue)
-            else -> Math.min(getBaseLevel(skill), getCurrentLevel(skill) + value)
+            capValue > 0 -> Math.min(getCurrentLevel(skill) + value, getMaxLevel(skill) + capValue)
+            capValue < 0 -> Math.max(getCurrentLevel(skill) + value, getMaxLevel(skill) + capValue)
+            else -> Math.min(getMaxLevel(skill), getCurrentLevel(skill) + value)
         }
         val newLevel = Math.max(0, altered)
         val curLevel = getCurrentLevel(skill)
@@ -118,7 +118,7 @@ class SkillSet(val maxSkills: Int) {
      * positive number.
      *
      * @param capped if true, the [skill] level cannot decrease further than
-     * [getBaseLevel] - [value].
+     * [getMaxLevel] - [value].
      */
     fun decrementCurrentLevel(skill: Int, value: Int, capped: Boolean) = alterCurrentLevel(skill, -value, if (capped) -value else 0)
 
@@ -131,15 +131,15 @@ class SkillSet(val maxSkills: Int) {
      * positive number.
      *
      * @param capped if true, the [skill] level cannot increase further than
-     * [getBaseLevel].
+     * [getMaxLevel].
      */
     fun incrementCurrentLevel(skill: Int, value: Int, capped: Boolean) = alterCurrentLevel(skill, value, if (capped) 0 else value)
 
     /**
-     * Set [skill] level to [getBaseLevel].
+     * Set [skill] level to [getMaxLevel].
      */
     fun restore(skill: Int) {
-        setCurrentLevel(skill, getBaseLevel(skill))
+        setCurrentLevel(skill, getMaxLevel(skill))
     }
 
     /**

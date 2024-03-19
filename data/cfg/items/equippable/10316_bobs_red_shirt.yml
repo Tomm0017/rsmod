@@ -1,0 +1,31 @@
+---
+id: 10316
+name: "Bob's red shirt"
+examine: "'Bob says: Never give your password out to anyone.'"
+tradeable: true
+weight: 1.0
+tradeable_on_ge: true
+cost: 3
+lowalch: 1
+highalch: 1
+buy_limit: 4
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

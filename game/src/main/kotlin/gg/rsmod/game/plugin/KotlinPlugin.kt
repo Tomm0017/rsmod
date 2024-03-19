@@ -1,11 +1,11 @@
 package gg.rsmod.game.plugin
 
+import com.google.gson.GsonBuilder
+import dev.openrune.cache.CacheManager.item
+import dev.openrune.cache.CacheManager.npc
+import dev.openrune.cache.CacheManager.objects
 import gg.rsmod.game.Server
 import gg.rsmod.game.event.Event
-import gg.rsmod.game.fs.Definition
-import gg.rsmod.game.fs.def.ItemDef
-import gg.rsmod.game.fs.def.NpcDef
-import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.*
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.container.key.ContainerKey
@@ -16,6 +16,8 @@ import gg.rsmod.game.model.shop.ShopCurrency
 import gg.rsmod.game.model.shop.StockType
 import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.service.Service
+import java.nio.file.Files
+import java.nio.file.Paths
 import kotlin.reflect.KClass
 import kotlin.script.experimental.annotations.KotlinScript
 
@@ -30,6 +32,38 @@ import kotlin.script.experimental.annotations.KotlinScript
         compilationConfiguration = KotlinPluginConfiguration::class
 )
 abstract class KotlinPlugin(private val r: PluginRepository, val world: World, val server: Server) {
+
+    private val METADATA_PATH = Paths.get("./plugins", "configs")
+
+    /**
+     * Set the [PluginMetadata] for this plugin.
+     */
+    fun load_metadata(metadata: PluginMetadata) {
+        checkNotNull(metadata.propertyFileName) { "Property file name must be set in order to load metadata." }
+
+        val file = METADATA_PATH.resolve("${metadata.propertyFileName}.json")
+        val gson = GsonBuilder()
+            .setPrettyPrinting()
+            .disableHtmlEscaping()
+            .create()
+
+        if (!Files.exists(file)) {
+            Files.createDirectories(METADATA_PATH)
+            Files.newBufferedWriter(file).use { writer ->
+                gson.toJson(metadata, PluginMetadata::class.java, writer)
+            }
+        }
+
+        Files.newBufferedReader(file).use { reader ->
+            val data = gson.fromJson(reader, PluginMetadata::class.java)
+            if (data.properties.isNotEmpty()) {
+                properties = mutableMapOf()
+                data.properties.forEach { key, value ->
+                    properties[key] = if (value is Double) value.toInt() else value
+                }
+            }
+        }
+    }
 
     /**
      * A map of properties that will be copied from the [PluginMetadata] and
@@ -70,7 +104,7 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      * Set the [NpcCombatDef] for npcs with [Npc.id] of [npc].
      */
     fun set_combat_def(npc: Int, def: NpcCombatDef) {
-        check(!r.npcCombatDefs.containsKey(npc)) { "Npc combat definition has been previously set: $npc" }
+
         r.npcCombatDefs[npc] = def
     }
 
@@ -167,9 +201,9 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      */
     fun on_item_option(item: Int, option: String, logic: (Plugin).() -> Unit) {
         val opt = option.lowercase()
-        val def = world.definitions.get(ItemDef::class.java, item)
-        val option = def.inventoryMenu.indexOfFirst { it?.lowercase() == opt }
-        check(option != -1) { "Option \"$option\" not found for item $item [options=${def.inventoryMenu.filterNotNull().filter { it.isNotBlank() }}]" }
+        val def = item(item)
+        val option = def.options.indexOfFirst { it?.lowercase() == opt }
+
         r.bindItem(item, option + 1, logic)
     }
     /**
@@ -178,10 +212,10 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      */
     fun on_equipment_option(item: Int, option: String, logic: (Plugin).() -> Unit) {
         val opt = option.lowercase()
-        val def = world.definitions.get(ItemDef::class.java, item)
-        val slot = def.equipmentMenu.indexOfFirst { it?.lowercase() == opt }
+        val def = item(item)
+        val slot = def.interfaceOptions.indexOfFirst { it?.lowercase() == opt }
 
-        check(slot != -1) { "Option \"$option\" not found for item equipment $item [options=${def.equipmentMenu.filterNotNull().filter { it.isNotBlank() }}]" }
+        check(slot != -1) { "Option \"$option\" not found for item equipment $item [options=${def.interfaceOptions.filterNotNull().filter { it.isNotBlank() }}]" }
 
         r.bindEquipmentOption(item, slot + 1, logic)
     }
@@ -194,43 +228,10 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      */
     fun on_obj_option(obj: Int, option: String, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
         val opt = option.lowercase()
-        val def = world.definitions.get(ObjectDef::class.java, obj)
-        val slot = def.options.indexOfFirst { it?.lowercase() == opt }
-
-        check(slot != -1) { "Option \"$option\" not found for object $obj [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
+        val def = objects(obj)
+        val slot = def.actions.indexOfFirst { it?.lowercase() == opt }
 
         r.bindObject(obj, slot + 1, lineOfSightDistance, logic)
-    }
-
-    fun itemHasGroundOption(item: Int, option: String) : Boolean {
-        val slot =  world.definitions.get(ItemDef::class.java, item).inventoryMenu.indexOfFirst {
-            it?.lowercase() == option.lowercase()
-        }
-        return slot != -1
-    }
-
-    fun itemHasInventoryOption(item: Int, option: String) : Boolean {
-        val slot =  world.definitions.get(ItemDef::class.java, item).inventoryMenu.indexOfFirst {
-            it?.lowercase() == option.lowercase()
-        }
-        return slot != -1
-    }
-
-    fun objHasOption(obj: Int, option: String) : Boolean {
-        val slot =  world.definitions.get(ObjectDef::class.java, obj).options.indexOfFirst {
-            it?.lowercase() == option.lowercase()
-        }
-        return slot != -1
-    }
-
-    /**
-     * Checks if a [NPC] has [option]
-     */
-    fun npcHasOption(npc: Int, option: String) : Boolean {
-        val slot =  world.definitions.get(NpcDef::class.java, npc).options.indexOfFirst {
-            it?.lowercase() == option.lowercase()
-        }
-        return slot != -1
     }
 
     /**
@@ -245,10 +246,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      */
     fun on_npc_option(npc: Int, option: String, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
         val opt = option.lowercase()
-        val def = world.definitions.get(NpcDef::class.java, npc)
-        val slot = def.options.indexOfFirst { it?.lowercase() == opt }
-
-        check(slot != -1) { "Option \"$option\" not found for npc $npc [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
+        val def = npc(npc)
+        val slot = def.actions.indexOfFirst { it?.lowercase() == opt }
 
         r.bindNpc(npc, slot + 1, lineOfSightDistance, logic)
     }
@@ -260,10 +259,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      */
     fun on_ground_item_option(item: Int, option: String, logic: (Plugin).() -> Unit) {
         val opt = option.lowercase()
-        val def = world.definitions.get(ItemDef::class.java, item)
-        val slot = def.groundMenu.indexOfFirst { it?.lowercase() == opt }
-
-        check(slot != -1) { "Option \"$option\" not found for ground item $item [options=${def.groundMenu.filterNotNull().filter { it.isNotBlank() }}]" }
+        val def = item(item)
+        val slot = def.options.indexOfFirst { it?.lowercase() == opt }
 
         r.bindGroundItem(item, slot + 1, logic)
     }
@@ -597,28 +594,14 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     fun getPluginRepository(): PluginRepository {
         return r
     }
-    fun <T : Definition> getDefs(type: KClass<out T>, id: Int): T {
-        return world.definitions.get(type.java, id)
-    }
-    fun <T : Definition> getDefsNullable(type: KClass<out T>, id: Int): T? {
-        return world.definitions.getNullable(type.java, id)
-    }
+
     fun obj_has_option(obj: Int, option: String): Boolean {
-        val objDefs = getDefs(ObjectDef::class, obj)
-        return objDefs.options.contains(option)
+        val objDefs = objects(obj)
+        return objDefs.actions.contains(option)
     }
     fun npc_has_option(npc: Int, option: String): Boolean {
-        val npcDefs = getDefs(NpcDef::class, npc)
-        return npcDefs.options.contains(option)
+        val npcDefs = npc(npc)
+        return npcDefs.actions.contains(option)
     }
-
-    /**
-     * @param type [Definition]
-     * @return Definition count of that type
-     */
-    fun <T : Definition> getDefCount(type: KClass<out T>) : Int {
-        return world.definitions.getCount(type.java)
-    }
-
 
 }

@@ -1,0 +1,31 @@
+---
+id: 27183
+name: "3rd age mage hat"
+examine: "Fabulously ancient mage protection enchanted in the 3rd Age."
+tradeable: true
+weight: 0.4
+tradeable_on_ge: false
+cost: 40
+lowalch: 16
+highalch: 24
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 8
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 8
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

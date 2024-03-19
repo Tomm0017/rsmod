@@ -1,0 +1,35 @@
+---
+id: 10334
+name: "3rd age range coif"
+examine: "Fabulously ancient range protection crafted from white dragonhide."
+tradeable: true
+weight: 1.0
+tradeable_on_ge: true
+cost: 50400
+lowalch: 20160
+highalch: 30240
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -2
+  attackRanged: 9
+  defenceStab: 4
+  defenceSlash: 7
+  defenceCrush: 10
+  defenceMagic: 5
+  defenceRanged: 8
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 65
+  - skill: "defence"
+    level: 45

@@ -79,7 +79,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
          * Objects will affect the collision map.
          */
         if (entity.entityType.isObject) {
-            world.collision.applyCollision(world.definitions, entity as GameObject, CollisionUpdate.Type.ADD)
+            world.collision.applyCollision(entity as GameObject, CollisionUpdate.Type.ADD)
         }
 
         /*
@@ -131,7 +131,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
          * collision map.
          */
         if (entity.entityType.isObject) {
-            world.collision.applyCollision(world.definitions, entity as GameObject, CollisionUpdate.Type.REMOVE)
+            world.collision.applyCollision(entity as GameObject, CollisionUpdate.Type.REMOVE)
         }
 
         entities[tile]?.remove(entity)

@@ -1,0 +1,31 @@
+---
+id: 7455
+name: "Iron gloves"
+examine: "A pair of gloves."
+tradeable: false
+weight: 0.226
+tradeable_on_ge: false
+cost: 250
+lowalch: 100
+highalch: 150
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 3
+  attackSlash: 3
+  attackCrush: 3
+  attackMagic: 2
+  attackRanged: 3
+  defenceStab: 3
+  defenceSlash: 3
+  defenceCrush: 3
+  defenceMagic: 2
+  defenceRanged: 3
+  meleeStrength: 3
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

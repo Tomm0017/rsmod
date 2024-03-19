@@ -1,0 +1,31 @@
+---
+id: 24171
+name: "Guthix halo (l)"
+examine: "Halo with the protection of Guthix."
+tradeable: false
+weight: 0.3
+tradeable_on_ge: false
+cost: 150000
+lowalch: 60000
+highalch: 90000
+buy_limit: null
+equipment:
+  prayer: 3
+  equipSlot: "hat"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 11
+  defenceSlash: 12
+  defenceCrush: 10
+  defenceMagic: 11
+  defenceRanged: -1
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

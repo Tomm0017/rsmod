@@ -1,0 +1,19 @@
+---
+- id: 11680
+  x: 2739
+  z: 3581
+  height: 1
+  amount: 1
+  respawnTime: 50
+- id: 6561
+  x: 3049
+  z: 3257
+  height: 0
+  amount: 1
+  respawnTime: 50
+- id: 556
+  x: 3150
+  z: 3247
+  height: 0
+  amount: 1
+  respawnTime: 50

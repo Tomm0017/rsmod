@@ -1,0 +1,31 @@
+---
+id: 27002
+name: "Void knight gloves (l)(or)"
+examine: "Void knight gloves plucked from the shattered abyss."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 6052
+lowalch: 2420
+highalch: 3631
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 6
+  defenceSlash: 6
+  defenceCrush: 6
+  defenceMagic: 4
+  defenceRanged: 6
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

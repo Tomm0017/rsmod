@@ -1,0 +1,35 @@
+---
+id: 22278
+name: "Blue d'hide shield"
+examine: "A solid yew shield covered in blue dragon leather."
+tradeable: true
+weight: 8.0
+tradeable_on_ge: true
+cost: 7500
+lowalch: 3000
+highalch: 4500
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -15
+  attackSlash: -15
+  attackCrush: -11
+  attackMagic: -10
+  attackRanged: 5
+  defenceStab: 16
+  defenceSlash: 14
+  defenceCrush: 12
+  defenceMagic: 12
+  defenceRanged: 12
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 50
+  - skill: "defence"
+    level: 40

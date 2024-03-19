@@ -1,0 +1,35 @@
+---
+id: 1129
+name: "Leather body"
+examine: "Better than no armour!"
+tradeable: true
+weight: 2.721
+tradeable_on_ge: true
+cost: 21
+lowalch: 8
+highalch: 12
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "torso"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -2
+  attackRanged: 2
+  defenceStab: 8
+  defenceSlash: 9
+  defenceCrush: 10
+  defenceMagic: 4
+  defenceRanged: 9
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 1
+  - skill: "defence"
+    level: 1

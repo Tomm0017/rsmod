@@ -1,0 +1,35 @@
+---
+id: 1097
+name: "Studded chaps"
+examine: "Those studs should provide a bit more protection."
+tradeable: true
+weight: 4.535
+tradeable_on_ge: true
+cost: 750
+lowalch: 300
+highalch: 450
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -5
+  attackRanged: 6
+  defenceStab: 15
+  defenceSlash: 16
+  defenceCrush: 17
+  defenceMagic: 6
+  defenceRanged: 16
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 20
+  - skill: "defence"
+    level: 1

@@ -1,0 +1,35 @@
+---
+id: 20564
+name: "Proselyte hauberk"
+examine: "A Proselyte Temple Knight's armour."
+tradeable: true
+weight: 8.618
+tradeable_on_ge: false
+cost: 20
+lowalch: 8
+highalch: 12
+buy_limit: null
+equipment:
+  prayer: 8
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -30
+  attackRanged: -15
+  defenceStab: 65
+  defenceSlash: 63
+  defenceCrush: 55
+  defenceMagic: -6
+  defenceRanged: 63
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 30
+  - skill: "prayer"
+    level: 20

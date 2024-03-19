@@ -1,0 +1,40 @@
+---
+id: 21009
+name: "Dragon sword"
+examine: "A razor sharp sword."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 72001
+lowalch: 28800
+highalch: 43200
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 17
+  attackSpeed: 4
+  attackStab: 65
+  attackSlash: 55
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 2
+  defenceCrush: 1
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 63
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 60

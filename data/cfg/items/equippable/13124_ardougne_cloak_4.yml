@@ -1,0 +1,31 @@
+---
+id: 13124
+name: "Ardougne cloak 4"
+examine: "A shadowy Ardougne cloak."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 0
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 6
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 6
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 6
+  attackRanged: 0
+  defenceStab: 6
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 6
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

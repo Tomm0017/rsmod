@@ -1,0 +1,31 @@
+---
+id: 23846
+name: "Corrupted legs (basic)"
+examine: "A resilient set of leg armour with a little protection from corrupted creatures."
+tradeable: false
+weight: 9.071
+tradeable_on_ge: false
+cost: 1
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 6
+  attackSlash: 6
+  attackCrush: 2
+  attackMagic: 6
+  attackRanged: 6
+  defenceStab: 52
+  defenceSlash: 52
+  defenceCrush: 52
+  defenceMagic: 52
+  defenceRanged: 52
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

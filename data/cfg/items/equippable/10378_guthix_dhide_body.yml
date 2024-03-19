@@ -1,0 +1,35 @@
+---
+id: 10378
+name: "Guthix d'hide body"
+examine: "Guthix blessed dragonhide body armour."
+tradeable: true
+weight: 6.0
+tradeable_on_ge: true
+cost: 13000
+lowalch: 5200
+highalch: 7800
+buy_limit: 8
+equipment:
+  prayer: 1
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -15
+  attackRanged: 30
+  defenceStab: 55
+  defenceSlash: 47
+  defenceCrush: 60
+  defenceMagic: 50
+  defenceRanged: 55
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 70
+  - skill: "defence"
+    level: 40

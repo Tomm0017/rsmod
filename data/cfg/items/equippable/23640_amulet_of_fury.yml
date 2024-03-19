@@ -1,0 +1,31 @@
+---
+id: 23640
+name: "Amulet of fury"
+examine: "A very powerful onyx amulet."
+tradeable: false
+weight: 0.01
+tradeable_on_ge: false
+cost: 30
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 5
+  equipSlot: "neck"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 10
+  attackSlash: 10
+  attackCrush: 10
+  attackMagic: 10
+  attackRanged: 10
+  defenceStab: 15
+  defenceSlash: 15
+  defenceCrush: 15
+  defenceMagic: 15
+  defenceRanged: 15
+  meleeStrength: 8
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,35 @@
+---
+id: 5553
+name: "Rogue top"
+examine: "Black banded leather armour, a rogue's dream!"
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 625
+lowalch: 250
+highalch: 375
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 10
+  defenceSlash: 10
+  defenceCrush: 10
+  defenceMagic: 10
+  defenceRanged: 10
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "thieving"
+    level: 50
+  - skill: "agility"
+    level: 50

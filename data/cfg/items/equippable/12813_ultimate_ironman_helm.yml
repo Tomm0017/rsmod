@@ -1,0 +1,31 @@
+---
+id: 12813
+name: "Ultimate ironman helm"
+examine: "For just a rather very independent scaper."
+tradeable: false
+weight: 0.907
+tradeable_on_ge: false
+cost: 0
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: -3
+  defenceStab: 6
+  defenceSlash: 7
+  defenceCrush: 5
+  defenceMagic: -1
+  defenceRanged: 6
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

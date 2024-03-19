@@ -1,0 +1,38 @@
+---
+id: 25516
+name: "Dharok's greataxe"
+examine: "Dharok the Wretched's greataxe."
+tradeable: false
+weight: 3.175
+tradeable_on_ge: false
+cost: 1
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 1
+  attackSpeed: 7
+  attackStab: -4
+  attackSlash: 103
+  attackCrush: 95
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: -1
+  meleeStrength: 105
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 2065
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 2064
+    walkBackwardsAnimId: 2064
+    walkLeftAnimId: 2064
+    walkRightAnimId: 2064
+    runAnimId: 824
+  skillReqs: null

@@ -1,0 +1,40 @@
+---
+id: 13652
+name: "Dragon claws"
+examine: "A set of fighting claws."
+tradeable: true
+weight: 0.907
+tradeable_on_ge: true
+cost: 205000
+lowalch: 82000
+highalch: 123000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 4
+  attackSpeed: 4
+  attackStab: 41
+  attackSlash: 57
+  attackCrush: -4
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 13
+  defenceSlash: 26
+  defenceCrush: 7
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 56
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 60

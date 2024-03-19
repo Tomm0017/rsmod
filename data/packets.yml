@@ -1224,11 +1224,11 @@ client-packets:
     length: 10
     ignore: true
     # @Done
-    #- message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: EVENT_MOUSE_CLICK - need to refactor code to see what values are received
-    #  type: FIXED
-    #  opcode: 16
-    #  length: 6
-    #  ignore: true
+  #- message: gg.rsmod.game.message.impl.IgnoreMessage # TODO: EVENT_MOUSE_CLICK - need to refactor code to see what values are received
+  #  type: FIXED
+  #  opcode: 16
+  #  length: 6
+  #  ignore: true
     # @Done
   - message: gg.rsmod.game.message.impl.MapBuildCompleteMessage #completed
     type: FIXED

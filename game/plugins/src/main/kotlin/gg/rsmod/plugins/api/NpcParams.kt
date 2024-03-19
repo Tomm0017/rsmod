@@ -1,6 +1,7 @@
 package gg.rsmod.plugins.api
 
 import gg.rsmod.game.model.combat.NpcCombatDef
+import gg.rsmod.game.model.weightedTableBuilder.tableDrops
 import gg.rsmod.plugins.api.ext.enumSetOf
 
 /**
@@ -29,6 +30,7 @@ enum class NpcSpecies {
     UNDEAD
 }
 
+
 /**
  * @author Tom <rspsmods@gmail.com>
  */
@@ -45,6 +47,24 @@ class NpcCombatBuilder {
     private var defaultBlockAnim = -1
 
     private val deathAnimList = mutableListOf<Int>()
+
+    private var defaultAttackSound = -1
+    private var defaultAttackSoundArea: Boolean = false
+    private var defaultAttackSoundRadius: Int = -1
+    private var defaultAttackSoundVolume: Int = -1
+
+
+    private var defaultBlockSound = -1
+    private var defaultBlockSoundArea: Boolean = false
+    private var defaultBlockSoundRadius: Int = -1
+    private var defaultBlockSoundVolume: Int = -1
+
+
+    private var defaultDeathSound = -1
+    private var defaultDeathSoundArea: Boolean = false
+    private var defaultDeathSoundRadius: Int = -1
+    private var defaultDeathSoundVolume: Int = -1
+
 
     private var respawnDelay = -1
 
@@ -70,7 +90,12 @@ class NpcCombatBuilder {
 
     private val speciesSet = enumSetOf<NpcSpecies>()
 
+    var dropTable = mutableListOf<tableDrops>()
+
     fun build(): NpcCombatDef {
+        /**
+         * @TODO Add indentifier if check fails
+         */
         check(maxHealth != -1) { "Max health must be set." }
         check(attackSpeed != -1) { "Attack speed must be set." }
         check(deathAnimList.isNotEmpty()) { "A death animation must be set." }
@@ -89,11 +114,70 @@ class NpcCombatBuilder {
         }
 
         return NpcCombatDef(
-                maxHealth, stats.toList(), attackSpeed, defaultAttackAnim,
-                defaultBlockAnim, deathAnimList, respawnDelay, aggroRadius,
-                aggroTargetDelay, aggroTimer, poisonChance, venomChance,
-                poisonImmunity, venomImmunity, slayerReq, slayerXp,
-                bonuses.toList(), speciesSet)
+            maxHealth,
+            stats.toList(),
+            attackSpeed,
+            defaultAttackAnim,
+            defaultBlockAnim,
+            deathAnimList,
+
+            defaultAttackSound,
+            defaultAttackSoundArea,
+            defaultAttackSoundRadius,
+            defaultAttackSoundVolume,
+
+            defaultBlockSound,
+            defaultBlockSoundArea,
+            defaultBlockSoundRadius,
+            defaultBlockSoundVolume,
+
+            defaultDeathSound,
+            defaultDeathSoundArea,
+            defaultDeathSoundRadius,
+            defaultDeathSoundVolume,
+
+            respawnDelay,
+            aggroRadius,
+            aggroTargetDelay,
+            aggroTimer,
+            poisonChance,
+            venomChance,
+            poisonImmunity,
+            venomImmunity,
+            slayerReq,
+            slayerXp,
+            bonuses.toList(),
+            speciesSet,
+            dropTable.toSet()
+        )
+    }
+
+    fun setAttackSoundArea(attackSoundArea: Boolean) {
+        defaultAttackSoundArea = attackSoundArea
+    }
+    fun setAttackSoundRadius(soundRadius: Int) {
+        defaultAttackSoundRadius = soundRadius
+    }
+    fun setAttackSoundVolume(soundVolume: Int) {
+        defaultAttackSoundVolume = soundVolume
+    }
+    fun setBlockSoundArea(blockSoundArea: Boolean) {
+        defaultBlockSoundArea = blockSoundArea
+    }
+    fun setBlockSoundRadius(blockSoundRadius: Int) {
+        defaultBlockSoundRadius = blockSoundRadius
+    }
+    fun setBlockSoundVolume(blockSoundVolume: Int) {
+        defaultBlockSoundVolume = blockSoundVolume
+    }
+    fun setDeathSoundArea(deathSoundArea: Boolean) {
+        defaultDeathSoundArea = deathSoundArea
+    }
+    fun setDeathSoundRadius(DeathSoundRadius: Int) {
+        defaultDeathSoundRadius = DeathSoundRadius
+    }
+    fun setDeathSoundVolume(DeathSoundVolume: Int) {
+        defaultDeathSoundVolume = DeathSoundVolume
     }
 
     fun setHitpoints(health: Int): NpcCombatBuilder {
@@ -106,7 +190,7 @@ class NpcCombatBuilder {
      * @param speed the attack speed, in cycles.
      */
     fun setAttackSpeed(speed: Int): NpcCombatBuilder {
-        check(attackSpeed == -1) { "Attack speed already set." }
+        check(attackSpeed == -1) { " Attack speed already set, at: $attackSpeed" }
         attackSpeed = speed
         return this
     }
@@ -156,6 +240,21 @@ class NpcCombatBuilder {
         return this
     }
 
+    fun setDefaultAttackSound(sound: Int) {
+        check(defaultAttackSound == -1) { "Default attack sound already set." }
+        defaultAttackSound = sound
+    }
+
+    fun setDefaultBlockSound(sound: Int) {
+        check(defaultBlockSound == -1) { "Default block sound already set." }
+        defaultBlockSound = sound
+    }
+
+    fun setDefaultDeathSound(sound: Int) {
+        check(defaultDeathSound == -1) { "Default death sound already set." }
+        defaultDeathSound = sound
+    }
+
     fun setDefaultAttackAnimation(animation: Int): NpcCombatBuilder {
         check(defaultAttackAnim == -1) { "Default attack animation already set." }
         defaultAttackAnim = animation
@@ -172,6 +271,11 @@ class NpcCombatBuilder {
         setDefaultAttackAnimation(attackAnimation)
         setDefaultBlockAnimation(blockAnimation)
         return this
+    }
+
+    fun setCombatSounds(attackSound: Int, blockSound: Int) {
+        setDefaultAttackSound(attackSound)
+        setDefaultBlockSound(blockSound)
     }
 
     fun setDeathAnimation(vararg anims: Int): NpcCombatBuilder {
@@ -334,8 +438,10 @@ class NpcCombatBuilder {
         return this
     }
 
+
     companion object {
         private const val BONUS_COUNT = 14
         private const val DEFAULT_AGGRO_TIMER = 1000 // 10 minutes
     }
+
 }

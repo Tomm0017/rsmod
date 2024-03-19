@@ -1,0 +1,40 @@
+---
+id: 1289
+name: "Rune sword"
+examine: "A razor sharp sword."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 20800
+lowalch: 8320
+highalch: 12480
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 17
+  attackSpeed: 4
+  attackStab: 38
+  attackSlash: 26
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 2
+  defenceCrush: 1
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 39
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 40

@@ -1,0 +1,35 @@
+---
+id: 24419
+name: "Inquisitor's great helm"
+examine: "The great helmet of the turncloak justiciar."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: true
+cost: 500000
+lowalch: 200000
+highalch: 300000
+buy_limit: 8
+equipment:
+  prayer: 1
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -2
+  attackSlash: -2
+  attackCrush: 8
+  attackMagic: -5
+  attackRanged: -5
+  defenceStab: 19
+  defenceSlash: 10
+  defenceCrush: 21
+  defenceMagic: 0
+  defenceRanged: 12
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "strength"
+    level: 70
+  - skill: "defence"
+    level: 30

@@ -1,0 +1,33 @@
+---
+id: 12293
+name: "Mithril full helm (t)"
+examine: "Mithril full helm with trim."
+tradeable: true
+weight: 2.267
+tradeable_on_ge: true
+cost: 1430
+lowalch: 572
+highalch: 858
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: -3
+  defenceStab: 13
+  defenceSlash: 14
+  defenceCrush: 11
+  defenceMagic: -1
+  defenceRanged: 13
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 20

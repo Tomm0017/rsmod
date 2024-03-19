@@ -1,0 +1,31 @@
+---
+id: 26223
+name: "Ancient ceremonial legs"
+examine: "Some ceremonial robes dedicated to an ancient god."
+tradeable: true
+weight: 0.8
+tradeable_on_ge: true
+cost: 80000
+lowalch: 32000
+highalch: 48000
+buy_limit: 8
+equipment:
+  prayer: 5
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

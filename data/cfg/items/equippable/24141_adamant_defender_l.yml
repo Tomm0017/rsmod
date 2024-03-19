@@ -1,0 +1,35 @@
+---
+id: 24141
+name: "Adamant defender (l)"
+examine: "A defensive weapon."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 1
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 13
+  attackSlash: 12
+  attackCrush: 11
+  attackMagic: -3
+  attackRanged: -2
+  defenceStab: 13
+  defenceSlash: 12
+  defenceCrush: 11
+  defenceMagic: -3
+  defenceRanged: -2
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 30
+  - skill: "defence"
+    level: 30

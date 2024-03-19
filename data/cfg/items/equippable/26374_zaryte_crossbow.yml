@@ -1,0 +1,31 @@
+---
+id: 26374
+name: "Zaryte crossbow"
+examine: "A weapon born out of conflict."
+tradeable: true
+weight: 6.001
+tradeable_on_ge: true
+cost: 990000
+lowalch: 396000
+highalch: 594000
+buy_limit: null
+equipment:
+  prayer: 1
+  equipSlot: "weapon"
+  weaponType: 5
+  attackSpeed: 6
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 110
+  defenceStab: 14
+  defenceSlash: 14
+  defenceCrush: 12
+  defenceMagic: 15
+  defenceRanged: 16
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

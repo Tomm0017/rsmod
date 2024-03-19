@@ -1,0 +1,35 @@
+---
+id: 10388
+name: "Saradomin chaps"
+examine: "Saradomin blessed dragonhide chaps."
+tradeable: true
+weight: 5.0
+tradeable_on_ge: true
+cost: 6000
+lowalch: 2400
+highalch: 3600
+buy_limit: 8
+equipment:
+  prayer: 1
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -10
+  attackRanged: 17
+  defenceStab: 31
+  defenceSlash: 25
+  defenceCrush: 33
+  defenceMagic: 28
+  defenceRanged: 31
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 70
+  - skill: "defence"
+    level: 40

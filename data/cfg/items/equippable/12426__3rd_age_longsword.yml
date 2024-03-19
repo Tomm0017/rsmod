@@ -1,0 +1,33 @@
+---
+id: 12426
+name: "3rd age longsword"
+examine: "A beautifully crafted sword forged by ancient blacksmiths."
+tradeable: true
+weight: 1.0
+tradeable_on_ge: true
+cost: 150000
+lowalch: 60000
+highalch: 90000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 0
+  attackSlash: 72
+  attackCrush: 60
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 3
+  defenceCrush: 2
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 75
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 65

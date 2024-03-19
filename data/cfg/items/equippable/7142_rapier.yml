@@ -1,0 +1,33 @@
+---
+id: 7142
+name: "Rapier"
+examine: "The very butcher of a silk button."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 25600
+lowalch: 10240
+highalch: 15360
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 45
+  attackSlash: 7
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 44
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 40

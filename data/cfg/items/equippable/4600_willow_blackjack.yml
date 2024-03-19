@@ -1,0 +1,31 @@
+---
+id: 4600
+name: "Willow blackjack"
+examine: "A handy little club made out of willow."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 600
+lowalch: 240
+highalch: 360
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 8
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

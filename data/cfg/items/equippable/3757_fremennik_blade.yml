@@ -1,0 +1,33 @@
+---
+id: 3757
+name: "Fremennik blade"
+examine: "A sword used only by Fremennik warriors."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 5000
+lowalch: 2000
+highalch: 3000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 6
+  attackSlash: 29
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 28
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 30

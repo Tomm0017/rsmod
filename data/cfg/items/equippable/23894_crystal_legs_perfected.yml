@@ -1,0 +1,32 @@
+---
+id: 23894
+name: "Crystal legs (perfected)"
+examine: "The most resilient set of leg armour with a lot of protection from crystalline\
+  \ creatures."
+tradeable: false
+weight: 9.071
+tradeable_on_ge: false
+cost: 1
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 4
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 14
+  attackSlash: 14
+  attackCrush: 4
+  attackMagic: 14
+  attackRanged: 14
+  defenceStab: 92
+  defenceSlash: 92
+  defenceCrush: 92
+  defenceMagic: 92
+  defenceRanged: 92
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

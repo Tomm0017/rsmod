@@ -1,0 +1,35 @@
+---
+id: 4156
+name: "Mirror shield"
+examine: "I can just about see things in this shield's reflection."
+tradeable: true
+weight: 2.267
+tradeable_on_ge: true
+cost: 5000
+lowalch: 2000
+highalch: 3000
+buy_limit: 40
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 10
+  defenceSlash: 15
+  defenceCrush: 5
+  defenceMagic: 5
+  defenceRanged: 10
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "slayer"
+    level: 25
+  - skill: "defence"
+    level: 20

@@ -1,0 +1,33 @@
+---
+id: 22954
+name: "Devout boots"
+examine: "A pair of Devout Boots."
+tradeable: true
+weight: 0.5
+tradeable_on_ge: true
+cost: 20000
+lowalch: 8000
+highalch: 12000
+buy_limit: 70
+equipment:
+  prayer: 5
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "prayer"
+    level: 60

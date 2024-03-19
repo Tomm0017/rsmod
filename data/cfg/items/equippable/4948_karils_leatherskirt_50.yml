@@ -1,0 +1,35 @@
+---
+id: 4948
+name: "Karil's leatherskirt 50"
+examine: "Karil the Tainted's leather skirt."
+tradeable: false
+weight: 5.443
+tradeable_on_ge: false
+cost: 47000
+lowalch: 18800
+highalch: 28200
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -10
+  attackRanged: 17
+  defenceStab: 26
+  defenceSlash: 20
+  defenceCrush: 28
+  defenceMagic: 35
+  defenceRanged: 33
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 70
+  - skill: "defence"
+    level: 70

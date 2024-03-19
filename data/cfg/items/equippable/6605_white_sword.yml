@@ -1,0 +1,33 @@
+---
+id: 6605
+name: "White sword"
+examine: "A razor sharp sword."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 624
+lowalch: 249
+highalch: 374
+buy_limit: 125
+equipment:
+  prayer: 1
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 14
+  attackSlash: 10
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 2
+  defenceCrush: 1
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 12
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 10

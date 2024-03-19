@@ -1,0 +1,31 @@
+---
+id: 27713
+name: "Crystal legs"
+examine: "A bright, shiny set of leg armour."
+tradeable: false
+weight: 1.0
+tradeable_on_ge: false
+cost: 1000000
+lowalch: 400000
+highalch: 600000
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -12
+  attackRanged: 18
+  defenceStab: 26
+  defenceSlash: 21
+  defenceCrush: 30
+  defenceMagic: 34
+  defenceRanged: 38
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

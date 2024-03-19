@@ -1,0 +1,33 @@
+---
+id: 6589
+name: "White battleaxe"
+examine: "A vicious looking axe."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: true
+cost: 1248
+lowalch: 499
+highalch: 748
+buy_limit: 125
+equipment:
+  prayer: 1
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 6
+  attackStab: -2
+  attackSlash: 20
+  attackCrush: 15
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: -1
+  meleeStrength: 24
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 10

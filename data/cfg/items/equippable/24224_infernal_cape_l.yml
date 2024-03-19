@@ -1,0 +1,31 @@
+---
+id: 24224
+name: "Infernal cape (l)"
+examine: "Whose idea was it to have a cape made of lava anyway?"
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 80000
+lowalch: 32000
+highalch: 48000
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 4
+  attackSlash: 4
+  attackCrush: 4
+  attackMagic: 1
+  attackRanged: 1
+  defenceStab: 12
+  defenceSlash: 12
+  defenceCrush: 12
+  defenceMagic: 12
+  defenceRanged: 12
+  meleeStrength: 8
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

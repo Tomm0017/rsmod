@@ -1,0 +1,31 @@
+---
+id: 4302
+name: "Ham hood"
+examine: "Light-weight head protection and eye shield."
+tradeable: true
+weight: 0.453
+tradeable_on_ge: true
+cost: 75
+lowalch: 30
+highalch: 45
+buy_limit: 15
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 2
+  defenceMagic: 0
+  defenceRanged: 1
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,31 @@
+---
+id: 27277
+name: "Tumeken's shadow (uncharged)"
+examine: "An ancient staff created using a higher power."
+tradeable: true
+weight: 4.0
+tradeable_on_ge: true
+cost: 7000000
+lowalch: 2800000
+highalch: 4200000
+buy_limit: null
+equipment:
+  prayer: 1
+  equipSlot: "2h"
+  weaponType: 8337
+  attackSpeed: 5
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 35
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 20
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

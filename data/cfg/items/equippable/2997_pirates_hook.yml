@@ -1,0 +1,31 @@
+---
+id: 2997
+name: "Pirate's hook"
+examine: "You should see the shark..."
+tradeable: true
+weight: 0.3
+tradeable_on_ge: true
+cost: 89
+lowalch: 35
+highalch: 53
+buy_limit: 4
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 1
+  defenceSlash: 5
+  defenceCrush: 3
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,40 @@
+---
+id: 1197
+name: "Mithril kiteshield"
+examine: "A large metal shield."
+tradeable: true
+weight: 4.535
+tradeable_on_ge: true
+cost: 2210
+lowalch: 884
+highalch: 1326
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: 0
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -8
+  attackRanged: -3
+  defenceStab: 18
+  defenceSlash: 22
+  defenceCrush: 20
+  defenceMagic: -1
+  defenceRanged: 20
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "defence"
+    level: 20

@@ -1,6 +1,6 @@
 package gg.rsmod.game.action
 
-import gg.rsmod.game.fs.def.AnimDef
+import dev.openrune.cache.CacheManager.anim
 import gg.rsmod.game.model.LockState
 import gg.rsmod.game.model.attr.KILLER_ATTR
 import gg.rsmod.game.model.entity.*
@@ -52,7 +52,7 @@ object NpcDeathAction {
         }
 
         deathAnimation.forEach { anim ->
-            val def = npc.world.definitions.get(AnimDef::class.java, anim)
+            val def = anim(anim)
             npc.animate(def.id)
             wait(def.cycleLength +1)
         }

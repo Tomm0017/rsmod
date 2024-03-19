@@ -1,0 +1,33 @@
+---
+id: 1147
+name: "Rune med helm"
+examine: "A medium sized helmet."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 19200
+lowalch: 7680
+highalch: 11520
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -3
+  attackRanged: 0
+  defenceStab: 22
+  defenceSlash: 23
+  defenceCrush: 21
+  defenceMagic: -1
+  defenceRanged: 22
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

@@ -1,0 +1,42 @@
+---
+id: 8850
+name: "Rune defender"
+examine: "A defensive weapon."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 65004
+lowalch: 26001
+highalch: 39002
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: 0
+  attackSpeed: 0
+  attackStab: 20
+  attackSlash: 19
+  attackCrush: 18
+  attackMagic: -3
+  attackRanged: -2
+  defenceStab: 20
+  defenceSlash: 19
+  defenceCrush: 18
+  defenceMagic: -3
+  defenceRanged: -2
+  meleeStrength: 5
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 40
+  - skill: "defence"
+    level: 40

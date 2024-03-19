@@ -1,0 +1,33 @@
+---
+id: 13373
+name: "Shayzien boots (4)"
+examine: "Dress like a tier 4 Shayzien soldier."
+tradeable: false
+weight: 1.36
+tradeable_on_ge: false
+cost: 55
+lowalch: 22
+highalch: 33
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -2
+  attackRanged: -1
+  defenceStab: 5
+  defenceSlash: 6
+  defenceCrush: 7
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 20

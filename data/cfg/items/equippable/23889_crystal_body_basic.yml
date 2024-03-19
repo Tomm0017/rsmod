@@ -1,0 +1,32 @@
+---
+id: 23889
+name: "Crystal body (basic)"
+examine: "A not so sturdy piece of armour with a little protection from crystalline\
+  \ creatures."
+tradeable: false
+weight: 9.979
+tradeable_on_ge: false
+cost: 1
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 3
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 8
+  attackSlash: 8
+  attackCrush: 3
+  attackMagic: 8
+  attackRanged: 8
+  defenceStab: 86
+  defenceSlash: 86
+  defenceCrush: 86
+  defenceMagic: 86
+  defenceRanged: 86
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

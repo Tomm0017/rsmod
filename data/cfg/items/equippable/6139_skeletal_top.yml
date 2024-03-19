@@ -1,0 +1,35 @@
+---
+id: 6139
+name: "Skeletal top"
+examine: "The bones in this armour seem to vibrate with a magical quality..."
+tradeable: true
+weight: 4.989
+tradeable_on_ge: true
+cost: 45000
+lowalch: 18000
+highalch: 27000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 8
+  attackRanged: -10
+  defenceStab: 35
+  defenceSlash: 25
+  defenceCrush: 42
+  defenceMagic: 15
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40
+  - skill: "magic"
+    level: 40

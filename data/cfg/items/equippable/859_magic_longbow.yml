@@ -1,0 +1,33 @@
+---
+id: 859
+name: "Magic longbow"
+examine: "A nice sturdy magical bow."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 2560
+lowalch: 1024
+highalch: 1536
+buy_limit: 18000
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 6
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 69
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 50

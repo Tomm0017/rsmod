@@ -1,0 +1,40 @@
+---
+id: 11283
+name: "Dragonfire shield"
+examine: "A heavy shield with a snarling, draconic visage."
+tradeable: false
+weight: 7.257
+tradeable_on_ge: false
+cost: 2000000
+lowalch: 800000
+highalch: 1200000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: 0
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -10
+  attackRanged: -5
+  defenceStab: 70
+  defenceSlash: 75
+  defenceCrush: 72
+  defenceMagic: 10
+  defenceRanged: 72
+  meleeStrength: 7
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "defence"
+    level: 75

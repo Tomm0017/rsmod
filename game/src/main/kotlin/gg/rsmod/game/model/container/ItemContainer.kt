@@ -1,7 +1,6 @@
 package gg.rsmod.game.model.container
 
-import gg.rsmod.game.fs.DefinitionSet
-import gg.rsmod.game.fs.def.ItemDef
+import dev.openrune.cache.CacheManager.item
 import gg.rsmod.game.model.container.key.ContainerKey
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.item.SlotItem
@@ -13,12 +12,11 @@ import io.github.oshai.kotlinlogging.KotlinLogging
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Iterable<Item?> {
+class ItemContainer(val key: ContainerKey) : Iterable<Item?> {
 
-    constructor(definitions: DefinitionSet, capacity: Int, stackType: ContainerStackType)
-            : this(definitions, ContainerKey("", capacity, stackType))
+    constructor(capacity: Int, stackType: ContainerStackType) : this(ContainerKey("", capacity, stackType))
 
-    constructor(other: ItemContainer) : this(other.definitions, other.capacity, other.stackType) {
+    constructor(other: ItemContainer) : this(other.capacity, other.stackType) {
         for (i in 0 until capacity) {
             val item = if (other[i] != null) Item(other[i]!!) else null
             set(i, item)
@@ -253,7 +251,7 @@ class ItemContainer(val definitions: DefinitionSet, val key: ContainerKey) : Ite
      * @see ItemTransaction
      */
     fun add(item: Int, amount: Int = 1, assureFullInsertion: Boolean = true, forceNoStack: Boolean = false, beginSlot: Int = -1): ItemTransaction {
-        val def = definitions.get(ItemDef::class.java, item)
+        val def = item(item)
 
         /*
          * Should the item stack?

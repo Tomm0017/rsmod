@@ -1,0 +1,31 @@
+---
+id: 20583
+name: "Rune gloves"
+examine: "A pair of very nice gloves."
+tradeable: false
+weight: 0.226
+tradeable_on_ge: false
+cost: 750
+lowalch: 300
+highalch: 450
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 8
+  attackSlash: 8
+  attackCrush: 8
+  attackMagic: 4
+  attackRanged: 8
+  defenceStab: 8
+  defenceSlash: 8
+  defenceCrush: 8
+  defenceMagic: 4
+  defenceRanged: 8
+  meleeStrength: 8
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

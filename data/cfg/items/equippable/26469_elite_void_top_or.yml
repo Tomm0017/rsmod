@@ -1,0 +1,31 @@
+---
+id: 26469
+name: "Elite void top (or)"
+examine: "An elite void knight top plucked from the shattered abyss."
+tradeable: false
+weight: 6.803
+tradeable_on_ge: false
+cost: 48500
+lowalch: 19400
+highalch: 29100
+buy_limit: null
+equipment:
+  prayer: 3
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 45
+  defenceSlash: 45
+  defenceCrush: 45
+  defenceMagic: 45
+  defenceRanged: 45
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

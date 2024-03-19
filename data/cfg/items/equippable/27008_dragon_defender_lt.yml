@@ -1,0 +1,31 @@
+---
+id: 27008
+name: "Dragon defender (l)(t)"
+examine: "A defensive weapon trimmed with gold."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 68007
+lowalch: 27202
+highalch: 40804
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 25
+  attackSlash: 24
+  attackCrush: 23
+  attackMagic: -3
+  attackRanged: -2
+  defenceStab: 25
+  defenceSlash: 24
+  defenceCrush: 23
+  defenceMagic: -3
+  defenceRanged: -2
+  meleeStrength: 6
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

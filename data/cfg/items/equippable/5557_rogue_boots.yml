@@ -1,0 +1,35 @@
+---
+id: 5557
+name: "Rogue boots"
+examine: "Black banded leather boots, a rogue's dream!"
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 250
+lowalch: 100
+highalch: 150
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 2
+  defenceSlash: 2
+  defenceCrush: 2
+  defenceMagic: 2
+  defenceRanged: 2
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "thieving"
+    level: 50
+  - skill: "agility"
+    level: 50

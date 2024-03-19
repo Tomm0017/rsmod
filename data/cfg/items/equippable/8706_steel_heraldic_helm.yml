@@ -1,0 +1,33 @@
+---
+id: 8706
+name: "Steel heraldic helm"
+examine: "The colours represent Saradomin."
+tradeable: false
+weight: 2.721
+tradeable_on_ge: false
+cost: 600
+lowalch: 240
+highalch: 360
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: -3
+  defenceStab: 9
+  defenceSlash: 10
+  defenceCrush: 7
+  defenceMagic: -1
+  defenceRanged: 9
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 5

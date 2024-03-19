@@ -1,0 +1,33 @@
+---
+id: 22625
+name: "Statius's full helm"
+examine: "A powerful helmet."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: false
+cost: 250000
+lowalch: 100000
+highalch: 150000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 3
+  attackSlash: 3
+  attackCrush: 4
+  attackMagic: -6
+  attackRanged: -2
+  defenceStab: 65
+  defenceSlash: 70
+  defenceCrush: 63
+  defenceMagic: -1
+  defenceRanged: 71
+  meleeStrength: 3
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 78

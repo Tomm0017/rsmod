@@ -1,0 +1,35 @@
+---
+id: 25404
+name: "Bloodbark body"
+examine: "Keeps my chest protected."
+tradeable: true
+weight: 4.535
+tradeable_on_ge: true
+cost: 120000
+lowalch: 48000
+highalch: 72000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 18
+  attackRanged: 0
+  defenceStab: 53
+  defenceSlash: 39
+  defenceCrush: 64
+  defenceMagic: 24
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "magic"
+    level: 60
+  - skill: "defence"
+    level: 60

@@ -1,0 +1,31 @@
+---
+id: 27000
+name: "Void knight top (l)(or)"
+examine: "A void knight top plucked from the shattered abyss."
+tradeable: false
+weight: 6.803
+tradeable_on_ge: false
+cost: 48000
+lowalch: 19200
+highalch: 28800
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 45
+  defenceSlash: 45
+  defenceCrush: 45
+  defenceMagic: 45
+  defenceRanged: 45
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

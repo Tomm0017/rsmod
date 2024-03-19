@@ -1,0 +1,31 @@
+---
+id: 21157
+name: "Necklace of faith"
+examine: "Can grant me prayer in an emergency."
+tradeable: true
+weight: 0.01
+tradeable_on_ge: true
+cost: 1425
+lowalch: 570
+highalch: 855
+buy_limit: 10000
+equipment:
+  prayer: 0
+  equipSlot: "neck"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

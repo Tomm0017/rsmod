@@ -1,0 +1,33 @@
+---
+id: 7141
+name: "Harry's cutlass"
+examine: "I hope he doesn't want it back."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 1040
+lowalch: 416
+highalch: 624
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 3
+  attackSlash: 14
+  attackCrush: 0
+  attackMagic: -5
+  attackRanged: 0
+  defenceStab: 4
+  defenceSlash: 4
+  defenceCrush: 4
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 22
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 20

@@ -1,0 +1,31 @@
+---
+id: 26752
+name: "Superior calamity chest (l)"
+examine: "A superior chest piece used by the Calamity Coven."
+tradeable: false
+weight: 0.907
+tradeable_on_ge: false
+cost: 100000
+lowalch: 40000
+highalch: 60000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 5
+  attackSlash: 5
+  attackCrush: 5
+  attackMagic: 12
+  attackRanged: 16
+  defenceStab: 47
+  defenceSlash: 51
+  defenceCrush: 54
+  defenceMagic: 28
+  defenceRanged: 48
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

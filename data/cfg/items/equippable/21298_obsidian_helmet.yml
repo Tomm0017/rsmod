@@ -1,0 +1,33 @@
+---
+id: 21298
+name: "Obsidian helmet"
+examine: "Provides excellent protection."
+tradeable: true
+weight: 3.628
+tradeable_on_ge: true
+cost: 56320
+lowalch: 22528
+highalch: 33792
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 25
+  defenceSlash: 23
+  defenceCrush: 26
+  defenceMagic: 0
+  defenceRanged: 24
+  meleeStrength: 3
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 60

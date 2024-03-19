@@ -1,0 +1,32 @@
+---
+id: 22435
+name: "Enchanted emerald sickle (b)"
+examine: "It's a blessed and enchanted silver sickle with an emerald recessed into\
+  \ it."
+tradeable: false
+weight: 1.587
+tradeable_on_ge: false
+cost: 250
+lowalch: 100
+highalch: 150
+buy_limit: null
+equipment:
+  prayer: 5
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 1
+  defenceMagic: 1
+  defenceRanged: 1
+  meleeStrength: 3
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

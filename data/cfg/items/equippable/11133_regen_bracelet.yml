@@ -1,0 +1,31 @@
+---
+id: 11133
+name: "Regen bracelet"
+examine: "Helps to restore Hitpoints."
+tradeable: true
+weight: 0.25
+tradeable_on_ge: true
+cost: 202000
+lowalch: 80800
+highalch: 121200
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 8
+  attackSlash: 8
+  attackCrush: 8
+  attackMagic: 3
+  attackRanged: 7
+  defenceStab: 6
+  defenceSlash: 6
+  defenceCrush: 6
+  defenceMagic: 3
+  defenceRanged: 6
+  meleeStrength: 7
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

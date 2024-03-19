@@ -1,0 +1,35 @@
+---
+id: 24421
+name: "Inquisitor's plateskirt"
+examine: "The plateskirt of the turncloak justiciar."
+tradeable: true
+weight: 9.071
+tradeable_on_ge: true
+cost: 750000
+lowalch: 300000
+highalch: 450000
+buy_limit: 8
+equipment:
+  prayer: 2
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -3
+  attackSlash: -3
+  attackCrush: 12
+  attackMagic: -9
+  attackRanged: -5
+  defenceStab: 42
+  defenceSlash: 30
+  defenceCrush: 49
+  defenceMagic: 0
+  defenceRanged: 22
+  meleeStrength: 2
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "strength"
+    level: 70
+  - skill: "defence"
+    level: 30

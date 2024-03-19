@@ -1,0 +1,33 @@
+---
+id: 4880
+name: "Dharok's helm 100"
+examine: "Dharok the Wretched's helm."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 103000
+lowalch: 41200
+highalch: 61800
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -3
+  attackRanged: -1
+  defenceStab: 45
+  defenceSlash: 48
+  defenceCrush: 44
+  defenceMagic: -1
+  defenceRanged: 51
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 70

@@ -49,7 +49,7 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
             /*
-             * Non-human [org.alter.game.model.entity.Player]s do not need this
+             * Non-human [gg.rsmod.game.model.entity.Player]s do not need this
              * to send any synchronization data to their game-client as they do
              * not have one.
              */
@@ -64,7 +64,7 @@ class ParallelSynchronizationTask(private val executor: ExecutorService) : GameT
         phaser.bulkRegister(playerCount)
         worldPlayers.forEach { p ->
             /*
-             * Non-human [org.alter.game.model.entity.Player]s do not need this
+             * Non-human [gg.rsmod.game.model.entity.Player]s do not need this
              * to send any synchronization data to their game-client as they do
              * not have one.
              */

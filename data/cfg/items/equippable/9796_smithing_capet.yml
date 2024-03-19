@@ -1,0 +1,33 @@
+---
+id: 9796
+name: "Smithing cape(t)"
+examine: "The cape worn by master smiths."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 99000
+lowalch: 39600
+highalch: 59400
+buy_limit: null
+equipment:
+  prayer: 4
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 9
+  defenceSlash: 9
+  defenceCrush: 9
+  defenceMagic: 9
+  defenceRanged: 9
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "smithing"
+    level: 99

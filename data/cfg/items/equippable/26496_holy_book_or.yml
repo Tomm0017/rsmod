@@ -1,0 +1,31 @@
+---
+id: 26496
+name: "Holy book (or)"
+examine: "The holy book of Saradomin, plucked from the shattered abyss."
+tradeable: false
+weight: 1.0
+tradeable_on_ge: false
+cost: 200
+lowalch: 80
+highalch: 120
+buy_limit: null
+equipment:
+  prayer: 5
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 8
+  defenceSlash: 8
+  defenceCrush: 8
+  defenceMagic: 8
+  defenceRanged: 8
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

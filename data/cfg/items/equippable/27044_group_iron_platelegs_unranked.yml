@@ -1,0 +1,31 @@
+---
+id: 27044
+name: "Group iron platelegs (unranked)"
+examine: "Protects your legs while still stylish."
+tradeable: false
+weight: 4.535
+tradeable_on_ge: false
+cost: 0
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -21
+  attackRanged: -11
+  defenceStab: 11
+  defenceSlash: 10
+  defenceCrush: 10
+  defenceMagic: -4
+  defenceRanged: 10
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

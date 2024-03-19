@@ -1,0 +1,32 @@
+---
+id: 27100
+name: "Elder maul (or)"
+examine: "A maul crafted from the component parts of Tekton and various decorative\
+  \ materials."
+tradeable: false
+weight: 5.443
+tradeable_on_ge: false
+cost: 500010
+lowalch: 200004
+highalch: 300006
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 8337
+  attackSpeed: 6
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 135
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 147
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

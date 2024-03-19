@@ -1,0 +1,42 @@
+---
+id: 1271
+name: "Adamant pickaxe"
+examine: "Used for mining."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: true
+cost: 3200
+lowalch: 1280
+highalch: 1920
+buy_limit: 40
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 11
+  attackSpeed: 5
+  attackStab: 17
+  attackSlash: -2
+  attackCrush: 15
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 19
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "mining"
+    level: 31
+  - skill: "attack"
+    level: 30

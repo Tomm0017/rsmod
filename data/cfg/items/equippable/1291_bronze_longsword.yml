@@ -1,0 +1,33 @@
+---
+id: 1291
+name: "Bronze longsword"
+examine: "A razor sharp longsword."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 40
+lowalch: 16
+highalch: 24
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 4
+  attackSlash: 5
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 3
+  defenceCrush: 2
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 7
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 1

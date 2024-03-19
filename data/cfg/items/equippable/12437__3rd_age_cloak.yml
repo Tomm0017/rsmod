@@ -1,0 +1,33 @@
+---
+id: 12437
+name: "3rd age cloak"
+examine: "A beautiful cloak woven by ancient tailors."
+tradeable: true
+weight: 0.005
+tradeable_on_ge: true
+cost: 85000
+lowalch: 34000
+highalch: 51000
+buy_limit: 8
+equipment:
+  prayer: 5
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 9
+  defenceSlash: 9
+  defenceCrush: 9
+  defenceMagic: 9
+  defenceRanged: 9
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "prayer"
+    level: 65

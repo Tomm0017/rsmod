@@ -1,0 +1,31 @@
+---
+id: 27238
+name: "Masori body (f)"
+examine: "Fortified armour once worn by a powerful ranger."
+tradeable: true
+weight: 10.0
+tradeable_on_ge: true
+cost: 1600000
+lowalch: 640000
+highalch: 960000
+buy_limit: null
+equipment:
+  prayer: 1
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -4
+  attackRanged: 43
+  defenceStab: 59
+  defenceSlash: 52
+  defenceCrush: 64
+  defenceMagic: 74
+  defenceRanged: 60
+  meleeStrength: 0
+  rangedStrength: 4
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

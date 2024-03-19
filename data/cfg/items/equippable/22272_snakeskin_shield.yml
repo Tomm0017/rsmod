@@ -1,0 +1,35 @@
+---
+id: 22272
+name: "Snakeskin shield"
+examine: "A solid willow shield covered in snakeskin leather."
+tradeable: true
+weight: 8.0
+tradeable_on_ge: true
+cost: 920
+lowalch: 368
+highalch: 552
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -15
+  attackSlash: -15
+  attackCrush: -11
+  attackMagic: -10
+  attackRanged: 3
+  defenceStab: 10
+  defenceSlash: 9
+  defenceCrush: 8
+  defenceMagic: 7
+  defenceRanged: 10
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 30
+  - skill: "defence"
+    level: 30

@@ -1,0 +1,33 @@
+---
+id: 1297
+name: "Black longsword"
+examine: "A razor sharp longsword."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 960
+lowalch: 384
+highalch: 576
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 13
+  attackSlash: 18
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 3
+  defenceCrush: 2
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 16
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 10

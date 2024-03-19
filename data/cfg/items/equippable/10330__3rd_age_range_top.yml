@@ -1,0 +1,35 @@
+---
+id: 10330
+name: "3rd age range top"
+examine: "Fabulously ancient range protection crafted from white dragonhide."
+tradeable: true
+weight: 4.0
+tradeable_on_ge: true
+cost: 50800
+lowalch: 20320
+highalch: 30480
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -15
+  attackRanged: 30
+  defenceStab: 55
+  defenceSlash: 47
+  defenceCrush: 60
+  defenceMagic: 60
+  defenceRanged: 55
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 65
+  - skill: "defence"
+    level: 45

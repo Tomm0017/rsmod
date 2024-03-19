@@ -1,0 +1,35 @@
+---
+id: 4870
+name: "Ahrim's robetop 50"
+examine: "Ahrim the Blighted's armoured robe top."
+tradeable: false
+weight: 4.535
+tradeable_on_ge: false
+cost: 50000
+lowalch: 20000
+highalch: 30000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 30
+  attackRanged: -10
+  defenceStab: 52
+  defenceSlash: 37
+  defenceCrush: 63
+  defenceMagic: 30
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "magic"
+    level: 70
+  - skill: "defence"
+    level: 70

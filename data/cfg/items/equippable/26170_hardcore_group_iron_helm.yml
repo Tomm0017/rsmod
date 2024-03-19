@@ -1,0 +1,32 @@
+---
+id: 26170
+name: "Hardcore group iron helm"
+examine: "A symbol of the most epic adventurers - with nerves of steel and hearts\
+  \ of iron."
+tradeable: false
+weight: 0.907
+tradeable_on_ge: false
+cost: 0
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: -3
+  defenceStab: 6
+  defenceSlash: 7
+  defenceCrush: 5
+  defenceMagic: -1
+  defenceRanged: 6
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

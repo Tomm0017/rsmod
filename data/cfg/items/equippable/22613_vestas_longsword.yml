@@ -1,0 +1,33 @@
+---
+id: 22613
+name: "Vesta's longsword"
+examine: "A powerful longsword."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 300000
+lowalch: 120000
+highalch: 180000
+buy_limit: 10
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 106
+  attackSlash: 121
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 1
+  defenceSlash: 4
+  defenceCrush: 3
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 118
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 78

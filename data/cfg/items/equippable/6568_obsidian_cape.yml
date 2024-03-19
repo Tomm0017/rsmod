@@ -1,0 +1,31 @@
+---
+id: 6568
+name: "Obsidian cape"
+examine: "A cape of woven obsidian plates."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 60000
+lowalch: 24000
+highalch: 36000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 9
+  defenceSlash: 9
+  defenceCrush: 9
+  defenceMagic: 9
+  defenceRanged: 9
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

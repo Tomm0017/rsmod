@@ -1,0 +1,33 @@
+---
+id: 3097
+name: "Steel claws"
+examine: "A set of fighting claws."
+tradeable: true
+weight: 0.907
+tradeable_on_ge: true
+cost: 175
+lowalch: 70
+highalch: 105
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 8
+  attackSlash: 11
+  attackCrush: -4
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 3
+  defenceSlash: 6
+  defenceCrush: 2
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 12
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 5

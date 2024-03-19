@@ -1,0 +1,33 @@
+---
+id: 4967
+name: "Torag's platebody 25"
+examine: "Torag the Corrupted's platebody armour."
+tradeable: false
+weight: 9.979
+tradeable_on_ge: false
+cost: 280000
+lowalch: 112000
+highalch: 168000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -30
+  attackRanged: -10
+  defenceStab: 122
+  defenceSlash: 120
+  defenceCrush: 107
+  defenceMagic: -6
+  defenceRanged: 132
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 70

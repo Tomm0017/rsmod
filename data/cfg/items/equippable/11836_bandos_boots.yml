@@ -1,0 +1,33 @@
+---
+id: 11836
+name: "Bandos boots"
+examine: "Some sturdy boots."
+tradeable: true
+weight: 6.0
+tradeable_on_ge: true
+cost: 289010
+lowalch: 115604
+highalch: 173406
+buy_limit: 8
+equipment:
+  prayer: 1
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -5
+  attackRanged: -3
+  defenceStab: 17
+  defenceSlash: 18
+  defenceCrush: 19
+  defenceMagic: 0
+  defenceRanged: 15
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 65

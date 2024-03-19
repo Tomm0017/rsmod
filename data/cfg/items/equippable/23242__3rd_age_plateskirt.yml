@@ -1,0 +1,33 @@
+---
+id: 23242
+name: "3rd age plateskirt"
+examine: "Fabulously ancient armour beaten from magical silver."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: true
+cost: 200000
+lowalch: 80000
+highalch: 120000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -25
+  attackRanged: -2
+  defenceStab: 78
+  defenceSlash: 76
+  defenceCrush: 83
+  defenceMagic: -5
+  defenceRanged: 75
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 65

@@ -1,0 +1,31 @@
+---
+id: 25867
+name: "Bow of faerdhinen (c)"
+examine: "A magical elven bow, corrupted through the addition of too many shards."
+tradeable: false
+weight: 1.5
+tradeable_on_ge: false
+cost: 5000000
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 3
+  attackSpeed: 5
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 128
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 106
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

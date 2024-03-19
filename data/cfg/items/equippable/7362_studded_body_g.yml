@@ -1,0 +1,35 @@
+---
+id: 7362
+name: "Studded body (g)"
+examine: "Those studs should provide a bit more protection. Nice trim too!"
+tradeable: true
+weight: 5.443
+tradeable_on_ge: true
+cost: 850
+lowalch: 340
+highalch: 510
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -4
+  attackRanged: 8
+  defenceStab: 18
+  defenceSlash: 25
+  defenceCrush: 22
+  defenceMagic: 8
+  defenceRanged: 25
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 20
+  - skill: "defence"
+    level: 20

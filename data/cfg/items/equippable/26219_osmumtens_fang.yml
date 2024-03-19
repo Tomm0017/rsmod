@@ -1,0 +1,31 @@
+---
+id: 26219
+name: "Osmumten's fang"
+examine: "A deadly sword created long ago."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 1000000
+lowalch: 400000
+highalch: 600000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 8337
+  attackSpeed: 5
+  attackStab: 105
+  attackSlash: 75
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 103
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

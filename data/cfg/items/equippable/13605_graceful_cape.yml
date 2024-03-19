@@ -1,0 +1,31 @@
+---
+id: 13605
+name: "Graceful cape"
+examine: "A sign of your grace and loyalty."
+tradeable: false
+weight: 0.8
+tradeable_on_ge: false
+cost: 40
+lowalch: 16
+highalch: 24
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,33 @@
+---
+id: 10553
+name: "Penance gloves"
+examine: "These gloves seem unbelieveably light!"
+tradeable: false
+weight: 0.34
+tradeable_on_ge: false
+cost: 65001
+lowalch: 26000
+highalch: 39000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 3
+  defenceCrush: 4
+  defenceMagic: 0
+  defenceRanged: 2
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

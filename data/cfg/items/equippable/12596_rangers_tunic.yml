@@ -1,0 +1,33 @@
+---
+id: 12596
+name: "Rangers' tunic"
+examine: "Lightweight body armour ideal for rangers."
+tradeable: true
+weight: 3.0
+tradeable_on_ge: true
+cost: 12000
+lowalch: 4800
+highalch: 7200
+buy_limit: 4
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -15
+  attackRanged: 15
+  defenceStab: 6
+  defenceSlash: 9
+  defenceCrush: 12
+  defenceMagic: 6
+  defenceRanged: 6
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 40

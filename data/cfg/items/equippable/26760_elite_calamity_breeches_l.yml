@@ -1,0 +1,31 @@
+---
+id: 26760
+name: "Elite calamity breeches (l)"
+examine: "Elite breeches used by the Calamity Coven."
+tradeable: false
+weight: 0.907
+tradeable_on_ge: false
+cost: 125000
+lowalch: 50000
+highalch: 75000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 4
+  attackSlash: 4
+  attackCrush: 4
+  attackMagic: 11
+  attackRanged: 14
+  defenceStab: 44
+  defenceSlash: 43
+  defenceCrush: 44
+  defenceMagic: 24
+  defenceRanged: 44
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

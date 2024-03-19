@@ -1,0 +1,33 @@
+---
+id: 10442
+name: "Guthix crozier"
+examine: "A Guthix crozier."
+tradeable: true
+weight: 2.0
+tradeable_on_ge: true
+cost: 5000
+lowalch: 2000
+highalch: 3000
+buy_limit: 8
+equipment:
+  prayer: 6
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 7
+  attackSlash: -1
+  attackCrush: 25
+  attackMagic: 10
+  attackRanged: 0
+  defenceStab: 2
+  defenceSlash: 3
+  defenceCrush: 1
+  defenceMagic: 10
+  defenceRanged: 0
+  meleeStrength: 32
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "prayer"
+    level: 60

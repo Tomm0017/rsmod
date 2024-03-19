@@ -1,0 +1,31 @@
+---
+id: 27287
+name: "Keris partisan of corruption"
+examine: "A mystical-feeling polearm imbued with destructive power."
+tradeable: false
+weight: 3.218
+tradeable_on_ge: false
+cost: 300000
+lowalch: 120000
+highalch: 180000
+buy_limit: null
+equipment:
+  prayer: 3
+  equipSlot: "weapon"
+  weaponType: 8337
+  attackSpeed: 4
+  attackStab: 58
+  attackSlash: -2
+  attackCrush: 57
+  attackMagic: 2
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 45
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

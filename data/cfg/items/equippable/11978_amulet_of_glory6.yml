@@ -1,0 +1,31 @@
+---
+id: 11978
+name: "Amulet of glory(6)"
+examine: "A dragonstone amulet with 6 magic charges."
+tradeable: true
+weight: 0.01
+tradeable_on_ge: true
+cost: 17625
+lowalch: 7050
+highalch: 10575
+buy_limit: 10000
+equipment:
+  prayer: 3
+  equipSlot: "neck"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 10
+  attackSlash: 10
+  attackCrush: 10
+  attackMagic: 10
+  attackRanged: 10
+  defenceStab: 3
+  defenceSlash: 3
+  defenceCrush: 3
+  defenceMagic: 3
+  defenceRanged: 3
+  meleeStrength: 6
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

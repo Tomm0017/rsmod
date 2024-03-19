@@ -1,0 +1,33 @@
+---
+id: 22650
+name: "Zuriel's hood"
+examine: "A powerful hood."
+tradeable: true
+weight: 0.907
+tradeable_on_ge: false
+cost: 250000
+lowalch: 100000
+highalch: 150000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 8
+  attackRanged: -2
+  defenceStab: 20
+  defenceSlash: 16
+  defenceCrush: 22
+  defenceMagic: 8
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 78

@@ -1,0 +1,31 @@
+---
+id: 11710
+name: "Anti-dragon shield (nz)"
+examine: "For use in the Nightmare Zone."
+tradeable: false
+weight: 5.443
+tradeable_on_ge: false
+cost: 0
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 7
+  defenceSlash: 9
+  defenceCrush: 8
+  defenceMagic: 2
+  defenceRanged: 8
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

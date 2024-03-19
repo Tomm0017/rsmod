@@ -1,0 +1,33 @@
+---
+id: 1193
+name: "Steel kiteshield"
+examine: "A large metal shield."
+tradeable: true
+weight: 5.443
+tradeable_on_ge: true
+cost: 850
+lowalch: 340
+highalch: 510
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -8
+  attackRanged: -3
+  defenceStab: 13
+  defenceSlash: 15
+  defenceCrush: 14
+  defenceMagic: -1
+  defenceRanged: 14
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 5

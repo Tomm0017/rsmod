@@ -1,0 +1,31 @@
+---
+id: 26235
+name: "Zaryte vambraces"
+examine: "A pair of ancient vambraces."
+tradeable: true
+weight: 1.0
+tradeable_on_ge: true
+cost: 200000
+lowalch: 80000
+highalch: 120000
+buy_limit: null
+equipment:
+  prayer: 1
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -8
+  attackSlash: -8
+  attackCrush: -8
+  attackMagic: 0
+  attackRanged: 18
+  defenceStab: 8
+  defenceSlash: 8
+  defenceCrush: 8
+  defenceMagic: 5
+  defenceRanged: 8
+  meleeStrength: 0
+  rangedStrength: 2
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

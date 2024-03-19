@@ -1,0 +1,33 @@
+---
+id: 12391
+name: "Gilded boots"
+examine: "Rune boots with gold plate."
+tradeable: true
+weight: 1.36
+tradeable_on_ge: true
+cost: 12500
+lowalch: 5000
+highalch: 7500
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -3
+  attackRanged: -1
+  defenceStab: 12
+  defenceSlash: 13
+  defenceCrush: 14
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 2
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

@@ -1,0 +1,33 @@
+---
+id: 1243
+name: "Mithril spear"
+examine: "A mithril tipped spear."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 845
+lowalch: 338
+highalch: 507
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 17
+  attackSlash: 17
+  attackCrush: 17
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 1
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 18
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 20

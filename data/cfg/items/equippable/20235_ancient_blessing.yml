@@ -1,0 +1,32 @@
+---
+id: 20235
+name: "Ancient blessing"
+examine: "The misery that is now upon us is but the passing of greed, the bitterness\
+  \ of those who fear the way of progress."
+tradeable: true
+weight: 0.51
+tradeable_on_ge: true
+cost: 80
+lowalch: 32
+highalch: 48
+buy_limit: 5
+equipment:
+  prayer: 1
+  equipSlot: "ammo"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

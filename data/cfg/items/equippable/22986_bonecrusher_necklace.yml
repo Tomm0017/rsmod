@@ -1,0 +1,33 @@
+---
+id: 22986
+name: "Bonecrusher necklace"
+examine: "A necklace made out of dragon bones, hydra tail and a bonecrusher."
+tradeable: false
+weight: 0.025
+tradeable_on_ge: false
+cost: 80000
+lowalch: 32000
+highalch: 48000
+buy_limit: null
+equipment:
+  prayer: 12
+  equipSlot: "neck"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 10
+  attackSlash: 10
+  attackCrush: 10
+  attackMagic: 10
+  attackRanged: 10
+  defenceStab: 2
+  defenceSlash: 2
+  defenceCrush: 2
+  defenceMagic: 2
+  defenceRanged: 2
+  meleeStrength: 2
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "prayer"
+    level: 80

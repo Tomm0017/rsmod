@@ -5,23 +5,25 @@ import kotlin.script.experimental.api.defaultImports
 
 object KotlinPluginConfiguration : ScriptCompilationConfiguration({
     defaultImports(
-            "org.alter.game.fs.def.*",
-            "org.alter.game.model.*",
-            "org.alter.game.model.item.*",
-            "org.alter.game.model.entity.*",
-            "org.alter.game.model.container.*",
-            "org.alter.game.model.container.key.*",
-            "org.alter.game.model.queue.*",
-            "org.alter.game.model.attr.AttributeKey",
-            "org.alter.game.model.timer.TimerKey",
-            "org.alter.game.model.shop.ShopItem",
-            "org.alter.game.model.shop.PurchasePolicy",
-            "org.alter.game.model.shop.StockType",
-            "org.alter.game.plugin.Plugin",
-            "org.alter.game.**",
-            "org.alter.api.*",
-            "org.alter.api.ext.*",
-            "org.alter.api.cfg.*",
-            "org.alter.api.dsl.*"
+            "gg.rsmod.game.fs.def.*",
+
+            "gg.rsmod.game.model.*",
+            "gg.rsmod.game.model.item.*",
+            "gg.rsmod.game.model.entity.*",
+            "gg.rsmod.game.model.container.*",
+            "gg.rsmod.game.model.container.key.*",
+            "gg.rsmod.game.model.queue.*",
+            "gg.rsmod.game.model.attr.AttributeKey",
+            "gg.rsmod.game.model.timer.TimerKey",
+            "gg.rsmod.game.model.shop.ShopItem",
+            "gg.rsmod.game.model.shop.PurchasePolicy",
+            "gg.rsmod.game.model.shop.StockType",
+
+            "gg.rsmod.game.plugin.Plugin",
+
+            "gg.rsmod.plugins.api.*",
+            "gg.rsmod.plugins.api.ext.*",
+            "gg.rsmod.plugins.api.cfg.*",
+            "gg.rsmod.plugins.api.dsl.*"
     )
 })

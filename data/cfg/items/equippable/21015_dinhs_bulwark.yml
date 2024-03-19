@@ -1,0 +1,42 @@
+---
+id: 21015
+name: "Dinh's bulwark"
+examine: "Is it... looking at me?"
+tradeable: true
+weight: 30.0
+tradeable_on_ge: true
+cost: 560000
+lowalch: 224000
+highalch: 336000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 27
+  attackSpeed: 5
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 124
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 106
+  defenceSlash: 109
+  defenceCrush: 109
+  defenceMagic: -10
+  defenceRanged: 148
+  meleeStrength: 38
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 7508
+    turnOnSpotAnim: 7510
+    walkForwardAnimId: 7509
+    walkBackwardsAnimId: 7509
+    walkLeftAnimId: 7509
+    walkRightAnimId: 7509
+    runAnimId: 7509
+  skillReqs:
+  - skill: "attack"
+    level: 75
+  - skill: "defence"
+    level: 75

@@ -1,0 +1,31 @@
+---
+id: 10063
+name: "Desert camo legs"
+examine: "These should make me harder to spot in desert areas."
+tradeable: true
+weight: 0.226
+tradeable_on_ge: true
+cost: 20
+lowalch: 8
+highalch: 12
+buy_limit: 150
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: -7
+  defenceStab: 11
+  defenceSlash: 10
+  defenceCrush: 10
+  defenceMagic: 0
+  defenceRanged: 10
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

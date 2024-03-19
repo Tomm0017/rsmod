@@ -1,0 +1,31 @@
+---
+id: 22114
+name: "Mythical cape"
+examine: "The cape worn by members of the Myths' Guild."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 10000
+lowalch: 4000
+highalch: 6000
+buy_limit: null
+equipment:
+  prayer: 1
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 6
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 8
+  defenceSlash: 8
+  defenceCrush: 8
+  defenceMagic: 8
+  defenceRanged: 8
+  meleeStrength: 1
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

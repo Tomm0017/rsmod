@@ -1,0 +1,40 @@
+---
+id: 11259
+name: "Magic butterfly net"
+examine: "For catching butterflies."
+tradeable: false
+weight: 0.226
+tradeable_on_ge: false
+cost: 1000
+lowalch: 400
+highalch: 600
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 15
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 6604
+    turnOnSpotAnim: 6611
+    walkForwardAnimId: 6607
+    walkBackwardsAnimId: 6608
+    walkLeftAnimId: 6610
+    walkRightAnimId: 6609
+    runAnimId: 6603
+  skillReqs:
+  - skill: "hunter"
+    level: 17

@@ -1,0 +1,35 @@
+---
+id: 24144
+name: "Staff of balance"
+examine: "A ghastly weapon with evil origins combined with an icon of balance."
+tradeable: true
+weight: 1.5
+tradeable_on_ge: true
+cost: 1000004
+lowalch: 400001
+highalch: 600002
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 21
+  attackSpeed: 4
+  attackStab: 55
+  attackSlash: 70
+  attackCrush: 0
+  attackMagic: 17
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 3
+  defenceCrush: 3
+  defenceMagic: 17
+  defenceRanged: 0
+  meleeStrength: 72
+  rangedStrength: 0
+  magicDamage: 15
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 75
+  - skill: "magic"
+    level: 75

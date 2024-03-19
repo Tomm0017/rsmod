@@ -1,0 +1,35 @@
+---
+id: 10887
+name: "Barrelchest anchor"
+examine: "This is likely to put my back out..."
+tradeable: false
+weight: 30.0
+tradeable_on_ge: false
+cost: 230000
+lowalch: 92000
+highalch: 138000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 6
+  attackStab: -2
+  attackSlash: 10
+  attackCrush: 92
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 100
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 60
+  - skill: "strength"
+    level: 40

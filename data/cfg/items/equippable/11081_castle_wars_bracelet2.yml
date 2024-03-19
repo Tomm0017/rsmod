@@ -1,0 +1,31 @@
+---
+id: 11081
+name: "Castle wars bracelet(2)"
+examine: "Must be worn as you enter the game to receive the bonus for that game."
+tradeable: true
+weight: 0.25
+tradeable_on_ge: false
+cost: 1675
+lowalch: 670
+highalch: 1005
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,33 @@
+---
+id: 10551
+name: "Fighter torso"
+examine: "A Penance Fighter torso armour."
+tradeable: false
+weight: 4.0
+tradeable_on_ge: false
+cost: 65006
+lowalch: 26002
+highalch: 39003
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -40
+  attackRanged: 0
+  defenceStab: 62
+  defenceSlash: 85
+  defenceCrush: 62
+  defenceMagic: -10
+  defenceRanged: 67
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

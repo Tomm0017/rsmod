@@ -1,0 +1,31 @@
+---
+id: 26233
+name: "Ancient godsword"
+examine: "A mysterious, heavy sword."
+tradeable: true
+weight: 10.0
+tradeable_on_ge: true
+cost: 1250000
+lowalch: 500000
+highalch: 750000
+buy_limit: null
+equipment:
+  prayer: 8
+  equipSlot: "2h"
+  weaponType: 8337
+  attackSpeed: 6
+  attackStab: 0
+  attackSlash: 132
+  attackCrush: 80
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 132
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

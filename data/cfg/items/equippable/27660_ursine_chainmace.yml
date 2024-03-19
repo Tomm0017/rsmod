@@ -1,0 +1,31 @@
+---
+id: 27660
+name: "Ursine chainmace"
+examine: "An ancient and peculiar chainmace, corrupted by the power of Callisto."
+tradeable: false
+weight: 2.0
+tradeable_on_ge: false
+cost: 175000
+lowalch: 70000
+highalch: 105000
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "weapon"
+  weaponType: 8337
+  attackSpeed: 4
+  attackStab: 53
+  attackSlash: -2
+  attackCrush: 71
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 74
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

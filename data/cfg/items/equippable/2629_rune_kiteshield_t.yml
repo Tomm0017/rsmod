@@ -1,0 +1,33 @@
+---
+id: 2629
+name: "Rune kiteshield (t)"
+examine: "Rune kiteshield with trim."
+tradeable: true
+weight: 5.443
+tradeable_on_ge: true
+cost: 54400
+lowalch: 21760
+highalch: 32640
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -8
+  attackRanged: -2
+  defenceStab: 44
+  defenceSlash: 48
+  defenceCrush: 46
+  defenceMagic: -1
+  defenceRanged: 46
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

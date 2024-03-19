@@ -1,0 +1,33 @@
+---
+id: 12476
+name: "Armadyl full helm"
+examine: "Rune full helmet in the colours of Armadyl."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: true
+cost: 35200
+lowalch: 14080
+highalch: 21120
+buy_limit: 8
+equipment:
+  prayer: 1
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: -3
+  defenceStab: 30
+  defenceSlash: 32
+  defenceCrush: 27
+  defenceMagic: -1
+  defenceRanged: 30
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

@@ -1,0 +1,31 @@
+---
+id: 23787
+name: "Ardougne knight platebody"
+examine: "A platebody worn by the Knights of Ardougne."
+tradeable: false
+weight: 9.979
+tradeable_on_ge: false
+cost: 2000
+lowalch: 800
+highalch: 1200
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -30
+  attackRanged: -15
+  defenceStab: 21
+  defenceSlash: 20
+  defenceCrush: 12
+  defenceMagic: -6
+  defenceRanged: 20
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

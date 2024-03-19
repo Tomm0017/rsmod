@@ -1,0 +1,42 @@
+---
+id: 13263
+name: "Abyssal bludgeon"
+examine: "Elements of deceased Abyssal Sires have been fused together."
+tradeable: true
+weight: 6.0
+tradeable_on_ge: true
+cost: 260000
+lowalch: 104000
+highalch: 156000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 26
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 102
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 85
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 1662
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 1663
+    walkBackwardsAnimId: 1663
+    walkLeftAnimId: 1663
+    walkRightAnimId: 1663
+    runAnimId: 1664
+  skillReqs:
+  - skill: "attack"
+    level: 70
+  - skill: "strength"
+    level: 70

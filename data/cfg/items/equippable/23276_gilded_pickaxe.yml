@@ -1,0 +1,35 @@
+---
+id: 23276
+name: "Gilded pickaxe"
+examine: "Used for mining and very stylish."
+tradeable: true
+weight: 2.267
+tradeable_on_ge: true
+cost: 50000
+lowalch: 20000
+highalch: 30000
+buy_limit: 4
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 11
+  attackSpeed: 5
+  attackStab: 26
+  attackSlash: -2
+  attackCrush: 24
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 29
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "mining"
+    level: 41
+  - skill: "attack"
+    level: 40

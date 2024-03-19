@@ -1,0 +1,33 @@
+---
+id: 22181
+name: "Adamant heraldic helm"
+examine: "The colours represent money."
+tradeable: false
+weight: 2.721
+tradeable_on_ge: false
+cost: 3520
+lowalch: 1408
+highalch: 2112
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: -3
+  defenceStab: 19
+  defenceSlash: 21
+  defenceCrush: 16
+  defenceMagic: -1
+  defenceRanged: 19
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 30

@@ -1,0 +1,38 @@
+---
+id: 7409
+name: "Magic secateurs"
+examine: "The only way to kill a Tanglefoot."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 1
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 17
+  attackSpeed: 5
+  attackStab: 7
+  attackSlash: 9
+  attackCrush: -5
+  attackMagic: 1
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 1
+  defenceRanged: 0
+  meleeStrength: 1
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs: null

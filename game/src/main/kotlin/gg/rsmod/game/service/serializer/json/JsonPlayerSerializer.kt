@@ -3,6 +3,7 @@ package gg.rsmod.game.service.serializer.json
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import gg.rsmod.game.Server
 import gg.rsmod.game.model.PlayerUID
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
@@ -38,7 +39,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
 
     private lateinit var path: Path
 
-    override fun initSerializer(server: gg.rsmod.game.Server, world: World, serviceProperties: ServerProperties) {
+    override fun initSerializer(server: Server, world: World, serviceProperties: ServerProperties) {
         path = Paths.get(serviceProperties.getOrDefault("path", "../data/saves/"))
         if (!Files.exists(path)) {
             Files.createDirectory(path)
@@ -99,7 +100,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                     return@forEach
                 }
                 val container = if (client.containers.containsKey(key)) client.containers[key] else {
-                    client.containers[key] = ItemContainer(client.world.definitions, key)
+                    client.containers[key] = ItemContainer(key)
                     client.containers[key]
                 }!!
                 it.items.forEach { slot, item ->

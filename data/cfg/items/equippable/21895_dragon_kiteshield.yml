@@ -1,0 +1,33 @@
+---
+id: 21895
+name: "Dragon kiteshield"
+examine: "An ancient and powerful looking Dragon Kiteshield."
+tradeable: true
+weight: 6.803
+tradeable_on_ge: true
+cost: 1600000
+lowalch: 640000
+highalch: 960000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -8
+  attackRanged: -3
+  defenceStab: 56
+  defenceSlash: 60
+  defenceCrush: 58
+  defenceMagic: -1
+  defenceRanged: 58
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 60

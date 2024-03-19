@@ -1,0 +1,31 @@
+---
+id: 6731
+name: "Seers ring"
+examine: "A mysterious ring that can fill the wearer with magical power..."
+tradeable: true
+weight: 0.004
+tradeable_on_ge: true
+cost: 10000
+lowalch: 4000
+highalch: 6000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "ring"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 6
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 6
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

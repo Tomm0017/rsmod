@@ -1,0 +1,35 @@
+---
+id: 4089
+name: "Mystic hat"
+examine: "A magical hat."
+tradeable: true
+weight: 0.453
+tradeable_on_ge: true
+cost: 15000
+lowalch: 6000
+highalch: 9000
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "hat"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 4
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "magic"
+    level: 40
+  - skill: "defence"
+    level: 20

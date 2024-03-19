@@ -1,0 +1,33 @@
+---
+id: 3171
+name: "Iron spear(kp)"
+examine: "A Karambwan poisoned iron tipped spear."
+tradeable: false
+weight: 2.267
+tradeable_on_ge: false
+cost: 91
+lowalch: 36
+highalch: 54
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 8
+  attackSlash: 8
+  attackCrush: 8
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 1
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 10
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 1

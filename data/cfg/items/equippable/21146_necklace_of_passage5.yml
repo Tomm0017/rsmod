@@ -1,0 +1,31 @@
+---
+id: 21146
+name: "Necklace of passage(5)"
+examine: "This necklace can really take you places."
+tradeable: true
+weight: 0.01
+tradeable_on_ge: true
+cost: 1275
+lowalch: 510
+highalch: 765
+buy_limit: 10000
+equipment:
+  prayer: 0
+  equipSlot: "neck"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

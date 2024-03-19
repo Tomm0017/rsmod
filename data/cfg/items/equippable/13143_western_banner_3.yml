@@ -1,0 +1,38 @@
+---
+id: 13143
+name: "Western banner 3"
+examine: "A mysterious crystal banner."
+tradeable: false
+weight: 2.267
+tradeable_on_ge: false
+cost: 0
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 0
+  attackSpeed: 5
+  attackStab: 17
+  attackSlash: 17
+  attackCrush: 17
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 1
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 18
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 1421
+    turnOnSpotAnim: 1426
+    walkForwardAnimId: 1422
+    walkBackwardsAnimId: 1423
+    walkLeftAnimId: 1424
+    walkRightAnimId: 1425
+    runAnimId: 1427
+  skillReqs: null

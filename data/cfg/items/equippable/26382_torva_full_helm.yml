@@ -1,0 +1,31 @@
+---
+id: 26382
+name: "Torva full helm"
+examine: "An ancient warrior's full helm."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: true
+cost: 200000
+lowalch: 80000
+highalch: 120000
+buy_limit: null
+equipment:
+  prayer: 1
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -5
+  attackRanged: -5
+  defenceStab: 59
+  defenceSlash: 60
+  defenceCrush: 62
+  defenceMagic: -2
+  defenceRanged: 57
+  meleeStrength: 8
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

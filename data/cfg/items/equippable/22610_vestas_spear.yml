@@ -1,0 +1,33 @@
+---
+id: 22610
+name: "Vesta's spear"
+examine: "A powerful spear."
+tradeable: true
+weight: 2.267
+tradeable_on_ge: true
+cost: 300000
+lowalch: 120000
+highalch: 180000
+buy_limit: 10
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 133
+  attackSlash: 113
+  attackCrush: 120
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 18
+  defenceSlash: 21
+  defenceCrush: 21
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 122
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 78

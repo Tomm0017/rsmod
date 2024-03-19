@@ -1,0 +1,33 @@
+---
+id: 13365
+name: "Shayzien greaves (2)"
+examine: "Dress like a tier 2 Shayzien soldier."
+tradeable: false
+weight: 9.071
+tradeable_on_ge: false
+cost: 45
+lowalch: 18
+highalch: 27
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -14
+  attackRanged: -3
+  defenceStab: 14
+  defenceSlash: 13
+  defenceCrush: 12
+  defenceMagic: -3
+  defenceRanged: 14
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 20

@@ -1,0 +1,31 @@
+---
+id: 26782
+name: "Salve amulet(ei)"
+examine: "Increases melee, ranged and magic damage & accuracy by 20% against the undead."
+tradeable: false
+weight: 0.007
+tradeable_on_ge: false
+cost: 300
+lowalch: 120
+highalch: 180
+buy_limit: null
+equipment:
+  prayer: 3
+  equipSlot: "neck"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 3
+  defenceSlash: 3
+  defenceCrush: 3
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

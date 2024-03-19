@@ -1,0 +1,37 @@
+---
+id: 23682
+name: "Crystal pickaxe (inactive)"
+examine: "If rocks could feel fear, they'd fear this."
+tradeable: false
+weight: 1.36
+tradeable_on_ge: false
+cost: 520000
+lowalch: 208000
+highalch: 312000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 11
+  attackSpeed: 5
+  attackStab: 38
+  attackSlash: -2
+  attackCrush: 32
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 42
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 70
+  - skill: "agility"
+    level: 50
+  - skill: "mining"
+    level: 71

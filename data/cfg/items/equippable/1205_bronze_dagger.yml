@@ -1,0 +1,40 @@
+---
+id: 1205
+name: "Bronze dagger"
+examine: "Short but pointy."
+tradeable: true
+weight: 0.453
+tradeable_on_ge: true
+cost: 10
+lowalch: 4
+highalch: 6
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 17
+  attackSpeed: 4
+  attackStab: 4
+  attackSlash: 2
+  attackCrush: -4
+  attackMagic: 1
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 1
+  defenceRanged: 0
+  meleeStrength: 3
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 1

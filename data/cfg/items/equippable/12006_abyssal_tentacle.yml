@@ -1,0 +1,40 @@
+---
+id: 12006
+name: "Abyssal tentacle"
+examine: "A weapon from the Abyss, embedded in a slimy tentacle."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 289800
+lowalch: 115920
+highalch: 173880
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 20
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 90
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 86
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 1660
+    walkBackwardsAnimId: 1660
+    walkLeftAnimId: 1660
+    walkRightAnimId: 1660
+    runAnimId: 1661
+  skillReqs:
+  - skill: "attack"
+    level: 75

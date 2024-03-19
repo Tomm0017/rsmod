@@ -1,0 +1,40 @@
+---
+id: 4934
+name: "Karil's crossbow 100"
+examine: "Karil the Tainted's repeating crossbow."
+tradeable: false
+weight: 3.628
+tradeable_on_ge: false
+cost: 160000
+lowalch: 64000
+highalch: 96000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 5
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 84
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 2074
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 2076
+    walkBackwardsAnimId: 2076
+    walkLeftAnimId: 2076
+    walkRightAnimId: 2076
+    runAnimId: 2077
+  skillReqs:
+  - skill: "ranged"
+    level: 70

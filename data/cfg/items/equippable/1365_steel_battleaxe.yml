@@ -1,0 +1,40 @@
+---
+id: 1365
+name: "Steel battleaxe"
+examine: "A vicious looking axe."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: true
+cost: 650
+lowalch: 260
+highalch: 390
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 1
+  attackSpeed: 6
+  attackStab: -2
+  attackSlash: 16
+  attackCrush: 11
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: -1
+  meleeStrength: 20
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 5

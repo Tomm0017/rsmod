@@ -1,0 +1,38 @@
+---
+id: 25314
+name: "Giant boulder"
+examine: "That's one ginormous boulder."
+tradeable: false
+weight: 15.0
+tradeable_on_ge: false
+cost: 1
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: -100
+  attackSlash: -100
+  attackCrush: -50
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: -10
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 4193
+    turnOnSpotAnim: 4194
+    walkForwardAnimId: 4194
+    walkBackwardsAnimId: 4194
+    walkLeftAnimId: 4194
+    walkRightAnimId: 4194
+    runAnimId: 7274
+  skillReqs: null

@@ -1,0 +1,31 @@
+---
+id: 26742
+name: "Koriff's coif (l)"
+examine: "Koriff the Crowd Pleaser's coif."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 21500
+lowalch: 8600
+highalch: 12900
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -60
+  attackSlash: -60
+  attackCrush: -60
+  attackMagic: -60
+  attackRanged: 18
+  defenceStab: -25
+  defenceSlash: -25
+  defenceCrush: -25
+  defenceMagic: 20
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

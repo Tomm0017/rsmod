@@ -1,0 +1,31 @@
+---
+id: 25985
+name: "Elidinis' ward"
+examine: "A ward once used by Elidinis herself."
+tradeable: true
+weight: 0.708
+tradeable_on_ge: true
+cost: 5000000
+lowalch: 2000000
+highalch: 3000000
+buy_limit: null
+equipment:
+  prayer: 1
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 5
+  attackRanged: 0
+  defenceStab: 5
+  defenceSlash: 3
+  defenceCrush: 9
+  defenceMagic: 0
+  defenceRanged: 6
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 3
+  renderAnimations: null
+  skillReqs: null

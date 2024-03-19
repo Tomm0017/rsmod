@@ -1,0 +1,33 @@
+---
+id: 1111
+name: "Adamant chainbody"
+examine: "A series of connected metal rings."
+tradeable: true
+weight: 7.711
+tradeable_on_ge: true
+cost: 4800
+lowalch: 1920
+highalch: 2880
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -15
+  attackRanged: 0
+  defenceStab: 36
+  defenceSlash: 50
+  defenceCrush: 61
+  defenceMagic: -3
+  defenceRanged: 38
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 30

@@ -1,0 +1,35 @@
+---
+id: 10564
+name: "Granite body"
+examine: "Provides excellent protection."
+tradeable: true
+weight: 22.679
+tradeable_on_ge: true
+cost: 80000
+lowalch: 32000
+highalch: 48000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -22
+  attackRanged: -5
+  defenceStab: 87
+  defenceSlash: 84
+  defenceCrush: 79
+  defenceMagic: -6
+  defenceRanged: 97
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "strength"
+    level: 50
+  - skill: "defence"
+    level: 50

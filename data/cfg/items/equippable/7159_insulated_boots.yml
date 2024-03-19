@@ -1,0 +1,33 @@
+---
+id: 7159
+name: "Insulated boots"
+examine: "They're heavily insulated wellies."
+tradeable: true
+weight: 1.36
+tradeable_on_ge: true
+cost: 200
+lowalch: 80
+highalch: 120
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 1
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 1
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "slayer"
+    level: 37

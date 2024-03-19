@@ -1,0 +1,33 @@
+---
+id: 22234
+name: "Dragon boots (g)"
+examine: "These fancy boots will protect my feet."
+tradeable: false
+weight: 1.0
+tradeable_on_ge: false
+cost: 20000
+lowalch: 8000
+highalch: 12000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -3
+  attackRanged: -1
+  defenceStab: 16
+  defenceSlash: 17
+  defenceCrush: 18
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 60

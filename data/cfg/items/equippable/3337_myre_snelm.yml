@@ -1,0 +1,31 @@
+---
+id: 3337
+name: "Myre snelm"
+examine: "A swamp coloured pointed snail shell helmet."
+tradeable: true
+weight: 2.0
+tradeable_on_ge: true
+cost: 300
+lowalch: 120
+highalch: 180
+buy_limit: 150
+equipment:
+  prayer: 0
+  equipSlot: "hat"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -3
+  attackRanged: -1
+  defenceStab: 7
+  defenceSlash: 8
+  defenceCrush: 6
+  defenceMagic: -1
+  defenceRanged: 7
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

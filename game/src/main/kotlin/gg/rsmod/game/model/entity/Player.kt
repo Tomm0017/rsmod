@@ -1,7 +1,7 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
-import gg.rsmod.game.fs.def.VarpDef
+import dev.openrune.cache.CacheManager.varpCount
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.*
@@ -87,13 +87,13 @@ open class Player(world: World) : Pawn(world) {
      */
     @Volatile private var setDisconnectionTimer = false
 
-    val bonds = ItemContainer(world.definitions, BOND_POUCH_KEY)
+    val bonds = ItemContainer(BOND_POUCH_KEY)
 
-    val inventory = ItemContainer(world.definitions, INVENTORY_KEY)
+    val inventory = ItemContainer(INVENTORY_KEY)
 
-    val equipment = ItemContainer(world.definitions, EQUIPMENT_KEY)
+    val equipment = ItemContainer(EQUIPMENT_KEY)
 
-    val bank = ItemContainer(world.definitions, BANK_KEY)
+    val bank = ItemContainer(BANK_KEY)
 
     /**
      * A map that contains all the [ItemContainer]s a player can have.
@@ -107,7 +107,7 @@ open class Player(world: World) : Pawn(world) {
 
     val interfaces by lazy { InterfaceSet(PlayerInterfaceListener(this, world.plugins)) }
 
-    val varps = VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java))
+    val varps = VarpSet(maxVarps = varpCount())
 
     private val skillSet = SkillSet(maxSkills = world.gameContext.skillCount)
 
@@ -243,7 +243,7 @@ open class Player(world: World) : Pawn(world) {
 
     override fun getCurrentHp(): Int = getSkills().getCurrentLevel(3)
 
-    override fun getMaxHp(): Int = getSkills().getBaseLevel(3)
+    override fun getMaxHp(): Int = getSkills().getMaxLevel(3)
 
     override fun setCurrentHp(level: Int) {
         getSkills().setCurrentLevel(3, level)
@@ -466,8 +466,8 @@ open class Player(world: World) : Pawn(world) {
     }
 
     fun calculateWeight() {
-        val inventoryWeight = inventory.filterNotNull().sumOf { it.getDef(world.definitions).weight }
-        val equipmentWeight = equipment.filterNotNull().sumOf { it.getDef(world.definitions).weight }
+        val inventoryWeight = inventory.filterNotNull().sumOf { it.getDef().weight }
+        val equipmentWeight = equipment.filterNotNull().sumOf { it.getDef().weight }
         this.weight = inventoryWeight + equipmentWeight
         write(UpdateRunWeightMessage(this.weight.toInt()))
     }
@@ -476,7 +476,7 @@ open class Player(world: World) : Pawn(world) {
         Arrays.fill(equipmentBonuses, 0)
         for (i in 0 until equipment.capacity) {
             val item = equipment[i] ?: continue
-            val def = item.getDef(world.definitions)
+            val def = item.getDef()
             def.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
         }
     }
@@ -495,7 +495,7 @@ open class Player(world: World) : Pawn(world) {
         /*
          * Only increment the 'current' level if it's set at its capped level.
          */
-        if (getSkills().getCurrentLevel(skill) == getSkills().getBaseLevel(skill)) {
+        if (getSkills().getCurrentLevel(skill) == getSkills().getMaxLevel(skill)) {
             getSkills().setBaseXp(skill, newXp)
         } else {
             getSkills().setXp(skill, newXp)

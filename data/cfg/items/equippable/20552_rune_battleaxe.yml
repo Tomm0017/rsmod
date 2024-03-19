@@ -1,0 +1,40 @@
+---
+id: 20552
+name: "Rune battleaxe"
+examine: "A vicious looking axe."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: false
+cost: 10
+lowalch: 4
+highalch: 6
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 1
+  attackSpeed: 6
+  attackStab: -2
+  attackSlash: 48
+  attackCrush: 43
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: -1
+  meleeStrength: 64
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 40

@@ -1,0 +1,31 @@
+---
+id: 27004
+name: "Elite void robe (l)(or)"
+examine: "Elite void knight robes plucked from the shattered abyss."
+tradeable: false
+weight: 8.164
+tradeable_on_ge: false
+cost: 45500
+lowalch: 18200
+highalch: 27300
+buy_limit: null
+equipment:
+  prayer: 3
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 30
+  defenceSlash: 30
+  defenceCrush: 30
+  defenceMagic: 30
+  defenceRanged: 30
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

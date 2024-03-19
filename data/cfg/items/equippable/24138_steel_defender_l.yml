@@ -1,0 +1,35 @@
+---
+id: 24138
+name: "Steel defender (l)"
+examine: "A defensive weapon."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 1
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 7
+  attackSlash: 6
+  attackCrush: 5
+  attackMagic: -3
+  attackRanged: -2
+  defenceStab: 7
+  defenceSlash: 6
+  defenceCrush: 5
+  defenceMagic: -3
+  defenceRanged: -2
+  meleeStrength: 1
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 5
+  - skill: "defence"
+    level: 5

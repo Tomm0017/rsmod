@@ -1,0 +1,40 @@
+---
+id: 1434
+name: "Dragon mace"
+examine: "A spiky mace."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 50000
+lowalch: 20000
+highalch: 30000
+buy_limit: 70
+equipment:
+  prayer: 5
+  equipSlot: "weapon"
+  weaponType: 16
+  attackSpeed: 4
+  attackStab: 40
+  attackSlash: -2
+  attackCrush: 60
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 55
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 60

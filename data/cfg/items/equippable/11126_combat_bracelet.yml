@@ -1,0 +1,31 @@
+---
+id: 11126
+name: "Combat bracelet"
+examine: "You will need to recharge the bracelet at the Legends Guild."
+tradeable: true
+weight: 0.25
+tradeable_on_ge: true
+cost: 21040
+lowalch: 8416
+highalch: 12624
+buy_limit: 10000
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 7
+  attackSlash: 7
+  attackCrush: 7
+  attackMagic: 3
+  attackRanged: 7
+  defenceStab: 5
+  defenceSlash: 5
+  defenceCrush: 5
+  defenceMagic: 3
+  defenceRanged: 5
+  meleeStrength: 6
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

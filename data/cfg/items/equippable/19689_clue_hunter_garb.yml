@@ -1,0 +1,31 @@
+---
+id: 19689
+name: "Clue hunter garb"
+examine: "Stark and full of vigour."
+tradeable: false
+weight: 2.0
+tradeable_on_ge: false
+cost: 1
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -2
+  attackRanged: 2
+  defenceStab: 8
+  defenceSlash: 9
+  defenceCrush: 10
+  defenceMagic: 4
+  defenceRanged: 9
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

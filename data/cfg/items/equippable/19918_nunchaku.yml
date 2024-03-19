@@ -1,0 +1,38 @@
+---
+id: 19918
+name: "Nunchaku"
+examine: "A pair of Nunchaku, smells of pizza."
+tradeable: true
+weight: 1.36
+tradeable_on_ge: true
+cost: 6000
+lowalch: 2400
+highalch: 3600
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 0
+  attackSpeed: 5
+  attackStab: -4
+  attackSlash: -4
+  attackCrush: 11
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 14
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 1660
+    walkBackwardsAnimId: 1660
+    walkLeftAnimId: 1660
+    walkRightAnimId: 1660
+    runAnimId: 1661
+  skillReqs: null

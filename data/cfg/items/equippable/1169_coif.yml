@@ -1,0 +1,35 @@
+---
+id: 1169
+name: "Coif"
+examine: "Light weight head protection."
+tradeable: true
+weight: 0.907
+tradeable_on_ge: true
+cost: 200
+lowalch: 80
+highalch: 120
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -1
+  attackRanged: 2
+  defenceStab: 4
+  defenceSlash: 6
+  defenceCrush: 8
+  defenceMagic: 4
+  defenceRanged: 4
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 20
+  - skill: "defence"
+    level: 1

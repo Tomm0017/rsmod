@@ -1,0 +1,31 @@
+---
+id: 23845
+name: "Corrupted body (perfected)"
+examine: "A very sturdy piece of armour with a lot of protection from corrupted creatures."
+tradeable: false
+weight: 9.979
+tradeable_on_ge: false
+cost: 1
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 5
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 15
+  attackSlash: 16
+  attackCrush: 5
+  attackMagic: 16
+  attackRanged: 16
+  defenceStab: 124
+  defenceSlash: 124
+  defenceCrush: 124
+  defenceMagic: 124
+  defenceRanged: 124
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,33 @@
+---
+id: 2663
+name: "Saradomin platelegs"
+examine: "Rune platelegs in the colours of Saradomin."
+tradeable: true
+weight: 9.071
+tradeable_on_ge: true
+cost: 64000
+lowalch: 25600
+highalch: 38400
+buy_limit: 8
+equipment:
+  prayer: 1
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -21
+  attackRanged: -11
+  defenceStab: 51
+  defenceSlash: 49
+  defenceCrush: 47
+  defenceMagic: -4
+  defenceRanged: 49
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

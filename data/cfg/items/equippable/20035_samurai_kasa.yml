@@ -1,0 +1,33 @@
+---
+id: 20035
+name: "Samurai kasa"
+examine: "A conical hat."
+tradeable: true
+weight: 0.6
+tradeable_on_ge: true
+cost: 4000
+lowalch: 1600
+highalch: 2400
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 16
+  defenceSlash: 17
+  defenceCrush: 15
+  defenceMagic: 4
+  defenceRanged: 16
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 35

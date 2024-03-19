@@ -1,0 +1,40 @@
+---
+id: 10156
+name: "Hunters' crossbow"
+examine: "A weapon made of bone and wood."
+tradeable: true
+weight: 5.0
+tradeable_on_ge: true
+cost: 1300
+lowalch: 520
+highalch: 780
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 5
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 55
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 4591
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 4226
+    walkBackwardsAnimId: 4227
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 4228
+  skillReqs:
+  - skill: "ranged"
+    level: 50

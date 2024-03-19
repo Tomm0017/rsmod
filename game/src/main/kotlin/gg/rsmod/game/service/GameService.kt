@@ -1,6 +1,7 @@
 package gg.rsmod.game.service
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
+import gg.rsmod.game.Server
 import gg.rsmod.game.message.MessageDecoderSet
 import gg.rsmod.game.message.MessageEncoderSet
 import gg.rsmod.game.message.MessageStructureSet
@@ -122,17 +123,17 @@ class GameService : Service {
      */
     internal var pause = false
 
-    override fun init(server: gg.rsmod.game.Server, world: World, serviceProperties: ServerProperties) {
+    override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
         this.world = world
         populateTasks(serviceProperties)
         maxMessagesPerCycle = serviceProperties.getOrDefault("messages-per-cycle", 30)
         executor.scheduleAtFixedRate(this::cycle, 0, world.gameContext.cycleTime.toLong(), TimeUnit.MILLISECONDS)
     }
 
-    override fun postLoad(server: gg.rsmod.game.Server, world: World) {
+    override fun postLoad(server: Server, world: World) {
     }
 
-    override fun terminate(server: gg.rsmod.game.Server, world: World) {
+    override fun terminate(server: Server, world: World) {
     }
 
     private fun populateTasks(serviceProperties: ServerProperties) {
@@ -178,7 +179,7 @@ class GameService : Service {
         }
     }
 
-    override fun bindNet(server: gg.rsmod.game.Server, world: World) {
+    override fun bindNet(server: Server, world: World) {
     }
 
     /**
@@ -258,9 +259,9 @@ class GameService : Service {
              *
              * Map:
              * The amount of map entities that are currently active.
-             * c: chunks [org.alter.game.model.region.Chunk]
+             * c: chunks [gg.rsmod.game.model.region.Chunk]
              * r: regions
-             * i: instanced maps [org.alter.game.model.instance.InstancedMap]
+             * i: instanced maps [gg.rsmod.game.model.instance.InstancedMap]
              *
              * Queues:
              * The amount of plugins that are being executed on this exact

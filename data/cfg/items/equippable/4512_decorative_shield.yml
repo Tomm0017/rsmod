@@ -1,0 +1,33 @@
+---
+id: 4512
+name: "Decorative shield"
+examine: "A very decorative shield."
+tradeable: false
+weight: 4.535
+tradeable_on_ge: false
+cost: 5440
+lowalch: 2176
+highalch: 3264
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -8
+  attackRanged: -3
+  defenceStab: 27
+  defenceSlash: 31
+  defenceCrush: 29
+  defenceMagic: -1
+  defenceRanged: 29
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 30

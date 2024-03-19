@@ -1,0 +1,45 @@
+---
+id: 11673
+name: "Void seal(1)"
+examine: "A seal storing the power of the Void Knights."
+tradeable: false
+weight: 0.005
+tradeable_on_ge: false
+cost: 100
+lowalch: 40
+highalch: 60
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "neck"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 1
+  defenceSlash: 1
+  defenceCrush: 1
+  defenceMagic: 1
+  defenceRanged: 1
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 42
+  - skill: "strength"
+    level: 42
+  - skill: "hitpoints"
+    level: 42
+  - skill: "ranged"
+    level: 42
+  - skill: "magic"
+    level: 42
+  - skill: "defence"
+    level: 42
+  - skill: "prayer"
+    level: 22

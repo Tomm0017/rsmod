@@ -1,0 +1,35 @@
+---
+id: 22003
+name: "Dragonfire ward"
+examine: "A light shield with a haunting, skeletal visage."
+tradeable: true
+weight: 4.082
+tradeable_on_ge: true
+cost: 2000000
+lowalch: 800000
+highalch: 1200000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -10
+  attackSlash: -10
+  attackCrush: -10
+  attackMagic: -10
+  attackRanged: 15
+  defenceStab: -25
+  defenceSlash: -20
+  defenceCrush: -22
+  defenceMagic: 28
+  defenceRanged: 18
+  meleeStrength: -2
+  rangedStrength: 8
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 70
+  - skill: "defence"
+    level: 75

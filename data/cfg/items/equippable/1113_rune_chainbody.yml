@@ -1,0 +1,33 @@
+---
+id: 1113
+name: "Rune chainbody"
+examine: "A series of connected metal rings."
+tradeable: true
+weight: 6.803
+tradeable_on_ge: true
+cost: 50000
+lowalch: 20000
+highalch: 30000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -15
+  attackRanged: 0
+  defenceStab: 63
+  defenceSlash: 72
+  defenceCrush: 78
+  defenceMagic: -3
+  defenceRanged: 65
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40

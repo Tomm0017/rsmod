@@ -1,0 +1,32 @@
+---
+id: 23389
+name: "Spiked manacles"
+examine: "Some very spikey metal bands, better make sure I don't cut myself while\
+  \ walking."
+tradeable: true
+weight: 3.0
+tradeable_on_ge: true
+cost: 2500
+lowalch: 1000
+highalch: 1500
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -3
+  attackRanged: -1
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: -4
+  defenceRanged: 0
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

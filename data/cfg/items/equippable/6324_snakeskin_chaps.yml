@@ -1,0 +1,35 @@
+---
+id: 6324
+name: "Snakeskin chaps"
+examine: "Made from 100% real snake."
+tradeable: true
+weight: 3.628
+tradeable_on_ge: true
+cost: 1175
+lowalch: 470
+highalch: 705
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -5
+  attackRanged: 6
+  defenceStab: 8
+  defenceSlash: 8
+  defenceCrush: 10
+  defenceMagic: 4
+  defenceRanged: 10
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 30
+  - skill: "defence"
+    level: 30

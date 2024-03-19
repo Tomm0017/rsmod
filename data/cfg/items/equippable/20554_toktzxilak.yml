@@ -1,0 +1,33 @@
+---
+id: 20554
+name: "Toktz-xil-ak"
+examine: "A razor sharp sword of obsidian."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: false
+cost: 20
+lowalch: 8
+highalch: 12
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 47
+  attackSlash: 38
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 2
+  defenceSlash: 3
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 49
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 60

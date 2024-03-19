@@ -1,0 +1,33 @@
+---
+id: 10584
+name: "Keris(p++)"
+examine: "The twisted blade is covered with a nasty poison."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 10000
+lowalch: 4000
+highalch: 6000
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 40
+  attackSlash: 20
+  attackCrush: -10
+  attackMagic: 2
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 2
+  defenceRanged: 0
+  meleeStrength: 30
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 50

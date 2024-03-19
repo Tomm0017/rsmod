@@ -1,0 +1,37 @@
+---
+id: 10146
+name: "Orange salamander"
+examine: "Slightly slimy but kind of cute."
+tradeable: true
+weight: 4.0
+tradeable_on_ge: true
+cost: 100
+lowalch: 40
+highalch: 60
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 0
+  attackSlash: 19
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 29
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 31
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 50
+  - skill: "attack"
+    level: 50
+  - skill: "magic"
+    level: 50

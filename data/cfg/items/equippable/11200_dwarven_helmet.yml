@@ -1,0 +1,33 @@
+---
+id: 11200
+name: "Dwarven helmet"
+examine: "A sturdy helmet that belonged to Rupert the Beard."
+tradeable: true
+weight: 1.9
+tradeable_on_ge: true
+cost: 60000
+lowalch: 24000
+highalch: 36000
+buy_limit: 50
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 6
+  attackMagic: -2
+  attackRanged: -2
+  defenceStab: 27
+  defenceSlash: 28
+  defenceCrush: 31
+  defenceMagic: 5
+  defenceRanged: 24
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 50

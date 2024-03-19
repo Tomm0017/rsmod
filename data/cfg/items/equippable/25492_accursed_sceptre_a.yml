@@ -1,0 +1,31 @@
+---
+id: 25492
+name: "Accursed sceptre (a)"
+examine: "A mighty sceptre used in long forgotten battles."
+tradeable: true
+weight: 0.198
+tradeable_on_ge: false
+cost: 120000
+lowalch: 48000
+highalch: 72000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 13
+  attackSpeed: 5
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 22
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 20
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,31 @@
+---
+id: 9070
+name: "Moonclan armour"
+examine: "Provides good protection."
+tradeable: false
+weight: 4.535
+tradeable_on_ge: false
+cost: 1000
+lowalch: 400
+highalch: 600
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 5
+  attackRanged: -10
+  defenceStab: 5
+  defenceSlash: 5
+  defenceCrush: 5
+  defenceMagic: 5
+  defenceRanged: -10
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,35 @@
+---
+id: 7372
+name: "Green d'hide body (t)"
+examine: "Made from 100% real dragonhide. With colourful trim!"
+tradeable: true
+weight: 6.803
+tradeable_on_ge: true
+cost: 7800
+lowalch: 3120
+highalch: 4680
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -15
+  attackRanged: 15
+  defenceStab: 18
+  defenceSlash: 27
+  defenceCrush: 24
+  defenceMagic: 20
+  defenceRanged: 35
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 40
+  - skill: "defence"
+    level: 40

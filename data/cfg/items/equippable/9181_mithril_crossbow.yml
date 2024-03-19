@@ -1,0 +1,33 @@
+---
+id: 9181
+name: "Mithril crossbow"
+examine: "A mithril crossbow."
+tradeable: true
+weight: 5.0
+tradeable_on_ge: true
+cost: 783
+lowalch: 313
+highalch: 469
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 5
+  attackSpeed: 6
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 66
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 36

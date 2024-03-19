@@ -1,6 +1,5 @@
 package gg.rsmod.game.model.collision
 
-import gg.rsmod.game.fs.DefinitionSet
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.GameObject
@@ -138,10 +137,10 @@ class CollisionManager(val chunks: ChunkSet, val createChunksIfNeeded: Boolean =
         }
     }
 
-    fun applyCollision(definitions: DefinitionSet, obj: GameObject, updateType: CollisionUpdate.Type) {
+    fun applyCollision(obj: GameObject, updateType: CollisionUpdate.Type) {
         val builder = CollisionUpdate.Builder()
         builder.setType(updateType)
-        builder.putObject(definitions, obj)
+        builder.putObject(obj)
         applyUpdate(builder.build())
     }
 

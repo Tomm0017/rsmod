@@ -1,0 +1,33 @@
+---
+id: 12217
+name: "Bronze platelegs (t)"
+examine: "Bronze platelegs with trim."
+tradeable: true
+weight: 9.071
+tradeable_on_ge: true
+cost: 80
+lowalch: 32
+highalch: 48
+buy_limit: 4
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -21
+  attackRanged: -11
+  defenceStab: 8
+  defenceSlash: 7
+  defenceCrush: 6
+  defenceMagic: -4
+  defenceRanged: 7
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 1

@@ -1,0 +1,31 @@
+---
+id: 26551
+name: "Arcane grimoire"
+examine: "A powerful tome filled with the knowledge of the magical arts."
+tradeable: false
+weight: 0.002
+tradeable_on_ge: false
+cost: 400
+lowalch: 160
+highalch: 240
+buy_limit: null
+equipment:
+  prayer: 3
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 6
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

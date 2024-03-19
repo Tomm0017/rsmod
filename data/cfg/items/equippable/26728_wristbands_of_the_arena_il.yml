@@ -1,0 +1,31 @@
+---
+id: 26728
+name: "Wristbands of the arena (il)"
+examine: "A pair of imbued wristbands to protect your hands in combat."
+tradeable: false
+weight: 0.25
+tradeable_on_ge: false
+cost: 86002
+lowalch: 34400
+highalch: 51601
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 14
+  attackSlash: 13
+  attackCrush: 15
+  attackMagic: 7
+  attackRanged: 13
+  defenceStab: 12
+  defenceSlash: 12
+  defenceCrush: 12
+  defenceMagic: 6
+  defenceRanged: 12
+  meleeStrength: 12
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

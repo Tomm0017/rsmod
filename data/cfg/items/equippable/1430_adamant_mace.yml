@@ -1,0 +1,33 @@
+---
+id: 1430
+name: "Adamant mace"
+examine: "A spiky mace."
+tradeable: true
+weight: 2.041
+tradeable_on_ge: true
+cost: 1440
+lowalch: 576
+highalch: 864
+buy_limit: 125
+equipment:
+  prayer: 3
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 13
+  attackSlash: -2
+  attackCrush: 25
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 23
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 30

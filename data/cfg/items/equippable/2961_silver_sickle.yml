@@ -1,0 +1,31 @@
+---
+id: 2961
+name: "Silver sickle"
+examine: "It's a silver sickle."
+tradeable: true
+weight: 1.587
+tradeable_on_ge: true
+cost: 175
+lowalch: 70
+highalch: 105
+buy_limit: 15
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 1
+  defenceMagic: 1
+  defenceRanged: 1
+  meleeStrength: 1
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

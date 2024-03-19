@@ -1,0 +1,37 @@
+---
+id: 12821
+name: "Spectral spirit shield"
+examine: "An ethereal shield with a spectral sigil attached to it."
+tradeable: true
+weight: 2.0
+tradeable_on_ge: true
+cost: 2000000
+lowalch: 800000
+highalch: 1200000
+buy_limit: 8
+equipment:
+  prayer: 3
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 53
+  defenceSlash: 55
+  defenceCrush: 73
+  defenceMagic: 30
+  defenceRanged: 52
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 75
+  - skill: "prayer"
+    level: 70
+  - skill: "magic"
+    level: 65

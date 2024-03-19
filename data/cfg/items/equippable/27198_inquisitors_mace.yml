@@ -1,0 +1,31 @@
+---
+id: 27198
+name: "Inquisitor's mace"
+examine: "A powerful mace once wielded by the turncloak justiciar."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: false
+cost: 20
+lowalch: 8
+highalch: 12
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "weapon"
+  weaponType: 16
+  attackSpeed: 4
+  attackStab: 52
+  attackSlash: -4
+  attackCrush: 95
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 89
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

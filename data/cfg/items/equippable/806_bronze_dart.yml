@@ -1,0 +1,40 @@
+---
+id: 806
+name: "Bronze dart"
+examine: "A deadly throwing dart with a bronze tip."
+tradeable: true
+weight: 0.0
+tradeable_on_ge: true
+cost: 1
+lowalch: 0
+highalch: 0
+buy_limit: 7000
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 19
+  attackSpeed: 3
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 1
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "ranged"
+    level: 1

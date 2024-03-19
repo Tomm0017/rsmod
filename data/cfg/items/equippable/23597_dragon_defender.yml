@@ -1,0 +1,40 @@
+---
+id: 23597
+name: "Dragon defender"
+examine: "A defensive weapon."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 30
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: 0
+  attackSpeed: 0
+  attackStab: 25
+  attackSlash: 24
+  attackCrush: 23
+  attackMagic: -3
+  attackRanged: -2
+  defenceStab: 25
+  defenceSlash: 24
+  defenceCrush: 23
+  defenceMagic: -3
+  defenceRanged: -2
+  meleeStrength: 6
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "defence"
+    level: 60

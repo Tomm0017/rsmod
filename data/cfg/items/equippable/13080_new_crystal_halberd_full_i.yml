@@ -1,0 +1,44 @@
+---
+id: 13080
+name: "New crystal halberd full (i)"
+examine: "A nice sturdy pike."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 1
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 12
+  attackSpeed: 7
+  attackStab: 85
+  attackSlash: 110
+  attackCrush: 5
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: -1
+  defenceSlash: 4
+  defenceCrush: 5
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 118
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 813
+    turnOnSpotAnim: 1209
+    walkForwardAnimId: 1205
+    walkBackwardsAnimId: 1206
+    walkLeftAnimId: 1207
+    walkRightAnimId: 1208
+    runAnimId: 1210
+  skillReqs:
+  - skill: "attack"
+    level: 75
+  - skill: "strength"
+    level: 35
+  - skill: "agility"
+    level: 50

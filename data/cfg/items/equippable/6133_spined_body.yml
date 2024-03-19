@@ -1,0 +1,35 @@
+---
+id: 6133
+name: "Spined body"
+examine: "A constant reminder that I'm above a Dagannoth in the food chain."
+tradeable: true
+weight: 6.803
+tradeable_on_ge: true
+cost: 7800
+lowalch: 3120
+highalch: 4680
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -15
+  attackRanged: 15
+  defenceStab: 40
+  defenceSlash: 32
+  defenceCrush: 45
+  defenceMagic: 20
+  defenceRanged: 40
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40
+  - skill: "ranged"
+    level: 40

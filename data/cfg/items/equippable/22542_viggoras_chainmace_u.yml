@@ -1,0 +1,41 @@
+---
+id: 22542
+name: "Viggora's chainmace (u)"
+examine: "An ancient chainmace with a peculiar mechanism that allows for varying attack\
+  \ styles."
+tradeable: true
+weight: 2.0
+tradeable_on_ge: true
+cost: 120000
+lowalch: 48000
+highalch: 72000
+buy_limit: 8
+equipment:
+  prayer: 2
+  equipSlot: "weapon"
+  weaponType: 16
+  attackSpeed: 4
+  attackStab: 53
+  attackSlash: -2
+  attackCrush: 67
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 66
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 244
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 247
+    walkBackwardsAnimId: 247
+    walkLeftAnimId: 247
+    walkRightAnimId: 247
+    runAnimId: 248
+  skillReqs:
+  - skill: "attack"
+    level: 60

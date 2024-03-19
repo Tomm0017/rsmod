@@ -1,0 +1,32 @@
+---
+id: 23893
+name: "Crystal legs (attuned)"
+examine: "A more resilient set of leg armour with some protection from crystalline\
+  \ creatures."
+tradeable: false
+weight: 9.071
+tradeable_on_ge: false
+cost: 1
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 3
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 10
+  attackSlash: 10
+  attackCrush: 3
+  attackMagic: 10
+  attackRanged: 10
+  defenceStab: 74
+  defenceSlash: 74
+  defenceCrush: 74
+  defenceMagic: 74
+  defenceRanged: 74
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

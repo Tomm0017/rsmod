@@ -1,6 +1,6 @@
 package gg.rsmod.game.sync.segment
 
-import gg.rsmod.game.fs.def.NpcDef
+import dev.openrune.cache.CacheManager.npc
 import gg.rsmod.game.model.ChatMessage
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
@@ -146,7 +146,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                     val skippedSlots = BooleanArray(12)
                     for (i in 0 until 12) {
                         val item = other.equipment[i] ?: continue
-                        val itemDef = (Item(item.id)).getDef(other.world.definitions)
+                        val itemDef = (Item(item.id)).getDef()
                         val wearpos2 = itemDef.wearPos2
                         if (wearpos2 != -1) skippedSlots[wearpos2] = true
                         val wearpos3 = itemDef.wearPos3
@@ -191,7 +191,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
 
                 when {
                     transmog -> {
-                        val def = other.world.definitions.get(NpcDef::class.java, other.getTransmogId())
+                        val def = npc(other.getTransmogId())
                         val animations = arrayOf(
                             def.standAnim, def.walkAnim, def.walkAnim, def.rotateLeftAnim,
                             def.rotateRightAnim, def.rotateBackAnim, def.walkAnim
@@ -214,7 +214,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
 
                         val weapon = other.equipment[3] // Assume slot 3 is the weapon.
                         if (weapon != null) {
-                            val def = weapon.getDef(other.world.definitions)
+                            val def = weapon.getDef()
                             def.renderAnimations?.forEachIndexed { index, anim ->
                                 var ani = anim
                                 if (anim == 0) {

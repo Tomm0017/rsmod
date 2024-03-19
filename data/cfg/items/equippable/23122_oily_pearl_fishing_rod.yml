@@ -1,0 +1,31 @@
+---
+id: 23122
+name: "Oily pearl fishing rod"
+examine: "Useful for fishing in lava while looking a little bit fancy."
+tradeable: false
+weight: 0.481
+tradeable_on_ge: false
+cost: 80
+lowalch: 32
+highalch: 48
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 50
+  attackSpeed: 5
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

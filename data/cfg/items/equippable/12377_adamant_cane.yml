@@ -1,0 +1,40 @@
+---
+id: 12377
+name: "Adamant cane"
+examine: "A diamond topped cane."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 1440
+lowalch: 576
+highalch: 864
+buy_limit: 4
+equipment:
+  prayer: 3
+  equipSlot: "weapon"
+  weaponType: 16
+  attackSpeed: 5
+  attackStab: 13
+  attackSlash: -2
+  attackCrush: 25
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 23
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 30

@@ -1,0 +1,33 @@
+---
+id: 4582
+name: "Black spear(p)"
+examine: "A poisoned black tipped spear."
+tradeable: true
+weight: 2.267
+tradeable_on_ge: true
+cost: 750
+lowalch: 300
+highalch: 450
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 15
+  attackSlash: 15
+  attackCrush: 15
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 1
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 16
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 10

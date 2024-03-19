@@ -1,0 +1,31 @@
+---
+id: 11711
+name: "Magic secateurs (nz)"
+examine: "For use in the Nightmare Zone."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 0
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 7
+  attackSlash: 9
+  attackCrush: -5
+  attackMagic: 1
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 1
+  defenceRanged: 0
+  meleeStrength: 1
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

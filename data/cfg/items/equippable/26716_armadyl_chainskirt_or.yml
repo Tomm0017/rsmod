@@ -1,0 +1,31 @@
+---
+id: 26716
+name: "Armadyl chainskirt (or)"
+examine: "A chainskirt of great craftsmanship."
+tradeable: false
+weight: 1.0
+tradeable_on_ge: false
+cost: 289900
+lowalch: 115960
+highalch: 173940
+buy_limit: null
+equipment:
+  prayer: 1
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -6
+  attackSlash: -6
+  attackCrush: -6
+  attackMagic: -10
+  attackRanged: 20
+  defenceStab: 32
+  defenceSlash: 26
+  defenceCrush: 34
+  defenceMagic: 40
+  defenceRanged: 33
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

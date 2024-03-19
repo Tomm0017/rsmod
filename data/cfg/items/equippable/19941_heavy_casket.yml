@@ -1,0 +1,38 @@
+---
+id: 19941
+name: "Heavy casket"
+examine: "Full to the brim with loot... Where's that key gone?"
+tradeable: false
+weight: 15.0
+tradeable_on_ge: false
+cost: 1000
+lowalch: 400
+highalch: 600
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 0
+  attackSpeed: 6
+  attackStab: -4
+  attackSlash: -4
+  attackCrush: 11
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 9
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 4193
+    turnOnSpotAnim: 4194
+    walkForwardAnimId: 4194
+    walkBackwardsAnimId: 4194
+    walkLeftAnimId: 4194
+    walkRightAnimId: 4194
+    runAnimId: 4194
+  skillReqs: null

@@ -1,0 +1,31 @@
+---
+id: 27655
+name: "Webweaver bow"
+examine: "A bow of a follower of Armadyl, corrupted by the power of Venenatis."
+tradeable: false
+weight: 3.175
+tradeable_on_ge: false
+cost: 175000
+lowalch: 70000
+highalch: 105000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 3
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 85
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 65
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

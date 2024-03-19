@@ -1,0 +1,31 @@
+---
+id: 23593
+name: "Barrows gloves"
+examine: "A pair of very nice gloves."
+tradeable: false
+weight: 0.226
+tradeable_on_ge: false
+cost: 30
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 12
+  attackSlash: 12
+  attackCrush: 12
+  attackMagic: 6
+  attackRanged: 12
+  defenceStab: 12
+  defenceSlash: 12
+  defenceCrush: 12
+  defenceMagic: 6
+  defenceRanged: 12
+  meleeStrength: 12
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

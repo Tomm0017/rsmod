@@ -1,0 +1,33 @@
+---
+id: 3176
+name: "Dragon spear(kp)"
+examine: "A Karambwan poisoned dragon tipped spear."
+tradeable: false
+weight: 2.267
+tradeable_on_ge: false
+cost: 62400
+lowalch: 24960
+highalch: 37440
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 55
+  attackSlash: 55
+  attackCrush: 55
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 5
+  defenceSlash: 5
+  defenceCrush: 5
+  defenceMagic: 5
+  defenceRanged: 5
+  meleeStrength: 60
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 60

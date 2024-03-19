@@ -1,0 +1,35 @@
+---
+id: 10958
+name: "Frog-leather boots"
+examine: "Boots made out of frog hide."
+tradeable: true
+weight: 1.0
+tradeable_on_ge: true
+cost: 200
+lowalch: 80
+highalch: 120
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -8
+  attackRanged: 2
+  defenceStab: 1
+  defenceSlash: 1
+  defenceCrush: 1
+  defenceMagic: 0
+  defenceRanged: 1
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 25
+  - skill: "ranged"
+    level: 25

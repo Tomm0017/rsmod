@@ -1,0 +1,31 @@
+---
+id: 7456
+name: "Steel gloves"
+examine: "A pair of gloves."
+tradeable: false
+weight: 0.226
+tradeable_on_ge: false
+cost: 500
+lowalch: 200
+highalch: 300
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 4
+  attackSlash: 4
+  attackCrush: 4
+  attackMagic: 2
+  attackRanged: 4
+  defenceStab: 4
+  defenceSlash: 4
+  defenceCrush: 4
+  defenceMagic: 2
+  defenceRanged: 4
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

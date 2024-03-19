@@ -1,0 +1,40 @@
+---
+id: 7158
+name: "Dragon 2h sword"
+examine: "A two-handed Dragon Sword."
+tradeable: true
+weight: 3.628
+tradeable_on_ge: true
+cost: 220000
+lowalch: 88000
+highalch: 132000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 10
+  attackSpeed: 7
+  attackStab: -4
+  attackSlash: 92
+  attackCrush: 80
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: -1
+  meleeStrength: 93
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 2561
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 2562
+    walkBackwardsAnimId: 2562
+    walkLeftAnimId: 2562
+    walkRightAnimId: 2562
+    runAnimId: 2563
+  skillReqs:
+  - skill: "attack"
+    level: 60

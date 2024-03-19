@@ -1,0 +1,33 @@
+---
+id: 6601
+name: "White mace"
+examine: "A spiky mace."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 432
+lowalch: 172
+highalch: 259
+buy_limit: 125
+equipment:
+  prayer: 3
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 8
+  attackSlash: -2
+  attackCrush: 16
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 13
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 10

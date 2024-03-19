@@ -1,0 +1,33 @@
+---
+id: 10073
+name: "Spotted cape"
+examine: "A surprisingly aerodynamic cape."
+tradeable: false
+weight: -2.2
+tradeable_on_ge: false
+cost: 400
+lowalch: 160
+highalch: 240
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 1
+  defenceMagic: 0
+  defenceRanged: 2
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "hunter"
+    level: 40

@@ -1,0 +1,33 @@
+---
+id: 1285
+name: "Mithril sword"
+examine: "A razor sharp sword."
+tradeable: true
+weight: 1.587
+tradeable_on_ge: true
+cost: 845
+lowalch: 338
+highalch: 507
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 16
+  attackSlash: 11
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 2
+  defenceCrush: 1
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 17
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 20

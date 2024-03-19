@@ -1,0 +1,31 @@
+---
+id: 27253
+name: "Elidinis' ward (or)"
+examine: "A fortified ward once used by Elidinis herself."
+tradeable: false
+weight: 3.708
+tradeable_on_ge: false
+cost: 5850000
+lowalch: 2340000
+highalch: 3510000
+buy_limit: null
+equipment:
+  prayer: 4
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 25
+  attackRanged: 0
+  defenceStab: 53
+  defenceSlash: 55
+  defenceCrush: 73
+  defenceMagic: 2
+  defenceRanged: 52
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 5
+  renderAnimations: null
+  skillReqs: null

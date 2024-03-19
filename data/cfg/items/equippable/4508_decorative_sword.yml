@@ -1,0 +1,33 @@
+---
+id: 4508
+name: "Decorative sword"
+examine: "A very decorative sword."
+tradeable: false
+weight: 1.587
+tradeable_on_ge: false
+cost: 3200
+lowalch: 1280
+highalch: 1920
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 20
+  attackSlash: 29
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 3
+  defenceCrush: 2
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 31
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 5

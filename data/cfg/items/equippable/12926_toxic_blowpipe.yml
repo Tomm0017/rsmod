@@ -1,0 +1,40 @@
+---
+id: 12926
+name: "Toxic blowpipe"
+examine: "Fires darts while coating them with venom."
+tradeable: false
+weight: 0.5
+tradeable_on_ge: false
+cost: 120000
+lowalch: 48000
+highalch: 72000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 19
+  attackSpeed: 3
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 30
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 20
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 813
+    turnOnSpotAnim: 1209
+    walkForwardAnimId: 1205
+    walkBackwardsAnimId: 1206
+    walkLeftAnimId: 1207
+    walkRightAnimId: 1208
+    runAnimId: 1210
+  skillReqs:
+  - skill: "ranged"
+    level: 75

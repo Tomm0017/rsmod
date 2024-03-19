@@ -1,0 +1,40 @@
+---
+id: 1359
+name: "Rune axe"
+examine: "A powerful axe."
+tradeable: true
+weight: 1.36
+tradeable_on_ge: true
+cost: 12800
+lowalch: 5120
+highalch: 7680
+buy_limit: 40
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 1
+  attackSpeed: 5
+  attackStab: -2
+  attackSlash: 26
+  attackCrush: 24
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 29
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 40

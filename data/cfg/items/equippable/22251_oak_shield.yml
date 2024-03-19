@@ -1,0 +1,33 @@
+---
+id: 22251
+name: "Oak shield"
+examine: "A solid oaken shield."
+tradeable: true
+weight: 3.175
+tradeable_on_ge: true
+cost: 80
+lowalch: 32
+highalch: 48
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 5
+  defenceSlash: 6
+  defenceCrush: 4
+  defenceMagic: 1
+  defenceRanged: 5
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 10

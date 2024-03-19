@@ -1,8 +1,9 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
-import gg.rsmod.game.fs.def.NpcDef
-import gg.rsmod.game.fs.def.VarbitDef
+import dev.openrune.cache.CacheManager.npc
+import dev.openrune.cache.CacheManager.varbit
+import dev.openrune.cache.filestore.definition.data.NPCDefinition
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
@@ -91,7 +92,7 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     /**
      * Gets the [NpcDef] corresponding to our [id].
      */
-    val def: NpcDef = world.definitions.get( NpcDef::class.java, id)
+    val def: NPCDefinition = npc(id)
 
     var pathsIndex = 0
 
@@ -115,7 +116,7 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
 
     override fun isRunning(): Boolean = false
 
-    override fun getSize(): Int = world.definitions.get(NpcDef::class.java, id).size
+    override fun getSize(): Int = npc(id).size
 
     override fun getCurrentHp(): Int = hitpoints
 
@@ -150,14 +151,14 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
      * [NpcDef.transforms] and [NpcDef.transformVarp]/[NpcDef.transformVarbit].
      */
     fun getTransform(player: Player): Int {
-        if (def.transformVarbit != -1) {
-            val varbitDef = world.definitions.get(VarbitDef::class.java, def.transformVarbit)
+        if (def.varbit != -1) {
+            val varbitDef = varbit(def.varbit)
             val state = player.varps.getBit(varbitDef.varp, varbitDef.startBit, varbitDef.endBit)
             return def.transforms!![state]
         }
 
-        if (def.transformVarp != -1) {
-            val state = player.varps.getState(def.transformVarp)
+        if (def.varp != -1) {
+            val state = player.varps.getState(def.varp)
             return def.transforms!![state]
         }
 

@@ -1,0 +1,33 @@
+---
+id: 10280
+name: "Willow comp bow"
+examine: "A powerful bow made from willow wood."
+tradeable: true
+weight: 1.8
+tradeable_on_ge: true
+cost: 300
+lowalch: 120
+highalch: 180
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 22
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 20

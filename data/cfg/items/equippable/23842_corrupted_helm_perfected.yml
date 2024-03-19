@@ -1,0 +1,31 @@
+---
+id: 23842
+name: "Corrupted helm (perfected)"
+examine: "The shiniest helmet that provides a lot of protection from corrupted creatures."
+tradeable: false
+weight: 2.721
+tradeable_on_ge: false
+cost: 1
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 3
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 10
+  attackSlash: 10
+  attackCrush: 3
+  attackMagic: 10
+  attackRanged: 10
+  defenceStab: 68
+  defenceSlash: 68
+  defenceCrush: 68
+  defenceMagic: 68
+  defenceRanged: 68
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

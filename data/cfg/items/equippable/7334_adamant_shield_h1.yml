@@ -1,0 +1,33 @@
+---
+id: 7334
+name: "Adamant shield (h1)"
+examine: "A shield with a heraldic design"
+tradeable: true
+weight: 5.896
+tradeable_on_ge: true
+cost: 5440
+lowalch: 2176
+highalch: 3264
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -8
+  attackRanged: -3
+  defenceStab: 27
+  defenceSlash: 31
+  defenceCrush: 29
+  defenceMagic: -1
+  defenceRanged: 29
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 30

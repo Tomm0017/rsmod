@@ -1,0 +1,31 @@
+---
+id: 26732
+name: "Saika's hood (l)"
+examine: "Saika the puppet master's hood."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 11500
+lowalch: 4600
+highalch: 6900
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -20
+  attackSlash: -20
+  attackCrush: -20
+  attackMagic: 10
+  attackRanged: -2
+  defenceStab: 10
+  defenceSlash: 10
+  defenceCrush: 10
+  defenceMagic: 0
+  defenceRanged: -10
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

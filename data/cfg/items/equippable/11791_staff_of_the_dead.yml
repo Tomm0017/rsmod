@@ -1,0 +1,42 @@
+---
+id: 11791
+name: "Staff of the dead"
+examine: "A ghastly weapon with evil origins."
+tradeable: true
+weight: 1.5
+tradeable_on_ge: true
+cost: 1000005
+lowalch: 400002
+highalch: 600003
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 21
+  attackSpeed: 4
+  attackStab: 55
+  attackSlash: 70
+  attackCrush: 0
+  attackMagic: 17
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 3
+  defenceCrush: 3
+  defenceMagic: 17
+  defenceRanged: 0
+  meleeStrength: 72
+  rangedStrength: 0
+  magicDamage: 15
+  renderAnimations:
+    standAnimId: 813
+    turnOnSpotAnim: 1209
+    walkForwardAnimId: 1205
+    walkBackwardsAnimId: 1206
+    walkLeftAnimId: 1207
+    walkRightAnimId: 1208
+    runAnimId: 1210
+  skillReqs:
+  - skill: "attack"
+    level: 75
+  - skill: "magic"
+    level: 75

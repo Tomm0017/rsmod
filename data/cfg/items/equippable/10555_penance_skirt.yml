@@ -1,0 +1,35 @@
+---
+id: 10555
+name: "Penance skirt"
+examine: "A skirt made from the skin of a Penance Ranger."
+tradeable: false
+weight: 3.0
+tradeable_on_ge: false
+cost: 65005
+lowalch: 26002
+highalch: 39003
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -10
+  attackRanged: 15
+  defenceStab: 26
+  defenceSlash: 21
+  defenceCrush: 28
+  defenceMagic: 19
+  defenceRanged: 26
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 60
+  - skill: "defence"
+    level: 40

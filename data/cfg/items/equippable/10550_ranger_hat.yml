@@ -1,0 +1,33 @@
+---
+id: 10550
+name: "Ranger hat"
+examine: "A Penance Ranger hat."
+tradeable: false
+weight: 2.0
+tradeable_on_ge: false
+cost: 65002
+lowalch: 26000
+highalch: 39001
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hat"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -5
+  attackSlash: -5
+  attackCrush: -5
+  attackMagic: -5
+  attackRanged: 6
+  defenceStab: 7
+  defenceSlash: 10
+  defenceCrush: 11
+  defenceMagic: 5
+  defenceRanged: 8
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 45

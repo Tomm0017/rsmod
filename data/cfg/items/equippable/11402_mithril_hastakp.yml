@@ -1,0 +1,33 @@
+---
+id: 11402
+name: "Mithril hasta(kp)"
+examine: "A karambwan poison-tipped, one-handed mithril hasta."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 845
+lowalch: 338
+highalch: 507
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 17
+  attackSlash: 17
+  attackCrush: 17
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: -5
+  defenceSlash: -5
+  defenceCrush: -4
+  defenceMagic: 0
+  defenceRanged: -5
+  meleeStrength: 18
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 20

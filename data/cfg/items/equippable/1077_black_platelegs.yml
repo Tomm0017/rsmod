@@ -1,0 +1,33 @@
+---
+id: 1077
+name: "Black platelegs"
+examine: "Big, black and heavy looking."
+tradeable: true
+weight: 9.071
+tradeable_on_ge: true
+cost: 1920
+lowalch: 768
+highalch: 1152
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -21
+  attackRanged: -11
+  defenceStab: 21
+  defenceSlash: 20
+  defenceCrush: 19
+  defenceMagic: -4
+  defenceRanged: 20
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 10

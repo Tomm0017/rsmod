@@ -1,0 +1,35 @@
+---
+id: 10332
+name: "3rd age range legs"
+examine: "Fabulously ancient range protection crafted from white dragonhide."
+tradeable: true
+weight: 3.0
+tradeable_on_ge: true
+cost: 50600
+lowalch: 20240
+highalch: 30360
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -10
+  attackRanged: 17
+  defenceStab: 31
+  defenceSlash: 25
+  defenceCrush: 33
+  defenceMagic: 30
+  defenceRanged: 31
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 65
+  - skill: "defence"
+    level: 45

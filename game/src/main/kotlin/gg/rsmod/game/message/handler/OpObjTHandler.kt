@@ -47,7 +47,7 @@ class OpObjTHandler : MessageHandler<OpObjTMessage> {
     val obj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.id == message.obj } ?: return
 
     if (message.movementType == 1 && world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-        val def = obj.getDef(world.definitions)
+        val def = obj.getDef()
         client.moveTo(world.findRandomTileAround(obj.tile, radius = 1, centreWidth = def.width, centreLength = def.length) ?: obj.tile)
     }
 

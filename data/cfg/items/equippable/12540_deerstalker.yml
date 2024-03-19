@@ -1,0 +1,31 @@
+---
+id: 12540
+name: "Deerstalker"
+examine: "Elementary!"
+tradeable: true
+weight: 0.5
+tradeable_on_ge: true
+cost: 2300
+lowalch: 920
+highalch: 1380
+buy_limit: 4
+equipment:
+  prayer: 0
+  equipSlot: "hat"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

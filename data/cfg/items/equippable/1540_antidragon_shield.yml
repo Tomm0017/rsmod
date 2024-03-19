@@ -1,0 +1,38 @@
+---
+id: 1540
+name: "Anti-dragon shield"
+examine: "This provides partial protection from dragonbreath attacks."
+tradeable: true
+weight: 5.443
+tradeable_on_ge: true
+cost: 20
+lowalch: 8
+highalch: 12
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: 0
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 7
+  defenceSlash: 9
+  defenceCrush: 8
+  defenceMagic: 2
+  defenceRanged: 8
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs: null

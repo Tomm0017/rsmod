@@ -3,10 +3,11 @@ package gg.rsmod.net.codec.game
 import gg.rsmod.net.packet.GamePacket
 import gg.rsmod.net.packet.PacketType
 import gg.rsmod.util.io.IsaacRandom
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToByteEncoder
+
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.text.DecimalFormat
 
 /**
@@ -16,22 +17,10 @@ class GamePacketEncoder(private val random: IsaacRandom?) : MessageToByteEncoder
 
     override fun encode(ctx: ChannelHandlerContext, msg: GamePacket, out: ByteBuf) {
         if (msg.type == PacketType.VARIABLE_BYTE && msg.length >= 256) {
-            logger.error {
-                "${"Message length {} too long for 'variable-byte' packet on channel {}."} ${
-                    DecimalFormat().format(
-                        msg.length
-                    )
-                } ${ctx.channel()}"
-            }
+            logger.error("Message length {} too long for 'variable-byte' packet on channel {}.", DecimalFormat().format(msg.length), ctx.channel())
             return
         } else if (msg.type == PacketType.VARIABLE_SHORT && msg.length >= 65536) {
-            logger.error {
-                "${"Message length {} too long for 'variable-short' packet on channel {}."} ${
-                    DecimalFormat().format(
-                        msg.length
-                    )
-                } ${ctx.channel()}"
-            }
+            logger.error("Message length {} too long for 'variable-short' packet on channel {}.", DecimalFormat().format(msg.length), ctx.channel())
             return
         }
         out.writeByte((msg.opcode + (random?.nextInt() ?: 0)) and 0xFF)
@@ -40,7 +29,18 @@ class GamePacketEncoder(private val random: IsaacRandom?) : MessageToByteEncoder
             PacketType.VARIABLE_SHORT -> out.writeShort(msg.length)
             else -> {}
         }
-        out.writeBytes(msg.payload)
+
+        /**
+         * The [OpenUrlMessage] is a unique packet which
+         * requires each byte be masked with isaac randoms
+         */
+        if(msg.opcode == 63){
+            for (i in 0 until msg.length){
+                out.writeByte((msg.payload.getByte(i) + (random?.nextInt() ?: 0)) and 0xFF)
+            }
+        } else {
+            out.writeBytes(msg.payload)
+        }
         msg.payload.release()
     }
 

@@ -1,0 +1,31 @@
+---
+id: 23595
+name: "Berserker ring"
+examine: "A ring reputed to bring out a berserk fury in its wearer."
+tradeable: false
+weight: 0.004
+tradeable_on_ge: false
+cost: 30
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "ring"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 4
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

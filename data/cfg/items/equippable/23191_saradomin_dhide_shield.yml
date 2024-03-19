@@ -1,0 +1,35 @@
+---
+id: 23191
+name: "Saradomin d'hide shield"
+examine: "Saradomin blessed wooden shield covered in dragon leather."
+tradeable: true
+weight: 8.0
+tradeable_on_ge: true
+cost: 28334
+lowalch: 11333
+highalch: 17000
+buy_limit: 8
+equipment:
+  prayer: 1
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -15
+  attackSlash: -15
+  attackCrush: -11
+  attackMagic: -10
+  attackRanged: 7
+  defenceStab: 21
+  defenceSlash: 18
+  defenceCrush: 16
+  defenceMagic: 15
+  defenceRanged: 14
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40
+  - skill: "ranged"
+    level: 70

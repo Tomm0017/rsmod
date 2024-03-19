@@ -1,0 +1,35 @@
+---
+id: 13237
+name: "Pegasian boots"
+examine: "A pair of upgraded ranger boots."
+tradeable: true
+weight: 1.814
+tradeable_on_ge: true
+cost: 75000
+lowalch: 30000
+highalch: 45000
+buy_limit: 15
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -12
+  attackRanged: 12
+  defenceStab: 5
+  defenceSlash: 5
+  defenceCrush: 5
+  defenceMagic: 5
+  defenceRanged: 5
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 75
+  - skill: "defence"
+    level: 75

@@ -1,0 +1,31 @@
+---
+id: 24539
+name: "'24-carat' sword"
+examine: "A carrot sword painted gold!"
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 1
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 18
+  attackSpeed: 4
+  attackStab: -100
+  attackSlash: -100
+  attackCrush: -50
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: -10
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

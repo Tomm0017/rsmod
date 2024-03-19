@@ -1,0 +1,33 @@
+---
+id: 3755
+name: "Farseer helm"
+examine: "This helmet is worn by farseers."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: true
+cost: 60000
+lowalch: 24000
+highalch: 36000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -5
+  attackSlash: -5
+  attackCrush: -5
+  attackMagic: 6
+  attackRanged: -5
+  defenceStab: 8
+  defenceSlash: 10
+  defenceCrush: 12
+  defenceMagic: 6
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 45

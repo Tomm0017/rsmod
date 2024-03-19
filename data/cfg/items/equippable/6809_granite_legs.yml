@@ -1,0 +1,35 @@
+---
+id: 6809
+name: "Granite legs"
+examine: "These look pretty heavy."
+tradeable: true
+weight: 15.875
+tradeable_on_ge: true
+cost: 66000
+lowalch: 26400
+highalch: 39600
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -31
+  attackRanged: -18
+  defenceStab: 43
+  defenceSlash: 45
+  defenceCrush: 41
+  defenceMagic: -4
+  defenceRanged: 68
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 50
+  - skill: "strength"
+    level: 50

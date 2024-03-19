@@ -1,0 +1,31 @@
+---
+id: 23850
+name: "Corrupted halberd (attuned)"
+examine: "A wooden stick with some more corrupted on the end."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 1
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "2h"
+  weaponType: 12
+  attackSpeed: 4
+  attackStab: 114
+  attackSlash: 114
+  attackCrush: 12
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 88
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

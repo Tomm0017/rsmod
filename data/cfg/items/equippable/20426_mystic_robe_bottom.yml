@@ -1,0 +1,35 @@
+---
+id: 20426
+name: "Mystic robe bottom"
+examine: "The lower half of a magical robe."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 10
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 15
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 15
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "magic"
+    level: 40
+  - skill: "defence"
+    level: 20

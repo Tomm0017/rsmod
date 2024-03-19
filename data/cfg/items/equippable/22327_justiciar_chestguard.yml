@@ -1,0 +1,34 @@
+---
+id: 22327
+name: "Justiciar chestguard"
+examine: "A Justiciar's chestguard. They once roamed the land casting judgements on\
+  \ wrongdoers, their decisions were never questioned."
+tradeable: true
+weight: 9.979
+tradeable_on_ge: true
+cost: 6000000
+lowalch: 2400000
+highalch: 3600000
+buy_limit: 8
+equipment:
+  prayer: 4
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -40
+  attackRanged: -20
+  defenceStab: 132
+  defenceSlash: 130
+  defenceCrush: 117
+  defenceMagic: -16
+  defenceRanged: 142
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 75

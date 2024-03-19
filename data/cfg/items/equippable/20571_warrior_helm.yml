@@ -1,0 +1,33 @@
+---
+id: 20571
+name: "Warrior helm"
+examine: "This helmet is worn by warriors."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: false
+cost: 30
+lowalch: 12
+highalch: 18
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 5
+  attackCrush: 0
+  attackMagic: -5
+  attackRanged: -5
+  defenceStab: 31
+  defenceSlash: 33
+  defenceCrush: 29
+  defenceMagic: 0
+  defenceRanged: 30
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 45

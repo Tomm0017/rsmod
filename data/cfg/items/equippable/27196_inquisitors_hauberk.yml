@@ -1,0 +1,31 @@
+---
+id: 27196
+name: "Inquisitor's hauberk"
+examine: "The hauberk of the turncloak justiciar."
+tradeable: true
+weight: 9.979
+tradeable_on_ge: false
+cost: 20
+lowalch: 8
+highalch: 12
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -3
+  attackSlash: -3
+  attackCrush: 12
+  attackMagic: -11
+  attackRanged: -10
+  defenceStab: 67
+  defenceSlash: 55
+  defenceCrush: 71
+  defenceMagic: 0
+  defenceRanged: 35
+  meleeStrength: 4
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

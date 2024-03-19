@@ -1,0 +1,40 @@
+---
+id: 6528
+name: "Tzhaar-ket-om"
+examine: "A maul of obsidian."
+tradeable: true
+weight: 3.628
+tradeable_on_ge: true
+cost: 50001
+lowalch: 20000
+highalch: 30000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 2
+  attackSpeed: 7
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 80
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 85
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 2065
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 2064
+    walkBackwardsAnimId: 2064
+    walkLeftAnimId: 2064
+    walkRightAnimId: 2064
+    runAnimId: 824
+  skillReqs:
+  - skill: "strength"
+    level: 60

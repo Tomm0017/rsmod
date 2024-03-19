@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "types": [
+      "T2",
+      "T1"
+    ],
+    "address": "localhost",
+    "activity": "Alter",
+    "location": "AUSTRALIA",
+    "players": 0
+  },
+  {
+    "id": 2,
+    "types": [
+      "QUEST_SPEEDRUNNING"
+    ],
+    "address": "localhost",
+    "activity": "Alter #2",
+    "location": "AUSTRALIA",
+    "players": 0
+  }
+]

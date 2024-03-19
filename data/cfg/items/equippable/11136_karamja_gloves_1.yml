@@ -1,0 +1,31 @@
+---
+id: 11136
+name: "Karamja gloves 1"
+examine: "A pair of gloves from Karamja."
+tradeable: false
+weight: 0.226
+tradeable_on_ge: false
+cost: 0
+lowalch: 0
+highalch: 0
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 1
+  attackSlash: 1
+  attackCrush: 1
+  attackMagic: 1
+  attackRanged: 1
+  defenceStab: 1
+  defenceSlash: 1
+  defenceCrush: 1
+  defenceMagic: 1
+  defenceRanged: 1
+  meleeStrength: 1
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

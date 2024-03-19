@@ -1,0 +1,33 @@
+---
+id: 2491
+name: "Black d'hide vambraces"
+examine: "Vambraces made from 100% real dragonhide."
+tradeable: true
+weight: 0.283
+tradeable_on_ge: true
+cost: 4320
+lowalch: 1728
+highalch: 2592
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -10
+  attackRanged: 11
+  defenceStab: 4
+  defenceSlash: 5
+  defenceCrush: 5
+  defenceMagic: 8
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 70

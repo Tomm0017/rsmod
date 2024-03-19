@@ -1,0 +1,32 @@
+---
+id: 20223
+name: "Unholy blessing"
+examine: "The Dark Lord will rise again with his servant's aid, greater and more terrible\
+  \ than ever he was."
+tradeable: true
+weight: 0.51
+tradeable_on_ge: true
+cost: 80
+lowalch: 32
+highalch: 48
+buy_limit: 5
+equipment:
+  prayer: 1
+  equipSlot: "ammo"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

@@ -1,0 +1,31 @@
+---
+id: 23357
+name: "Rain bow"
+examine: "Short but effective and very colourful."
+tradeable: true
+weight: 1.36
+tradeable_on_ge: true
+cost: 500
+lowalch: 200
+highalch: 300
+buy_limit: 18000
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 3
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 8
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

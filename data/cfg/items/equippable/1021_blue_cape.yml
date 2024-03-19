@@ -1,0 +1,31 @@
+---
+id: 1021
+name: "Blue cape"
+examine: "A thick blue cape."
+tradeable: true
+weight: 0.453
+tradeable_on_ge: true
+cost: 32
+lowalch: 12
+highalch: 19
+buy_limit: 150
+equipment:
+  prayer: 0
+  equipSlot: "cape"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 1
+  defenceMagic: 0
+  defenceRanged: 2
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

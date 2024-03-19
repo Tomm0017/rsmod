@@ -1,0 +1,31 @@
+---
+id: 26712
+name: "Heavy ballista (or)"
+examine: "A powerful and good looking weapon forged from the wreckage of an airship."
+tradeable: false
+weight: 6.0
+tradeable_on_ge: false
+cost: 950000
+lowalch: 380000
+highalch: 570000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 5
+  attackSpeed: 7
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 125
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 15
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

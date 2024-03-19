@@ -1,0 +1,33 @@
+---
+id: 19710
+name: "Ring of suffering (i)"
+examine: "An extremely deep sense of suffering burns within this powerful ring."
+tradeable: false
+weight: 0.006
+tradeable_on_ge: false
+cost: 201100
+lowalch: 80440
+highalch: 120660
+buy_limit: null
+equipment:
+  prayer: 4
+  equipSlot: "ring"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 20
+  defenceSlash: 20
+  defenceCrush: 20
+  defenceMagic: 20
+  defenceRanged: 20
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "hitpoints"
+    level: 75

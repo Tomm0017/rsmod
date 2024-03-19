@@ -1,0 +1,33 @@
+---
+id: 22328
+name: "Justiciar legguards"
+examine: "A Justiciar's platelegs. Their once bright colours have since faded."
+tradeable: true
+weight: 9.071
+tradeable_on_ge: true
+cost: 4500000
+lowalch: 1800000
+highalch: 2700000
+buy_limit: 8
+equipment:
+  prayer: 4
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -31
+  attackRanged: -17
+  defenceStab: 95
+  defenceSlash: 92
+  defenceCrush: 93
+  defenceMagic: -14
+  defenceRanged: 102
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 75

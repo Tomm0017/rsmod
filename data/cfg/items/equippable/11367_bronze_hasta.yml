@@ -1,0 +1,33 @@
+---
+id: 11367
+name: "Bronze hasta"
+examine: "A bronze-tipped, one-handed hasta."
+tradeable: true
+weight: 2.267
+tradeable_on_ge: true
+cost: 26
+lowalch: 10
+highalch: 15
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 5
+  attackSlash: 5
+  attackCrush: 5
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: -1
+  defenceSlash: -1
+  defenceCrush: -1
+  defenceMagic: 0
+  defenceRanged: -1
+  meleeStrength: 6
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 1

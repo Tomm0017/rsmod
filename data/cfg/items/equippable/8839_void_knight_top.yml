@@ -1,0 +1,45 @@
+---
+id: 8839
+name: "Void knight top"
+examine: "Torso armour from the order of the Void Knights."
+tradeable: false
+weight: 6.803
+tradeable_on_ge: false
+cost: 48000
+lowalch: 19200
+highalch: 28800
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 45
+  defenceSlash: 45
+  defenceCrush: 45
+  defenceMagic: 45
+  defenceRanged: 45
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 42
+  - skill: "strength"
+    level: 42
+  - skill: "hitpoints"
+    level: 42
+  - skill: "ranged"
+    level: 42
+  - skill: "magic"
+    level: 42
+  - skill: "defence"
+    level: 42
+  - skill: "prayer"
+    level: 22

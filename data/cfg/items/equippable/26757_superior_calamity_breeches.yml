@@ -1,0 +1,31 @@
+---
+id: 26757
+name: "Superior calamity breeches"
+examine: "Superior breeches used by the Calamity Coven."
+tradeable: false
+weight: 0.907
+tradeable_on_ge: false
+cost: 100000
+lowalch: 40000
+highalch: 60000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 3
+  attackSlash: 3
+  attackCrush: 3
+  attackMagic: 8
+  attackRanged: 11
+  defenceStab: 32
+  defenceSlash: 34
+  defenceCrush: 36
+  defenceMagic: 20
+  defenceRanged: 32
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

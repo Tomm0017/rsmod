@@ -1,0 +1,31 @@
+---
+id: 23897
+name: "Crystal halberd (perfected)"
+examine: "A wooden stick with a lot of crystal on the end."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 1
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 3
+  equipSlot: "2h"
+  weaponType: 12
+  attackSpeed: 4
+  attackStab: 166
+  attackSlash: 166
+  attackCrush: 28
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 138
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

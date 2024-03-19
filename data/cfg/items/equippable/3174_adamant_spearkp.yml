@@ -1,0 +1,33 @@
+---
+id: 3174
+name: "Adamant spear(kp)"
+examine: "A Karambwan poisoned adamantite tipped spear."
+tradeable: false
+weight: 2.721
+tradeable_on_ge: false
+cost: 2080
+lowalch: 832
+highalch: 1248
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: -1
+  attackSpeed: 4
+  attackStab: 24
+  attackSlash: 24
+  attackCrush: 24
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 1
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 28
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 30

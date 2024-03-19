@@ -1,0 +1,40 @@
+---
+id: 13576
+name: "Dragon warhammer"
+examine: "Spikey, close combat weapon."
+tradeable: true
+weight: 2.0
+tradeable_on_ge: true
+cost: 120000
+lowalch: 48000
+highalch: 72000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 2
+  attackSpeed: 6
+  attackStab: -4
+  attackSlash: -4
+  attackCrush: 95
+  attackMagic: -4
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 85
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs:
+  - skill: "attack"
+    level: 60

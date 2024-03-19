@@ -1,7 +1,7 @@
 package gg.rsmod.game.model.collision
 
-import gg.rsmod.game.fs.DefinitionSet
-import gg.rsmod.game.fs.def.ObjectDef
+import dev.openrune.cache.CacheManager.objects
+import dev.openrune.cache.filestore.definition.data.ObjectDefinition
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.GameObject
@@ -53,8 +53,8 @@ class CollisionUpdate private constructor(val type: Type, val flags: Object2Obje
             }
         }
 
-        fun putObject(definitions: DefinitionSet, obj: GameObject) {
-            val def = definitions.get(ObjectDef::class.java, obj.id)
+        fun putObject(obj: GameObject) {
+            val def = objects(obj.id)
             val type = obj.type
             val tile = obj.tile
 
@@ -67,7 +67,7 @@ class CollisionUpdate private constructor(val type: Type, val flags: Object2Obje
             val height = tile.height
             var width = def.width
             var length = def.length
-            val impenetrable = def.blockProjectile
+            val impenetrable = def.impenetrable
             val orientation = obj.rot
 
             if (orientation == 1 || orientation == 3) {
@@ -76,7 +76,7 @@ class CollisionUpdate private constructor(val type: Type, val flags: Object2Obje
             }
 
             if (type == ObjectType.FLOOR_DECORATION.value) {
-                if (def.interactType && def.solid) {
+                if (def.interactive == 1 && def.solid == 1) {
                     putTile(Tile(x, z, height), impenetrable, *Direction.NESW)
                 }
             } else if (type >= ObjectType.DIAGONAL_WALL.value && type < ObjectType.FLOOR_DECORATION.value) {
@@ -94,11 +94,11 @@ class CollisionUpdate private constructor(val type: Type, val flags: Object2Obje
             }
         }
 
-        private fun unwalkable(def: ObjectDef, type: Int): Boolean {
-            val isSolidFloorDecoration = type == ObjectType.FLOOR_DECORATION.value && def.interactType
-            val isRoof = type > ObjectType.DIAGONAL_INTERACTABLE.value && type < ObjectType.FLOOR_DECORATION.value && def.solid
-            val isWall = (type >= ObjectType.LENGTHWISE_WALL.value && type <= ObjectType.RECTANGULAR_CORNER.value || type == ObjectType.DIAGONAL_WALL.value) && def.solid
-            val isSolidInteractable = (type == ObjectType.DIAGONAL_INTERACTABLE.value || type == ObjectType.INTERACTABLE.value) && def.solid
+        private fun unwalkable(def: ObjectDefinition, type: Int): Boolean {
+            val isSolidFloorDecoration = type == ObjectType.FLOOR_DECORATION.value && def.interactive == 1
+            val isRoof = type > ObjectType.DIAGONAL_INTERACTABLE.value && type < ObjectType.FLOOR_DECORATION.value && def.solid == 1
+            val isWall = (type >= ObjectType.LENGTHWISE_WALL.value && type <= ObjectType.RECTANGULAR_CORNER.value || type == ObjectType.DIAGONAL_WALL.value) && def.solid == 1
+            val isSolidInteractable = (type == ObjectType.DIAGONAL_INTERACTABLE.value || type == ObjectType.INTERACTABLE.value) && def.solid == 1
 
             return isWall || isRoof || isSolidInteractable || isSolidFloorDecoration
         }

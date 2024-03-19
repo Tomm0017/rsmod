@@ -1,0 +1,33 @@
+---
+id: 20038
+name: "Samurai shirt"
+examine: "A type of shirt worn by the Samurai."
+tradeable: true
+weight: 2.0
+tradeable_on_ge: true
+cost: 7000
+lowalch: 2800
+highalch: 4200
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 69
+  defenceSlash: 67
+  defenceCrush: 59
+  defenceMagic: 10
+  defenceRanged: 67
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 35

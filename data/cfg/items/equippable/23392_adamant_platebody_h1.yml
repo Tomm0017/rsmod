@@ -1,0 +1,33 @@
+---
+id: 23392
+name: "Adamant platebody (h1)"
+examine: "Adamant platebody with a heraldic design."
+tradeable: true
+weight: 11.339
+tradeable_on_ge: true
+cost: 16640
+lowalch: 6656
+highalch: 9984
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -30
+  attackRanged: -15
+  defenceStab: 65
+  defenceSlash: 63
+  defenceCrush: 55
+  defenceMagic: -6
+  defenceRanged: 63
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 30

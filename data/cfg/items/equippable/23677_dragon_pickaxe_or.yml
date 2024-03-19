@@ -1,0 +1,35 @@
+---
+id: 23677
+name: "Dragon pickaxe (or)"
+examine: "A dragon pickaxe infused with a fragment of Zalcano."
+tradeable: false
+weight: 2.4
+tradeable_on_ge: false
+cost: 97960
+lowalch: 39184
+highalch: 58776
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 11
+  attackSpeed: 5
+  attackStab: 38
+  attackSlash: -2
+  attackCrush: 32
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 1
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 42
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "attack"
+    level: 60
+  - skill: "mining"
+    level: 61

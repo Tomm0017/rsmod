@@ -1,0 +1,35 @@
+---
+id: 6131
+name: "Spined helm"
+examine: "A helm fit for any Fremennik ranger."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: true
+cost: 60000
+lowalch: 24000
+highalch: 36000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -6
+  attackSlash: -6
+  attackCrush: -6
+  attackMagic: -6
+  attackRanged: 6
+  defenceStab: 6
+  defenceSlash: 6
+  defenceCrush: 6
+  defenceMagic: 6
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 40
+  - skill: "ranged"
+    level: 40

@@ -1,0 +1,31 @@
+---
+id: 23887
+name: "Crystal helm (attuned)"
+examine: "A shinier helmet that provides some protection from crystalline creatures."
+tradeable: false
+weight: 2.721
+tradeable_on_ge: false
+cost: 1
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 6
+  attackSlash: 6
+  attackCrush: 2
+  attackMagic: 6
+  attackRanged: 6
+  defenceStab: 48
+  defenceSlash: 48
+  defenceCrush: 48
+  defenceMagic: 48
+  defenceRanged: 48
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

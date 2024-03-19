@@ -1,0 +1,33 @@
+---
+id: 10348
+name: "3rd age platebody"
+examine: "Fabulously ancient armour beaten from magical silver."
+tradeable: true
+weight: 9.979
+tradeable_on_ge: true
+cost: 200000
+lowalch: 80000
+highalch: 120000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -20
+  attackRanged: 0
+  defenceStab: 96
+  defenceSlash: 108
+  defenceCrush: 113
+  defenceMagic: -4
+  defenceRanged: 97
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 65

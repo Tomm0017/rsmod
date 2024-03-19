@@ -36,7 +36,7 @@ class GamePacketDecoder(private val random: IsaacRandom?, private val packetMeta
             opcode = buf.readUnsignedByte().toInt() - (random?.nextInt() ?: 0) and 0xFF
             val packetType = packetMetadata.getType(opcode)
             if (packetType == null) {
-                logger.warn { "${"Channel {} sent message with no valid metadata: {}."} ${ctx.channel()} $opcode" }
+                logger.warn("Channel {} sent message with no valid metadata: {}.", ctx.channel(), opcode)
                 buf.skipBytes(buf.readableBytes())
                 return
             }

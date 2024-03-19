@@ -1,0 +1,35 @@
+---
+id: 4864
+name: "Ahrim's staff 50"
+examine: "Ahrim the Blighted's quarterstaff."
+tradeable: false
+weight: 2.267
+tradeable_on_ge: false
+cost: 85000
+lowalch: 34000
+highalch: 51000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 6
+  attackStab: 12
+  attackSlash: -1
+  attackCrush: 65
+  attackMagic: 15
+  attackRanged: 0
+  defenceStab: 3
+  defenceSlash: 5
+  defenceCrush: 2
+  defenceMagic: 15
+  defenceRanged: 0
+  meleeStrength: 68
+  rangedStrength: 0
+  magicDamage: 5
+  renderAnimations: null
+  skillReqs:
+  - skill: "magic"
+    level: 70
+  - skill: "attack"
+    level: 70

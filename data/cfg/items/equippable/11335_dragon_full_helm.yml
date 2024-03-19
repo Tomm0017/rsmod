@@ -1,0 +1,33 @@
+---
+id: 11335
+name: "Dragon full helm"
+examine: "Protects your head and looks impressive too."
+tradeable: true
+weight: 2.0
+tradeable_on_ge: true
+cost: 150000
+lowalch: 60000
+highalch: 90000
+buy_limit: 8
+equipment:
+  prayer: 0
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: -3
+  defenceStab: 45
+  defenceSlash: 48
+  defenceCrush: 41
+  defenceMagic: -1
+  defenceRanged: 46
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 60

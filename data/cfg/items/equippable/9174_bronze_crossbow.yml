@@ -1,0 +1,40 @@
+---
+id: 9174
+name: "Bronze crossbow"
+examine: "A bronze crossbow."
+tradeable: true
+weight: 4.0
+tradeable_on_ge: true
+cost: 73
+lowalch: 29
+highalch: 43
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 5
+  attackSpeed: 6
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 18
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 4591
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 4226
+    walkBackwardsAnimId: 4227
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 4228
+  skillReqs:
+  - skill: "ranged"
+    level: 1

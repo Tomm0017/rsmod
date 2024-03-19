@@ -1,0 +1,35 @@
+---
+id: 6330
+name: "Snakeskin vambraces"
+examine: "Made from 100% real snake."
+tradeable: true
+weight: 0.283
+tradeable_on_ge: true
+cost: 434
+lowalch: 173
+highalch: 260
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -5
+  attackRanged: 6
+  defenceStab: 2
+  defenceSlash: 2
+  defenceCrush: 2
+  defenceMagic: 1
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 30
+  - skill: "defence"
+    level: 30

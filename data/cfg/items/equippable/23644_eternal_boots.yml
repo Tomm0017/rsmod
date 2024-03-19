@@ -1,0 +1,35 @@
+---
+id: 23644
+name: "Eternal boots"
+examine: "A pair of upgraded infinity boots."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 30
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 8
+  attackRanged: 0
+  defenceStab: 5
+  defenceSlash: 5
+  defenceCrush: 5
+  defenceMagic: 8
+  defenceRanged: 5
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "magic"
+    level: 75
+  - skill: "defence"
+    level: 75

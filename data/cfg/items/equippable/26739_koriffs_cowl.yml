@@ -1,0 +1,31 @@
+---
+id: 26739
+name: "Koriff's cowl"
+examine: "Koriff the Crowd Pleaser's cowl."
+tradeable: false
+weight: 0.453
+tradeable_on_ge: false
+cost: 16500
+lowalch: 6600
+highalch: 9900
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -40
+  attackSlash: -40
+  attackCrush: -40
+  attackMagic: -40
+  attackRanged: 14
+  defenceStab: -15
+  defenceSlash: -15
+  defenceCrush: -15
+  defenceMagic: 15
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

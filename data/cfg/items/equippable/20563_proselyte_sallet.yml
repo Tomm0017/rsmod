@@ -1,0 +1,35 @@
+---
+id: 20563
+name: "Proselyte sallet"
+examine: "A Proselyte Temple Knight's helm."
+tradeable: true
+weight: 2.267
+tradeable_on_ge: false
+cost: 20
+lowalch: 8
+highalch: 12
+buy_limit: null
+equipment:
+  prayer: 4
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: -3
+  defenceStab: 19
+  defenceSlash: 21
+  defenceCrush: 16
+  defenceMagic: -1
+  defenceRanged: 19
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 30
+  - skill: "prayer"
+    level: 20

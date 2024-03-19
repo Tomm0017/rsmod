@@ -1,0 +1,35 @@
+---
+id: 22269
+name: "Hard leather shield"
+examine: "A solid oaken shield covered in hard leather."
+tradeable: true
+weight: 7.0
+tradeable_on_ge: true
+cost: 500
+lowalch: 200
+highalch: 300
+buy_limit: 125
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -15
+  attackSlash: -15
+  attackCrush: -11
+  attackMagic: -10
+  attackRanged: 2
+  defenceStab: 8
+  defenceSlash: 7
+  defenceCrush: 7
+  defenceMagic: 5
+  defenceRanged: 9
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 20
+  - skill: "defence"
+    level: 10

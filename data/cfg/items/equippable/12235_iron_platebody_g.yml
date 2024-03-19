@@ -1,0 +1,33 @@
+---
+id: 12235
+name: "Iron platebody (g)"
+examine: "Iron platebody with gold trim."
+tradeable: true
+weight: 9.979
+tradeable_on_ge: true
+cost: 560
+lowalch: 224
+highalch: 336
+buy_limit: 4
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -30
+  attackRanged: -15
+  defenceStab: 21
+  defenceSlash: 20
+  defenceCrush: 12
+  defenceMagic: -6
+  defenceRanged: 20
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 1

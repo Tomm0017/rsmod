@@ -1,0 +1,38 @@
+---
+id: 2402
+name: "Silverlight"
+examine: "The magical sword 'Silverlight'."
+tradeable: false
+weight: 1.814
+tradeable_on_ge: false
+cost: 50
+lowalch: 20
+highalch: 30
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "weapon"
+  weaponType: 9
+  attackSpeed: 5
+  attackStab: 9
+  attackSlash: 14
+  attackCrush: -2
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 3
+  defenceCrush: 2
+  defenceMagic: 1
+  defenceRanged: 0
+  meleeStrength: 12
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 808
+    turnOnSpotAnim: 823
+    walkForwardAnimId: 819
+    walkBackwardsAnimId: 820
+    walkLeftAnimId: 821
+    walkRightAnimId: 822
+    runAnimId: 824
+  skillReqs: null

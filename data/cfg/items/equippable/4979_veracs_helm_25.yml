@@ -1,0 +1,33 @@
+---
+id: 4979
+name: "Verac's helm 25"
+examine: "Verac the Defiled's helm."
+tradeable: false
+weight: 1.36
+tradeable_on_ge: false
+cost: 103000
+lowalch: 41200
+highalch: 61800
+buy_limit: null
+equipment:
+  prayer: 3
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -6
+  attackRanged: -2
+  defenceStab: 55
+  defenceSlash: 58
+  defenceCrush: 54
+  defenceMagic: 0
+  defenceRanged: 56
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 70

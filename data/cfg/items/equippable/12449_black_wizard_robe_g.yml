@@ -1,0 +1,31 @@
+---
+id: 12449
+name: "Black wizard robe (g)"
+examine: "I can do magic better in this."
+tradeable: true
+weight: 0.907
+tradeable_on_ge: true
+cost: 15
+lowalch: 6
+highalch: 9
+buy_limit: 4
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 3
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 3
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

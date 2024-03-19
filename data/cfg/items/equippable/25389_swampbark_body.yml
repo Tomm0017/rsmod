@@ -1,0 +1,35 @@
+---
+id: 25389
+name: "Swampbark body"
+examine: "Keeps my chest protected."
+tradeable: true
+weight: 4.535
+tradeable_on_ge: true
+cost: 120000
+lowalch: 48000
+highalch: 72000
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 15
+  attackRanged: 0
+  defenceStab: 38
+  defenceSlash: 44
+  defenceCrush: 48
+  defenceMagic: 21
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "magic"
+    level: 50
+  - skill: "defence"
+    level: 50

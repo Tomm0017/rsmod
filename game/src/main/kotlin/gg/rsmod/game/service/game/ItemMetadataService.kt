@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.google.common.base.Stopwatch
+import dev.openrune.cache.CacheManager.item
 import gg.rsmod.game.Server
-import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
@@ -87,10 +87,10 @@ class ItemMetadataService : Service {
     }
 
     private fun load(item: Metadata, world: World) {
-        val def = world.definitions.get(ItemDef::class.java, item.id)
+        val def = item(item.id)
         def.name = item.name
         def.examine = item.examine
-        def.tradeable = item.tradeable
+        def.isTradeable = item.tradeable
         def.weight = item.weight
         if (item.equipment != null) {
             val equipment = item.equipment
@@ -107,7 +107,6 @@ class ItemMetadataService : Service {
             }
 
             def.renderAnimations = equipment.renderAnimations?.getAsArray()
-            def.attackSounds = equipment.attackSounds
             if (slots != null) {
                 def.equipSlot = slots.slot
                 def.equipType = slots.secondary
@@ -119,7 +118,6 @@ class ItemMetadataService : Service {
                 }
                 def.skillReqs = reqs
             }
-            def.equipSound = equipment.equipSound
             def.bonuses = intArrayOf(
                 equipment.attackStab,
                 equipment.attackSlash,

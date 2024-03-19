@@ -1,0 +1,39 @@
+---
+id: 22951
+name: "Boots of brimstone"
+examine: "A pair of heat resistant boots charged with the claw of the ferocious Drake."
+tradeable: true
+weight: 3.175
+tradeable_on_ge: true
+cost: 20000
+lowalch: 8000
+highalch: 12000
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 3
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 3
+  attackRanged: 5
+  defenceStab: 10
+  defenceSlash: 10
+  defenceCrush: 10
+  defenceMagic: 5
+  defenceRanged: 5
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "slayer"
+    level: 44
+  - skill: "defence"
+    level: 70
+  - skill: "magic"
+    level: 70
+  - skill: "ranged"
+    level: 70

@@ -1,0 +1,33 @@
+---
+id: 21304
+name: "Obsidian platelegs"
+examine: "Provides excellent protection."
+tradeable: true
+weight: 9.071
+tradeable_on_ge: true
+cost: 67000
+lowalch: 26800
+highalch: 40200
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 46
+  defenceSlash: 43
+  defenceCrush: 41
+  defenceMagic: -10
+  defenceRanged: 40
+  meleeStrength: 1
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 60

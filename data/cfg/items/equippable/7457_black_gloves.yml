@@ -1,0 +1,31 @@
+---
+id: 7457
+name: "Black gloves"
+examine: "A pair of nice gloves."
+tradeable: false
+weight: 0.226
+tradeable_on_ge: false
+cost: 1000
+lowalch: 400
+highalch: 600
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 5
+  attackSlash: 5
+  attackCrush: 5
+  attackMagic: 3
+  attackRanged: 5
+  defenceStab: 5
+  defenceSlash: 5
+  defenceCrush: 5
+  defenceMagic: 3
+  defenceRanged: 5
+  meleeStrength: 5
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

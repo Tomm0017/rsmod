@@ -1,0 +1,33 @@
+---
+id: 20572
+name: "Archer helm"
+examine: "This helmet is worn by archers."
+tradeable: true
+weight: 2.721
+tradeable_on_ge: false
+cost: 30
+lowalch: 12
+highalch: 18
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: -5
+  attackSlash: -5
+  attackCrush: -5
+  attackMagic: -5
+  attackRanged: 6
+  defenceStab: 6
+  defenceSlash: 8
+  defenceCrush: 10
+  defenceMagic: 6
+  defenceRanged: 6
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 45

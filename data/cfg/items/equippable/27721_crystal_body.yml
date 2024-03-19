@@ -1,0 +1,31 @@
+---
+id: 27721
+name: "Crystal body"
+examine: "Sturdier than it looks."
+tradeable: false
+weight: 2.0
+tradeable_on_ge: false
+cost: 1500000
+lowalch: 600000
+highalch: 900000
+buy_limit: null
+equipment:
+  prayer: 3
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -18
+  attackRanged: 31
+  defenceStab: 46
+  defenceSlash: 38
+  defenceCrush: 48
+  defenceMagic: 44
+  defenceRanged: 68
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

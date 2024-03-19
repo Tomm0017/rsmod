@@ -1,0 +1,35 @@
+---
+id: 10589
+name: "Granite helm"
+examine: "A stone helmet."
+tradeable: true
+weight: 4.535
+tradeable_on_ge: true
+cost: 46000
+lowalch: 18400
+highalch: 27600
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "head"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -9
+  attackRanged: -7
+  defenceStab: 31
+  defenceSlash: 33
+  defenceCrush: 29
+  defenceMagic: -1
+  defenceRanged: 39
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "strength"
+    level: 50
+  - skill: "defence"
+    level: 50

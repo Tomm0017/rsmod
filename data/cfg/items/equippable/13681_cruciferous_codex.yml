@@ -1,0 +1,31 @@
+---
+id: 13681
+name: "Cruciferous codex"
+examine: "The holy book of Cabbages."
+tradeable: false
+weight: 1.0
+tradeable_on_ge: false
+cost: 200
+lowalch: 80
+highalch: 120
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "shield"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

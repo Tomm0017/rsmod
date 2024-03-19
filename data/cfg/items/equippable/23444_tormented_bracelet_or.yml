@@ -1,0 +1,33 @@
+---
+id: 23444
+name: "Tormented bracelet (or)"
+examine: "A deep sense of torment burns within this powerful bracelet."
+tradeable: false
+weight: 0.25
+tradeable_on_ge: false
+cost: 201000
+lowalch: 80400
+highalch: 120600
+buy_limit: null
+equipment:
+  prayer: 2
+  equipSlot: "hands"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 10
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 5
+  renderAnimations: null
+  skillReqs:
+  - skill: "hitpoints"
+    level: 75

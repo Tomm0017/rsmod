@@ -1,0 +1,35 @@
+---
+id: 10956
+name: "Frog-leather chaps"
+examine: "Chaps made out of frog hide."
+tradeable: true
+weight: 3.0
+tradeable_on_ge: true
+cost: 900
+lowalch: 360
+highalch: 540
+buy_limit: 70
+equipment:
+  prayer: 0
+  equipSlot: "legs"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -5
+  attackRanged: 2
+  defenceStab: 7
+  defenceSlash: 7
+  defenceCrush: 9
+  defenceMagic: 4
+  defenceRanged: 9
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "defence"
+    level: 25
+  - skill: "ranged"
+    level: 25

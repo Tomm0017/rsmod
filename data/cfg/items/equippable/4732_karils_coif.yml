@@ -1,0 +1,35 @@
+---
+id: 4732
+name: "Karil's coif"
+examine: "Karil the Tainted's coif."
+tradeable: true
+weight: 0.907
+tradeable_on_ge: true
+cost: 13000
+lowalch: 5200
+highalch: 7800
+buy_limit: 15
+equipment:
+  prayer: 0
+  equipSlot: "nohair"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: -1
+  attackRanged: 7
+  defenceStab: 6
+  defenceSlash: 9
+  defenceCrush: 12
+  defenceMagic: 6
+  defenceRanged: 10
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "ranged"
+    level: 70
+  - skill: "defence"
+    level: 70

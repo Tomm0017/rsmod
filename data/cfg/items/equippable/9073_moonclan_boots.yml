@@ -1,0 +1,31 @@
+---
+id: 9073
+name: "Moonclan boots"
+examine: "Groovy foot protection."
+tradeable: false
+weight: 0.907
+tradeable_on_ge: false
+cost: 900
+lowalch: 360
+highalch: 540
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "feet"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 2
+  attackRanged: -5
+  defenceStab: 2
+  defenceSlash: 2
+  defenceCrush: 2
+  defenceMagic: 2
+  defenceRanged: -5
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs: null

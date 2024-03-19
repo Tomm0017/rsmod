@@ -1,0 +1,40 @@
+---
+id: 22398
+name: "Ivandis flail"
+examine: "A legendary flail."
+tradeable: false
+weight: 0.001
+tradeable_on_ge: false
+cost: 20000
+lowalch: null
+highalch: null
+buy_limit: null
+equipment:
+  prayer: 5
+  equipSlot: "weapon"
+  weaponType: -1
+  attackSpeed: 5
+  attackStab: 24
+  attackSlash: 38
+  attackCrush: 62
+  attackMagic: 8
+  attackRanged: 0
+  defenceStab: 4
+  defenceSlash: 4
+  defenceCrush: 2
+  defenceMagic: 8
+  defenceRanged: 0
+  meleeStrength: 42
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 8009
+    turnOnSpotAnim: 8015
+    walkForwardAnimId: 8011
+    walkBackwardsAnimId: 8012
+    walkLeftAnimId: 8014
+    walkRightAnimId: 8013
+    runAnimId: 8016
+  skillReqs:
+  - skill: "attack"
+    level: 40

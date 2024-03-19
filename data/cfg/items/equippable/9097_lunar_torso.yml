@@ -1,0 +1,35 @@
+---
+id: 9097
+name: "Lunar torso"
+examine: "Provides good protection."
+tradeable: false
+weight: 4.535
+tradeable_on_ge: false
+cost: 100
+lowalch: 40
+highalch: 60
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "body"
+  weaponType: -1
+  attackSpeed: 0
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 10
+  attackRanged: -10
+  defenceStab: 34
+  defenceSlash: 22
+  defenceCrush: 40
+  defenceMagic: 12
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations: null
+  skillReqs:
+  - skill: "magic"
+    level: 65
+  - skill: "defence"
+    level: 40

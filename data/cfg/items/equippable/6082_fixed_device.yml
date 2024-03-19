@@ -1,0 +1,38 @@
+---
+id: 6082
+name: "Fixed device"
+examine: "A device for firing dye."
+tradeable: false
+weight: 4.0
+tradeable_on_ge: false
+cost: 150
+lowalch: 60
+highalch: 90
+buy_limit: null
+equipment:
+  prayer: 0
+  equipSlot: "2h"
+  weaponType: 8
+  attackSpeed: 4
+  attackStab: 0
+  attackSlash: 0
+  attackCrush: 0
+  attackMagic: 0
+  attackRanged: 0
+  defenceStab: 0
+  defenceSlash: 0
+  defenceCrush: 0
+  defenceMagic: 0
+  defenceRanged: 0
+  meleeStrength: 0
+  rangedStrength: 0
+  magicDamage: 0
+  renderAnimations:
+    standAnimId: 2316
+    turnOnSpotAnim: 2321
+    walkForwardAnimId: 2317
+    walkBackwardsAnimId: 2318
+    walkLeftAnimId: 2319
+    walkRightAnimId: 2320
+    runAnimId: 2322
+  skillReqs: null

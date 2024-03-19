@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.skills.runecrafting
 
+import dev.openrune.cache.CacheManager.item
+
 Tiara.values.forEach { tiara ->
 
     val altar = tiara.altar
@@ -21,8 +23,8 @@ Tiara.values.forEach { tiara ->
  */
 fun createTiara(player: Player, talisman: Int, def: Tiara) {
 
-    val tiaraDef = world.definitions.get(ItemDef::class.java, Items.TIARA)
-    val talismanDef = world.definitions.get(ItemDef::class.java, talisman)
+    val tiaraDef = item(Items.TIARA)
+    val talismanDef = item(talisman)
     val inventory = player.inventory
 
     if (!inventory.contains(tiaraDef.id)) {

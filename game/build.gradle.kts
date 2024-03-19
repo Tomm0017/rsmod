@@ -13,11 +13,10 @@ val lib = rootProject.project.libs
 dependencies {
     runtimeOnly(project(":game:plugins"))
 
-
     with(lib) {
         implementation(projects.util)
+        implementation("dev.openrune:filestore:1.0.0")
         implementation(projects.net)
-
         implementation(kotlin.scripting)
         implementation(kotlin.script.runtime)
         implementation(kotlinx.coroutines)

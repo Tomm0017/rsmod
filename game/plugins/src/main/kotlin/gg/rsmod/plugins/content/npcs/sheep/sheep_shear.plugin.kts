@@ -1,7 +1,9 @@
 package gg.rsmod.plugins.content.npcs.sheep
 
+import dev.openrune.cache.CacheManager.npc
+
 Sheep.SHEEP_NPCS.forEach { sheep ->
-    if (world.definitions.get(NpcDef::class.java, sheep).options.contains("Shear")) {
+    if (npc(sheep).actions.contains("Shear")) {
 
         on_npc_option(npc = sheep, option = "shear") {
             val npc = player.getInteractingNpc()

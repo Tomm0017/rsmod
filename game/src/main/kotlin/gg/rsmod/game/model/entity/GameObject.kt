@@ -1,9 +1,9 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
-import gg.rsmod.game.fs.DefinitionSet
-import gg.rsmod.game.fs.def.ObjectDef
-import gg.rsmod.game.fs.def.VarbitDef
+import dev.openrune.cache.CacheManager.objects
+import dev.openrune.cache.CacheManager.varbit
+import dev.openrune.cache.filestore.definition.data.ObjectDefinition
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.AttributeMap
@@ -48,7 +48,7 @@ abstract class GameObject : Entity {
 
     constructor(id: Int, type: Int, rot: Int, tile: Tile) : this(id, (type shl 2) or rot, tile)
 
-    fun getDef(definitions: DefinitionSet): ObjectDef = definitions.get(ObjectDef::class.java, id)
+    fun getDef(): ObjectDefinition = objects(id)
 
     fun isSpawned(world: World): Boolean = world.isSpawned(this)
 
@@ -61,10 +61,10 @@ abstract class GameObject : Entity {
      */
     fun getTransform(player: Player): Int {
         val world = player.world
-        val def = getDef(world.definitions)
+        val def = getDef()
 
         if (def.varbit != -1) {
-            val varbitDef = world.definitions.get(VarbitDef::class.java, def.varbit)
+            val varbitDef = varbit(def.varbit)
             val state = player.varps.getBit(varbitDef.varp, varbitDef.startBit, varbitDef.endBit)
             return def.transforms!![state]
         }
@@ -75,6 +75,16 @@ abstract class GameObject : Entity {
         }
 
         return id
+    }
+
+    fun getRotatedWidth(): Int = when {
+        (rot and 0x1) == 1 -> getDef().length
+        else -> getDef().width
+    }
+
+    fun getRotatedLength(): Int = when {
+        (rot and 0x1) == 1 -> getDef().width
+        else -> getDef().length
     }
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("id", id).add("type", type).add("rot", rot).add("tile", tile.toString()).toString()

@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.content.skills.smithing.action
 
-import gg.rsmod.game.fs.def.ItemDef
+import dev.openrune.cache.CacheManager.item
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.cfg.Items
@@ -119,8 +119,8 @@ object SmithingAction {
         }
 
         if (bar.level > player.getSkills().getCurrentLevel(Skills.SMITHING)) {
-            val barDef = task.player.world.definitions.get(ItemDef::class.java, bar.id)
-            task.messageBox(INSUFFICIENT_LEVEL_BAR.format(bar.level, barDef.name.toLowerCase()))
+            val barDef = item(bar.id)
+            task.messageBox(INSUFFICIENT_LEVEL_BAR.format(bar.level, barDef.name.lowercase()))
             return false
         }
 
@@ -144,8 +144,8 @@ object SmithingAction {
             }
 
             if (meta.barCount > player.inventory.getItemCount(meta.bar!!.id)) {
-                val barDef = task.player.world.definitions.get(ItemDef::class.java, meta.bar.id)
-                task.messageBox(INSUFFICIENT_BAR_QTY.format(barDef.name.toLowerCase(), meta.name.prefixAn()))
+                val barDef = item(meta.bar.id)
+                task.messageBox(INSUFFICIENT_BAR_QTY.format(barDef.name.lowercase(), meta.name.prefixAn()))
                 return false
             }
 

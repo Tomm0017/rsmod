@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.items.essencepouch
 
+import dev.openrune.cache.CacheManager.item
+
 /**
  * The set of essence pouch definitions
  */
@@ -30,7 +32,7 @@ pouches.forEach { pouch ->
 fun fillPouch(player: Player, pouch: EssencePouch) {
 
     if (player.getSkills().getMaxLevel(Skills.RUNECRAFTING) < pouch.levelReq) {
-        player.message("This pouch requires level ${pouch.levelReq} ${Skills.getSkillName(world, Skills.RUNECRAFTING)} to use.")
+        player.message("This pouch requires level ${pouch.levelReq} ${Skills.getSkillName(Skills.RUNECRAFTING)} to use.")
         return
     }
 
@@ -38,7 +40,7 @@ fun fillPouch(player: Player, pouch: EssencePouch) {
     val containedItem = item.getAttr(ItemAttribute.ATTACHED_ITEM_ID) ?: -1
     val amount = Math.max(item.getAttr(ItemAttribute.ATTACHED_ITEM_COUNT) ?: 0, 0)
 
-    val def = world.definitions.getNullable(ItemDef::class.java, containedItem)
+    val def = item(containedItem)
     val inventory = player.inventory
     val freeSpace = pouch.capacity - amount
 
@@ -67,7 +69,7 @@ fun fillPouch(player: Player, pouch: EssencePouch) {
     if (def != null) {
 
         if (!inventory.contains(def.id)) {
-            player.message("You can only put ${def.name.toLowerCase()} in the pouch.")
+            player.message("You can only put ${def.name.lowercase()} in the pouch.")
             return
         }
 
@@ -134,7 +136,7 @@ fun checkPouch(player: Player) {
         return
     }
 
-    val name = world.definitions.get(ItemDef::class.java, item).name.toLowerCase()
+    val name = item(item).name.lowercase()
     val multiple = count > 1
 
     player.message("There ${count.toLiteral()?.pluralPrefix(count)} ${name.pluralSuffix(count)} in this pouch.")

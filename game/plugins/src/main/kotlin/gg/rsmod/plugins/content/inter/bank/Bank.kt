@@ -64,7 +64,7 @@ object Bank {
 
             if (from[i] == null) {
                 if (placehold || p.getVarbit(ALWAYS_PLACEHOLD_VARBIT) == 1) {
-                    val def = item.getDef(p.world.definitions)
+                    val def = item.getDef()
 
                     /**
                      * Make sure the item has a valid placeholder item in its
@@ -142,7 +142,7 @@ object Bank {
     }
 
     fun ItemContainer.removePlaceholder(world: World, item: Item): Int {
-        val def = item.toUnnoted(world.definitions).getDef(world.definitions)
+        val def = item.toUnnoted().getDef()
         val slot = if (def.placeholderLink > 0) indexOfFirst { it?.id == def.placeholderLink && it.amount == 0 } else -1
         if (slot != -1) {
             this[slot] = null

@@ -1,6 +1,6 @@
 package gg.rsmod.game.action
 
-import gg.rsmod.game.fs.def.ItemDef
+import dev.openrune.cache.CacheManager.item
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 
@@ -61,7 +61,7 @@ object EquipAction {
     }
 
     fun equip(p: Player, item: Item, inventorySlot: Int = -1): Result {
-        val def = p.world.definitions.get(ItemDef::class.java, item.id)
+        val def = item(item.id)
         val plugins = p.world.plugins
 
         // Resets interaction when an item is equipped.
@@ -148,7 +148,7 @@ object EquipAction {
              */
             for (i in 0 until p.equipment.capacity) {
                 val equip = p.equipment[i] ?: continue
-                val otherDef = p.world.definitions.get(ItemDef::class.java, equip.id)
+                val otherDef = item(equip.id)
                 if (otherDef.equipType == equipSlot && otherDef.equipType != 0) {
                     unequip.add(i)
                 }

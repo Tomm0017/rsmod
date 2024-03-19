@@ -1,7 +1,8 @@
 package gg.rsmod.plugins.service.marketvalue
 
+import dev.openrune.cache.CacheManager.item
+import dev.openrune.cache.CacheManager.itemCount
 import gg.rsmod.game.Server
-import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
@@ -16,9 +17,9 @@ class ItemMarketValueService : Service {
     private val values = Int2IntOpenHashMap()
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
-        val items = world.definitions.getCount(ItemDef::class.java)
+        val items = itemCount()
         for (i in 0 until items) {
-            val def = world.definitions.getNullable(ItemDef::class.java, i) ?: continue
+            val def = item(i)
 
             if (!def.noted && def.name.isNotBlank()) {
                 values[i] = def.cost

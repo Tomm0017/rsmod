@@ -10,7 +10,7 @@ import gg.rsmod.plugins.content.skills.smithing.data.typeForChild
 /**
  * The smithing meta data instance
  */
-val smithingData = SmithingData(world.definitions)
+val smithingData = SmithingData()
 
 /**
  * The map of bar item ids to their definitions

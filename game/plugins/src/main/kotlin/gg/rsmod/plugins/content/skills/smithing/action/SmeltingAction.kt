@@ -1,28 +1,28 @@
 package gg.rsmod.plugins.content.skills.smithing.action
 
-import gg.rsmod.game.fs.DefinitionSet
-import gg.rsmod.game.fs.def.ItemDef
+import dev.openrune.cache.CacheManager.item
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.api.Skills
 import gg.rsmod.plugins.api.ext.*
 import gg.rsmod.plugins.content.skills.smithing.data.Bar
+import java.util.*
 
 /**
  * @author Triston Plummer ("Dread")
  *
  * Handles the action of smelting bars at a furnace.
  */
-class SmeltingAction(private val defs: DefinitionSet) {
+class SmeltingAction() {
 
     /**
      * A map of bar ids to their item names
      */
-    private val barNames = Bar.values.associate { it.id to  defs.get(ItemDef::class.java, it.id).name.toLowerCase() }
+    private val barNames = Bar.values.associate { it.id to item(it.id).name.lowercase() }
 
     /**
      * A map of ore ids to their item names
      */
-    private val oreNames = Bar.values.map { Pair(it.primaryOre, it.secondaryOre) }.flatMap { it.toList() }.distinct().associate { it to  defs.get(ItemDef::class.java, it).name.toLowerCase() }
+    private val oreNames = Bar.values.map { Pair(it.primaryOre, it.secondaryOre) }.flatMap { it.toList() }.distinct().associate { it to  item(it).name.lowercase() }
 
     /**
      * Handles the smelting of a bar
@@ -92,7 +92,7 @@ class SmeltingAction(private val defs: DefinitionSet) {
         }
 
         if (player.getSkills().getCurrentLevel(Skills.SMITHING) < bar.level) {
-            task.messageBox("You need a ${Skills.getSkillName(player.world, Skills.SMITHING)} level of at least ${bar.level} to smelt ${oreNames[bar.primaryOre]}.")
+            task.messageBox("You need a ${Skills.getSkillName(Skills.SMITHING)} level of at least ${bar.level} to smelt ${oreNames[bar.primaryOre]}.")
             return false
         }
 

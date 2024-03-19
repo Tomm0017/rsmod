@@ -1,5 +1,7 @@
 package gg.rsmod.plugins.content.skills.runecrafting
 
+import dev.openrune.cache.CacheManager.item
+
 private val enterOption = "Enter"
 
 Altar.values.forEach { altar ->
@@ -10,7 +12,7 @@ Altar.values.forEach { altar ->
     altar.ruins?.forEach { ruin ->
 
         // The object definition for the Mysterious Ruins
-        val def = world.definitions.get(ObjectDef::class.java, ruin)
+        val def = item(ruin)
 
         // Allow using the talisman on the ruins to enter the altar
         altar.talisman?.let { talisman ->

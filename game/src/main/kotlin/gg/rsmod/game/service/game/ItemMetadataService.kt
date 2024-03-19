@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import dev.openrune.cache.CacheManager.item
+import dev.openrune.cache.CacheManager.itemCount
 import gg.rsmod.game.Server
-import gg.rsmod.game.fs.DefinitionSet
-import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
@@ -29,7 +29,7 @@ class ItemMetadataService : Service {
         }
 
         Files.newBufferedReader(path).use { reader ->
-            load(world.definitions, reader)
+            load(reader)
         }
     }
 
@@ -42,20 +42,20 @@ class ItemMetadataService : Service {
     override fun terminate(server: Server, world: World) {
     }
 
-    private fun load(definitions: DefinitionSet, reader: BufferedReader) {
+    private fun load(reader: BufferedReader) {
         val mapper = ObjectMapper(YAMLFactory())
         mapper.propertyNamingStrategy = PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
 
         val items = mapper.readValue(reader, Array<Metadata>::class.java).map { it.id to it }.toMap()
 
-        val itemCount = definitions.getCount(ItemDef::class.java)
+        val itemCount = itemCount()
 
         for (i in 0 until itemCount) {
-            val def = definitions.get(ItemDef::class.java, i)
+            val def = item(i)
             val data = items[def.id] ?: continue
             def.name = data.name
             def.examine = data.examine
-            def.tradeable = data.tradeable
+            def.isTradeable = data.tradeable
             def.weight = data.weight
 
             if (data.equipment != null) {

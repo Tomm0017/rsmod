@@ -21,7 +21,7 @@ val standardBarIds = bars.filter { it != Bar.LOVAKITE }.map { bar -> bar.id }.to
 /**
  * The smelting action instance
  */
-val smelting = SmeltingAction(world.definitions)
+val smelting = SmeltingAction()
 
 /**
  * The set of 'standard' furnaces

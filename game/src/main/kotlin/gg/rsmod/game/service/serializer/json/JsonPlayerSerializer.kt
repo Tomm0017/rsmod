@@ -94,7 +94,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                     return@forEach
                 }
                 val container = if (client.containers.containsKey(key)) client.containers[key] else {
-                    client.containers[key] = ItemContainer(client.world.definitions, key)
+                    client.containers[key] = ItemContainer(key)
                     client.containers[key]
                 }!!
                 it.items.forEach { slot, item ->

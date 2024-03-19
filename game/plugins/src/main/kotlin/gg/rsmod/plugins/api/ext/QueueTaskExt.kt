@@ -1,7 +1,7 @@
 package gg.rsmod.plugins.api.ext
 
-import gg.rsmod.game.fs.def.ItemDef
-import gg.rsmod.game.fs.def.NpcDef
+import dev.openrune.cache.CacheManager.item
+import dev.openrune.cache.CacheManager.npc
 import gg.rsmod.game.message.impl.ResumePauseButtonMessage
 import gg.rsmod.game.model.Appearance
 import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
@@ -194,7 +194,7 @@ suspend fun QueueTask.messageBox(message: String, lineSpacing: Int = 31) {
  */
 suspend fun QueueTask.chatNpc(message: String, npc: Int = -1, animation: Int = 588, title: String? = null) {
     val npcId = if (npc != -1) npc else player.attr[INTERACTING_NPC_ATTR]?.get()?.getTransform(player) ?: throw RuntimeException("Npc id must be manually set as the player is not interacting with an npc.")
-    val dialogTitle = title ?: player.world.definitions.get(NpcDef::class.java, npcId).name
+    val dialogTitle = title ?: npc(npcId).name
 
     player.runClientScript(2379)
     player.openInterface(parent = 162, child = CHATBOX_CHILD, interfaceId = 231)
@@ -330,7 +330,7 @@ suspend fun QueueTask.levelUpMessageBox(skill: Int, levelIncrement: Int) {
             player.setComponentHidden(interfaceId = 233, component = value, hidden = skill != key)
         }
 
-        val skillName = Skills.getSkillName(player.world, skill)
+        val skillName = Skills.getSkillName(skill)
         val initialChar = Character.toLowerCase(skillName.toCharArray().first())
         val vowel = initialChar == 'a' || initialChar == 'e' || initialChar == 'i' || initialChar == 'o' || initialChar == 'u'
         val levelFormat = if (levelIncrement == 1) (if (vowel) "an" else "a") else "$levelIncrement"
@@ -363,8 +363,7 @@ suspend fun QueueTask.levelUpMessageBox(skill: Int, levelIncrement: Int) {
 }
 
 suspend fun QueueTask.produceItemBox(vararg items: Int, title: String = "What would you like to make?", maxItems: Int = player.inventory.capacity, logic: Player.(Int, Int) -> Unit) {
-    val defs = player.world.definitions
-    val itemDefs = items.map { defs.get(ItemDef::class.java, it) }
+    val itemDefs = items.map { item(it) }
 
     val baseChild = 14
     val itemArray = Array(10) { -1 }

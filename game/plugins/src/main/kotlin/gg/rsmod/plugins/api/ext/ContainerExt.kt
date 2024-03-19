@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.api.ext
 
-import gg.rsmod.game.fs.def.ItemDef
+import dev.openrune.cache.CacheManager.item
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.container.ItemTransaction
@@ -12,7 +12,7 @@ fun ItemContainer.getNetworth(world: World): Long {
     var networth = 0L
     rawItems.forEach { item ->
         if (item != null) {
-            val cost = service?.get(item.id) ?: world.definitions.getNullable(ItemDef::class.java, item.id)?.cost ?: 0
+            val cost = service?.get(item.id) ?: item(item.id).cost
             networth += cost * item.amount
         }
     }
@@ -49,7 +49,7 @@ fun ItemContainer.transfer(to: ItemContainer, item: Item, fromSlot: Int = -1, to
      * Turn the initial item into its noted or unnoted form, depending on [note]
      * and [unnote].
      */
-    val finalItem = if (note) copy.toNoted(definitions) else if (unnote) copy.toUnnoted(definitions) else copy
+    val finalItem = if (note) copy.toNoted() else if (unnote) copy.toUnnoted() else copy
 
     val add = to.add(finalItem.id, finalItem.amount, assureFullInsertion = false, beginSlot = toSlot)
     if (add.completed == 0) {

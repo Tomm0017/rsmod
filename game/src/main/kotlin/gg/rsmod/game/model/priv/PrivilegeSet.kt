@@ -31,9 +31,9 @@ class PrivilegeSet : Iterable<Privilege> {
             val powers = hashSetOf<String>()
             powerValues.forEach { power ->
                 val value = power as String
-                powers.add(value.toLowerCase())
+                powers.add(value.lowercase())
             }
-            definitions.add(Privilege(id = id, icon = icon, name = name.toLowerCase(), powers = powers))
+            definitions.add(Privilege(id = id, icon = icon, name = name.lowercase(), powers = powers))
         }
         values = mutableListOf()
         values.addAll(definitions)
@@ -43,7 +43,7 @@ class PrivilegeSet : Iterable<Privilege> {
 
     fun get(id: Int): Privilege? = values.firstOrNull { it.id == id }
 
-    fun get(name: String): Privilege? = values.firstOrNull { it.name == name.toLowerCase() }
+    fun get(name: String): Privilege? = values.firstOrNull { it.name == name.lowercase() }
 
-    fun isEligible(from: Privilege, to: String): Boolean = from.powers.contains(to.toLowerCase())
+    fun isEligible(from: Privilege, to: String): Boolean = from.powers.contains(to.lowercase())
 }

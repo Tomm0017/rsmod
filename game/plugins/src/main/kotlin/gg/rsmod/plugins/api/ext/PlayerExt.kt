@@ -1,8 +1,8 @@
 package gg.rsmod.plugins.api.ext
 
 import com.google.common.primitives.Ints
-import gg.rsmod.game.fs.def.ItemDef
-import gg.rsmod.game.fs.def.VarbitDef
+import dev.openrune.cache.CacheManager.item
+import dev.openrune.cache.CacheManager.varbit
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
@@ -309,12 +309,12 @@ fun Player.syncVarp(id: Int) {
 }
 
 fun Player.getVarbit(id: Int): Int {
-    val def = world.definitions.get(VarbitDef::class.java, id)
+    val def = varbit(id)
     return varps.getBit(def.varp, def.startBit, def.endBit)
 }
 
 fun Player.setVarbit(id: Int, value: Int) {
-    val def = world.definitions.get(VarbitDef::class.java, id)
+    val def = varbit(id)
     varps.setBit(def.varp, def.startBit, def.endBit, value)
 }
 
@@ -323,14 +323,14 @@ fun Player.setVarbit(id: Int, value: Int) {
  * its varp value in [Player.varps].
  */
 fun Player.sendTempVarbit(id: Int, value: Int) {
-    val def = world.definitions.get(VarbitDef::class.java, id)
+    val def = varbit(id)
     val state = BitManipulation.setBit(varps.getState(def.varp), def.startBit, def.endBit, value)
     val message = if (state in -Byte.MAX_VALUE..Byte.MAX_VALUE) VarpSmallMessage(def.varp, state) else VarpLargeMessage(def.varp, state)
     write(message)
 }
 
 fun Player.toggleVarbit(id: Int) {
-    val def = world.definitions.get(VarbitDef::class.java, id)
+    val def = varbit(id)
     varps.setBit(def.varp, def.startBit, def.endBit, getVarbit(id) xor 1)
 }
 
@@ -436,10 +436,10 @@ fun Player.sendWeaponComponentInformation() {
     val panel: Int
 
     if (weapon != null) {
-        val definition = world.definitions.get(ItemDef::class.java, weapon.id)
+        val definition = item(weapon.id)
         name = definition.name
 
-        panel = Math.max(0, definition.weaponType)
+        panel = 0.coerceAtLeast(definition.weaponType)
     } else {
         name = "Unarmed"
         panel = 0
@@ -481,8 +481,8 @@ fun Player.calculateDeathContainers(): DeathContainers {
         keepAmount++
     }
 
-    val keptContainer = ItemContainer(world.definitions, keepAmount, ContainerStackType.NO_STACK)
-    val lostContainer = ItemContainer(world.definitions, inventory.capacity + equipment.capacity, ContainerStackType.NORMAL)
+    val keptContainer = ItemContainer(keepAmount, ContainerStackType.NO_STACK)
+    val lostContainer = ItemContainer(inventory.capacity + equipment.capacity, ContainerStackType.NORMAL)
 
     var totalItems = inventory.rawItems.filterNotNull() + equipment.rawItems.filterNotNull()
     val valueService = world.getService(ItemMarketValueService::class.java)
@@ -490,7 +490,7 @@ fun Player.calculateDeathContainers(): DeathContainers {
     totalItems = if (valueService != null) {
         totalItems.sortedBy { it.id }.sortedWith(compareByDescending { valueService.get(it.id) })
     } else {
-        totalItems.sortedBy { it.id }.sortedWith(compareByDescending { world.definitions.get(ItemDef::class.java, it.id).cost })
+        totalItems.sortedBy { it.id }.sortedWith(compareByDescending { item(it.id).cost })
     }
 
     totalItems.forEach { item ->

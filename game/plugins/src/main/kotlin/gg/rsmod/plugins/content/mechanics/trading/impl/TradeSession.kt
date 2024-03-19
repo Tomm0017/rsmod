@@ -27,7 +27,7 @@ class TradeSession(private val player: Player, private val partner: Player) {
     /**
      * The trade container for this trade session, in the current player's context
      */
-    val container = ItemContainer(player.world.definitions, player.inventory.capacity, ContainerStackType.NORMAL)
+    val container = ItemContainer(player.inventory.capacity, ContainerStackType.NORMAL)
 
     /**
      * The [ItemMarketValueService] instance for this trade session
@@ -42,7 +42,7 @@ class TradeSession(private val player: Player, private val partner: Player) {
     /**
      * An extension function for retrieving the value of each item in an [ItemContainer]]
      */
-    private fun ItemContainer.getItemValues() : Array<Int> = rawItems.map { if (it == null) 0 else (priceService?.get(it.id) ?: it.getDef(player.world.definitions).cost ?: 0) * it.amount }.toTypedArray()
+    private fun ItemContainer.getItemValues() : Array<Int> = rawItems.map { if (it == null) 0 else (priceService?.get(it.id) ?: it.getDef().cost ?: 0) * it.amount }.toTypedArray()
 
     /**
      * An extension function for retrieving the sum of each item's value in an [ItemContainer]

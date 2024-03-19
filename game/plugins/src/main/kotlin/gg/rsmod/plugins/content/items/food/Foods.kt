@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.content.items.food
 
-import gg.rsmod.game.fs.def.ItemDef
+import dev.openrune.cache.CacheManager.item
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.timer.ATTACK_DELAY
 import gg.rsmod.game.model.timer.COMBO_FOOD_DELAY
@@ -44,7 +44,7 @@ object Foods {
         }
 
         val oldHp = p.getSkills().getCurrentLevel(Skills.HITPOINTS)
-        val foodName = p.world.definitions.get(ItemDef::class.java, food.item).name
+        val foodName = item(food.item).name
 
         p.animate(anim)
         p.playSound(EAT_FOOD_SOUND)
@@ -64,7 +64,7 @@ object Foods {
 
         when (food) {
             else -> {
-                p.message("You eat the ${foodName.toLowerCase()}.")
+                p.message("You eat the ${foodName.lowercase()}.")
                 if (p.getSkills().getCurrentLevel(Skills.HITPOINTS) > oldHp) {
                     p.message("It heals some health.")
                 }

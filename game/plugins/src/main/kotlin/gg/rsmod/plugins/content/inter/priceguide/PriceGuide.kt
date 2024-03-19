@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.content.inter.priceguide
 
-import gg.rsmod.game.fs.def.ItemDef
+import dev.openrune.cache.CacheManager.item
 import gg.rsmod.game.model.ExamineEntityType
 import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.container.ContainerStackType
@@ -24,7 +24,7 @@ object PriceGuide {
     private val TEMP_INV_CONTAINER = AttributeKey<ItemContainer>()
 
     fun open(p: Player) {
-        p.attr[GUIDE_CONTAINER] = ItemContainer(p.world.definitions, p.inventory.capacity, ContainerStackType.STACK)
+        p.attr[GUIDE_CONTAINER] = ItemContainer(p.inventory.capacity, ContainerStackType.STACK)
         p.attr[TEMP_INV_CONTAINER] = ItemContainer(p.inventory)
 
         p.setInterfaceUnderlay(color = -1, transparency = -1)
@@ -54,7 +54,7 @@ object PriceGuide {
         val guideContainer = p.attr[GUIDE_CONTAINER] ?: return
         val invContainer = p.attr[TEMP_INV_CONTAINER] ?: return
 
-        if (!p.world.definitions.get(ItemDef::class.java, item).tradeable) {
+        if (!item(item).isTradeable) {
             p.message("You cannot trade that item.")
             return
         }
@@ -88,7 +88,7 @@ object PriceGuide {
         for (i in 0 until invContainer.capacity) {
             val item = invContainer[i] ?: continue
 
-            if (!p.world.definitions.get(ItemDef::class.java, item.id).tradeable) {
+            if (!item(item.id).isTradeable) {
                 anyUntradeables = true
                 continue
             }
@@ -179,7 +179,7 @@ object PriceGuide {
     }
 
     fun search(p: Player, item: Int) {
-        val def = p.world.definitions.get(ItemDef::class.java, item)
+        val def = item(item)
         val valueService = p.world.getService(ItemMarketValueService::class.java)
         val cost = valueService?.get(item) ?: def.cost
 
@@ -201,7 +201,7 @@ object PriceGuide {
         val costs = Array(size = guideContainer.capacity) { 0 }
         guideContainer.forEachIndexed { index, item ->
             if (item != null) {
-                val cost = valueService?.get(item.id) ?: p.world.definitions.get(ItemDef::class.java, item.id).cost
+                val cost = valueService?.get(item.id) ?: item(item.id).cost
                 costs[index] = cost
             }
         }

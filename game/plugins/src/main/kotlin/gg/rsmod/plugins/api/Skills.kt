@@ -1,7 +1,7 @@
 package gg.rsmod.plugins.api
 
-import gg.rsmod.game.fs.def.EnumDef
-import gg.rsmod.game.model.World
+import dev.openrune.cache.CacheManager.enum
+
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -35,8 +35,8 @@ object Skills {
     const val MIN_COMBAT_LVL = 3
     const val MAX_COMBAT_LVL = 126
 
-    fun getSkillName(world: World, skill: Int): String {
-        val enum = world.definitions.get(EnumDef::class.java, 680)
+    fun getSkillName(skill: Int): String {
+        val enum = enum(680)
         return enum.getString(skill)
     }
 
@@ -46,9 +46,9 @@ object Skills {
         else -> false
     }
 
-    fun getSkillForName(world: World, maxSkills: Int, skillName: String): Int {
+    fun getSkillForName(maxSkills: Int, skillName: String): Int {
         for (i in 0 until maxSkills) {
-            if (getSkillName(world, i).toLowerCase() == skillName) {
+            if (getSkillName(i).lowercase() == skillName) {
                 return i
             }
         }

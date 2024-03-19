@@ -1,11 +1,11 @@
 package gg.rsmod.game.plugin
 
 import com.google.gson.GsonBuilder
+import dev.openrune.cache.CacheManager.item
+import dev.openrune.cache.CacheManager.npc
+import dev.openrune.cache.CacheManager.objects
 import gg.rsmod.game.Server
 import gg.rsmod.game.event.Event
-import gg.rsmod.game.fs.def.ItemDef
-import gg.rsmod.game.fs.def.NpcDef
-import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.Direction
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
@@ -22,6 +22,7 @@ import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.service.Service
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.*
 import kotlin.script.experimental.annotations.KotlinScript
 
 /**
@@ -171,11 +172,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      * This method should be used over the option-int variant whenever possible.
      */
     fun on_item_option(item: Int, option: String, logic: (Plugin).() -> Unit) {
-        val opt = option.toLowerCase()
-        val def = world.definitions.get(ItemDef::class.java, item)
-        val slot = def.inventoryMenu.indexOfFirst { it?.toLowerCase() == opt }
+        val opt = option.lowercase()
+        val def = item(item)
+        val slot = def.interfaceOptions.indexOfFirst { it?.lowercase() == opt }
 
-        check(slot != -1) { "Option \"$option\" not found for item $item [options=${def.inventoryMenu.filterNotNull().filter { it.isNotBlank() }}]" }
+        check(slot != -1) { "Option \"$option\" not found for item $item [options=${def.interfaceOptions.filterNotNull().filter { it.isNotBlank() }}]" }
 
         r.bindItem(item, slot + 1, logic)
     }
@@ -185,11 +186,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      * [gg.rsmod.game.model.item.Item].
      */
     fun on_equipment_option(item: Int, option: String, logic: (Plugin).() -> Unit) {
-        val opt = option.toLowerCase()
-        val def = world.definitions.get(ItemDef::class.java, item)
-        val slot = def.equipmentMenu.indexOfFirst { it?.toLowerCase() == opt }
+        val opt = option.lowercase()
+        val def = item(item)
+        val slot = def.interfaceOptions.indexOfFirst { it?.lowercase() == opt }
 
-        check(slot != -1) { "Option \"$option\" not found for item equipment $item [options=${def.equipmentMenu.filterNotNull().filter { it.isNotBlank() }}]" }
+        check(slot != -1) { "Option \"$option\" not found for item equipment $item [options=${def.interfaceOptions.filterNotNull().filter { it.isNotBlank() }}]" }
 
         r.bindEquipmentOption(item, slot + 1, logic)
     }
@@ -201,11 +202,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      * This method should be used over the option-int variant whenever possible.
      */
     fun on_obj_option(obj: Int, option: String, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
-        val opt = option.toLowerCase()
-        val def = world.definitions.get(ObjectDef::class.java, obj)
-        val slot = def.options.indexOfFirst { it?.toLowerCase() == opt }
+        val opt = option.lowercase()
+        val def = objects(obj)
+        val slot = def.actions.indexOfFirst { it?.lowercase() == opt }
 
-        check(slot != -1) { "Option \"$option\" not found for object $obj [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
+        check(slot != -1) { "Option \"$option\" not found for object $obj [options=${def.actions.filterNotNull().filter { it.isNotBlank() }}]" }
 
         r.bindObject(obj, slot + 1, lineOfSightDistance, logic)
     }
@@ -221,11 +222,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      * specify this value.
      */
     fun on_npc_option(npc: Int, option: String, lineOfSightDistance: Int = -1, logic: (Plugin).() -> Unit) {
-        val opt = option.toLowerCase()
-        val def = world.definitions.get(NpcDef::class.java, npc)
-        val slot = def.options.indexOfFirst { it?.toLowerCase() == opt }
+        val opt = option.lowercase()
+        val def = npc(npc)
+        val slot = def.actions.indexOfFirst { it?.lowercase() == opt }
 
-        check(slot != -1) { "Option \"$option\" not found for npc $npc [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
+        check(slot != -1) { "Option \"$option\" not found for npc $npc [options=${def.actions.filterNotNull().filter { it.isNotBlank() }}]" }
 
         r.bindNpc(npc, slot + 1, lineOfSightDistance, logic)
     }
@@ -236,11 +237,11 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
      * This method should be used over the option-int variant whenever possible.
      */
     fun on_ground_item_option(item: Int, option: String, logic: (Plugin).() -> Unit) {
-        val opt = option.toLowerCase()
-        val def = world.definitions.get(ItemDef::class.java, item)
-        val slot = def.groundMenu.indexOfFirst { it?.toLowerCase() == opt }
+        val opt = option.lowercase()
+        val def = item(item)
+        val slot = def.options.indexOfFirst { it?.lowercase() == opt }
 
-        check(slot != -1) { "Option \"$option\" not found for ground item $item [options=${def.groundMenu.filterNotNull().filter { it.isNotBlank() }}]" }
+        check(slot != -1) { "Option \"$option\" not found for ground item $item [options=${def.options.filterNotNull().filter { it.isNotBlank() }}]" }
 
         r.bindGroundItem(item, slot + 1, logic)
     }

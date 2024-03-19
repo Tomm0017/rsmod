@@ -1,7 +1,7 @@
 package gg.rsmod.plugins.content.magic
 
-import gg.rsmod.game.fs.def.EnumDef
-import gg.rsmod.game.fs.def.ItemDef
+import dev.openrune.cache.CacheManager.enum
+import dev.openrune.cache.CacheManager.item
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
@@ -65,7 +65,7 @@ object MagicSpells {
         if (p.getVarbit(INF_RUNES_VARBIT) == 0) {
             for (item in items) {
                 if (p.inventory.getItemCount(item.id) < item.amount && p.equipment.getItemCount(item.id) < item.amount) {
-                    p.message("You do not have enough ${item.getDef(p.world.definitions).name}s to cast this spell.")
+                    p.message("You do not have enough ${item.getDef().name}s to cast this spell.")
                     return false
                 }
             }
@@ -90,17 +90,17 @@ object MagicSpells {
     fun isLoaded(): Boolean = metadata.isNotEmpty()
 
     fun loadSpellRequirements(world: World) {
-        val spellBookEnums = world.definitions.get(EnumDef::class.java, SPELLBOOK_POINTER_ENUM)
+        val spellBookEnums = enum(SPELLBOOK_POINTER_ENUM)
         val spellBooks = spellBookEnums.values.values.map { it as Int }
         spellBooks.forEach { spellBook ->
-            val spellBookEnum = world.definitions.get(EnumDef::class.java, spellBook)
+            val spellBookEnum = enum(spellBook)
             val spellItems = spellBookEnum.values.values.map { it as Int }
 
             for (item in spellItems) {
-                val itemDef = world.definitions.get(ItemDef::class.java, item)
+                val itemDef = item(item)
                 val params = itemDef.params
 
-                val spellbook = params[SPELL_SPELLBOOK_KEY] as Int
+                val spellbook = params?.get(SPELL_SPELLBOOK_KEY) as Int
                 val name = params[SPELL_NAME_KEY] as String
                 val lvl = params[SPELL_LVL_REQ_KEY] as Int
                 val componentHash = params[SPELL_COMPONENT_HASH_KEY] as Int

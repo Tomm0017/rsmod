@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.content.skills.runecrafting
 
-import gg.rsmod.game.fs.def.ItemDef
+import dev.openrune.cache.CacheManager.item
 import gg.rsmod.game.model.Graphic
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.plugins.api.EquipmentType
@@ -122,18 +122,18 @@ object RunecraftAction {
      */
     private suspend fun canCraftRune(it: QueueTask, rune: Rune) : Boolean {
         val player = it.player
-        val def = player.world.definitions.get(ItemDef::class.java, rune.id)
+        val def = item(rune.id)
 
         if (player.getSkills().getMaxLevel(Skills.RUNECRAFTING) < rune.level) {
-            it.messageBox("You need a ${Skills.getSkillName(player.world, Skills.RUNECRAFTING)} level of at least ${rune.level} to craft ${def.name.toLowerCase()}s.")
+            it.messageBox("You need a ${Skills.getSkillName(Skills.RUNECRAFTING)} level of at least ${rune.level} to craft ${def.name.lowercase()}s.")
             return false
         }
 
         val essence = rune.essence
-        val essenceDef = player.world.definitions.get(ItemDef::class.java, essence.first())
+        val essenceDef = item(essence.first())
 
         if (!player.inventory.filter { it != null && essence.contains(it.id) }.any()) {
-            it.messageBox("You do not have any ${essenceDef.name.toLowerCase()}s to bind.")
+            it.messageBox("You do not have any ${essenceDef.name.lowercase()}s to bind.")
             return false
         }
 
@@ -149,12 +149,12 @@ object RunecraftAction {
     private suspend fun canCraftCombo(it: QueueTask, combo: CombinationRune) : Boolean {
         val player = it.player
 
-        val comboName = player.world.definitions.get(ItemDef::class.java, combo.id).name.toLowerCase()
-        val runeName = player.world.definitions.get(ItemDef::class.java, combo.rune).name.toLowerCase()
-        val talismanName = player.world.definitions.get(ItemDef::class.java, combo.talisman).name.toLowerCase()
+        val comboName = item(combo.id).name.lowercase()
+        val runeName = item(combo.rune).name.lowercase()
+        val talismanName = item(combo.talisman).name.lowercase()
 
         if (player.getSkills().getMaxLevel(Skills.RUNECRAFTING) < combo.level) {
-            it.messageBox("You need a ${Skills.getSkillName(player.world, Skills.RUNECRAFTING)} level of at least ${combo.level} to craft ${comboName}s.")
+            it.messageBox("You need a ${Skills.getSkillName(Skills.RUNECRAFTING)} level of at least ${combo.level} to craft ${comboName}s.")
             return false
         }
 

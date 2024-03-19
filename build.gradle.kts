@@ -26,6 +26,7 @@ allprojects {
         maven("https://repo.maven.apache.org/maven2")
         maven("https://jitpack.io")
         maven("https://repo.runelite.net/")
+        maven("https://raw.githubusercontent.com/OpenRune/hosting/master")
     }
 
     val lib = rootProject.project.libs
@@ -40,7 +41,8 @@ allprojects {
         implementation(lib.json)
         implementation(lib.jbcrypt)
         implementation(lib.gson)
-        implementation(lib.cache)
+        implementation(lib.cache.rl)
+        implementation(lib.cache.or)
         implementation(lib.netty.all)
         implementation(lib.kotlinx.serialization.core)
         testImplementation(lib.junit)

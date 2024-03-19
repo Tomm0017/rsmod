@@ -1,8 +1,7 @@
 package gg.rsmod.plugins.content.skills.smithing.data
 
-import gg.rsmod.game.fs.DefinitionSet
-import gg.rsmod.game.fs.def.EnumDef
-import gg.rsmod.game.fs.def.ItemDef
+import dev.openrune.cache.CacheManager.enum
+import dev.openrune.cache.CacheManager.item
 
 /**
  * @author Triston Plummer ("Dread")
@@ -11,34 +10,34 @@ import gg.rsmod.game.fs.def.ItemDef
  *
  * @param defs  The definition set for the game world
  */
-class SmithingData(private val defs: DefinitionSet) {
+class SmithingData() {
 
     /**
      * The enum definition containing the number of items that are produced
      * when smithing a specified item
      */
-    private val producedCountEnum = defs.get(EnumDef::class.java, PRODUCED_COUNT_ENUM)
+    private val producedCountEnum = enum(PRODUCED_COUNT_ENUM)
 
     /**
      * The enum definition containing the number of bars required to produce
      * each item
      */
-    private val barCountEnum = defs.get(EnumDef::class.java, BARS_COUNT_ENUM)
+    private val barCountEnum = enum(BARS_COUNT_ENUM)
 
     /**
      * The enum definition containing the levels required for each producible item
      */
-    private val levelReqsEnum = defs.get(EnumDef::class.java, LEVEL_REQ_ENUM)
+    private val levelReqsEnum = enum(LEVEL_REQ_ENUM)
 
     /**
      * The enum definition containing the bars that may be smithed
      */
-    val smithableBarsEnum = defs.get(EnumDef::class.java, SMITHABLE_BARS_ENUM)
+    val smithableBarsEnum = enum(SMITHABLE_BARS_ENUM)
 
     /**
      * A map of producible items to their names
      */
-    private val itemNames = levelReqsEnum.values.map { it.key }.associate { it to defs.get(ItemDef::class.java, it).name.toLowerCase() }
+    private val itemNames = levelReqsEnum.values.map { it.key }.associate { it to item(it).name.lowercase() }
 
     /**
      * Maps an item id to the meta data required to craft it

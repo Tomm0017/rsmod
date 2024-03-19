@@ -1,6 +1,6 @@
 package gg.rsmod.game.sync.segment
 
-import gg.rsmod.game.fs.def.NpcDef
+import dev.openrune.cache.CacheManager.npc
 import gg.rsmod.game.model.ChatMessage
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.entity.Player
@@ -132,7 +132,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                         if (i == arms) {
                             val item = other.equipment[4]
                             if (item != null) {
-                                if (item.getDef(other.world.definitions).equipType == arms) {
+                                if (item.getDef().equipType == arms) {
                                     appBuf.put(DataType.BYTE, 0)
                                     continue
                                 }
@@ -140,7 +140,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                         } else if (i == hair) {
                             val item = other.equipment[0]
                             if (item != null) {
-                                val equipType = item.getDef(other.world.definitions).equipType
+                                val equipType = item.getDef().equipType
                                 if (equipType == hair || equipType == beard) {
                                     appBuf.put(DataType.BYTE, 0)
                                     continue
@@ -173,7 +173,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
 
                     val weapon = other.equipment[3] // Assume slot 3 is the weapon.
                     if (weapon != null) {
-                        val def = weapon.getDef(other.world.definitions)
+                        val def = weapon.getDef()
                         def.renderAnimations?.forEachIndexed { index, anim ->
                             animations[index] = anim
                         }
@@ -183,7 +183,7 @@ class PlayerUpdateBlockSegment(val other: Player, private val newPlayer: Boolean
                         appBuf.put(DataType.SHORT, anim)
                     }
                 } else {
-                    val def = other.world.definitions.get(NpcDef::class.java, other.getTransmogId())
+                    val def = npc(other.getTransmogId())
                     val animations = arrayOf(def.standAnim, def.walkAnim, def.walkAnim, def.render3,
                             def.render4, def.render5, def.walkAnim)
 

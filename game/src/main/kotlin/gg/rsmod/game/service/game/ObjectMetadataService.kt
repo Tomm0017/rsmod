@@ -5,9 +5,8 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import dev.openrune.cache.CacheManager.objects
 import gg.rsmod.game.Server
-import gg.rsmod.game.fs.DefinitionSet
-import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
@@ -31,7 +30,7 @@ class ObjectMetadataService : Service {
         }
 
         Files.newBufferedReader(path).use { reader ->
-            load(world.definitions, reader)
+            load(reader)
         }
     }
 
@@ -44,7 +43,7 @@ class ObjectMetadataService : Service {
     override fun terminate(server: Server, world: World) {
     }
 
-    private fun load(definitions: DefinitionSet, reader: BufferedReader) {
+    private fun load(reader: BufferedReader) {
         val mapper = ObjectMapper(YAMLFactory())
         mapper.propertyNamingStrategy = PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
@@ -52,8 +51,8 @@ class ObjectMetadataService : Service {
         val reference = object : TypeReference<List<Metadata>>() {}
         mapper.readValue<List<Metadata>>(reader, reference)?.let { metadataSet ->
             metadataSet.forEach { metadata ->
-                val def = definitions.getNullable(ObjectDef::class.java, metadata.id) ?: return@forEach
-                def.examine = metadata.examine
+                val def = objects(metadata.id)
+                def.examine = metadata.examine?: ""
             }
         }
     }

@@ -1,13 +1,12 @@
 package gg.rsmod.game.model
 
 import com.google.common.base.Stopwatch
+import dev.openrune.cache.CacheManager.item
+import dev.openrune.cache.CacheManager.npc
+import dev.openrune.cache.CacheManager.objects
 import gg.rsmod.game.DevContext
 import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
-import gg.rsmod.game.fs.DefinitionSet
-import gg.rsmod.game.fs.def.ItemDef
-import gg.rsmod.game.fs.def.NpcDef
-import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.message.impl.LogoutFullMessage
 import gg.rsmod.game.message.impl.UpdateRebootTimerMessage
 import gg.rsmod.game.model.attr.AttributeMap
@@ -57,11 +56,6 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
      * The [Store] is responsible for handling the data in our cache.
      */
     lateinit var filestore: Store
-
-    /**
-     * The [DefinitionSet] that holds general filestore data.
-     */
-    val definitions = DefinitionSet()
 
     /**
      * The [HuffmanCodec] used to compress and decompress public chat messages.
@@ -398,7 +392,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
         val tile = item.tile
         val chunk = chunks.getOrCreate(tile)
 
-        val def = definitions.get(ItemDef::class.java, item.item)
+        val def = item(item.item)
 
         if (def.stackable) {
             val oldItem = chunk.getEntities<GroundItem>(tile, EntityType.GROUND_ITEM).firstOrNull { it.item == item.item && it.ownerUID == item.ownerUID }
@@ -550,9 +544,9 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
 
     fun sendExamine(p: Player, id: Int, type: ExamineEntityType) {
         val examine = when (type) {
-            ExamineEntityType.ITEM -> definitions.get(ItemDef::class.java, id).examine
-            ExamineEntityType.NPC -> definitions.get(NpcDef::class.java, id).examine
-            ExamineEntityType.OBJECT -> definitions.get(ObjectDef::class.java, id).examine
+            ExamineEntityType.ITEM -> item(id).examine
+            ExamineEntityType.NPC -> npc(id).examine
+            ExamineEntityType.OBJECT -> objects(id).examine
         }
 
         if (examine != null) {

@@ -6,9 +6,9 @@ private val HAY_OBJECTS = setOf(
 HAY_OBJECTS.forEach { hay ->
     on_obj_option(obj = hay, option = "search") {
         val obj = player.getInteractingGameObj()
-        val name = obj.getDef(world.definitions).name
+        val name = obj.getDef().name
         player.queue {
-            search(this, player, name.toLowerCase())
+            search(this, player, name.lowercase())
         }
     }
 }

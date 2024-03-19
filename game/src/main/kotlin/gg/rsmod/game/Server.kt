@@ -1,6 +1,7 @@
 package gg.rsmod.game
 
 import com.google.common.base.Stopwatch
+import dev.openrune.cache.CacheManager
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.GroundItem
@@ -54,7 +55,7 @@ class Server {
          * Load the API property file.
          */
         apiProperties.loadYaml(apiProps.toFile())
-        logger.info("Preparing ${getApiName()}...")
+        logger.info { "Preparing ${getApiName()}..." }
 
         /*
          * Inform the time it took to load the API related logic.
@@ -115,14 +116,11 @@ class Server {
          * Load the file store.
          */
         individualStopwatch.reset().start()
+
+        CacheManager.init(filestore)
         world.filestore = Store(filestore.toFile())
         world.filestore.load()
         logger.info("Loaded filestore from path {} in {}ms.", filestore, individualStopwatch.elapsed(TimeUnit.MILLISECONDS))
-
-        /*
-         * Load the definitions.
-         */
-        world.definitions.loadAll(world.filestore)
 
         /*
          * Load the services required to run the server.
@@ -135,7 +133,7 @@ class Server {
              * Preload region definitions.
              */
             world.getService(XteaKeyService::class.java)?.let { service ->
-                world.definitions.loadRegions(world, world.chunks, service.validRegions)
+                MapLoader.loadRegions(world, world.chunks, service.validRegions)
             }
         }
 

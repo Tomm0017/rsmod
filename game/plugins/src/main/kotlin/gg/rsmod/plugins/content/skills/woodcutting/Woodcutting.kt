@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.content.skills.woodcutting
 
-import gg.rsmod.game.fs.def.ItemDef
+import dev.openrune.cache.CacheManager.objects
 import gg.rsmod.game.model.entity.DynamicObject
 import gg.rsmod.game.model.entity.GameObject
 import gg.rsmod.game.model.entity.Player
@@ -22,7 +22,7 @@ object Woodcutting {
             return
         }
 
-        val logName = p.world.definitions.get(ItemDef::class.java, tree.log).name
+        val logName = objects(tree.log).name
         val axe = AxeType.values.firstOrNull { p.getSkills().getMaxLevel(Skills.WOODCUTTING) >= it.level && (p.equipment.contains(it.item) || p.inventory.contains(it.item)) }!!
 
         p.filterableMessage("You swing your axe at the tree.")

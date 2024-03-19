@@ -1,5 +1,10 @@
 package gg.rsmod.plugins.content.cmd
 
+import dev.openrune.cache.CacheManager.item
+import dev.openrune.cache.CacheManager.itemCount
+import dev.openrune.cache.CacheManager.varbit
+import dev.openrune.cache.CacheManager.varbitCount
+import dev.openrune.cache.filestore.definition.data.VarBitDefinition
 import gg.rsmod.game.model.attr.NO_CLIP_ATTR
 import gg.rsmod.game.model.bits.INFINITE_VARS_STORAGE
 import gg.rsmod.game.model.bits.InfiniteVarsType
@@ -34,7 +39,7 @@ on_command("max") {
             }
             else -> throw IllegalStateException("Unhandled combat class: ${CombatConfigs.getCombatClass(player)} for $player")
         }
-        val name = combatClass.name.toLowerCase().capitalize()
+        val name = combatClass.name.lowercase().capitalize()
         val message = """<col=178000>$name:</col>   Max hit=<col=801700>$max</col>   Accuracy=<col=801700>${(accuracy * 100).toInt()}%</col> [${String.format("%.6f", accuracy)}]"""
         player.message(message)
     }
@@ -211,7 +216,7 @@ on_command("setlvl", Privilege.ADMIN_POWER) {
         try {
             skill = values[0].toInt()
         } catch (e: NumberFormatException) {
-            var name = values[0].toLowerCase()
+            var name = values[0].lowercase()
             when (name) {
                 "con" -> name = "construction"
                 "hp" -> name = "hitpoints"
@@ -225,7 +230,7 @@ on_command("setlvl", Privilege.ADMIN_POWER) {
                 "rc" -> name = "runecrafting"
                 "fm" -> name = "firemaking"
             }
-            skill = Skills.getSkillForName(world, player.getSkills().maxSkills, name)
+            skill = Skills.getSkillForName(player.getSkills().maxSkills, name)
         }
         if (skill != -1) {
             val level = values[1].toInt()
@@ -241,8 +246,8 @@ on_command("item", Privilege.ADMIN_POWER) {
     tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::item 4151 1</col> or <col=801700>::item 4151</col>") { values ->
         val item = values[0].toInt()
         val amount = if (values.size > 1) Math.min(Int.MAX_VALUE.toLong(), values[1].parseAmount()).toInt() else 1
-        if (item < world.definitions.getCount(ItemDef::class.java)) {
-            val def = world.definitions.get(ItemDef::class.java, Item(item).toUnnoted(world.definitions).id)
+        if (item < itemCount()) {
+            val def = item(Item(item).toUnnoted().id)
             val result = player.inventory.add(item = item, amount = amount, assureFullInsertion = false)
             player.message("You have spawned <col=801700>${DecimalFormat().format(result.completed)} x ${def.name}</col></col> ($item).")
         } else {
@@ -290,11 +295,11 @@ on_command("getvarbits", Privilege.ADMIN_POWER) {
     val args = player.getCommandArgs()
     tryWithUsage(player, args, "Invalid format! Example of proper command <col=801700>::getvarbits 83</col>") { values ->
         val varp = values[0].toInt()
-        val varbits = mutableListOf<VarbitDef>()
-        val totalVarbits = world.definitions.getCount(VarbitDef::class.java)
+        val varbits = mutableListOf<VarBitDefinition>()
+        val totalVarbits = varbitCount()
         for (i in 0 until totalVarbits) {
-            val varbit = world.definitions.getNullable(VarbitDef::class.java, i)
-            if (varbit?.varp == varp) {
+            val varbit = varbit(i)
+            if (varbit.varp == varp) {
                 varbits.add(varbit)
             }
         }

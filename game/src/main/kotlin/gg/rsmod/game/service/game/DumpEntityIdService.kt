@@ -1,10 +1,12 @@
 package gg.rsmod.game.service.game
 
+import dev.openrune.cache.CacheManager.item
+import dev.openrune.cache.CacheManager.itemCount
+import dev.openrune.cache.CacheManager.npc
+import dev.openrune.cache.CacheManager.npcCount
+import dev.openrune.cache.CacheManager.objectCount
+import dev.openrune.cache.CacheManager.objects
 import gg.rsmod.game.Server
-import gg.rsmod.game.fs.DefinitionSet
-import gg.rsmod.game.fs.def.ItemDef
-import gg.rsmod.game.fs.def.NpcDef
-import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
@@ -45,12 +47,12 @@ class DumpEntityIdService : Service {
         if (!dump) {
             return
         }
-        val definitions = world.definitions
+
         val namer = Namer()
 
-        writeItems(definitions, namer)
-        writeNpcs(definitions, namer)
-        writeObjs(definitions, namer)
+        writeItems(namer)
+        writeNpcs(namer)
+        writeObjs(namer)
     }
 
     override fun bindNet(server: Server, world: World) {
@@ -59,18 +61,18 @@ class DumpEntityIdService : Service {
     override fun terminate(server: Server, world: World) {
     }
 
-    private fun writeItems(definitions: DefinitionSet, namer: Namer) {
-        val count = definitions.getCount(ItemDef::class.java)
+    private fun writeItems(namer: Namer) {
+        val count = itemCount()
         val items = generateWriter("Items.kt")
         for (i in 0 until count) {
-            val item = definitions.getNullable(ItemDef::class.java, i) ?: continue
+            val item = item(i)
             /*
              * Skip placeholder items.
              */
             if (item.isPlaceholder) {
                 continue
             }
-            val rawName = if (item.noteTemplateId > 0) definitions.get(ItemDef::class.java, item.noteLinkId).name + "_NOTED" else item.name
+            val rawName = if (item.noteTemplateId > 0) item(item.noteLinkId).name + "_NOTED" else item.name
             if (rawName.isNotBlank()) {
                 val name = namer.name(rawName, i)
                 write(items, "const val $name = $i")
@@ -79,11 +81,11 @@ class DumpEntityIdService : Service {
         endWriter(items)
     }
 
-    private fun writeNpcs(definitions: DefinitionSet, namer: Namer) {
-        val count = definitions.getCount(NpcDef::class.java)
+    private fun writeNpcs(namer: Namer) {
+        val count = npcCount()
         val npcs = generateWriter("Npcs.kt")
         for (i in 0 until count) {
-            val npc = definitions.getNullable(NpcDef::class.java, i) ?: continue
+            val npc = npc(i)
             val rawName = npc.name.replace("?", "")
             if (rawName.isNotEmpty() && rawName.isNotBlank()) {
                 val name = namer.name(npc.name, i)
@@ -93,11 +95,11 @@ class DumpEntityIdService : Service {
         endWriter(npcs)
     }
 
-    private fun writeObjs(definitions: DefinitionSet, namer: Namer) {
-        val count = definitions.getCount(ObjectDef::class.java)
+    private fun writeObjs(namer: Namer) {
+        val count = objectCount()
         val objs = generateWriter("Objs.kt")
         for (i in 0 until count) {
-            val npc = definitions.getNullable(ObjectDef::class.java, i) ?: continue
+            val npc = objects(i) ?: continue
             val rawName = npc.name.replace("?", "")
             if (rawName.isNotEmpty() && rawName.isNotBlank()) {
                 val name = namer.name(npc.name, i)

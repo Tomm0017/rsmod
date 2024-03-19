@@ -84,7 +84,7 @@ object CombatConfigs {
         if (pawn is Player) {
             val default = PLAYER_DEFAULT_ATTACK_SPEED
             val weapon = pawn.getEquipment(EquipmentType.WEAPON) ?: return default
-            return Math.max(MIN_ATTACK_SPEED, weapon.getDef(pawn.world.definitions).attackSpeed)
+            return Math.max(MIN_ATTACK_SPEED, weapon.getDef().attackSpeed)
         }
 
         throw IllegalArgumentException("Invalid pawn type.")

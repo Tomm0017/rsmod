@@ -1,15 +1,17 @@
 package gg.rsmod.game.model
 
 import com.google.common.base.Stopwatch
-import dev.openrune.cache.CacheManager.item
-import dev.openrune.cache.CacheManager.npc
-import dev.openrune.cache.CacheManager.objects
 import gg.rsmod.game.DevContext
 import gg.rsmod.game.GameContext
 import gg.rsmod.game.Server
+import gg.rsmod.game.fs.DefinitionSet
+import gg.rsmod.game.fs.def.ItemDef
+import gg.rsmod.game.fs.def.NpcDef
+import gg.rsmod.game.fs.def.ObjectDef
 import gg.rsmod.game.message.impl.LogoutFullMessage
 import gg.rsmod.game.message.impl.UpdateRebootTimerMessage
 import gg.rsmod.game.model.attr.AttributeMap
+import gg.rsmod.game.model.attr.TERMINAL_ARGS
 import gg.rsmod.game.model.collision.CollisionManager
 import gg.rsmod.game.model.combat.NpcCombatDef
 import gg.rsmod.game.model.entity.*
@@ -30,11 +32,12 @@ import gg.rsmod.game.service.xtea.XteaKeyService
 import gg.rsmod.game.sync.block.UpdateBlockSet
 import gg.rsmod.util.HuffmanCodec
 import gg.rsmod.util.ServerProperties
-import io.github.oshai.kotlinlogging.KotlinLogging
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.runelite.cache.IndexType
 import net.runelite.cache.fs.Store
 import java.io.File
@@ -56,6 +59,13 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
      * The [Store] is responsible for handling the data in our cache.
      */
     lateinit var filestore: Store
+
+    /**
+     * The [DefinitionSet] that holds general filestore data.
+     */
+    val definitions = DefinitionSet()
+
+    lateinit var settings : Any
 
     /**
      * The [HuffmanCodec] used to compress and decompress public chat messages.
@@ -219,7 +229,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
     internal fun cycle() {
         if (currentCycle++ >= Int.MAX_VALUE - 1) {
             currentCycle = 0
-            logger.info { "World cycle has been reset." }
+            logger.info("World cycle has been reset.")
         }
 
         /*
@@ -227,7 +237,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
          * the [timers] during its execution, which isn't uncommon.
          */
         val timersCopy = timers.getTimers().toMutableMap()
-        timersCopy.forEach { (key, time) ->
+        timersCopy.forEach { key, time ->
             if (time <= 0) {
                 plugins.executeWorldTimer(this, key)
                 if (!timers.has(key)) {
@@ -260,7 +270,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
 
             groundItem.currentCycle++
 
-            if (groundItem.isPublic() && groundItem.currentCycle >= gameContext.gItemDespawnDelay) {
+            if (groundItem.isPublic() && groundItem.currentCycle >= gameContext.gItemDespawnDelay && groundItem.respawnCycles == -1) {
                 /*
                  * If the ground item is public and its cycle count has reached the
                  * despawn delay set by our game, we add it to our removal queue.
@@ -391,9 +401,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
     fun spawn(item: GroundItem) {
         val tile = item.tile
         val chunk = chunks.getOrCreate(tile)
-
-        val def = item(item.item)
-
+        val def = definitions.get(ItemDef::class.java, item.item)
         if (def.stackable) {
             val oldItem = chunk.getEntities<GroundItem>(tile, EntityType.GROUND_ITEM).firstOrNull { it.item == item.item && it.ownerUID == item.ownerUID }
             if (oldItem != null) {
@@ -404,7 +412,6 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
                 return
             }
         }
-
         groundItems.add(item)
         chunk.addEntity(this, item, tile)
     }
@@ -496,6 +503,8 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
 
     fun getShop(name: String): Shop? = plugins.shops.getOrDefault(name, null)
 
+    fun getShop(shopId: Int): Shop? = plugins.shops.values.elementAt(shopId)
+
     fun getMultiCombatChunks(): Set<Int> = plugins.multiCombatChunks
 
     fun getMultiCombatRegions(): Set<Int> = plugins.multiCombatRegions
@@ -544,9 +553,9 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
 
     fun sendExamine(p: Player, id: Int, type: ExamineEntityType) {
         val examine = when (type) {
-            ExamineEntityType.ITEM -> item(id).examine
-            ExamineEntityType.NPC -> npc(id).examine
-            ExamineEntityType.OBJECT -> objects(id).examine
+            ExamineEntityType.ITEM -> definitions.get(ItemDef::class.java, id).examine
+            ExamineEntityType.NPC -> definitions.get(NpcDef::class.java, id).examine
+            ExamineEntityType.OBJECT -> definitions.get(ObjectDef::class.java, id).examine
         }
 
         if (examine != null) {
@@ -595,7 +604,7 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
             val values = s as LinkedHashMap<*, *>
             val className = values["class"] as String
             val clazz = Class.forName(className).asSubclass(Service::class.java)!!
-            val service = clazz.newInstance()
+            val service = clazz.getDeclaredConstructor().newInstance()
 
             val properties = hashMapOf<String, Any>()
             values.filterKeys { it != "class" }.forEach { key, value ->
@@ -607,16 +616,10 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
             stopwatch.stop()
 
             services.add(service)
-            logger.info {
-                "${"Initiated service '{}' in {}ms."} ${service.javaClass.simpleName} ${
-                    stopwatch.elapsed(
-                        TimeUnit.MILLISECONDS
-                    )
-                }"
-            }
+            logger.info("Initiated service '{}' in {}ms.", service.javaClass.simpleName, stopwatch.elapsed(TimeUnit.MILLISECONDS))
         }
         services.forEach { s -> s.postLoad(server, this) }
-        logger.info { "${"Loaded {} game services."} ${services.size}" }
+        logger.info("Loaded {} game services.", services.size)
     }
 
     /**
@@ -639,6 +642,10 @@ class World(val gameContext: GameContext, val devContext: DevContext) {
      */
     internal fun bindServices(server: Server) {
         services.forEach { it.bindNet(server, this) }
+    }
+
+    fun getTerminalArgs() : Array<String>? {
+        return this.attr[TERMINAL_ARGS]
     }
 
     companion object {

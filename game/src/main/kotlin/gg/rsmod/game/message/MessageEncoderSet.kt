@@ -23,6 +23,7 @@ class MessageEncoderSet {
         put(RebuildLoginEncoder(), RebuildLoginMessage::class.java)
         put(VarpSmallEncoder(), VarpSmallMessage::class.java)
         put(VarpLargeEncoder(), VarpLargeMessage::class.java)
+        put(OpenUrlEncoder(), OpenUrlMessage::class.java)
         put(IfOpenSubEncoder(), IfOpenSubMessage::class.java)
         put(IfCloseSubEncoder(), IfCloseSubMessage::class.java)
         put(IfSetTextEncoder(), IfSetTextMessage::class.java)
@@ -57,9 +58,18 @@ class MessageEncoderSet {
         put(SynthSoundEncoder(), SynthSoundMessage::class.java)
         put(SoundAreaEncoder(), SoundAreaMessage::class.java)
         put(MidiSongEncoder(), MidiSongMessage::class.java)
+        put(MidiJingleEncoder(), MidiJingleMessage::class.java)
         put(OnDialogAbortEncoder(), TriggerOnDialogAbortMessage::class.java)
         put(UpdateRebootTimerEncoder(), UpdateRebootTimerMessage::class.java)
         put(MapAnimEncoder(), MapAnimMessage::class.java)
+        put(IfSetModelEncoder(), IfSetModelMessage::class.java)
+        put(CamShakeEncoder(), CamShakeMessage::class.java)
+        put(CameraResetEncoder(), CamResetMessage::class.java)
+        //put(LoadFriendListEncoder(), UpdateFriendListMessage::class.java)
+        //put(LoadIgnoreListEncoder(), UpdateIgnoreListMessage::class.java)
+        //put(LoadEmptyFriendsListEncoder(), FriendListLoadedMessage::class.java)
+
+        //put(MessagePrivateReceiverEncoder(), MessagePrivateReceiverMessage::class.java)
     }
 
     private fun <T : Message> put(encoder: MessageEncoder<T>, message: Class<out T>) {

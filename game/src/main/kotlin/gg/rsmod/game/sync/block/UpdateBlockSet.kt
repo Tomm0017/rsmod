@@ -33,7 +33,8 @@ class UpdateBlockSet {
      * value 0xFF, we have to write it as a short. The client uses a certain bit
      * to identify when this is the case.
      */
-    var updateBlockExcessMask = -1
+    var updateBlockExcessMask8 = -1
+    var updateBlockExcessMask16 = -1
 
     /**
      * The order in which [UpdateBlockType]s must be handled in the synchronization
@@ -45,15 +46,18 @@ class UpdateBlockSet {
 
     fun load(properties: ServerProperties) {
         check(this.updateOpcode == -1)
-        check(this.updateBlockExcessMask == -1)
+        check(this.updateBlockExcessMask8 == -1)
+        check(this.updateBlockExcessMask16 == -1)
         check(this.updateBlockOrder.isEmpty())
         check(this.updateBlocks.isEmpty())
 
         val updateOpcode = properties.get<Int>("updating-opcode")!!
         val largeSceneUpdateOpcode = properties.getOrDefault("large-updating-opcode", -1)
-        val excessMask = if (properties.has("excess-mask")) Integer.decode(properties.get<String>("excess-mask")) else -1
+        val excessMask8 = if (properties.has("excess-mask-8")) Integer.decode(properties.get<Int>("excess-mask-8").toString()) else -1
+        val excessMask16 = if (properties.has("excess-mask-16")) Integer.decode(properties.get<Int>("excess-mask-16").toString()) else -1
         this.updateOpcode = updateOpcode
-        this.updateBlockExcessMask = excessMask
+        this.updateBlockExcessMask8 = excessMask8
+        this.updateBlockExcessMask16 = excessMask16
         this.largeSceneUpdateOpcode = largeSceneUpdateOpcode
 
         val orders = properties.getOrDefault("order", ArrayList<Any>())
@@ -66,7 +70,7 @@ class UpdateBlockSet {
         blocks.forEach { packet ->
             val values = packet as LinkedHashMap<*, *>
             val blockType = (values["block"] as String).toUpperCase()
-            val bit = if (values.containsKey("bit")) Integer.decode(values["bit"] as String) else -1
+            val bit = if (values.containsKey("bit")) Integer.decode(values["bit"].toString()) else -1
             val structureValues = mutableListOf<MessageValue>()
 
             if (values.containsKey("structure")) {
@@ -81,7 +85,6 @@ class UpdateBlockSet {
                     structureValues.add(MessageValue(id = name, order = order, transformation = transform, type = type, signature = signature))
                 }
             }
-
             val block = UpdateBlockType.valueOf(blockType)
             val structure = UpdateBlockStructure(bit = bit, values = structureValues)
             this.updateBlocks[block] = structure

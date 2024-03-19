@@ -26,7 +26,7 @@ open class WeightNodeSet<T> {
     fun getRandom(random: Random = this.random): T = getRandomNode(random).convert(random)
 
     fun getRandomNode(random: Random = this.random): WeightNode<T> {
-        val totalWeight = nodes.sumBy { it.weight }
+        val totalWeight = nodes.sumOf { it.weight }
         var randomWeight = random.nextInt(totalWeight + 1)
 
         for (node in nodes) {

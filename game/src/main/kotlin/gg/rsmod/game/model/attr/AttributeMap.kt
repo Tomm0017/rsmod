@@ -47,5 +47,5 @@ class AttributeMap {
         }
     }
 
-    fun toPersistentMap(): Map<String, Any> = attributes.filterKeys { it.persistenceKey != null }.mapKeys { it.key.persistenceKey!! }
+    fun toPersistentMap(): Map<String, Any> = attributes.filterKeys { it.persistenceKey != null && !it.temp }.mapKeys { it.key.persistenceKey!! }
 }

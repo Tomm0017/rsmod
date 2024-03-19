@@ -39,9 +39,9 @@ class OpLoc2Handler : MessageHandler<OpLoc2Message> {
          * Get the region chunk that the object would belong to.
          */
         val chunk = world.chunks.getOrCreate(tile)
-        val obj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.id == message.id } ?: return
+        val obj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.id == message.item } ?: return
 
-        log(client, "Object action 2: id=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
+        log(client, "Object action 2: id=%d, x=%d, z=%d, movement=%d", message.item, message.x, message.z, message.movementType)
 
         client.stopMovement()
         client.closeInterfaceModal()
@@ -49,7 +49,7 @@ class OpLoc2Handler : MessageHandler<OpLoc2Message> {
         client.resetInteractions()
 
         if (message.movementType == 1 && world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-            val def = obj.getDef()
+            val def = obj.getDef(world.definitions)
             client.moveTo(world.findRandomTileAround(obj.tile, radius = 1, centreWidth = def.width, centreLength = def.length) ?: obj.tile)
         }
 

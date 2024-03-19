@@ -48,11 +48,11 @@ class MessageStructureSet {
     }
 
     private fun load(properties: ServerProperties, storeOpcodes: Boolean) {
-        val packets = properties.get<ArrayList<Any>>(if (storeOpcodes) "in-packets" else "out-packets")!!
+        val packets = properties.get<ArrayList<Any>>(if (storeOpcodes) "client-packets" else "server-packets")!!
         packets.forEach { packet ->
             val values = packet as LinkedHashMap<*, *>
             val className = values["message"] as String
-            val packetType = if (values.containsKey("type")) PacketType.valueOf((values["type"] as String).toUpperCase()) else PacketType.FIXED
+            val packetType = if (values.containsKey("type")) PacketType.valueOf((values["type"] as String).uppercase()) else PacketType.FIXED
             val clazz = Class.forName(className)
             val packetLength = values["length"] as? Int ?: 0
             val ignore = values["ignore"] as? Boolean ?: false
@@ -71,22 +71,35 @@ class MessageStructureSet {
                 packetStructure?.forEach { structure ->
                     val structValues = structure as LinkedHashMap<*, *>
                     val name = structValues["name"] as String
-                    val order = if (structValues.containsKey("order")) DataOrder.valueOf(structValues["order"] as String) else DataOrder.BIG
+                    val order: () -> DataOrder = {
+                        if (structValues.containsKey("order")) {
+                            if (structValues["order"] != "IME") {
+                                DataOrder.valueOf(structValues["order"] as String)
+                            } else {
+                                DataOrder.INVERSE_MIDDLE
+                            }
+                        } else {
+                            DataOrder.BIG
+                        }
+                    }
+
+
+
                     val transform = if (structValues.containsKey("trans")) DataTransformation.valueOf(structValues["trans"] as String) else DataTransformation.NONE
                     val type = DataType.valueOf(structValues["type"] as String)
-                    val signature = if (structValues.containsKey("sign")) DataSignature.valueOf((structValues["sign"] as String).toUpperCase()) else DataSignature.SIGNED
-                    packetValues[name] = MessageValue(id = name, order = order, transformation = transform, type = type,
-                            signature = signature)
+                    val signature = if (structValues.containsKey("sign")) DataSignature.valueOf((structValues["sign"] as String).uppercase()) else DataSignature.SIGNED
+                    packetValues[name] = MessageValue(id = name, order = order(), transformation = transform, type = type,
+                        signature = signature)
                 }
                 val messageStructure = MessageStructure(type = packetType, opcodes = packetOpcodes.toIntArray(), length = packetLength,
-                        ignore = ignore, values = packetValues)
+                    ignore = ignore, values = packetValues)
                 structureClasses[clazz] = messageStructure
                 if (storeOpcodes) {
                     packetOpcodes.forEach { opcode -> structureOpcodes[opcode] = messageStructure }
                 }
             } else {
                 val messageStructure = MessageStructure(type = packetType, opcodes = packetOpcodes.toIntArray(), length = packetLength,
-                        ignore = ignore, values = Object2ObjectLinkedOpenHashMap(0))
+                    ignore = ignore, values = Object2ObjectLinkedOpenHashMap(0))
                 structureClasses[clazz] = messageStructure
                 if (storeOpcodes) {
                     packetOpcodes.forEach { opcode -> structureOpcodes[opcode] = messageStructure }

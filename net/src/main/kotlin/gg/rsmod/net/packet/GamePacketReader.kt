@@ -21,6 +21,7 @@ import gg.rsmod.util.DataConstants
 import gg.rsmod.util.io.BufferUtils.readJagexString
 import gg.rsmod.util.io.BufferUtils.readString
 import io.netty.buffer.ByteBuf
+import java.lang.IllegalStateException
 
 /**
  * A utility class for reading [GamePacket]s.
@@ -125,7 +126,7 @@ class GamePacketReader(packet: GamePacket) {
      */
     private fun checkBitAccess() {
         Preconditions.checkState(mode === AccessMode.BIT_ACCESS,
-                "For bit-based calls to work, the mode must be bit access.")
+            "For bit-based calls to work, the mode must be bit access.")
     }
 
     /**
@@ -135,7 +136,7 @@ class GamePacketReader(packet: GamePacket) {
      */
     private fun checkByteAccess() {
         Preconditions.checkState(mode === AccessMode.BYTE_ACCESS,
-                "For byte-based calls to work, the mode must be byte access.")
+            "For byte-based calls to work, the mode must be byte access.")
     }
 
     /**
@@ -188,24 +189,47 @@ class GamePacketReader(packet: GamePacket) {
             if (transformation != DataTransformation.NONE) {
                 throw IllegalArgumentException("Middle endian cannot be transformed.")
             }
-            if (type != DataType.INT) {
-                throw IllegalArgumentException("Middle endian can only be used with an integer.")
+            if (!(type == DataType.INT || type == DataType.MEDIUM)) {
+                throw IllegalArgumentException("Middle endian can only be used with integer and medium values.")
             }
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 8).toLong()
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF).toLong()
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 24).toLong()
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 16).toLong()
-        } else if (order == DataOrder.INVERSED_MIDDLE) {
+
+            when (type) {
+                DataType.MEDIUM -> {
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 8).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 16).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF).toLong()
+                }
+                DataType.INT -> {
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 8).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 24).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 16).toLong()
+                }
+                else -> throw IllegalStateException("Unknown $type")
+            }
+        } else if (order == DataOrder.INVERSE_MIDDLE) {
             if (transformation != DataTransformation.NONE) {
                 throw IllegalArgumentException("Inversed middle endian cannot be transformed.")
             }
-            if (type != DataType.INT) {
-                throw IllegalArgumentException("Inversed middle endian can only be used with an integer.")
+            if (!(type == DataType.INT || type == DataType.MEDIUM)) {
+                throw IllegalArgumentException("Inversed middle endian can only be used with integer and medium values.")
             }
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 16).toLong()
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 24).toLong()
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF).toLong()
-            longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 8).toLong()
+
+            when (type) {
+                DataType.MEDIUM -> {
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 16).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 8).toLong()
+                }
+                DataType.INT -> {
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 16).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 24).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF).toLong()
+                    longValue = longValue or (buffer.readByte().toInt() and 0xFF shl 8).toLong()
+                }
+                else -> throw IllegalStateException("Unknown $type")
+
+            }
         } else {
             throw IllegalArgumentException("Unknown order.")
         }

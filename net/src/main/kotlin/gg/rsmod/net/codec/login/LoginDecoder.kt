@@ -42,15 +42,30 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
         }
     }
 
+    private fun ChannelHandlerContext.writeResponse(result: LoginResultType) {
+        val buf = channel().alloc().buffer(1)
+        buf.writeByte(result.id)
+        writeAndFlush(buf).addListener(ChannelFutureListener.CLOSE)
+    }
+
     private fun decodeHeader(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
         if (buf.readableBytes() >= 3) {
-            val size = buf.readUnsignedShort()
+            val size = buf.readUnsignedShort() // always 0
             if (buf.readableBytes() >= size) {
-                val revision = buf.readInt()
-                buf.skipBytes(Int.SIZE_BYTES) // Always 1
-                buf.skipBytes(Byte.SIZE_BYTES)
+
+                val revision
+                        = buf.readInt()
+                buf.readInt() // always 1
+                buf.readUnsignedByte() // client type
+                /**
+                 * login protocols see param4 sent before and inside the xtea buffer
+                 * and clientType here is an addition since the inclusion of mobile;
+                 * all of this is ignored by rsmod for now.
+                 */
+                buf.readUnsignedByte() // param4 is written as a signed byte
+
                 if (revision == serverRevision) {
-                    payloadLength = size - (Int.SIZE_BYTES + Int.SIZE_BYTES + Byte.SIZE_BYTES)
+                    payloadLength = size - (Int.SIZE_BYTES + Int.SIZE_BYTES + Byte.SIZE_BYTES + Byte.SIZE_BYTES)
                     decodePayload(ctx, buf, out)
                 } else {
                     ctx.writeResponse(LoginResultType.REVISION_MISMATCH)
@@ -60,10 +75,10 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
             }
         }
     }
-
     private fun decodePayload(ctx: ChannelHandlerContext, buf: ByteBuf, out: MutableList<Any>) {
         if (buf.readableBytes() >= payloadLength) {
             buf.markReaderIndex()
+            buf.readUnsignedByte() // The byte that you commented out.
 
             val secureBuf: ByteBuf = if (rsaExponent != null && rsaModulus != null) {
                 val secureBufLength = buf.readUnsignedShort()
@@ -78,35 +93,32 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
             if (!successfulEncryption) {
                 buf.resetReaderIndex()
                 buf.skipBytes(payloadLength)
-                logger.info { "${"Channel '{}' login request rejected."} ${ctx.channel()}" }
+                logger.info("Channel '{}' login request rejected.", ctx.channel())
                 ctx.writeResponse(LoginResultType.BAD_SESSION_ID)
                 return
             }
 
-            val xteaKeys = IntArray(4) { secureBuf.readInt() }
+            val xteaKeys = IntArray(4) {secureBuf.readInt()}
             val reportedSeed = secureBuf.readLong()
 
-            val authCode: Int
+            var authCode: Int = -1
             val password: String?
             val previousXteaKeys = IntArray(4)
 
             if (reconnecting) {
-                for (i in previousXteaKeys.indices) {
+                for (i in 0 until previousXteaKeys.size) {
                     previousXteaKeys[i] = secureBuf.readInt()
                 }
 
-                authCode = -1
                 password = null
             } else {
-                val authType = secureBuf.readByte().toInt()
-
-                if (authType == 1) {
-                    authCode = secureBuf.readInt()
-                } else if (authType == 0 || authType == 2) {
-                    authCode = secureBuf.readUnsignedMedium()
-                    secureBuf.skipBytes(Byte.SIZE_BYTES)
-                } else {
-                    authCode = secureBuf.readInt()
+                when(secureBuf.readByte().toInt()) {
+                    0,1 -> {
+                        authCode = secureBuf.readUnsignedMedium()
+                        secureBuf.skipBytes(Byte.SIZE_BYTES)
+                    }
+                    2 -> secureBuf.skipBytes(Int.SIZE_BYTES)
+                    3 -> authCode = secureBuf.readInt()
                 }
 
                 secureBuf.skipBytes(Byte.SIZE_BYTES)
@@ -119,15 +131,7 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
             if (reportedSeed != serverSeed) {
                 xteaBuf.resetReaderIndex()
                 xteaBuf.skipBytes(payloadLength)
-                logger.info {
-                    "${"User '{}' login request seed mismatch [receivedSeed=$reportedSeed, expectedSeed=$serverSeed]."} ${
-                        arrayOf<Any?>(
-                            username,
-                            reportedSeed,
-                            serverSeed
-                        )
-                    }"
-                }
+                logger.info("User '{}' login request seed mismatch [receivedSeed=$reportedSeed, expectedSeed=$serverSeed].", username, reportedSeed, serverSeed)
                 ctx.writeResponse(LoginResultType.BAD_SESSION_ID)
                 return
             }
@@ -136,64 +140,46 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
             val clientResizable = (clientSettings shr 1) == 1
             val clientWidth = xteaBuf.readUnsignedShort()
             val clientHeight = xteaBuf.readUnsignedShort()
-
             xteaBuf.skipBytes(24) // random.dat data
-            xteaBuf.readString()
-            xteaBuf.skipBytes(Int.SIZE_BYTES)
+            xteaBuf.readString() // param9
+            xteaBuf.skipBytes(Int.SIZE_BYTES) // param14
+            xteaBuf.skipBytes(55) //platform info block size - rev 211
+            xteaBuf.readByte() // client type
+            xteaBuf.skipBytes(Int.SIZE_BYTES) // 0
 
-            xteaBuf.skipBytes(Byte.SIZE_BYTES * 10)
-            xteaBuf.skipBytes(Short.SIZE_BYTES)
-            xteaBuf.skipBytes(Byte.SIZE_BYTES)
-            xteaBuf.skipBytes(Byte.SIZE_BYTES * 3)
-            xteaBuf.skipBytes(Short.SIZE_BYTES)
-            xteaBuf.readJagexString()
-            xteaBuf.readJagexString()
-            xteaBuf.readJagexString()
-            xteaBuf.readJagexString()
-            xteaBuf.skipBytes(Byte.SIZE_BYTES)
-            xteaBuf.skipBytes(Short.SIZE_BYTES)
-            xteaBuf.readJagexString()
-            xteaBuf.readJagexString()
-            xteaBuf.skipBytes(Byte.SIZE_BYTES * 2)
-            xteaBuf.skipBytes(Int.SIZE_BYTES * 3)
-            xteaBuf.skipBytes(Int.SIZE_BYTES)
-            xteaBuf.readJagexString()
 
-            xteaBuf.skipBytes(Int.SIZE_BYTES * 3)
-
-            val crcs = IntArray(cacheCrcs.size) { xteaBuf.readInt() }
-
-            for (i in 0 until crcs.size) {
-                /**
-                 * CRC for index 16 is always sent as 0 (at least on the
-                 * Desktop client, need to look into mobile).
-                 */
-                if (i == 16) {
-                    continue
-                }
-                if (crcs[i] != cacheCrcs[i]) {
-                    buf.resetReaderIndex()
-                    buf.skipBytes(payloadLength)
-                    logger.info { "User '$username' login request crc mismatch [requestCrc=${crcs.contentToString()}, cacheCrc=${cacheCrcs.contentToString()}]." }
-                    ctx.writeResponse(LoginResultType.REVISION_MISMATCH)
-                    return
-                }
-            }
+            /**
+             * For now ignored since 1) Busy with other stuff. 2) Not that important.
+             */
+//            val crcs = decodeCRCs(xteaBuf)
+//            for (i in crcs.indices) {
+//                println("$i ${crcs[i]}")
+//                /**
+//                 * CRC for index 16 is always sent as 0 (at least on the
+//                 * Desktop client, need to look into mobile).
+//                 */
+//                if (i == 16) {
+//                    continue
+//                }
+////                if (!cacheCrcs.contains(crcs[i])) {
+////                    buf.resetReaderIndex()
+////                    buf.skipBytes(payloadLength)
+////                    logger.info { "User '$username' login request crc mismatch [requestCrc=${crcs.contentToString()}, cacheCrc=${cacheCrcs.contentToString()}]." }
+////                    println("$i : ${crcs[i]}  != ${cacheCrcs[i]}")
+////
+////                    ctx.writeResponse(LoginResultType.REVISION_MISMATCH)
+////                    return
+////                }
+//            }
 
             logger.info { "User '$username' login request from ${ctx.channel()}." }
 
             val request = LoginRequest(channel = ctx.channel(), username = username,
-                    password = password ?: "", revision = serverRevision, xteaKeys = xteaKeys,
-                    resizableClient = clientResizable, auth = authCode, uuid = "".uppercase(Locale.getDefault()), clientWidth = clientWidth, clientHeight = clientHeight,
-                    reconnecting = reconnecting)
+                password = password ?: "", revision = serverRevision, xteaKeys = xteaKeys,
+                resizableClient = clientResizable, auth = authCode, uuid = "".lowercase(), clientWidth = clientWidth, clientHeight = clientHeight,
+                reconnecting = reconnecting)
             out.add(request)
         }
-    }
-
-    private fun ChannelHandlerContext.writeResponse(result: LoginResultType) {
-        val buf = channel().alloc().buffer(1)
-        buf.writeByte(result.id)
-        writeAndFlush(buf).addListener(ChannelFutureListener.CLOSE)
     }
 
     private fun ByteBuf.decipher(xteaKeys: IntArray): ByteBuf {
@@ -202,9 +188,16 @@ class LoginDecoder(private val serverRevision: Int, private val cacheCrcs: IntAr
         return Unpooled.wrappedBuffer(Xtea.decipher(xteaKeys, data, 0, data.size))
     }
 
+    /**
+     * As of revision 190 the client now sends the CRCs out of order
+     * and with varying byte orders
+     */
     companion object {
         private val logger = KotlinLogging.logger{}
         private const val LOGIN_OPCODE = 16
         private const val RECONNECT_OPCODE = 18
+        private val CRCorder = intArrayOf(
+            9,20,17,10,13,6,12,18,11,5,3,4,0,2,14,15,19,8,1,7
+        )
     }
 }

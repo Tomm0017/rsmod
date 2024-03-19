@@ -1,8 +1,9 @@
 package gg.rsmod.game.model.interf
 
 import gg.rsmod.game.model.interf.listener.InterfaceListener
-import io.github.oshai.kotlinlogging.KotlinLogging
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap
+
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 /**
  * Stores visible interfaces.
@@ -77,7 +78,7 @@ class InterfaceSet(private val listener: InterfaceListener) {
             closeByHash(found)
             return found
         }
-        logger.warn { "${"Interface {} is not visible and cannot be closed."} $parent" }
+        logger.warn("Interface {} is not visible and cannot be closed.", parent)
         return -1
     }
 
@@ -117,7 +118,7 @@ class InterfaceSet(private val listener: InterfaceListener) {
             listener.onInterfaceClose(found)
             return found
         }
-        logger.warn { "${"No interface visible in pane ({}, {})."} ${hash shr 16} ${hash and 0xFFFF}" }
+        logger.warn("No interface visible in pane ({}, {}).", hash shr 16, hash and 0xFFFF)
         return -1
     }
 

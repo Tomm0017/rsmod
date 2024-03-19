@@ -151,24 +151,54 @@ class GamePacketBuilder {
             DataOrder.MIDDLE -> {
                 Preconditions.checkArgument(transformation == DataTransformation.NONE, "Middle endian cannot be transformed.")
 
-                Preconditions.checkArgument(type == DataType.INT, "Middle endian can only be used with an integer.")
+                Preconditions.checkArgument(type == DataType.INT || type == DataType.MEDIUM, "Middle endian can only be used with integer and medium values.")
 
-                buffer.writeByte((longValue shr 8).toByte().toInt())
-                buffer.writeByte(longValue.toByte().toInt())
-                buffer.writeByte((longValue shr 24).toByte().toInt())
-                buffer.writeByte((longValue shr 16).toByte().toInt())
+                when (type) {
+                    DataType.MEDIUM -> {
+                        buffer.writeByte((longValue shr 16).toByte().toInt())
+                        buffer.writeByte(longValue.toByte().toInt())
+                        buffer.writeByte((longValue shr 8).toByte().toInt())
+                    }
+                    DataType.INT -> {
+                        buffer.writeByte((longValue shr 8).toByte().toInt())
+                        buffer.writeByte(longValue.toByte().toInt())
+                        buffer.writeByte((longValue shr 24).toByte().toInt())
+                        buffer.writeByte((longValue shr 16).toByte().toInt())
+                    }
+                    else -> throw IllegalStateException("Unknown DataType: $type.")
+                }
             }
-            DataOrder.INVERSED_MIDDLE -> {
+            DataOrder.CUSTOM -> {
+                when (type) {
+                    DataType.MEDIUM -> {
+                        buffer.writeByte((longValue shr 8).toByte().toInt())
+                        buffer.writeByte((longValue shr 16).toByte().toInt())
+                        buffer.writeByte(longValue.toByte().toInt())
+                    }
+                    else -> throw IllegalArgumentException("Unknown shit")
+                }
+            }
+            DataOrder.INVERSE_MIDDLE -> {
                 Preconditions.checkArgument(transformation == DataTransformation.NONE, "Inversed middle endian cannot be transformed.")
 
-                Preconditions.checkArgument(type == DataType.INT, "Inversed middle endian can only be used with an integer.")
+                Preconditions.checkArgument(type == DataType.INT || type == DataType.MEDIUM, "Inversed middle endian can only be used with integer and medium values.")
 
-                buffer.writeByte((longValue shr 16).toByte().toInt())
-                buffer.writeByte((longValue shr 24).toByte().toInt())
-                buffer.writeByte(longValue.toByte().toInt())
-                buffer.writeByte((longValue shr 8).toByte().toInt())
+                when (type) {
+                    DataType.MEDIUM -> {
+                        buffer.writeByte(longValue.toByte().toInt())
+                        buffer.writeByte((longValue shr 16).toByte().toInt())
+                        buffer.writeByte((longValue shr 8).toByte().toInt())
+                    }
+                    DataType.INT -> {
+                        buffer.writeByte((longValue shr 16).toByte().toInt())
+                        buffer.writeByte((longValue shr 24).toByte().toInt())
+                        buffer.writeByte(longValue.toByte().toInt())
+                        buffer.writeByte((longValue shr 8).toByte().toInt())
+                    }
+                    else -> throw IllegalStateException("Unknown DataType: $type.")
+                }
             }
-            else -> throw IllegalArgumentException("Unknown order.")
+            else -> throw IllegalArgumentException("Unknown order $order.")
         }
     }
 
@@ -232,6 +262,7 @@ class GamePacketBuilder {
      */
     @Throws(IllegalArgumentException::class)
     fun putBits(numBits: Int, value: Int) {
+        // @TODO print("$numBits : $value | ");
         var numberOfBits = numBits
         Preconditions.checkArgument(numberOfBits in 1..32, "Number of bits must be between 1 and 32 inclusive.")
 
@@ -344,9 +375,9 @@ class GamePacketBuilder {
      *
      * @param bytes The byte array.
      */
-    fun putBytesReverse(bytes: ByteArray) {
+    fun putBytesReverse(bytes: ByteArray, length: Int = bytes.size) {
         checkByteAccess()
-        for (i in bytes.indices.reversed()) {
+        for (i in length-1 downTo 0) {
             buffer.writeByte(bytes[i].toInt())
         }
     }
@@ -356,8 +387,8 @@ class GamePacketBuilder {
      *
      * @param buffer The source [ByteBuf].
      */
-    fun putBytesReverse(buffer: ByteBuf) {
-        val bytes = ByteArray(buffer.readableBytes())
+    fun putBytesReverse(buffer: ByteBuf, length: Int = buffer.readableBytes()) {
+        val bytes = ByteArray(length)
         buffer.markReaderIndex()
         try {
             buffer.readBytes(bytes)
@@ -373,11 +404,11 @@ class GamePacketBuilder {
      * @param transformation The transformation.
      * @param bytes The byte array.
      */
-    fun putBytesReverse(transformation: DataTransformation, bytes: ByteArray) {
+    fun putBytesReverse(transformation: DataTransformation, bytes: ByteArray, length: Int = bytes.size) {
         if (transformation == DataTransformation.NONE) {
-            putBytesReverse(bytes)
+            putBytesReverse(bytes, length)
         } else {
-            for (i in bytes.indices.reversed()) {
+            for (i in length-1 downTo 0) {
                 put(DataType.BYTE, transformation, bytes[i])
             }
         }

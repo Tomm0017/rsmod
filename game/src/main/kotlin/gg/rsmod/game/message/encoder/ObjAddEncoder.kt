@@ -12,6 +12,11 @@ class ObjAddEncoder : MessageEncoder<ObjAddMessage>() {
         "item" -> message.item
         "amount" -> message.amount
         "tile" -> message.tile
+        "unknown1" -> 31
+        "random1" -> 0  // Will change in next rev as of [211]
+        "random2" -> 0  // Will change in next rev as of [211]
+        "random3" -> 0  // Will change in next rev as of [211]
+        "random4" -> 0  // Will change in next rev as of [211]
         else -> throw Exception("Unhandled value key.")
     }
 

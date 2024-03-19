@@ -49,7 +49,7 @@ class OpLoc5Handler : MessageHandler<OpLoc5Message> {
         client.resetInteractions()
 
         if (message.movementType == 1 && world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-            val def = obj.getDef()
+            val def = obj.getDef(world.definitions)
             client.moveTo(world.findRandomTileAround(obj.tile, radius = 1, centreWidth = def.width, centreLength = def.length) ?: obj.tile)
         }
 

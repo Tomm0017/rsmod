@@ -1,6 +1,5 @@
 package gg.rsmod.game.service.world
 
-import gg.rsmod.game.Server
 import gg.rsmod.game.model.PlayerUID
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
@@ -12,16 +11,16 @@ import gg.rsmod.util.ServerProperties
  */
 interface WorldVerificationService : Service {
 
-    override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
+    override fun init(server: gg.rsmod.game.Server, world: World, serviceProperties: ServerProperties) {
     }
 
-    override fun postLoad(server: Server, world: World) {
+    override fun postLoad(server: gg.rsmod.game.Server, world: World) {
     }
 
-    override fun bindNet(server: Server, world: World) {
+    override fun bindNet(server: gg.rsmod.game.Server, world: World) {
     }
 
-    override fun terminate(server: Server, world: World) {
+    override fun terminate(server: gg.rsmod.game.Server, world: World) {
     }
 
     /**

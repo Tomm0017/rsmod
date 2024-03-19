@@ -7,6 +7,7 @@ import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.attr.INTERACTING_ITEM
+import gg.rsmod.game.model.attr.INTERACTING_ITEM_SLOT
 import gg.rsmod.game.model.attr.INTERACTING_OBJ_ATTR
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.GameObject
@@ -52,7 +53,7 @@ class OpLocUHandler : MessageHandler<OpLocUMessage> {
         val obj = chunk.getEntities<GameObject>(tile, EntityType.STATIC_OBJECT, EntityType.DYNAMIC_OBJECT).firstOrNull { it.id == message.obj } ?: return
 
         if (message.movementType == 1 && world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
-            val def = obj.getDef()
+            val def = obj.getDef(world.definitions)
             client.moveTo(world.findRandomTileAround(obj.tile, radius = 1, centreWidth = def.width, centreLength = def.length) ?: obj.tile)
         }
 
@@ -64,6 +65,7 @@ class OpLocUHandler : MessageHandler<OpLocUMessage> {
         client.resetInteractions()
 
         client.attr[INTERACTING_ITEM] = WeakReference(item)
+        client.attr[INTERACTING_ITEM_SLOT] = message.slot
         client.attr[INTERACTING_OBJ_ATTR] = WeakReference(obj)
 
         client.executePlugin(ObjectPathAction.itemOnObjectPlugin)

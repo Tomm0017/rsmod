@@ -20,15 +20,6 @@ private val LOCATIONS = mapOf(
         "Clan Wars" to Tile(3370, 3161, 0)
 )
 
-RING_OF_DUELING.forEach { duel ->
-    LOCATIONS.forEach { location, endTile ->
-        on_equipment_option(duel, option = location) {
-            player.queue(TaskPriority.STRONG) {
-                player.teleport(endTile)
-            }
-        }
-    }
-}
 
 fun Player.teleport(endTile : Tile) {
     if (canTeleport(TeleportType.MODERN) && hasEquipped(EquipmentType.RING, *RING_OF_DUELING)) {

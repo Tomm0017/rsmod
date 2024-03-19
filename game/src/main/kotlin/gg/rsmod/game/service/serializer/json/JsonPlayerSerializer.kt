@@ -3,25 +3,30 @@ package gg.rsmod.game.service.serializer.json
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import gg.rsmod.game.Server
-import gg.rsmod.game.model.*
+import gg.rsmod.game.model.PlayerUID
+import gg.rsmod.game.model.Tile
+import gg.rsmod.game.model.World
+import gg.rsmod.game.model.appearance.Appearance
+import gg.rsmod.game.model.appearance.Gender
 import gg.rsmod.game.model.attr.AttributeKey
 import gg.rsmod.game.model.container.ItemContainer
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.interf.DisplayMode
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.priv.Privilege
+import gg.rsmod.game.model.social.Social
 import gg.rsmod.game.model.timer.TimerKey
 import gg.rsmod.game.service.serializer.PlayerLoadResult
 import gg.rsmod.game.service.serializer.PlayerSerializerService
 import gg.rsmod.net.codec.login.LoginRequest
 import gg.rsmod.util.ServerProperties
+
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.mindrot.jbcrypt.BCrypt
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.Arrays
+import java.util.*
 
 /**
  * A [PlayerSerializerService] implementation that decodes and encodes player
@@ -33,11 +38,11 @@ class JsonPlayerSerializer : PlayerSerializerService() {
 
     private lateinit var path: Path
 
-    override fun initSerializer(server: Server, world: World, serviceProperties: ServerProperties) {
+    override fun initSerializer(server: gg.rsmod.game.Server, world: World, serviceProperties: ServerProperties) {
         path = Paths.get(serviceProperties.getOrDefault("path", "../data/saves/"))
         if (!Files.exists(path)) {
             Files.createDirectory(path)
-            logger.info { "Path does not exist: $path, creating directory..." }
+            logger.info("Path does not exist: $path, creating directory...")
         }
     }
 
@@ -53,7 +58,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
             val world = client.world
             val reader = Files.newBufferedReader(save)
             val json = Gson()
-            val data = json.fromJson<JsonPlayerSaveData>(reader, JsonPlayerSaveData::class.java)
+            val data = json.fromJson(reader, JsonPlayerSaveData::class.java)
             reader.close()
 
             if (!request.reconnecting) {
@@ -69,7 +74,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                  * If the [request] is a [LoginRequest.reconnecting] request, we
                  * verify that the login xteas match from our previous session.
                  */
-                if (!data.previousXteas.contentEquals(request.xteaKeys)) {
+                if (!Arrays.equals(data.previousXteas, request.xteaKeys)) {
                     return PlayerLoadResult.INVALID_RECONNECTION
                 }
             }
@@ -94,7 +99,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                     return@forEach
                 }
                 val container = if (client.containers.containsKey(key)) client.containers[key] else {
-                    client.containers[key] = ItemContainer(key)
+                    client.containers[key] = ItemContainer(client.world.definitions, key)
                     client.containers[key]
                 }!!
                 it.items.forEach { slot, item ->
@@ -119,6 +124,11 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                 client.varps.setState(varp.id, varp.state)
             }
 
+            if (data.social == null)
+                data.social = Social()
+
+            client.social = data.social
+
             return PlayerLoadResult.LOAD_ACCOUNT
         } catch (e: Exception) {
             logger.error(e) { "Error when loading player: ${request.username}" }
@@ -132,7 +142,7 @@ class JsonPlayerSerializer : PlayerSerializerService() {
                 privilege = client.privilege.id, runEnergy = client.runEnergy, displayMode = client.interfaces.displayMode.id,
                 appearance = client.getPersistentAppearance(), skills = client.getPersistentSkills(), itemContainers = client.getPersistentContainers(),
                 attributes = client.attr.toPersistentMap(), timers = client.timers.toPersistentTimers(),
-                varps = client.varps.getAll().filter { it.state != 0 })
+                varps = client.varps.getAll().filter { it.state != 0 }, social = client.social)
         val writer = Files.newBufferedWriter(path.resolve(client.loginUsername))
         val json = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
         json.toJson(data, writer)

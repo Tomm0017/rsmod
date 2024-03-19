@@ -7,15 +7,7 @@ import gg.rsmod.plugins.content.combat.isBeingAttacked
 private val PICKPOCKET_ANIMATION = 881
 private val GLOVES_OF_SILENCE_BONUS = 5
 
-PickpocketNpc.values.forEach { pickpocketNpc ->
-    pickpocketNpc.npcIds.forEach { npcId ->
-        on_npc_option(npc = npcId, option = "pickpocket") {
-            player.queue {
-                pickpocket(npcId, pickpocketNpc)
-            }
-        }
-    }
-}
+
 
 suspend fun QueueTask.pickpocket(npcId: Int, npc: PickpocketNpc) {
     val playerThievingLvl = player.getSkills().getCurrentLevel(Skills.THIEVING)

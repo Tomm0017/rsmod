@@ -1,6 +1,7 @@
 package gg.rsmod.game.action
 
-import dev.openrune.cache.CacheManager.anim
+import gg.rsmod.game.fs.def.AnimDef
+import gg.rsmod.game.message.impl.MidiJingleMessage
 import gg.rsmod.game.model.attr.KILLER_ATTR
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.queue.QueueTask
@@ -30,9 +31,9 @@ object PlayerDeathAction {
 
     private suspend fun QueueTask.death(player: Player) {
         val world = player.world
-        val deathAnim = anim(DEATH_ANIMATION)
+        val deathAnim = world.definitions.get(AnimDef::class.java, DEATH_ANIMATION)
         val instancedMap = world.instanceAllocator.getMap(player.tile)
-
+        player.write(MidiJingleMessage(90))
         player.damageMap.getMostDamage()?.let { killer ->
             if (killer is Player) {
                 world.getService(LoggerService::class.java, searchSubclasses = true)?.logPlayerKill(killer, player)
@@ -41,7 +42,6 @@ object PlayerDeathAction {
         }
 
         world.plugins.executePlayerPreDeath(player)
-
         player.resetFacePawn()
         wait(2)
         player.animate(deathAnim.id)

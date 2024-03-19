@@ -3,9 +3,11 @@ package gg.rsmod.game.system
 import com.google.common.primitives.Ints
 import gg.rsmod.net.codec.filestore.FilestoreRequest
 import gg.rsmod.net.codec.filestore.FilestoreResponse
-import io.github.oshai.kotlinlogging.KotlinLogging
+import gg.rsmod.util.io.BufferUtils.toArray
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext
+
+import io.github.oshai.kotlinlogging.KotlinLogging
 import net.runelite.cache.fs.Container
 import net.runelite.cache.fs.Store
 import net.runelite.cache.fs.jagex.CompressionType
@@ -52,7 +54,7 @@ class FilestoreSystem(channel: Channel, private val filestore: Store) : ServerSy
                 }
 
                 val container = Container(CompressionType.NONE, -1)
-                container.compress(buf.array().copyOf(buf.readableBytes()), null)
+                container.compress(buf.toArray().copyOf(buf.readableBytes()), null)
                 cachedIndexData = container.data
                 buf.release()
             }
@@ -82,7 +84,7 @@ class FilestoreSystem(channel: Channel, private val filestore: Store) : ServerSy
             val response = FilestoreResponse(index = req.index, archive = req.archive, data = data)
             ctx.writeAndFlush(response)
         } else {
-            logger.warn { "${"Data is missing from archive. index={}, archive={}"} ${req.index} ${req.archive}" }
+            logger.warn("Data is missing from archive. index={}, archive={}", req.index, req.archive)
         }
     }
 

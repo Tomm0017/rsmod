@@ -6,45 +6,6 @@ val LIMIT_TARGETS_VARBIT = 6503
 val SKULL_SHORT_DURATION = 500
 val SKULL_LONG_DURATION = 2000
 
-arrayOf(Npcs.EMBLEM_TRADER, Npcs.EMBLEM_TRADER_316).forEach { npc ->
-    on_npc_option(npc = npc, option = "talk-to") {
-        player.queue { chat(this) }
-    }
-
-    on_npc_option(npc = npc, option = "trade") {
-        open_bounty_store(player)
-    }
-
-    on_npc_option(npc = npc, option = "skull") {
-        player.queue {
-            if (player.hasSkullIcon(SkullIcon.NONE)) {
-                give_pk_skull(this)
-            } else {
-                extend_pk_skull(this)
-            }
-        }
-    }
-
-    if (npc == Npcs.EMBLEM_TRADER) {
-        on_npc_option(npc = npc, option = "hide-streaks") {
-            player.queue {
-                if (options("Yes", "No", title = "Hide kill streak data?") == 1) {
-                    hide_killstreak_data(player)
-                    player.message("Bounty Hunter kill streak data has now been hidden.")
-                }
-            }
-        }
-    } else if (npc == Npcs.EMBLEM_TRADER_316) {
-        on_npc_option(npc = npc, option = "show-streaks") {
-            player.queue {
-                if (options("Yes", "No", title = "Show kill streak data?") == 1) {
-                    show_killstreak_data(player)
-                    player.message("Bounty Hunter kill streak data has now been activated.")
-                }
-            }
-        }
-    }
-}
 
 suspend fun chat(it: QueueTask) {
     it.chatNpc("Hello, wanderer.", animation = 588)

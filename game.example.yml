@@ -2,9 +2,9 @@
 # You want to edit these to fit your game.
 name: "OpenRune"
 game-port: 43594
-revision: 181
+revision: 220
 # Cache Build from OpenRS2
-cache-build: 101
+cache-build: 1731
 
 # The coordinates for the home location.
 home-x: 3087

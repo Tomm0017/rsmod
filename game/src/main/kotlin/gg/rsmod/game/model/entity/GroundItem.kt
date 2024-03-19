@@ -29,7 +29,7 @@ class GroundItem private constructor(val item: Int, var amount: Int, internal va
 
     internal var currentCycle = 0
 
-    internal var respawnCycles = -1
+    var respawnCycles = -1
 
     internal val attr = EnumMap<ItemAttribute, Int>(ItemAttribute::class.java)
 

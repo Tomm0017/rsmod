@@ -11,6 +11,7 @@ class ObjDelEncoder : MessageEncoder<ObjDelMessage>() {
     override fun extract(message: ObjDelMessage, key: String): Number = when (key) {
         "item" -> message.item
         "tile" -> message.tile
+        "amount" -> message.amount
         else -> throw Exception("Unhandled value key.")
     }
 

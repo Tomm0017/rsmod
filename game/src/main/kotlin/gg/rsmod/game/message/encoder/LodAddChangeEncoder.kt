@@ -12,6 +12,7 @@ class LodAddChangeEncoder : MessageEncoder<LocAddChangeMessage>() {
         "tile" -> message.tile
         "settings" -> message.settings
         "id" -> message.id
+        "unknown" -> 31
         else -> throw Exception("Unhandled value key.")
     }
 

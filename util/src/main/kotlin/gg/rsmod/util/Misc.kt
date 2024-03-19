@@ -5,6 +5,11 @@ package gg.rsmod.util
  */
 object Misc {
 
+
+    fun IntRange.toArray(): Array<Int> {
+        return toList().toTypedArray()
+    }
+
     val DIRECTION_DELTA_X = intArrayOf(-1, 0, 1, -1, 1, -1, 0, 1)
     val DIRECTION_DELTA_Z = intArrayOf(-1, -1, -1, 0, 0, 1, 1, 1)
 

@@ -1,8 +1,8 @@
 package gg.rsmod.game.service.serializer
 
-import gg.rsmod.game.Server
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
+import gg.rsmod.game.model.attr.APPEARANCE_SET_ATTR
 import gg.rsmod.game.model.attr.NEW_ACCOUNT_ATTR
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.Service
@@ -19,28 +19,29 @@ abstract class PlayerSerializerService : Service {
 
     private lateinit var startTile: Tile
 
-    final override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
+    final override fun init(server: gg.rsmod.game.Server, world: World, serviceProperties: ServerProperties) {
         startTile = Tile(world.gameContext.home)
         initSerializer(server, world, serviceProperties)
     }
 
-    override fun postLoad(server: Server, world: World) {
+    override fun postLoad(server: gg.rsmod.game.Server, world: World) {
     }
 
-    override fun bindNet(server: Server, world: World) {
+    override fun bindNet(server: gg.rsmod.game.Server, world: World) {
     }
 
-    override fun terminate(server: Server, world: World) {
+    override fun terminate(server: gg.rsmod.game.Server, world: World) {
     }
 
     fun configureNewPlayer(client: Client, request: LoginRequest) {
         client.attr.put(NEW_ACCOUNT_ATTR, true)
+        client.attr.put(APPEARANCE_SET_ATTR, false)
 
         client.passwordHash = BCrypt.hashpw(request.password, BCrypt.gensalt(16))
         client.tile = startTile
     }
 
-    abstract fun initSerializer(server: Server, world: World, serviceProperties: ServerProperties)
+    abstract fun initSerializer(server: gg.rsmod.game.Server, world: World, serviceProperties: ServerProperties)
 
     abstract fun loadClientData(client: Client, request: LoginRequest): PlayerLoadResult
 

@@ -1,6 +1,6 @@
 package gg.rsmod.game.action
 
-import dev.openrune.cache.CacheManager.item
+import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.game.model.item.Item
 
@@ -19,10 +19,9 @@ object EquipAction {
     //  3) Load skill names via external configs which would be used throughout
     //      the game and plugins module
     private val SKILL_NAMES = arrayOf(
-            "attack", "defence", "strength", "hitpoints", "ranged", "prayer",
-            "magic", "cooking", "woodcutting", "fletching", "fishing", "firemaking",
-            "crafting", "Smithing", "mining", "herblore", "agility", "thieving",
-            "slayer", "farming", "runecrafting", "hunter", "construction"
+        "attack", "defence", "strength", "hitpoints", "ranged", "prayer", "magic", "cooking",
+        "woodcutting", "fletching", "fishing", "firemaking", "crafting", "Smithing", "mining", "herblore",
+        "agility", "thieving", "slayer", "farming", "runecrafting", "hunter", "construction"
     )
 
     /**
@@ -61,7 +60,7 @@ object EquipAction {
     }
 
     fun equip(p: Player, item: Item, inventorySlot: Int = -1): Result {
-        val def = item(item.id)
+        val def = p.world.definitions.get(ItemDef::class.java, item.id)
         val plugins = p.world.plugins
 
         // Resets interaction when an item is equipped.
@@ -85,7 +84,7 @@ object EquipAction {
                 val skill = entry.key.toInt()
                 val level = entry.value
 
-                if (p.getSkills().getMaxLevel(skill) < level) {
+                if (p.getSkills().getBaseLevel(skill) < level) {
                     val skillName = SKILL_NAMES[skill]
                     val prefix = if ("aeiou".indexOf(Character.toLowerCase(skillName[0])) != -1) "an" else "a"
                     p.writeMessage("You are not high enough level to use this item.")
@@ -131,7 +130,7 @@ object EquipAction {
 
             if (equipType != -1 && equipType != equipSlot) {
                 /*
-                 * [gg.rsmod.game.fs.def.ItemDef.equipType] counts as a 'secondary'
+                 * [org.alter.game.fs.def.ItemDef.equipType] counts as a 'secondary'
                  * equipment slot, which should be unequipped as well.
                  *
                  * For example, 2h swords have an equipment type of 5, which is also
@@ -148,7 +147,7 @@ object EquipAction {
              */
             for (i in 0 until p.equipment.capacity) {
                 val equip = p.equipment[i] ?: continue
-                val otherDef = item(equip.id)
+                val otherDef = p.world.definitions.get(ItemDef::class.java, equip.id)
                 if (otherDef.equipType == equipSlot && otherDef.equipType != 0) {
                     unequip.add(i)
                 }
@@ -196,15 +195,14 @@ object EquipAction {
                     val transaction = p.inventory.add(equipment.id, equipment.amount, beginSlot = if (initialSlot != -1) initialSlot else 0)
                     transaction.items.firstOrNull()?.item?.copyAttr(equipment)
                     initialSlot = -1
-
-                    /*
-                     * The item in equipSlot will be removed afterwards, so don't
-                     * remove it here!
-                     */
                     if (slot != equipSlot) {
                         p.equipment[slot] = null
                     }
                     onItemUnequip(p, equipmentId, slot)
+                }
+
+                if (def.equipSound != null) {
+                    p.playSound(def.equipSound!!)
                 }
 
                 p.equipment[equipSlot] = newEquippedItem

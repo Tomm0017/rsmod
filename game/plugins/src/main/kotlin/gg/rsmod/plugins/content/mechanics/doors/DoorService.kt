@@ -22,8 +22,8 @@ class DoorService : Service {
     val doubleDoors = ObjectArrayList<DoubleDoorSet>()
 
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
-        val singleDoorFile = Paths.get(serviceProperties.get("single-doors") ?: "./data/cfg/doors/single-doors.json")
-        val doubleDoorsFile = Paths.get(serviceProperties.get("double-doors") ?: "./data/cfg/doors/double-doors.json")
+        val singleDoorFile = Paths.get(serviceProperties.get("single-doors") ?: "../data/cfg/doors/single-doors.json")
+        val doubleDoorsFile = Paths.get(serviceProperties.get("double-doors") ?: "../data/cfg/doors/double-doors.json")
 
         Files.newBufferedReader(singleDoorFile).use { reader ->
             val doors = Gson().fromJson<ObjectArrayList<Door>>(reader, object: TypeToken<ObjectArrayList<Door>>() {}.type)

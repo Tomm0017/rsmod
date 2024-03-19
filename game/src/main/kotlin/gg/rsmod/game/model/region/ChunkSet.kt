@@ -1,6 +1,5 @@
 package gg.rsmod.game.model.region
 
-import gg.rsmod.game.MapLoader
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.collision.CollisionMatrix
@@ -90,7 +89,7 @@ class ChunkSet(val world: World) {
 
         chunks[coords] = newChunk
         if (activeRegions.add(regionId)) {
-            MapLoader.createRegion(world, regionId)
+            world.definitions.createRegion(world, regionId)
         }
         return newChunk
     }

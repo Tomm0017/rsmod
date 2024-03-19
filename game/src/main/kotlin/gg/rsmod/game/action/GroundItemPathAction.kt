@@ -1,6 +1,6 @@
 package gg.rsmod.game.action
 
-import dev.openrune.cache.CacheManager.item
+import gg.rsmod.game.fs.def.ItemDef
 import gg.rsmod.game.message.impl.SetMapFlagMessage
 import gg.rsmod.game.model.MovementQueue
 import gg.rsmod.game.model.attr.GROUNDITEM_PICKUP_TRANSACTION
@@ -61,7 +61,6 @@ object GroundItemPathAction {
                 wait(1)
                 continue
             }
-            // TODO: check if player can grab the item by leaning over
             if (p.tile.sameAs(item.tile)) {
                 handleAction(p, item, opt)
             } else {
@@ -79,19 +78,43 @@ object GroundItemPathAction {
             if (!p.world.plugins.canPickupGroundItem(p, groundItem.item)) {
                 return
             }
-            // NOTE(Tom): we may want to make the assureFullInsertion flag false and
-            // allow the world to remove some of the ground item instead of all of it.
-            val add = p.inventory.add(item = groundItem.item, amount = groundItem.amount, assureFullInsertion = true)
-            if (add.completed == 0) {
-                p.writeMessage("You don't have enough inventory space to hold that item.")
-                return
+
+            /**
+             * added partial pickup requires tracking player inventory amount before and after
+             * as the leftover amount must be derived after transaction in order to properly
+             * place the remainder [Item.amount] of [GroundItem] back as leftover
+             */
+            val before = p.inventory.getItemCount(groundItem.item)
+            val add = p.inventory.add(item = groundItem.item, amount = groundItem.amount, assureFullInsertion = false)
+            val after = p.inventory.getItemCount(groundItem.item)
+
+            if (add.getLeftOver() != 0) {
+                p.writeMessage("You don't have enough inventory space to hold any more.")
+            } else {
+                p.playSound(2582)
             }
 
             add.items.firstOrNull()?.let { item ->
                 item.item.attr.putAll(groundItem.attr)
             }
 
+            val remainder = groundItem.amount - (after - before)
             p.world.remove(groundItem)
+
+            if(remainder != 0) {
+                if(groundItem.ownerUID == null) {
+                    p.world.spawn(GroundItem(groundItem.item, remainder, groundItem.tile))
+                } else {
+                    p.world.spawn(
+                        GroundItem(
+                            groundItem.item,
+                            remainder,
+                            groundItem.tile,
+                            p.world.getPlayerForUid(groundItem.ownerUID!!)
+                        )
+                    )
+                }
+            }
 
             p.attr[GROUNDITEM_PICKUP_TRANSACTION] = WeakReference(add)
             p.world.plugins.executeGlobalGroundItemPickUp(p)
@@ -106,8 +129,8 @@ object GroundItemPathAction {
         } else {
             val handled = p.world.plugins.executeGroundItem(p, groundItem.item, opt)
             if (!handled && p.world.devContext.debugItemActions) {
-                val definition = item(groundItem.item)
-                p.writeMessage("Unhandled ground item action: [item=${groundItem.item}, option=[$opt, ${definition.options[opt - 1]}]]")
+                val definition = p.world.definitions.get(ItemDef::class.java, groundItem.item)
+                p.writeMessage("Unhandled ground item action: [item=${groundItem.item}, option=[$opt, ${definition.groundMenu[opt - 1]}]]")
             }
         }
     }

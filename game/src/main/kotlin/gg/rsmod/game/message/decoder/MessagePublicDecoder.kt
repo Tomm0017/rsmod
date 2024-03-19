@@ -31,7 +31,6 @@ class MessagePublicDecoder : MessageDecoder<MessagePublicMessage>() {
         val length = reader.unsignedSmart
         val data = ByteArray(reader.readableBytes)
         reader.getBytes(data)
-
         return MessagePublicMessage(type, color, effect, length, data)
     }
 }

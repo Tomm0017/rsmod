@@ -1,7 +1,8 @@
 package gg.rsmod.game.model.item
 
 import com.google.common.base.MoreObjects
-import dev.openrune.cache.CacheManager.item
+import gg.rsmod.game.fs.DefinitionSet
+import gg.rsmod.game.fs.def.ItemDef
 
 /**
  * @author Tom <rspsmods@gmail.com>
@@ -23,8 +24,8 @@ class Item(val id: Int, var amount: Int = 1) {
      * If this item does not have a noted link item id, it will return a new [Item]
      * with the same [Item.id].
      */
-    fun toNoted(): Item {
-        val def = getDef()
+    fun toNoted(definitions: DefinitionSet): Item {
+        val def = getDef(definitions)
         return if (def.noteTemplateId == 0 && def.noteLinkId > 0) Item(def.noteLinkId, amount).copyAttr(this) else Item(this).copyAttr(this)
     }
 
@@ -33,8 +34,8 @@ class Item(val id: Int, var amount: Int = 1) {
      * If this item does not have a unnoted link item id, it will return a new [Item]
      * with the same [Item.id].
      */
-    fun toUnnoted(): Item {
-        val def = getDef()
+    fun toUnnoted(definitions: DefinitionSet): Item {
+        val def = getDef(definitions)
         return if (def.noteTemplateId > 0) Item(def.noteLinkId, amount).copyAttr(this) else Item(this).copyAttr(this)
     }
 
@@ -42,9 +43,9 @@ class Item(val id: Int, var amount: Int = 1) {
      * Get the name of this item. If this item is noted this method will use
      * its un-noted template and get the name for said template.
      */
-    fun getName(): String = toUnnoted().getDef().name
+    fun getName(definitions: DefinitionSet): String = toUnnoted(definitions).getDef(definitions).name
 
-    fun getDef() = item(id)
+    fun getDef(definitions: DefinitionSet) = definitions.get(ItemDef::class.java, id)
 
     /**
      * Returns true if [attr] contains any value.

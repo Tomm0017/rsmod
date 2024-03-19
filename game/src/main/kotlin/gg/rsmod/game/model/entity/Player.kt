@@ -1,32 +1,31 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
-import dev.openrune.cache.CacheManager.varpCount
+import gg.rsmod.game.fs.def.VarpDef
 import gg.rsmod.game.message.Message
 import gg.rsmod.game.message.impl.*
 import gg.rsmod.game.model.*
+import gg.rsmod.game.model.appearance.Appearance
 import gg.rsmod.game.model.attr.CURRENT_SHOP_ATTR
 import gg.rsmod.game.model.attr.LEVEL_UP_INCREMENT
 import gg.rsmod.game.model.attr.LEVEL_UP_OLD_XP
 import gg.rsmod.game.model.attr.LEVEL_UP_SKILL_ID
 import gg.rsmod.game.model.container.ItemContainer
-import gg.rsmod.game.model.container.key.BANK_KEY
-import gg.rsmod.game.model.container.key.ContainerKey
-import gg.rsmod.game.model.container.key.EQUIPMENT_KEY
-import gg.rsmod.game.model.container.key.INVENTORY_KEY
+import gg.rsmod.game.model.container.key.*
 import gg.rsmod.game.model.interf.InterfaceSet
 import gg.rsmod.game.model.interf.listener.PlayerInterfaceListener
 import gg.rsmod.game.model.item.Item
 import gg.rsmod.game.model.priv.Privilege
 import gg.rsmod.game.model.queue.QueueTask
 import gg.rsmod.game.model.skill.SkillSet
+import gg.rsmod.game.model.social.Social
 import gg.rsmod.game.model.timer.ACTIVE_COMBAT_TIMER
 import gg.rsmod.game.model.timer.FORCE_DISCONNECTION_TIMER
 import gg.rsmod.game.model.varp.VarpSet
 import gg.rsmod.game.service.log.LoggerService
 import gg.rsmod.game.sync.block.UpdateBlockType
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
-import java.util.Arrays
+import java.util.*
 
 /**
  * A [Pawn] that represents a player.
@@ -43,7 +42,7 @@ open class Player(world: World) : Pawn(world) {
     lateinit var uid: PlayerUID
 
     /**
-     * The display name that will show on the player while in-game.
+     * The name that was used when the player logged into the game.
      */
     var username = ""
 
@@ -59,7 +58,7 @@ open class Player(world: World) : Pawn(world) {
     var lastKnownRegionBase: Coordinate? = null
 
     /**
-     * A flag that indicates whether or not the [login] method has been executed.
+     * A flag that indicates whether the [login] method has been executed.
      * This is currently used so that we don't send player updates when the player
      * hasn't been fully initialized. We can test later to see if this is even
      * necessary.
@@ -88,16 +87,19 @@ open class Player(world: World) : Pawn(world) {
      */
     @Volatile private var setDisconnectionTimer = false
 
-    val inventory = ItemContainer(INVENTORY_KEY)
+    val bonds = ItemContainer(world.definitions, BOND_POUCH_KEY)
 
-    val equipment = ItemContainer(EQUIPMENT_KEY)
+    val inventory = ItemContainer(world.definitions, INVENTORY_KEY)
 
-    val bank = ItemContainer(BANK_KEY)
+    val equipment = ItemContainer(world.definitions, EQUIPMENT_KEY)
+
+    val bank = ItemContainer(world.definitions, BANK_KEY)
 
     /**
      * A map that contains all the [ItemContainer]s a player can have.
      */
     val containers = HashMap<ContainerKey, ItemContainer>().apply {
+        put(BOND_POUCH_KEY, bonds)
         put(INVENTORY_KEY, inventory)
         put(EQUIPMENT_KEY, equipment)
         put(BANK_KEY, bank)
@@ -105,7 +107,7 @@ open class Player(world: World) : Pawn(world) {
 
     val interfaces by lazy { InterfaceSet(PlayerInterfaceListener(this, world.plugins)) }
 
-    val varps = VarpSet(maxVarps = varpCount())
+    val varps = VarpSet(maxVarps = world.definitions.getCount(VarpDef::class.java))
 
     private val skillSet = SkillSet(maxSkills = world.gameContext.skillCount)
 
@@ -115,7 +117,7 @@ open class Player(world: World) : Pawn(world) {
     val options = Array<String?>(10) { null }
 
     /**
-     * Flag that indicates whether or not to refresh the shop the player currently
+     * Flag that indicates whether to refresh the shop the player currently
      * has open.
      */
     var shopDirty = false
@@ -172,13 +174,22 @@ open class Player(world: World) : Pawn(world) {
      */
     internal val localNpcs = ObjectArrayList<Npc>()
 
-    var appearance = Appearance.DEFAULT
+    var appearance = Appearance.DEFAULT_MALE
+
+    /**
+     * A flag to indicate whether [anims] should be sent
+     *  in place of the default animation appearance
+     *   Note| "forced" because it's embedded in the [PlayerUpdateBlock]
+     */
+    private var appearimation = false
+
+    val anims = arrayOf(808, 823, 819, 820, 821, 822, 824)
 
     var weight = 0.0
 
     var skullIcon = -1
 
-    var runEnergy = 100.0
+    var runEnergy = 10000.00 // 100.0
 
     /**
      * The current combat level. This must be set externally by a login plugin
@@ -202,6 +213,26 @@ open class Player(world: World) : Pawn(world) {
 
     override val entityType: EntityType = EntityType.PLAYER
 
+    fun isAppearimation(): Boolean = appearimation
+
+    fun setAppearimation(forced: Boolean) {
+        this.appearimation = forced
+        addBlock(UpdateBlockType.APPEARANCE)
+    }
+
+    fun appearimate(idleSequence: Int, turnLeftSequence: Int, turnRightSequence: Int,
+            walkBackSequence: Int, walkLeftSequence: Int, walkRightSequence: Int, runSequence: Int) {
+        anims[0] = idleSequence
+        anims[1] = turnLeftSequence
+        anims[2] = turnRightSequence
+        anims[3] = walkBackSequence
+        anims[4] = walkLeftSequence
+        anims[5] = walkRightSequence
+        anims[6] = runSequence
+        appearimation = true
+        addBlock(UpdateBlockType.APPEARANCE)
+    }
+
     /**
      * Checks if the player is running. We assume that the varp with id of
      * [173] is the running state varp.
@@ -212,7 +243,7 @@ open class Player(world: World) : Pawn(world) {
 
     override fun getCurrentHp(): Int = getSkills().getCurrentLevel(3)
 
-    override fun getMaxHp(): Int = getSkills().getMaxLevel(3)
+    override fun getMaxHp(): Int = getSkills().getBaseLevel(3)
 
     override fun setCurrentHp(level: Int) {
         getSkills().setCurrentLevel(3, level)
@@ -406,6 +437,7 @@ open class Player(world: World) : Pawn(world) {
 
         initiated = true
         world.plugins.executeLogin(this)
+        social.updateStatus(this)
     }
 
     /**
@@ -430,11 +462,12 @@ open class Player(world: World) : Pawn(world) {
         world.instanceAllocator.logout(this)
         world.plugins.executeLogout(this)
         world.unregister(this)
+        social.updateStatus(this)
     }
 
     fun calculateWeight() {
-        val inventoryWeight = inventory.filterNotNull().sumOf { it.getDef().weight.toDouble() }
-        val equipmentWeight = equipment.filterNotNull().sumOf { it.getDef().weight.toDouble() }
+        val inventoryWeight = inventory.filterNotNull().sumOf { it.getDef(world.definitions).weight }
+        val equipmentWeight = equipment.filterNotNull().sumOf { it.getDef(world.definitions).weight }
         this.weight = inventoryWeight + equipmentWeight
         write(UpdateRunWeightMessage(this.weight.toInt()))
     }
@@ -443,7 +476,7 @@ open class Player(world: World) : Pawn(world) {
         Arrays.fill(equipmentBonuses, 0)
         for (i in 0 until equipment.capacity) {
             val item = equipment[i] ?: continue
-            val def = item.getDef()
+            val def = item.getDef(world.definitions)
             def.bonuses.forEachIndexed { index, bonus -> equipmentBonuses[index] += bonus }
         }
     }
@@ -462,7 +495,7 @@ open class Player(world: World) : Pawn(world) {
         /*
          * Only increment the 'current' level if it's set at its capped level.
          */
-        if (getSkills().getCurrentLevel(skill) == getSkills().getMaxLevel(skill)) {
+        if (getSkills().getCurrentLevel(skill) == getSkills().getBaseLevel(skill)) {
             getSkills().setBaseXp(skill, newXp)
         } else {
             getSkills().setXp(skill, newXp)
@@ -544,6 +577,10 @@ open class Player(world: World) : Pawn(world) {
         write(MessageGameMessage(type = 0, message = message, username = null))
     }
 
+    internal fun playSound(id: Int, volume: Int = 1, delay: Int = 0) {
+        write(SynthSoundMessage(sound = id, volume = volume, delay = delay))
+    }
+
     override fun toString(): String = MoreObjects.toStringHelper(this)
             .add("name", username)
             .add("pid", index)
@@ -567,4 +604,7 @@ open class Player(world: World) : Pawn(world) {
          */
         const val TILE_VIEW_DISTANCE = 32
     }
+
+    var social = Social()
+
 }

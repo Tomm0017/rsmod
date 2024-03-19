@@ -86,12 +86,11 @@ class HuffmanCodec(private val sizes: ByteArray) {
 
     }
 
-    fun compress(text: String, output: ByteArray): Int {
+    fun compress(text: String, output: ByteArray, offset: Int = 0): Int {
         var key = 0
-
         val input = text.toByteArray()
 
-        var bitpos = 0
+        var bitpos = offset * 8
         for (pos in 0 until text.length) {
             val data = input[pos].toInt() and 255
             val size = sizes[data]
@@ -103,28 +102,28 @@ class HuffmanCodec(private val sizes: ByteArray) {
 
             var remainder = bitpos and 7
             key = key and (-remainder shr 31)
-            var offset = bitpos shr 3
+            var offsetV2 = bitpos shr 3
             bitpos += size.toInt()
-            val i_41_ = (-1 + (remainder - -size) shr 3) + offset
+            val i_41_ = (-1 + (remainder - -size) shr 3) + offsetV2
             remainder += 24
             key = key or mask.ushr(remainder)
-            output[offset] = key.toByte()
-            if (i_41_.inv() < offset.inv()) {
+            output[offsetV2] = key.toByte()
+            if (i_41_.inv() < offsetV2.inv()) {
                 remainder -= 8
                 key = mask.ushr(remainder)
-                output[++offset] = key.toByte()
-                if (offset.inv() > i_41_.inv()) {
+                output[++offsetV2] = key.toByte()
+                if (offsetV2.inv() > i_41_.inv()) {
                     remainder -= 8
                     key = mask.ushr(remainder)
-                    output[++offset] = key.toByte()
-                    if (offset.inv() > i_41_.inv()) {
+                    output[++offsetV2] = key.toByte()
+                    if (offsetV2.inv() > i_41_.inv()) {
                         remainder -= 8
                         key = mask.ushr(remainder)
-                        output[++offset] = key.toByte()
-                        if (i_41_ > offset) {
+                        output[++offsetV2] = key.toByte()
+                        if (i_41_ > offsetV2) {
                             remainder -= 8
                             key = mask shl -remainder
-                            output[++offset] = key.toByte()
+                            output[++offsetV2] = key.toByte()
                         }
                     }
                 }

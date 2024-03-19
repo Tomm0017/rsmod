@@ -2,6 +2,7 @@ package gg.rsmod.game.message.encoder
 
 import gg.rsmod.game.message.MessageEncoder
 import gg.rsmod.game.message.impl.RunClientScriptMessage
+
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 /**
@@ -38,7 +39,7 @@ class RunClientScriptEncoder : MessageEncoder<RunClientScriptMessage>() {
                         args.add((value.toInt() shr 8).toByte())
                         args.add(value.toByte())
                     }
-                    else -> logger.error { "${"Invalid argument type {} for script {}."} ${value::class.java} ${message.id}" }
+                    else -> logger.error("Invalid argument type {} for script {}.", value::class.java, message.id)
                 }
             }
             args.toByteArray()

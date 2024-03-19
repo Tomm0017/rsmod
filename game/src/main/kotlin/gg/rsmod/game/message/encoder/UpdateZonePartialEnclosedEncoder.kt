@@ -13,9 +13,9 @@ class UpdateZonePartialEnclosedEncoder : MessageEncoder<UpdateZonePartialEnclose
     override fun extract(message: UpdateZonePartialEnclosedMessage, key: String): Number = when (key) {
         "x" -> message.x
         "z" -> message.z
+        "y" -> message.y
         else -> throw Exception("Unhandled value key.")
     }
-
     override fun extractBytes(message: UpdateZonePartialEnclosedMessage, key: String): ByteArray = when (key) {
         "payload" -> {
             val builder = GamePacketBuilder()

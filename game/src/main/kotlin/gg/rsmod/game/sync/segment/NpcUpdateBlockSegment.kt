@@ -3,6 +3,7 @@ package gg.rsmod.game.sync.segment
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.sync.SynchronizationSegment
 import gg.rsmod.game.sync.block.UpdateBlockType
+import gg.rsmod.net.packet.DataTransformation
 import gg.rsmod.net.packet.DataType
 import gg.rsmod.net.packet.GamePacketBuilder
 
@@ -19,7 +20,6 @@ class NpcUpdateBlockSegment(private val npc: Npc, private val newAddition: Boole
         var forceFaceTile = false
 
         if (newAddition) {
-
             if (npc.blockBuffer.faceDegrees != 0) {
                 mask = mask or blocks.updateBlocks[UpdateBlockType.FACE_TILE]!!.bit
                 forceFaceTile = true
@@ -29,7 +29,22 @@ class NpcUpdateBlockSegment(private val npc: Npc, private val newAddition: Boole
             }
         }
 
-        buf.put(DataType.BYTE, mask and 0xFF)
+        val firstExtensionBit = 0x20 // update this
+        val secondExtensionBit = 0x400 // update this
+
+        if (mask and 0xFF.inv() != 0) {
+            mask = mask or firstExtensionBit
+        }
+        if (mask and 0xFFFF.inv() != 0) {
+            mask = mask or secondExtensionBit
+        }
+        buf.put(DataType.BYTE, mask)
+        if (mask and firstExtensionBit != 0) {
+            buf.put(DataType.BYTE, mask ushr 8)
+        }
+        if (mask and secondExtensionBit != 0) {
+            buf.put(DataType.BYTE, mask ushr 16)
+        }
 
         blocks.updateBlockOrder.forEach { blockType ->
             val force = when (blockType) {
@@ -45,12 +60,30 @@ class NpcUpdateBlockSegment(private val npc: Npc, private val newAddition: Boole
 
     private fun write(buf: GamePacketBuilder, blockType: UpdateBlockType) {
         val blocks = npc.world.npcUpdateBlocks
-
         when (blockType) {
+            UpdateBlockType.APPLY_TINT -> {
+                val structure = blocks.updateBlocks[blockType]!!.values
+                buf.put(structure[0].type, structure[0].order, structure[0].transformation, npc.blockBuffer.recolourStartCycle) // recolourStartCycle
+                buf.put(structure[1].type, structure[1].order, structure[1].transformation, npc.blockBuffer.recolourEndCycle) // recolourEndCycle
+                buf.put(structure[2].type, structure[2].order, structure[2].transformation, npc.blockBuffer.recolourHue) // recolourHue
+                buf.put(structure[3].type, structure[3].order, structure[3].transformation, npc.blockBuffer.recolourSaturation) // recolourSaturation
+                buf.put(structure[4].type, structure[4].order, structure[4].transformation, npc.blockBuffer.recolourLuminance) // recolourLuminance
+                buf.put(structure[5].type, structure[5].order, structure[5].transformation, npc.blockBuffer.recolourOpacity) // recolourAmount
+            }
+
+            UpdateBlockType.OVERRIDE_LEVEL -> {
+                val structure = blocks.updateBlocks[blockType]!!.values
+                buf.put(structure[0].type, structure[0].order, structure[0].transformation, npc.blockBuffer.overrideLevel)
+            }
+
+            UpdateBlockType.NAME_CHANGE -> {
+                buf.putString(npc.blockBuffer.TempName)
+            }
 
             UpdateBlockType.FACE_PAWN -> {
                 val structure = blocks.updateBlocks[blockType]!!.values
                 buf.put(structure[0].type, structure[0].order, structure[0].transformation, npc.blockBuffer.facePawnIndex)
+                buf.put(structure[1].type, structure[1].order, structure[1].transformation, npc.blockBuffer.facePawnIndex shr 16)
             }
 
             UpdateBlockType.FACE_TILE -> {
@@ -59,6 +92,7 @@ class NpcUpdateBlockSegment(private val npc: Npc, private val newAddition: Boole
                 val z = npc.blockBuffer.faceDegrees and 0xFFFF
                 buf.put(structure[0].type, structure[0].order, structure[0].transformation, x)
                 buf.put(structure[1].type, structure[1].order, structure[1].transformation, z)
+                buf.put(structure[2].type, structure[2].order, structure[2].transformation, npc.blockBuffer.faceInstant)
             }
 
             UpdateBlockType.ANIMATION -> {
@@ -74,6 +108,10 @@ class NpcUpdateBlockSegment(private val npc: Npc, private val newAddition: Boole
 
             UpdateBlockType.GFX -> {
                 val structure = blocks.updateBlocks[blockType]!!.values
+
+                buf.put(DataType.BYTE, DataTransformation.NEGATE, 1) // gfx_array_how many to read one by one
+                buf.put(DataType.BYTE, DataTransformation.NEGATE, 0) // gfx_index from the array
+
                 buf.put(structure[0].type, structure[0].order, structure[0].transformation, npc.blockBuffer.graphicId)
                 buf.put(structure[1].type, structure[1].order, structure[1].transformation, (npc.blockBuffer.graphicHeight shl 16) or npc.blockBuffer.graphicDelay)
             }

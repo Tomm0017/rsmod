@@ -3,6 +3,7 @@ package gg.rsmod.game.message
 import gg.rsmod.game.model.World
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.service.log.LoggerService
+
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 /**
@@ -26,10 +27,11 @@ interface MessageHandler<T : Message> {
         if (client.logPackets) {
             val message = String.format(format, *args)
             val logService = client.world.getService(LoggerService::class.java, searchSubclasses = true)
+            //println("Logger-message: [$message] , client: [$client]")
             if (logService != null) {
                 logService.logPacket(client, message)
             } else {
-                logger.trace { message }
+                logger.trace(message)
             }
         }
     }

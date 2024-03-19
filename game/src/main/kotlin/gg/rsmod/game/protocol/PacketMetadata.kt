@@ -3,6 +3,7 @@ package gg.rsmod.game.protocol
 import gg.rsmod.game.message.MessageStructureSet
 import gg.rsmod.net.packet.IPacketMetadata
 import gg.rsmod.net.packet.PacketType
+
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 /**
@@ -21,7 +22,7 @@ class PacketMetadata(private val structures: MessageStructureSet) : IPacketMetad
     override fun getLength(opcode: Int): Int {
         val structure = structures.get(opcode)
         if (structure == null) {
-            logger.warn { "${"No message structure found for message with opcode {}."} $opcode" }
+            logger.warn("No message structure found for message with opcode {}.", opcode)
             return 0
         }
         return structure.length
@@ -30,7 +31,7 @@ class PacketMetadata(private val structures: MessageStructureSet) : IPacketMetad
     override fun shouldIgnore(opcode: Int): Boolean {
         val structure = structures.get(opcode)
         if (structure == null) {
-            logger.warn { "${"No message structure found for message with opcode {}."} $opcode" }
+            logger.warn("No message structure found for message with opcode {}.", opcode)
             return true
         }
         return structure.ignore

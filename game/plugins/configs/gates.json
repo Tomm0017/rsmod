@@ -1,0 +1,11 @@
+{
+  "name": "General Gates",
+  "description": "Handle the opening and closing of general gates.",
+  "authors": [
+    "Tomm"
+  ],
+  "properties": {
+    "opens_before_stick": 5,
+    "reset_stuck_doors_delay": 25
+  }
+}

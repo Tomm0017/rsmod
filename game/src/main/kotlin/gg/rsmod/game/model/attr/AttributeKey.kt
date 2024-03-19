@@ -24,7 +24,7 @@ import com.google.common.base.MoreObjects
  *
  * @author Tom <rspsmods@gmail.com>
  */
-class AttributeKey<T>(val persistenceKey: String? = null, val resetOnDeath: Boolean = false) {
+class AttributeKey<T>(val persistenceKey: String? = null, val resetOnDeath: Boolean = false, val temp : Boolean = false) {
 
     override fun toString(): String = MoreObjects.toStringHelper(this).add("persistenceKey", persistenceKey).add("resetOnDeath", resetOnDeath).toString()
 

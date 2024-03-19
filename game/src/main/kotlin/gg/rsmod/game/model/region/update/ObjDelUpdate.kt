@@ -12,5 +12,5 @@ import gg.rsmod.game.model.entity.GroundItem
 class ObjDelUpdate(override val type: EntityUpdateType,
                    override val entity: GroundItem) : EntityUpdate<GroundItem>(type, entity) {
 
-    override fun toMessage(): Message = ObjDelMessage(entity.item, ((entity.tile.x and 0x7) shl 4) or (entity.tile.z and 0x7))
+    override fun toMessage(): Message = ObjDelMessage(entity.item, ((entity.tile.x and 0x7) shl 4) or (entity.tile.z and 0x7), entity.amount)
 }

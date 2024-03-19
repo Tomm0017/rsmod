@@ -70,3 +70,13 @@ val FOOD_DELAY = TimerKey()
  * Timer key for delay in between eating "combo" food.
  */
 val COMBO_FOOD_DELAY = TimerKey()
+
+/**
+ * Timer key for delay in between burying bones.
+ */
+val BURY_BONE_DELAY = TimerKey()
+
+/**
+ * Timer key for delay in between burying bones.
+ */
+val BONE_OFFER_DELAY = TimerKey()

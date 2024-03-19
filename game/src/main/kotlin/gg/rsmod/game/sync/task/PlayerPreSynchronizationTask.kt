@@ -23,7 +23,7 @@ object PlayerPreSynchronizationTask : SynchronizationTask<Player> {
         if (last == null || shouldRebuildRegion(last, current)) {
             val regionX = ((current.x shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
             val regionZ = ((current.z shr 3) - (Chunk.MAX_VIEWPORT shr 4)) shl 3
-
+            // @TODO UpdateZoneFullFollowsMessage
             pawn.lastKnownRegionBase = Coordinate(regionX, regionZ, current.height)
 
             val xteaService = pawn.world.xteaKeyService

@@ -5,6 +5,7 @@ import gg.rsmod.game.model.entity.Pawn
 import gg.rsmod.game.sync.block.UpdateBlockType
 import java.util.ArrayDeque
 import java.util.Deque
+import kotlin.math.abs
 
 /**
  * Responsible for handling a queue of [Step]s for a [Pawn].
@@ -92,7 +93,7 @@ class MovementQueue(val pawn: Pawn) {
     private fun addStep(current: Tile, next: Tile, type: StepType, detectCollision: Boolean) {
         var dx = next.x - current.x
         var dz = next.z - current.z
-        val delta = Math.max(Math.abs(dx), Math.abs(dz))
+        val delta = Math.max(abs(dx), abs(dz))
 
         for (i in 0 until delta) {
             if (dx < 0) {

@@ -31,7 +31,7 @@ class FutureRoute private constructor(val strategy: PathFindingStrategy, val ste
 
     lateinit var route: Route
 
-    companion object {
+        companion object {
 
         private val logger = KotlinLogging.logger{}
         /**

@@ -15,6 +15,7 @@ class RebuildLoginEncoder : MessageEncoder<RebuildLoginMessage>() {
     override fun extract(message: RebuildLoginMessage, key: String): Number = when (key) {
         "x" -> message.tile.x shr 3
         "z" -> message.tile.z shr 3
+        "unused" -> 0
         else -> throw Exception("Unhandled value key.")
     }
 

@@ -26,28 +26,34 @@ class MessageDecoderSet {
      * Links [Message]s to their respective [MessageDecoder]s and [MessageHandler].
      */
     fun init(structures: MessageStructureSet) {
+        put(WindowStatusMessage::class.java, WindowStatusDecoder(), WindowStatusHandler(), structures)
+        put(MapBuildCompleteMessage::class.java, MapBuildCompleteDecoder(), MapBuildCompleteHandler(), structures)
+        put(IfButtonMessage::class.java, IfButton1Decoder(), IfButton1Handler(), structures)
         put(EventAppletFocusMessage::class.java, EventAppletFocusDecoder(), EventAppletFocusHandler(), structures)
+        put(MoveGameClickMessage::class.java, MoveGameClickDecoder(), ClickMapHandler(), structures)
+
         put(EventCameraPositionMessage::class.java, EventCameraPositionDecoder(), EventCameraPositionHandler(), structures)
         put(EventMouseIdleMessage::class.java, EventMouseIdleDecoder(), EventMouseIdleHandler(), structures)
         put(EventKeyboardMessage::class.java, EventKeyboardDecoder(), EventKeyboardHandler(), structures)
+        put(EventMouseClickMessage::class.java, EventMouseClickDecoder(), EventMouseClickHandler(), structures)
 
         put(DetectModifiedClientMessage::class.java, DetectModifiedClientDecoder(), DetectModifiedClientHandler(), structures)
-        put(WindowStatusMessage::class.java, WindowStatusDecoder(), WindowStatusHandler(), structures)
-
-        put(MapBuildCompleteMessage::class.java, MapBuildCompleteDecoder(), MapBuildCompleteHandler(), structures)
         put(MessagePublicMessage::class.java, MessagePublicDecoder(), MessagePublicHandler(), structures)
         put(UpdateAppearanceMessage::class.java, UpdateAppearanceDecoder(), UpdateAppearanceHandler(), structures)
         put(ClientCheatMessage::class.java, ClientCheatDecoder(), ClientCheatHandler(), structures)
-        put(ClanJoinChatLeaveChatMessage::class.java, ClanJoinChatLeaveChatDecoder(), ClanJoinChatLeaveHandler(), structures)
+        //put(ClanJoinChatLeaveChatMessage::class.java, ClanJoinChatLeaveChatDecoder(), ClanJoinChatLeaveHandler(), structures)
 
-        put(MoveGameClickMessage::class.java, MoveGameClickDecoder(), ClickMapHandler(), structures)
         put(MoveMinimapClickMessage::class.java, MoveMinimapClickDecoder(), ClickMinimapHandler(), structures)
         put(TeleportMessage::class.java, TeleportDecoder(), TeleportHandler(), structures)
         put(ClickWorldMapMessage::class.java, ClickWorldMapDecoder(), ClickWorldMapHandler(), structures)
 
         put(CloseModalMessage::class.java, CloseModalDecoder(), CloseMainComponentHandler(), structures)
-        put(IfButtonMessage::class.java, IfButton1Decoder(), IfButton1Handler(), structures)
+
+
+        put(IfButtonTMessage::class.java, IfButtonTDecoder(), IfButtonTHandler(), structures)
+
         put(IfButtonDMessage::class.java, IfButtonDDecoder(), IfButtonDHandler(), structures)
+        put(IfModelOp1Message::class.java, IfModelOp1Decoder(), IfModelOp1Handler(), structures)
 
         put(ResumePauseButtonMessage::class.java, ResumePauseButtonDecoder(), ResumePauseButtonHandler(), structures)
         put(ResumePCountDialogMessage::class.java, ResumePCountDialogDecoder(), ResumePCountDialogHandler(), structures)
@@ -61,23 +67,19 @@ class MessageDecoderSet {
         put(OpLoc4Message::class.java, OpLoc4Decoder(), OpLoc4Handler(), structures)
         put(OpLoc5Message::class.java, OpLoc5Decoder(), OpLoc5Handler(), structures)
         put(OpLoc6Message::class.java, OpLoc6Decoder(), OpLoc6Handler(), structures)
-
-        put(OpHeld1Message::class.java, OpHeld1Decoder(), OpHeld1Handler(), structures)
-        put(OpHeld2Message::class.java, OpHeld2Decoder(), OpHeld2Handler(), structures)
-        put(OpHeld3Message::class.java, OpHeld3Decoder(), OpHeld3Handler(), structures)
-        put(OpHeld4Message::class.java, OpHeld4Decoder(), OpHeld4Handler(), structures)
-        put(OpHeld5Message::class.java, OpHeld5Decoder(), OpHeld5Handler(), structures)
-        put(OpHeld6Message::class.java, OpHeld6Decoder(), OpHeld6Handler(), structures)
-        put(OpHeldDMessage::class.java, OpHeldDDecoder(), OpHeldDHandler(), structures)
-        put(OpHeldUMessage::class.java, OpHeldUDecoder(), OpHeldUHandler(), structures)
-
-        put(OpHeldTMessage::class.java, OpHeldTDecoder(), OpHeldTHandler(), structures)
+        put(OpLocTMessage::class.java, OpLocTDecoder(), OpLocTHandler(), structures)
+        
         put(OpLocUMessage::class.java, OpLocUDecoder(), OpLocUHandler(), structures)
 
         put(OpObj1Message::class.java, OpObj1Decoder(), OpObj1Handler(), structures)
+        put(OpObj2Message::class.java, OpObj2Decoder(), OpObj2Handler(), structures)
         put(OpObj3Message::class.java, OpObj3Decoder(), OpObj3Handler(), structures)
         put(OpObj4Message::class.java, OpObj4Decoder(), OpObj4Handler(), structures)
+        put(OpObj5Message::class.java, OpObj5Decoder(), OpObj5Handler(), structures)
+        put(OpObj6Message::class.java, OpObj6Decoder(), OpObj6Handler(), structures)
+
         put(OpObjUMessage::class.java, OpObjUDecoder(), OpObjUHandler(), structures)
+        put(OpObjTMessage::class.java, OpObjTDecoder(), OpObjTHandler(), structures)
 
         put(OpNpc1Message::class.java, OpNpc1Decoder(), OpNpc1Handler(), structures)
         put(OpNpc2Message::class.java, OpNpc2Decoder(), OpNpc2Handler(), structures)
@@ -96,6 +98,14 @@ class MessageDecoderSet {
         put(OpPlayer6Message::class.java, OpPlayer6Decoder(), OpPlayer6Handler(), structures)
         put(OpPlayer7Message::class.java, OpPlayer7Decoder(), OpPlayer7Handler(), structures)
         put(OpPlayer8Message::class.java, OpPlayer8Decoder(), OpPlayer8Handler(), structures)
+        put(OpPlayerTMessage::class.java, OpPlayerTDecoder(), OpPlayerTHandler(), structures)
+
+        //put(FriendListAddMessage::class.java, FriendListAddDecoder(), FriendListAddHandler(), structures)
+        //put(FriendListDeleteMessage::class.java, FriendListDeleteDecoder(), FriendListDeleteHandler(), structures)
+        //put(IgnoreListAddMessage::class.java, IgnoreListAddDecoder(), IgnoreListAddHandler(), structures)
+        //put(IgnoreListDeleteMessage::class.java, IgnoreListDeleteDecoder(), IgnoreListDeleteHandler(), structures)
+        //put(MessagePrivateSenderMessage::class.java, MessagePrivateSenderDecoder(), MessagePrivateSenderHandler(), structures)
+
     }
 
     private fun <T : Message> put(messageType: Class<T>, decoderType: MessageDecoder<T>, handlerType: MessageHandler<T>, structures: MessageStructureSet) {

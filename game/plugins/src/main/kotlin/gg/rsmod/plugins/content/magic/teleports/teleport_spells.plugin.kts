@@ -7,23 +7,6 @@ private val SOUNDAREA_ID = 200
 private val SOUNDAREA_RADIUS = 10
 private val SOUNDAREA_VOLUME = 1
 
-TeleportSpell.values.forEach { teleport ->
-    if (teleport.paramItem == null) {
-        on_magic_spell_button(teleport.spellName) { metadata ->
-            player.teleport(teleport, metadata)
-        }
-    } else {
-        val metadata = MagicSpells.getMetadata(teleport.paramItem)!!
-        on_button(metadata.interfaceId, metadata.component) {
-            player.teleport(teleport, metadata)
-        }
-    }
-}
-
-on_magic_spell_button("Respawn Teleport") { metadata ->
-    player.teleport(TeleportType.ARCEUUS, world.gameContext.home, 27.0, metadata)
-}
-
 fun Player.teleport(spell: TeleportSpell, data: SpellMetadata) = teleport(spell.type, spell.endArea.randomTile, spell.xp, data)
 
 fun Player.teleport(type: TeleportType, endTile: Tile, xp: Double, data: SpellMetadata) {

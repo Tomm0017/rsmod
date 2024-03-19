@@ -7,7 +7,9 @@ import gg.rsmod.game.model.World
 import gg.rsmod.game.service.serializer.PlayerSerializerService
 import gg.rsmod.game.system.GameSystem
 import gg.rsmod.net.codec.login.LoginRequest
+import gg.rsmod.net.packet.GamePacket
 import io.netty.channel.Channel
+import gg.rsmod.game.message.impl.*
 
 /**
  * A [Player] that is controlled by a human. A [Client] is responsible for
@@ -80,7 +82,7 @@ class Client(val channel: Channel, world: World) : Player(world) {
      * A flag which indicates that the client will have their incoming packets
      * ([gg.rsmod.game.message.Message]s) logged.
      */
-    var logPackets = false
+    var logPackets = true
 
     override val entityType: EntityType = EntityType.CLIENT
 
@@ -93,12 +95,45 @@ class Client(val channel: Channel, world: World) : Player(world) {
         gameSystem.handleMessages()
     }
 
+    private val completedMessages = listOf(VarpSmallMessage::class, VarpLargeMessage::class, UpdateStatMessage::class,
+        UpdateRunEnergyMessage::class, UpdateRunWeightMessage::class, RunClientScriptMessage::class,
+        IfSetEventsMessage::class, IfOpenSubMessage::class, IfSetTextMessage::class,
+        UpdateZonePartialEnclosedMessage::class, RebuildNormalMessage::class, RebuildLoginMessage::class,
+        IfOpenTopMessage::class, MidiSongMessage::class, MidiJingleMessage::class, UpdateInvFullMessage::class,
+        MessageGameMessage::class, SetOpPlayerMessage::class, IfMoveSubMessage::class, LogoutFullMessage::class)
+
+    private var rebuildNormalMessageWritten = false
+    private val pendingMessages = mutableListOf<Message>()
     override fun write(vararg messages: Message) {
-        messages.forEach { m -> gameSystem.write(m) }
+        messages.forEach { message ->
+            if (!rebuildNormalMessageWritten && message is RebuildNormalMessage) {
+                gameSystem.write(message)
+                rebuildNormalMessageWritten = true
+                onRebuildNormalMessageWritten()
+            } else if (rebuildNormalMessageWritten || message is RebuildLoginMessage) {
+                gameSystem.write(message)
+            } else {
+                println(message)
+                pendingMessages.add(message)
+            }
+        }
+    }
+
+    private fun onRebuildNormalMessageWritten() {
+        pendingMessages.forEach { message ->
+            gameSystem.write(message)
+        }
+        pendingMessages.clear()
     }
 
     override fun write(vararg messages: Any) {
-        messages.forEach { m -> channel.write(m) }
+        messages.forEach {
+            if (it is GamePacket && it.opcode == 23) {
+                channel.write(it)
+            } else {
+                println("Unhandled Server Packet: $it")
+            }
+        }
     }
 
     override fun channelFlush() {

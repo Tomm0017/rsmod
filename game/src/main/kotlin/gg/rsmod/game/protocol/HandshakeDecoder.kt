@@ -6,10 +6,11 @@ import gg.rsmod.net.codec.handshake.HandshakeMessage
 import gg.rsmod.net.codec.handshake.HandshakeType
 import gg.rsmod.net.codec.login.LoginDecoder
 import gg.rsmod.net.codec.login.LoginEncoder
-import io.github.oshai.kotlinlogging.KotlinLogging
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
+
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.math.BigInteger
 
 /**
@@ -51,7 +52,7 @@ class HandshakeDecoder(private val revision: Int, private val cacheCrcs: IntArra
                  * make sure we read any bytes from the buffer.
                  */
                 buf.readBytes(buf.readableBytes())
-                logger.warn { "${"Unhandled handshake type {} requested by {}."} $opcode ${ctx.channel()}" }
+                logger.warn("Unhandled handshake type {} requested by {}.", opcode, ctx.channel())
                 return
             }
         }

@@ -31,7 +31,7 @@ class NpcSynchronizationTask(private val worldNpcs: Array<Npc?>) : Synchronizati
         }
 
         if (maskBuf.byteBuf.writerIndex() > 0) {
-            buf.putBits(15, 0x7FFF)
+            buf.putBits(16, 0xFFFF)
         }
 
         buf.switchToByteAccess()
@@ -47,6 +47,7 @@ class NpcSynchronizationTask(private val worldNpcs: Array<Npc?>) : Synchronizati
         val iterator = localNpcs.iterator()
 
         segments.add(NpcCountSegment(localNpcs.size))
+
         while (iterator.hasNext()) {
             val npc = iterator.next()
             if (shouldRemove(player, npc)) {

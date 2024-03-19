@@ -31,7 +31,7 @@ enum class DataOrder {
     /**
      * Also known as the V2 order.
      */
-    INVERSED_MIDDLE,
+    INVERSE_MIDDLE,
 
     /**
      * Least significant byte to most significant byte.
@@ -41,6 +41,13 @@ enum class DataOrder {
     /**
      * Also known as the V1 order.
      */
-    MIDDLE
+    MIDDLE,
+
+    /**
+     * Used exclusively for [DataType.BYTES] written in reverse order
+     */
+    REVERSED,
+
+    CUSTOM
 
 }

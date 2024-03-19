@@ -20,16 +20,6 @@ private val LOCATIONS = mapOf(
         "Al kharid" to Tile(3292, 3165)
 )
 
-GLORY.forEach { glory ->
-    LOCATIONS.forEach { location, tile ->
-        on_equipment_option(glory, option = location) {
-            player.queue(TaskPriority.STRONG) {
-                player.teleport(tile)
-            }
-        }
-    }
-}
-
 
 fun Player.teleport(endTile : Tile) {
     if (canTeleport(TeleportType.GLORY) && hasEquipped(EquipmentType.AMULET, *GLORY)) {

@@ -79,7 +79,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
          * Objects will affect the collision map.
          */
         if (entity.entityType.isObject) {
-            world.collision.applyCollision(entity as GameObject, CollisionUpdate.Type.ADD)
+            world.collision.applyCollision(world.definitions, entity as GameObject, CollisionUpdate.Type.ADD)
         }
 
         /*
@@ -131,7 +131,7 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
          * collision map.
          */
         if (entity.entityType.isObject) {
-            world.collision.applyCollision(entity as GameObject, CollisionUpdate.Type.REMOVE)
+            world.collision.applyCollision(world.definitions, entity as GameObject, CollisionUpdate.Type.REMOVE)
         }
 
         entities[tile]?.remove(entity)
@@ -181,7 +181,6 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
      */
     private fun sendUpdate(world: World, update: EntityUpdate<*>) {
         val surrounding = coords.getSurroundingCoords()
-
         for (coords in surrounding) {
             val chunk = world.chunks.get(coords, createIfNeeded = false) ?: continue
             val clients = chunk.getEntities<Client>(EntityType.CLIENT)
@@ -208,13 +207,15 @@ class Chunk(val coords: ChunkCoords, val heights: Int) {
         updates.forEach { update ->
             val message = EntityGroupMessage(update.type.id, update.toMessage())
             if (canBeViewed(p, update.entity)) {
-                messages.add(message)
+                println(update.toMessage())
+                //messages.add(message)
             }
         }
 
         if (messages.isNotEmpty()) {
             val local = p.lastKnownRegionBase!!.toLocal(coords.toTile())
-            p.write(UpdateZonePartialEnclosedMessage(local.x, local.z, gameService.messageEncoders, gameService.messageStructures, *messages.toTypedArray()))
+            println("${local.x}, ${local.z}, ${local.height}")
+            p.write(UpdateZonePartialEnclosedMessage(local.x, local.z, local.height, gameService.messageEncoders, gameService.messageStructures, *messages.toTypedArray()))
         }
     }
 

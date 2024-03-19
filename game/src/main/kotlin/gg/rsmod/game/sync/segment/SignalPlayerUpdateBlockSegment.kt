@@ -15,7 +15,7 @@ class SignalPlayerUpdateBlockSegment : SynchronizationSegment {
         buf.putBits(1, 1)
         /*
          * Signal to the client that the player requires
-         * [gg.rsmod.game.sync.block.UpdateBlockType] decoding.
+         * [org.alter.game.sync.block.UpdateBlockType] decoding.
          */
         buf.putBits(1, 1)
         /*

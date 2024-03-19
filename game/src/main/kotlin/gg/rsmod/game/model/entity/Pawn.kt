@@ -21,10 +21,8 @@ import gg.rsmod.game.model.queue.QueueTaskSet
 import gg.rsmod.game.model.queue.TaskPriority
 import gg.rsmod.game.model.queue.impl.PawnQueueTaskSet
 import gg.rsmod.game.model.region.Chunk
-import gg.rsmod.game.model.timer.FROZEN_TIMER
+import gg.rsmod.game.model.timer.*
 import gg.rsmod.game.model.timer.RESET_PAWN_FACING_TIMER
-import gg.rsmod.game.model.timer.STUN_TIMER
-import gg.rsmod.game.model.timer.TimerMap
 import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.service.log.LoggerService
 import gg.rsmod.game.sync.block.UpdateBlockBuffer
@@ -80,7 +78,7 @@ abstract class Pawn(val world: World) : Entity() {
     /**
      * The last [Direction] this pawn was facing.
      */
-    internal var lastFacingDirection: Direction = Direction.SOUTH
+    var lastFacingDirection: Direction = Direction.SOUTH
 
     /**
      * A public getter property for [lastFacingDirection].
@@ -271,7 +269,11 @@ abstract class Pawn(val world: World) : Entity() {
                 if (key == RESET_PAWN_FACING_TIMER) {
                     resetFacePawn()
                 } else {
-                    world.plugins.executeTimer(this, key)
+                    try {
+                        world.plugins.executeTimer(this, key)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
                 if (!timers.has(key)) {
                     iterator.remove()
@@ -491,17 +493,67 @@ abstract class Pawn(val world: World) : Entity() {
         moveTo(tile.x, tile.z, tile.height)
     }
 
-    fun animate(id: Int, delay: Int = 0) {
+    fun animate(id: Int, delay: Int = 0, interruptable: Boolean = false) {
+        if (!this.hasBlock(UpdateBlockType.ANIMATION) || interruptable) {
+            if (this is Player) {
+                world.plugins.executeOnAnimation(this, id)
+            }
+            animateSend(-1, 0)
+            animateSend(id, delay)
+        }
+    }
+    fun graphic(id: Int, height: Int = 0, delay: Int = 0) {
+        graphicSend(-1, 0, 0)
+        graphicSend(id, height, delay)
+    }
+
+    /**
+     * @param id = Animation id
+     * @param startDelay = when to start anim
+     * @param interruptable = if Anim can be interrupted by other anim masks
+     */
+    fun animateSend(id: Int, startDelay: Int = 0) {
         blockBuffer.animation = id
-        blockBuffer.animationDelay = delay
+        blockBuffer.animationDelay = startDelay
+        if (this is Player) {
+            world.plugins.onAnimList[id]
+        }
         addBlock(UpdateBlockType.ANIMATION)
     }
 
-    fun graphic(id: Int, height: Int = 0, delay: Int = 0) {
+    fun graphicSend(id: Int, height: Int = 0, delay: Int = 0) {
         blockBuffer.graphicId = id
         blockBuffer.graphicHeight = height
         blockBuffer.graphicDelay = delay
         addBlock(UpdateBlockType.GFX)
+    }
+
+    fun applyTint(hue: Int = 0, saturation: Int = 0, luminance: Int = 0, opacity: Int = 0, delay: Int = 0, duration: Int = 0) {
+        blockBuffer.recolourStartCycle = delay
+        blockBuffer.recolourEndCycle = duration
+        blockBuffer.recolourHue = hue
+        blockBuffer.recolourSaturation = saturation
+        blockBuffer.recolourLuminance = luminance
+        blockBuffer.recolourOpacity = opacity
+        addBlock(UpdateBlockType.APPLY_TINT)
+    }
+
+    fun overrideLevel(level: Int) {
+        if (entityType.isPlayer) {
+            println("Can't override level for a player")
+            return
+        }
+        blockBuffer.overrideLevel = level
+        addBlock(UpdateBlockType.OVERRIDE_LEVEL)
+    }
+
+    fun setTempName(name: String) {
+        if (entityType.isPlayer) {
+            println("TempName can't be applied to a player")
+            return
+        }
+        blockBuffer.TempName = name
+        addBlock(UpdateBlockType.NAME_CHANGE)
     }
 
     fun graphic(graphic: Graphic) {
@@ -513,7 +565,11 @@ abstract class Pawn(val world: World) : Entity() {
         addBlock(UpdateBlockType.FORCE_CHAT)
     }
 
-    fun faceTile(face: Tile, width: Int = 1, length: Int = 1) {
+    fun faceDirection(direction: Direction) {
+        faceTile(Tile(direction.getDeltaX(), direction.getDeltaZ()))
+    }
+
+    fun faceTile(face: Tile, width: Int = 1, length: Int = 1, instant: Int = 0) {
         if (entityType.isPlayer) {
             val srcX = tile.x * 64
             val srcZ = tile.z * 64
@@ -531,6 +587,7 @@ abstract class Pawn(val world: World) : Entity() {
             val faceX = (face.x shl 1) + 1
             val faceZ = (face.z shl 1) + 1
             blockBuffer.faceDegrees = (faceX shl 16) or faceZ
+            blockBuffer.faceInstant = instant
         }
 
         blockBuffer.facePawnIndex = -1
@@ -540,7 +597,7 @@ abstract class Pawn(val world: World) : Entity() {
     fun facePawn(pawn: Pawn) {
         blockBuffer.faceDegrees = 0
 
-        val index = if (pawn.entityType.isPlayer) pawn.index + 32768 else pawn.index
+        val index = if (pawn.entityType.isPlayer) pawn.index + 65536 else pawn.index
         if (blockBuffer.facePawnIndex != index) {
             blockBuffer.faceDegrees = 0
             blockBuffer.facePawnIndex = index

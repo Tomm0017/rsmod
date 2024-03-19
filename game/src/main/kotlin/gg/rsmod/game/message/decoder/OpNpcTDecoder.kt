@@ -12,7 +12,8 @@ class OpNpcTDecoder : MessageDecoder<OpNpcTMessage>() {
         val npcIndex = values["npc_index"]!!.toInt()
         val componentHash = values["component_hash"]!!.toInt()
         val componentSlot = values["component_slot"]!!.toInt()
+        val verify = values["verify"]!!.toInt()
         val movementType = values["movement_type"]!!.toInt()
-        return OpNpcTMessage(npcIndex, componentHash, componentSlot, movementType)
+        return OpNpcTMessage(npcIndex, componentHash, componentSlot, verify, movementType)
     }
 }

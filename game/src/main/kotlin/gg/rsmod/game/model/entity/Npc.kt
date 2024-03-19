@@ -1,16 +1,13 @@
 package gg.rsmod.game.model.entity
 
 import com.google.common.base.MoreObjects
-import dev.openrune.cache.CacheManager.npc
-import dev.openrune.cache.CacheManager.varbit
-import dev.openrune.cache.filestore.definition.data.NPCDefinition
+import gg.rsmod.game.fs.def.NpcDef
+import gg.rsmod.game.fs.def.VarbitDef
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
-import gg.rsmod.game.model.combat.AttackStyle
-import gg.rsmod.game.model.combat.CombatClass
-import gg.rsmod.game.model.combat.CombatStyle
-import gg.rsmod.game.model.combat.NpcCombatDef
+import gg.rsmod.game.model.combat.*
+import gg.rsmod.game.model.weightedTableBuilder.tableDrops
 import gg.rsmod.game.sync.block.UpdateBlockType
 
 /**
@@ -94,7 +91,9 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     /**
      * Gets the [NpcDef] corresponding to our [id].
      */
-    val def: NPCDefinition = npc(id)
+    val def: NpcDef = world.definitions.get( NpcDef::class.java, id)
+
+    var pathsIndex = 0
 
     /**
      * Getter property for our npc name.
@@ -109,18 +108,21 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
     val species: Set<Any>
         get() = combatDef.species
 
+    val dropTable: Set<tableDrops>?
+        get() = combatDef.drops
+
     override val entityType: EntityType = EntityType.NPC
 
     override fun isRunning(): Boolean = false
 
-    override fun getSize(): Int = npc(id).size
+    override fun getSize(): Int = world.definitions.get(NpcDef::class.java, id).size
 
     override fun getCurrentHp(): Int = hitpoints
 
     override fun getMaxHp(): Int = combatDef.hitpoints
 
-    override fun setCurrentHp(level: Int) {
-        this.hitpoints = level
+    override fun setCurrentHp(health: Int) {
+        this.hitpoints = health
     }
 
     override fun addBlock(block: UpdateBlockType) {
@@ -145,17 +147,17 @@ class Npc private constructor(val id: Int, world: World, val spawnTile: Tile) : 
      * [player]'s view point.
      *
      * Npcs can change their appearance for each player depending on their
-     * [NpcDef.transforms] and [NpcDef.varp]/[NpcDef.varbit].
+     * [NpcDef.transforms] and [NpcDef.transformVarp]/[NpcDef.transformVarbit].
      */
     fun getTransform(player: Player): Int {
-        if (def.varbit != -1) {
-            val varbitDef = varbit(def.varbit)
+        if (def.transformVarbit != -1) {
+            val varbitDef = world.definitions.get(VarbitDef::class.java, def.transformVarbit)
             val state = player.varps.getBit(varbitDef.varp, varbitDef.startBit, varbitDef.endBit)
             return def.transforms!![state]
         }
 
-        if (def.varp != -1) {
-            val state = player.varps.getState(def.varp)
+        if (def.transformVarp != -1) {
+            val state = player.varps.getState(def.transformVarp)
             return def.transforms!![state]
         }
 

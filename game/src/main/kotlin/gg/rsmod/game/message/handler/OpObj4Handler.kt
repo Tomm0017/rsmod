@@ -6,8 +6,8 @@ import gg.rsmod.game.message.impl.OpObj4Message
 import gg.rsmod.game.model.EntityType
 import gg.rsmod.game.model.Tile
 import gg.rsmod.game.model.World
-import gg.rsmod.game.model.attr.INTERACTING_GROUNDITEM_ATTR
 import gg.rsmod.game.model.attr.INTERACTING_OPT_ATTR
+import gg.rsmod.game.model.attr.INTERACTING_GROUNDITEM_ATTR
 import gg.rsmod.game.model.entity.Client
 import gg.rsmod.game.model.entity.GroundItem
 import gg.rsmod.game.model.entity.Player
@@ -32,13 +32,13 @@ class OpObj4Handler : MessageHandler<OpObj4Message> {
             return
         }
 
-        log(client, "Ground Item action 4: item=%d, x=%d, z=%d, movement=%d", message.item, message.x, message.z, message.movementType)
+        log(client, "Ground Item action 4: item=%d, x=%d, z=%d, movement=%d", message.id, message.x, message.z, message.movementType)
 
         /*
          * Get the region chunk that the object would belong to.
          */
         val chunk = world.chunks.getOrCreate(tile)
-        val item = chunk.getEntities<GroundItem>(tile, EntityType.GROUND_ITEM).firstOrNull { it.item == message.item && it.canBeViewedBy(client) } ?: return
+        val item = chunk.getEntities<GroundItem>(tile, EntityType.GROUND_ITEM).firstOrNull { it.item == message.id && it.canBeViewedBy(client) } ?: return
 
         if (message.movementType == 1 && world.privileges.isEligible(client.privilege, Privilege.ADMIN_POWER)) {
             client.moveTo(item.tile)

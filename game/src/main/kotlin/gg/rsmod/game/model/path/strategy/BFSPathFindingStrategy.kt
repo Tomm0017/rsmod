@@ -75,10 +75,10 @@ class BFSPathFindingStrategy(collision: CollisionManager) : PathFindingStrategy(
         }
 
         if (tail == null && closed.isNotEmpty()) {
-            val min = closed.minBy { it.tile.getDistance(end) }!!
+            val min = closed.minByOrNull { it.tile.getDistance(end) }!!
             val valid = closed.filter { it.tile.getDistance(end) <= min.tile.getDistance(end) }
             if (valid.isNotEmpty()) {
-                tail = valid.minBy { it.tile.getDelta(start) }
+                tail = valid.minByOrNull { it.tile.getDelta(start) }
             }
         }
 

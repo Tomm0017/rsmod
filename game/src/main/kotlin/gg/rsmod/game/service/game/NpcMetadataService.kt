@@ -1,17 +1,12 @@
 package gg.rsmod.game.service.game
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import dev.openrune.cache.CacheManager.npc
 import gg.rsmod.game.Server
+import gg.rsmod.game.fs.DefinitionSet
+import gg.rsmod.game.fs.def.NpcDef
 import gg.rsmod.game.model.World
 import gg.rsmod.game.service.Service
 import gg.rsmod.util.ServerProperties
-import java.io.BufferedReader
-import java.io.FileNotFoundException
+import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -22,16 +17,13 @@ import java.nio.file.Paths
 class NpcMetadataService : Service {
 
     private lateinit var path: Path
-
     override fun init(server: Server, world: World, serviceProperties: ServerProperties) {
-        path = Paths.get(serviceProperties.getOrDefault("path", "../data/cfg/npcs.yml"))
+
+        path = Paths.get(serviceProperties.getOrDefault("path", "../data/cfg/npcs.csv"))
         if (!Files.exists(path)) {
             throw FileNotFoundException("Path does not exist. $path")
         }
-
-        Files.newBufferedReader(path).use { reader ->
-            load(reader)
-        }
+        load(world.definitions)
     }
 
     override fun postLoad(server: Server, world: World) {
@@ -43,19 +35,17 @@ class NpcMetadataService : Service {
     override fun terminate(server: Server, world: World) {
     }
 
-    private fun load(reader: BufferedReader) {
-        val mapper = ObjectMapper(YAMLFactory())
-        mapper.propertyNamingStrategy = PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-
-        val reference = object : TypeReference<List<Metadata>>() {}
-        mapper.readValue<List<Metadata>>(reader, reference)?.let { metadataSet ->
-            metadataSet.forEach { metadata ->
-                val def = npc(metadata.id)
-                def.examine = metadata.examine?: ""
+    private fun load(definitions: DefinitionSet) {
+        path.toFile().forEachLine { line ->
+            val parts = line.split(',')
+            if (parts.size >= 2) {
+                val id = parts[0].toIntOrNull()
+                val examine = line.substringAfter(',').trim()
+                if (id != null) {
+                    val def = definitions.getNullable(NpcDef::class.java, id) ?: return@forEachLine
+                    def.examine = examine.replace("\"", "")
+                }
             }
         }
     }
-
-    private data class Metadata(val id: Int = -1, val examine: String? = null)
 }

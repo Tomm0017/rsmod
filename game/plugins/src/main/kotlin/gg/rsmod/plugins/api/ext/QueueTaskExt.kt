@@ -3,7 +3,7 @@ package gg.rsmod.plugins.api.ext
 import dev.openrune.cache.CacheManager.item
 import dev.openrune.cache.CacheManager.npc
 import gg.rsmod.game.message.impl.ResumePauseButtonMessage
-import gg.rsmod.game.model.Appearance
+import gg.rsmod.game.model.appearance.Appearance
 import gg.rsmod.game.model.attr.INTERACTING_NPC_ATTR
 import gg.rsmod.game.model.entity.Npc
 import gg.rsmod.game.model.entity.Pawn
@@ -16,7 +16,7 @@ import gg.rsmod.plugins.api.Skills
  * The child id of the chat box in the gameframe interface. This can change
  * with revision.
  */
-const val CHATBOX_CHILD = 561
+const val CHATBOX_CHILD = 565
 
 /**
  * The id for the appearance interface.
